@@ -22,7 +22,7 @@ In tutti gli esami saranno presenti
 Il programma del corso è quello che si trova qui sotto.
 
 # Programma didattico
-##### Tipo Verde (Completata)
+##### Tipo Verde 
  - [ ] La nozione di insieme e di appartenenza di un elemento ad un insieme. 
  - [ ] Sottoinsiemi di un insieme: inclusione di un insieme in un altro. 
  - [ ] L'insieme vuoto. 
@@ -54,14 +54,14 @@ Il programma del corso è quello che si trova qui sotto.
  - [ ] Dimostrazioni dirette. 
  - [ ] Dimostrazioni per assurdo. 
  - [ ] Il Principio di Induzione Matematica. 
-##### Tipo Rosso (Completata)
+##### Tipo Rosso
  - [ ] Il Principio del Buon Ordinamento. 
-##### Tipo Verde (Completata)
+##### Tipo Verde
  - [ ] Numeri naturali. 
  - [ ] Numeri interi. 
-##### Tipo Blu (Completata)
+##### Tipo Blu
  - [ ] I numeri razionali sono classi di equivalenza (no dim.). 
-##### Tipo Verde (Completata)
+##### Tipo Verde
  - [ ] I numeri complessi. 
  - [ ] L'unita' immaginaria. 
  - [ ] Somma, prodotto e quoziente di numeri complessi. 
@@ -71,9 +71,9 @@ Il programma del corso è quello che si trova qui sotto.
  - [ ] Numeri primi e composti. 
  - [ ] Numeri coprimi. 
  - [ ] Ogni numero >1 è prodotto di numeri primi. 
-##### ??? (Studiato teoricamente)
+##### ???
  - [x] L'infinita' dei numeri primi.
-##### Tipo Verde (Completato)
+##### Tipo Verde
  - [ ] L'Algoritmo Euclideo per la determinazione del massimo comune divisore di due interi positivi. 
  - [ ] L'Identità di Bezout. 
  - [ ] Se un numero primo divide un prodotto allora divide uno dei fattori. 
@@ -115,19 +115,19 @@ Il programma del corso è quello che si trova qui sotto.
  - [ ] La risoluzione delle ricorsioni lineari a coefficienti costanti. 
  - [ ] Formule chiuse. 
  - [ ] La formula chiusa per la somma geometrica. 
-##### Tipo Blu (Completato)
+##### Tipo Blu
  - [ ] Somme polinomiali. 
  - [ ] La formula chiusa per una somma polinomiale. 
  - [ ] Somme non polinomiali. 
  - [ ] Se f e' una funzione reale continua e monotona crescente allora la somma, per i=1,..,n, di f(i) e' limitata superiormente (rispettivamente, inferiormente) da f(n) + l'integrale di f(x) da 1 ad n (rispettivamente, f(1) + l'integrale di f(x) da 1 ad n). 
  - [ ] Similmente se f e' una funzione reale continua e monotona decrescente. 
-##### Tipo Rosso (Completato)
+##### Tipo Rosso
  - [ ] Somme doppie. 
  - [ ] La tecnica di inversione dell'ordine di sommatoria per il calcolo e la stima di una somma doppia. 
  - [ ] Prodotti. 
  - [ ] La tecnica del logaritmo per il calcolo e la stima di prodotti. 
  - [ ] La formula di Stirling (no dim.). 
-##### Tipo Blu (Completato)
+##### Tipo Blu
  - [ ] Notazioni asintotiche. 
  - [ ] Successioni e funzioni asintoticamente piu' piccole di altre. 
  - [ ] Successioni e funzioni asintoticamente equivalenti. 

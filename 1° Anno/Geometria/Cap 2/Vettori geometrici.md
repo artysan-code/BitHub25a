@@ -23,4 +23,14 @@ $V_O^2$ con la somma descritta nella Definizione 2.2 è un gruppo commutativo.
 L'elemento neutro è il vettore nullo: infatti, dalla definizione segue subito che $$\begin{array}{}
 \forall\ \overrightarrow{OA}\in V_O^2 & &  &  &  &  \overrightarrow{OA}+\overrightarrow{OO}=\overrightarrow{OA}=\overrightarrow{OO}+\overrightarrow{OA} &  &  &  &  &
 \end{array}$$
-anche 
+Anche l'opposto si trova facilmente: l'opposto del vettore $\overrightarrow{OA}$ è proprio il vettore $\overrightarrow{OA'}$, dove $A'$ è il simmetrico di $A$ rispetto a $O$ sulla retta passante per $O$ e $A$.
+
+La proprietà commutativa: se $O$,$A$ e $B$ non sono allineati, $\overrightarrow{OA}$+$\overrightarrow{OB}$=$\overrightarrow{OB}$+$\overrightarrow{OA}$ segue dal fatto che i punti $O$,$A$ e $B$ e i punti $O$,$B$ e $A$ identificano lo stesso parallelogramma. Se invece i tre punti sono allineati, la commutatività segue dalla proprietà della congruenza fra segmenti orientati.
+
+La proprietà associativa: consideriamo tre vettori applicati $\overrightarrow{OA_1}$,$\overrightarrow{OA_2}$ e$\overrightarrow{OA_3}$; supponiamo per un momento che fra i punti $O$, $A_1$, $A_2$ e $A_3$ non ce ne siano tre allineati. Poniamo $$\begin{array}{l}
+\overrightarrow{OB_1}= \overrightarrow{OA_1}+\overrightarrow{OA_2}\quad\quad\overrightarrow{OB_2}= \overrightarrow{OA_2}+\overrightarrow{OA_3}\\
+\overrightarrow{OC}=\overrightarrow{OB_1}+\overrightarrow{OA_3}=(\overrightarrow{OA_1}+\overrightarrow{OA_2})+\overrightarrow{OA_3}\\
+\text{Dobbiamo dimostrare che} \\
+\overrightarrow{OA_1}+(\overrightarrow{OA_2}+\overrightarrow{OA_3})= \overrightarrow{OA_1}+\overrightarrow{OB_2}=\overrightarrow{OC}
+\end{array}$$
+Prima di tutto, siccome $OB_1CA_3$ è un parallelogramma, il segmento $B_1C$ è parallelo e congruente al segmento $\overline{OA_3}$. Ma anche $OA_3B_{2}A_{2}$ è un parallelogramma; quindi il segmento $\overline{OA_{3}}$ è parallelo e congruente al segmento $\overline{A_{2}B_{2}}$. Dunque 

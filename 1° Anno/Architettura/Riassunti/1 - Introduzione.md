@@ -1,7 +1,7 @@
 Un calcolatore digitale è una macchina in grado di svolgere operazioni per le persone tramite istruzioni che vengono fornite da queste ultime. Una sequenza di istruzioni da eseguire si chiama **programma** e deve essere scritto in un *linguaggio* comprensibile per la macchina.
 Quest'ultimo si chiama **linguaggio macchina** e contiene un insieme di istruzioni fornito dal produttore della macchina. Questo linguaggio risulta difficile da comprendere e utilizzare, per questo si è cercato di creare dei livelli di astrazione per semplificare il lavoro del **programmatore**. Questo approccio di astrazione si chiama **approccio strutturale**.
 
-## 1. 1 Approccio Strutturale 
+## Approccio Strutturale 
 Per avvicinare un linguaggio naturale come quello umano a quello macchina bisogna impostare dei livelli di astrazione. 
 
 ### Linguaggi, Livelli e Macchine Virtuali

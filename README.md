@@ -1,7 +1,7 @@
 # BitHub25a Comunità Educativa
-Il nostro obiettivo presso BitHub25a è sviluppare una piattaformIl nostro team di BitHub25a si propone di creare uno spazio web dove poter accedere a informazioni e risorse sul Corso di Informatica dell'Università Tor Vergata.
+Il nostro team di BitHub25a si propone di creare uno spazio web dove poter accedere a informazioni e risorse sul Corso di Informatica dell'Università Tor Vergata.
 
-Per ora questo è solo un repository GitHub contenente tutte le risorse per ogni lezione di questo corso, con tutte le note e le informazioni che possiamo creare e ottenere. Inoltre, questo repository è pubblico, quindi qualsiasi utente può segnalare problemi e inviare richieste per migliorare ulteriormente il progetto.a web dedicata a fornire risorse e informazioni riguardanti il Corso di Informatica presso l'Università di Tor Vergata.
+Per ora questo è solo un repository GitHub contenente tutte le risorse per ogni lezione di questo corso, con tutte le note e le informazioni che possiamo creare e ottenere. Inoltre, questo repository è pubblico, quindi qualsiasi utente può segnalare problemi e inviare richieste per migliorare ulteriormente il progetto.Verrà in futuro creata una pagina web dedicata a fornire risorse e informazioni riguardanti il Corso di Informatica presso l'Università di Tor Vergata.
 
 Attualmente, abbiamo creato una repository su GitHub che contiene una vasta gamma di risorse per ciascuna materia del corso, compresi appunti e informazioni provenienti da varie fonti. Questa repository è pubblica, consentendo a ogni utente di segnalare problemi e inviare richieste per migliorare costantemente il progetto.
 

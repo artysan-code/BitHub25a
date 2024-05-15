@@ -106,3 +106,5 @@ Sono enormi macchine con potenze di calcolo inferiori ai cluster ma con una magg
 ### 1.5 Unità metriche
 
 Nel sistema metrico abbiamo dei prefissi che servono a dare un valore diverso all'unità di misura che stiamo usando. Però nell'informatica non funziona proprio come dalle altre parti. Ci viene da pensare che 1 Megabyte corrisponde a 1.000.000 di byte (cioè $10^3$), invece essendo che la misura è binaria 1 Kilobyte corrisponde a 1024 byte (Cioè $2^10$). Inoltre, dobbiamo distinguere la **velocità di trasferimento** che si misura in bit/s, che effettivamente viene proporzionata in $10^n$, e la **capacità**, che invece si misura usando il sistema binario quindi $2^n$.
+
+[[2 - Organizzazione dei sistemi di calcolo|Continua...]]

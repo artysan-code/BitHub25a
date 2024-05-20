@@ -37,6 +37,11 @@ Ne conseguì una vera e propria "guerra religiosa" tra i sostenitori delle metod
 La risposta si trova sia a livello _economico_ che di _compatibilità_. Gli investimenti in aziende come **Intel** e la necessità di mantenere la compatibilità con il software esistente rendevano poco conveniente l'adozione di una nuova tecnologia. L'unico compromesso fu offerto da Intel in alcuni processori, che integravano un nucleo RISC e uno CISC, per migliorare parzialmente le prestazioni pur mantenendo la compatibilità con l'architettura esistente.
 
 ### 2.1.4 Principi di progettazione dei calcolatori moderni
-Il progetto **RISC** tutt'ora porta con sé dei principi di progettazione che vengono tutt'ora applicati a livello generale, in quanto ottimali. I *principi di progettazione RISC* seguiti tutt'ora sono i seguenti:
-- *Tutte le istruzioni sono direttamente eseguite dall'hardware*, senza quindi l'utilizzo dell'interpretazione di microistruzioni. Eliminando questo livello di astrazione guadagniamo ulteriori performance nel calcolatore.
-- *Massimizzare la frequenza di emissione delle istruzioni*, che pone al centro la tecnica di **parallelismo delle istruzioni** di cui parleremo più tardi.
+Il progetto **RISC** continua a portare con sé principi di progettazione che sono tuttora applicati a livello generale, in quanto ottimali. I _principi di progettazione RISC_ seguiti attualmente sono i seguenti:
+- _Tutte le istruzioni sono eseguite direttamente dall'hardware_, senza l'utilizzo dell'interpretazione di microistruzioni. Eliminando questo livello di astrazione, si ottengono migliori performance nel calcolatore.
+- _Massimizzare la frequenza di emissione delle istruzioni_, ponendo al centro la tecnica del **parallelismo delle istruzioni**, di cui parleremo più avanti. Generalmente è preferibile eseguire più istruzioni contemporaneamente piuttosto che eseguirle più velocemente, indipendentemente dal tempo di esecuzione.
+- _Istruzioni facili da decodificare_, creando uno o pochi pattern di istruzioni per rendere la decodifica semplice. La fase di decodifica può rallentare significativamente l'esecuzione delle istruzioni se non è ben progettata.
+- _Solo le istruzioni Load e Store fanno riferimento alla memoria_, separando le operazioni in passi distinti: prelevare gli operandi e memorizzarli nei registri per l'esecuzione. Prelevare dati dalla memoria è un'operazione potenzialmente lenta e soggetta a vari problemi. La soluzione è fare riferimento solo alle istruzioni di load e store, facendo operare tutte le altre sui registri.
+- _Disponibilità di molti registri_, poiché prelevare dati dalla memoria è molto lento. È preferibile conservare i valori nei registri, in quanto sono notevolmente più veloci.
+
+### 2.1.5 Parallelismo a livello d'istruzione

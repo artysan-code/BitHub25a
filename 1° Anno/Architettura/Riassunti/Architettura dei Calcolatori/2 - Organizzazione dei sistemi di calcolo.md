@@ -24,4 +24,19 @@ L'interprete permetteva di aggiungere nuove istruzioni e funzionalità senza toc
 Grazie alle architetture, si potevano inviare aggiornamenti di alcune istruzioni, risolvere errori prima dell'esecuzione dei programmi e sviluppare in modo efficiente nuove istruzioni. Un altro fattore che rese sempre più usato il principio di interpretazione fu lo sviluppo delle **memorie di controllo**, memorie molto veloci in cui veniva salvato l'interprete per rendere più veloce l'interpretazione.
 
 ### 2.1.3 RISC contro CISC
+Tradizionalmente, c'è sempre stata una tendenza a sviluppare nuove tecnologie in grado di implementare istruzioni sempre più complesse. L'ultima tendenza è stata quella di _interpretare_ le istruzioni, con l'obiettivo finale di ridurre il divario tra l'hardware progettato e il software scritto dai programmatori. Questo ha portato a una nuova tipologia di implementazione dei calcolatori e la divisione in due tipologie di esse.
 
+Seguendo il modello di _Seymour Cray_, fu inventato un nuovo tipo di microcomputer ad alte prestazioni che suscitò l'interesse di alcuni progettisti, i quali tentarono di seguire lo stile di quella architettura. Questo portò all'avvio di un progetto chiamato **RISC** (Reduced Instruction Set Computer), che si proponeva di sviluppare una tecnologia con le seguenti caratteristiche:
+- Non doveva essere retrocompatibile con altre architetture.
+- Doveva essere progettato per massimizzare **l'emissione delle istruzioni**, relegando in secondo piano il tempo effettivo di esecuzione delle istruzioni.
+
+In contrapposizione abbiamo invece i calcolatori di tipo **CISC** (Complex Instruction Set Computer) che seguivano la precedente moda.
+
+Ne conseguì una vera e propria "guerra religiosa" tra i sostenitori delle metodologie di progettazione RISC e CISC. Tuttavia, nonostante i buoni propositi e le eccellenti caratteristiche, perché l'architettura RISC non ha prevalso sulla concorrenza?
+
+La risposta si trova sia a livello _economico_ che di _compatibilità_. Gli investimenti in aziende come **Intel** e la necessità di mantenere la compatibilità con il software esistente rendevano poco conveniente l'adozione di una nuova tecnologia. L'unico compromesso fu offerto da Intel in alcuni processori, che integravano un nucleo RISC e uno CISC, per migliorare parzialmente le prestazioni pur mantenendo la compatibilità con l'architettura esistente.
+
+### 2.1.4 Principi di progettazione dei calcolatori moderni
+Il progetto **RISC** tutt'ora porta con sé dei principi di progettazione che vengono tutt'ora applicati a livello generale, in quanto ottimali. I *principi di progettazione RISC* seguiti tutt'ora sono i seguenti:
+- *Tutte le istruzioni sono direttamente eseguite dall'hardware*, senza quindi l'utilizzo dell'interpretazione di microistruzioni. Eliminando questo livello di astrazione guadagniamo ulteriori performance nel calcolatore.
+- *Massimizzare la frequenza di emissione delle istruzioni*, che pone al centro la tecnica di **parallelismo delle istruzioni** di cui parleremo più tardi.

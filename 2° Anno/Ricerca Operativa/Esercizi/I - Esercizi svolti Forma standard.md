@@ -70,3 +70,5 @@ min\quad-13x_{1}-20x_{2}+5x_{3}+x_{4}^{+}-x_{4}^{-} \\
 x_{2}+x_{3}+50x_{4}^{+}-50x_{4}^{-}+s_{3}=3\\
 x_{1}\geq 0,x_{2}\geq 0,x_{3}\geq 0,x_{4}^{+}\geq 0,x_{4}^{-}\geq 0,s_{1}\geq 0,s_{2}\geq 0,s_{3}\geq 0,
 \end{array}$$
+
+[[II - SBA Esempio spiegazione|Prossimo Argomento]]

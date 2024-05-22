@@ -8,3 +8,7 @@
 4. Se $\overline{a}_{ik}\leq 0$ per ogni $i\in \{1,\dots,m\}$, allora il problema è illimitato; si definisca $r$ come in $(3.20)-(3.22)$; **STOP**
 5. Altrimenti , si scelga $h\in\{1,\dots,m\}$ tale che $$\overline{a}_{hk}>0\quad\text{ e }\quad\frac{\overline{b}_{h}}{\overline{a}_{hk}}=min\{\frac{\overline{b}_{i}}{\overline{a}_{ik}}: i\in\{1,\dots,m\},\overline{a}_{ik}>0\}$$
 6. Si ridefinisca $B[h]:=k$ e si torni al passo 1.
+
+[[Simplesso esercizi|Esempi simplesso]]
+
+[[|Prossimo argomento]]

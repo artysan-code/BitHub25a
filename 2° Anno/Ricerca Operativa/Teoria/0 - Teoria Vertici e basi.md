@@ -8,3 +8,7 @@ Sia $B = {x \in \textsf{I\kern-0.1ex R}^{n}: Ax = b,x \geq 0}$ dove $A \in \text
 
 Sia $A\in \textsf{I\kern-0.1ex R}^{m\times x}$ con rank $A = m$, una soluzione di base è non — degenere se ha $m$ componenti strettamente positive. 
 Un sottoinsieme $B$ è una base se $|B| = m$ e la matrice $A_{B}$ è invertibile. Un base ammissibile se $A_{B}^{-1}b\geq 0$.
+
+[[Esercizio Vertici e basi|Esercizio esempio]]
+
+[[I - Teoria Forma Standard|Prossimo Argomento]]

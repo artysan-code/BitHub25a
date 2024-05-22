@@ -17,3 +17,7 @@ dove:
 	- si moltiplicano per -1 i vincoli con termine noto negativo
 
 Questi passaggi permettono, senza perdere in generalità, di risolvere qualsiasi problema di PL tramite sistemi di equazioni lineari.
+
+[[I - Esercizi svolti Forma standard|Esercizi esempio]]
+
+[[II - SBA Esempio spiegazione|Prossimo Argomento]]

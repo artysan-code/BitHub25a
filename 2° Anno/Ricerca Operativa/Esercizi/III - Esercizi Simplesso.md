@@ -1,4 +1,4 @@
-
+# Esempio 1
 Una ditta di profumi realizza due nuove fragranze a partire da 3 essenze: rosa, mughetto e viola. 
 
 Per realizzare un decalitro di fragranza 1 sono richiesti 1,5 litri di rosa, 1 litro di mughetto e 0,3 litri di viola. 
@@ -94,3 +94,8 @@ s_{1},s_{2}=0 \\
 s_{3}=0.9 \\
 z=2460 (\text{ valore ottimo del problema iniziale})
 \end{array}$$
+
+# Esempio 2
+
+
+[[|Prossimo Argomento]]

@@ -53,3 +53,5 @@ A=\begin{bmatrix}
 =(7(-3)(-1))+(2(0)(1))+(0(-5)(-1))-(1(-3)(0))-(-1(0)(7))-(-1(-5)(2))= \\
 21+0+0-0-0-10= 11\neq 0\implies x^{'}=[1\ 1\ 0] \text{ è un vertice}
 \end{array}$$
+
+[[I - Teoria Forma Standard|Prossimo Argomento]]

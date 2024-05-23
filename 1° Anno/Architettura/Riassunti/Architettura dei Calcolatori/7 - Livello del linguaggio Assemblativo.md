@@ -10,7 +10,9 @@ I programmatori utilizzano il linguaggio assembly per sfruttare simboli mnemonic
 
 Un programmatore che utilizza il linguaggio assemblativo ha accesso a tutte le funzionalità della macchina, diversamente da un programmatore che usa linguaggi di alto livello (che può manipolare i dati a livello di bit). Tuttavia, un programma scritto in linguaggio assemblativi è specifico per una particolare macchina, mentre i programmi scritti in linguaggi di alto livello possono essere compilati per diverse piattaforme.
 ### 7.1.2 - Perché usare il linguaggio assemblativo 
+Analizziamo nel dettaglio la seguente domanda: _perché programmare in linguaggio assembly?_ Ci sono due principali motivi: **prestazioni** e **funzionalità**.
 
+Un programmatore esperto, che conosce a fondo il linguaggio assemblativo e i metodi di codifica ottimali, può creare un codice più piccolo e veloce rispetto a un codice scritto in linguaggi di alto livello. Inoltre, ci sono particolari situazioni che possono essere implementate solo utilizzando il linguaggio assembly, poiché offre un accesso più diretto all'hardware della macchina. Basta pensare ai programmi del BIOS, dei driver e dei firmware.
 ### 7.1.3 - Formato delle istruzioni del linguaggio assemblativo 
 ### 7.1.4 - Pseudoistruzioni
 ## 7.2 - Macroistruzioni

@@ -4,7 +4,11 @@ Il **traduttore** è il programma che si occupa di convertire un programma utent
 ## 7.1 - Introduzione al linguaggio assemblativo
 Possiamo suddividere i traduttori in due categorie principali: gli assemblatori, che convertono i linguaggi sorgente simbolici in linguaggi macchina numerici, e i compilatori, che trasformano i linguaggi sorgente di alto livello in linguaggi macchina numerici o in una rappresentazione simbolica.
 ### 7.1.1 - Che cos'è un linguaggio assemblativo
+Una linea di codice in linguaggio assemblatore corrisponde direttamente a una riga di codice in linguaggio macchina. Pertanto, un programma sorgente composto da _n_ linee produrrà un codice macchina di _n_ linee. 
 
+I programmatori utilizzano il linguaggio assembly per sfruttare simboli mnemonici come ADD, SUB, e MUL, che sono più facili da ricordare rispetto ai codici ottali o esadecimali corrispondenti. Ugualmente per gli indirizzi, assegnando nomi che sarà compito dell'assemblatore di decodificare.
+
+Un programmatore che utilizza il linguaggio assemblativo ha accesso a tutte le funzionalità della macchina, diversamente da un programmatore che usa linguaggi di alto livello (che può manipolare i dati a livello di bit). Tuttavia, un programma scritto in linguaggio assemblativi è specifico per una particolare macchina, mentre i programmi scritti in linguaggi di alto livello possono essere compilati per diverse piattaforme.
 ### 7.1.2 - Perché usare il linguaggio assemblativo 
 
 ### 7.1.3 - Formato delle istruzioni del linguaggio assemblativo 

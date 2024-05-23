@@ -2,6 +2,7 @@ A differenza degli altri livelli, il _linguaggio assemblativo_ è implementato m
 
 Il **traduttore** è il programma che si occupa di convertire un programma utente, scritto in _linguaggio sorgente_, in un _linguaggio di destinazione_. Questo processo viene utilizzato quando si dispone di un processore per il linguaggio di destinazione ma non per quello sorgente. Il programma sorgente non viene eseguito direttamente; invece, viene tradotto in un programma chiamato _oggetto_ o _eseguibile binario_, che poi viene eseguito.
 ## 7.1 - Introduzione al linguaggio assemblativo
+Possiamo suddividere i traduttori in due categorie principali: gli assemblatori, che convertono i linguaggi sorgente simbolici in linguaggi macchina numerici, e i compilatori, che trasformano i linguaggi sorgente di alto livello in linguaggi macchina numerici o in una rappresentazione simbolica.
 ### 7.1.1 - Che cos'è un linguaggio assemblativo
 
 ### 7.1.2 - Perché usare il linguaggio assemblativo 

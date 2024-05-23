@@ -14,6 +14,16 @@ Le istruzioni IJVM sono semplici, composte da campi con il primo campo come **co
 
 (pagine riassunte: 1)
 ### 4.1.1 - Percorso dati
+Il **percorso dati** della CPU include la ALU, i suoi input e output. Anche se ottimizzato per i programmi IJVM, è simile ai percorsi dati di altre macchine. Il nostro percorso dati ha registri a 32 bit, accessibili solo a livello di microarchitettura. La maggior parte dei registri può inviare il contenuto sul bus B, collegato all'input della ALU, il cui output guida lo _shifter_, che invia il risultato sul bus C. I valori del bus C possono essere scritti simultaneamente in uno o più registri. Al momento, non c'è un bus A.
+
+Figura 4.1
+
+La ALU è controllata da sei linee: $F_{0}$ e $F_{1}$ determinano l'operazione, ENA e ENB abilitano gli input, INVA inverte l'input sinistro e INC aggiunge un riporto al risultato. Non tutte le 64 combinazioni di controllo sono utilizzate. Queste funzioni saranno utili per l'intero insieme JVM. La ALU richiede due input: sinistro (A) e destro (B), con il bus B collegato a sinistra.
+
+Un valore può essere caricato in H scegliendo una funzione della ALU che trasferisca l'input destro senza modificarlo. L'output della ALU è gestito da altre due linee di controllo: SLL8 trasla a sinistra di un byte, impostando a 0 gli 8 bit meno significativi, e SRA1 trasla a destra di un bit, mantenendo il bit più significativo.
+
+È possibile leggere e scrivere lo stesso valore in un ciclo. Per incrementare SP di 1, si porta il valore di SP sul bus B, si disabilita l'input sinistro della ALU, si abilita INC e si memorizza il risultato in SP. Quando un registro è selezionato come input destro della ALU, i suoi valori vengono mantenuti sul bus B per tutto il ciclo. La ALU opera e il risultato arriva al bus C attraverso lo shifter. Alla fine del ciclo, un segnale di clock memorizza il contenuto del bus C in uno o più registri, che può essere lo stesso registro di input di B. Questa temporizzazione precisa permette di leggere e scrivere lo stesso registro in un ciclo.
+#### 4.1.1.1 - Temporizzazione del percorso dati
 
 ### 4.1.2 - Microistruzioni
 

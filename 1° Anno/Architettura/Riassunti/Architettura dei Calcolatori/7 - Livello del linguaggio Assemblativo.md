@@ -117,7 +117,13 @@ Inoltre, una macro può richiamare un'altra macro o anche sé stessa. Le macro r
 
 (Pagine riassunte: 0.75)
 ### 7.2.4 - Implementazione delle funzionalità macro negli assemblatori
+Analizziamo in dettaglio il funzionamento delle macro in alcuni assemblatori.
 
+L'assemblatore mantiene una tabella contenente i nomi delle macro e puntatori alle loro definizioni memorizzate. Alcuni assemblatori utilizzano una tabella separata per i nomi delle macro, mentre altri integrano questa tabella con quella delle istruzioni macchina e delle pseudoistruzioni.
+
+Quando viene definita una macro, l'assemblatore aggiunge un elemento alla tabella che contiene il nome della macro, il numero di parametri formali e un puntatore a una seconda tabella. Questa seconda tabella contiene il corpo della macro, rappresentato come una stringa con istruzioni separate da ";" (punto e virgola).
+
+Durante la prima fase dell'assemblaggio, l'assemblatore cerca gli opcode ed espande le macro. Quando incontra una macro, interrompe la lettura dell'input e legge il corpo della macro precedentemente memorizzato, sostituendo i parametri formali con quelli forniti. L'uso del simbolo "&" prima dei parametri formali aiuta l'assemblatore a riconoscerli facilmente.
 
 (Pagine riassunte: 0.75)
 ## 7.3 - Processo di assemblaggio

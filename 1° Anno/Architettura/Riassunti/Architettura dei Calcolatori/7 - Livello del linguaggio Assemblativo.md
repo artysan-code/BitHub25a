@@ -51,7 +51,30 @@ In questo codice, vediamo un'allocazione controllata da una condizione. In base 
 
 (Pagine riassunte: 2.5)
 ## 7.2 - Macroistruzioni
+Molti programmatori si trovano a dover riscrivere ripetutamente la stessa sequenza di codice. Grazie alle **macro** o **macroistruzioni**, questo problema viene risolto, poiché permettono di trasformare una sequenza di codice in una _procedura_ che può essere richiamata quando necessario (verrà chiarita la differenza tra procedura e macro più tardi). Tuttavia, se le sequenze sono brevi, il richiamo della procedura può introdurre un lavoro aggiuntivo che rallenta il programma.
+
+(Pagine riassunte: 0.25)
 ### 7.2.1 - Definizione, chiamata ed espansione di macro
+Nei linguaggi assembly, quando viene definita una macro (delimitata da _MACRO_ e _ENDM_ in x86), l'assemblatore prende la sequenza di codice e la inserisce nella tabella delle definizioni di macro per un utilizzo successivo. Un esempio di codice macro è il seguente:
+
+```
+SWAP    MACRO
+		MOV EAX, P
+		MOV EBX, Q
+		MOV Q, EAX
+		MOV P, EBX
+		ENDM
+		
+		SWAP
+		
+		SWAP
+```
+
+All'inizio troviamo _SWAP_, che crea un **alias** o **etichetta** per la macro, usato per richiamare il codice in seguito, e una sequenza di codice definita nel blocco da _MACRO_ a _ENDM_.
+
+Durante l'assemblaggio del codice, l'assemblatore rimuove la macro e la inserisce nella tabella delle macro, sostituendo poi nelle **chiamate di macro** (dove troviamo _SWAP_) il codice memorizzato nella tabella. Questo processo di sostituzione del codice è chiamato **espansione di macro**. È importante non confondere una macro con una procedura, poiché la macro viene espansa durante l'assemblaggio, mentre la procedura viene chiamata durante l'esecuzione, rendendo quindi la macro il metodo più efficiente.
+
+(Pagine riassunte: 2)
 ### 7.2.2 - Macro con parametri
 ### 7.2.3 - Caratteristiche avanzate
 ### 7.2.4 - Implementazione delle funzionalità macro negli assemblatori

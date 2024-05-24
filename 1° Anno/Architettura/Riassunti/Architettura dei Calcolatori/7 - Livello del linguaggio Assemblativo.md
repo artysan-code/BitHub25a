@@ -28,7 +28,7 @@ Le **etichette** vengono utilizzate per assegnare un nome simbolico a un indiriz
 
 In questa architettura, così come in altre, vengono assegnati nomi simbolici agli indirizzi, come ad esempio _EAX_, _EBX_, _ECX_ e così via.
 
-L'**opcode** contiene un'abbreviazione simbolica del codice operativo o un comando per l'assemblatore. Ad esempio, _MOV_ serve per caricare o memorizzare un registro, mentre _DD_ (Define Double) serve a definire uno spazio per una variabile (in questa architettura la parola è definita a 16 bit).
+L'**opcode** contiene un'abbreviazione simbolica del codice operativo o un comando per l'assemblatore. Ad esempio, _MOV_ serve per caricare o memorizzare un registro, mentre _DD_ (Define Double) serve a definire uno spazio per una variabile (in questa architettura la parola è definita a 16 bit quindi double sta per parola doppia a 32 bit).
 
 Il **campo operandi** contiene gli operandi dell'istruzione definita dall'opcode. Ad esempio, per un'istruzione di somma, conterrà i registri da sommare e il registro in cui inserire il risultato (su ARM, ad esempio).
 
@@ -36,7 +36,20 @@ Infine, il **campo commenti** è una zona dove i programmatori possono fornire i
 
 (Pagine riassunte: 2)
 ### 7.1.4 - Pseudoistruzioni
+Nei linguaggi assembly, le istruzioni dirette all'assemblatore sono chiamate pseudoistruzioni o direttive dell'assemblatore. Un esempio di pseudoistruzione è l'opcode DD, che indica all'assemblatore di definire uno spazio per una doppia parola, quindi 32 bit. Esistono molti altri esempi e diverse pseudoistruzioni, ma per evitare di trattare un'architettura diversa da quella che stiamo studiando, consideriamo il seguente esempio:
 
+```assembly_x86
+WORDSIZE EQU 32
+IF WORDSIZE GT 32
+WSIZE: DD 64
+ELSE
+WSIZE: DD 32
+ENDIF
+```
+
+In questo codice, vediamo un'allocazione controllata da una condizione. In base al valore di _WORDSIZE_ (in questo caso 32), alloca uno spazio per una parola di 64 o 32 bit. Questa è una tecnica efficace che rende il codice adattabile a diverse situazioni, evitando la necessità di compilare codici separati per ogni caso specifico.
+
+(Pagine riassunte: 2.5)
 ## 7.2 - Macroistruzioni
 ### 7.2.1 - Definizione, chiamata ed espansione di macro
 ### 7.2.2 - Macro con parametri

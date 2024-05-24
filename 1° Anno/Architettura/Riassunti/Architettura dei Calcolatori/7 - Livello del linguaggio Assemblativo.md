@@ -76,8 +76,30 @@ Durante l'assemblaggio del codice, l'assemblatore rimuove la macro e la inserisc
 
 (Pagine riassunte: 2)
 ### 7.2.2 - Macro con parametri
+Le macro descritte precedentemente si espandono in una sequenza di codice definita e perfettamente identica all'originale. Nel caso in cui volessimo rendere più dinamico l'utilizzo delle macro possiamo definire nella macro dei **parametri formali** che verranno sostituiti durante l'espansione dai **parametri attuali** forniti nella chiamata di macro, come nel seguente codice:
+
+```
+CHANGE      MACRO P1, P2
+			MOV EAX, P1
+			MOV EBX, P2
+			MOV P2, EAX
+			MOV P1, EBX
+			ENDM
+			
+			CHANGE P, Q
+			
+			CHANGE R, S
+```
+
+(Pagine riassunte: 1)
 ### 7.2.3 - Caratteristiche avanzate
+
+
+(Pagine riassunte: 0.75)
 ### 7.2.4 - Implementazione delle funzionalità macro negli assemblatori
+
+
+(Pagine riassunte: 0.75)
 ## 7.3 - Processo di assemblaggio
 ### 7.3.1 - Assemblatori a due passate
 ### 7.3.2 - Prima passata

@@ -128,6 +128,13 @@ Durante la prima fase dell'assemblaggio, l'assemblatore cerca gli opcode ed espa
 (Pagine riassunte: 0.75)
 ## 7.3 - Processo di assemblaggio
 ### 7.3.1 - Assemblatori a due passate
+Si potrebbe pensare che un programma in fase di assemblaggio traduca ogni istruzione direttamente in linguaggio macchina, ma questo non è sempre possibile a causa del **problema dei riferimenti avanti**, dove un simbolo viene utilizzato prima della sua definizione.
+
+Un primo metodo per risolvere questo problema è l'uso di assemblatori a **due passate**, dove ogni passata rappresenta una lettura completa del codice sorgente. Nella prima passata, l'assemblatore raccoglie tutti i riferimenti delle etichette e le informazioni necessarie per la seconda passata, che compila effettivamente il codice istruzione per istruzione. Questo metodo è semplice e diretto.
+
+Un secondo metodo esegue una prima passata convertendo il codice sorgente in una forma intermedia, memorizzata nella tabella della memoria. La seconda passata lavora solo su questa tabella, risparmiando tempo e riducendo l'uso delle operazioni I/O, specialmente se non è necessaria la generazione del listato.
+
+(Pagine riassunte: 1)
 ### 7.3.2 - Prima passata
 ### 7.3.3 - Seconda passata
 ### 7.3.4 - Tabella dei simboli

@@ -265,6 +265,28 @@ Questo meccanismo garantisce che il flusso del programma continui senza interruz
 (pagine riassunte: 4)
 ## 4.6 - Esempi del livello di microarchitettura
 ### 4.6.1 - Microarchitettura della CPU Core i7
+Il Core i7 sembra un processore CISC tradizionale con un ampio set di istruzioni complesse, operazioni su interi a 8, 16 e 32 bit, e operazioni in virgola mobile a 32 e 64 bit. Le istruzioni variano in lunghezza da 1 a 17 byte e ci sono solo otto registri visibili.
+
+Tuttavia, all'interno, il Core i7 utilizza un nucleo RISC moderno, semplice ed efficace con architettura pipeline. Questo consente una velocità di clock estremamente elevata, che continuerà probabilmente ad aumentare.
+
+Questa dualità permette di combinare la ricchezza funzionale delle istruzioni CISC con l'efficienza e la velocità del nucleo RISC, garantendo compatibilità con software legacy e alte prestazioni per nuovi applicativi.
+#### 4.6.1.1 - Descrizione della microarchitettura Sandy Bridge del Core i7
+La microarchitettura Core i7, chiamata **Sandy Bridge**, rappresenta un notevole perfezionamento delle precedenti microarchitetture Intel, tra cui P6 e P4. È costituita da quattro parti principali: il sottosistema di memoria, il front end, il controllo dell'esecuzione fuori sequenza e le unità esecutive.
+##### Sottosistema di Memoria
+Ogni processore Core i7 include una cache L2 unificata e la logica per l'accesso alla cache L3. La cache L2 è di 256 KB, organizzata come cache associativa a 8 vie con linee da 64 byte. Tutti i processori condividono una cache L3, che varia da 1 a 20 MB. Se un accesso alla cache L3 fallisce, la richiesta viene inoltrata alla RAM esterna attraverso il bus DDR3.
+##### Front End
+Il front end preleva le istruzioni dal sottosistema di memoria, le decodifica in micro-operazioni RISC e le memorizza in due cache istruzioni. La cache L1 è di 32 KB. Le micro-operazioni decodificate alimentano la cache delle micro-operazioni (L0), che memorizza le micro-operazioni decodificate per evitare ulteriori decodifiche.
+##### Predizione dei Salti
+Il front end include meccanismi di predizione dei salti che migliorano le prestazioni monitorando i salti precedenti e utilizzando queste informazioni per fare previsioni future.
+##### Esecuzione Fuori Sequenza
+Le istruzioni vengono trasferite allo scheduler fuori-sequenza, che esegue le istruzioni non necessariamente nell'ordine originale, permettendo l'esecuzione parallela delle istruzioni pronte.
+##### Unità Esecutive
+Le unità esecutive processano istruzioni su interi, in virgola mobile e altre operazioni specializzate. Funzionano in parallelo, ottenendo i dati dall’insieme dei registri e dalla cache dati L1.
+
+In sintesi, Sandy Bridge del Core i7 combina la complessità di una CISC con l'efficienza di un nucleo RISC, migliorando le prestazioni e l'efficienza energetica.
+
+(pagine riassunte: 3)
+#### 4.6.1.2 - Pipeline Sandy Bridge del Core i7
 
 ### 4.6.2 - Microarchitettura della CPU OMAP4430
 

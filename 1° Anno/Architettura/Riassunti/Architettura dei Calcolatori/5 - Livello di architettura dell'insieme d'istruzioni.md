@@ -60,7 +60,19 @@ In generale, l'ISA ARM è progettata per offrire un'architettura efficiente e fl
 
 (pagine riassunte: 3)
 ### 5.1.7 - Panoramica del livello ISA dell'ATmega168 AVR
+L'ATmega168 è un microcontrollore utilizzato in sistemi integrati come semafori e radiosveglie, gestendo varie funzioni come il controllo dei pulsanti, delle luci e altre parti dell'interfaccia utente. Dal punto di vista dell'ISA, l'ATmega168 ha una sola modalità operativa e nessuna protezione hardware, poiché non esegue programmi di utenti potenzialmente ostili.
 
+La sua struttura di memoria è semplice: 16 KB per i programmi e 1 KB per i dati, entrambi separati. Questa divisione consente di implementare i programmi in memoria flash e i dati in SRAM.
+
+L'ATmega168 utilizza un'organizzazione di memoria a due livelli per offrire maggiore sicurezza. La memoria flash del programma è divisa in sezione di bootloader e sezione di applicazioni, con dimensioni determinate da bit programmabili al primo avvio. Solo il codice del bootloader può aggiornare la memoria flash per motivi di sicurezza. Questo sistema consente di eseguire solo il codice approvato e firmato digitalmente da un distributore fidato.
+
+Il microcontrollore ha 32 registri a uso generale da 8 bit (R0 - R31), che sono anche presenti nello spazio di memoria. Ad esempio, il byte 0 dello spazio dati corrisponde a R0 e così via. Questa organizzazione facilita l'accesso ai registri tramite l'indirizzamento di memoria.
+
+Altri registri specializzati includono il registro di stato, che contiene bit di abilitazione degli interrupt, bit ausiliario di riporto, bit di segno, bit di overflow e altri, e il registro del puntatore dello stack (SP), che mantiene l'indirizzo corrente dello spazio dati per le istruzioni di PUSH e POP.
+
+Inoltre, ci sono 64 byte di registri dedicati ai dispositivi di I/O, e il registro di stato gestisce anche l'attivazione e la disattivazione degli interrupt globali tramite il bit I. Il puntatore dello stack (SP) è composto da due locazioni di memoria consecutive per indirizzare correttamente la memoria dati.
+
+(pagine riassunte: 2)
 ## 5.2 - Tipi di dati
 ### 5.2.1 - Tipi di dati numerici
 

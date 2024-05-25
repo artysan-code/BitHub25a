@@ -74,8 +74,29 @@ Inoltre, ci sono 64 byte di registri dedicati ai dispositivi di I/O, e il regist
 
 (pagine riassunte: 2)
 ## 5.2 - Tipi di dati
-### 5.2.1 - Tipi di dati numerici
+La rappresentazione dei dati all'interno di un computer è fondamentale per il corretto funzionamento dei sistemi di calcolo. A livello ISA, sono disponibili diversi tipi di dati che possono essere manipolati dalle istruzioni del processore. Tuttavia, una delle questioni fondamentali riguarda il supporto hardware per un particolare tipo di dati.
 
+Il supporto hardware implica che una o più istruzioni si aspettano che i dati siano rappresentati in un formato specifico e l'utente non è libero di scegliere un formato diverso. Ad esempio, nel caso degli interi, l'hardware potrebbe aspettarsi che il bit più significativo rappresenti il segno del numero, e se questo formato non viene rispettato, il funzionamento del sistema potrebbe essere compromesso.
+
+Immaginate, ad esempio, se un responsabile del centro di calcolo di uno studio di contabilità decidesse di invertire il modo in cui i computer rappresentano i numeri negativi. Questo potrebbe causare errori nei calcoli, poiché il software è stato progettato per gestire i numeri in un formato specifico.
+
+In un contesto diverso, ad esempio per la valutazione del debito pubblico, potrebbero essere necessari numeri molto più grandi di quelli supportati nativamente dall'hardware. In questi casi, potrebbe essere necessario implementare una gestione software per la rappresentazione e l'aritmetica di numeri di dimensioni maggiori, ad esempio utilizzando due interi di 32 bit per rappresentare un singolo numero (64 bit in totale), noto come **precisione doppia**.
+
+Il concetto di "precisione doppia" si riferisce alla capacità di rappresentare e manipolare numeri con una maggiore precisione rispetto ai numeri interi a 32 bit standard. Questo è particolarmente utile in applicazioni che richiedono una maggiore precisione numerica, come nel caso di calcoli scientifici o finanziari complessi.
+
+Nei prossimi paragrafi, esamineremo i tipi di dati supportati dall'hardware, inclusa la precisione doppia, per i quali sono richiesti formati specifici di rappresentazione per garantire il corretto funzionamento delle istruzioni di elaborazione.
+
+(pagine riassunte: 1)
+### 5.2.1 - Tipi di dati numerici
+I tipi di dati possono essere suddivisi in due categorie principali: numerici e non numerici. Iniziamo con i dati numerici, che comprendono gli interi e i numeri in virgola mobile.
+
+Gli interi sono utilizzati per contare oggetti, identificare elementi, e per una varietà di altri scopi. Possono essere di diverse lunghezze, tipicamente 8, 16, 32 e 64 bit. La rappresentazione più comune degli interi avviene in notazione binaria in complemento a due, che permette di rappresentare sia numeri positivi che negativi. Ad esempio, un intero senza segno di 32 bit può rappresentare valori compresi tra 0 e $2^{32}-1$, mentre un intero con segno di 32 bit può gestire numeri compresi tra -$2^{31}$ e $2^{31}-1$.
+
+Per rappresentare numeri che non possono essere espressi come interi, come ad esempio 3,5, si utilizzano i numeri in virgola mobile. Questi numeri sono solitamente di lunghezza 32, 64 o 128 bit e consentono la rappresentazione di valori con parte intera e parte frazionaria. La maggior parte dei computer moderni dispone di istruzioni dedicate per l'aritmetica in virgola mobile e spesso hanno registri separati per operandi interi e in virgola mobile.
+
+Alcuni linguaggi di programmazione, come il COBOL, supportano anche un tipo di dati per i numeri decimali. Questi numeri vengono spesso rappresentati nell'hardware utilizzando la codifica binaria dei decimali (BCD), dove ogni cifra decimale viene codificata con 4 bit. Tuttavia, l'aritmetica dei numeri decimali impacchettati può comportare delle complicazioni, quindi possono essere necessarie istruzioni aggiuntive per la correzione dell'aritmetica decimale. Ad esempio, il problema del "millennium bug" o Y2K è stato causato in parte dalla rappresentazione a due cifre degli anni nei sistemi COBOL, che utilizzavano solo 8 bit per rappresentare l'anno, causando problemi al passaggio al nuovo millennio.
+
+(pagine riassunte: 1)
 ### 5.2.2 - Tipi di dati non numerici
 
 ### 5.2.3 - Tipi di dati del Core i7

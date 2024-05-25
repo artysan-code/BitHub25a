@@ -8,7 +8,13 @@ Gli ISA devono essere efficienti per essere economicamente vantaggiosi. Un buon 
 ## 5.1 - Panoramica del livello ISA
 Per iniziare lo studio del livello ISA, chiediamoci cos'è. Sebbene sembri una domanda semplice, essa presenta diverse complicazioni. Esamineremo alcune questioni controverse e poi analizzeremo modelli di memoria, registri e istruzioni.
 ### 5.1.1 - Proprietà del livello ISA
+Il livello ISA può essere definito come la rappresentazione della macchina per i programmatori, emersa dall'output dei compilatori. Include informazioni sulla memoria, registri, tipi di dati e istruzioni disponibili. In alcune architetture, è formalmente specificato da documenti di definizione, come nel caso di ARM, per garantire l'interoperabilità tra diverse implementazioni hardware. Questi documenti non dettagliano la microarchitettura ma stabiliscono il comportamento delle istruzioni.
 
+I documenti di definizione includono sezioni normative e informative, delineando requisiti e raccomandazioni. Ad esempio, il documento di definizione per ARM v7 assicura che tutti i chip ARM eseguano lo stesso codice. Tali documenti possono essere estesi, come nel caso del Core i7 di Intel, che conta 4161 pagine.
+
+Un'altra caratteristica chiave del livello ISA è la presenza di più modalità di esecuzione, come la **modalità kernel** per il sistema operativo e la **modalità utente** per le applicazioni, con restrizioni sull'uso di alcune istruzioni sensibili.
+
+(pagine riassunte: 1.5)
 ### 5.1.2 - Modelli della memoria
 
 ### 5.1.3 - Registri

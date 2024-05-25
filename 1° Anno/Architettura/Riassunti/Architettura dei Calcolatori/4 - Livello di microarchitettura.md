@@ -133,8 +133,42 @@ Ogni ciclo del microprogramma è autocontenuto: specifica cosa andrà sul bus B,
 
 (pagine riassunte: 6)
 ## 4.2 - Esempio di ISA: IJVM
+Ci riferiremo all'architettura dell'insieme d'istruzioni (ISA) con il termine **macroarchitettura**, in contrapposizione con la microarchitettura.
 ### 4.2.1 - Stack
+Le variabili locali delle procedure vengono memorizzate in una struttura dati chiamata **stack** (o "pila") della memoria. Questo approccio risolve il problema dell'allocazione di memoria per le variabili locali in modo che non interferiscano tra loro, specialmente quando una procedura richiama se stessa o altre procedure.
+#### Organizzazione della Memoria con lo Stack
+##### Stack e Registri
+- **LV (Local Variables pointer)**: Registro che punta alla base delle variabili locali della procedura corrente.
+- **SP (Stack Pointer)**: Registro che punta alla cima dello stack.
+#### Funzionamento dello Stack
+##### Esempio di Chiamate di Procedure
+1. **Chiamata di Procedura A**:
+   - Quando la procedura A viene invocata, le sue variabili locali (ad esempio, a1, a2, a3) vengono allocate nello stack.
+   - LV punta alla base delle variabili locali di A, mentre SP punta alla cima dello stack, dopo l'allocazione delle variabili di A.
+2. **Chiamata di Procedura B da A**:
+   - Quando A chiama B, il registro LV viene aggiornato per puntare alla base delle variabili locali di B e SP viene incrementato per allocare spazio per le variabili locali di B.
+3. **Chiamata di Procedura C da B**:
+   - Analogamente, quando B chiama C, LV e SP vengono nuovamente aggiornati per le variabili di C.
+4. **Terminazione delle Procedure**:
+   - Quando C termina, il controllo ritorna a B, e LV e SP vengono riportati allo stato precedente, permettendo a B di continuare l'esecuzione.
+   - Quando B termina, il controllo ritorna ad A, riportando LV e SP allo stato iniziale di A.
 
+Questo metodo permette di usare la memoria in modo efficiente, rilasciando lo spazio occupato dalle variabili locali non appena la procedura termina.
+##### Uso dello Stack per Operazioni Aritmetiche
+Oltre a memorizzare le variabili locali, lo stack può essere utilizzato come **stack degli operandi** per eseguire operazioni aritmetiche.
+- **Esempio**: Calcolo di `a1 = a2 + a3` in procedura A:
+  1. A inserisce `a2` nello stack, incrementando SP.
+  2. A inserisce `a3` nello stack, incrementando nuovamente SP.
+  3. Una istruzione preleva `a2` e `a3` dallo stack, li somma, e inserisce il risultato nuovamente nello stack.
+  4. Il risultato viene prelevato dallo stack e memorizzato in `a1`.
+#### Vantaggi dell'Uso dello Stack
+- **Flessibilità**: Ogni chiamata di procedura ha il proprio blocco di variabili locali, evitando interferenze tra le chiamate.
+- **Efficienza di Memoria**: La memoria viene allocata e rilasciata dinamicamente, a seconda delle necessità delle procedure attive.
+- **Facilità di Implementazione delle Procedure Ricorsive**: Ogni chiamata ricorsiva ha il proprio contesto di esecuzione separato.
+#### Considerazioni Finali
+Mentre tutte le macchine utilizzano uno stack per memorizzare le variabili locali delle procedure, non tutte lo utilizzano per le operazioni aritmetiche. Tuttavia, macchine come la JVM e IJVM utilizzano uno stack degli operandi, il che dimostra la versatilità dello stack nella gestione della memoria e dell'esecuzione delle operazioni.
+
+(pagine riassunte: 2.5)
 ### 4.2.2 - Modello della memoria di IJVM
 
 ### 4.2.3 - Insieme d'istruzioni IJVM

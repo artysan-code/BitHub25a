@@ -225,7 +225,44 @@ L'architettura di IJVM è progettata per gestire in modo efficiente la memoria d
 
 (pagine riassunte: 1.5)
 ### 4.2.3 - Insieme d'istruzioni IJVM
+La gestione delle istruzioni in IJVM, in particolare l'invocazione di metodi (`INVOKEVIRTUAL`) e il ritorno dai metodi (`IRETURN`), segue una sequenza precisa di operazioni per assicurare un corretto funzionamento. Qui di seguito è descritta nel dettaglio questa sequenza, con attenzione alle operazioni di push e pop dello stack, la gestione dei puntatori e la memorizzazione dei valori di ritorno.
+#### Esecuzione dell'istruzione INVOKEVIRTUAL
+Quando un metodo viene invocato utilizzando l'istruzione `INVOKEVIRTUAL`, avviene la seguente sequenza di operazioni:
+1. **Preparazione dei Parametri**:
+   - Il chiamante inserisce sullo stack un riferimento all'oggetto da chiamare (`OBJREF`).
+   - Successivamente, vengono inseriti sullo stack i parametri del metodo, ad esempio `Parametro 1`, `Parametro 2`, `Parametro 3`, ecc.
+2. **Codice Operativo e Spiazzamento**:
+   - L'istruzione `INVOKEVIRTUAL` include uno spiazzamento che punta a una posizione nella porzione costante di memoria, dove è memorizzato l'indirizzo del metodo da invocare.
+3. **Lettura dell'Area dei Metodi**:
+   - Nei primi 4 byte dell'area dei metodi puntata, si trovano:
+	 - Il numero di parametri del metodo (incluso `OBJREF` come parametro 0).
+	 - La dimensione del blocco delle variabili locali necessario per il metodo.
+4. **Calcolo del Nuovo Blocco delle Variabili Locali**:
+   - L'indirizzo base del nuovo blocco delle variabili locali viene calcolato sottraendo il numero di parametri dal puntatore allo stack (`SP`).
+   - Il registro `LV` viene impostato per puntare a `OBJREF`.
+5. **Memorizzazione dei Puntatori**:
+   - In `OBJREF` viene memorizzato l'indirizzo della locazione in cui si trova il vecchio `PC`.
+   - Immediatamente sopra, viene memorizzato il vecchio `LV`.
+6. **Impostazione del Nuovo Stack**:
+   - Il nuovo stack per la procedura invocata inizia subito sopra il vecchio `LV`.
+   - Il registro `SP` viene impostato per puntare al vecchio `LV`.
+7. **Impostazione del Contatore di Programma (PC)**:
+   - Infine, il registro `PC` viene impostato in modo da puntare al quinto byte nell'area del codice del metodo da eseguire.
+#### Esecuzione dell'istruzione IRETURN
+Quando il metodo termina, l'istruzione `IRETURN` inverte la sequenza di operazioni effettuate da `INVOKEVIRTUAL`. Ecco come:
+1. **Accesso al Puntatore di Collegamento (Link Pointer)**:
+   - L'istruzione `IRETURN` accede al puntatore di collegamento, che è la parola identificata dal puntatore `LV` corrente. Questo permette di ripristinare i puntatori `PC` e `LV` ai loro valori precedenti.
+2. **Deallocazione dello Spazio Utilizzato**:
+   - Lo spazio utilizzato dal metodo viene deallocato. Questo significa che `OBJREF` (ora sovrascritto) e tutti i parametri vengono estratti dallo stack.
+3. **Gestione del Valore di Ritorno**:
+   - Il valore di ritorno del metodo, memorizzato in cima allo stack, viene copiato nella locazione in cui era originariamente memorizzato `OBJREF`.
+   - Il registro `SP` viene reimpostato per puntare a questa locazione.
+4. **Restituzione del Controllo**:
+   - Il controllo viene restituito all'istruzione immediatamente successiva a `INVOKEVIRTUAL`.
 
+Questo meccanismo garantisce che il flusso del programma continui senza interruzioni e che i valori di ritorno siano correttamente gestiti, permettendo una gestione efficace delle chiamate e dei ritorni dai metodi.
+
+(pagine riassunte: 4)
 ### 4.2.4 - Compilazione da Java a IJVM
 
 ## 4.6 - Esempi del livello di microarchitettura

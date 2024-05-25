@@ -44,7 +44,21 @@ I registri del Core i7 includono EAX, EBX, ECX ed EDX, utilizzati per operazioni
 
 (pagine riassunte: 2)
 ### 5.1.6 - Panoramica del livello ISA dell'OMAP4430 ARM
+L'architettura ARM è stata introdotta per la prima volta nel 1985 da Acorn Computer, ispirata dalle ricerche svolte a Berkeley negli anni '80. La versione originale, ARM2, era a 32 bit e supportava uno spazio degli indirizzi a 26 bit. L'OMAP4430 utilizza la microarchitettura ARM Cortex A9, che implementa la versione 7 dell'architettura ARM.
 
+La struttura della memoria dell'OMAP4430 è un vettore di 23 byte. I processori ARM sono bi-endian, consentendo l'accesso alla memoria nei due ordini big-endian e little-endian. È importante che l'ISA preveda uno spazio degli indirizzi più grande delle necessità implementative per consentire l'espansione futura della memoria.
+
+L'ISA ARM versione 8 è stata recentemente pubblicata per supportare uno spazio di indirizzamento a 64 bit, affrontando le preoccupazioni riguardanti lo spazio degli indirizzi limitato a 32 bit delle versioni precedenti.
+
+L'ISA ARM presenta due gruppi principali di registri: 16 registri d'uso generale da 32 bit e, se supportato, 32 registri in virgola mobile da 32 bit. I registri d'uso generale vanno da R0 a R15 e sono utilizzati per operazioni aritmetiche e di memoria. I registri in virgola mobile possono essere trattati come valori in virgola mobile a precisione singola o doppia, a seconda dell'istruzione utilizzata.
+
+L'architettura ARM è load/store, il che significa che le uniche operazioni che accedono direttamente alla memoria sono load e store, mentre le operazioni logiche e aritmetiche operano solo su registri o operandi all'interno dell'istruzione stessa.
+
+I registri speciali includono il registro IP utilizzato per chiamate di funzione, il registro SP che indica la posizione dello stack, il registro LP utilizzato per mantenere l'indirizzo di ritorno e il registro **PSR** che mantiene lo stato delle precedenti operazioni dell'ALU.
+
+In generale, l'ISA ARM è progettata per offrire un'architettura efficiente e flessibile, consentendo l'accesso rapido alla memoria e operazioni aritmetiche e logiche su registri dedicati.
+
+(pagine riassunte: 3)
 ### 5.1.7 - Panoramica del livello ISA dell'ATmega168 AVR
 
 ## 5.2 - Tipi di dati

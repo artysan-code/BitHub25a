@@ -34,9 +34,15 @@ Il **registro di flag**, o PSW (Program Status Word), contiene tutti i possibili
 
 (pagine riassunte: 1.5)
 ### 5.1.4 - Istruzioni
-
+La caratteristica principale del livello ISA è l'insieme di istruzioni macchina che definisce ciò che la macchina può fare. Questo comprende sempre istruzioni come STORE e LOAD per il trasferimento di dati tra registri e memoria, nonché MOVE per la copia di dati tra registri. Aringhiera sempre istruzioni aritmetiche, booleane e di confronto dei dati con salto condizionato. Abbiamo già visto alcune istruzioni ISA comuni e ne vedremo molte altre in questo capitolo.
 ### 5.1.5 - Panoramica del livello ISA del Core i7
+Il Core i7, frutto dell'evoluzione di molte generazioni di processori Intel, ha un ISA che mantiene il completo supporto per programmi scritti per l'8086 e l'8088, con reminiscenze dell'8080. Dal punto di vista del software, sia l'8086 che l'8088 erano macchine a 16 bit effettivi. L'80386 fu la prima macchina a 32 bit della famiglia Intel, e tutti i processori successivi mantengono l'architettura IA-32, mentre la x86-64 estende la dimensione dei calcoli e degli indirizzi virtuali a 64 bit.
 
+Il Core i7 opera in tre modalità: la **modalità reale**, che lo fa funzionare come un 8088; la **modalità virtuale 8086**, che consente l'esecuzione protetta di vecchi programmi 8088; e la **modalità protetta**, in cui il Core i7 funziona come un Pentium 4. Il Core i7 dispone di un enorme spazio degli indirizzi, diviso in segmenti, sebbene la maggior parte dei sistemi operativi supporti un solo segmento, offrendo uno spazio degli indirizzi lineare di $2^{32}$ byte.
+
+I registri del Core i7 includono EAX, EBX, ECX ed EDX, utilizzati per operazioni aritmetiche, puntatori, cicli e moltiplicazioni/divisioni. ESI, EDI ed EBP sono utilizzati per puntatori alla memoria e per il registro dello stack. Il gruppo successivo di registri, da CS a GS, comprende i registri di segmento.
+
+(pagine riassunte: 2)
 ### 5.1.6 - Panoramica del livello ISA dell'OMAP4430 ARM
 
 ### 5.1.7 - Panoramica del livello ISA dell'ATmega168 AVR

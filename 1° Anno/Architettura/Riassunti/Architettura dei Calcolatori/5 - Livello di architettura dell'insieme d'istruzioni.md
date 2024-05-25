@@ -16,7 +16,15 @@ Un'altra caratteristica chiave del livello ISA è la presenza di più modalità 
 
 (pagine riassunte: 1.5)
 ### 5.1.2 - Modelli della memoria
+I computer dividono la memoria in celle consecutive, comunemente di 8 bit, chiamate byte o **ottetti**. I byte sono spesso raggruppati in parole di 4 o 8 byte, con istruzioni specifiche per manipolare intere parole. L'allineamento dei dati è importante per l'efficienza della memoria, come nel caso del Core i7 che richiede accessi allineati a 64 bit.
 
+La capacità di leggere parole da indirizzi arbitrari richiede funzionalità logiche aggiuntive nel chip, rendendolo più grande e costoso. Molti processori hanno uno spazio lineare degli indirizzi, ma alcune macchine separano gli spazi degli indirizzi per istruzioni e dati, offrendo vantaggi come la prevenzione di sovrascritture accidentali del programma e la resistenza agli attacchi malware.
+
+La semantica della memoria è importante, ad esempio, ci si aspetta che un'istruzione LOAD restituisca il valore memorizzato da un'istruzione STORE nello stesso indirizzo. I progettisti possono scegliere tra approcci che vanno dalla serializzazione di tutte le richieste d'accesso alla memoria, con prestazioni ridotte ma semantica più semplice, all'assenza di garanzie, dove il programma deve usare istruzioni SYNC per forzare un ordine sulla memoria.
+
+Modelli di memoria intermedi sono anche possibili, dove l'hardware blocca automaticamente alcuni accessi alla memoria ma non altri. Nonostante le complicazioni, questa tendenza è diffusa a causa delle implementazioni sottostanti come il riordinamento delle microistruzioni, le pipeline profonde e i livelli di cache multipli.
+
+(pagine riassunte: 2)
 ### 5.1.3 - Registri
 
 ### 5.1.4 - Istruzioni

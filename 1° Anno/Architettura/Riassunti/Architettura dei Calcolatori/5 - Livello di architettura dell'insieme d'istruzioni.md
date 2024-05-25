@@ -26,7 +26,13 @@ Modelli di memoria intermedi sono anche possibili, dove l'hardware blocca automa
 
 (pagine riassunte: 2)
 ### 5.1.3 - Registri
+I computer dispongono di registri visibili a livello ISA, utilizzati per il controllo dell'esecuzione del programma e per contenere risultati temporanei. Questi registri possono essere specializzati, come il program counter e il puntatore allo stack, o d'uso generale, destinati a variabili locali e risultati parziali del calcolo. Le macchine RISC tendono ad avere almeno 32 registri d'uso generale, spesso simmetrici e intercambiabili.
 
+I registri del livello ISA sono implementati a livello microarchitetturale e sono sempre visibili a entrambi i livelli. Esistono anche registri specializzati visibili solo in modalità kernel, utilizzati per il controllo di cache, memoria e dispositivi di I/O, e non accessibili ai compilatori o agli utenti.
+
+Il **registro di flag**, o PSW (Program Status Word), contiene tutti i possibili bit di condizione, come N (risultato negativo), Z (risultato zero), V (overflow), C (carry), A (carry oltre il terzo bit) e P (parità nulla). Questi bit sono importanti per le istruzioni di confronto e salto condizionato. Il PSW può anche includere informazioni sulla modalità di macchina, priorità della CPU e stato degli interrupt, con alcuni campi leggibili in modalità utente e altri scrivibili solo in modalità kernel.
+
+(pagine riassunte: 1.5)
 ### 5.1.4 - Istruzioni
 
 ### 5.1.5 - Panoramica del livello ISA del Core i7

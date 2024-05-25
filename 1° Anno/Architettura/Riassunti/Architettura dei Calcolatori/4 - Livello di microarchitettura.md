@@ -136,6 +136,8 @@ Ogni ciclo del microprogramma è autocontenuto: specifica cosa andrà sul bus B,
 Ci riferiremo all'architettura dell'insieme d'istruzioni (ISA) con il termine **macroarchitettura**, in contrapposizione con la microarchitettura.
 ### 4.2.1 - Stack
 Le variabili locali delle procedure vengono memorizzate in una struttura dati chiamata **stack** (o "pila") della memoria. Questo approccio risolve il problema dell'allocazione di memoria per le variabili locali in modo che non interferiscano tra loro, specialmente quando una procedura richiama se stessa o altre procedure.
+
+figura 4.8
 #### Organizzazione della Memoria con lo Stack
 ##### Stack e Registri
 - **LV (Local Variables pointer)**: Registro che punta alla base delle variabili locali della procedura corrente.
@@ -170,7 +172,58 @@ Mentre tutte le macchine utilizzano uno stack per memorizzare le variabili local
 
 (pagine riassunte: 2.5)
 ### 4.2.2 - Modello della memoria di IJVM
+#### Architettura di IJVM
+L'architettura di IJVM è concepita in modo da separare chiaramente le diverse aree di memoria utilizzate durante l'esecuzione di un programma. Ecco una descrizione dettagliata delle diverse componenti e il loro funzionamento.
+##### 4.2.2.1 - Memoria
+La memoria in IJVM può essere vista come:
+- **Array di 4.294.967.296 byte (4 GB)**
+- **Array di 1.073.741.824 parole da 4 byte**
+A differenza di molti altri ISA, IJVM utilizza puntatori e indirizzi impliciti per accedere alla memoria, il che consente una gestione più sicura e strutturata dei dati.
+##### 4.2.2.2 - Aree di Memoria
+**a. Porzione Costante di Memoria**
+- **Contenuto**: Costanti, stringhe e puntatori ad altre aree di memoria.
+- **Accesso**: Sola lettura (i programmi IJVM non possono scrivere in quest'area).
+**b. Blocco delle Variabili Locali**
+- **Funzione**: Memorizza le variabili locali di ogni metodo invocato.
+- **Contenuto**: All'inizio di questo blocco sono memorizzati i parametri con cui è stato invocato il metodo.
+- **Separazione**: Non comprende lo stack degli operandi.
+**c. Stack degli Operandi**
+- **Funzione**: Utilizzato per memorizzare gli operandi durante il calcolo delle espressioni aritmetiche e altre operazioni temporanee.
+- **Dimensione**: Ha una dimensione massima stabilita in anticipo dal compilatore Java.
+- **Registro Implicito**: Un registro contiene l'indirizzo della parola in cima allo stack.
+**d. Area dei Metodi**
+- **Contenuto**: Il codice del programma, organizzato come un array di byte.
+- **Registro PC (Program Counter)**: Punta all'istruzione corrente da eseguire, espresso in byte.
+##### 4.2.2.3 - Puntatori e Registri
+**Puntatori a Parole**
+- **CPP (Constant Pool Pointer)**: Punta alla costante di memoria.
+- **LV (Local Variables Pointer)**: Punta alla base delle variabili locali del metodo corrente.
+- **SP (Stack Pointer)**: Punta alla cima dello stack degli operandi.
+**Indirizzi e Spiazzamenti**
+- **Parole**: I registri come LV e SP sono puntatori a parole. Gli spiazzamenti sono espressi in numero di parole.
+  - Esempio: LV, LV + 1 e LV + 2 fanno riferimento alle prime tre parole del blocco delle variabili locali.
+  - Esempio: LV, LV + 4 e LV + 8 fanno riferimento a parole a intervalli di quattro parole (16 byte).
+**Puntatore a Byte**
+- **PC (Program Counter)**: Contiene un indirizzo espresso in byte.
+  - Esempio: Incrementare PC di uno corrisponde a prelevare il byte successivo.
+  - Esempio: Incrementare SP di uno corrisponde a prelevare la parola successiva.
+#### Esempio di Funzionamento
+1. **Invocazione di un Metodo**
+   - Quando un metodo viene invocato, viene allocato un nuovo blocco di variabili locali nello stack.
+   - LV viene aggiornato per puntare alla base di questo nuovo blocco.
+2. **Esecuzione di Istruzioni**
+   - Le istruzioni vengono prelevate dall'area dei metodi utilizzando il PC.
+   - Le operazioni aritmetiche utilizzano lo stack degli operandi, con SP che punta alla cima dello stack.
+3. **Chiusura di un Metodo**
+   - Al termine dell'esecuzione di un metodo, lo stack viene aggiornato per rimuovere il blocco delle variabili locali.
+   - LV e SP vengono riportati allo stato precedente.
+4. **Esempio di Accesso a Variabili Locali**
+   - Se una variabile locale deve essere accessibile, il registro LV viene utilizzato con uno spiazzamento.
+   - Esempio: Per accedere alla prima variabile locale, si utilizza LV + 0; per la seconda variabile, LV + 1, e così via.
+#### Conclusione
+L'architettura di IJVM è progettata per gestire in modo efficiente la memoria durante l'esecuzione di programmi Java. Utilizzando puntatori a parole per variabili locali e stack degli operandi, e puntatori a byte per il codice dei metodi, IJVM garantisce una gestione sicura e strutturata della memoria, facilitando l'implementazione di linguaggi ad alto livello come Java.
 
+(pagine riassunte: 1.5)
 ### 4.2.3 - Insieme d'istruzioni IJVM
 
 ### 4.2.4 - Compilazione da Java a IJVM

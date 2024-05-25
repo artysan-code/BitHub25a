@@ -59,8 +59,39 @@ Per convertire il registro MBR a 8 bit in una parola a 32 bit, si tratta il valo
 
 (pagine riassunte: 2)
 ### 4.1.2 - Microistruzioni
+Per controllare il percorso dati della figura 4.1, utilizziamo 29 segnali, suddivisi in cinque gruppi funzionali:
+
+1. 9 segnali per controllare la scrittura dei dati dal bus C ai registri.
+2. 9 segnali per abilitare i registri sul bus B come input per la ALU.
+3. 8 segnali per controllare le funzioni della ALU e dello shifter.
+4. 2 segnali (non mostrati) per indicare alla memoria di leggere o scrivere attraverso MAR e MDR.
+5. 1 segnale (non mostrato) per indicare il prelievo dalla memoria attraverso PC o MBR.
+
+Questi 29 segnali specificano le operazioni da eseguire durante un ciclo del percorso dati, che include:
+
+1. Portare i valori dei registri sul bus B.
+2. Propagare i segnali attraverso ALU e shifter.
+3. Guidare i risultati sul bus C.
+4. Scrivere i risultati nei registri appropriati.
+
+Se viene asserito il segnale per una lettura dalla memoria, l'operazione inizia alla fine del ciclo del percorso dati, dopo il caricamento di MAR. Una lettura della memoria avviata alla fine del ciclo �k trasmette dati utilizzabili solo a partire dal ciclo �+2k+2. In altre parole, carichiamo MAR alla fine del ciclo e avviamo l'operazione di memoria subito dopo. Poiché la memoria richiede un ciclo di clock, i dati non saranno disponibili in MDR all'inizio del ciclo successivo, soprattutto con impulsi di clock brevi. Deve quindi trascorrere un ciclo completo del percorso dati tra l'inizio di una lettura della memoria e l'utilizzo del risultato. Durante questo ciclo è possibile eseguire altre operazioni che non richiedono dati dalla memoria.
+
+In alcuni casi può essere utile scrivere l'output del bus C in più di un registro, mentre non ha senso abilitare più di un registro sul bus B contemporaneamente.
+
+Per controllare il percorso dati, utilizziamo 24 segnali (bit):
+
+- 9 per la scrittura dal bus C ai registri.
+- 9 per abilitare i registri sul bus B.
+- 8 per controllare ALU e shifter.
+- 2 per le operazioni di memoria.
+- 1 per il prelievo dalla memoria attraverso PC o MBR.
+
+Questi bit controllano il percorso dati solo per un ciclo. Per determinare le operazioni del ciclo successivo, aggiungiamo due campi: NEXT_ADDRESS e JAM. Questi permettono di descrivere le operazioni da eseguire nel ciclo successivo, combinando i 24 bit di controllo con informazioni aggiuntive.
+
+L'ordinamento dei gruppi nella figura 4.6 è stato scelto per minimizzare l'incrocio delle linee, che nei diagrammi schematici spesso corrisponde a collegamenti incrociati sui chip. Minimizzare questi incroci facilita il progetto dei chip.
 
 ### 4.1.3 - Unità di controllo microprogrammata: Mic-1
+
 
 ## 4.2 - Esempio di ISA: IJVM
 ### 4.2.1 - Stack

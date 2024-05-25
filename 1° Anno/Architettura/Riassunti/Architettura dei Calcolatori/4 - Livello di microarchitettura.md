@@ -28,7 +28,7 @@ Un valore può essere caricato in H scegliendo una funzione della ALU che trasfe
 #### 4.1.1.1 - Temporizzazione del percorso dati
 All'inizio di ogni ciclo di clock viene generato un breve impulso, sincronizzato con il clock principale. Al fronte di discesa dell'impulso, i bit di controllo delle porte logiche vengono impostati, operazione che richiede un tempo $\Delta w$. Successivamente, il registro selezionato invia il suo contenuto sul bus B, stabilizzandosi dopo un tempo $\Delta x$. A questo punto, la ALU e lo shifter operano sui dati, con output stabili dopo un tempo $\Delta y$. Dopo un ulteriore tempo $\Delta z$, i risultati si propagano lungo il bus C fino ai registri, che vengono caricati al fronte di salita dell'impulso successivo. Questo caricamento è rapido, garantendo che le modifiche degli input non influenzino immediatamente il bus C.
 
-Figura 4.1
+Figura 4.3
 
 All'interno del percorso dati, c'è un tempo di propagazione anche senza elementi di memorizzazione. Il bus C non cambia immediatamente dopo una modifica del bus B. Quindi, anche se un'operazione di scrittura modifica un registro di input, il valore sarà reinserito in modo sicuro prima che il nuovo valore possa influenzare la ALU.
 
@@ -98,8 +98,9 @@ Finora abbiamo descritto come viene controllato il microprogramma, ma non abbiam
 1. Lo stato di ogni segnale di controllo del sistema.
 2. L'indirizzo della microistruzione da eseguire subito dopo.
 
-#### La Microarchitettura Mic-1
 La Figura 4.6 è un diagramma a blocchi dettagliato dell’intera microarchitettura della nostra macchina di esempio, chiamata Mic-1. Il diagramma è composto da due parti principali: il percorso dati, sulla sinistra, e la sezione di controllo, sulla destra. 
+
+figura 4.6
 ##### Memoria di Controllo
 L’elemento più grande e importante della sezione di controllo è la memoria di controllo. Questa memoria contiene l'intero microprogramma. È una memoria dedicata che memorizza le microistruzioni anziché le istruzioni ISA. Ogni microistruzione specifica esplicitamente il proprio successore, offrendo maggiore flessibilità rispetto alle istruzioni della memoria principale, che sono eseguite in ordine sequenziale.
 ##### Registri della Memoria di Controllo

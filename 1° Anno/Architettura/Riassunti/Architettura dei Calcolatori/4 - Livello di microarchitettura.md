@@ -263,8 +263,6 @@ Quando il metodo termina, l'istruzione `IRETURN` inverte la sequenza di operazio
 Questo meccanismo garantisce che il flusso del programma continui senza interruzioni e che i valori di ritorno siano correttamente gestiti, permettendo una gestione efficace delle chiamate e dei ritorni dai metodi.
 
 (pagine riassunte: 4)
-### 4.2.4 - Compilazione da Java a IJVM
-
 ## 4.6 - Esempi del livello di microarchitettura
 ### 4.6.1 - Microarchitettura della CPU Core i7
 

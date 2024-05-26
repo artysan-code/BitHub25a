@@ -160,7 +160,11 @@ Infine, il codice sorgente può essere stampato insieme al codice oggetto o inse
 
 (Pagine riassunte: 1.5)
 ### 7.3.4 - Tabella dei simboli
+Ora analizzeremo i modi con cui vengono strutturate le tabelle dei simboli, anche se generalmente cercano di rappresentare una **memoria associativa** a coppie (ad un simbolo è associato un valore).
 
+Il metodo principale però è molto lento, in quanto bisogna leggere mediamente metà della lunghezza della tabella per trovare un elemento. Un buon metodo è quello di utilizzare un **algoritmo di ricerca dicotomica**: si confronta *l'elemento ricercato* con quello che è posto a metà della tabella e se alfabeticamente lo segue allora si cercherà nella seconda parte della tabella, sennò viceversa. Si applica questo algoritmo ricorsivamente fino a trovare l'elemento e permette di impiegare $\log_{2}{n}$.
+
+Un altro metodo è strutturare questa memoria associativa tramite la **codifica hash o hashing** (metodo usato nei dizionari a lista di trabocco) dove una funzione hash mappa nell'intervallo degli interi da 0 a k - 1 (dove k è la lunghezza della tabella). Il metodo di mapping è casuale.
 
 (Pagine riassunte: 2)
 ## 7.4 - Collegamento e caricamento

@@ -176,9 +176,16 @@ Perché dividere questo compito? Se l'assemblatore trasformasse direttamente il 
 
 (Pagine riassunte: 1)
 ### 7.4.1 - Compiti dei linker
+Il linker ha il compito di prendere tutti i moduli oggetto forniti dall'assemblatore e creare un'immagine esatta dello spazio di indirizzamento virtuale del programma eseguibile.
 
+Poiché i sistemi operativi Windows e Unix richiedono uno spazio di indirizzamento lineare, si verifica il **problema della rilocazione**: ogni modulo non è collegato e rilocato rispetto agli altri. Inoltre, se un programma fa riferimento a un altro modulo, non sa in quale spazio di indirizzamento è stato definito, causando il **problema dei riferimenti esterni**.
+
+Per risolvere questi problemi, il linker crea una tabella che inserisce per ogni modulo la _larghezza_ e decide l'indirizzo iniziale di ciascun modulo. Successivamente, riloca ogni istruzione di branch all'indirizzo corretto rispetto al nuovo _indirizzo iniziale_. Ad esempio, se il modulo A occupa gli indirizzi da 100 a 400 e il modulo B doveva saltare all'indirizzo 250, ora B, partendo da 400, salterà all'indirizzo 650. Inoltre, per risolvere i riferimenti esterni, il linker sostituisce ogni chiamata ad altri moduli con gli indirizzi iniziali dei moduli corretti.
 
 (Pagine riassunte: 3)
 ### 7.4.2 - Struttura di un modulo oggetto
+
+
+(Pagine riassunte: 1.25)
 ### 7.4.3 - Rilocazione a tempo del biding e dinamica
 ### 7.4.4 - Collegamento dinamico

@@ -152,7 +152,17 @@ Le costanti per le quali l'assemblatore riserva automaticamente la memoria sono 
 
 (Pagine riassunte: 4)
 ### 7.3.3 - Seconda passata
+Nella seconda passata, l'assemblatore compie operazioni simili alla prima; ogni linea viene codificata una alla volta senza ulteriori elaborazioni, utilizzando le informazioni già presenti nelle tabelle create.
+
+La generazione del codice viene eseguita da funzioni specifiche che gestiscono i vari _schemi di istruzione_ e producono il codice binario, scritto su un file in grandi porzioni per ridurre il traffico di dati verso il disco.
+
+Infine, il codice sorgente può essere stampato insieme al codice oggetto o inserito in un file di _buffer_ per la stampa successiva. Questo processo presuppone che il codice sia privo di errori, un'abilità in cui i programmatori eccellono.
+
+(Pagine riassunte: 1.5)
 ### 7.3.4 - Tabella dei simboli
+
+
+(Pagine riassunte: 2)
 ## 7.4 - Collegamento e caricamento
 ### 7.4.1 - Compiti dei linker
 ### 7.4.2 - Struttura di un modulo oggetto

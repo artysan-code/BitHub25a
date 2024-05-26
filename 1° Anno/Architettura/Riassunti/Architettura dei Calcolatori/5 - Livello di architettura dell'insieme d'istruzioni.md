@@ -128,6 +128,11 @@ Per facilitare l'accesso alla memoria, l'ATmega168 include anche un supporto lim
 
 (pagine riassunte: 0.5)
 ## 5.3 - Formati d'istruzione
+Un’istruzione consiste in un opcode (codice operativo), di solito corredato da altre informazioni quali la provenienza degli operandi e la destinazione dei risultati. L’argomento generale che tratta della provenienza degli operandi (cioè il loro indirizzo) è detto indirizzamento e verrà illustrato in dettaglio nel prosieguo di questo paragrafo. Un’istruzione è dotata di un opcode che ne specifica il comportamento, e può contenere nessuno, uno, due o tre indirizzi.
+
+Alcune macchine hanno tutte le istruzioni della stessa lunghezza, altre dispongono d’istruzioni di lunghezza diversa. Le istruzioni possono essere più corte, altrettanto lunghe o più lunghe della dimensione di parola. La scelta di avere tutte le istruzioni della stessa lunghezza semplifica la loro decodifica, ma spesso implica uno spreco di spazio, visto che tutte le istruzioni devono essere lunghe quanto la più lunga. Sono anche possibili altri compromessi.
+
+(pagine riassunte: 0.5)
 ### 5.3.1 - Criteri progettuali per i formati d'istruzoni
 
 ### 5.3.2 - Codice operativo espandibile

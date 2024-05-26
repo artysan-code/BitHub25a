@@ -164,11 +164,21 @@ Ora analizziamo i metodi per strutturare le tabelle dei simboli, che generalment
 
 Il metodo più semplice è lento, poiché richiede la lettura di metà della tabella in media per trovare un elemento. Un metodo più efficiente è l'**algoritmo di ricerca dicotomica**: si confronta l'elemento cercato con quello al centro della tabella. Se l'elemento cercato è alfabeticamente successivo, si cerca nella seconda metà della tabella, altrimenti nella prima. Questo algoritmo si applica ricorsivamente fino a trovare l'elemento, impiegando un tempo di $\log_{2}{n}$.
 
-Un altro metodo efficace è la **codifica hash** o **hashing**, utilizzata nei dizionari con liste di trabocco. Una funzione hash mappa i simboli nell'intervallo di interi da 0 a k−1k - 1k−1 (dove kkk è la lunghezza della tabella). Ogni elemento, chiamato _bucket_, punta a una lista concatenata che contiene i riferimenti al simbolo e al valore. Il metodo di mapping è casuale.
+Un altro metodo efficace è la **codifica hash** o **hashing**, utilizzata nei dizionari con liste di trabocco. Una funzione hash mappa i simboli nell'intervallo di interi da 0 a k−1 (dove k è la lunghezza della tabella). Ogni elemento, chiamato _bucket_, punta a una lista concatenata che contiene i riferimenti al simbolo e al valore. Il metodo di mapping è casuale.
 
 (Pagine riassunte: 2)
 ## 7.4 - Collegamento e caricamento
+Abbiamo studiato come l'assemblatore crea programmi oggetto (o procedure) uno alla volta. Ma come vengono gestiti i collegamenti tra queste procedure?
+
+Diversi strumenti collegano i **moduli oggetto**, tra cui il **linker**, il **linking loader** e il **linkage editor**. Il compito del linker è creare il programma eseguibile binario finale e completo.
+
+Perché dividere questo compito? Se l'assemblatore trasformasse direttamente il codice in linguaggio macchina, ogni modifica richiederebbe la ricompilazione completa di ogni modulo. La divisione in moduli consente di ricompilare solo quelli modificati e di collegarli successivamente.
+
+(Pagine riassunte: 1)
 ### 7.4.1 - Compiti dei linker
+
+
+(Pagine riassunte: 3)
 ### 7.4.2 - Struttura di un modulo oggetto
 ### 7.4.3 - Rilocazione a tempo del biding e dinamica
 ### 7.4.4 - Collegamento dinamico

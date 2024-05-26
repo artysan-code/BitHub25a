@@ -134,7 +134,17 @@ Alcune macchine hanno tutte le istruzioni della stessa lunghezza, altre dispongo
 
 (pagine riassunte: 0.5)
 ### 5.3.1 - Criteri progettuali per i formati d'istruzoni
+La scelta dei formati d’istruzione richiede ai progettisti di computer di tenere conto di molti fattori. Si tratta di una decisione cruciale che deve essere presa molto presto nel processo di progettazione, poiché l'insieme d'istruzioni di un computer può persistere per decenni. È fondamentale la capacità di aggiungere nuove istruzioni all'insieme per sfruttare le opportunità che si presentano nel corso del tempo, ma ciò dipende anche dalla sopravvivenza dell'architettura e dell'azienda che l'ha progettata.
 
+L'efficienza di un ISA dipende fortemente dalla tecnologia utilizzata nell'implementazione del computer. Le scelte fatte per l'ISA possono rivelarsi problematiche nel tempo a causa dell'evoluzione tecnologica. Ad esempio, un'architettura basata sullo stack può essere efficace se gli accessi in memoria sono veloci, mentre una con molti registri può essere preferibile in altri contesti.
+
+La lunghezza delle istruzioni è un aspetto critico. Sebbene istruzioni più corte occupino meno spazio di memoria, possono essere più difficili da decodificare o sovrapporre. Tuttavia, istruzioni più brevi possono contribuire a velocizzare il processore, soprattutto quando si tratta di accedere alla memoria o alle cache. La dimensione delle istruzioni è quindi un compromesso tra spazio, decodifica, esecuzione e larghezza di banda della memoria.
+
+Un altro criterio progettuale riguarda lo spazio necessario per esprimere tutte le operazioni desiderate. È importante prevedere un numero sufficiente di codici operativi per supportare le funzionalità richieste, evitando così di rimanere vincolati dalle limitazioni del formato delle istruzioni.
+
+Infine, il numero di bit in un campo degli indirizzi è cruciale. Maggiore risoluzione nell'accesso alla memoria può significare indirizzi più lunghi e istruzioni più complesse. Un compromesso è necessario per bilanciare la risoluzione dell'accesso alla memoria con la lunghezza delle istruzioni e le prestazioni complessive del sistema.
+
+(pagine riassunte: 2.5)
 ### 5.3.2 - Codice operativo espandibile
 
 ### 5.3.3 - Formati delle istruzioni del Core i7

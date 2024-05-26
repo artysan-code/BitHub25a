@@ -204,9 +204,11 @@ Il metodo più semplice per specificare un operando in un'istruzione è includer
 
 (pagine riassunte: 0.5)
 ### 5.4.3 - Indirizzamento diretto
-
+L'indirizzamento diretto è un metodo per specificare un operando in memoria mediante l'uso dell'indirizzo completo. Tuttavia, presenta limitazioni simili a quelle dell'indirizzamento immediato: l'istruzione accede sempre alla stessa locazione di memoria, anche se il valore contenuto può cambiare. Questo rende l'indirizzamento diretto adatto solo per accedere a variabili globali il cui indirizzo è noto in fase di compilazione. Nonostante ciò, è ampiamente utilizzato nei programmi che definiscono variabili globali. Nelle prossime righe, esamineremo come il computer determina quali indirizzi sono immediati e quali sono diretti.
 ### 5.4.4 - Indirizzamento a registro
+L'indirizzamento a registro è simile concettualmente all'indirizzamento diretto, ma specifica un registro anziché una locazione di memoria. È la modalità di indirizzamento più comune nella maggior parte dei computer, poiché i registri sono veloci nell'accesso e hanno indirizzi brevi. I compilatori spesso anticipano quali variabili verranno richiamate più frequentemente (come gli indici di ciclo) e le assegnano ai registri. Questa modalità è conosciuta semplicemente come "modalità a registro". Nelle architetture load/store come l'OMAP4430 ARM, quasi tutte le istruzioni utilizzano esclusivamente questa modalità di indirizzamento. L'unico caso in cui non viene utilizzata è quando un operando viene trasferito dalla memoria in un registro (istruzione LOAD) o da un registro in memoria (istruzione STORE). Anche in questi casi, uno degli operandi è un registro che contiene l'indirizzo della parola di memoria in lettura o scrittura.
 
+(pagine riassunte: 0.5)
 ### 5.4.5 - Indirizzamento a registro indiretto
 
 ### 5.4.6 - Indirizzamento indicizzato

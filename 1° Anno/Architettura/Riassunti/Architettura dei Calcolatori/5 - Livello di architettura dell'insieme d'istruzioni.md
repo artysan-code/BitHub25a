@@ -210,7 +210,19 @@ L'indirizzamento a registro è simile concettualmente all'indirizzamento diretto
 
 (pagine riassunte: 0.5)
 ### 5.4.5 - Indirizzamento a registro indiretto
+In questa modalità, l’operando è in memoria, ma il suo indirizzo è contenuto in un registro, non incorporato nell’istruzione come nell’indirizzamento diretto. Questo registro viene chiamato **puntatore**. L'indirizzamento a registro indiretto permette di referenziare la memoria senza incorporare l'intero indirizzo nell'istruzione e consente di usare diverse parole di memoria durante esecuzioni diverse della stessa istruzione.
+Immaginiamo un ciclo che somma i 1024 elementi di un vettore d’interi nel registro R1. Due registri, R2 e R3, puntano rispettivamente al primo elemento dell’array e all’indirizzo subito dopo l’ultimo elemento. Se l'array inizia all'indirizzo A e contiene 1024 interi di 4 byte ciascuno, il primo indirizzo dopo l'array sarà A + 4096.
+Il codice di esempio mostra diverse modalità di indirizzamento. Le prime tre istruzioni usano l’indirizzamento a registro per il primo operando e l’indirizzamento immediato per il secondo. La seconda istruzione copia l'indirizzo di A in R2, specificato con il simbolo #. La terza istruzione copia in R2 l'indirizzo della prima parola oltre l’array.
+Il ciclo vero e proprio non contiene nessun indirizzo di memoria: usa l’indirizzamento a registro e quello a registro indiretto. Questo rende il ciclo conciso e veloce. Il rifiuto di usare indirizzi di memoria produce un codice efficiente. 
+Un’altra soluzione potrebbe essere l'uso di un programma **auto-modificante**. Invece di usare l’indirizzamento a registro indiretto, l'istruzione nel ciclo potrebbe modificare sé stessa per sommare il prossimo elemento dell'array. Ad esempio, dopo una iterazione, l’istruzione
 
+ADD R1, A
+diventerebbe
+
+ADD R1, A+4
+I programmi auto-modificanti, proposti da John Von Neumann, erano utili sui primi computer, ma oggi sono considerati di pessimo stile, difficili da capire e incompatibili con le moderne architetture hardware, che presuppongono che i programmi non si auto-modifichino. Fortunatamente, questa pratica è scomparsa.
+
+(pagine riassunte: 1.5)
 ### 5.4.6 - Indirizzamento indicizzato
 
 ### 5.4.7 - Indirizzamento indicizzato esteso

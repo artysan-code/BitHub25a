@@ -1,3 +1,5 @@
+(Pagine riassunte: 29)
+
 A differenza degli altri livelli, il _linguaggio assemblativo_ è implementato mediante la _traduzione_ anziché l'interpretazione.
 
 Il **traduttore** è il programma che si occupa di convertire un programma utente, scritto in _linguaggio sorgente_, in un _linguaggio di destinazione_. Questo processo viene utilizzato quando si dispone di un processore per il linguaggio di destinazione ma non per quello sorgente. Il programma sorgente non viene eseguito direttamente; invece, viene tradotto in un programma chiamato _oggetto_ o _eseguibile binario_, che poi viene eseguito.
@@ -136,6 +138,19 @@ Un secondo metodo esegue una prima passata convertendo il codice sorgente in una
 
 (Pagine riassunte: 1)
 ### 7.3.2 - Prima passata
+Nella prima passata, l'assemblatore ha il compito principale di costruire la **tabella dei simboli** dove un simbolo è un'etichetta o un valore assegnato tramite una pseudoistruzione.
+
+Per tenere traccia della posizione dell'istruzione, l'assemblatore utilizza una variabile chiamata **ILC** (Instruction Location Counter). Nella maggior parte degli assemblatori, la prima passata utilizza tre tabelle interne: una per i simboli, una per le pseudoistruzioni e una per i codici operativi.
+
+I simboli vengono definiti nella tabella quando c'è una definizione esplicita, come con _EQU_, o quando sono usati come etichette. A ciascun simbolo viene associato il valore numerico dell'ILC e altre informazioni opzionali.
+
+La tabella dei codici operativi include per ogni riga un opcode con i dettagli, come gli operandi, il codice esadecimale dell'istruzione, la lunghezza dell'istruzione e soprattutto la _classe di istruzione_, un valore numerico associato a ogni combinazione di operando e operandi nell'istruzione.
+
+Alcuni assemblatori supportano le **istruzioni pseudoimmediate**, che permettono l'uso dell'indirizzamento immediato anche se non implementato dal linguaggio di destinazione.
+
+Le costanti per le quali l'assemblatore riserva automaticamente la memoria sono chiamate **letterali**, migliorando la leggibilità e l'interpretazione del codice. Nella prima passata, i letterali vengono letti e inseriti in una tabella specifica, che successivamente viene riordinata e ripulita dai duplicati.
+
+(Pagine riassunte: 4)
 ### 7.3.3 - Seconda passata
 ### 7.3.4 - Tabella dei simboli
 ## 7.4 - Collegamento e caricamento
@@ -143,5 +158,3 @@ Un secondo metodo esegue una prima passata convertendo il codice sorgente in una
 ### 7.4.2 - Struttura di un modulo oggetto
 ### 7.4.3 - Rilocazione a tempo del biding e dinamica
 ### 7.4.4 - Collegamento dinamico
-
-(Pagine riassunte: 29)

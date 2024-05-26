@@ -108,11 +108,25 @@ Infine, i puntatori rappresentano un altro tipo di dato importante, essenzialmen
 
 (pagine riassunte: 1)
 ### 5.2.3 - Tipi di dati del Core i7
+Il Core i7 supporta una varietà di tipi di dati, inclusi gli interi con segno in complemento a due, gli interi senza segno, i numeri decimali in codifica binaria e i numeri in virgola mobile nel formato IEEE 754. A causa delle sue origini come macchina a 8/16 bit, il Core i7 gestisce, oltre agli interi a 32 bit, anche interi di 8 e 16 bit, offrendo numerose istruzioni per la loro aritmetica, operazioni booleane e confronti. Il processore può anche essere utilizzato in modalità a 64 bit, supportando registri e operazioni a 64 bit. Sebbene gli operandi non debbano necessariamente essere allineati in memoria, l'allineamento degli indirizzi delle parole su multipli di 4 byte può migliorare le prestazioni.
 
+Il Core i7 è ben equipaggiato per la manipolazione dei caratteri ASCII a 8 bit, disponendo di istruzioni speciali per la copia e la ricerca di stringhe di caratteri. Queste istruzioni sono applicabili sia alle stringhe di lunghezza nota che a quelle terminate da un carattere di fine stringa e sono frequentemente utilizzate nelle librerie che manipolano le stringhe.
+
+(pagine riassunte: 0.5)
 ### 5.2.4 - Tipi di dati dell'OMAP4430 ARM
+La CPU OMAP4430 supporta un ampio spettro di formati di dati. Per quanto riguarda i soli interi, può gestire operandi da 8, 16 e 32 bit, con o senza segno. La gestione dei tipi di dato piccoli nell’OMAP4430 è più intelligente rispetto a quella del Core i7. Internamente, l’OMAP4430 è una macchina a 32 bit con un percorso dati e istruzioni da 32 bit. Un programma può specificare la dimensione e il segno di un valore da caricare; ad esempio, per caricare un byte con segno si usa l'istruzione LDRSB, che converte il valore caricato nel corrispondente valore a 32 bit. Analogamente, anche le istruzioni di memorizzazione specificano la dimensione e il segno del valore da scrivere in memoria e accedono solamente alla porzione specificata del registro di input.
 
+Gli interi con segno utilizzano il formato in complemento a due. Sono disponibili operandi in virgola mobile a 32 e 64 bit che rispettano lo standard IEEE 754. Tutti gli operandi devono essere allineati in memoria per garantire il corretto funzionamento delle operazioni.
+
+A differenza del Core i7, l'OMAP4430 non dispone di istruzioni hardware speciali per il supporto di tipi di dati carattere e stringa; la loro manipolazione è gestita completamente via software.
+
+(pagine riassunte: 0.5)
 ### 5.2.5 - Tipi di dati dell'ATmega168
+L'ATmega168 dispone di una varietà di tipi di dati molto limitata. Tutti i registri sono lunghi 8 bit, con una sola eccezione, e così anche gli interi sono di 8 bit, così come i caratteri. In pratica, il solo tipo di dati le cui operazioni aritmetiche sono realmente supportate dall'hardware è il byte di 8 bit, come si evince dalla Figura 5.8.
 
+Per facilitare l'accesso alla memoria, l'ATmega168 include anche un supporto limitato a puntatori senza segno di 16 bit. I puntatori da 16 bit X, Y e Z sono formati dalla concatenazione delle coppie di registri di 8 bit R26/R27, R28/R29 e R30/R31 rispettivamente. Quando un'istruzione di caricamento utilizza X, Y o Z come operando per l'indirizzo, il processore può incrementare o decrementare il valore a seconda della necessità.
+
+(pagine riassunte: 0.5)
 ## 5.3 - Formati d'istruzione
 ### 5.3.1 - Criteri progettuali per i formati d'istruzoni
 

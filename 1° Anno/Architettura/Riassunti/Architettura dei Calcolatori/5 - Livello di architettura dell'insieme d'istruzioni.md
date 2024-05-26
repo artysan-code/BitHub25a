@@ -146,7 +146,13 @@ Infine, il numero di bit in un campo degli indirizzi è cruciale. Maggiore risol
 
 (pagine riassunte: 2.5)
 ### 5.3.2 - Codice operativo espandibile
+La scelta dei formati delle istruzioni comporta numerosi compromessi, inclusi quelli tra la lunghezza degli opcode e la dimensione degli indirizzi. Ad esempio, una lunghezza di istruzione (*n* + *k*) bit, con un opcode di *k* bit e un indirizzo di *n* bit, permette un'ampia varietà di operazioni ma limita la dimensione della memoria indirizzabile. In alternativa, gli stessi bit possono essere distribuiti in modo diverso per consentire un maggior numero di istruzioni o una maggiore risoluzione nella memoria.
 
+Un'ulteriore possibilità è quella di utilizzare un "codice operativo espandibile". Questo approccio consente di interpretare gli opcode in modo flessibile in base alla loro posizione nei bit dell'istruzione. Ad esempio, se si ha un set di istruzioni con opcode da 0 a 14 per istruzioni con tre indirizzi e l'opcode 15 per istruzioni speciali, si può utilizzare l'opcode 15 per estendere ulteriormente le possibilità. In questo caso, l'opcode 15 indica che il vero codice operativo è contenuto in una parte diversa dell'istruzione. Utilizzando questa tecnica, è possibile ottenere un numero maggiore di istruzioni senza aumentare la lunghezza complessiva dell'opcode.
+
+Tuttavia, è importante considerare che l'uso di un codice operativo espandibile può aumentare la complessità del decodificatore delle istruzioni e influenzare le prestazioni complessive del processore. Inoltre, la dimensione complessiva dell'opcode può crescere significativamente con questo approccio, portando a una maggiore complessità del sistema. La scelta tra diverse configurazioni dipende dalle esigenze specifiche del progetto e dai compromessi accettabili tra flessibilità, complessità e dimensione complessiva dell'istruzione.
+
+(pagine riassunte: 2.5)
 ### 5.3.3 - Formati delle istruzioni del Core i7
 
 ### 5.3.4 - Formati delle istruzioni dell'OMAP4430 ARM

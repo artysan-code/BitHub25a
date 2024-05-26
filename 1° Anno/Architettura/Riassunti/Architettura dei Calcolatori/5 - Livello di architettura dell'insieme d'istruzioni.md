@@ -224,7 +224,23 @@ I programmi auto-modificanti, proposti da John Von Neumann, erano utili sui prim
 
 (pagine riassunte: 1.5)
 ### 5.4.6 - Indirizzamento indicizzato
+L’indirizzamento indicizzato consente di referenziare una parola di memoria a un dato spiazzamento dal contenuto di un registro. Ad esempio, in IJVM le variabili locali sono referenziate specificando il loro spiazzamento rispetto a LV. Questa modalità combina un registro con un offset costante.
+Consideriamo due vettori, A e B, di 1024 parole ciascuno. Vogliamo calcolare \(A_{i} AND B_{i}\) per ogni elemento e fare l’OR di questi risultati per verificare se c'è almeno una coppia di componenti non nulla. Possiamo salvare gli indirizzi di A e B in due registri e usare l’indirizzamento indicizzato per accedere agli elementi degli array.
+Per questo programma, usiamo quattro registri:
+1. R1 - contiene l’OR cumulativo dei prodotti logici.
+2. R2 - l’indice *i* per visitare gli array.
+3. R3 - la costante 4096, il primo valore di *i* da non considerare.
+4. R4 - un registro di lavoro per il calcolo di ogni prodotto.
+Il ciclo inizia con l’istruzione etichettata come CICLO. La prima istruzione effettua il fetch di \(A_{i}\) in R4 usando l’indirizzamento indicizzato: il valore di R2 viene sommato all’indirizzo base A. Ad esempio, la notazione:
+MOV R4, A(R2)
 
+significa che R4 (la destinazione) usa la modalità registro, mentre la sorgente usa la modalità indicizzata con offset A e registro R2. Se A vale 124300, l'istruzione diventa qualcosa come:
+MOV R4, 124300(R2)
+
+Alla prima iterazione, R2 vale 0, quindi la parola di memoria indicizzata è \(A_{0}\) all'indirizzo 124300, che viene salvata in R4. Alla seconda iterazione, R2 vale 4, quindi la parola di memoria indicizzata è \(A_{1}\) all'indirizzo 124304, e così via.
+In questo esempio, l’offset nell’istruzione è l’indirizzo base A, e il registro contiene un piccolo intero incrementato ad ogni iterazione. Questa forma richiede un campo offset abbastanza grande nell’istruzione per contenere un indirizzo, ma spesso risulta la scelta migliore nonostante sia meno efficiente.
+
+(pagine riassunte: 1.5)
 ### 5.4.7 - Indirizzamento indicizzato esteso
 
 ### 5.4.8 - Indirizzamento a stack

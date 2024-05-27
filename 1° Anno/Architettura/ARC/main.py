@@ -1,6 +1,5 @@
 import math
 
-
 def req_exec_input() -> None:
     exercise = int(input("Inserisci che esercizio vuoi fare:\n\n- 0 per multiprogrammazione\n- 1 per Sistema batch\n\n> "))
     match exercise:
@@ -22,7 +21,6 @@ def solve_batch(algorithm: str, num_proc: int)-> None:
             for i in range(num_proc - 1):
                 data["P" + i] = input("Inserisci il tempo di esecuzione del processo " + str(i+1)+ ": ")
                 print("\n")
-                
 
 def solve_multiprogram(mem_tot: int, mem_os: int, mem_proc: int, wait_io: int, cpu_load: int):
     if cpu_load == 0:

@@ -246,7 +246,14 @@ Alcune macchine dispongono della cosiddetta modalità d'**indirizzamento indiciz
 
 (pagine riassunte: 0.5)
 ### 5.4.8 - Indirizzamento a stack
+ Abbiamo già sottolineato che è molto consigliabile rendere le istruzioni macchina quanto più corte possibile. Il limite alla riduzione della lunghezza degli indirizzi equivale a non averne per nulla. In questo paragrafo analizziamo più da vicino l 'indirizzamento a stack.
+#### 5.4.8.1 - Notazione polacca inversa
+È tradizione in matematica indicare l’operatore in mezzo agli operandi, come in x + y, invece che dopo gli operandi, come in x y +.La forma con l’operatore “ in” mezzo è detta notazione infissa, mentre la forma con l’operatore dopo gli operandi si chiama postfissa o anche notazione polacca inversa, dal logico polacco J. Lukasiewicz (1958) che ne studiò le proprietà. La notazione polacca inversa presenta un certo numero di vantaggi rispetto all’infissa in merito alla scrittura di formule algebriche. Per prima cosa qualsiasi formula può essere espressa correttamente senza parentesi. Inoltre la valutazione delle formule in tale notazione si addice particolarmente ai compilatori con stack. Infine, per gli operatori infissi si definisce una precedenza, che è arbitraria e poco gradita.
 
+#### 5.4.8.2 -Valutazione delle formule in notazione polacca inversa
+La notazione polacca inversa è la notazione ideale per la valutazione di una formula da parte di un computer dotato di stack. Una formula è costituita da $n$ simboli, ciascuno dei quali è un operando o un operatore. L’algoritmo che si avvale di uno stack per la valutazione di una formula in notazione polacca inversa è molto semplice: scorre la stringa da sinistra verso destra e, quando incontra un operando, lo impila sullo stack. Invece quando incontra un operatore ne esegue l'istruzione corrispondente. Il numero sulla cima dello stack è l’operando destro, non quello sinistro; questa precisazione è importante perché nella divisione e nella sottrazione l’ordine degli operandi conta (a differenza dell’addizione e della moltiplicazione). In altre parole, IDIV è stata definita appositamente in modo tale che, dopo aver fatto il push del numeratore e poi quello del denominatore, la sua esecuzione produca come risultato la divisione corretta. Si noti la semplicità di generazione del codice per l’IJVM: si scorre la notazione polacca inversa della formula e si restituisce un’istruzione per ciascun simbolo. Se il simbolo è una costante o una variabile, si restituisce un’istruzione di push sullo stack; se il simbolo è un operatore, si restituisce l’istruzione che esegue l’operazione.
+
+(pagine riassunte: 3.5)
 ### 5.4.9 - Modalità d'indirizzamento per istruzioni di salto
 
 ### 5.4.10 - Modalità d'indirizzamento dei codici operativi e delle modalità d'indirizzamento

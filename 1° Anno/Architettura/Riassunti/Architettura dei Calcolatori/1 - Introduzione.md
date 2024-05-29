@@ -1,74 +1,78 @@
-Un calcolatore digitale è una macchina in grado di svolgere operazioni per le persone tramite istruzioni che vengono fornite da queste ultime. Una sequenza di istruzioni da eseguire si chiama **programma** e deve essere scritto in un *linguaggio* comprensibile per la macchina.
-Quest'ultimo si chiama **linguaggio macchina** e contiene un insieme di istruzioni fornito dal produttore della macchina. Questo linguaggio risulta difficile da comprendere e utilizzare, per questo si è cercato di creare dei livelli di astrazione per semplificare il lavoro del **programmatore**. Questo approccio di astrazione si chiama **approccio strutturale**.
+Un calcolatore digitale è una macchina in grado di eseguire operazioni per le persone tramite istruzioni fornite da queste ultime. Una sequenza di istruzioni da eseguire si chiama **programma** e deve essere scritta in un _linguaggio_ comprensibile dalla macchina.
 
-## 1. 1 Approccio Strutturale 
-Per avvicinare un linguaggio naturale come quello umano a quello macchina bisogna impostare dei livelli di astrazione. 
+Questo linguaggio, chiamato **linguaggio macchina**, contiene un insieme di istruzioni fornite dal produttore della macchina. Poiché il linguaggio macchina è difficile da comprendere e utilizzare, sono stati creati livelli di astrazione per semplificare il lavoro del **programmatore**. Questo approccio di astrazione è noto come **approccio strutturale**.
 
-### 1.1.1 Linguaggi, Livelli e Macchine Virtuali
-Per affrontare il problema abbiamo due modi distinti, ponendo $L_0$ come il linguaggio di una macchina $M_0$ e un linguaggio $L_1$ non compatibile con $M_0$:
-- **Traduzione**, scriviamo un programma in linguaggio $L_0$, chiamato **traduttore** che prende in input un programma scritto in $L_1$ e lo riscrive in linguaggio $L_0$. Implica maggiore velocità del codice, ma difficoltà maggiore nel rendere un programma **compatibile**. (Durante l'esecuzione, il computer ha il controllo del traduttore)
-- **Interpretazione**, scriviamo un programma in linguaggio $L_0$, chiamato **interprete** che prende in input un programma scritto in $L_1$ e lo esegue con le stesse istruzioni scritte in $L_0$. (Durante l'esecuzione, il computer ha il controllo dell'interprete e il programma in $L_1$ è visto come un insieme di dati)
+(Pagine riassunte: 1)
+## 1. 1 - Approccio Strutturale 
+Per avvicinare un linguaggio naturale come quello umano a quello macchina bisogna impostare dei livelli di astrazione.
+### 1.1.1 - Linguaggi, Livelli e Macchine Virtuali  
+Per affrontare il problema della compatibilità tra linguaggi, consideriamo $L_0$ come il linguaggio di una macchina $M_0$ e $L_1$ come un linguaggio non compatibile con $M_0$. Ci sono due approcci distinti:
+- **Traduzione**: consiste nello scrivere un programma in linguaggio $L_0$, chiamato **traduttore**, che prende in input un programma scritto in $L_1$ e lo riscrive in linguaggio $L_0$. Questo metodo garantisce maggiore velocità di esecuzione, ma rende più difficile la compatibilità del programma. Durante l'esecuzione, il computer ha il controllo del traduttore.
+- **Interpretazione**: consiste nello scrivere un programma in linguaggio $L_0$, chiamato **interprete**, che prende in input un programma scritto in $L_1$ e lo esegue utilizzando istruzioni di $L_0$. In questo caso, durante l'esecuzione, il computer ha il controllo dell'interprete e il programma in $L_1$ è trattato come un insieme di dati.
 
-Per rendere effettivi questi metodi $L_1$ e $L_0$ devono essere due linguaggi con livelli di astrazione non troppo distanti (per questo si suddivide in più strati questo metodo). Invece di parlare di tutto il livello astrazione che ha portato a creare un **linguaggio virtuale**, di solito, si parla direttamente di **macchine virtuali** $M_n$ su cui vengono eseguiti linguaggi virtuali $L_n$ tramite traduzione o interpretazione. Le chiamiamo virtuali perché la realizzazione di queste macchine è troppo dispendiosa e conviene invece studiarle a livello logico. Questo metodo ci permette di dare ad ogni macchina virtuale un livello, creando così una **struttura multi-livello** a strati (Figura 1).
+Per implementare efficacemente questi metodi, i linguaggi $L_1$ e $L_0$ devono avere livelli di astrazione non troppo distanti. Per questo motivo, spesso si suddivide il processo in più strati. Anziché parlare dell'intero livello di astrazione che ha portato alla creazione di un **linguaggio virtuale**, si parla direttamente di **macchine virtuali** $M_n$ su cui vengono eseguiti linguaggi virtuali $L_n$ tramite traduzione o interpretazione. Queste macchine sono chiamate virtuali perché la loro realizzazione fisica sarebbe troppo dispendiosa, e quindi vengono studiate a livello logico. Questo approccio consente di assegnare a ogni macchina virtuale un livello, creando una **struttura multilivello** a strati.
 
-### 1.1.2 Attuali macchine multi-livello
+(Pagine riassunte: 2.75)
+### 1.1.2 - Attuali macchine multi-livello
+Le **macchine multilivello attuali** sono divise logicamente in livelli da 0 a 5:
+- **Livello Logico Digitale**: formato principalmente da porte logiche che implementano la logica booleana, formate da transistor che ricevono input digitali dai registri.
+- **Livello Micro-Architettura**: comprende il circuito *ALU* (Arithmetic Logic Unit) che esegue operazioni semplici su dati ottenuti dai registri (generalmente da 8 a 32), formando un *datapath*. Questo livello è gestito da un *microprogramma* o direttamente dall'hardware.
+- **Livello ISA** (Instruction Set Architecture): contiene un *insieme di istruzioni* fornite dal produttore, interpretate dal microprogramma o dai circuiti elettronici.
+- **Livello Macchina del Sistema Operativo**: una versione ibrida del livello ISA, contenente istruzioni ISA e implementando funzionalità utili. Alcune istruzioni sono interpretate dal Sistema Operativo, altre dal microprogramma.
+- **Livello del Linguaggio Assemblativo**: semplifica la scrittura di programmi per i livelli sottostanti. I linguaggi assemblativi sono tradotti in un linguaggio virtuale inferiore e poi interpretati. Il traduttore utilizzato è chiamato assemblatore.
+- **Livello del Linguaggio ad Alto Livello**: comprende linguaggi moderni molto più semplici da usare, tradotti nei livelli sottostanti da un compilatore o interpretati direttamente.
 
-Le macchine multi-livello attuali sono divise in livelli da 0 a 5(logicamente parlando):
-0. **Livello Logico Digitale**, formato principalmente da porte (gate) che implementano la logica booleana e formano dei transistor che prendono input digitali da dei registri.
-1. **Livello Micro-Architettura**, dove troviamo un circuito chiamato **ALU** che esegue operazioni semplici su dati ottenuti dai registri (in genere da 8 a 32) formando un **datapath** (letteralmente percorso di dati). Generalmente viene gestito da un **micro-programma** ma può essere anche semplicemente gestito dall'hardware.
-2. **Livello ISA** , un livello di istruzioni fornite dal produttore che vengono interpretate dal microprogramma o dai circuiti elettronici.
-3. **Livello Macchina del Sistema Operativo**, generalmente una versione ibrida del precedente, in quanto contiene istruzioni di tipo ISA e implementa funzionalità utili. Alcune istruzioni vengono interpretate dal Sistema Operativo e altre direttamente dal microprogramma.
-4. **Livello del Linguaggio Assemblativo**, pensato per rendere più semplice al programmatore scrivere un programma adatto ai livelli sottostanti. Questi linguaggi sono inizialmente tradotti in un *linguaggio virtuale* inferiore e poi interpretati. Il loro traduttore si chiama **assemblatore**.
-5. **Livello del Linguaggio ad Alto Livello**, linguaggi moderni che sono molto più semplici da utilizzare e che utilizzano un **compilatore** al posto dell'assemblatore per essere tradotti nei livelli sottostanti, anche se ne esistono di interpretati.
+(Pagine riassunte: 2.5)
+### 1.1.3 - Evoluzione delle macchine multi-livello
+Grazie alla suddivisione della macchina in livelli, abbiamo distinto concettualmente l'**hardware** (le componenti tangibili di un'architettura) dal **software** (gli algoritmi e il modo di implementarli). $$\text{Hardware e software sono logicamente equivalenti.}$$Nel tempo, la tecnologia si è sviluppata per affrontare vari problemi. I primi computer digitali degli anni '40 erano solitamente divisi tra il livello ISA e il livello logico digitale, portando a un hardware sempre più complesso per ottenere nuove funzionalità. 
 
-### 1.1.3 Evoluzione delle macchine multi-livello
+Nel 1951, Maurice Wilkes propose di invertire questa tendenza attraverso l'**astrazione logica**, progettando ciò che oggi definiamo un microprogramma, che traduceva un programma ISA in un linguaggio logico con istruzioni molto semplici, riducendo errori hardware e il dispendio di risorse. 
 
-Grazie a questa suddivisione della macchina in livelli, siamo arrivati concettualmente a dividere **l'hardware**, cioè l'insieme delle componenti tangibili di un'architettura, dal software, cioè gli algoritmi e il modo di implementarli. 
+Negli anni '60, per ridurre i lunghi tempi di compilazione ed esecuzione dei programmi (spesso eseguiti su macchine condivise e lente), fu creato un programma definitivo, chiamato **sistema operativo**, per automatizzare molti processi di compilazione ed esecuzione dei programmi. Col tempo, si concluse che per ottenere nuove funzioni "hardware" bastava studiarle a livello software. 
 
-$$\text{Hardware e Software sono logicamente equivalenti.}$$
+Tuttavia, questo metodo rallentò l'esecuzione dei microprogrammi con l'aumentare delle funzioni aggiunte, portando infine a un ritorno all'approccio iniziale, eliminando la microprogrammazione e riducendo il carico di istruzioni che il processore doveva gestire.
 
-Nel tempo la tecnologia si è sviluppata ed adattata ai diversi problemi che incontrava. I primi computer digitali (degli anni '40) erano solitamente divisi in livello ISA e livello logico digitale, che portava a creare hardware sempre più complesso per ottenere nuove funzionalità. Nel 1951 Maurice Wilkes propose di invertire questo andamento questa**astrazione logica** progettando ciò che oggi definiamo un microprogramma, che traduceva un programma ISA in un linguaggio logico con istruzioni molto semplici (allo scopo di ridurre errori hardware e
-dispendio di risorse).
+(Pagine riassunte: 5)
+## 1.2 - Pietre militari nell'architettura dei computer
+Il seguente capitolo è stato riassunto in maniera probabilmente eccessiva, a causa del fatto che ci sono troppi dati da trascrivere e che sembrano valere poco per un'orale.
 
-Nel 1960, allo scopo di ridurre il lungo percorso per compilare ed eseguire un programma (passava in una macchina che veniva condivisa da più programmatori e molto lenta), si creò un programma definitivo chiamato anche oggi **sistema operativo** allo scopo di automatizzare molti processi della compilazione ed esecuzione dei programmi.
+Per riferimenti a livello di libro le pagine sono da 13 a 29.
+### 1.2.1 - Generazione Zero - Meccanici (1642-1945)
+Le prime macchine, incredibile a dirsi, risalgono al 1642. Un esempio famoso è la _macchina di Pascal_, in grado di eseguire addizioni e sottrazioni. Un altro è la _macchina di Leibniz_, che poteva eseguire anche moltiplicazioni e divisioni. Queste macchine eseguivano operazioni molto semplici (algoritmi singoli), ma stimolarono l'interesse degli investitori a sviluppare macchine sempre più complesse, in grado di eseguire algoritmi multipli. Questo interesse e sviluppo portarono, nel corso di tre secoli, alla creazione delle calcolatrici che conosciamo oggi.
 
-Col tempo si arrivò alla conclusione che per ottenere nuove funzioni "hardware\" bastava studiarle a livello software. Tuttavia questo metodo rallentò l'esecuzione dei microprogrammi con l'aumentare delle funzioni aggiunte, quindi si tornò nuovamente al punto di partenza, eliminando la microprogrammazione e riducendo il carico di istruzioni
-che il processore doveva sostenere.
+(Pagine riassunte: 3.5)
+### 1.2.2 - Prima Generazione - Valvole (1945-1955)
+Come in molte scoperte scientifiche e tecnologiche, la guerra ha avuto un enorme impatto sullo sviluppo dei calcolatori. Durante la Seconda Guerra Mondiale, furono creati calcolatori enormi per assistere le operazioni militari, come il calcolo delle coordinate per l'artiglieria e la decifrazione dei codici (come nella lotta contro ENIGMA). Tra i più noti ci sono il *Colossus*, il primo calcolatore digitale, e l'*ENIAC*, che conteneva 18.000 valvole, 1.500 relè e consumava fino a 140 kW di energia.
 
-## 1.2 Pietre militari nell'architettura dei computer (Capitolo da Rivedere)
+Uno dei contributi più significativi di questo periodo è lo sviluppo della macchina di von Neumann, chiamata così in onore del suo creatore. Questa macchina introdusse due importanti innovazioni:
+- L'uso del sistema binario al posto del sistema decimale, semplificando l'architettura dei computer come l'ENIAC.
+- La suddivisione della macchina in memoria, unità logico-aritmetica (ALU), unità di controllo (CU) e dispositivi di input e output. Nei computer moderni, l'ALU e la CU formano la CPU.
 
-Questo capitolo verrà minimizzato in quanto tratta la storia effettiva dal 1642 al 1990 circa. In quanto è un capitolo puramente ispirato alla curiosità, sarà disponibile interamente esclusivamente sul libro.
-### 1.2.1 Generazione Zero - Meccanici (1642-1945)
+(Pagine riassunte: 3)
+### 1.2.3 - Seconda Generazione - Transistor (1955-1965)
+In questa generazione di computer, il principale motore di sviluppo fu il **transistor**, inventato nel 1948 da John Bardeen. Inizialmente, le aziende più famose erano riluttanti a investire in questa tecnologia e nei computer in generale. Tuttavia, con l'arrivo del PDP-1, la prima macchina dotata di 4096 byte di memoria a 18 bit con 200.000 istruzioni al secondo, le cose cambiarono. La IBM e la DEC, aziende investitrici in tecnologie, iniziarono a produrre prodotti che, pur non raggiungendo le velocità dei computer a valvole dell'epoca, avevano costi significativamente inferiori. Con il PDP-8 arrivò anche l'uso dell'**omnibus**, che permetteva di connettere diverse componenti in parallelo.
 
-Le prime macchine, anche se sembrerà assurdo, le ritroviamo fin dal 1642 con macchine come *La macchina di Pascal* che era completamente meccanica, o *La macchina di Leibniz*. Queste macchine eseguivano operazioni molto semplici (algoritmi singoli), portando quindi gli investitori dei progetti a voler cercare di implementare macchine sempre più complesse (algoritmi multipli) che portarono, tre secoli fa, a creare effettive calcolatrici come quelle moderne.
-### 1.2.2 Prima Generazione - Valvole (1945-1955)
+Un'altra invenzione di rilievo fu il **supercomputer** di Seymour Cray, una figura paragonabile a quella di von Neumann per il suo genio. Infine, il computer Burroughs B5000 rappresentò il primo progetto incentrato principalmente sul software. Questo computer cercò di implementare al meglio un linguaggio chiamato Algol 60, precursore di Java e C, nella macchina.
 
-Come nella maggior parte delle scoperte scientifiche e tecnologiche, la guerra ebbe un enorme effetto. Vi fu la creazione di enormi calcolatori per per aiutare i militanti (calcolo delle coordinate per artiglieria, la lotta contro ENIGMA, \...), tra i più conosciuti l'*ENIAC*, che aveva 18.000 valvole e 1500 relè e consumava fino a 140Kw di energia. La cosa più importante che abbiamo in questo periodo è lo sviluppo della *macchina di von Neumann* o anche IAS, nome dato in onore del suo creatore, che ebbe due importanti aggiornamenti:
+(Pagine riassunte: 2.5)
+### 1.2.4 - Terza Generazione - Circuiti Integrati (1965-1980)
+L'invenzione dei circuiti integrati da parte di Jack Kilby e Robert Noyce permise la costruzione di computer sempre più piccoli e veloci, grazie alla possibilità di raggruppare fino a 10 transistor in un chip. Questa innovazione portò a una significativa riduzione delle dimensioni e dei costi dei computer, aumentando al contempo le loro capacità e velocità.
 
-- L'utilizzo del binario al posto di un sistema decimale per semplificare l'architettura di computer come quello ENIAC.
-- La suddivisione della macchina in memoria, l'unità logico aritmetica, unità di controllo e dispositivi di input e output. (Nei computer moderni l'ALU e la CU formano la CPU)  
+Un'altra grande innovazione fu l'introduzione del concetto di **famiglia di computer**, che consentiva di coprire una gamma più ampia di necessità dei clienti con modelli diversi ma compatibili tra loro. Questo approccio permetteva alle aziende di offrire una varietà di soluzioni scalabili e aggiornabili nel tempo.
 
-### 1.2.3 Seconda Generazione - Transistor (1955-1965
+I principali cambiamenti di questo periodo riguardarono anche l'invenzione della **multiprogrammazione**, una tecnica che consentiva di avere più programmi in memoria allo stesso tempo, pronti per l'esecuzione. Questa tecnica divenne una caratteristica distintiva della serie IBM 360, una delle famiglie di computer più innovative dell'epoca. La multiprogrammazione ottimizzava l'uso delle risorse di calcolo, permettendo di eseguire più operazioni contemporaneamente e migliorando l'efficienza complessiva del sistema.
 
-In questa generazione di computer troviamo come principale portatore di sviluppo il **transistor**, inventato nel 1948 da John Bardenn. Inizialmente le aziende più famose non avevano intenzione di investire in questa tecnologia e nei computer in generale, ma con l'arrivo del PDP-1 (prima macchina dotata di 4096 byte di memoria a 18 bit con 200.000 istruzioni al secondo).Da lì la IBM e la DEC (aziende investitrici in tecnologie) iniziarono a
-produrre prodotti che riuscivano a raggiungere velocità modeste (non comparabili ai computer attuali a valvole) ma che avevano un costo enormemente inferiore. Con il PDP-8 arrivò anche l'utilizzo dell'**omnibus**, che permetteva in *parallelo* di connettere diverse componenti contemporaneamente.
+In sintesi, gli sviluppi tecnologici si concentrarono sulla riduzione delle dimensioni dell'hardware e sull'aumento delle capacità, introducendo concetti avanzati come la multiprogrammazione per sfruttare al meglio le risorse disponibili.
 
-Altra invenzione di nicchia fu il **supercomputer** di *Seymour Cray*, figura paragonabile al genio di von Neumann. Ultima nota fu il computer Burroughts B5000, primo progetto incentrato principalmente sul software. Cercarono di implementare al meglio un linguaggio chiamato Algol 60, precursore di Java e C, nella macchina.
-
-### 1.2.4 Terza Generazione - Circuiti Integrati (1965-1980)
-
-L'invenzione dei circuiti integrati da parte di Jack Kilby e Robert Noyce, permise la costruzione di computer sempre più piccoli e veloci (grazie al fatto che si poteva raggruppare fino a 10 transistor in un chip).
-
-I principali cambiamenti riguardarono l'invenzione della **multiprogrammazione**, che ritroviamo con l'innovativa serie 360 IBM (Famiglia di computer IBM), dove è possibile avere più programmi in memoria allo stesso tempo, in attesa. Generalmente gli sviluppi si incentrarono sul minimizzare ancora di più l'hardware aumentandone però le capacità.
-
-### 1.2.5 Quarta Generazione - Integrazione a grandissima scala (1980-?)
-
+(Pagine riassunte: 2)
+### 1.2.5 - Quarta Generazione - Integrazione a grandissima scala (1980-?)
 Grazie alla tecnologia VLSI (Very Large Scale Integration), si iniziarono a creare chip che contenevano centinaia, migliaia se non milioni di transistor. Prima dell'avvento dei primi microcomputer, ogni università o azienda doveva dotarsi di un costoso computer che fungeva da centro di calcolo; dopodiché ogni privato o dipartimento poteva dotarsi del proprio calcolatore.
 
 Inizialmente, quando un privato comprava un computer, si doveva montare componente per componente (ricevuta in un apposito kit) e scrivere il proprio sistema operativo. Col tempo arrivarono in dei floppy disk i primi sistemi operativi, contenenti una serie di istruzioni eseguibili sulla **shell**.
 
 Con l'inizio della vendita di Personal Computer preassemblati e preparati per l'utilizzo (dove vediamo in concorrenza IBM, Apple, Atari\...) arrivò con Apple il primo computer dotato di **GUI** (Graphical User Interface) l'Apple Lisa, che fu troppo costoso e sostituito con una opzione più economica chiamata Macintosh. (Non tratterò il resto di questo capitolo che parla semplicemente dello sviluppo dei processori Intel/AMD e di nuove tecnologie)
 
+(Pagine riassunte: 3)
 ### 1.2.6 Quinta Generazione - Computer a basso consumo e Computer invisibili
 
 Con l'avanzare della tecnologia i personal computer diventarono sempre più piccoli, arrivando alle invenzioni di tablet come il GridPad nel 1989. Rivoluzionari sono anche i PDA (Personal Digital Assistans), inventati da Jeff Hawkins che utilizzavano una particolare tecnica chiamato \"Graffiti\" che rendeva la scrittura leggibile più adattabile al computer (per renderla più leggibile per quest'ultimo). Questo tipo di tecnologia venne applicata sui smartphone.

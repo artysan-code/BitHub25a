@@ -1,28 +1,26 @@
-v**riferimento teorico**
+Per un riferimento teorico sugli **algoritmi di scheduling** andare[[2 - Processi e Thread#^311407| a questa pagina]].
 
+## Batch
+Generalmente dobbiamo fissare i seguenti concetti, che sono:
+- Tempo di Turnaround $T_T$, intervallo del processo dall'ingresso in coda fino al termine dell'esecuzione.
+- Tempo di Attesa $T_W$, intervallo di tempo che il processo trascorre in attesa.
+- Tempo di Arrivo $T_A$, tempo di arrivo nella coda dei processi.
+- Tempo di Esecuzione $T_X$, autoesplicativo.
+- Tempo di Inizio esecuzione $T_S$, anche questo autoesplicativo.
+- Tempo di fine esecuzione $T_E$, pure questo.
 
+Il calcolo di ogni T è diverso e dipende dal problema, ma i fondamentali sono questi (Ottenuti da First-come First-Served):$$\begin{array}{l}
+T_{T} = T_{E}(i) - T_{A}(i)  \\
+T_{W} = T_{S}(i) - T_{A}(i) \\
+T_{E} = T_{S}(i) + T_{X}(i) \\
+T_{S} = T_{E}(i-1)\quad se\quad i>1\quad oppure\quad T_{S} = T_{A}(1) = 0\quad se\quad i=1
+\end{array}$$
+Generalmente viene richiesto di calcolare la media di $T_{W}$ e di $T_{T}$.
 
+Nei sistemi batch possiamo riordinare (a seconda dell'algoritmo) i processi in arrivo. Nei sistemi interattivi no.
 
-### Algoritmi di Scheduling in Sistemi Batch
+Se non viene specificato in quanto partono i processi, possiamo scegliere noi tramite l'algoritmo quali far partire e in che ordine.
 
-#### First-come, first-served
-I processi vengono assegnati alla CPU in ordine di arrivo.Quando arrivano nuovi job, essi vengono messi in coda alla lista. Quando il job in esecuzione si blocca, viene eseguito il prossimo job in lista; quando torna pronto viene messo in coda alla lista.
-Con questo algoritmo un unica lista concatenata traccia tutti i processi pronti, mandando sempre il primo in esecuzione.
-In un algoritmo first-come first-served, un processo CPU-bound viene eseguito per 1 secondo alla volta, mentre molti processi I/O-bound richiedono molte letture dal disco per completare il lavoro. Il problema sorge quando il processo CPU-bound, dopo 1 secondo di esecuzione, richiede un blocco di disco. Durante l'attesa del blocco, tutti i processi I/O-bound iniziano le loro letture. Una volta ottenuto il blocco, il processo CPU-bound si esegue per altri 1 secondo, seguito rapidamente da tutti i processi I/O-bound. Questo può causare ritardi significativi nei processi I/O-bound, poiché devono attendere l'esecuzione del processo CPU-bound prima di poter procedere.
-In conclusione, con l'algoritmo first-come first-served, ogni processo I/O-bound impiegherebbe 1000 secondi per completare le letture dal disco. Tuttavia, con un algoritmo di scheduling che preleva il processo CPU-bound ogni 10 millisecondi, i processi I/O-bound potrebbero completare il loro lavoro in soli 10 secondi anziché 1000. Questo avviene senza rallentare significativamente il processo CPU-bound, consentendo quindi un'efficienza molto maggiore nell'utilizzo delle risorse. 
-#### Shortest job first
-Quando nella coda di input si trovano parecchi job di pari importanza in attesa di essere avviati, lo scheduler preleva per primo il job più breve (**shortest job first**). Nel caso di quattro job con tempi di esecuzione rispettivamente di a, b, c e d, l'algoritmo shortest job first garantisce tempi di turnaround ottimali. Ad esempio, se consideriamo i job A, B, C e D con tempi di esecuzione di 8, 4, 4 e 4 minuti rispettivamente, l'esecuzione secondo shortest job first produce tempi di turnaround di 4, 8, 12 e 20 minuti, con una media di 11 minuti. Questo dimostra l'efficacia e l'ottimalità dell'algoritmo shortest job first nel minimizzare i tempi di turnaround.
-L'algoritmo shortest job first è ottimale solo quando tutti i job sono disponibili contemporaneamente. Tuttavia, se i job arrivano in momenti diversi, potrebbe non essere la scelta migliore. Ad esempio, considerando cinque job con tempi di esecuzione e tempi di arrivo differenti, l'esecuzione nell'ordine di arrivo produce una media di 4.6, mentre eseguendo nell'ordine B, C, D, E e A si ottiene una media di 4.4. Questo dimostra che in certi contesti l'ordine di arrivo può influenzare l'efficacia dell'algoritmo.
-#### Shortest remaining time
-Una versione preemptive dell'algoritmo shortest job first è l'algoritmo **shortest remaining time next**. In questo schema, lo scheduler seleziona sempre il processo che richiederà il minor tempo per completare l'esecuzione. È necessario conoscere in anticipo il tempo di esecuzione dei processi. Quando arriva un nuovo job, il suo tempo totale viene confrontato con il tempo rimanente del processo attualmente in esecuzione. Se il nuovo job richiede meno tempo per terminare rispetto al processo attuale, quest'ultimo viene sospeso e il nuovo job viene avviato. Questo approccio consente ai lavori brevi di ottenere un servizio rapido.
-### Algoritmi di Scheduling in Sistemi Interattivi
-
-#### Scheduling round-robin
-Ogni processo riceve un intervallo di tempo, chiamato **quanto** (quantum), durante il quale può essere eseguito. Se il processo è ancora in esecuzione al termine del quanto, la CPU viene assegnata a un altro processo. Se il processo si blocca o termina prima del quanto, la CPU viene riassegnata naturalmente. L'algoritmo round-robin è facile da implementare e richiede solo una lista dei processi eseguibili. La scelta della durata del quanto è cruciale: se è troppo breve, causa frequenti cambi di contesto, riducendo l'efficienza della CPU; se è troppo lungo, può portare a lunghi tempi di attesa per i processi interattivi. Ad esempio, un quanto di 4 ms con un cambio di contesto che richiede 1 ms comporta uno spreco del 20% del tempo CPU, mentre un quanto di 100 ms riduce questo spreco all'1%, ma può causare ritardi inaccettabili per le richieste interattive. Un compromesso ragionevole per il quanto è tra 20 e 50 ms.
-
-#### Scheduling a priorità
-Lo scheduling round-robin presume che tutti i processi abbiano la stessa importanza, ma in molti contesti, come nelle università o su PC multiutente, alcuni processi sono più importanti di altri. Questo porta allo **scheduling a priorità** (priority scheduling), dove a ogni processo viene assegnata una priorità e viene eseguito quello con la priorità più alta. Per evitare che i processi ad alta priorità monopolizzino la CPU, lo scheduler può ridurre la loro priorità a ogni scatto di clock o assegnare un quanto di tempo massimo per l'esecuzione.
-Le priorità possono essere assegnate staticamente o dinamicamente. Ad esempio, in un computer militare, i processi avviati da persone di rango superiore possono avere priorità più alta, mentre in un data center commerciale, i job a priorità alta possono essere più costosi. In UNIX, il comando nice permette agli utenti di ridurre volontariamente la priorità dei loro processi, anche se raramente viene utilizzato.
-Per migliorare l'efficienza, le priorità possono essere assegnate dinamicamente, favorendo i processi I/O bound che necessitano frequentemente della CPU per brevi periodi. Un algoritmo semplice imposta la priorità a 1/f, dove f è la frazione dell'ultimo quanto usato dal processo.
-Spesso è utile raggruppare i processi in classi di priorità e applicare lo scheduling round-robin all'interno di ciascuna classe. Se una classe di priorità più alta è vuota, si passa alla successiva. Periodicamente, è necessario rivedere le priorità per evitare che i processi a bassa priorità rimangano in attesa indefinitamente.
-
+## Sistemi Interattivi
+### Sistema Round-Robin
+Dato un sistema di n processi, troviamo definito un quantum di esecuzione, un cambio di contesto (entrambi in $u\text{s}$) e in che posizione ci troviamo nel giro. Ci viene chiesto

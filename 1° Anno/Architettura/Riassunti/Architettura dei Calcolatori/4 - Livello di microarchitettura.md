@@ -18,7 +18,7 @@ Il **percorso dati** della CPU include la ALU, i suoi input e output. Anche se o
 
 Figura 4.1
 
-La ALU è controllata da sei linee: $F_{0}$ e $F_{1}$ determinano l'operazione, ENA e ENB abilitano gli input, INVA inverte l'input sinistro e INC aggiunge un riporto al risultato. Non tutte le 64 combinazioni di controllo sono utilizzate. Queste funzioni saranno utili per l'intero insieme JVM. La ALU richiede due input: sinistro (A) e destro (B), con il bus B collegato a sinistra.
+La ALU è controllata da sei linee: $F_{0}$ e $F_{1}$ determinano l'operazione, ENA e ENB abilitano gli input, INVA inverte l'input sinistro e INC aggiunge un riporto al risultato. Non tutte le 64 combinazioni di controllo sono utilizzate. Queste funzioni saranno utili per l'intero insieme JVM. La ALU richiede due input: sinistro (A) e destro (B), a quello di sinistra è collegato il registro H mentre a quello di destra è collegato il bus B.
 
 Un valore può essere caricato in H scegliendo una funzione della ALU che trasferisca l'input destro senza modificarlo. L'output della ALU è gestito da altre due linee di controllo: SLL8 trasla a sinistra di un byte, impostando a 0 gli 8 bit meno significativi, e SRA1 trasla a destra di un bit, mantenendo il bit più significativo.
 
@@ -46,14 +46,14 @@ L'intervallo dopo $\Delta z$ ha una certa tolleranza. Al fronte di salita del ci
 I sottocicli non sono definiti esplicitamente, poiché nessun impulso di clock segnala alle ALU e allo shifter di funzionare continuamente; i loro input sono inconsistenti fino a $\Delta w+\Delta x$ dopo il fronte di discesa del clock, e i loro output sono inconsistenti fino a $\Delta w+\Delta x+\Delta y$. È responsabilità dell'ingegnere progettista assicurarsi che $\Delta w+\Delta x+\Delta y+\Delta z$ sia sufficientemente breve rispetto al fronte di salita del clock, garantendo il corretto caricamento dei registri.
 
 (pagine riassunte: 2)
-#### 4.1.1.2 - Operazioni della memoria
+#### 4.1.1.\ - Operazioni della memoria
 La nostra macchina ha due modalità di comunicazione con la memoria: una porta a 32 bit con indirizzi espressi in parole e una porta a 8 bit con indirizzi espressi in byte. La porta a 32 bit è controllata dai registri MAR (Memory Address Register) e MDR (Memory Data Register), mentre la porta a 8 bit è controllata dal registro PC, che legge un byte negli 8 bit meno significativi di MBR. La porta a 8 bit può solo leggere dati dalla memoria.
 
 Ogni registro è controllato da uno o due **segnali di controllo**. Una freccia bianca sotto un registro indica un segnale di controllo che abilita l'output del registro verso il bus B. Una freccia nera indica un segnale di controllo che scrive nel registro un valore proveniente dal bus C. Per iniziare una lettura o una scrittura, bisogna caricare il registro di memoria appropriato e inviare un segnale di scrittura alla memoria.
 
-Le due modalità di accesso sono necessarie perché MAR e PC si riferiscono a diverse parti della memoria. MAR/MDR sono utilizzati per leggere e scrivere parole di dati a livello ISA, mentre PC/MBR leggono il programma eseguibile a livello ISA, un flusso di byte.
+Le due modalità di accesso sono necessarie perché MAR e PC si riferiscono a diverse parti della memoria. MAR/MDR sono utilizzati per leggere e scrivere parole di dati a livello ISA, mentre PC/MBR leggono il programma eseguibile a livello ISA, che consiste in un flusso di byte.
 
-Nelle implementazioni reali, esiste una sola memoria orientata al byte. MAR conta il numero di parole anche se gli indirizzi sono espressi in byte. Quando MAR viene portato sul bus degli indirizzi, i suoi 32 bit non sono mappati direttamente sulle 32 linee. I 2 bit più alti di MAR vengono scartati perché inutili per la nostra macchina, che ha un limite di indirizzamento di 4 GB. Così, quando MAR vale 1, sul bus viene posto l'indirizzo 4; quando MAR vale 2, l'indirizzo 8, e così via.
+Nelle implementazioni reali, esiste una sola memoria orientata al byte. MAR può contare il numero di parole, anche se gli indirizzi sono espressi in byte. Quando MAR viene portato sul bus degli indirizzi, i suoi 32 bit non sono mappati direttamente sulle 32 linee. I 2 bit più alti di MAR vengono scartati perché inutili per la nostra macchina, che ha un limite di indirizzamento di 4 GB. Così, quando MAR vale 1, sul bus viene posto l'indirizzo 4; quando MAR vale 2, l'indirizzo 8, e così via.
 
 Per convertire il registro MBR a 8 bit in una parola a 32 bit, si tratta il valore con segno compreso tra -128 e +127, utilizzando un processo chiamato **estensione del segno**. Questo consiste nel duplicare il bit del segno di MBR nei 24 bit più alti del bus B. La scelta tra convertire gli 8 bit di MBR in un valore a 32 bit con o senza segno è determinata dal segnale di controllo. La presenza delle due frecce giustifica la necessità di distinguere tra queste due opzioni.
 
@@ -74,7 +74,7 @@ Questi 29 segnali specificano le operazioni da eseguire durante un ciclo del per
 3. Guidare i risultati sul bus C.
 4. Scrivere i risultati nei registri appropriati.
 
-Se viene asserito il segnale per una lettura dalla memoria, l'operazione inizia alla fine del ciclo del percorso dati, dopo il caricamento di MAR. Una lettura della memoria avviata alla fine del ciclo �k trasmette dati utilizzabili solo a partire dal ciclo �+2k+2. In altre parole, carichiamo MAR alla fine del ciclo e avviamo l'operazione di memoria subito dopo. Poiché la memoria richiede un ciclo di clock, i dati non saranno disponibili in MDR all'inizio del ciclo successivo, soprattutto con impulsi di clock brevi. Deve quindi trascorrere un ciclo completo del percorso dati tra l'inizio di una lettura della memoria e l'utilizzo del risultato. Durante questo ciclo è possibile eseguire altre operazioni che non richiedono dati dalla memoria.
+Se viene asserito il segnale per una lettura dalla memoria, l'operazione inizia alla fine del ciclo del percorso dati, dopo il caricamento di MAR. Una lettura della memoria avviata alla fine del ciclo k+1 trasmette dati utilizzabili solo a partire dal ciclo k+2. In altre parole, carichiamo MAR alla fine del ciclo e avviamo l'operazione di memoria subito dopo. Poiché la memoria richiede un ciclo di clock, i dati non saranno disponibili in MDR all'inizio del ciclo successivo, soprattutto con impulsi di clock brevi. Deve quindi trascorrere un ciclo completo del percorso dati tra l'inizio di una lettura della memoria e l'utilizzo del risultato. Durante questo ciclo è possibile eseguire altre operazioni che non richiedono dati dalla memoria.
 
 In alcuni casi può essere utile scrivere l'output del bus C in più di un registro, mentre non ha senso abilitare più di un registro sul bus B contemporaneamente.
 
@@ -123,7 +123,7 @@ Il microprogramma non segue necessariamente un ordine sequenziale nella memoria 
 - **JAMZ**: Se abilitato, il flip-flop Z viene combinato con il bit più significativo di MPC tramite OR.
 - **JMPC**: Se abilitato, gli 8 bit di MBR vengono combinati in OR con gli 8 bit meno significativi di NEXT_ADDRESS.
 
-Quando tutti i bit di JAM sono zero, l'indirizzo della microistruzione successiva è semplicemente il valore nel campo NEXT_ADDRESS. Altrimenti, ci sono due potenziali indirizzi: NEXT_ADDRESS e NEXT_ADDRESS calcolato in OR con 0x100. 
+Quando tutti i bit di JAM sono zero, l'indirizzo della microistruzione successiva è semplicemente il valore nel campo NEXT_ADDRESS o NEXT_ADDRESS in OR con 1. Altrimenti, ci sono due potenziali indirizzi: NEXT_ADDRESS e NEXT_ADDRESS calcolato in OR con 0x100. 
 
 Ad esempio, se la microistruzione corrente ha il campo NEXT_ADDRESS = 0x92 e JAMZ impostato a 1, l'indirizzo successivo dipende dal bit Z. Se Z vale 0, la microistruzione successiva sarà all'indirizzo 0x92; altrimenti, sarà all'indirizzo 0x192.
 #### Efficienza del Salto Condizionale

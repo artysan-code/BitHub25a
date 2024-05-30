@@ -185,8 +185,34 @@ Per risolvere questi problemi, il linker crea una tabella che inserisce per ogni
 
 (Pagine riassunte: 3)
 ### 7.4.2 - Struttura di un modulo oggetto
+Generalmente i moduli oggetto sono divisibili in sei parti. La prima parte è **identificativa** e contiene le informazioni principali del modulo, quali nome, lunghezze, indirizzamenti interni per il linker e, in alcuni casi, la data di assemblaggio.
 
+La seconda parte è una lista di simboli definiti nel modulo a cui possono fare riferimento gli altri moduli, chiamati **punti di ingresso**.
+
+La terza parte, simile alla precedente, è una lista di simboli non presenti nel modulo, chiamati **riferimenti esterni**. Questa lista viene utilizzata dal linker per associare gli indirizzamenti corretti alla fine del collegamento.
+
+La quarta parte è il cuore del programma, costituita da **codice assemblativo** e **costanti** che vengono caricati in memoria. Questa parte è l'unica che rimane durante l'esecuzione, poiché tutte le altre parti vengono eliminate dopo il collegamento.
+
+La quinta parte è il **dizionario di rilocazione**.
 
 (Pagine riassunte: 1.25)
 ### 7.4.3 - Rilocazione a tempo del biding e dinamica
+Dopo aver portato in memoria un programma assemblato, possiamo incappare nella problematica della rilocazione. Un programma assemblato e collegato ha degli indirizzi di memoria specificati, ma se il programma viene riutilizzato in memoria fisica, non si può garantire che occuperà lo stesso spazio di indirizzamento, generando **problemi di indirizzamento**.
+
+Il momento in cui si determina l'indirizzo della memoria centrale rispetto a un'istruzione di branch è detto **tempo di binding**.
+
+La soluzione è virtualizzare l'indirizzamento, che però presenta ancora due problematiche: il momento in cui i nomi simbolici vengono legati agli *indirizzi virtuali* e il momento in cui questi ultimi vengono legati agli indirizzi fisici. Completate queste due operazioni, il collegamento è effettuato.
+
+Un meccanismo che applica al meglio questa soluzione è la **paginazione**. Dopo che un programma è stato spostato nella memoria centrale, non si modifica il programma ma solo la sua tabella delle pagine.
+
+Una seconda soluzione consiste nell'uso di un **registro di rilocazione** durante l'esecuzione, che punta sempre all'inizio del programma corrente; sommandolo via hardware a tutti gli indirizzi prima che vengano inviati in memoria, risolve il problema ma è più dispendioso e meno generale.
+
+Sulle macchine che possono effettuare riferimenti alla memoria relativi al PC, si sfrutta il fatto che molte istruzioni di branch sono relative al PC stesso. Ogni volta che spostiamo un programma in memoria, basta modificare il PC; questo tipo di programma è detto **indipendente dalla posizione**.
+
+(Pagine riassunte: 2.75)
 ### 7.4.4 - Collegamento dinamico
+Un modo efficiente, moderno e flessibile di collegare le procedure compilate è quello di collegarle al momento in cui la procedura viene caricata. Questo processo si chiama **collegamento dinamico**. 
+
+
+
+(Pagine riassunte: 4)

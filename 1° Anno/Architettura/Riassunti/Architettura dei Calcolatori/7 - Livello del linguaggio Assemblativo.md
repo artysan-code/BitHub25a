@@ -24,7 +24,7 @@ Un programmatore esperto, che conosce a fondo il linguaggio assemblativo e i met
 
 (Pagine riassunte: 0.75)
 ### 7.1.3 - Formato delle istruzioni del linguaggio assemblativo
-La struttura delle istruzioni nei linguaggi assembly è generalmente composta da quattro parti: _campo etichetta_, _codice operativo (opcode)_, _campo operandi_ e _campo commenti_. A livello educativo, si tratta comunemente di processori x86, anche se noi lavoriamo su ARMv7.
+La struttura delle istruzioni nei linguaggi assembly è generalmente composta da quattro parti: _campo etichetta_, _codice operativo (opcode)_, _campo operandi_ e _campo commenti_. A livello educativo, si tratta comunemente i processori x86, anche se noi lavoriamo su ARMv7.
 
 Le **etichette** vengono utilizzate per assegnare un nome simbolico a un indirizzo e definire le destinazioni per le istruzioni di salto, oltre a permettere l'accesso ai dati memorizzati mediante nomi simbolici.
 

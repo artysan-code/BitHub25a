@@ -77,22 +77,43 @@ L'introduzione del GUI rivoluzionò l'interazione uomo-macchina, rendendo i comp
 Lo sviluppo dei processori, come quelli di Intel e AMD, e delle nuove tecnologie correlate, continuò a migliorare le prestazioni e le capacità dei computer, ma questo è un argomento che esula da questo riassunto e che si concentra maggiormente sugli aspetti storici e tecnologici fondamentali.
 
 (Pagine riassunte: 3)
-### 1.2.6 Quinta Generazione - Computer a basso consumo e Computer invisibili
-Con l'avanzare della tecnologia i personal computer diventarono sempre più piccoli, arrivando alle invenzioni di tablet come il GridPad nel 1989. Rivoluzionari sono anche i PDA (Personal Digital Assistans), inventati da Jeff Hawkins che utilizzavano una particolare tecnica chiamato \"Graffiti\" che rendeva la scrittura leggibile più adattabile al computer (per renderla più leggibile per quest'ultimo). Questo tipo di tecnologia venne applicata sui smartphone.
-
-Non fu però la cosa più rilevante, infatti abbiamo l'avvento dei **computer invisibili**, che erano dei microcomputer applicati agli elettrodomestici. La particolarità era la **coprogettazione** che avevano, cioè lo sviluppo sia dell'hardware che del software compatibile da parte delle aziende. 
-
-## 1.3 Tipologie di computer
-
+###### Informazione
+Il capitolo 1.2.6 è stato saltato in quanto presunto non importante.
+## 1.3 - Tipologie di computer
 In questa sezione vedremo alcune tipologie di tecnologie moderne che si stanno tutt'ora sviluppando.  
+### 1.3.1 - Forze tecnologiche ed economiche
+Durante l'evoluzione della tecnologia dei computer, uno scienziato, Gordon Moore, iniziò ad analizzare l'andamento della crescita tecnologica, notando una curva costante circa ogni 3 anni. Teorizzò quella che è ora conosciuta come la **Legge di Moore**, che rappresenta più un'osservazione empirica che una legge fisica.
 
-### 1.3.1 Forze tecnologiche ed economiche
+#### La Legge di Moore
 
-Durante l'evoluzione della tecnologia dei computer uno scienziato, Gordon Moore, iniziò a studiare l'andamento della crescita tecnologica, notando che rimaneva costante circa ogni 3 anni. Teorizzò la **Legge di Moore**, che fu più una analisi dell'andamento delle tecnologie. Essa teorizzava che il numero di transistor raddoppia circa ogni 18 mesi (Semplicemente ogni anno nuove tecnologie rendono i transistor sempre più piccoli ed efficienti), che corrisponde al 60% in più ogni anno.
+La Legge di Moore teorizza che il numero di transistor su un chip raddoppia circa ogni 18 mesi, il che equivale a un incremento del 60% ogni anno. Questa previsione implica che, grazie all'innovazione continua, i transistor diventano sempre più piccoli e più efficienti, permettendo ai processori di diventare più potenti e meno costosi.
 
-Questa legge ci mostra come arriveremo ad un certo punto in cui l'ottimizzazione di un circuito, quindi la riduzione della dimensione dei transistor e altre migliorie, diventerà infattibile portandoci ad un **limite fisico**. Ora sono in sviluppo nuove tecnologie come le **macchine quantiche** che ci permetteranno di ovviare al problema. Questo tipo di sviluppo non è però mancato anche alle altre tecnologie, ad esempio le memorie sono passate in pochi anni da 10 MB di Hard disk a 1 TB di Hard disk.
+#### Implicazioni della Legge di Moore
+
+- **Aumento della Potenza di Calcolo**: Ogni 18 mesi, la potenza di calcolo dei microprocessori raddoppia, permettendo l'esecuzione di operazioni più complesse e l'elaborazione di dati più rapidamente.
+- **Riduzione dei Costi**: Man mano che i transistor diventano più piccoli, i costi di produzione per unità di calcolo diminuiscono, rendendo la tecnologia più accessibile.
+- **Miniaturizzazione dei Dispositivi**: La miniaturizzazione dei transistor permette la produzione di dispositivi elettronici sempre più compatti e portatili.
+
+#### Limiti della Legge di Moore
+
+Moore stesso riconobbe che questa tendenza non può continuare indefinitamente. L'ottimizzazione di un circuito e la riduzione delle dimensioni dei transistor incontrano dei **limiti fisici**:
+
+- **Limiti di Scala**: Alla scala dei nanometri, i transistor diventano così piccoli che gli effetti quantistici iniziano a interferire con il loro funzionamento.
+- **Problemi di Dissipazione del Calore**: Transistor più piccoli e più numerosi generano più calore, il che rappresenta una sfida per la gestione termica.
+- **Costi di Produzione**: Le tecnologie necessarie per produrre transistor a scale estremamente ridotte diventano esponenzialmente più costose.
+
+#### Oltre la Legge di Moore: Nuove Tecnologie
+
+Con l'approssimarsi dei limiti fisici imposti dalla Legge di Moore, la ricerca si sta orientando verso nuove tecnologie, tra cui:
+
+- **Computer Quantistici**: Utilizzano qubit al posto dei bit tradizionali, permettendo un salto quantico nella capacità di calcolo.
+- **Architetture Neuromorfiche**: Ispirate al funzionamento del cervello umano, queste architetture promettono di rivoluzionare il modo in cui i computer elaborano le informazioni.
+- **Memorie Avanzate**: Le tecnologie di memoria stanno evolvendo rapidamente, passando da hard disk con capacità di 10 MB a unità di memorizzazione con capacità di 1 TB e oltre in pochi decenni.
+
+La Legge di Moore ha guidato l'industria dei semiconduttori per decenni, ma il futuro della tecnologia dei computer potrebbe dipendere sempre più da innovazioni radicali oltre il semplice miglioramento dei transistor tradizionali.
+
+(Pagine riassunte: 2)
 ### 1.3.4 Microcontrollori
-
 Come microcontrollori intendiamo le tecnologie integrate nelle apparecchiature che non sono elaboratori. Essi comandano e gestiscono l'interfaccia utente. Possiamo trovarli nelle macchine, negli elettrodomestici, nei dispositivi per la comunicazione e per l'intrattenimento etc\... Sono dei sistemi a sola scrittura e sono descritti da tre caratteristiche fondamentali:
 
 - Le risorse utilizzate e i processi produttivi sono i più economici possibili, per permettere di poterne produrre in maggiore quantità.

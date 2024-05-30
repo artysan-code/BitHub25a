@@ -113,9 +113,12 @@ Come microcontrollori intendiamo le tecnologie integrate nelle apparecchiature c
 
 (Pagine riassunte: 2)
 ### 1.3.6 Personal Computer
-Il *personal computer* o PC abbreviato non è altro che un elaboratore \"personale\" composto generalmente da gigabyte di memoria, disco fisso, lettore CD-ROM/DVD/Blu-ray, scheda audio, interfaccia di rete e altre periferiche come monitor, mouse e tastiera. Ha un sistema operativo innovativo e sofisticato per rendere questa tecnologia accessibile a tutti, esistono sia portatili che desktop.
-### 1.3.7 Server
+Il *personal computer* o PC abbreviato non è altro che un elaboratore "personale" composto generalmente da gigabyte di memoria, disco fisso, lettore CD-ROM/DVD/Blu-ray, scheda audio, interfaccia di rete e altre periferiche come monitor, mouse e tastiera. Ha un sistema operativo innovativo e sofisticato per rendere questa tecnologia accessibile a tutti. Esistono sia portatili che desktop.
 
+Ricollegandoci a prima, il PC iniziò a spopolare con l'avvento dei sistemi più economici e dei sistemi operativi a GUI più intuitivi.
+
+(Pagine riassunte: 0.5)
+### 1.3.7 Server
 Un'altra tecnologia molto in vigore oggi sono i **server**, nient'altro che un personal computer con performance aumentate che ha lo scopo di eseguire miliardi di operazioni e transazioni al secondo. La tecnologia più usata con i server sono i **cluster** (sale server), che consisteva nel mettere in parallelo centinaia, se non migliaia, di server collegati con una rete di trasferimento dati ad alta velocità, riuscendo così a dividere le operazioni da eseguire in diverse macchine. In genere i cluster di grandi dimensioni si trovano in locali o edifici chiamati **data center**. I loro ambiti sono diversi, ma i più utilizzati sono quelli di Internet Web Server, cioè la gestione dei siti internet (tra richieste, caricamenti, trasferimenti).
 
 ### 1.3.8 Mainframe

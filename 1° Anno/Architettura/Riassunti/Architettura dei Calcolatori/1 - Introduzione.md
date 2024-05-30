@@ -83,27 +83,19 @@ Il capitolo 1.2.6 è stato saltato in quanto presunto non importante.
 In questa sezione vedremo alcune tipologie di tecnologie moderne che si stanno tutt'ora sviluppando.  
 ### 1.3.1 - Forze tecnologiche ed economiche
 Durante l'evoluzione della tecnologia dei computer, uno scienziato, Gordon Moore, iniziò ad analizzare l'andamento della crescita tecnologica, notando una curva costante circa ogni 3 anni. Teorizzò quella che è ora conosciuta come la **Legge di Moore**, che rappresenta più un'osservazione empirica che una legge fisica.
-
 #### La Legge di Moore
-
 La Legge di Moore teorizza che il numero di transistor su un chip raddoppia circa ogni 18 mesi, il che equivale a un incremento del 60% ogni anno. Questa previsione implica che, grazie all'innovazione continua, i transistor diventano sempre più piccoli e più efficienti, permettendo ai processori di diventare più potenti e meno costosi.
-
 #### Implicazioni della Legge di Moore
-
 - **Aumento della Potenza di Calcolo**: Ogni 18 mesi, la potenza di calcolo dei microprocessori raddoppia, permettendo l'esecuzione di operazioni più complesse e l'elaborazione di dati più rapidamente.
 - **Riduzione dei Costi**: Man mano che i transistor diventano più piccoli, i costi di produzione per unità di calcolo diminuiscono, rendendo la tecnologia più accessibile.
 - **Miniaturizzazione dei Dispositivi**: La miniaturizzazione dei transistor permette la produzione di dispositivi elettronici sempre più compatti e portatili.
-
 #### Limiti della Legge di Moore
-
 Moore stesso riconobbe che questa tendenza non può continuare indefinitamente. L'ottimizzazione di un circuito e la riduzione delle dimensioni dei transistor incontrano dei **limiti fisici**:
 
 - **Limiti di Scala**: Alla scala dei nanometri, i transistor diventano così piccoli che gli effetti quantistici iniziano a interferire con il loro funzionamento.
 - **Problemi di Dissipazione del Calore**: Transistor più piccoli e più numerosi generano più calore, il che rappresenta una sfida per la gestione termica.
 - **Costi di Produzione**: Le tecnologie necessarie per produrre transistor a scale estremamente ridotte diventano esponenzialmente più costose.
-
 #### Oltre la Legge di Moore: Nuove Tecnologie
-
 Con l'approssimarsi dei limiti fisici imposti dalla Legge di Moore, la ricerca si sta orientando verso nuove tecnologie, tra cui:
 
 - **Computer Quantistici**: Utilizzano qubit al posto dei bit tradizionali, permettendo un salto quantico nella capacità di calcolo.
@@ -114,13 +106,13 @@ La Legge di Moore ha guidato l'industria dei semiconduttori per decenni, ma il f
 
 (Pagine riassunte: 2)
 ### 1.3.4 Microcontrollori
-Come microcontrollori intendiamo le tecnologie integrate nelle apparecchiature che non sono elaboratori. Essi comandano e gestiscono l'interfaccia utente. Possiamo trovarli nelle macchine, negli elettrodomestici, nei dispositivi per la comunicazione e per l'intrattenimento etc\... Sono dei sistemi a sola scrittura e sono descritti da tre caratteristiche fondamentali:
-
+Come microcontrollori intendiamo le tecnologie integrate nelle apparecchiature che non sono elaboratori. Essi comandano e gestiscono l'interfaccia utente. Possiamo trovarli nelle macchine, negli elettrodomestici, nei dispositivi per la comunicazione e per l'intrattenimento, etc. Sono dei sistemi a sola scrittura e sono descritti da tre caratteristiche fondamentali:
 - Le risorse utilizzate e i processi produttivi sono i più economici possibili, per permettere di poterne produrre in maggiore quantità.
 - Lavorano in tempo reale, traducendo input direttamente in output che risulta in un tipo diverso di architettura.
 - Hanno limiti fisici e hardware: peso, capienza della batteria, limiti elettrici e meccanici.
-### 1.3.6 Personal Computer
 
+(Pagine riassunte: 2)
+### 1.3.6 Personal Computer
 Il *personal computer* o PC abbreviato non è altro che un elaboratore \"personale\" composto generalmente da gigabyte di memoria, disco fisso, lettore CD-ROM/DVD/Blu-ray, scheda audio, interfaccia di rete e altre periferiche come monitor, mouse e tastiera. Ha un sistema operativo innovativo e sofisticato per rendere questa tecnologia accessibile a tutti, esistono sia portatili che desktop.
 ### 1.3.7 Server
 

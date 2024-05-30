@@ -76,7 +76,7 @@ SWAP    MACRO
 
 All'inizio troviamo _SWAP_, che crea un **alias** o **etichetta** per la macro, usato per richiamare il codice in seguito, e una sequenza di codice definita nel blocco da _MACRO_ a _ENDM_.
 
-Durante l'assemblaggio del codice, l'assemblatore rimuove la macro e la inserisce nella tabella delle macro, sostituendo poi nelle **chiamate di macro** (dove troviamo _SWAP_) il codice memorizzato nella tabella. Questo processo di sostituzione del codice è chiamato **espansione di macro**. È importante non confondere una macro con una procedura, poiché la macro viene espansa durante l'assemblaggio, mentre la procedura viene chiamata durante l'esecuzione, rendendo quindi la macro il metodo più efficiente.
+Durante l'assemblaggio del codice, l'assemblatore rimuove la macro e la inserisce nella tabella delle macro, sostituendo poi nelle **chiamate di macro** (dove troviamo _SWAP_) il codice memorizzato nella tabella. Questo processo di sostituzione del codice è chiamato **espansione di macro**. È importante non confondere una macro con una procedura, poiché la macro viene espansa durante l'assemblaggio, mentre la procedura viene chiamata durante l'esecuzione, rendendo quindi la macro il metodo più efficiente in molti casi.
 
 (Pagine riassunte: 2)
 ### 7.2.2 - Macro con parametri

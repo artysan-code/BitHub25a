@@ -38,7 +38,9 @@ Infine, il **campo commenti** è una zona dove i programmatori possono fornire i
 
 (Pagine riassunte: 2)
 ### 7.1.4 - Pseudoistruzioni
-Nei linguaggi assembly, le istruzioni dirette all'assemblatore sono chiamate pseudoistruzioni o direttive dell'assemblatore. Un esempio di pseudoistruzione è l'opcode DD, che indica all'assemblatore di definire uno spazio per una doppia parola, quindi 32 bit. Esistono molti altri esempi e diverse pseudoistruzioni, ma per evitare di trattare un'architettura diversa da quella che stiamo studiando, consideriamo il seguente esempio:
+Nei linguaggi assembly, le istruzioni dirette all'assemblatore sono chiamate **pseudoistruzioni** o **direttive dell'assemblatore**. 
+
+Un esempio di pseudoistruzione è l'opcode DD, che indica all'assemblatore di definire uno spazio per una doppia parola, quindi 32 bit. Esistono molti altri esempi e diverse pseudoistruzioni, ma per evitare di trattare un'architettura diversa da quella che stiamo studiando, consideriamo il seguente esempio:
 
 ```assembly_x86
 WORDSIZE EQU 32

@@ -45,3 +45,37 @@ Il progetto **RISC** continua a portare con sé principi di progettazione che so
 - _Disponibilità di molti registri_, poiché prelevare dati dalla memoria è molto lento. È preferibile conservare i valori nei registri, in quanto sono notevolmente più veloci.
 
 ### 2.1.5 Parallelismo a livello d'istruzione
+I progettisti di calcolatori si sforzano costantemente di migliorare le prestazioni delle loro macchine. Per questo motivo molti progettisti di computer vedono nel parallelismo (compiere più azioni allo stesso tempo) un modo per ottenere prestazioni più elevate con una data velocità di clock.
+
+Il parallelismo può essere presente in due forme:
+- *a livello d'istruzione*: è sfruttato all'interno delle singole istruzioni per far si che la macchina possa elaborarne un maggior numero al secondo
+- *a livello di processore*: sono presenti più CPU che lavorano congiuntamente su uno stesso problema
+
+In questo paragrafo analizziamo il primo tipo, nel prossimo, invece, quello a livello di processore.
+#### 2.1.5.1 - Pipelining
+Per migliorare la velocità di esecuzione delle istruzioni, sin dagli anni '50 (come con IBM Stretch), i computer sono stati dotati di buffer di prefetch, registri in grado di anticipare il prelievo delle istruzioni dalla memoria. Ciò ha permesso di avere le istruzioni pronte per l'esecuzione senza dover attendere la loro lettura dalla memoria principale al momento del bisogno. Queste istruzioni vengono memorizzate in un insieme di registri chiamati **buffer di prefetch**, da cui possono essere utilizzate immediatamente quando necessario, senza attendere il completamento della lettura dalla memoria.
+
+In pratica la tecnica di *prefetching* divide l'esecuzione dell'istruzione in due parti:
+- prelievo dell'istruzione
+- esecuzione dell'istruzione
+Il concetto di *pipeline* spinge questa strategia molto più avanti; invece di dividere l'esecuzione di un'istruzione solamente in due fasi, la divide in un numero maggiore di parti (~12) che possono essere eseguite in parallelo: ciascuna di queste parti è gestita da componenti hardware dedicati.
+
+Durante il primo ciclo di clock, lo stadio S1 preleva l'istruzione 1 dalla memoria. Nel secondo ciclo, S2 decodifica l'istruzione 1 mentre S1 preleva l'istruzione 2. Nel terzo ciclo, S3 preleva gli operandi per l'istruzione 2 e l'istruzione 1, S2 decodifica l'istruzione 2, e S1 preleva la terza istruzione. Durante il quarto ciclo, S4 esegue l'istruzione 1, S3 preleva gli operandi per l'istruzione 2, S2 decodifica l'istruzione 3, e S1 preleva l'istruzione 4. Infine, nell'ultimo ciclo, S5 scrive il risultato dell'istruzione 1, mentre gli altri stadi continuano a lavorare sulle istruzioni successive.
+
+Supponendo un ciclo di clock di 2 ns e 10 ns per completare i cinque stadi della pipeline, la macchina sembrerebbe avere una velocità di 100 MIPS. Tuttavia, poiché viene completata un'istruzione ogni 2 ns, la vera velocità di elaborazione è di 500 MIPS anziché solo 100.
+
+L'uso della pipeline bilancia la **latenza** e la **larghezza di banda del processore**. Con un ciclo di clock di T ns e una pipeline a n stadi, la latenza è di nT ns, poiché ogni istruzione attraversa n stadi, ciascuno richiedente T ns. Sebbene si potrebbe teoricamente misurare la velocità di esecuzione in BIPS$^{3}$ anziché in MIPS, questa pratica non è comune e quindi non verrà adottata.
+Figura 2.4
+#### 2.1.5.2 - Architetture superscalari
+Se è bene avere una pipeline, averne due è sicuramente meglio. La Figura 2.5 mostra un ipotetico progetto di una CPU con due pipeline, entrambe basate sullo schema della Figura 2.4. In questa situazione una singola unità di fetch preleva due istruzioni alla volta e le inserisce nelle pipeline, ognuna delle quali è dotata di una ALU. Affinché le due istruzioni possano essere eseguite in parallelo, non devono però esserci conflitti nell'uso delle risorse e nessuna delle due istruzioni deve dipendere dal risultato dell’altra. Come nel caso della singola pipeline, o è il compilatore a occuparsi di gestire correttamente questa situazione oppure i conflitti sono rilevati ed eliminati durante l’esecuzione per mezzo di componenti hardware ad hoc.
+
+La pipeline principale, chiamata **pipeline u**, poteva eseguire una qualsiasi istruzione Pentium. La seconda pipeline, chiamata **pipeline v**, poteva invece eseguire solamente semplici istruzioni su interi.
+
+Figura 2.5
+
+Alcune regole determinavano se due istruzioni potevano essere eseguite in parallelo. Se non erano sufficientemente semplici o compatibili, solo la prima veniva eseguita subito, mentre la seconda veniva trattenuta per essere accoppiata all'istruzione successiva. Le istruzioni erano sempre eseguite in ordine. Compilatori specifici per il Pentium, capaci di produrre coppie di istruzioni compatibili, potevano generare programmi più veloci rispetto ai vecchi compilatori. Un'architettura con quattro pipeline richiederebbe la duplicazione di molti componenti hardware, quindi nelle CPU di gamma alta si utilizza un approccio diverso, con una singola pipeline associata a più unità funzionali. Questo approccio, chiamato **architettura superscalare** dal 1987, risale al calcolatore CDC 6600, che prelevava un'istruzione ogni 100 ns e la passava a una delle 10 unità funzionali che lavoravano in parallelo mentre la CPU avviava l'istruzione successiva.
+
+Nel corso del tempo la definizione di “superscalare” si è in qualche modo evoluta; ora è utilizzata per descrivere processori che lanciano più istruzioni (spesso quattro o sei) durante un ciclo di clock. Ovviamente una CPU superscalare, per poter gestire tutte queste istruzioni, deve avere più unità funzionali.
+
+(pagine riassunte: 4)
+

@@ -105,29 +105,35 @@ Con l'approssimarsi dei limiti fisici imposti dalla Legge di Moore, la ricerca s
 La Legge di Moore ha guidato l'industria dei semiconduttori per decenni, ma il futuro della tecnologia dei computer potrebbe dipendere sempre più da innovazioni radicali oltre il semplice miglioramento dei transistor tradizionali.
 
 (Pagine riassunte: 2)
-### 1.3.4 Microcontrollori
+### 1.3.4 - Microcontrollori
 Come microcontrollori intendiamo le tecnologie integrate nelle apparecchiature che non sono elaboratori. Essi comandano e gestiscono l'interfaccia utente. Possiamo trovarli nelle macchine, negli elettrodomestici, nei dispositivi per la comunicazione e per l'intrattenimento, etc. Sono dei sistemi a sola scrittura e sono descritti da tre caratteristiche fondamentali:
 - Le risorse utilizzate e i processi produttivi sono i più economici possibili, per permettere di poterne produrre in maggiore quantità.
 - Lavorano in tempo reale, traducendo input direttamente in output che risulta in un tipo diverso di architettura.
 - Hanno limiti fisici e hardware: peso, capienza della batteria, limiti elettrici e meccanici.
 
 (Pagine riassunte: 2)
-### 1.3.6 Personal Computer
+### 1.3.6 - Personal Computer
 Il *personal computer* o PC abbreviato non è altro che un elaboratore "personale" composto generalmente da gigabyte di memoria, disco fisso, lettore CD-ROM/DVD/Blu-ray, scheda audio, interfaccia di rete e altre periferiche come monitor, mouse e tastiera. Ha un sistema operativo innovativo e sofisticato per rendere questa tecnologia accessibile a tutti. Esistono sia portatili che desktop.
 
 Ricollegandoci a prima, il PC iniziò a spopolare con l'avvento dei sistemi più economici e dei sistemi operativi a GUI più intuitivi.
 
 (Pagine riassunte: 0.5)
-### 1.3.7 Server
-Un'altra tecnologia molto in vigore oggi sono i **server**, nient'altro che un personal computer con performance aumentate che ha lo scopo di eseguire miliardi di operazioni e transazioni al secondo. La tecnologia più usata con i server sono i **cluster** (sale server), che consisteva nel mettere in parallelo centinaia, se non migliaia, di server collegati con una rete di trasferimento dati ad alta velocità, riuscendo così a dividere le operazioni da eseguire in diverse macchine. In genere i cluster di grandi dimensioni si trovano in locali o edifici chiamati **data center**. I loro ambiti sono diversi, ma i più utilizzati sono quelli di Internet Web Server, cioè la gestione dei siti internet (tra richieste, caricamenti, trasferimenti).
+### 1.3.7 - Server
+Un'altra tecnologia molto in voga oggi sono i **server**, nient'altro che personal computer con prestazioni aumentate, che hanno lo scopo di eseguire miliardi di operazioni e transazioni al secondo.
 
-### 1.3.8 Mainframe
+La tecnologia più usata con i server sono i **cluster** (sale server), che consiste nel mettere in parallelo centinaia, se non migliaia, di server collegati con una rete di trasferimento dati ad alta velocità, riuscendo così a dividere le operazioni da eseguire su diverse macchine. In genere, i cluster di grandi dimensioni si trovano in locali o edifici chiamati **data center**. I loro ambiti sono diversi, ma i più utilizzati sono quelli di Internet Web Server, cioè la gestione dei siti internet (tra richieste, caricamenti, trasferimenti).
 
-Questa è una tecnologia appartenente agli anni '60 che però rimane ancora utilizzato in alcune aziende che non vogliono riprogrammare da zero l'intero sistema di gestione dei dati e piuttosto preferiscono sostituirlo ogni tanto.
+(Pagine riassunte: 2)
+### 1.3.8 - Mainframe
+Questa è una tecnologia appartenente agli anni '60, che però rimane ancora utilizzata in alcune aziende che non vogliono riprogrammare da zero l'intero sistema di gestione dei dati e preferiscono sostituirlo periodicamente.
 
-Sono enormi macchine con potenze di calcolo inferiori ai cluster ma con una maggiore banda di input/output che gli permette di elaborare una enorme quantità di dati. Altro tipo di tecnologia nota sono i **supercomputer** con CPU incredibilmente veloci utilizzate principalmente per calcoli ingegneristici e scientifici di alto livello, come scontri tra galassie, sintesi di nuove medicine oppure simulazioni dei flussi d'aria attorno agli aerei. 
-### 1.5 Unità metriche
+Si tratta di enormi macchine con potenze di calcolo inferiori ai cluster, ma con una maggiore banda di input/output e capacità di archiviazione dati enormi, che consentono di elaborare una quantità enorme di dati. 
 
+Un altro tipo di tecnologia nota sono i **supercomputer**, dotati di CPU incredibilmente veloci, utilizzati principalmente per calcoli ingegneristici e scientifici di alto livello, come simulazioni di scontri tra galassie, sintesi di nuove medicine, o simulazioni dei flussi d'aria attorno agli aerei.
+
+(Pagine riassunte: 1)
+## 1.5 - Unità metriche
 Nel sistema metrico abbiamo dei prefissi che servono a dare un valore diverso all'unità di misura che stiamo usando. Però nell'informatica non funziona proprio come dalle altre parti. Ci viene da pensare che 1 Megabyte corrisponde a 1.000.000 di byte (cioè $10^3$), invece essendo che la misura è binaria 1 Kilobyte corrisponde a 1024 byte (Cioè $2^10$). Inoltre, dobbiamo distinguere la **velocità di trasferimento** che si misura in bit/s, che effettivamente viene proporzionata in $10^n$, e la **capacità**, che invece si misura usando il sistema binario quindi $2^n$.
 
-[[2 - Organizzazione dei sistemi di calcolo|Continua...]]
+(Pagine riassunte: 1)
+[[2 - Processi e Thread| ]]

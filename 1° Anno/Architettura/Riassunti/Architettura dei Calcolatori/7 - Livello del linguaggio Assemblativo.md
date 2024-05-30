@@ -97,10 +97,9 @@ CHANGE      MACRO P1, P2
 
 (Pagine riassunte: 1)
 ### 7.2.3 - Caratteristiche avanzate
-Le architetture degli assemblatori sono progettate con metodi avanzati per prevenire paradossi o errori che potrebbero portare il processore a malfunzionamenti o loop infiniti. Un esempio di queste tecniche è l'uso delle macro.
+Le architetture degli assemblatori sono progettate con metodi avanzati per prevenire *paradossi o errori* che potrebbero portare il processore a malfunzionamenti o loop infiniti. Un esempio di queste tecniche è l'uso delle macro.
 
 Consideriamo il seguente codice:
-
 ```assembly
 M1  MACRO
 	IF WORDSIZE GT 16
@@ -115,9 +114,9 @@ M2	    MACRO
 		ENDM
 ```
 
-Come gestirà l'assemblatore le macro M2? In teoria, dovrebbe aggiungere due sequenze di codice diverse alla stessa etichetta, il che non è possibile. In questo caso, l'assemblatore genererà etichette diverse per ogni situazione ed espanderà solo la macro necessaria (per 16 bit o per 32 bit).
+Come gestirà l'assemblatore le macro M2? In teoria, dovrebbe aggiungere due sequenze di codice diverse alla stessa etichetta, il che non è possibile. In questo caso, l'assemblatore genererà *etichette diverse* per ogni situazione ed espanderà solo la macro necessaria (per 16 bit o per 32 bit).
 
-Inoltre, una macro può richiamare un'altra macro o anche sé stessa. Le macro ricorsive devono avere un parametro che cambia ad ogni chiamata e devono essere progettate per terminare dopo un numero finito di ricorsioni per evitare loop infiniti.
+Inoltre, una macro può richiamare un'altra macro o anche sé stessa. Le **macro ricorsive** devono avere un parametro che cambia ad ogni chiamata e devono essere progettate per terminare dopo un numero finito di ricorsioni per evitare loop infiniti.
 
 (Pagine riassunte: 0.75)
 ### 7.2.4 - Implementazione delle funzionalità macro negli assemblatori

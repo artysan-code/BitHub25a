@@ -145,7 +145,7 @@ Per tenere traccia della posizione dell'istruzione, l'assemblatore utilizza una 
 
 I simboli vengono definiti nella tabella quando c'è una definizione esplicita, come con _EQU_, o quando sono usati come etichette. A ciascun simbolo viene associato il valore numerico dell'ILC e altre informazioni opzionali.
 
-La tabella dei codici operativi include per ogni riga un opcode con i dettagli, come gli operandi, il codice esadecimale dell'istruzione, la lunghezza dell'istruzione e soprattutto la _classe di istruzione_, un valore numerico associato a ogni combinazione di operando e operandi nell'istruzione.
+La tabella dei codici operativi include per ogni riga un opcode con i dettagli, come gli operandi, il codice esadecimale dell'istruzione, la lunghezza dell'istruzione e soprattutto la **classe di istruzione**, un valore numerico associato a ogni combinazione di operando e operandi nell'istruzione.
 
 Alcuni assemblatori supportano le **istruzioni pseudoimmediate**, che permettono l'uso dell'indirizzamento immediato anche se non implementato dal linguaggio di destinazione.
 

@@ -211,8 +211,14 @@ Sulle macchine che possono effettuare riferimenti alla memoria relativi al PC, s
 
 (Pagine riassunte: 2.75)
 ### 7.4.4 - Collegamento dinamico
-Un modo efficiente, moderno e flessibile di collegare le procedure compilate è quello di collegarle al momento in cui la procedura viene caricata. Questo processo si chiama **collegamento dinamico**. 
+Un modo efficiente, moderno e flessibile di collegare le procedure compilate è quello di collegarle al momento in cui la procedura viene caricata. Questo processo si chiama **collegamento dinamico**.
 
+Il **MULTICS** è il primo sistema ad implementare un metodo ancora ineguagliabile a livello logico. Ogni programma ha un **segmento di collegamento** con un blocco di informazioni; questo blocco inizia con la parola dell'indirizzo virtuale della procedura, seguita dal *nome* memorizzato come stringa.
 
+Con questo collegamento dinamico, le chiamate alle procedure vengono tradotte in indirizzamenti indiretti verso la prima parola. Questa prima parola viene impostata dal linker come un identificativo di un'eccezione o un indirizzo non valido.
+
+Quando si richiama una procedura che fa parte di un altro segmento, il linker trova l'eccezione e cerca tramite il *nome* la procedura richiesta, riesegue l'istruzione e ricomincia. In questa maniera, il link è dinamico ed efficiente.
+
+Ci sarebbero altri due tipi di collegamento dinamico ma non li tratterò in quanto sembrano meno importanti.
 
 (Pagine riassunte: 4)

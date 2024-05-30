@@ -66,15 +66,18 @@ In sintesi, gli sviluppi tecnologici si concentrarono sulla riduzione delle dime
 
 (Pagine riassunte: 2)
 ### 1.2.5 - Quarta Generazione - Integrazione a grandissima scala (1980-?)
-Grazie alla tecnologia VLSI (Very Large Scale Integration), si iniziarono a creare chip che contenevano centinaia, migliaia se non milioni di transistor. Prima dell'avvento dei primi microcomputer, ogni università o azienda doveva dotarsi di un costoso computer che fungeva da centro di calcolo; dopodiché ogni privato o dipartimento poteva dotarsi del proprio calcolatore.
+Grazie alla tecnologia VLSI (Very Large Scale Integration), si iniziarono a creare chip che contenevano centinaia, migliaia, se non milioni di transistor. Questa evoluzione consentì la realizzazione di microcomputer, i quali trasformarono il modo in cui le università, le aziende e, infine, i privati potevano accedere alla potenza di calcolo. Prima dell'avvento dei microcomputer, le istituzioni dovevano dotarsi di costosi computer centralizzati per il calcolo, mentre con i microcomputer ogni dipartimento o privato poteva permettersi il proprio calcolatore.
 
-Inizialmente, quando un privato comprava un computer, si doveva montare componente per componente (ricevuta in un apposito kit) e scrivere il proprio sistema operativo. Col tempo arrivarono in dei floppy disk i primi sistemi operativi, contenenti una serie di istruzioni eseguibili sulla **shell**.
+L'era dei personal computer iniziò grazie al prezzo economico di questi nuovi dispositivi, rendendo possibile a chiunque di possederne uno. All'inizio, i computer per privati venivano venduti come kit da montare, con i componenti da assemblare manualmente e il software da scrivere ex novo. Successivamente, con l'arrivo dei primi sistemi operativi distribuiti su floppy disk, i computer vennero forniti con una shell contenente una serie di istruzioni eseguibili.
 
-Con l'inizio della vendita di Personal Computer preassemblati e preparati per l'utilizzo (dove vediamo in concorrenza IBM, Apple, Atari\...) arrivò con Apple il primo computer dotato di **GUI** (Graphical User Interface) l'Apple Lisa, che fu troppo costoso e sostituito con una opzione più economica chiamata Macintosh. (Non tratterò il resto di questo capitolo che parla semplicemente dello sviluppo dei processori Intel/AMD e di nuove tecnologie)
+Con l'inizio della vendita di Personal Computer preassemblati e pronti all'uso, diverse aziende entrarono in competizione, tra cui IBM, Apple, e Atari. Apple si distinse per l'introduzione del primo computer dotato di **GUI** (Graphical User Interface), l'Apple Lisa. Nonostante fosse innovativo, l'Apple Lisa risultò troppo costoso, e fu presto sostituito da una versione più economica chiamata Macintosh.
+
+L'introduzione del GUI rivoluzionò l'interazione uomo-macchina, rendendo i computer molto più accessibili e intuitivi per l'utente medio. Questo segna un importante passaggio nell'evoluzione dei personal computer, focalizzandosi sull'usabilità e sull'accessibilità, fattori che hanno contribuito significativamente alla diffusione di massa dei computer.
+
+Lo sviluppo dei processori, come quelli di Intel e AMD, e delle nuove tecnologie correlate, continuò a migliorare le prestazioni e le capacità dei computer, ma questo è un argomento che esula da questo riassunto e che si concentra maggiormente sugli aspetti storici e tecnologici fondamentali.
 
 (Pagine riassunte: 3)
 ### 1.2.6 Quinta Generazione - Computer a basso consumo e Computer invisibili
-
 Con l'avanzare della tecnologia i personal computer diventarono sempre più piccoli, arrivando alle invenzioni di tablet come il GridPad nel 1989. Rivoluzionari sono anche i PDA (Personal Digital Assistans), inventati da Jeff Hawkins che utilizzavano una particolare tecnica chiamato \"Graffiti\" che rendeva la scrittura leggibile più adattabile al computer (per renderla più leggibile per quest'ultimo). Questo tipo di tecnologia venne applicata sui smartphone.
 
 Non fu però la cosa più rilevante, infatti abbiamo l'avvento dei **computer invisibili**, che erano dei microcomputer applicati agli elettrodomestici. La particolarità era la **coprogettazione** che avevano, cioè lo sviluppo sia dell'hardware che del software compatibile da parte delle aziende. 

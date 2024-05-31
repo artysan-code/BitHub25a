@@ -177,9 +177,21 @@ Nei calcolatori portatili si usano DIMM più piccole, chiamate **SO-DIMM** (Smal
 
 (pagine riassunte: 1)
 ## 2.3 - Memoria secondaria
+La domanda se la memoria centrale possa mai essere troppo grande è inutile: non lo sarà mai.
 
+Con il progredire della tecnologia, la nostra capacità di archiviare informazioni cresce a ritmi esponenziali. Basti pensare alla digitalizzazione del patrimonio della Biblioteca del Congresso: 50 milioni di libri, immagini e testo che richiederebbero 100 Terabyte di memoria, una quantità enorme oggi, ma che potrebbe diventare gestibile in futuro.
+
+Lo stesso vale per i film: archiviare l'intera produzione cinematografica richiederebbe una memoria simile.
+
+Se per ora queste quantità di dati sono inaccessibili alla memoria centrale, il futuro ci riserva tecnologie che le renderanno fruibili.
+
+La nostra "fame di memoria" è inarrestabile e la tecnologia continuerà a evolversi per soddisfarla.
 ### 2.3.1 - Gerarchie di memoria
+La soluzione che viene tradizionalmente adottata per memorizzare una gran mole id dati consiste nell'organizzare gerarchicamente la memoria. Nella parte altra della gerarchia si trovano i registri della CPU, ai quali si può accedere alla stessa velocità della CPU. Più sotto vi è la moria cache, la cui dimensione può variare da 32 KB fino ad alcuni MB. La memoria centrale è il passo successivo e la sua dimensione è compresa tra 1 e centinaia di GB. Troviamo poi i dischi magnetici, la vera forza lavoro della memorizzazione permanente. Infine ci sono i nastri magnetici e i dischi ottici usati per l'archiviazione.
 
+Muovendosi verso il basso della gerarchia aumentano tre parametri chiave. Innanzitutto, il tempo di accesso diventa via via più grande. Secondariamente la capacità di memorizzazione aumenta man mano si scende verso il basso. In terzo luogo, scendendo lunga la gerarchia diminuiscono anche i costi unitari.
+
+(pagine riassunte: 1)
 ### 2.3.2 - Dischi magnetici
 
 ### 2.3.3 - Dischi IDE

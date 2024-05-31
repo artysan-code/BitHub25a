@@ -39,7 +39,7 @@ All'inizio di ogni ciclo di clock viene generato un breve impulso, sincronizzato
 
 Figura 4.3
 
-All'interno del percorso dati, c'è un tempo di propagazione anche senza elementi di memorizzazione. Il bus C non cambia immediatamente dopo una modifica del bus B. Quindi, anche se un'operazione di scrittura modifica un registro di input, il valore sarà reinserito in modo sicuro prima che il nuovo valore possa influenzare la ALU.
+All'interno del percorso dati, c'è un tempo di propagazione finito, anche senza elementi da memorizzare. Una modifica sul bus B non altererà istantaneamente il bus C, se non dopo un tot di tempo determinato. Quindi, anche se un'operazione di scrittura modifica un registro di input, il valore sarà reinserito in modo sicuro prima che il nuovo valore possa influenzare la ALU.
 
 Per far funzionare questa architettura, è necessaria una temporizzazione rigida: un ciclo di clock lungo, un ritardo di propagazione della ALU noto e un caricamento veloce dei registri dal bus C. Con un'attenta progettazione, il percorso dati può funzionare correttamente in ogni momento, come accade nelle macchine reali.
 
@@ -52,10 +52,12 @@ Il ciclo del percorso dati può essere visto come diviso in sottocicli, con l'in
 
 L'intervallo dopo $\Delta z$ ha una certa tolleranza. Al fronte di salita del ciclo successivo, i risultati sono memorizzati nei registri.
 
-I sottocicli non sono definiti esplicitamente, poiché nessun impulso di clock segnala alle ALU e allo shifter di funzionare continuamente; i loro input sono inconsistenti fino a $\Delta w+\Delta x$ dopo il fronte di discesa del clock, e i loro output sono inconsistenti fino a $\Delta w+\Delta x+\Delta y$. È responsabilità dell'ingegnere progettista assicurarsi che $\Delta w+\Delta x+\Delta y+\Delta z$ sia sufficientemente breve rispetto al fronte di salita del clock, garantendo il corretto caricamento dei registri.
+I sottocicli non sono definiti esplicitamente, poiché nessun impulso di clock segnala alle ALU e allo shifter di funzionare continuamente; i loro input sono inconsistenti fino a $\Delta w+\Delta x$ dopo il fronte di discesa del clock, e i loro output sono inconsistenti fino a $\Delta w+\Delta x+\Delta y$. 
+L'unico segnali espliciti che guidano il percorso dati sono il fronte di salita/discesa, che rispettivamente fanno partire il percorso dati e caricano i registri.
+È responsabilità dell'ingegnere progettista assicurarsi che $\Delta w+\Delta x+\Delta y+\Delta z$ sia sufficientemente breve rispetto al fronte di salita del clock, garantendo il corretto caricamento dei registri.
 
 (pagine riassunte: 2)
-#### 4.1.1.\ - Operazioni della memoria
+#### 4.1.1.1.1\ - Operazioni della memoria
 La nostra macchina ha due modalità di comunicazione con la memoria: una porta a 32 bit con indirizzi espressi in parole e una porta a 8 bit con indirizzi espressi in byte. La porta a 32 bit è controllata dai registri MAR (Memory Address Register) e MDR (Memory Data Register), mentre la porta a 8 bit è controllata dal registro PC, che legge un byte negli 8 bit meno significativi di MBR. La porta a 8 bit può solo leggere dati dalla memoria.
 
 Ogni registro è controllato da uno o due **segnali di controllo**. Una freccia bianca sotto un registro indica un segnale di controllo che abilita l'output del registro verso il bus B. Una freccia nera indica un segnale di controllo che scrive nel registro un valore proveniente dal bus C. Per iniziare una lettura o una scrittura, bisogna caricare il registro di memoria appropriato e inviare un segnale di scrittura alla memoria.

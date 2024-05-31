@@ -181,19 +181,27 @@ La domanda se la memoria centrale possa mai essere troppo grande è inutile: non
 
 Con il progredire della tecnologia, la nostra capacità di archiviare informazioni cresce a ritmi esponenziali. Basti pensare alla digitalizzazione del patrimonio della Biblioteca del Congresso: 50 milioni di libri, immagini e testo che richiederebbero 100 Terabyte di memoria, una quantità enorme oggi, ma che potrebbe diventare gestibile in futuro.
 
-Lo stesso vale per i film: archiviare l'intera produzione cinematografica richiederebbe una memoria simile.
-
 Se per ora queste quantità di dati sono inaccessibili alla memoria centrale, il futuro ci riserva tecnologie che le renderanno fruibili.
 
 La nostra "fame di memoria" è inarrestabile e la tecnologia continuerà a evolversi per soddisfarla.
 ### 2.3.1 - Gerarchie di memoria
-La soluzione che viene tradizionalmente adottata per memorizzare una gran mole id dati consiste nell'organizzare gerarchicamente la memoria. Nella parte altra della gerarchia si trovano i registri della CPU, ai quali si può accedere alla stessa velocità della CPU. Più sotto vi è la moria cache, la cui dimensione può variare da 32 KB fino ad alcuni MB. La memoria centrale è il passo successivo e la sua dimensione è compresa tra 1 e centinaia di GB. Troviamo poi i dischi magnetici, la vera forza lavoro della memorizzazione permanente. Infine ci sono i nastri magnetici e i dischi ottici usati per l'archiviazione.
+La soluzione che viene tradizionalmente adottata per memorizzare una gran mole di dati consiste nell'organizzare gerarchicamente la memoria. Nella parte altra della gerarchia si trovano i registri della CPU, ai quali si può accedere alla stessa velocità della CPU. Più sotto vi è la moria cache, la cui dimensione può variare da 32 KB fino ad alcuni MB. La memoria centrale è il passo successivo e la sua dimensione è compresa tra 1 e centinaia di GB. Troviamo poi i dischi magnetici, la vera forza lavoro della memorizzazione permanente. Infine ci sono i nastri magnetici e i dischi ottici usati per l'archiviazione.
 
 Muovendosi verso il basso della gerarchia aumentano tre parametri chiave. Innanzitutto, il tempo di accesso diventa via via più grande. Secondariamente la capacità di memorizzazione aumenta man mano si scende verso il basso. In terzo luogo, scendendo lunga la gerarchia diminuiscono anche i costi unitari.
 
 (pagine riassunte: 1)
 ### 2.3.2 - Dischi magnetici
+Un disco magnetico è composto da piatti di alluminio rivestiti di materiale magnetico, con diametri variabili tra 3 e 9 cm. La testina del disco, sospesa su un cuscinetto d'aria, scrive e legge i dati magnetizzando la superficie del disco. Le sequenze circolari di bit scritti durante una rotazione completa del disco sono chiamate **tracce**, suddivise in **settori** di lunghezza fissa, tipicamente 512 byte. Ogni settore è preceduto da un **preambolo** per la sincronizzazione della testina e seguito da un codice di correzione degli errori, come il codice **Reed-Solomon**. Tra i settori ci sono piccoli spazi chiamati **spazi tra settori**.
 
+I dischi hanno bracci mobili che posizionano la testina su diverse tracce concentriche. La densità lineare dei bit lungo le tracce è diversa dalla densità radiale. I dischi ad alta densità usano la **registrazione perpendicolare**, che permette una maggiore densità di dati. Alcuni dischi sono sigillati per prevenire la polvere, noti come **dischi Winchester**, e oggi chiamati hard disk.
+
+I dischi con più piatti impilati verticalmente formano cilindri di tracce allineate. Le prestazioni dei dischi dipendono dal **tempo di ricerca** (tra 5 e 10 ms), dalla **latenza rotazionale** (tra 3 e 6 ms), e dal tempo di trasferimento dei dati (13-16 ns per settore di 512 byte). La lettura di settori sparsi è inefficiente a causa di questi tempi.
+
+La differenza tra **burst rate** e **sustained rate** di un disco è significativa: il burst rate è la velocità di lettura immediata, mentre il sustained rate è la velocità media di lettura, che include i tempi di ricerca e latenza.
+
+Ogni disco ha un controllore dedicato che gestisce comandi, movimento del braccio, rilevamento e correzione degli errori, conversione dei dati e bufferizzazione. Il controllore gestisce anche i settori con errori, sostituendoli con settori liberi riservati per questo scopo.
+
+(pagine riassunte: 3.5)
 ### 2.3.3 - Dischi IDE
 
 ### 2.3.4 - Dischi SCSI

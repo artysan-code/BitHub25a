@@ -215,9 +215,30 @@ ATAPI-7 introdusse l'interfaccia **serial ATA**, trasferendo i dati in modo seri
 
 (pagine riassunte: 1.75)
 ### 2.3.4 - Dischi SCSI
+Gli hard disk SCSI offrono una velocità di trasferimento dati superiore rispetto agli IDE, con un'interfaccia diversa. La tecnologia SCSI, nata dalle origini dei floppy disk, è stata standardizzata nel 1986 come Small Computer System Interface (**SCSI**). Le versioni successive hanno garantito incrementi di velocità, con la wide SCSI a 16 bit diventata lo standard attuale.
 
+Questi dischi sono predominanti nelle workstation e nei server di fascia alta, soprattutto nei sistemi RAID, grazie alla loro velocità. Lo SCSI non è solo un'interfaccia per gli hard disk, ma anche un bus che supporta fino a sette dispositivi, inclusi hard disk, CD-ROM, scanner e altro. Ogni dispositivo SCSI ha un ID unico e due connettori.
+
+I cavi SCSI sono progettati per garantire elevata immunità al rumore, con 50 contatti di cui 25 dedicati alla terra. Sono disponibili versioni a 8 e 16 bit, quest'ultima richiede un cavo aggiuntivo per i segnali. La lunghezza dei cavi consente l'uso di dispositivi esterni come hard disk e scanner.
+
+I controllori SCSI possono agire sia come iniziatori che come destinatari di comunicazione. Di solito, il controllore lancia comandi ai dispositivi, coordinando l'accesso al bus quando più dispositivi tentano di utilizzarlo contemporaneamente.
+
+(pagine riassunte: 1.5)
 ### 2.3.5 - RAID
+Negli ultimi dieci anni, le prestazioni delle CPU sono aumentate esponenzialmente, raddoppiando circa ogni 18 mesi, mentre i dischi non hanno seguito lo stesso ritmo, causando un divario significativo tra le prestazioni della CPU e quelle dei dischi. Per affrontare questo problema, si è adottata l'elaborazione parallela per le CPU e l'I/O parallelo per i dischi, portando alla creazione dei sistemi **RAID** (Redundant Array of Independent Disks).
 
+Il concetto di RAID implica l'uso di un insieme di dischi vicino al server, gestito da un controllore RAID che distribuisce i dati tra i vari dischi, migliorando così le prestazioni e l'affidabilità rispetto a un singolo disco **SLED** (Single Large Expensive Disk). I RAID appaiono al sistema operativo come un singolo disco, ma distribuiscono i dati su più unità, permettendo operazioni parallele.
+
+Patterson e i suoi colleghi hanno definito diversi livelli di RAID, da 0 a 5:
+
+-  **RAID 0**: Distribuisce i dati in "strip" (strisce) su più dischi in modalità round robin. Funziona bene con richieste di grandi dimensioni ma male con richieste di singoli settori.
+-  **RAID 1**: Duplica tutti i dischi, utilizzando dischi di backup. Offre alta affidabilità e può distribuire le letture su più dischi.
+-  **RAID 2**: Utilizza codici di Hamming su parole di dati, con bit di parità aggiunti per la correzione degli errori. È stato usato nel calcolatore Thinking Machines CM-2.
+-  **RAID 3**: Simile al RAID 2 ma semplificato, con un solo disco dedicato ai bit di parità. Permette la correzione degli errori in caso di guasto di un disco.
+-  **RAID 4**: Come RAID 0 ma con una "strip" di parità su un disco aggiuntivo. Il disco di parità può diventare un collo di bottiglia.
+-  **RAID 5**: Distribuisce i bit di parità su tutti i dischi in modalità round robin, evitando il collo di bottiglia del RAID 4 ma complicando la ricostruzione dei dati in caso di guasto di un disco.
+
+(pagine riassunte: 4)
 ### 2.3.6 - Dischi a stato solido
 
 ### 2.3.7 - CD-ROM

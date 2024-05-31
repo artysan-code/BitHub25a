@@ -12,8 +12,13 @@ I due principali tipi di parallelismo a livello di istruzioni sono i seguenti:
 - **Processori superscalari**: Questi processori dispongono di un hardware particolare che consente di emettere più istruzioni simultaneamente verso l'unità di esecuzione. Tuttavia, il loro utilizzo è limitato dai costi elevati dovuti alla complessità dell'hardware necessario.
 - **Processori VLIW (Very Long Instruction Word)**: Come suggerisce il nome, questi processori eseguono istruzioni molto lunghe (fino a 136 bit), che possono contenere diverse operazioni per le varie unità funzionali. Tuttavia, risultano poco flessibili poiché è difficile utilizzare appieno tutte le unità funzionali con ogni istruzione. Nei calcolatori moderni, si adotta un principio di **pacchetto**, determinato da un **marcatore di pacchetto**, che equivale effettivamente a un blocco di istruzioni da eseguire. Questo approccio consente al programmatore di stabilire quali istruzioni eseguire prima e contemporaneamente, migliorando l'efficienza dell'esecuzione.
 
+(Vi è la spiegazione del processore VLIW TriMedia, dubito possa servire)
+
 (Pagine riassunte: 1.5)
 ### 8.1.2 - Multithreading nel chip
+
+
+(Pagine riassunte: )
 ### 8.1.3 - Multiprocessori in un solo chip
 ## 8.2 - Coprocessori
 ### 8.2.1 - Processori di rete

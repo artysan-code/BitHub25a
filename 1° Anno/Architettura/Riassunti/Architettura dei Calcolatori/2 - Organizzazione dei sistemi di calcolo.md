@@ -80,7 +80,37 @@ Nel corso del tempo la definizione di “superscalare” si è in qualche modo e
 (pagine riassunte: 4)
 
 ### 2.1.6 - Parallelismo a livello di processore
+La richiesta di calcolatori sempre più veloci è inarrestabile. Tuttavia, poiché le CPU continuano a diventare più veloci, si incontreranno problemi legati alla velocità della luce, con un ritardo di propagazione di 20 cm/ns nei cavi di rame e nelle fibre ottiche. Inoltre, chip più veloci generano più calore, il cui smaltimento rappresenta un problema significativo. La difficoltà di dissipare il calore è la principale ragione per cui la velocità di clock delle CPU è stagnata negli ultimi dieci anni. Il parallelismo a livello d'istruzione aiuta, ma il miglioramento delle prestazioni tramite pipeline e operazioni superscalari è limitato. Per ottenere guadagni significativi, l'unica soluzione è progettare calcolatori con più CPU. Pertanto, verrà ora analizzata l'organizzazione di alcuni di questi sistemi.
+#### 2.1.6.1 - Computer con parallelismo sui dati
 
+Molti problemi in ambiti computazionali come la fisica, l'ingegneria e la computer graphic utilizzano cicli e array, o comunque hanno una struttura altamente regolare. Spesso, gli stessi calcoli vengono ripetuti su diversi insiemi di dati. Questa regolarità rende tali programmi particolarmente adatti all'esecuzione parallela, migliorandone le prestazioni. Due metodi principali sono stati utilizzati per eseguire questi programmi in modo rapido ed efficiente: i processori SIMD e i processori vettoriali. I processori SIMD sono generalmente considerati calcolatori paralleli, mentre i processori vettoriali sono visti come un'estensione di un singolo processore.
+
+I computer con parallelismo sui dati, grazie alla loro efficienza, hanno trovato molte applicazioni di successo. Essi offrono una grande potenza computazionale utilizzando un numero inferiore di transistor rispetto ad altri approcci. I processori con parallelismo sui dati sono tra i metodi più efficaci per ottenere alte prestazioni dal silicio. Poiché tutti i processori eseguono la stessa istruzione, il sistema richiede solo un "cervello" per controllare il computer. Pertanto, il processore necessita solo di uno stadio di prelievo, uno di decodifica e di una logica di controllo.
+
+Un processore SIMD (Single Instruction-stream Multiple Datastream) consiste di un elevato numero di processori identici che eseguono la stessa sequenza d’istruzioni su insiemi diversi di dati.
+
+Le moderne unità di elaborazione grafica (GPU) si basano ampiamente sull'elaborazione SIMD per offrire grande potenza di calcolo con pochi transistor. L'elaborazione grafica è adatta ai processori SIMD poiché molti algoritmi sono altamente regolari, con operazioni ripetute su pixel, vertici, texture e contorni. Ad ogni ciclo, lo scheduler sceglie due thread da eseguire sul processore SIMD. L'istruzione successiva di ciascun thread viene poi eseguita da 16 processori SIMD. Se ogni thread può eseguire 16 operazioni per ciclo, una GPU Fermi con 32 SM a pieno carico può eseguire 512 operazioni per ciclo.
+
+Agli occhi di un programmatore, i **processori vettoriali** risultano molto simili a un processore SIMD. Anche questi processori eseguono in modo molto efficiente una stessa sequenza di operazioni su coppie di dati, anche se, a differenza dei processori SIMD, tutte le operazioni di addizione sono eseguite da un unico sommatore, altamente strutturato a pipeline.
+
+Sia i processori SIMD sia i processori vettoriali lavorano su array di dati. Entrambi eseguono singole istruzioni che, per esempio, sommano a coppie gli elementi di due vettori ma, mentre un processore SIMD lo fa usando tanti sommatori quanti sono gli elementi dei vettori, in un processore vettoriale si utilizza invece un **registro vettoriale**, che consiste di un insieme di registri convenzionali caricabili dalla memoria in una singola istruzione.
+
+Le istruzioni SSE (Streaming SIMD Extension) dell’architettura Intel Core utilizzano questo modello di esecuzione per velocizzare i programmi altamente regolari, come le applicazioni multimediali o il software scientifico.
+
+#### 2.1.6.2 - Multiprocessori
+In un processore parallelo sui dati, le unità di elaborazione non sono CPU indipendenti poiché condividono un'unica unità di controllo. Il primo sistema parallelo con più CPU complete che analizziamo è il **multiprocessore**, composto da più CPU che condividono una memoria comune. Ogni CPU può leggere e scrivere in qualsiasi parte della memoria, quindi devono coordinarsi tramite software per evitare conflitti. Quando due o più CPU interagiscono così strettamente, si dice che sono *tightly coupled*.
+
+Sono possibili vari schemi d’implcmentazione, il più semplice dei quali consiste nell’avere un singolo bus con più CPU, tutte connesse a un’unica memoria.
+
+È facile prevedere conflitti quando molti processori veloci tentano di accedere alla memoria attraverso lo stesso bus. Per ridurre queste contese e migliorare le prestazioni, i progettisti di multiprocessori hanno ideato vari schemi. Una soluzione, mostrata nella Figura 2.8, prevede che ogni processore abbia una propria memoria locale non accessibile agli altri. Questa memoria può contenere il codice del programma e i dati non condivisi, riducendo significativamente il traffico sul bus principale. Oltre a questo schema, ne esistono altri. Rispetto ad altri tipi di calcolatori paralleli, i multiprocessori offrono il vantaggio di un modello di programmazione basato sulla memoria condivisa. Poiché ogni processore può accedere all'intera memoria, non ci sono problemi se lo studio di una cellula supera i limiti della regione assegnata.
+#### 2.1.6.3 - Multicomputer
+Se da un lato è relativamente semplice costruire multiprocessori composti da un modesto numero di processori (non più di 256), è invece decisamente più complicato realizzarne di più grandi. La difficoltà risiede nel connettere tutti i processori alla memoria. Per aggirare questi problemi molti progettisti hanno semplicemente abbandonato l’idea di avere una memoria condivisa e hanno costruito sistemi composti da un gran numero di calcolatori interconnessi, ciascuno dotato di una memoria privata. Questi sistemi sono detti **multicomputer**. In questi sistemi le CPU sono dette con legame lasco (*loosely coupled*), in contrapposizione con quelle che compongono i multiprocessori.
+
+Le CPU dei multicomputer comunicano fra loro inviandosi messaggi, simili alle e-mail, ma molto più veloci. Nel caso di grandi sistemi, dato che non è efficiente connettere mutualmente tutti i calcolatori, si utilizzano topologie diverse come griglie 2D e 3D, alberi e anelli.
+
+Visto che è facile programmare i multiprocessori, mentre i multicomputer sono facili da costruire, molte ricerche sono indirizzate alla realizzazione di sistemi ibridi che uniscano le qualità di entrambi. Tali calcolatori cercano di dare l'illusione che esista una memoria condivisa, senza però averne realmente una in quanto troppo costosa.
+
+(pagine riassunte: 4.5)
 ## 2.2 - Memoria principale
 
 ### 2.2.1 - Bit

@@ -203,7 +203,17 @@ Ogni disco ha un controllore dedicato che gestisce comandi, movimento del bracci
 
 (pagine riassunte: 3.5)
 ### 2.3.3 - Dischi IDE
+I dischi dei moderni personal computer sono l'evoluzione di quelli presenti nei PC XT della IBM. Il sistema operativo leggeva e scriveva sul disco utilizzando il **BIOS**, situato in una memoria di sola lettura integrata nel PC, che lanciava le istruzioni necessarie per il trasferimento dei dati.
 
+Con l'introduzione delle unità **IDE** (_Integrated Drive Electronics_) negli anni '80, il controllo divenne integrato con l'unità stessa anziché essere su una scheda separata. Tuttavia, le chiamate al BIOS per l'indirizzamento dei settori rimasero invariate, basate su una geometria specifica. Questo causò problemi di retrocompatibilità e rese necessaria la remappatura virtuale della geometria reale.
+
+Le unità IDE evolsero in unità **EIDE** (_Extended_ IDE), che supportavano anche l'indirizzamento **LBA** (_Logical Block Addressing_), superando i limiti precedenti. Tuttavia, questo nuovo schema comportò un nuovo collo di bottiglia.
+
+Le unità e i controllori EIDE migliorarono ulteriormente. I controllori potevano avere due canali, ciascuno con un disco primario e uno secondario. Lo standard EIDE si evolse in **ATA-3** (AT attachment), poi in **ATAPI-4** (ATA Packet Interface) con velocità fino a 33 MB/s, e successivamente in ATAPI-5 con velocità fino a 66 MB/s. Con ATAPI-6, il limite dei 128 GB imposto dagli indirizzi LBA a 28 bit divenne problematico e fu esteso a 48 bit.
+
+ATAPI-7 introdusse l'interfaccia **serial ATA**, trasferendo i dati in modo seriale su un connettore a 7 pin. Questo standard prometteva velocità fino a 1.5 GB/s e riduceva il consumo energetico, diventando importante anche nei portatili.
+
+(pagine riassunte: 1.75)
 ### 2.3.4 - Dischi SCSI
 
 ### 2.3.5 - RAID

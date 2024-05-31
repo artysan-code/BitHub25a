@@ -67,3 +67,6 @@
 ### 5.8.3 - Questioni relative ai programmi applicativi
 
 ## 5.9 - Stato della ricerca sull'input/output
+
+
+[[8 - Sistemi a più processori|Prossimo Capitolo]]

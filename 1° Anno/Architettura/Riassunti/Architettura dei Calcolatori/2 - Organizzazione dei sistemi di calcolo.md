@@ -169,7 +169,13 @@ Infine, è comune avere più livelli di cache: una primaria integrata nel chip, 
 
 (pagine riassunte: 3.25)
 ### 2.2.6 - Assemblaggio e tipi di memoria
+A partire dalle prime memorie basate su semiconduttori e fino ai primi anni ’90, la memoria era prodotta, venduta e installata in un unico chip. Spesso i primi PC erano dotati di prese nelle quali era possibile inserire chip di memoria aggiuntivi, se e quando l’utente ne avesse avuto bisogno.
 
+A partire dall’inizio degli anni ’90 vari chip, in genere di 8 o 16 elementi, sono montati su una piccola scheda a circuiti stampati venduta singolarmente. Essa è chiamata **SIMM** (Single Inline Memory Module) oppure **DIMM** (Dual Inline Memory Module), a seconda che abbia i connettori allineati su uno o su due lati della scheda. Le SIMM, poco utilizzate ai giorni nostri, hanno un connettore laterale con 72 contatti e trasferiscono 32 bit per ciclo di clock; le DIMM invece hanno generalmente connettori con 120 contatti su ogni lato, per un totale di 240 contatti, e trasferiscono 64 bit per ciclo di clock. Le DIMM più diffuse oggi sono le DDR3, la terza versione delle memorie a doppia velocità (Double Data Rate).
+
+Nei calcolatori portatili si usano DIMM più piccole, chiamate **SO-DIMM** (Small Outline DIMM ). Alle SIMM e alle DIMM è possibile aggiungere un bit di parità o la correzione d’errore, ma, dato che la frequenza media degli errori di un modulo è di uno ogni 10 anni, spesso nella maggior parte dei calcolatori ordinari le funzionalità di rilevazione e correzione degli errori non sono presenti.
+
+(pagine riassunte: 1)
 ## 2.3 - Memoria secondaria
 
 ### 2.3.1 - Gerarchie di memoria
@@ -209,3 +215,5 @@ Infine, è comune avere più livelli di cache: una primaria integrata nel chip, 
 ### 2.4.6 - Macchine fotografiche digitali
 
 ### 2.4.7 - Codifica dei caratteri
+
+[[3 - Livello logico digitale|Prossimo Capitolo]] 

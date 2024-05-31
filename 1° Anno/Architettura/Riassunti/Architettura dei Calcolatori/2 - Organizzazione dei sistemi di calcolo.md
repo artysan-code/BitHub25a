@@ -146,7 +146,28 @@ Un esempio semplice di codice di correzione è l'uso di un singolo **bit di pari
 
 (pagine riassunte: 4.25)
 ### 2.2.5 - Memoria cache
+Storicamente, le CPU sono sempre state più veloci delle memorie. Mentre le CPU hanno migliorato le loro prestazioni tramite architetture a pipeline e superscalari, le memorie hanno aumentato principalmente la loro capacità, peggiorando lo squilibrio tra i due componenti. Questo squilibrio si manifesta quando la CPU deve attendere diversi cicli per ottenere i dati richiesti dalla memoria. Esistono due approcci per affrontare questo problema:
 
+1. **Lettura anticipata e blocco della CPU**: le istruzioni di lettura dalla memoria iniziano appena vengono incontrate, ma la CPU si blocca se tenta di utilizzare una parola non ancora arrivata.
+2. **Compilatori ottimizzati**: i compilatori generano codice che evita di utilizzare parole prima che siano disponibili, ma questo approccio è difficile da implementare.
+
+La tecnologia non è il problema principale, ma piuttosto le considerazioni economiche. Le memorie veloci quanto le CPU devono essere integrate nel chip della CPU, aumentando i costi e le dimensioni. La soluzione ideale sarebbe avere una grande quantità di memoria veloce a basso costo, ma le limitazioni pratiche impongono di scegliere tra una piccola quantità di memoria veloce e una grande quantità di memoria lenta.
+
+Per combinare i vantaggi di entrambe, si utilizza la **cache**, una piccola e veloce memoria che contiene le parole di memoria più frequentemente usate. La CPU cerca prima nella cache e, se la parola non è presente, la richiede alla memoria centrale. Questo riduce drasticamente il tempo medio di accesso se una frazione significativa delle parole è presente nella cache.
+
+Il successo della cache dipende dalla **principio di località**, che afferma che i riferimenti alla memoria in brevi intervalli temporali tendono a usare solo una piccola frazione della memoria totale. Le parole vicine a quella referenziata vengono caricate nella cache per accessi futuri veloci.
+
+Il tempo medio di accesso può essere calcolato come:
+$$\text{Tempo medio di accesso} = c + (1 - h)m$$
+dove \(c\) è il tempo di accesso alla cache, \(m\) è il tempo di accesso alla memoria centrale, e \(h\) è la frequenza di successi della cache.
+
+Le memorie centrali e le cache sono divise in blocchi fissi, o **linee di cache**. In caso di fallimento della cache, viene caricata un'intera linea dalla memoria centrale.
+
+Un quarto problema è la scelta tra una **cache unificata** (istruzioni e dati nella stessa cache) e una **cache specializzata** (istruzioni e dati in cache separate), quest'ultima più comune oggi per permettere accessi paralleli e perché le istruzioni non necessitano di riscrittura.
+
+Infine, è comune avere più livelli di cache: una primaria integrata nel chip, una secondaria sullo stesso circuito della CPU, e una terziaria più lontana.
+
+(pagine riassunte: 3.25)
 ### 2.2.6 - Assemblaggio e tipi di memoria
 
 ## 2.3 - Memoria secondaria

@@ -128,7 +128,15 @@ La cella rappresenta la più piccola unità indirizzabile; negli ultimi anni qua
 
 (pagine riassunte: 2)
 ### 2.2.3 - Ordinamento dei byte
+All'interno di una parola i byte possono essere numerati da destra a sinistra o da sinistra a destra. Questa scelta presenta degli importanti risvolti. Il primo sistema, in cui la numerazione comincia a partire dall'estremo più "grande" è chiamato *big endian*, in contrapposizione con il sistema *little endian* della figura 2.11.
 
+Figura 2.11
+
+Nei sistemi *big endian* e *little endian*, un intero a 32 bit con valore 6 è rappresentato dai bit 110 nei 3 bit più a destra e zero nei 29 bit più a sinistra. Nel sistema *big endian*, i bit 110 sono nel byte 3, mentre nel sistema *little endian* sono nel byte 0. Entrambe le rappresentazioni sono corrette e coerenti internamente. I problemi sorgono quando uno di questi sistemi invia un record all'altro via rete. Se una macchina *big endian* invia un record a una *little endian*, byte per byte, l'ordine dei byte risulta invertito, causando errori nella lettura di valori numerici.
+
+Una soluzione potrebbe essere un programma che inverte i byte all'interno di una parola dopo la copia, ma non esiste una soluzione semplice al problema. Un metodo poco efficiente consiste nell'includere un'intestazione prima di ogni dato per specificarne il tipo e la lunghezza, permettendo al ricevente di effettuare solo le conversioni necessarie.
+
+(pagine riassunte: 2)
 ### 2.2.4 - Codici correttori
 
 ### 2.2.5 - Memoria cache

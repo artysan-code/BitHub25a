@@ -122,7 +122,11 @@ Alcuni calcolatori sono pubblicizzati affermando che sono dotati di aritmetica d
 
 (pagine riassunte: 1)
 ### 2.2.2 - Indirizzi di memoria
+Le memorie sono costituite da un certo numero di **celle** (o **locazioni**) ciascuna delle quali può memorizzare informazioni. Ciascuna cella ha un numero, chiamato **indirizzo**, attraverso il quale il programma può riferirsi a essa. Se una memoria ha $n$ celle, i suoi indirizzi varieranno da 0 a $n - 1$. Tutte le celle di una memoria contengono lo stesso numero di bit; se una cella è costituita da $k$ bit, essa può contenere una qualsiasi delle $2^{k}$ diverse combinazioni di bit. I calcolatori che usano il sistema numerico binario (comprese la notazione ottale ed esadecimale) esprimono gli indirizzi di memoria in notazione binaria. Se un indirizzo ha $m$ bit, il massimo numero di celle indirizzabili è $2^{m}.$ 
 
+La cella rappresenta la più piccola unità indirizzabile; negli ultimi anni quasi tutti i produttori di calcolatori ne hanno standardizzato la dimensione impostandola a 8 bit. Questa dimensione è chiamata **byte**, ma anche il termine **ottetto** (**octet**) è talvolta utilizzato; i byte sono raggruppati in **parole** (word).
+
+(pagine riassunte: 2)
 ### 2.2.3 - Ordinamento dei byte
 
 ### 2.2.4 - Codici correttori

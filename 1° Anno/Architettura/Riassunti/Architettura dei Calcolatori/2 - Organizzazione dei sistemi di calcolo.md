@@ -112,9 +112,15 @@ Visto che è facile programmare i multiprocessori, mentre i multicomputer sono f
 
 (pagine riassunte: 4.5)
 ## 2.2 - Memoria principale
-
+La **memoria** è quella parte del calcolatore in cui sono depositati programmi e dati. Alcuni informatici utilizzano il termine inglese **store** o **storage** al posto di memoria, anche se il termine Storage viene utilizzato sempre più frequentemente per riferirsi alla registrazione dei dati nei dischi. Se non ci fosse una memoria da cui il processore potesse leggere e scrivere informazioni, non esisterebbero i calcolatori digitali a programma memorizzato.
 ### 2.2.1 - Bit
+L’unità base della memoria è la cifra binaria, chiamata **bit**. Un bit può avere valore 0 oppure i ed è l’unità più semplice possibile.
 
+Quando si dice che i calcolatori utilizzano l’aritmetica binaria perché è "efficiente” , s’intende che l’informazione digitale può essere memorizzata utilizzando dei valori di una certa quantità fisica continua, come la tensione o la corrente. Se occorre distinguere più valori, allora ci deve essere una minor separazione tra valori adiacenti e la memoria risulta di conseguenza meno affidabile.
+
+Alcuni calcolatori sono pubblicizzati affermando che sono dotati di aritmetica decimale oltre di quella binaria. Il trucco utilizzato consiste nell’usare 4 bit per memorizzare una cifra decimale mediante un codice chiamato BCD (*Binary Coded Decimal*). Quattro bit forniscono 16 combinazioni, di cui 10 sono utilizzate per le cifre da 0 a 9, mentre 6 sono inutilizzate.
+
+(pagine riassunte: 1)
 ### 2.2.2 - Indirizzi di memoria
 
 ### 2.2.3 - Ordinamento dei byte

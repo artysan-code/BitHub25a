@@ -18,7 +18,7 @@ Un programmatore che utilizza il linguaggio assemblativo ha accesso a tutte le f
 
 (Pagine riassunte: 1)
 ### 7.1.2 - Perché usare il linguaggio assemblativo 
-Analizziamo nel dettaglio la seguente domanda: _perché programmare in linguaggio assembly?_ Ci sono due principali motivi: **prestazioni** e **funzionalità**.
+Analizziamo nel dettaglio la seguente domanda: _perché programmare in linguaggio assembly?_ Ci sono due principali motivi: **prestazioni** e **accessibilità**.
 
 Un programmatore esperto, che conosce a fondo il linguaggio assemblativo e i metodi di codifica ottimali, può creare un codice più piccolo e veloce rispetto a un codice scritto in linguaggi di alto livello. Inoltre, ci sono particolari situazioni che possono essere implementate solo utilizzando il linguaggio assembly, poiché offre un accesso più diretto all'hardware della macchina. Basta pensare ai programmi del BIOS, dei driver e dei firmware.
 

@@ -66,49 +66,74 @@ In sintesi, gli sviluppi tecnologici si concentrarono sulla riduzione delle dime
 
 (Pagine riassunte: 2)
 ### 1.2.5 - Quarta Generazione - Integrazione a grandissima scala (1980-?)
-Grazie alla tecnologia VLSI (Very Large Scale Integration), si iniziarono a creare chip che contenevano centinaia, migliaia se non milioni di transistor. Prima dell'avvento dei primi microcomputer, ogni università o azienda doveva dotarsi di un costoso computer che fungeva da centro di calcolo; dopodiché ogni privato o dipartimento poteva dotarsi del proprio calcolatore.
+Grazie alla tecnologia VLSI (Very Large Scale Integration), si iniziarono a creare chip che contenevano centinaia, migliaia, se non milioni di transistor. Questa evoluzione consentì la realizzazione di microcomputer, i quali trasformarono il modo in cui le università, le aziende e, infine, i privati potevano accedere alla potenza di calcolo. Prima dell'avvento dei microcomputer, le istituzioni dovevano dotarsi di costosi computer centralizzati per il calcolo, mentre con i microcomputer ogni dipartimento o privato poteva permettersi il proprio calcolatore.
 
-Inizialmente, quando un privato comprava un computer, si doveva montare componente per componente (ricevuta in un apposito kit) e scrivere il proprio sistema operativo. Col tempo arrivarono in dei floppy disk i primi sistemi operativi, contenenti una serie di istruzioni eseguibili sulla **shell**.
+L'era dei personal computer iniziò grazie al prezzo economico di questi nuovi dispositivi, rendendo possibile a chiunque di possederne uno. All'inizio, i computer per privati venivano venduti come kit da montare, con i componenti da assemblare manualmente e il software da scrivere ex novo. Successivamente, con l'arrivo dei primi sistemi operativi distribuiti su floppy disk, i computer vennero forniti con una shell contenente una serie di istruzioni eseguibili.
 
-Con l'inizio della vendita di Personal Computer preassemblati e preparati per l'utilizzo (dove vediamo in concorrenza IBM, Apple, Atari\...) arrivò con Apple il primo computer dotato di **GUI** (Graphical User Interface) l'Apple Lisa, che fu troppo costoso e sostituito con una opzione più economica chiamata Macintosh. (Non tratterò il resto di questo capitolo che parla semplicemente dello sviluppo dei processori Intel/AMD e di nuove tecnologie)
+Con l'inizio della vendita di Personal Computer preassemblati e pronti all'uso, diverse aziende entrarono in competizione, tra cui IBM, Apple, e Atari. Apple si distinse per l'introduzione del primo computer dotato di **GUI** (Graphical User Interface), l'Apple Lisa. Nonostante fosse innovativo, l'Apple Lisa risultò troppo costoso, e fu presto sostituito da una versione più economica chiamata Macintosh.
+
+L'introduzione del GUI rivoluzionò l'interazione uomo-macchina, rendendo i computer molto più accessibili e intuitivi per l'utente medio. Questo segna un importante passaggio nell'evoluzione dei personal computer, focalizzandosi sull'usabilità e sull'accessibilità, fattori che hanno contribuito significativamente alla diffusione di massa dei computer.
+
+Lo sviluppo dei processori, come quelli di Intel e AMD, e delle nuove tecnologie correlate, continuò a migliorare le prestazioni e le capacità dei computer, ma questo è un argomento che esula da questo riassunto e che si concentra maggiormente sugli aspetti storici e tecnologici fondamentali.
 
 (Pagine riassunte: 3)
-### 1.2.6 Quinta Generazione - Computer a basso consumo e Computer invisibili
-
-Con l'avanzare della tecnologia i personal computer diventarono sempre più piccoli, arrivando alle invenzioni di tablet come il GridPad nel 1989. Rivoluzionari sono anche i PDA (Personal Digital Assistans), inventati da Jeff Hawkins che utilizzavano una particolare tecnica chiamato \"Graffiti\" che rendeva la scrittura leggibile più adattabile al computer (per renderla più leggibile per quest'ultimo). Questo tipo di tecnologia venne applicata sui smartphone.
-
-Non fu però la cosa più rilevante, infatti abbiamo l'avvento dei **computer invisibili**, che erano dei microcomputer applicati agli elettrodomestici. La particolarità era la **coprogettazione** che avevano, cioè lo sviluppo sia dell'hardware che del software compatibile da parte delle aziende. 
-
-## 1.3 Tipologie di computer
-
+###### Informazione
+Il capitolo 1.2.6 è stato saltato in quanto presunto non importante.
+## 1.3 - Tipologie di computer
 In questa sezione vedremo alcune tipologie di tecnologie moderne che si stanno tutt'ora sviluppando.  
+### 1.3.1 - Forze tecnologiche ed economiche
+Durante l'evoluzione della tecnologia dei computer, uno scienziato, Gordon Moore, iniziò ad analizzare l'andamento della crescita tecnologica, notando una curva costante circa ogni 3 anni. Teorizzò quella che è ora conosciuta come la **Legge di Moore**, che rappresenta più un'osservazione empirica che una legge fisica.
+#### La Legge di Moore
+La Legge di Moore teorizza che il numero di transistor su un chip raddoppia circa ogni 18 mesi, il che equivale a un incremento del 60% ogni anno. Questa previsione implica che, grazie all'innovazione continua, i transistor diventano sempre più piccoli e più efficienti, permettendo ai processori di diventare più potenti e meno costosi.
+#### Implicazioni della Legge di Moore
+- **Aumento della Potenza di Calcolo**: Ogni 18 mesi, la potenza di calcolo dei microprocessori raddoppia, permettendo l'esecuzione di operazioni più complesse e l'elaborazione di dati più rapidamente.
+- **Riduzione dei Costi**: Man mano che i transistor diventano più piccoli, i costi di produzione per unità di calcolo diminuiscono, rendendo la tecnologia più accessibile.
+- **Miniaturizzazione dei Dispositivi**: La miniaturizzazione dei transistor permette la produzione di dispositivi elettronici sempre più compatti e portatili.
+#### Limiti della Legge di Moore
+Moore stesso riconobbe che questa tendenza non può continuare indefinitamente. L'ottimizzazione di un circuito e la riduzione delle dimensioni dei transistor incontrano dei **limiti fisici**:
 
-### 1.3.1 Forze tecnologiche ed economiche
+- **Limiti di Scala**: Alla scala dei nanometri, i transistor diventano così piccoli che gli effetti quantistici iniziano a interferire con il loro funzionamento.
+- **Problemi di Dissipazione del Calore**: Transistor più piccoli e più numerosi generano più calore, il che rappresenta una sfida per la gestione termica.
+- **Costi di Produzione**: Le tecnologie necessarie per produrre transistor a scale estremamente ridotte diventano esponenzialmente più costose.
+#### Oltre la Legge di Moore: Nuove Tecnologie
+Con l'approssimarsi dei limiti fisici imposti dalla Legge di Moore, la ricerca si sta orientando verso nuove tecnologie, tra cui:
 
-Durante l'evoluzione della tecnologia dei computer uno scienziato, Gordon Moore, iniziò a studiare l'andamento della crescita tecnologica, notando che rimaneva costante circa ogni 3 anni. Teorizzò la **Legge di Moore**, che fu più una analisi dell'andamento delle tecnologie. Essa teorizzava che il numero di transistor raddoppia circa ogni 18 mesi (Semplicemente ogni anno nuove tecnologie rendono i transistor sempre più piccoli ed efficienti), che corrisponde al 60% in più ogni anno.
+- **Computer Quantistici**: Utilizzano qubit al posto dei bit tradizionali, permettendo un salto quantico nella capacità di calcolo.
+- **Architetture Neuromorfiche**: Ispirate al funzionamento del cervello umano, queste architetture promettono di rivoluzionare il modo in cui i computer elaborano le informazioni.
+- **Memorie Avanzate**: Le tecnologie di memoria stanno evolvendo rapidamente, passando da hard disk con capacità di 10 MB a unità di memorizzazione con capacità di 1 TB e oltre in pochi decenni.
 
-Questa legge ci mostra come arriveremo ad un certo punto in cui l'ottimizzazione di un circuito, quindi la riduzione della dimensione dei transistor e altre migliorie, diventerà infattibile portandoci ad un **limite fisico**. Ora sono in sviluppo nuove tecnologie come le **macchine quantiche** che ci permetteranno di ovviare al problema. Questo tipo di sviluppo non è però mancato anche alle altre tecnologie, ad esempio le memorie sono passate in pochi anni da 10 MB di Hard disk a 1 TB di Hard disk.
-### 1.3.4 Microcontrollori
+La Legge di Moore ha guidato l'industria dei semiconduttori per decenni, ma il futuro della tecnologia dei computer potrebbe dipendere sempre più da innovazioni radicali oltre il semplice miglioramento dei transistor tradizionali.
 
-Come microcontrollori intendiamo le tecnologie integrate nelle apparecchiature che non sono elaboratori. Essi comandano e gestiscono l'interfaccia utente. Possiamo trovarli nelle macchine, negli elettrodomestici, nei dispositivi per la comunicazione e per l'intrattenimento etc\... Sono dei sistemi a sola scrittura e sono descritti da tre caratteristiche fondamentali:
-
+(Pagine riassunte: 2)
+### 1.3.4 - Microcontrollori
+Come microcontrollori intendiamo le tecnologie integrate nelle apparecchiature che non sono elaboratori. Essi comandano e gestiscono l'interfaccia utente. Possiamo trovarli nelle macchine, negli elettrodomestici, nei dispositivi per la comunicazione e per l'intrattenimento, etc. Sono dei sistemi a sola scrittura e sono descritti da tre caratteristiche fondamentali:
 - Le risorse utilizzate e i processi produttivi sono i più economici possibili, per permettere di poterne produrre in maggiore quantità.
 - Lavorano in tempo reale, traducendo input direttamente in output che risulta in un tipo diverso di architettura.
 - Hanno limiti fisici e hardware: peso, capienza della batteria, limiti elettrici e meccanici.
-### 1.3.6 Personal Computer
 
-Il *personal computer* o PC abbreviato non è altro che un elaboratore \"personale\" composto generalmente da gigabyte di memoria, disco fisso, lettore CD-ROM/DVD/Blu-ray, scheda audio, interfaccia di rete e altre periferiche come monitor, mouse e tastiera. Ha un sistema operativo innovativo e sofisticato per rendere questa tecnologia accessibile a tutti, esistono sia portatili che desktop.
-### 1.3.7 Server
+(Pagine riassunte: 2)
+### 1.3.6 - Personal Computer
+Il *personal computer* o PC abbreviato non è altro che un elaboratore "personale" composto generalmente da gigabyte di memoria, disco fisso, lettore CD-ROM/DVD/Blu-ray, scheda audio, interfaccia di rete e altre periferiche come monitor, mouse e tastiera. Ha un sistema operativo innovativo e sofisticato per rendere questa tecnologia accessibile a tutti. Esistono sia portatili che desktop.
 
-Un'altra tecnologia molto in vigore oggi sono i **server**, nient'altro che un personal computer con performance aumentate che ha lo scopo di eseguire miliardi di operazioni e transazioni al secondo. La tecnologia più usata con i server sono i **cluster** (sale server), che consisteva nel mettere in parallelo centinaia, se non migliaia, di server collegati con una rete di trasferimento dati ad alta velocità, riuscendo così a dividere le operazioni da eseguire in diverse macchine. In genere i cluster di grandi dimensioni si trovano in locali o edifici chiamati **data center**. I loro ambiti sono diversi, ma i più utilizzati sono quelli di Internet Web Server, cioè la gestione dei siti internet (tra richieste, caricamenti, trasferimenti).
+Ricollegandoci a prima, il PC iniziò a spopolare con l'avvento dei sistemi più economici e dei sistemi operativi a GUI più intuitivi.
 
-### 1.3.8 Mainframe
+(Pagine riassunte: 0.5)
+### 1.3.7 - Server
+Un'altra tecnologia molto in voga oggi sono i **server**, nient'altro che personal computer con prestazioni aumentate, che hanno lo scopo di eseguire miliardi di operazioni e transazioni al secondo.
 
-Questa è una tecnologia appartenente agli anni '60 che però rimane ancora utilizzato in alcune aziende che non vogliono riprogrammare da zero l'intero sistema di gestione dei dati e piuttosto preferiscono sostituirlo ogni tanto.
+La tecnologia più usata con i server sono i **cluster** (sale server), che consiste nel mettere in parallelo centinaia, se non migliaia, di server collegati con una rete di trasferimento dati ad alta velocità, riuscendo così a dividere le operazioni da eseguire su diverse macchine. In genere, i cluster di grandi dimensioni si trovano in locali o edifici chiamati **data center**. I loro ambiti sono diversi, ma i più utilizzati sono quelli di Internet Web Server, cioè la gestione dei siti internet (tra richieste, caricamenti, trasferimenti).
 
-Sono enormi macchine con potenze di calcolo inferiori ai cluster ma con una maggiore banda di input/output che gli permette di elaborare una enorme quantità di dati. Altro tipo di tecnologia nota sono i **supercomputer** con CPU incredibilmente veloci utilizzate principalmente per calcoli ingegneristici e scientifici di alto livello, come scontri tra galassie, sintesi di nuove medicine oppure simulazioni dei flussi d'aria attorno agli aerei. 
-### 1.5 Unità metriche
+(Pagine riassunte: 2)
+### 1.3.8 - Mainframe
+Questa è una tecnologia appartenente agli anni '60, che però rimane ancora utilizzata in alcune aziende che non vogliono riprogrammare da zero l'intero sistema di gestione dei dati e preferiscono sostituirlo periodicamente.
 
+Si tratta di enormi macchine con potenze di calcolo inferiori ai cluster, ma con una maggiore banda di input/output e capacità di archiviazione dati enormi, che consentono di elaborare una quantità enorme di dati. 
+
+Un altro tipo di tecnologia nota sono i **supercomputer**, dotati di CPU incredibilmente veloci, utilizzati principalmente per calcoli ingegneristici e scientifici di alto livello, come simulazioni di scontri tra galassie, sintesi di nuove medicine, o simulazioni dei flussi d'aria attorno agli aerei.
+
+(Pagine riassunte: 1)
+## 1.5 - Unità metriche
 Nel sistema metrico abbiamo dei prefissi che servono a dare un valore diverso all'unità di misura che stiamo usando. Però nell'informatica non funziona proprio come dalle altre parti. Ci viene da pensare che 1 Megabyte corrisponde a 1.000.000 di byte (cioè $10^3$), invece essendo che la misura è binaria 1 Kilobyte corrisponde a 1024 byte (Cioè $2^10$). Inoltre, dobbiamo distinguere la **velocità di trasferimento** che si misura in bit/s, che effettivamente viene proporzionata in $10^n$, e la **capacità**, che invece si misura usando il sistema binario quindi $2^n$.
 
-[[2 - Organizzazione dei sistemi di calcolo|Continua...]]
+(Pagine riassunte: 1)
+[[2 - Processi e Thread| ]]

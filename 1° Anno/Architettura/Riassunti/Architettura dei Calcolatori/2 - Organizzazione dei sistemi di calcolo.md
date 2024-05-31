@@ -138,7 +138,13 @@ Una soluzione potrebbe essere un programma che inverte i byte all'interno di una
 
 (pagine riassunte: 2)
 ### 2.2.4 - Codici correttori
+Le memorie dei calcolatori possono occasionalmente commettere errori a causa di picchi di tensione o altre cause. Per proteggersi, alcune memorie utilizzano codici di rilevazione e/o correzione degli errori, aggiungendo bit extra a ogni parola di memoria. Una parola di memoria con $m$ bit di dati e $r$ bit di controllo, formando una **parola di codice** (codeword) di $(n = m + r)$ bit, può rilevare e correggere errori in base alla **distanza di Hamming**.
 
+La distanza di Hamming, ottenuta calcolando l'OR esclusivo (XOR) tra i bit di due parole e contando i bit a 1 nel risultato, determina la capacità di rilevazione e correzione degli errori. Per rilevare $d$ errori singoli, è necessaria una parola con distanza $d+1$, mentre per correggere $d$errori singoli serve una distanza $2d+1$.
+
+Un esempio semplice di codice di correzione è l'uso di un singolo **bit di parità**, scelto per rendere pari (o dispari) il numero di bit 1 nella parola di codice. Questo codice ha una distanza di 2, permettendo di rilevare errori singoli, poiché ogni errore singolo altera la parità. Tuttavia, non può correggere errori tripli, poiché due errori singoli possono trasformare una parola valida in un'altra valida, rendendo impossibile la correzione.
+
+(pagine riassunte: 4.25)
 ### 2.2.5 - Memoria cache
 
 ### 2.2.6 - Assemblaggio e tipi di memoria

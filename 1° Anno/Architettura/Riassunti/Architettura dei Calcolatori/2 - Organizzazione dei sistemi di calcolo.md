@@ -79,3 +79,58 @@ Nel corso del tempo la definizione di “superscalare” si è in qualche modo e
 
 (pagine riassunte: 4)
 
+### 2.1.6 - Parallelismo a livello di processore
+
+## 2.2 - Memoria principale
+
+### 2.2.1 - Bit
+
+### 2.2.2 - Indirizzi di memoria
+
+### 2.2.3 - Ordinamento dei byte
+
+### 2.2.4 - Codici correttori
+
+### 2.2.5 - Memoria cache
+
+### 2.2.6 - Assemblaggio e tipi di memoria
+
+## 2.3 - Memoria secondaria
+
+### 2.3.1 - Gerarchie di memoria
+
+### 2.3.2 - Dischi magnetici
+
+### 2.3.3 - Dischi IDE
+
+### 2.3.4 - Dischi SCSI
+
+### 2.3.5 - RAID
+
+### 2.3.6 - Dischi a stato solido
+
+### 2.3.7 - CD-ROM
+
+### 2.3.8 - CD-registrabili
+
+### 2.3.9 - CD-riscrivibili
+
+### 2.3.10 - DVD
+
+### 2.3.11 - Blu-Ray
+
+## 2.4 - Input/Output
+
+### 2.4.1 - Bus
+
+### 2.4.2 - Terminali
+
+### 2.4.3 - Mouse
+
+### 2.4.4 - Controller per videogiochi
+
+### 2.4.5 - Stampanti
+
+### 2.4.6 - Macchine fotografiche digitali
+
+### 2.4.7 - Codifica dei caratteri

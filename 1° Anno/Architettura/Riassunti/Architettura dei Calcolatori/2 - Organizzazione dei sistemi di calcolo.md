@@ -240,9 +240,29 @@ Patterson e i suoi colleghi hanno definito diversi livelli di RAID, da 0 a 5:
 
 (pagine riassunte: 4)
 ### 2.3.6 - Dischi a stato solido
+I dischi basati su memoria flash non volatile, noti come SSD (_Solid State Drive_), stanno diventando sempre più popolari come alternativa ad alta velocità rispetto ai tradizionali dischi magnetici. Gli SSD utilizzano celle di memoria flash a stato solido, costituite da transistor flash speciali con una porta flottante che può essere caricata e scaricata mediante alte tensioni. Questa struttura consente agli SSD di avere prestazioni superiori ai dischi magnetici, con tempi di ricerca pari a zero e nessuna parte in movimento, rendendoli ideali per i computer portatili.
 
+Tuttavia, gli SSD hanno alcuni svantaggi. Il costo per gigabyte è significativamente più alto rispetto ai dischi magnetici, rendendoli adatti solo per applicazioni specifiche o non sensibili ai costi. Inoltre, le celle flash degli SSD hanno una durata limitata, poiché possono essere scritte solo circa 100.000 volte prima di guastarsi. Questo è dovuto al danno progressivo causato dal processo di iniezione di elettroni nella porta flottante.
+
+Per mitigare questo problema, gli SSD utilizzano una mappa logica dei blocchi per riassegnare i blocchi di destinazione a quelli meno utilizzati, il che comporta un overhead nel salvataggio dei dati. Alcuni SSD utilizzano celle flash multilivello per memorizzare più bit per cella, aumentando la capacità di memorizzazione. Queste celle possono mantenere fino a quattro livelli di carica, consentendo la memorizzazione di due bit per ogni cella flash.
+
+(pagine riassunte: 2)
 ### 2.3.7 - CD-ROM
+I dischi ottici, sviluppati inizialmente per registrare programmi televisivi, sono oggi utilizzati ampiamente come dispositivi di memorizzazione per computer, grazie alla loro grande capacità e basso costo. Sono comuni per distribuire software, libri, film e dati vari, oltre che per creare copie di backup degli hard disk.
 
+Nel 1980, Philips e Sony svilupparono il CD (Compact Disc), che sostituì rapidamente i dischi in vinile per la musica. I dettagli tecnici del CD furono pubblicati nello Standard Internazionale IS 10149, noto come **Libro rosso** (Red Book). La standardizzazione internazionale delle specifiche di dischi e lettori consentì l'interoperabilità tra CD e lettori di diversi produttori.
+
+La produzione di un CD coinvolge l'uso di un laser infrarosso ad alta potenza per creare buchi (pit) su un disco di vetro fotosensibile, creando uno stampo per il policarbonato liquido. I pit e le aree non incise (land) consentono la lettura dei dati tramite un diodo laser a bassa potenza che distingue tra pit e land. I dati sono codificati come transizioni pit/land o land/pit.
+
+Nel 1984, Philips e Sony pubblicarono il **Libro giallo** (Yellow Book), definendo lo standard per i CD-ROM (Compact Disc-Read Only Memory), compatibili con i CD audio per dimensioni e metodi di produzione. Questo standard includeva miglioramenti per la correzione degli errori, fondamentali per la memorizzazione affidabile dei dati dei computer.
+
+Il **Libro giallo** definisce due modalità di dati. Il **Modo 1** comprende 16 byte di preambolo, 2048 byte di dati e 288 byte di codice di correzione degli errori. Il **Modo 2** combina dati e campi ECC in un campo dati di 2336 byte, adatto per applicazioni come audio e video che non richiedono correzione degli errori.
+
+Nel 1986, Philips introdusse il **Libro verde** (Green Book), che aggiunse grafica e la possibilità di combinare audio, video e dati in un singolo settore per i CD-ROM multimediali.
+
+Per l'uso universale dei CD-ROM su diversi computer, fu creato il file system **High Sierra**, diventato lo Standard Internazionale ISO 9660. Questo file system ha tre livelli: il **livello 1** supporta nomi di file con un massimo di 8 caratteri più un'estensione di 3 caratteri, con file contigui; il **livello 2** permette nomi di file fino a 32 caratteri; il **livello 3** consente file non contigui.
+
+(pagine riassunte: 4)
 ### 2.3.8 - CD-registrabili
 
 ### 2.3.9 - CD-riscrivibili

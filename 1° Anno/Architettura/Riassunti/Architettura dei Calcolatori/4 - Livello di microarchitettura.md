@@ -58,15 +58,20 @@ L'unico segnali espliciti che guidano il percorso dati sono il fronte di salita/
 
 (pagine riassunte: 2)
 #### 4.1.1.1.1\ - Operazioni della memoria
-La nostra macchina ha due modalità di comunicazione con la memoria: una porta a 32 bit con indirizzi espressi in parole e una porta a 8 bit con indirizzi espressi in byte. La porta a 32 bit è controllata dai registri MAR (Memory Address Register) e MDR (Memory Data Register), mentre la porta a 8 bit è controllata dal registro PC, che legge un byte negli 8 bit meno significativi di MBR. La porta a 8 bit può solo leggere dati dalla memoria.
+La nostra macchina ha **due diverse modalità di comunicazione con la memoria**: una porta a 32 bit con indirizzi espressi in parole e una porta a 8 bit con indirizzi espressi in byte. 
+La porta a 32 bit è controllata dai registri MAR (Memory Address Register) e MDR (Memory Data Register), mentre la porta a 8 bit è controllata dal registro PC, che legge un byte negli 8 bit meno significativi di MBR. La porta a 8 bit può solo leggere dati dalla memoria.
 
 Ogni registro è controllato da uno o due **segnali di controllo**. Una freccia bianca sotto un registro indica un segnale di controllo che abilita l'output del registro verso il bus B. Una freccia nera indica un segnale di controllo che scrive nel registro un valore proveniente dal bus C. Per iniziare una lettura o una scrittura, bisogna caricare il registro di memoria appropriato e inviare un segnale di scrittura alla memoria.
+MAR contiene gli indirizzi espressi in parole: con i valori (esempio) 1,2,3 ecc.. si fa riferimento a parole consecutive.
+PC contiene gli indirizzi espressi in byte: con i valori (esempio) 1,2,3 ecc.. si fa riferimento a byte consecutivi.
 
-Le due modalità di accesso sono necessarie perché MAR e PC si riferiscono a diverse parti della memoria. MAR/MDR sono utilizzati per leggere e scrivere parole di dati a livello ISA, mentre PC/MBR leggono il programma eseguibile a livello ISA, che consiste in un flusso di byte.
+Le due modalità di accesso sono necessarie perché MAR e PC si riferiscono a diverse parti della memoria.La combinazione di MAR/MDR è utilizzata per leggere e scrivere parole di dati a livello ISA, mentre la combinazione di PC/MBR è utilizzata per leggere il programma eseguibile a livello ISA, che consiste in un flusso di byte.
 
-Nelle implementazioni reali, esiste una sola memoria orientata al byte. MAR può contare il numero di parole, anche se gli indirizzi sono espressi in byte. Quando MAR viene portato sul bus degli indirizzi, i suoi 32 bit non sono mappati direttamente sulle 32 linee. I 2 bit più alti di MAR vengono scartati perché inutili per la nostra macchina, che ha un limite di indirizzamento di 4 GB. Così, quando MAR vale 1, sul bus viene posto l'indirizzo 4; quando MAR vale 2, l'indirizzo 8, e così via.
+Nelle implementazioni reali esiste una sola memoria, orientata al byte. È possibile utilizzare MAR per contare il numero di parole, anche se gli indirizzi sono espressi in byte. Quando MAR viene portato sul bus degli indirizzi, i suoi 32 bit non sono mappati direttamente sulle 32 linee. 
+I 2 bit più alti di MAR vengono scartati perché inutili per la nostra macchina, che ha un limite di indirizzamento di 4 GB. Il bit 0 di MAR viene mappato alla linea 2 del bus, il bit 1 alla linea 3, ecc.
+Quindi,  quando MAR vale 1, sul bus viene posto l'indirizzo 4 (linea 3, 2^0 * 0 + 2^1 * 0 + 2^2 * 1 ecc.), quando MAR vale 2, l'indirizzo 8, e così via.
 
-Per convertire il registro MBR a 8 bit in una parola a 32 bit, si tratta il valore con segno compreso tra -128 e +127, utilizzando un processo chiamato **estensione del segno**. Questo consiste nel duplicare il bit del segno di MBR nei 24 bit più alti del bus B. La scelta tra convertire gli 8 bit di MBR in un valore a 32 bit con o senza segno è determinata dal segnale di controllo. La presenza delle due frecce giustifica la necessità di distinguere tra queste due opzioni.
+Per convertire il registro MBR a 8 bit in una parola a 32 bit, si tratta come un valore con segno compreso tra -128 e +127, utilizzando un processo chiamato **estensione del segno**. Questo consiste nel duplicare il bit del segno di MBR nei 24 bit più alti del bus B. La scelta tra convertire gli 8 bit di MBR in un valore a 32 bit con o senza segno è determinata dal segnale di controllo sotto MBR. La presenza delle due frecce giustifica la necessità di distinguere tra queste due opzioni.
 
 (pagine riassunte: 2)
 ### 4.1.2 - Microistruzioni

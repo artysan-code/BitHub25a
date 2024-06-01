@@ -264,13 +264,38 @@ Per l'uso universale dei CD-ROM su diversi computer, fu creato il file system **
 
 (pagine riassunte: 4)
 ### 2.3.8 - CD-registrabili
+Inizialmente, l'attrezzatura per produrre i master dei CD-ROM era molto costosa, ma a partire dalla metà degli anni '90, i masterizzatori CD divennero comuni e accessibili. Questi dispositivi, noti come **CD-R**, sono simili ai CD-ROM ma con una scanalatura di 0,6 mm per guidare il laser durante la scrittura. I primi CD-R erano dorati a causa dell'uso dell'oro per lo strato riflettente, a differenza dell'alluminio utilizzato nei CD-ROM.
 
+Il **Libro arancione**, pubblicato nel 1989, definiva i CD-R e il formato **CD-ROM XA**, che permetteva la scrittura incrementale sui CD-R, consentendo di aggiungere settori in momenti diversi. Un insieme di settori scritti in una volta è chiamato **traccia del CD-ROM**.Questo metodo crea tracce multiple, ciascuna con il proprio **VTOC** (Volume Table of Contents), per gestire i file presenti. Tuttavia, i CD-ROM multisessione non sono leggibili dai lettori standard di CD audio, che si aspettano una singola VTOC all'inizio del disco.
+
+(pagine riassunte: 2.5)
 ### 2.3.9 - CD-riscrivibili
+Una tecnologia oggi disponibile è quella dei **CD-RW** (CD-ReWritable), che usano supporti della stessa dimensione dei CD-R. I CD-RW però, invece di usare la cianina o la ftalocianina per lo strato sul quale registrare, impiegano una lega di argento, indio, antimonio e tellurio. Questa lega ha due stati stabili, quello cristallino e quello amorfo, con diverse proprietà riflettenti. 
 
+I lettori CD-RW utilizzano laser che funzionano a tre potenze distinte. 
+Alla potenza più elevata il laser scioglie la lega portandola dallo stato cristallino altamente riflettente a quello amorfo, dotato di una riflettività minore e che rappresenta un pit. 
+Alla potenza media la lega si scioglie e si ricompone nello stato cristallino naturale per tornare a rappresentare un land. 
+Alla potenza più bassa è possibile rilevare lo stato del materiale (per operazioni di lettura),senza però indurre alcuna trasformazione.
+
+(pagine riassunte: 0.5)
 ### 2.3.10 - DVD
+Il formato base dei CD/CD-ROM è stato definito intorno al 1980, quando Hollywood cercava di sostituire le videocassette analogiche. Questa esigenza, combinata con l'avanzamento tecnologico e la domanda di tre mercati ricchi, portò allo sviluppo del DVD, inizialmente acronimo di Digital Video Disk, poi rinominato Digital Versatile Disk. I DVD, simili ai CD, sono creati iniettando policarbonato in uno stampo, con *pit* e *land* sulla superficie letti da un laser rosso. Le innovazioni dei DVD includono *pit* più piccoli e una spirale più stretta.
 
+Esistono quattro formati di DVD per soddisfare diverse esigenze di capacità:
+1. Singolo lato, singolo strato (4.7 GB)
+2. Singolo lato, doppio strato (8.5 GB)
+3. Doppio lato, singolo strato (9.4 GB)
+4. Doppio lato, doppio strato (17 GB)
+
+La tecnologia a doppio strato utilizza uno strato riflettente inferiore coperto da uno semiriflettente, permettendo al laser di leggere su due livelli differenti. Il livello inferiore richiede *pit* e *land* leggermente più grandi, riducendo leggermente la capacità rispetto allo strato superiore.
+
+Tra le funzionalità standard dei DVD vi sono l'omissione in tempo reale delle scene scabrose, l'audio a sei canali e il supporto per il *Pan-and-Scan*.
+
+(pagine riassunte: 2.25)
 ### 2.3.11 - Blu-Ray
+Il DVD è stato appena introdotto e già il suo successore minaccia di renderlo obsoleto; si tratta del **Blu-Ray**, chiamato in questo modo poiché utilizza un laser blu invece di quello rosso dei DVD. I laser blu hanno una lunghezza d’onda più piccola di quelli rossi, il che permette una messa a fuoco più accurata e l’uso di pii e land più piccoli. Ci si aspetta che alla fine Blu-Ray sostituirà i CD-ROM e i DVD, ma questo passaggio potrebbe richiedere degli anni.
 
+(pagine riassunte: 0.25)
 ## 2.4 - Input/Output
 
 ### 2.4.1 - Bus

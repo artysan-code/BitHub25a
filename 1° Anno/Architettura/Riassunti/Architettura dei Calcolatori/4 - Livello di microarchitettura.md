@@ -7,7 +7,7 @@ Per implementare IJVM, descriveremo la microarchitettura necessaria. Le architet
 
 La nostra microarchitettura includerà un microprogramma in una ROM per prelevare, decodificare ed eseguire le istruzioni IJVM. Per progettare una microarchitettura, è bene concepirla come un problema di programmazione, in cui ogni istruzione del livello ISA è una funzione richiamata in un loop che gira all'infinito.
 
-Il microprogramma ha variabili che rappresentano lo **stato** del calcolatore, cambiato da ogni funzione. Il _Program Counter_ (PC) è una di queste variabili e punta all indirizzo di memoria della prossima istruzione da eseguire, avanzando (ovvero puntando sempre all istruzione successiva) durante l'esecuzione.
+Il **microprogramma** ha variabili che rappresentano lo **stato** del calcolatore, cambiato da ogni funzione. Il _Program Counter_ (PC) è una di queste variabili e punta all indirizzo di memoria della prossima istruzione da eseguire, avanzando (ovvero puntando sempre all istruzione successiva) durante l'esecuzione.
 
 Le istruzioni IJVM sono corte, composte da campi specifici. Ad esempio, il primo campo è il  **codice operativo** (opcode): identifica il tipo di istruzione, ovvero se è di tipo ADD, BRANCH, ecc. Questo modello di esecuzione, chiamato **fetch-decodifica-esecuzione**, è utile a livello astratto e può essere la base per implementare ISA complessi come IJVM. L'insieme delle microistruzioni formano il microprogramma, e ciascuna di loro ha il controllo del percorso dati durante un ciclo.
 
@@ -75,12 +75,12 @@ Per convertire il registro MBR a 8 bit in una parola a 32 bit, si tratta come un
 
 (pagine riassunte: 2)
 ### 4.1.2 - Microistruzioni
-Per controllare il percorso dati della figura 4.1, utilizziamo 29 segnali, suddivisi in cinque gruppi funzionali:
+Per controllare il percorso dati, utilizziamo 29 segnali, suddivisi in cinque gruppi funzionali:
 
-1. 9 segnali per controllare la scrittura dei dati dal bus C ai registri.
+1. 9 segnali per controllare la scrittura dei dati dal bus C all'interno dei registri.
 2. 9 segnali per abilitare i registri sul bus B come input per la ALU.
 3. 8 segnali per controllare le funzioni della ALU e dello shifter.
-4. 2 segnali (non mostrati) per indicare alla memoria di leggere o scrivere attraverso MAR e MDR.
+4. 2 segnali (non mostrati) per indicare alla memoria di leggere (scrivere) attraverso MAR e MDR.
 5. 1 segnale (non mostrato) per indicare il prelievo dalla memoria attraverso PC o MBR.
 
 Questi 29 segnali specificano le operazioni da eseguire durante un ciclo del percorso dati, che include:
@@ -90,21 +90,26 @@ Questi 29 segnali specificano le operazioni da eseguire durante un ciclo del per
 3. Guidare i risultati sul bus C.
 4. Scrivere i risultati nei registri appropriati.
 
-Se viene asserito il segnale per una lettura dalla memoria, l'operazione inizia alla fine del ciclo del percorso dati, dopo il caricamento di MAR. Una lettura della memoria avviata alla fine del ciclo k+1 trasmette dati utilizzabili solo a partire dal ciclo k+2. In altre parole, carichiamo MAR alla fine del ciclo e avviamo l'operazione di memoria subito dopo. Poiché la memoria richiede un ciclo di clock, i dati non saranno disponibili in MDR all'inizio del ciclo successivo, soprattutto con impulsi di clock brevi. Deve quindi trascorrere un ciclo completo del percorso dati tra l'inizio di una lettura della memoria e l'utilizzo del risultato. Durante questo ciclo è possibile eseguire altre operazioni che non richiedono dati dalla memoria.
+Se viene asserito il segnale per una lettura dalla memoria, l'operazione inizia alla fine del ciclo del percorso dati, dopo il caricamento di MAR. Una lettura della memoria avviata alla fine del ciclo k+1 trasmette dati utilizzabili solo a partire dal ciclo k+2. In altre parole, carichiamo MAR alla fine del ciclo e avviamo l'operazione di memoria subito dopo. Poiché la memoria richiede un ciclo di clock, i dati non saranno disponibili in MDR all'inizio del ciclo successivo, soprattutto con impulsi di clock brevi. Deve quindi trascorrere un ciclo completo del percorso dati tra l'inizio di una lettura della memoria e l'utilizzo del risultato. Durante questo ciclo è possibile eseguire altre operazioni, basta che non richiedono dati dalla memoria.
 
-In alcuni casi può essere utile scrivere l'output del bus C in più di un registro, mentre non ha senso abilitare più di un registro sul bus B contemporaneamente.
+In alcuni casi può essere utile scrivere l'output presente sul bus C in più di un registro, mentre non ha senso abilitare più di un registro sul bus B contemporaneamente.
 
-Per controllare il percorso dati, utilizziamo 24 segnali (bit):
+Ci sono soltanto 9 registri di input che guidano il bus B: possiamo codificare in 4 bit l'informazione del bus B e utilizzare un decoder per generare 16 segnali di controllo,  7 de quali non vengono utilizzati. Quindi, possiamo controllare il percorso dati con 9+4+8+2+1 = 24 segnali (24 bit):
 
 - 9 per la scrittura dal bus C ai registri.
-- 9 per abilitare i registri sul bus B.
+- 4 (ottimizzati con coder e decoder) per abilitare i registri sul bus B.
 - 8 per controllare ALU e shifter.
 - 2 per le operazioni di memoria.
 - 1 per il prelievo dalla memoria attraverso PC o MBR.
 
-Questi bit controllano il percorso dati solo per un ciclo. Per determinare le operazioni del ciclo successivo, aggiungiamo due campi: NEXT_ADDRESS e JAM. Questi permettono di descrivere le operazioni da eseguire nel ciclo successivo, combinando i 24 bit di controllo con informazioni aggiuntive.
+Questi bit controllano il percorso dati solo per un ciclo. Per determinare le operazioni del ciclo successivo, aggiungiamo due campi: NEXT_ADDRESS e JAM. 
 
-L'ordinamento dei gruppi nella figura 4.6 è stato scelto per minimizzare l'incrocio delle linee, che nei diagrammi schematici spesso corrisponde a collegamenti incrociati sui chip. Minimizzare questi incroci facilita il progetto dei chip.
+1) Addr: Contiene l'indirizzo di una potenziale successiva microistruzione.
+2) JAM: Determina come viene selezionata la successiva microistruzione.
+3) ALU: Seleziona le funzioni della ALU e dello shifter.
+4) C: Seleziona quali registri sono scritti dal bus C.
+5) Mem: Seleziona la funzione della memoria.
+6) B: Seleziona la sorgente del bus B.
 
 (pagine riassunte 3)
 ### 4.1.3 - Unità di controllo microprogrammata: Mic-1

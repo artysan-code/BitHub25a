@@ -373,7 +373,23 @@ Il software del computer traduce i movimenti del mouse in coordinate sullo scher
 
 (pagine riassunte: 2)
 ### 2.4.4 - Controller per videogiochi
+Grazie alle molteplici esigenze degli utilizzatori di videogiochi il mercato delle console di gioco ha sviluppato dispositivi di input specializzati.
+#### 2.4.4.1 - Il controller Wiimote
+Il **Wiimote** interagisce in tempo reale con la console di gioco tramite un sistema bluetooth. Grazie ai sensori di movimento, il Wiimote può rilevare movimenti in tre dimensioni e, se puntato verso il televisore, offre una precisa funzione di puntamento.
 
+Il monitoraggio dei movimenti tridimensionali è effettuato tramite un accelerometro a tre assi. Ogni massa dell'accelerometro risponde all'accelerazione lungo il proprio asse, modificando la capacitanza rispetto a una parete fissa di metallo. Misurando queste variazioni, si rileva l'accelerazione lungo le tre direzioni.
+
+Tuttavia, gli accelerometri, pur efficaci nel rilevare movimenti tridimensionali, non sono sufficientemente precisi per controllare un puntatore sullo schermo televisivo a causa di un margine di errore che aumenta nel tempo.
+
+Per una rilevazione più precisa, il Wiimote utilizza tecnologie di computer vision. Una **sensor bar** posta sopra il televisore contiene LED a distanza fissa. Il Wiimote, dotato di una videocamera, può determinare la distanza e l'orientamento rispetto allo schermo osservando questi LED. La distanza tra i LED nel campo visivo del Wiimote è proporzionale alla distanza del controller dalla sensor bar, e la posizione dei LED indica la direzione di puntamento. Monitorando continuamente questa orientazione, il Wiimote offre una capacità di puntamento precisa senza gli errori degli accelerometri.
+#### 2.4.4.2 - Il controller Kinect
+Il dispositivo Kinect utilizza tecniche di computer vision per determinare le interazioni dell'utente con la console di gioco. Il suo funzionamento si basa sulla rilevazione della posizione dell'utente nella stanza, dell'orientamento e dei movimenti del corpo.
+
+La capacità di rilevazione di Kinect dipende da una fotocamera di profondità e da una videocamera. La fotocamera di profondità misura la distanza degli oggetti nel campo visivo emettendo un fascio di raggi laser infrarossi e catturando i riflessi con una camera a infrarossi.
+
+L'informazione sulla profondità viene combinata con i dati strutturali della videocamera per creare una mappa di profondità della scena. Questa mappa è elaborata da un algoritmo di computer vision per localizzare le persone nella stanza e analizzare l'orientamento e i movimenti del loro corpo.
+
+(pagine riassunte: 2)
 ### 2.4.5 - Stampanti
 
 

@@ -297,9 +297,27 @@ Il DVD è stato appena introdotto e già il suo successore minaccia di renderlo 
 
 (pagine riassunte: 0.25)
 ## 2.4 - Input/Output
-
+Come sappiamo un calcolatore è composto da tre componenti principali: la CPU, le memorie e i dispositivi di I/O. Finora abbiamo analizzato la CPU e le memorie; adesso passiamo allo studio dei dispositivi di I/O e alla loro connessione con il resto del sistema.
 ### 2.4.1 - Bus
+La configurazione tipica di un computer consiste in una scatola metallica contenente una **scheda madre**. Questa scheda ospita il chip della CPU, slot per moduli DIMM e altri chip di supporto, oltre a un bus lungo la sua lunghezza con prese per i connettori delle schede di I/O.
 
+Ogni dispositivo di I/O ha due componenti principali: il **controllore**, che contiene la maggior parte dell'elettronica, e il dispositivo stesso, come un lettore di dischi. Il controllore può essere integrato sulla scheda madre o situato su una scheda aggiuntiva. Ad esempio, il controllore video spesso si trova su una scheda aggiuntiva per offrire opzioni avanzate come acceleratori hardware e memoria aggiuntiva. Il controllore gestisce il dispositivo di I/O e il suo accesso al bus, eseguendo operazioni di **Direct Memory Access (DMA)**, che permette di leggere e scrivere dati in memoria senza l'intervento della CPU. Una volta completato il trasferimento, il controllore genera un **interrupt** che fa sospendere alla CPU il programma corrente per eseguire una speciale procedura chiamata **gestore dell'interrupt**.
+
+Se la CPU e un controllore di I/O cercano di usare il bus contemporaneamente, un **arbitro del bus** decide i turni, generalmente dando priorità alle periferiche di I/O per evitare perdite di dati. Questo processo, noto come **furto di cicli**, può rallentare le prestazioni del computer.
+
+Il bus **ISA (Industry Standard Architecture)**, utilizzato nei vecchi PC, continuò ad essere usato da molti produttori di cloni e periferiche, anche dopo l'introduzione del nuovo e più veloce bus del PS/2 di IBM. Questo portò IBM alla situazione paradossale di essere l'unico produttore di PC non compatibili con lo standard IBM.
+#### 2.4.1.1 - I bus PCI e PCIe
+Nonostante le pressioni di mercato per mantenere lo status quo, i vecchi bus divennero troppo lenti, portando allo sviluppo di macchine con più bus, come il vecchio bus ISA o il suo successore retrocompatibile **EISA** (Extended ISA). Alla fine, il bus **PCI** (Peripheral Component Interconnect) di Intel prevalse.
+
+Nel mondo dei computer, la velocità è sempre un problema e anche i bus PCI furono ritenuti troppo lenti, portando alla nascita dei bus PCIe. I computer moderni supportano sia PCI che PCIe, consentendo la connessione di dispositivi nuovi e veloci al bus PCIe e dispositivi più vecchi e lenti al bus PCI.
+
+Il PCIe rappresenta una svolta rispetto al PCI, non essendo nemmeno un bus tradizionale, ma una rete punto a punto che utilizza linee seriali di bit e commutazione di pacchetto, simile a Internet.
+
+Le principali differenze del PCIe includono:
+1. **Connessione seriale**: la trasmissione avviene su una linea di 1 bit piuttosto che 8, 16, 32 o 64 bit, evitando problemi di *skew* che limitano la velocità in connessioni parallele.
+2. **Comunicazioni punto a punto**: quando la CPU comunica con un dispositivo, invia un pacchetto che passa attraverso la root complex sulla scheda madre e talvolta attraverso uno switch. Questo sistema ricorda lo sviluppo di Ethernet, passata da trasmissioni in broadcast a comunicazioni punto a punto tramite switch.
+
+(pagine riassunte: 4.5)
 ### 2.4.2 - Terminali
 
 ### 2.4.3 - Mouse

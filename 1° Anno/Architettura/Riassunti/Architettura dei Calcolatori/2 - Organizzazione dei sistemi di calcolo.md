@@ -319,15 +319,57 @@ Le principali differenze del PCIe includono:
 
 (pagine riassunte: 4.5)
 ### 2.4.2 - Terminali
+Esistono diverse tipologie di dispositivi di I/O. I terminali sono costituiti da due componenti principali: la tastiera e il monitor. Nei mainframe, questi componenti sono spesso integrati in un unico dispositivo collegato al calcolatore principale tramite una linea seriale o un cavo telefonico. Questi terminali sono ancora ampiamente utilizzati nelle prenotazioni delle compagnie aeree, nelle banche e in altri sistemi basati su mainframe. Nei personal computer, invece, tastiera e monitor sono dispositivi separati, anche se la tecnologia utilizzata è sostanzialmente la stessa.
 
+(pagine riassunte: 0.25)
+#### 2.4.2.1 - Tastiere
+La pressione di un tasto di un PC genera un interrupt che stimola una parte del sistema operativo, chiamata gestore dell’interrupt della tastiera. Questa routine, leggendo un registro hardware della tastiera, ricava il numero associato al tasto premuto. Anche quando si rilascia un tasto viene generato un interrupt. La gestione di sequenze multi-tasto che coinvolgono i tasti SHIFT, CTRL e ALT è fatta interamente via software.
+
+(pagine riassunte: 0.5)
+#### 2.4.2.2 - Touch screen
+Nonostante le tastiere continuino ad essere utilizzate, un nuovo dispositivo di input ha guadagnato popolarità: il touch screen. Tipici dispositivi touch includono touchpad nei portatili e schermi di smartphone o tablet. I touch screen più comuni sono di tipo resistivo, capacitivo o a infrarossi.
+
+**Touch screen a infrarossi**: Utilizzano trasmettitori di raggi infrarossi e ricevitori disposti ai lati dello schermo. Quando un oggetto opaco interrompe i fasci di luce, il ricevitore rileva la caduta del segnale e comunica le coordinate al sistema operativo.
+
+**Touch screen resistivi**: Composti da due strati, uno superiore flessibile con fili orizzontali e uno inferiore con fili verticali. La pressione su un punto dello schermo fa sì che i fili dei due strati si tocchino, permettendo di localizzare l’area premuta. Funzionano bene con un solo dito, ma hanno difficoltà con più dita contemporaneamente.
+
+**Touch screen capacitivi a proiezione**: Utilizzati in gran parte degli smartphone e tablet, particolarmente quelli a **mutua capacitanza**, sono in grado di riconoscere il tocco di più dita contemporaneamente, abilitando gesti come espansione e pizzicamento. Questi schermi non reagiscono a oggetti non conduttivi come penne o dita coperte da guanti. Durante l’uso, le tensioni applicate ai "fili" dello schermo rilevano i cambiamenti di capacitanza causati dal tocco delle dita.
+
+(pagine riassunte: 1.75)
+#### 2.4.2.3 - Schermi piatti
+I primi schermi dei computer utilizzavano tubi catodici (CRT) simili a quelli delle vecchie televisioni. Oggi, la tecnologia più comune è quella degli schermi a cristalli liquidi (LCD).
+
+Gli **LCD** utilizzano cristalli liquidi, che sono molecole organiche viscose con proprietà ottiche che possono essere controllate elettricamente. Uno schermo LCD è composto da due lastre di vetro parallele contenenti cristalli liquidi, con elettrodi trasparenti collegati a ciascuna lastra. Una luce retroilluminante illumina lo schermo, mentre i campi elettrici creati dagli elettrodi regolano l'intensità della luce che passa attraverso i cristalli liquidi, permettendo di visualizzare immagini.
+
+Un esempio di schermo LCD è lo schermo **TN** (*Twisted Nematic*), dove le molecole del cristallo liquido si allineano lungo solchi orizzontali e verticali su due lastre, causando una torsione di 90 gradi. Questo tipo di schermo può usare due schemi per l'applicazione della tensione: 
+
+1. **Schermi a matrice passiva**: Economici, utilizzano fili paralleli per controllare i pixel.
+2. **Schermi a matrice attiva**: Più costosi ma di qualità superiore, utilizzano un piccolo elemento di commutazione, chiamato **thin film transistor** (TFT), per ogni pixel. La maggior parte dei laptop e dei monitor a schermo piatto usano la tecnologia TFT.
+
+Nuove tecnologie stanno emergendo tra cui gli **schermi OLED** (*Organic Light Emitting Diode*), che utilizzano molecole organiche caricate elettricamente tra due elettrodi.
+
+(pagine riassunte: 2.25)
+#### 2.4.2.4 - RAM della scheda video
+La maggior parte dei monitor viene aggiornata dalle 60 alle 100 volte al secondo utilizzando una memoria speciale chiamata **Video RAM** (VRAM) situata sulla scheda del controllore dello schermo. Questa memoria contiene una o più bitmap che rappresentano l'immagine dello schermo. Ad esempio, per uno schermo con risoluzione 1920x1080 pixel, la VRAM deve contenere 1920x1080 valori, uno per ogni pixel.
+
+In uno schermo standard, ogni pixel è rappresentato da un valore RGB (Red, Green, Blue) composto da 3 byte, uno per ciascuna componente del colore del pixel. Pertanto, una VRAM per uno schermo 1920x1080 con 3 byte per pixel richiede oltre 6,2 MB di spazio.
+
+Per ridurre i requisiti di memoria e il tempo di elaborazione della CPU, alcuni computer utilizzano un unico numero a 8 bit per rappresentare il colore desiderato, utilizzando una **tavolozza** (color palette) hardware con 256 elementi, ciascuno dei quali memorizza un valore RGB a 24 bit. Questo approccio, chiamato **colore indicizzato**, riduce i requisiti di memoria della VRAM di due terzi, ma limita la visualizzazione a 256 colori simultanei.
+
+Gli schermi basati su bitmap richiedono una notevole larghezza di banda.
+
+(pagine riassunte: 0.75)
 ### 2.4.3 - Mouse
 
 ### 2.4.4 - Controller per videogiochi
 
 ### 2.4.5 - Stampanti
 
-### 2.4.6 - Macchine fotografiche digitali
 
-### 2.4.7 - Codifica dei caratteri
+### 2.4.6 - Apparecchiature per telecomunicazioni
+
+### 2.4.7 - Macchine fotografiche digitali
+
+### 2.4.8 - Codifica dei caratteri
 
 [[3 - Livello logico digitale|Prossimo Capitolo]] 

@@ -360,7 +360,18 @@ Gli schermi basati su bitmap richiedono una notevole larghezza di banda.
 
 (pagine riassunte: 0.75)
 ### 2.4.3 - Mouse
+Nel tempo, l'uso dei computer è diventato sempre più accessibile a persone con conoscenze tecniche limitate. Inizialmente, i computer erano dotati di interfacce a linea di comando, considerate poco intuitive dagli utenti non specializzati. Per migliorare l'usabilità, molti produttori hanno sviluppato interfacce punta-e-clicca, introducendo il **mouse** come strumento principale.
 
+Il mouse, un piccolo dispositivo di plastica, muove un puntatore sullo schermo in corrispondenza del movimento sul tavolo. Ha uno, due o tre pulsanti per selezionare elementi e voci di menu.
+
+Esistono tre tipi di mouse:
+1. **Meccanico**: Utilizza due rotelle di gomma disposte perpendicolarmente per misurare il movimento. Le rotelle guidano potenziometri che calcolano la distanza percorsa.
+2. **Ottico**: Senza rotelle o pallina, utilizza un **LED** e un fotorilevatore. I primi modelli richiedevano un tappetino con una griglia di linee. I moderni mouse ottici illuminano la superficie sottostante con un LED e una fotocamera registra immagini circa 1000 volte al secondo.
+3. **Opto-meccanico**: Combina elementi meccanici e ottici, con una pallina che fa ruotare due cilindretti perpendicolari collegati a codificatori con fori. Il movimento del mouse è rilevato attraverso impulsi di luce che passano attraverso i fori.
+
+Il software del computer traduce i movimenti del mouse in coordinate sullo schermo, permettendo agli utenti di selezionare elementi semplicemente posizionando il puntatore e premendo un pulsante.
+
+(pagine riassunte: 2)
 ### 2.4.4 - Controller per videogiochi
 
 ### 2.4.5 - Stampanti

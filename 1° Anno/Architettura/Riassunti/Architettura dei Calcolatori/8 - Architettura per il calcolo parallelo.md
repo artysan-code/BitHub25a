@@ -16,10 +16,34 @@ I due principali tipi di parallelismo a livello di istruzioni sono i seguenti:
 
 (Pagine riassunte: 1.5)
 ### 8.1.2 - Multithreading nel chip
+Quando un riferimento di memoria fallisce nella prima e nella seconda cache, bisogna attendere la richiesta in memoria dei dati necessari. Questo intervallo risulta uno spreco di tempo per la CPU, proprio per questo esistono diversi metodi di **multithreading nel chip** che permettono di tenere la CPU occupata su un secondo *thread* mentre attende i dati per il primo. 
 
+Il primo approccio si chiama **multithreading a grana fine** dove per utilizzare al massimo l'hardware si usa un *cambio di contesto rapido*; le famiglie di thread (cioè gruppi di processi che necessitano di essere eseguiti nella maniera prefissata) vengono eseguite in maniera ciclica (Vedere es. sul libro pag. 570 fig. 8.7 a-b-c-d).
 
-(Pagine riassunte: )
+Il secondo invece si chiama **multithread a grana grossa** che impone un principio specchiato al precedente; viene eseguito il *cambio di contesto ogni stallo* ottenuto dal thread (vedere figura 8.7 e). Meno efficiente del precedente, ma se implementato con un giusto algoritmo che prevede possibili stalli, può direttamente cambiare contesto, sembrando così più vicino al precedente e preservando il suo principale obiettivo, cioè tenere la CPU occupata con *meno thread possibili*.
+
+Un'altra ottima modalità del grana grossa è di poter svuotare la *pipeline* ad ogni commutazione, così da poter tenere sempre presente *l'identità del thread* (l'identità del thread è sconosciuta alla CPU e con diversi thread che eseguono cambio di contesto si può perdere). Ovviamente nel caso di processori a emissioni di istruzioni maggiori i precedenti metodi funzionano più velocemente.
+
+Esiste però un terzo metodo chiamato **multithreading simultaneo** dove ciascun thread emette due istruzioni e in caso di stallo vi è un cambio di contesto verso il successivo thread. Corrisponde ad una miglioria del grana grossa, che sembra essere la più efficiente per i processori moderni.
+
+#### Hyperthreading nel Core i7
+Un applicazione effettiva di questo principio la troviamo nei processori intel che durante la produzione del Pentium quattro vennero progettati per supportare un principio di multithreading chiamato **hyperthreading** (Il primo vero processore ad averlo fu lo Xeon del 2002). 
+
+A livello fisico oramai diventava difficile migliorare l'hardware: aggiungere core, moduli, migliorare il clock, aumentare la pipeline, portavano tutti a maggiore inefficiente termica, di architettura e di predizione delle istruzioni. Il multithreading migliorava il processore del 25% aumentando solo del 5% la superficie del chip.
+
+Il principio alla base dell'hyperthreading è di eseguire due thread contemporaneamente, che risulta similmente ad avere due processori con memoria e cache condivisa. Proprio per questa condivisione, intel ha identificato dei metodi per la gestione logica dei thread che ora vediamo:
+- Il primo è la **condivisione ripartita delle risorse**, dove le risorse hardware e gli intervalli di esecuzione vengono divisi equamente in maniera forzata, non mandando quindi i thread in conflitto.
+- Il secondo è la **condivisone totale delle risorse**, l'opposto del precedente che però non ha un algoritmo di selezione, quindi il primo che arriva si serve da sé. Se un thread riempie le risorse utilizzate, la coda di attesa dei thread successivi si riempie e il thread principale rischia di non avere più spazio per le risorse successive.
+- Il terzo è la **condivisione a soglia**, dove un thread può acquisire risorse dinamicamente ma senza superare 3/4 della coda di attesa. In questa maniera un thread lento e uno veloce verranno eseguiti in autonomia senza fermarsi (non entrare in *starving*).
+- I precedenti implicano però anche un principio di **duplicazione** in quanto le risorse hardware devono essere maggiori per eseguire due thread thread contemporaneamente.
+
+Le modalità utilizzate vengono selezionate dinamicamente a seconda della situazione per rendere più efficiente ogni casistica. (Per l'esempio fig. 8.9 sul libro)
+
+(Pagine riassunte: 6.5)
 ### 8.1.3 - Multiprocessori in un solo chip
+
+
+(Pagine riassunte: 6.25)
 ## 8.2 - Coprocessori
 ### 8.2.1 - Processori di rete
 ### 8.2.2 - Processori grafici

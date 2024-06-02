@@ -40,7 +40,30 @@ Le modalità utilizzate vengono selezionate dinamicamente a seconda della situaz
 
 (Pagine riassunte: 6.5)
 ### 8.1.3 - Multiprocessori in un solo chip
+Il multithreading in alcuni ambiti non fornisce abbastanza performance. Proprio per questo una tecnologia che suscita tutt'ora interesse è quella del **multiprocessore in un chip**.
+#### Multiprocessori Omogenei in un solo chip
+Questo metodo è principalmente utilizzato nei server farm che raggruppano molti server web. Vi sono due possibili implementazioni:
+1. **Due pipeline con una sola CPU**: Questo approccio permette potenzialmente di raddoppiare il throughput. Consente la condivisione di alcune risorse, ma presenta una maggiore complessità di progettazione.
+2. **Due core con una sola pipeline**: In questo caso, il core corrisponde a un grande circuito che comprende una CPU, un controller I/O e una cache, che può essere inserito in un chip in maniera modulare. Questo approccio è più semplice da implementare ed è attualmente utilizzato in molte architetture moderne che supportano più core (n core).
+#### Multiprocessore a singolo chip Core i7
+Un processore Core i7 presenta 4 o più core, dove ogni core è dotato di tre cache private: due di primo livello per istruzioni e dati, e una di secondo livello, unificata.
 
+Il livello successivo della gerarchia è occupato dalla cache di livello 3, condivisa tra tutti i core, che si connette al livello sottostante tramite una **rete ad anello**. Una richiesta di comunicazione che entra nella rete viene trasmessa al nodo successivo, dove si verifica se la richiesta ha raggiunto il suo nodo di destinazione. Questo design consente una maggiore larghezza di banda, ma introduce anche una maggiore latenza.
+#### Multiprocessori eterogenei in un solo chip
+Tutte queste tecniche non sono applicabili in ogni ambito. Diversi dispositivi elettronici, come lettori CD, telefoni, e altri, necessitano di metodologie e applicativi differenti per rendere il prodotto ottimale per le prestazioni richieste.
+
+Ad esempio, i telefoni cellulari richiedono un multiprocessore eterogeneo, concentrato sulla gestione modulo per modulo, a causa della varietà di funzioni che svolgono: telecamera, schermo, audio input e output, rete internet mobile e Wi-Fi, ecc. I dispositivi audiovisivi, invece, necessitano principalmente di moduli di memoria per elaborare grandi quantità di dati rapidamente.
+
+Quali tecniche sono utilizzate per un processore eterogeneo? La gestione dei moduli (o core) è fondamentale. 
+
+Si può utilizzare un semplice bus, che però diventa un collo di bottiglia per sistemi più grandi. In alternativa, si possono usare più bus o un sistema ad anello che attraversa tutti i core. Ogni passaggio viene gestito tramite un **token** che arbitra le comunicazioni tra i core (viene preso da un core e poi rilasciato nell'anello).
+
+Un esempio di interconnessione nel chip di tipo eterogenea è il **CoreConnect** della IBM, che, a differenza del bus PCI, non presenta problemi di retrocompatibilità. È composto da tre bus:
+- Un bus per il **processore**, veloce, sincrono e a pipeline con dati a 32, 64 e 128 bit, temporizzati a 66, 133 o 183 MHz. Ha una velocità massima di trasferimento di 23,4 Gbps, contro i 4,2 Gbps del PCI. La tecnologia a pipeline permette di trasferire diverse richieste da diversi core, ottimizzato per connettere core veloci e trasferire blocchi corti.
+- Un bus per i **dispositivi I/O** più lenti, con interfaccia a 8, 16 e 32 bit, che può contenere non più di qualche centinaio di porte logiche. Ha una velocità massima di trasferimento di 300 Mbps.
+- Un bus per i **registri di periferica**, molto lento, che serve esclusivamente per fare riferimento ai registri delle periferiche.
+
+*(in questo capitolo chiedo un possibile secondo parere in quanto c'ho capito ben poco)*
 
 (Pagine riassunte: 6.25)
 ## 8.2 - Coprocessori

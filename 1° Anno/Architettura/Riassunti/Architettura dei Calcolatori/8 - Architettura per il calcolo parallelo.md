@@ -67,7 +67,15 @@ Un esempio di interconnessione nel chip di tipo eterogenea è il **CoreConnect**
 
 (Pagine riassunte: 6.25)
 ## 8.2 - Coprocessori
+Il principio del coprocessore è di riuscire a eseguire in maniera dipendente o anche indipendente un insieme di istruzioni specifiche. Si possono trovare in molti ambiti e giocano un ruolo importante nelle performance del sistema.
+
+(Pagine riassunte: 0.5)
 ### 8.2.1 - Processori di rete
+Partendo da una piccola introduzione sulle reti in generale, parliamo ora dei processori di rete che permettono di gestire i dati di ingresso ed uscita in maniera più efficiente, vista la banda di dati trasferibile con l'avanzare della tecnologia di rete.
+#### Introduzione alle reti
+Le reti dei calcolatori sono di due tipi: **LAN** (Local-Area Network) che connette dispositivi all'interno di edifici e **WAN** (Wide-Area Network) che connette dispositivi a grande distanza. La tecnologia LAN più usata è l'**Ethernet** che, oggi, si connette ad un commutatore centrale.
+
+(Pagine riassunte: 7.5)
 ### 8.2.2 - Processori grafici
 ### 8.2.3 - Crittoprocessori
 ## 8.3 - Multiprocessori con memoria condivisa

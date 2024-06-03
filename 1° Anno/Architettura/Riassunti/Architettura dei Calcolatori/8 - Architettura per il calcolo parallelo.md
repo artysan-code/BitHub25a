@@ -142,7 +142,13 @@ Essenziale è anche il sistema di gerarchia della memoria, che assicura che la G
 
 (Pagine riassunte: 3)
 ### 8.2.3 - Crittoprocessori
+La sicurezza al giorno d'oggi è uno dei principi fondamentali, soprattutto nel trasferimento dati. Le funzioni di crittografia e autenticazione, che siano tra server o tra client e server, hanno costi di calcolo elevati, per questo esistono dei coprocessori specifici che elaborano questi ultimi.
+
+Esistono due tipi di metodi crittografici: **a chiave simmetria** e **a chiave pubblica**. La prima smista i bit in maniera casuale per impedire la decifrazione del messaggio, la seconda la moltiplicazione o l'elevazione di numeri molto grandi (per esempio 1024 bit) che impiega molte risorse. Esiste hardware specifico per tutte queste mansioni, ma non verrà trattato.
+
+(Pagine riassunte: 0.5)
 ## 8.3 - Multiprocessori con memoria condivisa
+
 ### 8.3.1 - Multiprocessori e multicomputer a confronto
 ### 8.3.2 - Semantica della memoria
 ### 8.3.3 - Architetture di multiprocessori simmetrici UMA

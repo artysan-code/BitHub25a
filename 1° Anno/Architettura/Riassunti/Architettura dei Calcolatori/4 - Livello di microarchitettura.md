@@ -343,7 +343,12 @@ In sintesi, Sandy Bridge del Core i7 combina la complessità di una CISC con l'e
 
 (pagine riassunte: 3)
 #### 4.6.1.2 - Pipeline Sandy Bridge del Core i7
-
+Il front end ha il compito di prelevare istruzioni dalla memoria e prepararle per l'esecuzione.
+Si riempie di istruzioni x86 provenienti dalla cache di istruzioni di tipo L1 e decodifica queste istruzioni in micro operazioni che verranno memorizzate nell'omonima cache, che ne può contenere circa 1.5k. Se l'unità di decodifica incontra un salto condizionale, cerca nel predittore dei salti la destinazione predetta. Il predittore dei salti contiene la storia di tutte le diramazioni incontrate in passato, e la utilizza per indovinare se un nuovo salto condizionale dovrà essere eseguito oppure no.
+Se l'istruzione di diramazione non è presente nella tabella, si utilizza la predizione statica:
+1) Se è un salto all'indietro, si assume faccia parte di un ciclo (tipo while), e la predizione è molto precisa.
+2) Se è un salto in avanti, si assume faccia parte di un'if, e non si effettua la diramazione In questo caso la precisione non è elevata.
+Se viene effettuato il salto, si consulta il **BTB** (Branch Target Buffer). Il BTB mantiene l'indirizzo di destinazione dell'ultima occorrenza del salto. Di solito la destinazione è corretta, ma codici come lo switch in c++, avendo molteplici destinazione, rende questo sistema non molto corretto, rendendo le predizioni errate.
 
 ### 4.6.2 - Microarchitettura della CPU OMAP4430
 

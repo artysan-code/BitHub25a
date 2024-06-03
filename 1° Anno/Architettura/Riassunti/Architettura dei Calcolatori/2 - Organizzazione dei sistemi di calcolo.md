@@ -425,7 +425,38 @@ Infine, le **stampanti termiche** impiegano una testina con piccoli aghi che si 
 
 (pagine riassunte: 5)
 ### 2.4.6 - Apparecchiature per telecomunicazioni
+Al giorno d’oggi la maggior parte dei calcolatori è connessa a una rete di calcolatori, che spesso è Internet.
+#### 2.4.6.1 - Modem
+L'uso diffuso dei computer ha reso comune la necessità di comunicare tra loro. Le linee telefoniche, progettate per la voce, non sono adatte a trasmettere i segnali digitali dei computer senza distorsione. Per risolvere questo problema, si utilizza un segnale sinusoidale chiamato **portante**, che può essere trasmesso con minore distorsione. Variando l'ampiezza, la frequenza o la fase di questo segnale, è possibile trasmettere dati digitali. Questo processo è noto come **modulazione** e i dispositivi che lo realizzano si chiamano modem, da MOdulator DEModulator.
 
+Esistono diversi tipi di modulazione:
+- **Modulazione d'ampiezza**: utilizza due tensioni diverse per rappresentare 0 e 1.
+- **Modulazione di frequenza**: mantiene una tensione costante, cambiando la frequenza per rappresentare 0 e 1.
+- **Modulazione di fase**: mantiene costanti ampiezza e frequenza, invertendo la fase di 180 gradi per i cambiamenti di bit. In versioni più sofisticate, la fase cambia di 45, 135, 225 o 315 gradi, rappresentando 2 bit per intervallo, noto come **modulazione a coppia di bit**.
+
+I modem moderni operano a 56 Kbps, combinando diverse tecniche di modulazione. Questi modem sono **full-duplex**, capaci di trasmettere simultaneamente in entrambe le direzioni. I modem che trasmettono in una sola direzione per volta sono **half-duplex**, mentre le linee che trasmettono solo in una direzione sono **simplex**.
+#### 2.4.6.2 - Digital subscriber line
+Quando le società telefoniche raggiunsero la velocità di 56 Kbps, l'industria della TV via cavo offriva già velocità superiori a 10 Mbps e la TV satellitare raggiungeva i 50 Mbps. Con l'aumento dell'importanza dell'accesso a Internet, le società telefoniche, note come **telcos**, dovettero offrire un servizio più competitivo rispetto alle linee *dial-up*. La loro risposta fu l'introduzione di servizi a **banda larga** (broadband), inclusi i servizi **xDSL** (*Digital Subscriber Line*), tra cui il più diffuso è l'**ADSL** (Asymmetric DSL).
+
+La lentezza dei modem tradizionali è dovuta all'ottimizzazione del sistema telefonico per la voce umana, con il **ciclo locale** limitato a 3000 Hz, riducendo la velocità di trasferimento dati tramite un filtro nell'ufficio della compagnia telefonica. L'ADSL divide il ciclo locale in 256 canali di 4312,5 Hz ciascuno: il canale 0 per il servizio telefonico tradizionale **POTS** (Plain Old Telephone Service), i canali 1-5 non utilizzati per evitare interferenze tra voce e dati, e i rimanenti 250 canali per la trasmissione dei dati, con due canali per il controllo del traffico.
+
+Un dispositivo d’interfaccia **NID** (*Network Interface Device*) viene installato presso l'edificio del cliente per segnare il confine tra la proprietà della compagnia telefonica e quella dell'utente. Un **divisore** (*splitter*) separa la banda 0-4000 Hz per il servizio telefonico dai dati, instradando il segnale POTS verso il telefono o il fax e il segnale dati verso un modem ADSL.
+
+All'altro capo del cavo, presso la compagnia telefonica, un altro divisore separa il segnale vocale, instradandolo verso un commutatore per la voce, mentre i segnali a frequenza maggiore di 26 kHz sono inviati a un dispositivo **DSLAM** (*DSL Access Multiplexer*). Il DSLAM riconverte il segnale digitale in un flusso di bit e crea pacchetti di dati da spedire all'ISP.
+#### 2.4.6.3 - Internet via cavo
+In ogni grande città c’è una sede principale dell’operatore via cavo, collegata a diverse **stazioni di testa** tramite fibre ottiche o cavi ad alta larghezza di banda. Le stazioni di testa, a loro volta, connettono centinaia di case e uffici attraverso un cavo condiviso con una larghezza di banda di circa 750 MHz. Questo sistema condiviso pone il problema di gestire chi può trasmettere dati, quando e a quale frequenza.
+
+I canali TV via cavo nel Nord America occupano l'intervallo tra 50 e 550 MHz, con canali di 6 MHz ciascuno. In Europa, i canali partono da 65 MHz e occupano tra i 6 e gli 8 MHz. La parte inferiore della banda non è utilizzata per la TV.
+
+Per aggiungere l'accesso a Internet senza interferire con i programmi TV e garantire il traffico bidirezionale, i cavi moderni offrono una banda minima di 550 MHz, spesso raggiungendo 750 MHz. Il traffico in uscita utilizza la banda 5-42 MHz, mentre il traffico in entrata utilizza la parte alta della banda.
+
+L'accesso a Internet richiede un modem con due interfacce: una verso il computer e l'altra verso il cavo di rete. Il modem via cavo determina la propria distanza dalla stazione di testa tramite un processo chiamato **ranging**, regolando l'utilizzo dei canali in uscita e la temporizzazione. I canali sono divisi in **minislot** temporali, utilizzati per trasmettere pacchetti di dati. La stazione di testa assegna i *minislot* ai modem per richiedere la larghezza di banda necessaria. In caso di contesa, il modem aspetta un tempo casuale prima di riprovare.
+
+I canali in entrata sono gestiti dalla stazione di testa senza contese, utilizzando pacchetti di 204 byte. Durante l'inizializzazione del modem, dopo aver completato il ranging e ottenuto i canali in uscita e in entrata, il modem può iniziare a trasmettere pacchetti. Il primo pacchetto richiede un indirizzo IP all'ISP e l'ora del giorno.
+
+Per garantire la sicurezza, il traffico è criptato in entrambe le direzioni. Durante l'inizializzazione, si stabiliscono le chiavi di cifratura e il modem si identifica fornendo il proprio numero univoco. Completata l'inizializzazione, l'utente può registrarsi presso l'ISP e utilizzare il servizio.
+
+(pagine riassunte: 8.5)
 ### 2.4.7 - Macchine fotografiche digitali
 
 ### 2.4.8 - Codifica dei caratteri

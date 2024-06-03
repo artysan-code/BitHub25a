@@ -172,7 +172,7 @@ Ogni ciclo del microprogramma è autocontenuto: specifica cosa andrà sul bus B,
 
 (pagine riassunte: 6) -> (in realtà 4.2, tolti i schemi e l'impaginazione)
 ## 4.2 - Esempio di ISA: IJVM
-Ci riferiremo all'architettura dell'insieme d'istruzioni (ISA) con il termine **macroarchitettura**, in contrapposizione con la microarchitettura.
+Per praticità, a volte, ci riferiremo all'architettura dell'insieme d'istruzioni (ISA) con il termine **macroarchitettura**, in contrapposizione con la microarchitettura.
 ### 4.2.1 - Stack
 Le variabili locali delle procedure vengono memorizzate in una struttura dati chiamata **stack** (o "pila") della memoria. Questo approccio risolve il problema dell'allocazione di memoria per le variabili locali in modo che non interferiscano tra loro, specialmente quando una procedura richiama se stessa o altre procedure.
 

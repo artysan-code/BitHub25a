@@ -319,6 +319,7 @@ Questo meccanismo garantisce che il flusso del programma continui senza interruz
 
 (pagine riassunte: 4)
 ## 4.6 - Esempi del livello di microarchitettura
+Le macchine che esamineremo sono: Core i7, OMAP4430, ATmega168.
 ### 4.6.1 - Microarchitettura della CPU Core i7
 Il Core i7 sembra un processore CISC tradizionale con un ampio set di istruzioni complesse, operazioni su interi a 8, 16 e 32 bit, e operazioni in virgola mobile a 32 e 64 bit. Le istruzioni variano in lunghezza da 1 a 17 byte e ci sono solo otto registri visibili.
 

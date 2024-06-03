@@ -470,5 +470,28 @@ Infine, l’immagine viene memorizzata su una memoria flash o un piccolo hard di
 
 (pagine riassunte: 2.25)
 ### 2.4.8 - Codifica dei caratteri
+Ogni calcolatore ha un insieme di caratteri che, come minimo indispensabile, comprende le 26 lettere maiuscole, le 26 lettere minuscole, le cifre da 0 a 9 e un insieme di simboli speciali, come spazio, punto, virgola, segno meno e ritorno a capo. La corrispondenza tra caratteri e numeri naturali costituisce un **codice di caratteri**. È necessario che due calcolatori che comunicano fra loro utilizzino lo stesso codice, altrimenti non saranno in grado di capirsi.
+#### 2.4.8.1 - ASCII
+Un codice ampiamente utilizzato si chiama **ASCII** (*American Standard Code for Information Interchange*). I caratteri ASCII sono definiti da 7 bit, permettendo così un totale di 128 caratteri distinti. Ciononostante, visto che i computer sono orientati ai byte, ogni carattere ASCII viene normalmente memorizzato in un byte distinto. I codici compresi tra 0 e 1F (in esadecimale) sono caratteri di controllo e non vengono stampati. I codici da 128 a 255 non fanno parte della codifica ASCII, ma i PC IBM li hanno utilizzati per caratteri speciali come le emoticon e la maggior parte dei computer attuali li utilizza ancora.
+
+Molti dei caratteri di controllo ASCII sono pensati per la trasmissione di dati.
+
+I caratteri ASCII stampabili comprendono lettere maiuscole e minuscole, cifre, sim- boli di punteggiatura e alcuni simboli matematici.
+#### 2.4.8.2 - UNICODE
+Il primo tentativo di espandere il codice ASCII fu il codice IS 646, che aggiungeva 128 caratteri per trasformarlo in un codice a 8 bit chiamato **Latin-1**. Successivamente, il codice IS 8859 introdusse il concetto di **code page**, un insieme di 256 caratteri specifici per una lingua o gruppo di lingue. Tuttavia, il code page presentava problemi di gestione e non supportava lingue come giapponese o cinese.
+
+Per risolvere questi problemi, un consorzio di produttori di computer creò **UNICODE**, diventato poi uno Standard Internazionale (IS 10646). UNICODE assegna a ogni carattere un valore a 16 bit chiamato **code point**, semplificando la scrittura dei programmi poiché non esistono caratteri speciali composti da più byte.
+
+I code point di UNICODE sono divisi in blocchi multipli di 16 e assegnati a vari alfabeti principali, segni diacritici, simboli di punteggiatura, caratteri soprascritti e sottoscritti, simboli matematici, forme geometriche e simboli ornamentali. Include anche i simboli richiesti per le lingue cinese, giapponese e coreana.
+
+Nonostante UNICODE risolva molti problemi di internazionalizzazione, non risolve tutti i problemi globali. Ad esempio, i caratteri Han non sono ordinati come nei dizionari e l'aggiunta di nuove parole in lingue come il giapponese richiede nuovi code point. Inoltre, UNICODE utilizza lo stesso code point per caratteri con aspetti simili ma significati diversi in giapponese e cinese.
+#### 2.4.8.3 - UTF-8
+Nonostante fosse un miglioramento rispetto all'ASCII, Unicode ha esaurito i code point disponibili e utilizza 16 bit per carattere, risultando inefficiente per il testo ASCII puro. Per affrontare questi problemi è stato sviluppato **UTF-8 (UCS Transformation Format)**, che codifica i caratteri in una lunghezza variabile da 1 a 4 byte e può rappresentare circa due miliardi di caratteri. UTF-8 è diventato il sistema di codifica dominante sul Web.
+
+UTF-8 ha numerosi vantaggi: i codici da 0 a 127 corrispondono esattamente ai caratteri ASCII, permettendo di rappresentarli con un solo byte, mentre per gli altri caratteri il bit più significativo del primo byte è impostato a 1, indicando la presenza di byte aggiuntivi. Questo schema consente di codificare i caratteri ASCII con 8 bit, riducendo lo spreco di spazio. Inoltre, il primo byte di ogni carattere UTF-8 determina univocamente il numero di byte del carattere e i byte successivi iniziano sempre con 10, rendendo UTF-8 auto sincronizzante e facilitando l'analisi e la gestione del testo.
+
+UTF-8 è generalmente usato per codificare i 17 piani di Unicode, anche se il suo schema supporta molti più code point dei 1.114.112 definiti da Unicode.
+
+(pagine riassunte: 4.75)
 
 [[3 - Livello logico digitale|Prossimo Capitolo]] 

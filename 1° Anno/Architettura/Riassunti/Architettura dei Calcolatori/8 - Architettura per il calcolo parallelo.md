@@ -130,7 +130,15 @@ Queste ottimizzazioni, implementate singolarmente o in combinazione, contribuisc
 
 (Pagine riassunte: 7.5)
 ### 8.2.2 - Processori grafici
+Generalmente la CPU non è capace di elaborare enormi quantità di dati in intervalli infimi, come nei casi dei rendering 3D o di grafiche avanzate. Per questo esiste una tipologia di calcolatore chiamato GPU che fornisce performance competitive alla CPU.
+#### GPU NVIDIA Fermi
+Un esempio di famiglia di GPU è la famiglia **NVIDIA Fermi**. Descritta nel libro, questa famiglia presenta 16 **SM** (Streaming Multiprocessors), ciascuno dotato di una cache L1 privata ad alta larghezza di banda. Ogni SM contiene 32 core **CUDA**, che sono processori semplici in grado di eseguire calcoli interi a singola precisione e operazioni in virgola mobile. Gli SM condividono una cache L2 di 768 KB, collegata a un'interfaccia DRAM a più porte. La comunicazione tra la GPU e il processore host avviene tramite una DRAM condivisa, spesso attraverso un'interfaccia PCI-Express.
 
+Data la presenza di grandi gruppi di core negli SM, questi eseguono operazioni identiche a ciclo continuo, in un processo chiamato **SIMD** (Single-Instruction Multiple Data), che preleva e decodifica un'istruzione per ciclo. Questa capacità di calcolo massiccia offre notevoli vantaggi ai programmatori.
+
+Programmare per una GPU è più complesso rispetto alla programmazione per una CPU. NVIDIA ha quindi fornito un linguaggio specifico per i core CUDA, ottimizzato per il parallelismo degli SM. I thread vengono raggruppati in blocchi e assegnati agli SM. Se ogni thread esegue la stessa identica istruzione, fino a 16 istruzioni possono essere eseguite per ciclo di clock. In caso di divergenza delle istruzioni, l'elaborazione della GPU rallenta. Gli ambiti grafici e di rendering sono particolarmente adatti a questa tecnologia, sebbene le GPU si stiano espandendo in altri campi, portando alla definizione di GPGPU (General-Purpose Graphics Processing Units).
+
+Essenziale è anche il sistema di gerarchia della memoria, che assicura che la GPU non manchi di larghezza di banda, evitando così arresti imprevisti.
 
 (Pagine riassunte: 3)
 ### 8.2.3 - Crittoprocessori

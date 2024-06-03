@@ -333,7 +333,7 @@ Ogni processore Core i7 include una cache L2 unificata e la logica per l'accesso
 ##### Front End
 Il front end preleva le istruzioni dal sottosistema di memoria, le decodifica in micro-operazioni RISC e le memorizza in due cache istruzioni. La cache L1 è di 32 KB. Le micro-operazioni decodificate alimentano la cache delle micro-operazioni (L0), che memorizza le micro-operazioni decodificate per evitare ulteriori decodifiche.
 ##### Predizione dei Salti
-Il front end include meccanismi di predizione dei salti che migliorano le prestazioni monitorando i salti precedenti e utilizzando queste informazioni per fare previsioni future.
+Il front end include meccanismi di predizione dei salti che migliorano le prestazioni monitorando i salti precedenti e utilizzando queste informazioni per fare previsioni future. Più è precisa la predizione, meglio saranno le performance del processore. Per questo, le specifiche dei predittori vengono tenute segrete. Il predittore serve perché quando il codice arriva ad un salto, tipo un *If (condizione) fai (questo) oppure (quest'altro)*, il codice non può iniziare a caricare l'istruzione successiva nella pipeline.. visto che non sa il risultato della condizione. Vedremo meglio nella pipeline come torna utile. 
 ##### Esecuzione Fuori Sequenza
 Le istruzioni vengono trasferite allo scheduler fuori-sequenza, che esegue le istruzioni non necessariamente nell'ordine originale, permettendo l'esecuzione parallela delle istruzioni pronte.
 ##### Unità Esecutive
@@ -343,6 +343,7 @@ In sintesi, Sandy Bridge del Core i7 combina la complessità di una CISC con l'e
 
 (pagine riassunte: 3)
 #### 4.6.1.2 - Pipeline Sandy Bridge del Core i7
+
 
 ### 4.6.2 - Microarchitettura della CPU OMAP4430
 

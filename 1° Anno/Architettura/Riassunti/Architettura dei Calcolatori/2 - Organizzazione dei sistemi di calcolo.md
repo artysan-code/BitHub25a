@@ -391,8 +391,39 @@ L'informazione sulla profondità viene combinata con i dati strutturali della vi
 
 (pagine riassunte: 2)
 ### 2.4.5 - Stampanti
+I computer spesso dispongono di stampanti per poter stampare il proprio lavoro, ne parleremo in questo paragrafo.
+#### 2.4.5.1 - Stampanti laser
+Dopo l'invenzione della stampa, il progresso più significativo nella riproduzione dei testi è rappresentato dalla **stampante laser**. Questo dispositivo offre alta qualità dell'immagine, eccellente flessibilità, grande velocità e costi contenuti.
 
+Il cuore della stampante laser è un tamburo rotante caricato elettricamente e rivestito di materiale fotosensibile. Un laser, modulato per produrre regioni luminose e scure, disegna l'immagine desiderata sul tamburo, scaricando le aree colpite dalla luce. Il tamburo, ruotando, passa attraverso il toner, che si attacca alle aree caricate elettricamente. Il toner viene poi trasferito su un foglio di carta, creando l'immagine finale.
 
+Questo complesso processo combina fisica, chimica, meccanica e ottica. Alcuni produttori vendono meccanismi completi chiamati **motori di stampa** che comprendono tutte queste fasi.
+
+Le stampanti laser utilizzano linguaggi di programmazione specializzati come PCL di HP, PostScript di Adobe o PDF per descrivere come devono essere stampate le pagine.
+
+Per riprodurre la scala dei grigi, viene usata la tecnica dei mezzitoni, che divide l'immagine in celle di 6x6 pixel. Il numero di pixel neri in ogni cella determina la percezione di tonalità di grigio. La risoluzione effettiva dell'immagine si riduce a 100 celle per pollice, misurata in **lpi** (linee per pollice).
+#### 2.4.5.2 - Stampanti a colori
+Sebbene la maggior parte delle stampanti laser sia monocromatica, le stampanti laser a colori stanno diventando sempre più comuni. Le immagini a colori possono essere viste in due modi: tramite luce trasmessa (come sui monitor) o tramite luce riflessa (come nelle fotografie su carta). 
+
+Le immagini su monitor sono create combinando i tre colori primari additivi: rosso, verde e blu (RGB). Al contrario, le immagini su carta sono create sovrapponendo i tre colori primari sottrattivi: ciano, magenta e giallo (CMY). Tuttavia, poiché è difficile ottenere un nero puro con questi tre colori, le stampanti a colori usano anche il nero (K), risultando nel sistema CMYK.
+
+Il **gamut** o **gamma dei colori** è l'insieme completo dei colori che un dispositivo può rappresentare. Né i monitor né le stampanti possono riprodurre tutti i colori del mondo reale. I monitor utilizzano luce trasmessa e hanno un fondo nero, mentre le stampanti usano luce riflessa e hanno un fondo chiaro. Inoltre, i monitor generano 256 intensità per colore e le stampanti usano i mezzitoni, rendendo complessa la conversione accurata delle immagini dal monitor alla stampa. Le gamme di colori RGB e CMYK sono diverse, complicando ulteriormente questa conversione.
+#### 2.4.5.3 - Stampanti a getto d'inchiostro
+Per le stampe casalinghe a basso costo, molti preferiscono le **stampanti a getto d’inchiostro**. La testina di stampa mobile, che contiene le cartucce di inchiostro, si muove orizzontalmente lungo la carta spruzzando inchiostro attraverso piccoli ugelli. Le goccioline di inchiostro hanno un volume di circa 1 picolitro. Esistono due tipi principali di stampanti a getto d’inchiostro: *piezoelettriche* e *termiche*.
+
+Le stampanti piezoelettriche utilizzano un cristallo particolare che si deforma quando gli viene applicata una tensione, spruzzando così una goccia di inchiostro. Le stampanti termiche, invece, hanno una resistenza che riscalda rapidamente l’inchiostro fino a farlo evaporare, formando una bolla di gas che spruzza l’inchiostro attraverso l'ugello.
+
+Per ottenere risultati migliori, è importante usare carte e inchiostri speciali. Ci sono due tipi di inchiostro: a **base di coloranti** e a **pigmenti**. Gli inchiostri a base di coloranti producono colori luminosi e fluiscono facilmente, ma tendono a sbiadire sotto la luce solare. Gli inchiostri a base di pigmenti contengono particelle solide che non sbiadiscono facilmente, ma sono meno luminosi e possono bloccare gli ugelli, necessitando di una pulizia periodica.
+#### 2.4.5.4 - Stampanti speciali
+Oltre alle comuni stampanti laser e a getto d'inchiostro, esistono altri tipi di stampanti utilizzate in contesti che richiedono particolari requisiti di qualità del colore e costi. Le **stampanti a inchiostro solido** usano blocchi di inchiostro ceroso che vengono sciolti e spruzzati sulla carta, dove si solidificano e si fondono grazie a rulli rigidi. Queste stampanti possono richiedere fino a 10 minuti per riscaldare l'inchiostro all'accensione.
+
+Le **stampanti a getto di cera** impiegano un nastro rivestito di inchiostri cerosi, che vengono fusi e trasferiti sulla carta come pixel tramite elementi riscaldanti, utilizzando il sistema CMYK.
+
+Le **stampanti a sublimazione** passano direttamente dallo stato solido a quello gassoso senza passare per lo stato liquido. Utilizzano una testina di stampa con elementi riscaldanti programmabili per trasferire coloranti CMYK sulla carta.
+
+Infine, le **stampanti termiche** impiegano una testina con piccoli aghi che si scaldano rapidamente quando attraversati da una corrente elettrica. Questi aghi disegnano punti sulla carta termosensibile, creando l'immagine desiderata.
+
+(pagine riassunte: 5)
 ### 2.4.6 - Apparecchiature per telecomunicazioni
 
 ### 2.4.7 - Macchine fotografiche digitali

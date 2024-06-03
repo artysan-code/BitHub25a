@@ -142,18 +142,59 @@ Essenziale è anche il sistema di gerarchia della memoria, che assicura che la G
 
 (Pagine riassunte: 3)
 ### 8.2.3 - Crittoprocessori
-La sicurezza al giorno d'oggi è uno dei principi fondamentali, soprattutto nel trasferimento dati. Le funzioni di crittografia e autenticazione, che siano tra server o tra client e server, hanno costi di calcolo elevati, per questo esistono dei coprocessori specifici che elaborano questi ultimi.
+La sicurezza al giorno d'oggi è uno dei principi fondamentali, soprattutto nel trasferimento dei dati. Le funzioni di crittografia e autenticazione, sia tra server che tra client e server, richiedono notevoli risorse computazionali. Per questo motivo, esistono coprocessori specifici dedicati all'elaborazione di queste funzioni.
 
-Esistono due tipi di metodi crittografici: **a chiave simmetria** e **a chiave pubblica**. La prima smista i bit in maniera casuale per impedire la decifrazione del messaggio, la seconda la moltiplicazione o l'elevazione di numeri molto grandi (per esempio 1024 bit) che impiega molte risorse. Esiste hardware specifico per tutte queste mansioni, ma non verrà trattato.
+Esistono due principali tipi di metodi crittografici: **a chiave simmetrica** e **a chiave pubblica**. La crittografia a chiave simmetrica utilizza la stessa chiave per cifrare e decifrare i dati, smistando i bit in maniera casuale per impedire la decifrazione non autorizzata del messaggio. La crittografia a chiave pubblica, invece, utilizza una coppia di chiavi (una pubblica e una privata) e si basa su operazioni matematiche complesse come la moltiplicazione o l'elevazione di numeri molto grandi (ad esempio 1024 bit), che richiedono molte risorse.
+
+Sebbene esista hardware specifico per tutte queste mansioni, come i coprocessori crittografici, non verrà trattato in dettaglio in questo contesto.
 
 (Pagine riassunte: 0.5)
 ## 8.3 - Multiprocessori con memoria condivisa
-
+Ora trattiamo l'aggiunta di diverse CPU e come poter creare sistemi che permettono di applicarsi ad ambiti più grandi. Tratteremo i **multiprocessori** e i **multicomputer**.
 ### 8.3.1 - Multiprocessori e multicomputer a confronto
+Le metodologie di parallelismo, la comunicazione di informazioni tra CPU, condivisione di compiti e selezione di essi, sono tutte problematiche che vengono risolte e strutturate nei seguenti sistemi in maniera differente.
+#### Multiprocessori
+Il multiprocessore è un calcolatore in cui tutte le CPU condividono una memoria comune. Tutti i processi che cooperano in un multiprocessore possono condividere un unico spazio degli indirizzi virtuali mappato nella memoria comune. Ogni processo può leggere o scrivere una parola di memoria, ma soprattutto possono *comunicare tra di loro* tramite la memoria condivisa: uno scrive dati in memoria e l'altro li legge.
+
+Questa capacità di comunicare facilmente è ciò che rende i multiprocessori particolarmente utili. La programmazione risulta più semplice e si possono risolvere efficacemente molti problemi, come il rendering di tutti gli elementi in un'immagine.
+
+Poiché tutte le CPU accedono a una sola memoria, il sistema operativo è unico e vi è una sola mappa delle pagine e una sola tabella dei processi. Quando un processo viene bloccato, le sue informazioni rimangono salvate nella tabella e la CPU può passare all'esecuzione del processo successivo.
+#### Multicomputer
+Il **multicomputer** prevede per ogni CPU una memoria privata a cui accede tramite semplici istruzioni, diversamente dai multiprocessori, comunicando con le altre CPU lungo una **rete di interconnessione**.
+
+Quando una CPU (ad esempio, CPU 0) vuole accedere all'area di memoria di un'altra CPU (ad esempio, CPU 1) per analizzare il contenuto, spedisce una richiesta di copia dati. Questa richiesta, una volta analizzata, permette alla CPU 1 di riportare i dati richiesti a CPU 0. Durante questo processo, CPU 0 rimane bloccata e viene sbloccata al ricevimento dei dati, utilizzando un semplice sistema *send* e *receive*.
+
+Nonostante il metodo di comunicazione dei multicomputer possa sembrare rudimentale e meno efficiente rispetto ai multiprocessori, essi sono molto più facili da costruire. Per trarre vantaggio da entrambe le tecnologie, si è puntato a sviluppare sistemi **ibridi** o **scalabili** che implementano entrambe le filosofie.
+
+Le implementazioni della memoria condivisa possono essere riassunte utilizzando l'architettura a livelli precedentemente studiata:
+- **Memoria condivisa sotto il sistema operativo**: In questa configurazione, vi è una sola memoria fisica gestita dal sistema operativo che tiene traccia delle pagine e risponde all'hardware. Questo approccio è tipico dei multiprocessori.
+- **Memoria condivisa sopra il sistema operativo**: Nei sistemi di multicomputer, la memoria condivisa può essere simulata come uno spazio paginato di indirizzi virtuali condivisi. Questo approccio è chiamato **DSM** (Distributed Shared Memory). Quando una CPU tenta di accedere a una pagina di memoria non sua, si verifica una trap rivolta al sistema operativo. Il sistema operativo interrompe la CPU che possiede quella memoria per trasferire le informazioni alla CPU richiedente, dopodiché il ciclo di istruzioni continua.
+- **Memoria condivisa nel sistema runtime**: In questa configurazione, la memoria condivisa è astratta a livello di codice programmato (livello superiore). Questa implementazione elimina la necessità di hardware specifico, permettendo di implementare la propria astrazione tramite il compilatore. Un esempio di questo approccio è il sistema Linda, che vede la memoria virtuale come un insieme di tuple.
+
+Questi approcci permettono di sfruttare al meglio le caratteristiche dei multiprocessori e dei multicomputer, combinando la facilità di costruzione con l'efficienza nella comunicazione e nell'elaborazione.
+#### Tassonomia dei calcolatori paralleli
+Abbiamo uno schema approssimativo che organizza i calcolatori paralleli, fornito da Flynn che si basa su due concetti fondamentali: **flussi di istruzioni** e **flussi di dati**.
+
+Supponendo di classificare i flussi in 1 o molteplici, abbiamo quattro categorie principali di processori:
+- 
+
+(Pagine riassunte: 7.5)
 ### 8.3.2 - Semantica della memoria
+
+
+(Pagine riassunte: 4)
 ### 8.3.3 - Architetture di multiprocessori simmetrici UMA
+
+
+(Pagine riassunte: 8.5)
 ### 8.3.4 - Multiprocessori NUMA
+
+
+(Pagine riassunte: 9)
 ### 8.3.5 - Multiprocessori COMA
+
+
+(Pagine riassunte: 1.5)
 ## 8.4 - Multicomputer a scambio di messaggi
 ### 8.4.1 - Reti d'interconnessione
 ### 8.4.2 - Massive Parallel Processors

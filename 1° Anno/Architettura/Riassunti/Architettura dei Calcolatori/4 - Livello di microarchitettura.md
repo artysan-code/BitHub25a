@@ -268,7 +268,7 @@ A differenza di molti altri ISA, IJVM utilizza puntatori e indirizzi impliciti p
 #### Conclusione
 L'architettura di IJVM è progettata per gestire in modo efficiente la memoria durante l'esecuzione di programmi Java. Utilizzando puntatori a parole per variabili locali e stack degli operandi, e puntatori a byte per il codice dei metodi, IJVM garantisce una gestione sicura e strutturata della memoria, facilitando l'implementazione di linguaggi ad alto livello come Java.
 
-(pagine riassunte: 1.2499)
+(pagine riassunte: 1.25)
 ### 4.2.3 - Insieme d'istruzioni IJVM
 La gestione delle istruzioni in IJVM, in particolare l'invocazione di metodi (`INVOKEVIRTUAL`) e il ritorno dai metodi (`IRETURN`), segue una sequenza precisa di operazioni per assicurare un corretto funzionamento. Qui di seguito è descritta nel dettaglio questa sequenza, con attenzione alle operazioni di push e pop dello stack, la gestione dei puntatori e la memorizzazione dei valori di ritorno.
 #### Esecuzione dell'istruzione INVOKEVIRTUAL

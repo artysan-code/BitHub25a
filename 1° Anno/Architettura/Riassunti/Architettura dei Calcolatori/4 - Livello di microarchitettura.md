@@ -196,12 +196,18 @@ figura 4.8
 
 Questo metodo permette di usare la memoria in modo efficiente, rilasciando lo spazio occupato dalle variabili locali non appena la procedura termina.
 ##### Uso dello Stack per Operazioni Aritmetiche
-Oltre a memorizzare le variabili locali, lo stack può essere utilizzato come **stack degli operandi** per eseguire operazioni aritmetiche.
+Oltre a memorizzare le variabili locali, lo stack può essere utilizzato come **stack degli operandi** per **memorizzare** operazioni aritmetiche.
 - **Esempio**: Calcolo di `a1 = a2 + a3` in procedura A:
-  1. A inserisce `a2` nello stack, incrementando SP.
-  2. A inserisce `a3` nello stack, incrementando nuovamente SP.
-  3. Una istruzione preleva `a2` e `a3` dallo stack, li somma, e inserisce il risultato nuovamente nello stack.
-  4. Il risultato viene prelevato dallo stack e memorizzato in `a1`.
+  0.  Stack di partenza: 
+	$LV\rightarrow[a1],[a2],SP\rightarrow[a3]$
+  1. A re-inserisce `a2` nello stack, incrementando SP:
+	$LV \rightarrow[a1],[a2],[a3],SP \rightarrow [a2]$
+  2. A re-inserisce `a3` nello stack, incrementando nuovamente SP:
+	$LV \rightarrow[a1],[a2],[a3],[a2],SP \rightarrow [a3]$
+  1. Una istruzione preleva `a2` e `a3` dallo stack, li somma, e inserisce il risultato nuovamente nello stack:
+	$LV \rightarrow[a1],[a2],[a3],SP \rightarrow [a2+a3]$
+  2. Il risultato viene prelevato dallo stack e memorizzato in `a1`:
+	 $LV \rightarrow[a2 + a3],[a2],SP \rightarrow [a3]$
 #### Vantaggi dell'Uso dello Stack
 - **Flessibilità**: Ogni chiamata di procedura ha il proprio blocco di variabili locali, evitando interferenze tra le chiamate.
 - **Efficienza di Memoria**: La memoria viene allocata e rilasciata dinamicamente, a seconda delle necessità delle procedure attive.

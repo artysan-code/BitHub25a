@@ -87,16 +87,52 @@ Questo pacchetto viene quindi passato al livello di trasmissione dati (data link
 
 Per quanto riguarda le connessioni ADSL, il pacchetto è simile, ma utilizza un'intestazione Ethernet specifica per le connessioni telefoniche.
 #### Introduzione ai processori di rete
-Abbiamo visto la complessità dei trasferimenti in rete, in una LAN a 40 Gbps possiamo trasferire 5 milioni di pacchetti da 1 KB al secondo, se non 80 milioni con pacchetti da 64 byte; svolgere le attività descritte sopra in 12-200 ns è impossibile per il software.
+Abbiamo visto la complessità dei trasferimenti in rete: in una LAN a 40 Gbps, possiamo trasferire 5 milioni di pacchetti da 1 KB al secondo, o addirittura 80 milioni di pacchetti da 64 byte. Svolgere le attività descritte sopra in 12-200 ns è impossibile per il software.
 
-Una prima implementazione prevede l'utilizzo di un **ASIC** (Application-Specific Integrated Circuit) che è una scheda progettata su misura per ogni casistica. Tuttavia i chip ASIC sono molto costosi e le modifiche implicano una ulteriore progettazione intera della scheda.
+Una prima implementazione prevede l'utilizzo di un **ASIC** (Application-Specific Integrated Circuit), un circuito integrato progettato su misura per ogni specifica applicazione. Tuttavia, i chip ASIC sono molto costosi e le modifiche richiedono una riprogettazione completa della scheda.
 
-Una seconda possibilità usa i circuiti **FPGA** (Field Programmable Gate Array) che è un insieme di porte che possono essere riorganizzate mediante la modifica dei collegamenti tra di loro. Sono molto più semplici da creare e possono essere riprogrammate ma sono lenti e costosi.
+Una seconda possibilità utilizza i circuiti **FPGA** (Field Programmable Gate Array), un insieme di porte logiche che possono essere riorganizzate mediante la modifica dei collegamenti tra di loro. Gli FPGA sono più semplici da creare e possono essere riprogrammati, ma sono lenti e costosi rispetto agli ASIC.
 
-Infine abbiamo il **processori di rete**
+Infine, ci sono i **processori di rete**, dispositivi programmabili che ricevono, elaborano e rilasciano pacchetti alla stessa velocità con cui viaggiano i collegamenti. Un processore di rete è composto da un processore, una memoria e circuiti logici di supporto collegati da un bus principale. Dopo l'elaborazione, i pacchetti vengono inviati sul bus principale (se la scheda è interna all'utente) o su un'altra linea (se è un router).
+
+La memoria dei processori di rete comprende **SRAM** (Static RAM), più veloce e utilizzata per memorizzare tabelle di indirizzamento e altre strutture importanti, e **SDRAM** (Synchronous DRAM), meno costosa e più lenta, utilizzata per memorizzare i pacchetti in elaborazione.
+
+I processori di rete possono elaborare milioni di pacchetti al secondo su ogni linea. Per questo motivo, dispongono di sistemi di parallelismo a livello di chip, suddivisi in **PPE** (Protocol/Programmable/Packet Processing Engine), che sono core RISC con una quantità ridotta di memoria per il programma e le variabili. Questi core possono essere organizzati in serie di core identici che si supportano reciprocamente; in caso di saturazione, aggiungono i pacchetti in coda nella SDRAM. L'elaborazione può avvenire anche tramite una pipeline, come nei processori, o tramite multithreading, trattando i pacchetti come thread da eseguire.
+#### Elaborazione dei pacchetti
+L'elaborazione dei pacchetti è divisa in passaggi specifici, indipendentemente dal sistema implementato. Generalmente, queste fasi si dividono in due tipi di operazioni: l'elaborazione **in entrata** dei pacchetti di rete e **in uscita**.
+
+Le fasi sono le seguenti:
+1. **Verifica del checksum**: Se il pacchetto è di tipo Ethernet, viene confrontato il CRC con quello ricalcolato. Successivamente, se il checksum è assente o corretto, viene verificato ulteriormente il checksum IP per assicurarsi che il pacchetto non sia stato danneggiato da un bit difettoso.
+2. **Estrazione di campi**: Vengono estratti i dati principali dalle intestazioni Ethernet o IP e caricati nei registri o nella SRAM.
+3. **Classificazione dei pacchetti**: Ogni pacchetto viene classificato, fornendo un contesto logico, come pacchetto dati o controllo, in base alle sue specifiche caratteristiche.
+4. **Selezione del percorso**: Viene creato un percorso preferenziale per i pacchetti comuni e veloci da elaborare, mentre gli altri vengono smistati tramite il processore di controllo.
+5. **Determinazione del destinatario di rete**: I pacchetti IP contengono un indirizzo del destinatario a 32 bit. Poiché una ricerca su una tabella di $2^{32}$ elementi non è praticabile, la parte più significativa dell'indirizzo IP viene utilizzata per identificare il numero di rete, e il restante per specificare la macchina all'interno di quella rete. Questa operazione è spesso gestita da un ASIC dedicato.
+6. **Instradamento**: Una volta determinato il percorso del destinatario, si sceglie la linea di uscita su cui instradare il pacchetto, cercandola nella tabella della SRAM.
+7. **Scomposizione e riassemblaggio**: Poiché i pacchetti da inviare possono essere molto grandi, vengono scomposti in segmenti standard e poi riassemblati dal destinatario per ricostruire i dati originali.
+8. **Elaborazione**: Alcuni compiti, come la compressione/decompressione o la cifratura/decifratura, richiedono un'enorme potenza di calcolo e sono affidati al processore di rete.
+9. **Gestione dell'intestazione**: Viene gestita l'aggiunta, la rimozione o la modifica di informazioni nell'intestazione del pacchetto, come il numero di salti che il pacchetto ha eseguito, presente nell'intestazione IP.
+10. **Gestione della coda**: Per evitare problemi di latenza o jitter in alcune applicazioni particolari e per gestire il carico generale dei pacchetti in input/output, il processore di rete gestisce la coda.
+11. **Generazione della checksum**: I pacchetti in uscita devono avere un checksum. Il CRC viene generalmente generato dall'hardware piuttosto che dal processore di rete.
+12. **Contabilità**: Viene monitorato il traffico dei pacchetti, soprattutto quando la scheda funge da servizio per conto di altre reti, gestito dal processore di rete.
+13. **Raccolta di statistiche**: Sebbene opzionale, la raccolta di statistiche permette di avere una diagnostica sul traffico di rete, fornendo utili informazioni per l'analisi delle prestazioni.
+
+Questi passaggi sono cruciali per garantire un'efficiente elaborazione dei pacchetti di rete e per mantenere un alto livello di prestazioni nei sistemi di comunicazione.
+#### Incremento delle prestazioni
+Le ottimizzazioni nei sistemi di rete sono varie e non si concentrano esclusivamente sulla velocità di clock, l'emissione/immissione dei pacchetti o la velocità di trasferimento, ma piuttosto sul carico complessivo della scheda. Ecco alcune tecniche di ottimizzazione:
+1. **Parallelismo**: Aggiungere più PPE (Protocol/Programmable/Packet Processing Engine) può aumentare significativamente l'efficienza, permettendo di elaborare più pacchetti simultaneamente.
+2. **Schede specifiche**: Creare schede specifiche per casi particolari e pesanti può migliorare le prestazioni in scenari specifici.
+3. **Miglioramenti hardware**: Diversi miglioramenti hardware possono contribuire all'ottimizzazione:
+   - **Aumento della larghezza del bus**: Un bus più ampio può trasferire più dati simultaneamente, riducendo i colli di bottiglia.
+   - **Incremento della velocità di clock**: Un aumento della velocità di clock può accelerare l'elaborazione, sebbene possa anche aumentare il consumo energetico e il calore generato.
+   - **Sostituzione della SDRAM con SRAM**: La SRAM è più veloce della SDRAM e può migliorare le prestazioni complessive, anche se a un costo più elevato.
+
+Queste ottimizzazioni, implementate singolarmente o in combinazione, contribuiscono a migliorare l'efficienza e le prestazioni delle schede di rete, garantendo un'elaborazione più rapida e affidabile dei pacchetti.
 
 (Pagine riassunte: 7.5)
 ### 8.2.2 - Processori grafici
+
+
+(Pagine riassunte: 3)
 ### 8.2.3 - Crittoprocessori
 ## 8.3 - Multiprocessori con memoria condivisa
 ### 8.3.1 - Multiprocessori e multicomputer a confronto

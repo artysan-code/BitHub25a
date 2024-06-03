@@ -458,7 +458,17 @@ Per garantire la sicurezza, il traffico è criptato in entrambe le direzioni. Du
 
 (pagine riassunte: 8.5)
 ### 2.4.7 - Macchine fotografiche digitali
+Le macchine fotografiche digitali sono diventate una periferica del computer, poiché sempre più spesso il computer viene utilizzato per la fotografia digitale. Analogamente alle macchine fotografiche tradizionali, le digitali hanno una lente che forma un’immagine del soggetto sulla parte posteriore dell’apparecchio. Tuttavia, invece della pellicola, le digitali utilizzano una griglia rettangolare di **CCD** (Charge-Coupled Device) sensibili alla luce. 
 
+I CCD producono valori indipendentemente dal colore della luce che li colpisce. Per creare immagini a colori, i CCD sono organizzati in gruppi di quattro, coperti da un **filtro di Bayer** che consente alla luce rossa di colpire un solo CCD, alla luce blu di colpirne un altro, e alla luce verde di colpire due CCD, poiché l'occhio umano è più sensibile alla luce verde.
+
+Quando si scatta una foto, il software della macchina esegue tre azioni: mette a fuoco, determina l’esposizione e calcola il bilanciamento del bianco. La messa a fuoco automatica ottimizza le alte frequenze dell’immagine, l’esposizione viene regolata in base alla luce che raggiunge i CCD, e il bilanciamento del bianco corregge le dominanti cromatiche. 
+
+L'immagine catturata viene letta dai CCD e memorizzata come una griglia di pixel nella memoria interna. Successivamente, il software della macchina effettua la correzione del bilanciamento del bianco. L'immagine può essere compressa per risparmiare spazio, spesso utilizzando il formato **JPEG** che applica la trasformata di Fourier bidimensionale e riduce le componenti ad alta frequenza.
+
+Infine, l’immagine viene memorizzata su una memoria flash o un piccolo hard disk rimovibile chiamato **microdrive**. La post-elaborazione e la scrittura dell’immagine possono richiedere alcuni secondi per ciascuna foto.
+
+(pagine riassunte: 2.25)
 ### 2.4.8 - Codifica dei caratteri
 
 [[3 - Livello logico digitale|Prossimo Capitolo]] 

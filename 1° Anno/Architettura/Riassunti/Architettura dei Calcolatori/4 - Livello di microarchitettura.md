@@ -323,7 +323,7 @@ Le macchine che esamineremo sono: Core i7, OMAP4430, ATmega168.
 ### 4.6.1 - Microarchitettura della CPU Core i7
 Il Core i7 sembra un processore CISC tradizionale con un ampio set di istruzioni complesse, operazioni su interi a 8, 16 e 32 bit, e operazioni in virgola mobile a 32 e 64 bit. Le istruzioni variano in lunghezza da 1 a 17 byte e ci sono solo otto registri visibili.
 
-Tuttavia, all'interno, il Core i7 utilizza un nucleo RISC moderno, semplice ed efficace con architettura pipeline. Questo consente una velocità di clock estremamente elevata, che continuerà probabilmente ad aumentare.
+Tuttavia, all'interno, il Core i7 utilizza un nucleo RISC moderno, semplice ed efficace con architettura pipeline ed una velocità di clock estremamente elevata.
 
 Questa dualità permette di combinare la ricchezza funzionale delle istruzioni CISC con l'efficienza e la velocità del nucleo RISC, garantendo compatibilità con software legacy e alte prestazioni per nuovi applicativi.
 #### 4.6.1.1 - Descrizione della microarchitettura Sandy Bridge del Core i7

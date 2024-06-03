@@ -128,9 +128,15 @@ L’elemento più grande e importante della sezione di controllo è la memoria d
 La memoria di controllo necessita di un proprio registro di indirizzo e di un proprio registro dei dati:
 - **MPC (MicroProgram Counter)**: è il registro degli indirizzi della memoria di controllo.
 - **MIR (MicroInstruction Register)**: è il registro dei dati della memoria di controllo, che memorizza la microistruzione corrente. I bit di MIR determinano i segnali di controllo che guidano il percorso dati.
+Il registro MIR contiene sei gruppi:
+- Addr e J (JAM) controllano la selezione delle micro istruzioni successive.
+- ALU contiene 8 bit che selezionano la funzione della ALU e guidano lo shifter.
+- I bit C indicano in quali registri verrà caricato l'output della ALU dal bus C. 
+- I bit M controllano le operazioni della memoria.
+- I bit B (ultimi 4 bit) guidano il decodificatore, che determina quale registro deve essere portato sul bus B.
 ##### Funzionamento del Ciclo di Clock
 1. **Sottociclo 1**:
-    - All’inizio di un ciclo di clock, la parola contenuta nella memoria di controllo puntata da MPC viene trasferita in MIR. Il tempo necessario per questa operazione è $\Delta w$. MIR viene caricato durante il primo sottociclo.
+    - All’inizio di un ciclo di clock, la parola contenuta nella memoria di controllo e puntata da MPC viene trasferita in MIR. Il tempo necessario per questa operazione è $\Delta w$. MIR viene caricato durante il primo sottociclo.
 2. **Sottociclo 2**:
     - Dopo che MIR è stato caricato, i vari segnali di controllo si propagano nel percorso dati. Dopo $\Delta w + \Delta x$, gli input della ALU diventano stabili.
 3. **Sottociclo 3**:
@@ -140,19 +146,31 @@ La memoria di controllo necessita di un proprio registro di indirizzo e di un pr
 #### Calcolo dell'Indirizzo della Microistruzione Successiva
 Il microprogramma non segue necessariamente un ordine sequenziale nella memoria di controllo. Il campo **NEXT_ADDRESS** della microistruzione corrente indica l'indirizzo della microistruzione successiva. Il campo **JAM** determina ulteriori azioni da intraprendere:
 
+
+Quando il microprogramma deve calcolare la microistruzione successiva, inizia con il copiare i primi 9 bit di **NEXT_ADDRESS** all'interno di **MPC**. In contemporanea, viene ispezionato il campo **JAM** ; se il suo valore è 000 allora non viene eseguita nessuna azione aggiuntiva. In caso uno (o più) dei campi di jam sia 1, allora vanno intraprese altre azioni:
+
 - **JAMN**: Se abilitato, il flip-flop N viene combinato con il bit più significativo di MPC tramite OR.
 - **JAMZ**: Se abilitato, il flip-flop Z viene combinato con il bit più significativo di MPC tramite OR.
-- **JMPC**: Se abilitato, gli 8 bit di MBR vengono combinati in OR con gli 8 bit meno significativi di NEXT_ADDRESS.
+- **JMPC**: Se abilitato, gli 8 bit di MBR vengono combinati in OR con gli 8 bit meno significativi di NEXT_ADDRESS della **microistruzione precedente**.
 
-Quando tutti i bit di JAM sono zero, l'indirizzo della microistruzione successiva è semplicemente il valore nel campo NEXT_ADDRESS o NEXT_ADDRESS in OR con 1. Altrimenti, ci sono due potenziali indirizzi: NEXT_ADDRESS e NEXT_ADDRESS calcolato in OR con 0x100. 
+La funzione booleana che calcola questo bit è la seguente:
+F = (JAMZ AND Z) OR (JAMN AND N) OR NEXT_ADDRESS$[8]$ 
+
+Va notato che in tutti i casi possibili MPC può assumere soltanto uno di questi due valori:
+1) il valore di NEXT_ADDRESS.
+3) il valore di NEXT_ADDRESS, in cui il bit più significativo è calcolato in OR con 1.
+Non esistono altre possibilità. Se il bit più significativo di NEXT_ADDRESS valesse già 1, non avrebbe alcun senso utilizzare JAMN o JAMZ.
+
+Quando tutti i bit di JAM sono zero, l'indirizzo della microistruzione successiva è semplicemente il valore nel campo NEXT_ADDRESS o NEXT_ADDRESS in OR con 1. Altrimenti, ci sono due potenziali indirizzi: NEXT_ADDRESS o NEXT_ADDRESS calcolato in OR con 0x100. 
 
 Ad esempio, se la microistruzione corrente ha il campo NEXT_ADDRESS = 0x92 e JAMZ impostato a 1, l'indirizzo successivo dipende dal bit Z. Se Z vale 0, la microistruzione successiva sarà all'indirizzo 0x92; altrimenti, sarà all'indirizzo 0x192.
 #### Efficienza del Salto Condizionale
+La possibilità di calcolare l'OR  di MBR e NEXT_ADDRESS e di memorizzarne il risultato in MPC permette di implementare in modo efficiente una diramazione:
 Il bit JMPC consente un salto efficiente utilizzando il contenuto di MBR per determinare l'indirizzo della microistruzione successiva. Questo metodo è utile per gestire rapidamente i salti basati sui codici operativi appena prelevati.
 #### Conclusione
 Ogni ciclo del microprogramma è autocontenuto: specifica cosa andrà sul bus B, quali operazioni la ALU e lo shifter devono eseguire, dove verrà memorizzato il bus C e quale sarà il successivo valore di MPC. La figura 4.6 semplifica la temporizzazione implementando MPC come un registro virtuale, riducendo la complessità del progetto e migliorando l'efficienza operativa.
 
-(pagine riassunte: 6)
+(pagine riassunte: 6) -> (in realtà 4.2, tolti i schemi e l'impaginazione)
 ## 4.2 - Esempio di ISA: IJVM
 Ci riferiremo all'architettura dell'insieme d'istruzioni (ISA) con il termine **macroarchitettura**, in contrapposizione con la microarchitettura.
 ### 4.2.1 - Stack

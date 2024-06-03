@@ -73,7 +73,27 @@ Il principio del coprocessore è di riuscire a eseguire in maniera dipendente o 
 ### 8.2.1 - Processori di rete
 Partendo da una piccola introduzione sulle reti in generale, parliamo ora dei processori di rete che permettono di gestire i dati di ingresso ed uscita in maniera più efficiente, vista la banda di dati trasferibile con l'avanzare della tecnologia di rete.
 #### Introduzione alle reti
-Le reti dei calcolatori sono di due tipi: **LAN** (Local-Area Network) che connette dispositivi all'interno di edifici e **WAN** (Wide-Area Network) che connette dispositivi a grande distanza. La tecnologia LAN più usata è l'**Ethernet** che, oggi, si connette ad un commutatore centrale.
+Le reti dei calcolatori sono di due tipi principali: **LAN** (Local-Area Network) e **WAN** (Wide-Area Network). Le LAN connettono dispositivi all'interno di edifici o aree limitate, mentre le WAN collegano dispositivi su lunghe distanze.
+
+La tecnologia LAN più usata è l'**Ethernet**, che oggi si connette a un commutatore centrale (switch) con velocità che possono arrivare fino a 10 Gbps. 
+
+La tecnologia WAN è composta da **router** collegati ai server tramite cavi o fibre ottiche. I dati vengono suddivisi in **pacchetti** di dimensioni variabili tra 64 e 1500 byte, che viaggiano attraverso i router verso altre macchine tramite la tecnica della **commutazione di pacchetto store-and-forward**: il pacchetto viene memorizzato sul router e poi inoltrato al successivo fino alla destinazione.
+
+Dal lato utente, il calcolatore prepara i pacchetti e li spedisce all'*ISP* (Internet Service Provider), che li inoltra nella rete un salto alla volta finché non raggiungono i server web. Il *firewall* filtra i pacchetti per bloccare quelli malevoli. La rete utilizza diversi **protocolli** che definiscono la struttura dei pacchetti e il metodo di trasferimento; ad esempio, una richiesta di pagina web utilizza il protocollo *HTTP*, che viene elaborato dal server web.
+
+Una connessione al server web avviene tramite il protocollo **TCP** (Transfer Control Protocol), che garantisce che i pacchetti siano trasferiti completamente e nell'ordine corretto. Una richiesta HTTP ricevuta dal server viene elaborata e risponde con un messaggio TCP, che contiene un'**intestazione TCP**. Il messaggio viene poi preparato dal **Protocollo IP**, aggiungendo un'**intestazione IP** (contenente mittente, destinatario e altri campi).
+
+Questo pacchetto viene quindi passato al livello di trasmissione dati (data link layer), dove viene allegata un'ulteriore intestazione per la trasmissione vera e propria. Infine, il pacchetto contiene una checksum (presente anche nell'intestazione IP) per verificare la presenza di errori.
+
+Per quanto riguarda le connessioni ADSL, il pacchetto è simile, ma utilizza un'intestazione Ethernet specifica per le connessioni telefoniche.
+#### Introduzione ai processori di rete
+Abbiamo visto la complessità dei trasferimenti in rete, in una LAN a 40 Gbps possiamo trasferire 5 milioni di pacchetti da 1 KB al secondo, se non 80 milioni con pacchetti da 64 byte; svolgere le attività descritte sopra in 12-200 ns è impossibile per il software.
+
+Una prima implementazione prevede l'utilizzo di un **ASIC** (Application-Specific Integrated Circuit) che è una scheda progettata su misura per ogni casistica. Tuttavia i chip ASIC sono molto costosi e le modifiche implicano una ulteriore progettazione intera della scheda.
+
+Una seconda possibilità usa i circuiti **FPGA** (Field Programmable Gate Array) che è un insieme di porte che possono essere riorganizzate mediante la modifica dei collegamenti tra di loro. Sono molto più semplici da creare e possono essere riprogrammate ma sono lenti e costosi.
+
+Infine abbiamo il **processori di rete**
 
 (Pagine riassunte: 7.5)
 ### 8.2.2 - Processori grafici

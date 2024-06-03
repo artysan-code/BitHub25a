@@ -270,7 +270,17 @@ L'architettura di IJVM è progettata per gestire in modo efficiente la memoria d
 
 (pagine riassunte: 1.25)
 ### 4.2.3 - Insieme d'istruzioni IJVM
-La gestione delle istruzioni in IJVM, in particolare l'invocazione di metodi (`INVOKEVIRTUAL`) e il ritorno dai metodi (`IRETURN`), segue una sequenza precisa di operazioni per assicurare un corretto funzionamento. Qui di seguito è descritta nel dettaglio questa sequenza, con attenzione alle operazioni di push e pop dello stack, la gestione dei puntatori e la memorizzazione dei valori di ritorno.
+Ogni istruzione è composta da un **codice operativo** e in alcuni casi da un **operando**, che può essere uno spiazzamento o una costante.
+Alcune istruzioni permettono di inserire nello stack una parola proveniente da varie fonti, come per esempio la porzione costante di memoria (**LDC_W**), il blocco delle variabili locali (**ILOAD**) e l'istruzione stessa (**BIPUSH**). 
+Una variabile può anche essere estratta dallo stack e memorizzata nel blocco delle variabili locali (**ISTORE**). 
+È possibile eseguire due operazioni aritmetiche (**IADD** e **ISUB**) e due operazioni logiche, cioè booleane, (IAND e IOR) utilizzando come operandi le due parole che si trovano in cima allo stack.
+In tutte le operazioni logiche e aritmetiche vengono estratte due parole dallo stack e il risultato viene inserito sopra di esso. 
+
+Sono fornite quattro istruzioni per i salti, una non condizionale (**GOTO**) e tre condizionali (**IFEQ**, **IFLT** e **IF_ICMPEQ**). Tutte queste istruzioni, se accettate, modificano il valore di PC in base alla grandezza del loro spiazzamento (16 bit con segno), che si trova nell'istruzione, subito dopo il codice operativo. Questo spiazzamento viene aggiunto all'indirizzo dell'istruzione. Ci sono anche istruzioni IJVM che permettono di scambiare le due parole in cima allo stack (**SWAP**), di duplicare la parola che si trova in cima (**DUP**) e di rimuoverla (**POP**).
+
+Alcune istruzioni hanno più formati, per permettere di utilizzare una forma più breve per le versioni utilizzate più frequentemente. In IJVM abbiamo incluso due dei vari meccanismi che JVM mette a disposizione a questo scopo. In un caso abbiamo omesso la versione corta in favore di quella più generale. In un altro caso mostriamo come si può utilizzare l'istruzione prefisso WIDE per modificare l'istruzione successiva.
+
+Infine c'è un'istruzione (**INVOKEVIRTUAL**) per invocare un altro metodo e un'istruzione (**IRETURN**) per terminare il metodo e restituire il controllo a quello che l'aveva invo-cato.
 #### Esecuzione dell'istruzione INVOKEVIRTUAL
 Quando un metodo viene invocato utilizzando l'istruzione `INVOKEVIRTUAL`, avviene la seguente sequenza di operazioni:
 1. **Preparazione dei Parametri**:

@@ -44,9 +44,17 @@ La stessa porta logica può calcolare diverse funzioni a seconda delle convenzio
 
 (pagine riassunte: 3.5)
 ## 3.2 - Circuiti logici digitali elementari
-
+Al giorno d’oggi nella costruzione di circuiti i componenti elementari sono generalmente rappresentati da moduli contenenti un certo numero di porte. Nei paragrafi successivi analizzeremo più da vicino questi blocchi elementari e vedremo come vengono utilizzati e come sono costruiti a partire da singole porte logiche.
 ### 3.2.1 - Circuiti integrati
+Le porte logiche non sono vendute singolarmente ma come parte di **circuiti integrati** (**IC** o **chip**). Un circuito integrato è un pezzo rettangolare di silicio di dimensioni variabili in base al numero di porte necessarie. I circuiti più piccoli misurano circa 2 mm x 2 mm, mentre i più grandi possono arrivare a 18 mm x 18 mm.
 
+I chip piccoli, come quelli utilizzati per microcontrollori domestici o RAM, usano un supporto **DIP** (*Dual In-line Package*) con due file di pin che si inseriscono in un alloggiamento sulla scheda madre. I circuiti integrati più grandi usano supporti **PGA** (*Pin Grid Arrays*) o **LGA** (*Land Grid Arrays*). I PGA hanno pin sul fondo che si inseriscono in un alloggiamento sulla scheda madre, spesso con un meccanismo per facilitare l'inserimento. I LGA hanno pad piatti sul fondo e una copertura sul socket LGA applica una forza verso il basso per assicurare il contatto tra i pad.
+
+I DIP hanno una marcatura in un angolo che deve coincidere con un segno sul socket DIP. I PGA hanno in genere un pin mancante per l'orientamento. 
+
+Per i nostri scopi, consideriamo le porte logiche ideali, con output immediato al voltaggio in input. Tuttavia, in realtà, i chip hanno un ritardo temporale finito, chiamato **ritardo della porta**, che include il tempo di propagazione del segnale e il tempo di commutazione, solitamente tra centinaia di picosecondi e pochi nanosecondi.
+
+(pagine riassunte: 1.5)
 ### 3.2.2 - Reti combinatorie
 
 ### 3.2.3 - Circuiti per l'aritmetica

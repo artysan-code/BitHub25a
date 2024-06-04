@@ -34,7 +34,15 @@ Sia le porte NAND che NOR sono funzionalmente complete, il che significa che qua
 
 (pagine riassunte: 2)
 ### 3.1.4 - Equivalenza di circuiti
+I progettisti cercano di ridurre il numero di porte logiche nei circuiti per limitare le dimensioni delle schede, ridurre il consumo energetico e aumentare la velocità. Per farlo, devono trovare un circuito alternativo che calcoli la stessa funzione con meno porte.
 
+Molte regole dell'algebra ordinaria valgono anche per l'algebra booleana, come la proprietà distributiva: $( AB + AC \implies A(B + C) )$. Due funzioni sono equivalenti se hanno lo stesso output per tutti gli input possibili, verificabile tramite tabelle di verità. Solitamente, i progettisti semplificano una formula usando le leggi dell'algebra di Boole prima di costruire il circuito finale.
+
+È utile conoscere alcune identità fondamentali, molte delle quali hanno forme **duali** ottenibili scambiando AND con OR e 1 con 0. La legge di De Morgan può essere estesa a più variabili, per esempio $( ABC = A + B + C )$.
+
+La stessa porta logica può calcolare diverse funzioni a seconda delle convenzioni di tensione adottate. Con la **logica positiva**, 0 volt rappresenta il valore logico 0 e 1,5 volt il valore logico 1, risultando in una funzione AND. Con la **logica negativa**, 0 volt rappresenta il valore logico 1 e 1,5 volt il valore logico 0, risultando in una funzione OR. D'ora in poi, salvo diversa indicazione, si utilizzerà la logica positiva.
+
+(pagine riassunte: 3.5)
 ## 3.2 - Circuiti logici digitali elementari
 
 ### 3.2.1 - Circuiti integrati

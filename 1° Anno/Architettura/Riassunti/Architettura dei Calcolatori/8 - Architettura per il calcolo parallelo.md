@@ -185,6 +185,16 @@ Supponendo di classificare i flussi in 1 o molteplici, abbiamo quattro categorie
 
 (Pagine riassunte: 7.5)
 ### 8.3.2 - Semantica della memoria
+Nei multiprocessori le metodologie di accesso alla memoria pongono problemi di progettazione e gestione delle richieste di memoria. Per apprendere al meglio questo concetto di gestione della memoria, dobbiamo stabilire la **semantica della memoria**, che consiste in un contratto tra hardware, software e memorie. Le regole che stabiliscono questa semantica si chiamano **modelli di consistenza**.
+#### Consistenza stretta
+Un'utopia, in cui ogni locazione $x$ ritorna il valore di scrittura più recente, impossibile da implementare se non tramite un modulo di memoria che serve tutte le richieste nell'ordine in cui sono recapitate, che diventa un collo di bottiglia per l'intero sistema.
+#### Consistenza sequenziale
+
+#### Consistenza di processore
+
+#### Consistenza debole
+
+#### Consistenza dopo rilascio
 
 
 (Pagine riassunte: 4)

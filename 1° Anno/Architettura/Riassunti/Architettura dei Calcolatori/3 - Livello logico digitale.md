@@ -18,7 +18,21 @@ Una funzione booleana può essere espressa come una somma di prodotti logici di 
 
 (pagine riassunte: 2)
 ### 3.1.3 - Implementazione delle funzioni booleane
+Implementare una funzione booleana come somma di prodotti è un metodo efficace. Ecco i passaggi per creare un circuito che realizzi qualsiasi funzione booleana:
 
+1. Scrivi la tabella di verità della funzione.
+2. Usa invertitori per generare la negazione di ciascun input.
+3. Utilizza una porta AND per ogni combinazione di input che produce un risultato 1.
+4. Collega le porte AND agli input appropriati.
+5. Collega tutti gli output delle porte AND a una porta OR.
+
+Questo metodo dimostra che ogni funzione booleana può essere implementata con le porte NOT, AND e OR. Tuttavia, può essere più vantaggioso utilizzare un solo tipo di porta logica, come le NAND o le NOR.
+
+Per implementare una funzione booleana usando solo porte NAND o NOR, si può iniziare con le porte NOT, AND e OR e poi sostituirle con circuiti equivalenti a due ingressi. Ad esempio, $A + B + C + D$ può essere calcolato come $(A + B) + (C + D)$ usando tre porte logiche a due ingressi.
+
+Sia le porte NAND che NOR sono funzionalmente complete, il che significa che qualsiasi funzione booleana può essere realizzata utilizzando solo uno di questi due tipi di porte. Questa proprietà le rende particolarmente utili nella costruzione dei circuiti.
+
+(pagine riassunte: 2)
 ### 3.1.4 - Equivalenza di circuiti
 
 ## 3.2 - Circuiti logici digitali elementari

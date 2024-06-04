@@ -210,7 +210,44 @@ Queste sincronizzazioni, quindi, assicurano spazi temporali ordinati, ma non tut
 
 (Pagine riassunte: 4)
 ### 8.3.3 - Architetture di multiprocessori simmetrici UMA
+I multiprocessori più semplici comunicano su un solo bus, uno alla volta, controllando se è libero e in caso inserendo l'indirizzo di memoria richiesto. Se il bus è occupato, la CPU deve aspettare che si liberi, rendendola inattiva.
 
+Una soluzione è l'implementazione di una memoria cache, che riduce il carico del bus e permette alla CPU di eseguire alcune operazioni tramite questa. Il problema risulta nella coerenza della cache (vedremo dopo).
+
+Un'ulteriore implementazione è la memoria privata con un bus dedicato, che permette alle CPU di attingere alla memoria condivisa solo per le variabili condivise; questo metodo richiede però una cooperazione attiva del compilatore, in quanto i programmi, le variabili e gli stack devono essere caricati nella memoria privata.
+#### Cache snooping
+Il problema della coerenza della cache emerge quando una CPU accede a dati aggiornati da un'altra CPU. Se la CPU 1 vuole leggere una linea di cache già modificata dalla CPU 2, può farlo, ma se entrambe accedono contemporaneamente alla stessa linea, potrebbero verificarsi problemi. La CPU 2 potrebbe ottenere una copia della linea e lavorarci, ma se la CPU 1 apporta modifiche, la CPU 2 lavorerà su **dati obsoleti**.
+
+Questo è proprio il **problema della coerenza** o **consistenza della cache**. Vengono però proposte molte soluzioni che si presentano come **protocolli di coerenza della cache** e ora li analizzeremo.
+
+Tutte queste sono accomunate da un principio di controllo sui trasferimenti del bus tramite dei dispositivi chiamati **snooping cache** o **snoopy cache**.
+
+Il più semplice protocollo si chiama **write through**: se una CPU non trova un dato nella cache (*read miss*) il controllore carica nella cache il dato richiesto, così le successive letture saranno soddisfate (*read hit*) tenendo aggiornata la variabile. Un fallimento di scrittura (*write miss*) la parola modificata viene salvata in memoria e la linea contenente la parola non viene caricata nella cache. In caso di successo di scrittura (*write it*) viene aggiornata la cache e inoltre la parola viene scritta direttamente in memoria principale.
+
+continuo di questo sottocapitolo da studiare da rivedere, perché veramente troppo dettagliato.
+
+#### Protocollo MESI di coerenza delle cache
+**MESI** è un protocollo di coerenza di tipo *write-back* ed è basato sul protocollo *write-once*. Viene usato sul Pentium per lo snooping sul bus e presenta quattro stadi in cui si possono trovare gli elementi:
+- Non valido, quando l'elemento in cache non contiene dati validi.
+- Condiviso, quando la linea potrebbe essere contenuta in più di una cache, la memoria è aggiornata.
+- Esclusivo, quando la linea è unica e nessuna cache contiene la linea, la memoria è aggiornata.
+- Modificato, l'elemento è valido ma la memoria non lo è, non ci sono altre copie della linea.
+
+*come prima la spiegazione passo per passo per capire è lunga e poco riassumibile, ma l'immagine aiuta*
+#### Multiprocessori UMA con commutatori crossbar
+Per quanto si possa ottimizzare il sistema, un bus non è sufficiente per 16 o 32 CPU. Per questo motivo si utilizza un meccanismo chiamato **commutatore crossbar**, utilizzato anche nei centralini telefonici, che collega k CPU a k memorie.
+
+Ad ogni intersezione tra le linee verticali di uscita e quelle orizzontali di ingresso, c'è un **crosspoint**, un piccolo commutatore che può essere aperto o chiuso. Quando viene chiuso, permette la comunicazione con la linea intersecata (vedere fig. 8.29 (a)) e vengono chiusi per impedire che i collegamenti formati si intreccino, come nel gioco degli scacchi dove le torri non si attaccano.
+
+Queste reti sono **non bloccanti**, quindi non viene mai negato un collegamento a una CPU e non necessitano di pianificazione per nuovi collegamenti. Tuttavia, presentano limiti fisici all'aumentare del numero di CPU e memorie.
+#### Multiprocessori UMA con reti a commutazione multilivello
+Supponendo di organizzare ora questi collegamenti con un commutatore 2 x 2 con due ingressi e due uscite. I messaggi possiamo impostarli in quattro parti per comodità: modulo di memoria da usare, indirizzo del modulo, opcode dell'operazione e valore.
+
+Come rendere questo un metodo ottimale per sistemi più complessi? Abbiamo una possibilità economica e senza problemi, la **rete omega**.
+
+Collega n CPU a n memorie con $\log_{2}{n}$ **livelli** di $\frac{n}{2}$ commutatori ciascuno, quindi $\log_{2}{n}\frac{n}{2}$ commutatori, molto più efficiente del sistema precedente. Spesso ci si riferisce a questa rete con il termine **mescolamento perfetto**. Al ricevimento di un segnale di READ, il primo commutatore al primo livello legge il primo bit del modulo richiesto, se è 0 lo instrada verso le linee superiori, viceversa con 1. Diventando inutili questi bit, verranno sostituiti con l'indirizzo del destinatario, per rimandare indietro la richiesta.
+
+A differenza della rete con commutatori a crossbar però questa è una rete **bloccante**, cioè che non permette in caso di conflitti nei commutatori di far passare ogni richiesta. Una tecnica comune è quella di usare i bit meno significativi come numero di modulo, così da distribuire parole consecutive in diversi moduli (Quindi un modulo non ha tutte parole consecutive, ma diversi moduli hanno diverse parole consecutive). Un sistema di memoria in cui le parole consecutive si trovano in moduli diversi si chiama **interlacciato** e massimizza il parallelismo perché i riferimenti della memoria sono consecutivi.
 
 (Pagine riassunte: 8.5)
 ### 8.3.4 - Multiprocessori NUMA

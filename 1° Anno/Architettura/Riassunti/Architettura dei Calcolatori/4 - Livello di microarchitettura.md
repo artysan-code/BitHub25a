@@ -350,6 +350,26 @@ Se l'istruzione di diramazione non è presente nella tabella, si utilizza la pre
 2) Se è un salto in avanti, si assume faccia parte di un'if, e non si effettua la diramazione In questo caso la precisione non è elevata.
 Se viene effettuato il salto, si consulta il **BTB** (Branch Target Buffer). Il BTB mantiene l'indirizzo di destinazione dell'ultima occorrenza del salto. Di solito la destinazione è corretta, ma codici come lo switch in c++, avendo molteplici destinazione, rende questo sistema non molto corretto, rendendo le predizioni errate.
 
+La seconda parte della **pipeline**, ovvero l'unità di controllo dell'esecuzione fuori sequenza, è alimentata dalla cache delle micro-operazioni. Man mano che le micro-operazioni giungono dal front-end (fino a 4 per ciclo), l'unità di **allocazione e rinomina** ne tiene traccia in una tabella chiamata **ROB** (ReOrder Buffer), che può contenere fino a 168 elementi. 
+Questa unità effettua un controllo per verificare se le risorse richieste sono disponibili. Se lo sono, la micro-istruzione viene inserita in una delle due code dello schedulatore: una per le micro-operazioni di memoria e una per tutte le altre.
+In caso contrario, la micro-istruzione viene ritardata fino a che le risorse richieste non diventino disponibili. Nel frattempo, le altre micro-istruzioni vengono elaborate: questo crea un sistema di esecuzione fuori sequenza delle micro-istruzioni.
+Può succedere che una micro istruzione rimanga in stallo, a causa di risorse non accessibili in quel momento: in questo caso avviene la rinomina della sua destinazione, utilizzando uno dei 160 registri di lavoro invece che la risorsa richiesta. Se non fossero disponibili, l'allocatore annota la natura del problema all'interno dell'elemento della tabella ROB. La micro istruzione viene poi inserita in una delle cose di esecuzione, e nel momento in cui si libera la risorsa richiesta sarà eseguita.
+
+Una volta che la micro-istruzione è pronta ad essere eseguita, l'unità di allocazione e rinomina le inserisce i una delle due code dello schedulatore. Queste code inviano la micro istruzione alle sei unità funzionali:
+1) ALU 1 e unità per moltiplicazioni in virgola mobile
+2) ALU 2 e unità per addizioni e sottrazioni in virgola mobile
+3) ALU 3, trattamento dei salti e unità per confronti in virgola mobile
+4) istruzioni di memorizzazione
+5) istruzioni di caricamento 1
+6) istruzioni di caricamento 2
+
+Le tre ALU non sono identiche:
+
+1) La ALU 1 può eseguire tutte le operazioni aritmetiche e logiche, oltre alle operazioni e alle divisioni. 
+2) La ALU 2 può invece eseguire solamente istruzioni aritmetiche e logiche.
+3) La ALU 3 può eseguire operazioni aritmetiche e logiche e risolvere i salti.
+
+L'architettura Sandy Bridge ha introdotto le istruzioni AVX (Advanced Vector Extension) che supportano operazioni a 128 bit sui vettori. 
 ### 4.6.2 - Microarchitettura della CPU OMAP4430
 
 ### 4.6.3 - Microarchitettura del microcontrollore ATmega168

@@ -185,17 +185,28 @@ Supponendo di classificare i flussi in 1 o molteplici, abbiamo quattro categorie
 
 (Pagine riassunte: 7.5)
 ### 8.3.2 - Semantica della memoria
-Nei multiprocessori le metodologie di accesso alla memoria pongono problemi di progettazione e gestione delle richieste di memoria. Per apprendere al meglio questo concetto di gestione della memoria, dobbiamo stabilire la **semantica della memoria**, che consiste in un contratto tra hardware, software e memorie. Le regole che stabiliscono questa semantica si chiamano **modelli di consistenza**.
+Nei multiprocessori, le metodologie di accesso alla memoria pongono problemi di progettazione e gestione delle richieste di memoria. Per comprendere meglio questo concetto, dobbiamo definire la **semantica della memoria**, che consiste in un contratto tra hardware, software e memorie. Le regole che stabiliscono questa semantica si chiamano **modelli di consistenza**.
 #### Consistenza stretta
-Un'utopia, in cui ogni locazione $x$ ritorna il valore di scrittura più recente, impossibile da implementare se non tramite un modulo di memoria che serve tutte le richieste nell'ordine in cui sono recapitate, che diventa un collo di bottiglia per l'intero sistema.
+Un'utopia, in cui ogni locazione $x$ ritorna il valore di scrittura più recente, è impossibile da implementare se non tramite un modulo di memoria che serve tutte le richieste nell'ordine in cui sono recapitate, il che diventa un collo di bottiglia per l'intero sistema.
 #### Consistenza sequenziale
+In questa implementazione, quando ci sono diverse richieste di scrittura o lettura nella stessa area di memoria, l'hardware effettua un **rimescolamento non deterministico** e ne *rende partecipe tutte le CPU che hanno fatto richiesta*. 
 
+Lo scopo fondamentale è che vi sia una sequenza definita a tutti gli ambiti (quindi le CPU) e che non ci siano discrepanze (Se la CPU 1 scrive 100, la CPU 2 scrive 200 e CPU 3 e 4 leggono entrambe leggeranno o 100 o 200 ma mai diversamente) anche se meno stretto.
 #### Consistenza di processore
+Questo metodo è meno rigoroso ma molto più facile da implementare, soprattutto per multiprocessori di notevoli dimensioni. Si basa su due concetti:
+- Le scritture di ogni CPU sono percepite da tutte le altre CPU nello stesso ordine in cui sono state emesse.
+- Per ogni parola di memoria, tutte le CPU vedono lo stesso ordine di scritture al suo interno.
 
+La prima impone una certezza sull'ordine delle scritture eseguite sulla memoria da parte di tutte le CPU, mentre la seconda impone che non vi sia ambiguità su ciò che è stato scritto su un'area di memoria; tutti devono concordare su chi ha scritto per ultimo. Questo metodo, però, **non garantisce che tutte le CPU vedano le modifiche nello stesso ordine**, ma garantisce l'ordine delle scritture.
 #### Consistenza debole
+Questa non garantisce nemmeno l'ordine delle scritture, il che potrebbe farla sembrare ancora meno attenta. Per risolvere un po' del caos, questo sistema possiede delle variabili e delle operazioni di sincronizzazione, dove ogni CPU deve terminare il proprio lavoro e fermarsi.
 
+Questa operazione effettua un **flush della pipeline** e conduce la memoria a uno stato stabile senza operazioni pendenti. Queste operazioni sono sequenzialmente consistenti, in quanto anche se vengono emesse da più CPU, tutti i processori percepiscono lo stesso ordine globale.
+
+Queste sincronizzazioni, quindi, assicurano spazi temporali ordinati, ma non tutta la sequenza ordinata (vedere il libro fig. 8.25).
 #### Consistenza dopo rilascio
 
+*da rivedere non sono riuscito a capirlo*
 
 (Pagine riassunte: 4)
 ### 8.3.3 - Architetture di multiprocessori simmetrici UMA

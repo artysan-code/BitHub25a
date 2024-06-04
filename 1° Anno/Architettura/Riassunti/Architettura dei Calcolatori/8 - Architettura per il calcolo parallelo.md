@@ -173,10 +173,15 @@ Le implementazioni della memoria condivisa possono essere riassunte utilizzando 
 
 Questi approcci permettono di sfruttare al meglio le caratteristiche dei multiprocessori e dei multicomputer, combinando la facilità di costruzione con l'efficienza nella comunicazione e nell'elaborazione.
 #### Tassonomia dei calcolatori paralleli
-Abbiamo uno schema approssimativo che organizza i calcolatori paralleli, fornito da Flynn che si basa su due concetti fondamentali: **flussi di istruzioni** e **flussi di dati**.
+Abbiamo uno schema approssimativo che organizza i calcolatori paralleli, fornito da Flynn, che si basa su due concetti fondamentali: **flussi di istruzioni** e **flussi di dati**.
 
 Supponendo di classificare i flussi in 1 o molteplici, abbiamo quattro categorie principali di processori:
-- 
+- **SISD**, macchina sequenziale classica di von Neumann, una istruzione produce un dato.
+- **SIMD**, possono ricevere a volta solo un tipo di istruzione, ma operare simultaneamente su diversi dati. Si dividono in due categorie: **processori vettoriali** e **unità di calcolo vettoriali**.
+- **MISD**, categoria particolare dove diverse istruzioni lavorano sugli stessi dati.
+- **MIMD**, un insieme di CPU indipendenti che lavorano su molteplici dati, come i multicomputer e multiprocessori o generalmente le macchine parallele. La classificazione si complica ulteriormente con le *categorie di multicomputer e multiprocessori*:
+	- I multiprocessori si dividono per la metodologia di implementazione della memoria condivisa e sono: **UMA** (Uniform Memory Access), **NUMA** (Non-Uniform Memory Access) e **COMA** (Cache Only Memory Access).
+	- I multicomputer, detti anche **NORMA** (No Remote Memory Access), si dividono in due categorie: **MPP** (Massively Parallel Processor) collegati da una rete strettamente legata e **COW** (Cluster of Workstations), o **NOW** (Network of Workstations) o più semplicemente **clusters**.
 
 (Pagine riassunte: 7.5)
 ### 8.3.2 - Semantica della memoria

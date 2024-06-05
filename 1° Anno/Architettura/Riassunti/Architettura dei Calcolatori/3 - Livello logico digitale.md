@@ -140,7 +140,11 @@ Un buon modo per risolvere l'ambiguità dei latch SR è... evitare che si verifi
 
 (pagine riassunte: 2.75)
 ### 3.3.2 - Flip-Flop
+In molti circuiti è necessario campionare il valore di una certa linea in un particolare istante e memorizzarlo. In questi circuiti, chiamati **flip-flop**, la transizione di stato non si verifica quando il clock vale 1, ma durante la transizione del clock da 0 a 1 (fronte salita) oppure da 1 a 0 (fronte discesa). In questa situazione la lunghezza dell’impulso del clock non ha alcuna importanza, purché le transizioni si verifichino con sufficiente velocità.
 
+Per sottolinearlo ulteriormente ripetiamo la differenza che c’è tra un flip-flop e un latch: un flip-flop è a **commutazione sul fronte**, mentre un latch è a **commutazione a livello**. Esistono vari approcci per progettare un flip-flop. Se per esempio esistesse un metodo per generare un impulso di lunghezza estremamente breve sul fronte di salita, si potrebbe immettere tale impulso in un latch D. Occorre sottolineare che il vantaggio dell’ architettura di questo flip-flop è di essere di facile comprensione; tuttavia nella realtà si ricorre di solito ad architetture più sofisticate.
+
+(pagine riassunte: 2.25)
 ### 3.3.3 - Registri
 
 ### 3.3.4 - Organizzazione della memoria

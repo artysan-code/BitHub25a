@@ -90,7 +90,28 @@ Anche se i PLA *programmabili sul campo*, come quello appena descritto, vengono 
 
 (pagine riassunte: 1.5)
 ### 3.2.3 - Circuiti per l'aritmetica
+Inizieremo con un semplice registro a scorrimento (*shifter*) a 8 bit. continueremo guardando com’è costruito un sommatore e infine esamineremo le unità aritmetico-logiche che svolgono un ruolo centrale all’interno di tutti i calcolatori.
+#### 3.2.3.1 - Registri a scorrimento
+Il primo circuito aritmetico MSI che analizziamo ha otto input e otto output. Gli input sono collegati alle linee $D_{0}, ..., D_{7}$ mentre l’output, corrispondente all’input traslato di un bit, risulta disponibile sulle linee $S_{0}, ..., S_{7}$ La linea di controllo, C, ha valore 0 se lo spostamento deve avvenire verso sinistra, e 1 in caso contrario. Nel caso di uno spostamento a sinistra si inserisce uno 0 nel bit 7, e nel caso di uno shift a destra si inserisce uno 0 nel bit 0. Quando $C = 1$ la porta che si trova a destra in ciascuna coppia viene abilitata, lasciando passare il bit corrispondente verso l’output. Dato che la porta AND è collegata all’input della porta OR alla sua destra, si ottiene uno scorrimento verso destra. Quando $C = 0$ è la porta AND di sinistra in ciascuna coppia a essere abilitata, producendo uno spostamento verso sinistra.
 
+Figura 3.15
+#### 3.2.3.2 - Sommatori
+La Figura 3.16(b) mostra un **half adder** (*semisommatore*), che calcola il bit della somma e il bit del riporto. Questo circuito può sommare i bit meno significativi di due stringhe binarie, ma non gestisce il riporto da posizioni precedenti, quindi non può sommare correttamente gli altri bit. Per questo è necessario un **sommatore**.
+
+In un sommatore, il riporto in uscita di un bit è usato come riporto in entrata per il bit successivo a sinistra. Il riporto in entrata del bit più a destra è impostato a 0. Questo tipo di sommatore è chiamato **sommatore a propagazione di riporto**, poiché nel caso peggiore, sommando 1 a 111...111, la somma si completa solo dopo che il riporto si è propagato lungo tutta la parola binaria. Esistono sommatori più veloci che non hanno questo ritardo.
+
+Una modifica proposta consiste nell'avere due sommatori per i bit più significativi funzionanti in parallelo, *U0* e *U1*, insieme a un sommatore per i bit meno significativi. In *U0* il riporto è impostato a 0, mentre in *U1* è impostato a 1. Tutti e tre i sommatori iniziano contemporaneamente, ma solo uno tra *U0* e *U1* sarà corretto. Il sommatore corretto viene selezionato in base al riporto. Questo approccio, chiamato **sommatore a selezione del riporto**, dimezza il tempo necessario per l'addizione.
+#### 3.2.3.3 - Unità aritmetico logiche
+La maggior parte dei calcolatori contiene un unico circuito capace di effettuare operazioni AND, OR e somma di due parole. Questo circuito, chiamato **unità aritmetico logica** o **ALU** (*Arithmetic Logic Unit*), è composto da n circuiti identici per le singole posizioni dei bit e può calcolare una delle quattro funzioni: ( $A \ AND\ B$), ( $A \ OR\ B$), ($\overline{B}$ ) oppure ($A + B$), in base ai valori binari delle linee di selezione ($F_{0}$) e ($F_{1}$).
+
+La Figura 3.18 mostra la struttura della ALU:
+- **In basso a sinistra**: un decodificatore a 2 bit che genera i segnali di attivazione delle quattro operazioni in base ai segnali di controllo \( $F_{0}$ \) e \( $F_{1}$ \).
+- **In alto a sinistra**: le porte logiche per calcolare ($A \ AND\ B$), ($A \ OR\ B$) e ($\overline{B}$). Solo uno di questi risultati viene passato alla porta logica finale OR, in base alle linee di attivazione.
+- **In basso a destra**: un sommatore che calcola la somma di A e B e gestisce i riporti, permettendo a vari circuiti dello stesso tipo di collegarsi tra loro per operazioni su intere parole. Questi circuiti, chiamati **bit slices**, permettono di costruire ALU di larghezza arbitraria.
+
+Figura 3.18
+
+(pagine riassunte: 4.5)
 ### 3.2.4 - Clock
 
 ## 3.3 - Memoria

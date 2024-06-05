@@ -205,8 +205,15 @@ Questa operazione effettua un **flush della pipeline** e conduce la memoria a un
 
 Queste sincronizzazioni, quindi, assicurano spazi temporali ordinati, ma non tutta la sequenza ordinata (vedere il libro fig. 8.25).
 #### Consistenza dopo rilascio
+La **consistenza debole** è inefficiente perché richiede il completamento di tutte le operazioni di memoria pendenti e blocca le nuove operazioni finché le precedenti non sono terminate. Un miglioramento a questo modello è la **consistenza dopo rilascio** (*release consistency*), che adotta un approccio simile alle sezioni critiche.
 
-*da rivedere non sono riuscito a capirlo*
+Quando un processo esce da una regione critica, non è necessario completare immediatamente tutte le scritture. Basta assicurarsi che vengano effettuate prima che un altro processo rientri nella regione critica. Questo modello suddivide l'operazione di sincronizzazione della consistenza debole in due operazioni distinte:
+1. **acquire**: Prima di leggere o scrivere una variabile condivisa, la CPU deve eseguire un'operazione acquire sulla variabile di sincronizzazione per ottenere l'accesso esclusivo ai dati condivisi.
+2. **release**: Al termine dell'uso della variabile condivisa, la CPU esegue un'operazione release per rilasciare l'accesso. La release non forza il completamento immediato di tutte le scritture pendenti, ma attende che tutte le scritture precedenti siano completate senza ritardare nuove operazioni di memoria.
+
+Quando si esegue una acquire, si verifica se tutte le release precedenti sono state completate. Se non lo sono, la acquire rimane sospesa fino al loro termine. Questo schema evita di ritardare frequentemente le istruzioni, mantenendo comunque la consistenza.
+
+La ricerca sui modelli di consistenza della memoria continua, con nuovi approcci in fase di sviluppo.
 
 (Pagine riassunte: 4)
 ### 8.3.3 - Architetture di multiprocessori simmetrici UMA

@@ -324,7 +324,22 @@ I multicomputer operano tramite le primitive *send* e *receive* per lo scambio e
 
 (Pagine riassunte: 1)
 ### 8.4.1 - Reti d'interconnessione
+Similmente ai multiprocessori, abbiamo visto che i multicomputer posseggono una rete di interconnessione che collega tutti i nodi. Entrambe sono reti di scambio messaggi o meglio **pacchetti** ed è una caratteristica comune ad ogni elaboratore di dati.
+#### Topologia
+La topologia dei collegamenti definisce come vengono effettuati i collegamenti in una rete d'interconnessione ed è rappresentata tramite grafi. Ogni nodo ha dei collegamenti in uscita, il cui numero è chiamato **grado del nodo** o **fanout**. Un maggiore fanout offre più possibilità di instradamento e riduce gli errori; una rete di grado k può rimanere operativa anche senza k - 1 collegamenti.
 
+Altre caratteristiche importanti includono:
+- **Diametro** della rete d'interconnessione: il percorso più lungo tra due nodi, rappresentando il caso peggiore.
+- **Larghezza di banda di bisezione**: la capacità di trasmissione al secondo, ottenuta dividendo la rete a metà e scollegando i nodi tra le due parti. La larghezza di banda di bisezione è il numero più basso di collegamenti rimossi tra tutte le possibili divisioni, rappresentando il caso peggiore di trasferimento.
+- **Dimensionalità**: il numero di modi con cui un nodo può raggiungere un altro nodo. Una rete è *zero-dimensionale* se non ci sono alternative di percorso, *uno-dimensionale* se c'è una scelta (ad esempio, andare a destra o sinistra), *due-dimensionale* con due assi, e così via.
+
+Esistono diversi modi per creare una rete di connessione (vedi fig. 8.37):
+- **Stella**: ogni nodo è collegato a un nodo centrale usato solo per la commutazione, ma diventa un collo di bottiglia con l'aumento delle richieste.
+- **Interconnessione completa**: un grafo completo dove ogni nodo è collegato a ogni altro nodo, molto efficiente ma costoso.
+- **Albero**: presenta problemi di larghezza di banda di bisezione; il traffico vicino alla radice diventa un collo di bottiglia. Può essere migliorato con un **albero grasso**, dove i nodi vicino alla cima hanno maggiore capacità di collegamento.
+- **Anello**: ogni nodo è collegato ai suoi adiacenti, di tipo monodimensionale.
+- **Griglia o mesh**: un progetto bidimensionale molto usato a livello commerciale, regolare e facile da implementare. Il diametro cresce con la radice quadrata del numero di nodi. Una variante migliorata è il **toro**, dove i vertici opposti sono collegati tra loro, riducendo errori e diametro.
+- **Cubo**: un tipo tridimensionale che può essere esteso a quattro dimensioni duplicandolo e collegando i nodi corrispondenti. Lo stesso vale per le cinque dimensioni e oltre, formando un **ipercubo n-dimensionale**.
 
 (Pagine riassunte: 3.5)
 ### 8.4.2 - Massive Parallel Processors

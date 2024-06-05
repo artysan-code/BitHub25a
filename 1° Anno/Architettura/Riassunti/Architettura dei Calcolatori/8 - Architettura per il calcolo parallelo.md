@@ -274,7 +274,14 @@ A differenza della rete con commutatori a crossbar però questa è una rete **bl
 
 (Pagine riassunte: 8.5)
 ### 8.3.4 - Multiprocessori NUMA
+I processori UMA a singolo bus sono limitati a una dozzina di bus, mentre quelli con rete omega o a commutazione crossbar sono molto costosi. Per raggiungere centinaia di CPU bisogna rinunciare all'idea che tutti i moduli di memoria richiedano lo stesso tempo di accesso, proprio la filosofia di un multiprocessore di tipo **NUMA**; come i cugini UMA gestisce un solo spazio di indirizzamento, ma garantendo una maggiore velocità ai moduli circostanti.
 
+Sono distinguibili da tre caratteristiche:
+- C'è un solo spazio degli indirizzi visibile alle CPU.
+- L'accesso alle memorie distanti si effettua tramite istruzioni LOAD e STORE.
+- L'accesso alla memoria distante è più lento rispetto a quella vicina.
+
+Si parla inoltre di **NC-NUMA** quando manca il sistema di caching oppure, viceversa, di **CC-NUMA** quando sono presenti cache coerenti. 
 
 (Pagine riassunte: 9)
 ### 8.3.5 - Multiprocessori COMA

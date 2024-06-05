@@ -314,11 +314,43 @@ Per il secondo problema, basta non cancellare l'ultima copia di una linea; si pu
 
 (Pagine riassunte: 1.5)
 ## 8.4 - Multicomputer a scambio di messaggi
+Abbiamo già trattato le differenze tra multicomputer e multiprocessori; sommando tutte le competenze acquisite ora arriviamo a differenze prestazionali ed economiche molto significative. 
+
+Il sistema operativo percepisce i multiprocessori come dotati di memoria condivisa su cui eseguono istruzioni di load e store. Tuttavia, i multiprocessori hanno l'enorme svantaggio economico di non poter ospitare un gran numero di calcolatori, mentre i multicomputer eccellono in questo aspetto.
+
+Vedremo nel capitolo successivo che, sebbene i multiprocessori abbiano raggiunto configurazioni con 72 chip a doppia CPU (come nel Sun E25K), esistono multicomputer con fino a 65.536 CPU. Anche se i multiprocessori sono molto più semplici da sviluppare per i programmatori, i multicomputer sono allettanti per la loro potenza di calcolo parallelo.
+
+I multicomputer operano tramite le primitive *send* e *receive* per lo scambio esplicito di messaggi e sono implementati in sistemi con reti di scambio ad alta velocità. Per una maggiore comprensione, si può fare riferimento alla figura 8.36, che mostra come siano costituiti da diversi elementi (che possiamo vedere come se fossero computer) che comunicano tra loro attraverso una rete di interconnessione molto veloce.
+
+(Pagine riassunte: 1)
 ### 8.4.1 - Reti d'interconnessione
+
+
+(Pagine riassunte: 3.5)
 ### 8.4.2 - Massive Parallel Processors
+
+
+(Pagine riassunte: 10)
 ### 8.4.3 - Cluster
+
+
+(Pagine riassunte: 5.5)
 ### 8.4.4 - Software di comunicazione per multicomputer
+
+
+(Pagine riassunte: 2.5)
 ### 8.4.5 - Scheduling
+
+
+(Pagine riassunte: 1)
 ### 8.4.6 - Memoria condivisa a livello applicativo
+
+
+(Pagine riassunte: 7.5)
 ### 8.4.7 - Prestazioni
+
+
+(Pagine riassunte: 6.25)
 ## 8.5 - Grid Computing
+
+(Pagine riassunte: 3)

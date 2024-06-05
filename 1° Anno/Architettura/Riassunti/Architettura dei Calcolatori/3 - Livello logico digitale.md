@@ -113,7 +113,16 @@ Figura 3.18
 
 (pagine riassunte: 4.5)
 ### 3.2.4 - Clock
+In molti circuiti digitali, l'ordine degli eventi è cruciale e viene gestito tramite **clock**, che emettono impulsi a intervalli costanti. L'intervallo tra due impulsi consecutivi è detto **ciclo di clock**.
 
+Un calcolatore può eseguire più eventi durante un ciclo di clock. Per una risoluzione temporale più fine, si può ritardare il segnale del clock principale, generando un secondo segnale di clock con una fase traslata. Il diagramma di temporizzazione fornisce quattro riferimenti temporali per sincronizzare eventi discreti:
+
+1. Fronte di salita di C1.
+2. Fronte di discesa di C1.
+3. Fronte di salita di C2.
+4. Fronte di discesa di C2.
+
+Associando eventi a questi quattro fronti, si può stabilire una sequenza desiderata. Se servono più di quattro riferimenti temporali in un ciclo di clock, si collegano altre linee secondarie al clock principale e si usano circuiti con ritardi diversi.
 ## 3.3 - Memoria
 
 ### 3.3.1 - Latch

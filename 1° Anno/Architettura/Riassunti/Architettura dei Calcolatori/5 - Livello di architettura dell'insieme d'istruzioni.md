@@ -1,6 +1,6 @@
 Questo capitolo descrive il livello di architettura dell'insieme d'istruzioni (ISA), posizionato tra la microarchitettura e il sistema operativo. L'ISA è fondamentale per i progettisti di sistemi perché costituisce l'interfaccia tra software e hardware.
 
-I progettisti traducono i linguaggi di alto livello nell'ISA e costruiscono l'hardware per eseguirlo. Quando si sviluppa una nuova macchina, è cruciale mantenere la compatibilità con i modelli precedenti, sia per il sistema operativo che per le applicazioni. Questo garantisce che i vecchi programmi funzionino sui nuovi processori, preservando l'investimento degli utenti nel loro software.
+Quando si sviluppa una nuova macchina, è cruciale mantenere la **retrocompatibilità** con i modelli precedenti, sia per il sistema operativo che per le applicazioni. Questo garantisce che i vecchi programmi funzionino sui nuovi processori, preservando l'investimento degli utenti nel loro software.
 
 Gli ISA devono essere efficienti per essere economicamente vantaggiosi. Un buon ISA richiede meno risorse hardware e supporta una compilazione del codice efficace, rendendo più semplice per i compilatori generare codice ottimizzato. In sintesi, l'ISA deve soddisfare le esigenze sia dei progettisti hardware che software.
 

@@ -343,6 +343,10 @@ Esistono diversi modi per creare una rete di connessione (vedi fig. 8.37):
 
 (Pagine riassunte: 3.5)
 ### 8.4.2 - Massive Parallel Processors
+La prima categoria di multicomputer è la **MPP** (Massive Parallel Processors), enormi computer con costi di svariati milioni, successori dei mainframe. Utilizzano calcolatori standard e sono dotati di una rete di interconnessione ad alta banda e velocità, con software brevettati. Gli MPP hanno un'enorme capacità I/O e operano generalmente con trasferimenti di piccoli pacchetti. Presentano una bassa tolleranza agli errori, che possono bloccare calcoli importanti per ore, quindi sono dotati di hardware e software di controllo per mitigare questi problemi.
+#### BlueGene
+
+#### Red Storm
 
 
 (Pagine riassunte: 10)

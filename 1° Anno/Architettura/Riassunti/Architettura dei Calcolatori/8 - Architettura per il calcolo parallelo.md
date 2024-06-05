@@ -302,7 +302,15 @@ Non tratteremo però le migliorie specifiche.
 
 (Pagine riassunte: 9)
 ### 8.3.5 - Multiprocessori COMA
+Le macchine precedentemente analizzate presentano diversi problemi all'aumentare della grandezza del multiprocessore, come lenti accessi alla memoria distante, fallimenti di cache e colli di bottiglia, principalmente legati alla gestione della memoria e alla distanza delle chiamate.
 
+Usare ogni memoria principale di una CPU come cache risolve questi problemi, ed è il principio del progetto **COMA** (Cache Only Memory Access), che non richiede che ogni pagina abbia una macchina prefissata di appartenenza come nei NUMA e CC-NUMA. Lo spazio di indirizzi fisici è diviso in linee di cache che vengono trasferite all'interno del sistema su richiesta.
+
+Una memoria che si limita ad attrarre le linee richieste si chiama **memoria attrattiva**. Il principio della RAM principale come grande cache aumenta notevolmente il tasso di hit e le performance, ma comporta altri problemi: come localizzare le linee di cache e cosa succede quando viene estromessa dalla memoria l'ultima copia di una linea.
+
+Per risolvere il primo problema, si può mappare le pagine intere in una bitmap, dove ciascun bit corrisponde a una linea di cache e ne indica la presenza o assenza. Questo è un tipo di **COMA semplice** o **S-COMA**; se una linea è presente, deve trovarsi nella posizione corretta della sua pagina. Se non è così, il tentativo di usarla causerà una trap che porterà il software a cercarla e caricarla. Metodi per migliorare la ricerca delle linee distanti includono associare una macchina di appartenenza solo al suo elemento di directory oppure organizzare la memoria ad albero e cercare verso l'alto fino a trovarla.
+
+Per il secondo problema, basta non cancellare l'ultima copia di una linea; si può anche interrogare la directory per verificare se ci sono altre copie e, in caso affermativo, eliminarle.
 
 (Pagine riassunte: 1.5)
 ## 8.4 - Multicomputer a scambio di messaggi

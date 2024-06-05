@@ -32,7 +32,14 @@ I computer dispongono di registri visibili a livello ISA, utilizzati per il cont
 
 I registri del livello ISA sono implementati a livello microarchitetturale e sono sempre visibili a entrambi i livelli. Esistono anche registri specializzati visibili solo in modalità kernel, utilizzati per il controllo di cache, memoria e dispositivi di I/O, e non accessibili ai compilatori o agli utenti.
 
-Il **registro di flag**, o PSW (Program Status Word), contiene tutti i possibili bit di condizione, come N (risultato negativo), Z (risultato zero), V (overflow), C (carry), A (carry oltre il terzo bit) e P (parità nulla). Questi bit sono importanti per le istruzioni di confronto e salto condizionato. Il PSW può anche includere informazioni sulla modalità di macchina, priorità della CPU e stato degli interrupt, con alcuni campi leggibili in modalità utente e altri scrivibili solo in modalità kernel.
+Il **registro di flag**, o PSW (Program Status Word), contiene tutti i possibili bit di condizione:
+1) N: vale 1 dopo un risultato negativo.
+2) Z: vale 1 dopo un risultato uguale a zero.
+3) V: vale 1 se il risultato causa overflow. 
+4) C: vale 1 se il risultato ha causato un riporto oltre l'ultimo bit più significativo. 
+5) A: vale 1 se si è verificato un riporto oltre il terzo bit.
+6) P: vale 1 se il risultato è pari (parità nulla). 
+Questi bit sono importanti per le istruzioni di confronto e salto condizionato. Il PSW può anche includere informazioni sulla modalità di macchina, priorità della CPU e stato degli interrupt, con alcuni campi leggibili in modalità utente e altri scrivibili solo in modalità kernel.
 
 (pagine riassunte: 1.5)
 ### 5.1.4 - Istruzioni

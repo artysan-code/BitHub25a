@@ -22,9 +22,9 @@ I computer dividono la memoria in celle consecutive, comunemente di 8 bit, chiam
 
 La capacità di leggere parole da indirizzi arbitrari richiede funzionalità logiche aggiuntive nel chip, rendendolo più grande e costoso. Molti processori hanno uno spazio lineare degli indirizzi, ma alcune macchine separano gli spazi degli indirizzi per istruzioni e dati, offrendo vantaggi come la prevenzione di sovrascritture accidentali del programma e la resistenza agli attacchi malware.
 
-La semantica della memoria è importante, ad esempio, ci si aspetta che un'istruzione LOAD restituisca il valore memorizzato da un'istruzione STORE nello stesso indirizzo. I progettisti possono scegliere tra approcci che vanno dalla serializzazione di tutte le richieste d'accesso alla memoria, con prestazioni ridotte ma semantica più semplice, all'assenza di garanzie, dove il programma deve usare istruzioni SYNC per forzare un ordine sulla memoria.
+La semantica della memoria è estremamente importante: ci si aspetta che un'istruzione LOAD restituisca il valore memorizzato da un'istruzione STORE nello stesso indirizzo. Ma sappiamo (dal capitolo 4) che le istruzioni possono non essere eseguite in ordine, il che genera il pericolo concreto che la memoria esibisca comportamenti inattesi. Quindi, i progettisti possono scegliere tra approcci che vanno dalla serializzazione di tutte le richieste d'accesso alla memoria, con prestazioni ridotte ma semantica più semplice, all'assenza di garanzie, dove il programma deve usare istruzioni SYNC per forzare un ordine sulla memoria.
 
-Modelli di memoria intermedi sono anche possibili, dove l'hardware blocca automaticamente alcuni accessi alla memoria ma non altri. Nonostante le complicazioni, questa tendenza è diffusa a causa delle implementazioni sottostanti come il riordinamento delle microistruzioni, le pipeline profonde e i livelli di cache multipli.
+Esistono anche modelli di memoria intermedi, dove l'hardware blocca automaticamente alcuni accessi alla memoria ma non altri. Nonostante le complicazioni, questa tendenza è diffusa a causa delle implementazioni sottostanti come il riordinamento delle microistruzioni, le pipeline profonde e i livelli di cache multipli.
 
 (pagine riassunte: 2)
 ### 5.1.3 - Registri

@@ -43,7 +43,7 @@ Questi bit sono importanti per le istruzioni di confronto e salto condizionato. 
 
 (pagine riassunte: 1.5)
 ### 5.1.4 - Istruzioni
-La caratteristica principale del livello ISA è l'insieme di istruzioni macchina che definisce ciò che la macchina può fare. Questo comprende sempre istruzioni come STORE e LOAD per il trasferimento di dati tra registri e memoria, nonché MOVE per la copia di dati tra registri. Aringhiera sempre istruzioni aritmetiche, booleane e di confronto dei dati con salto condizionato. Abbiamo già visto alcune istruzioni ISA comuni e ne vedremo molte altre in questo capitolo.
+La caratteristica principale del livello ISA è l'insieme di istruzioni macchina che definisce ciò che la macchina può fare. Questo comprende sempre istruzioni come STORE e LOAD per il trasferimento di dati tra registri e memoria, nonché MOVE per la copia di dati tra registri. Sono sempre presenti istruzioni aritmetiche, booleane e di confronto dei dati con salto condizionato.
 ### 5.1.5 - Panoramica del livello ISA del Core i7
 Il Core i7, frutto dell'evoluzione di molte generazioni di processori Intel, ha un ISA che mantiene il completo supporto per programmi scritti per l'8086 e l'8088, con reminiscenze dell'8080. Dal punto di vista del software, sia l'8086 che l'8088 erano macchine a 16 bit effettivi. L'80386 fu la prima macchina a 32 bit della famiglia Intel, e tutti i processori successivi mantengono l'architettura IA-32, mentre la x86-64 estende la dimensione dei calcoli e degli indirizzi virtuali a 64 bit.
 

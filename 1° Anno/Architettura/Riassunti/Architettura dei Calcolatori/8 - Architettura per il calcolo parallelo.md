@@ -231,8 +231,17 @@ Tutte queste sono accomunate da un principio di controllo sui trasferimenti del 
 
 Il più semplice protocollo si chiama **write through**: se una CPU non trova un dato nella cache (*read miss*) il controllore carica nella cache il dato richiesto, così le successive letture saranno soddisfate (*read hit*) tenendo aggiornata la variabile. Un fallimento di scrittura (*write miss*) la parola modificata viene salvata in memoria e la linea contenente la parola non viene caricata nella cache. In caso di successo di scrittura (*write it*) viene aggiornata la cache e inoltre la parola viene scritta direttamente in memoria principale.
 
-continuo di questo sottocapitolo da studiare da rivedere, perché veramente troppo dettagliato.
+(Sul libro è rappresentato l'esempio del Cache Snooper in questa parte)
 
+Esistono molte varianti del protocollo: una snooping cache potrebbe aggiornare un elemento anziché invalidarlo, che concettualmente equivale a un'invalidazione seguita da un caricamento dalla memoria principale. Ogni protocollo di cache deve scegliere tra aggiornamento e invalidazione, con prestazioni variabili a seconda dei carichi di lavoro. I messaggi di aggiornamento sono più grandi ma prevengono miss futuri. 
+
+Un'altra variante prevede il caricamento nella snooping cache anche in caso di write miss; la scelta dipende dalla probabilità che la parola venga riscritta presto. Questa politica, chiamata **write-allocate**, può migliorare le prestazioni se tale probabilità è alta. Tuttavia, ogni operazione di scrittura che raggiunge la memoria tramite il bus può creare un collo di bottiglia, anche con poche CPU. 
+
+Per ridurre il traffico sul bus, alcuni protocolli **write-back** assicurano che non tutte le scritture raggiungano direttamente la memoria, annotando la validità delle linee modificate, che verranno scritte in memoria solo dopo molte scritture.
+##### Esempio effettivo Cache Snooper
+Nell'analisi delle operazioni di una snooping cache, consideriamo due cache: cache 1 che esegue le operazioni e cache 2 che osserva. In caso di un read miss, cache 1 richiede una linea dalla memoria, e cache 2 osserva senza intervenire. Con un read hit, la richiesta viene soddisfatta localmente, quindi cache 2 non ne è a conoscenza. 
+
+Le operazioni di scrittura sono più complesse: se la CPU1 effettua una scrittura, cache 1 invia una richiesta di scrittura sul bus sia in caso di hit che di miss. Cache 2 verifica se possiede la parola da scrivere; se non la possiede, non intraprende alcuna azione. Se invece la parola è presente in cache 2, questa la invalida per evitare dati obsoleti, rimuovendo l'elemento dalla cache. Poiché tutte le cache monitorano le richieste sul bus, ogni scrittura comporta l'aggiornamento della cache del richiedente e della memoria e l'invalidazione delle copie obsolete nelle altre cache, prevenendo incoerenze. Se la CPU di cache 2 deve leggere la parola successivamente, la leggerà dalla memoria aggiornata, mantenendo la coerenza tra cache 1, cache 2 e memoria. 
 #### Protocollo MESI di coerenza delle cache
 **MESI** è un protocollo di coerenza di tipo *write-back* ed è basato sul protocollo *write-once*. Viene usato sul Pentium per lo snooping sul bus e presenta quattro stadi in cui si possono trovare gli elementi:
 - Non valido, quando l'elemento in cache non contiene dati validi.

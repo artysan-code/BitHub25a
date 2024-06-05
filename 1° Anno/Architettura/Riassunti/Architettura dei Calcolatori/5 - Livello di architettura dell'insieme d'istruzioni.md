@@ -8,9 +8,11 @@ Gli ISA devono essere efficienti per essere economicamente vantaggiosi. Un buon 
 ## 5.1 - Panoramica del livello ISA
 Sembra banale, ma... cos'è un ISA? Di seguito esamineremo alcune questioni controverse e poi analizzeremo modelli di memoria, registri e istruzioni.
 ### 5.1.1 - Proprietà del livello ISA
-Il livello ISA può essere definito come la rappresentazione della macchina per i programmatori, emersa dall'output dei compilatori. Include informazioni sulla memoria, registri, tipi di dati e istruzioni disponibili. In alcune architetture, è formalmente specificato da documenti di definizione, come nel caso di ARM, per garantire l'interoperabilità tra diverse implementazioni hardware. Questi documenti non dettagliano la microarchitettura ma stabiliscono il comportamento delle istruzioni.
+Il codice di livello ISA è l'output di un compilatore. Per produrre questo codice, il proggettista del compilatore deve conoscere il modello di memoria, registri, tipi di dati e istruzioni disponibili. 
+Per alcune architetture il livello ISA è specificato attraverso un documento formale di definizione: per esempio ARM v7 ha una definizione ufficiale pubblicata da ARM Ltd. 
+Questi documenti non dettagliano la microarchitettura ma stabiliscono il comportamento delle istruzioni.
 
-I documenti di definizione includono sezioni normative e informative, delineando requisiti e raccomandazioni. Ad esempio, il documento di definizione per ARM v7 assicura che tutti i chip ARM eseguano lo stesso codice. Tali documenti possono essere estesi, come nel caso del Core i7 di Intel, che conta 4161 pagine.
+I documenti di definizione includono **sezioni normative** e **informative**, delineando requisiti e raccomandazioni. Ad esempio, il documento di definizione per ARM v7 assicura che tutti i chip ARM eseguano lo stesso codice. Tali documenti possono essere estesi, come nel caso del Core i7 di Intel, che conta 4161 pagine.
 
 Un'altra caratteristica chiave del livello ISA è la presenza di più modalità di esecuzione, come la **modalità kernel** per il sistema operativo e la **modalità utente** per le applicazioni, con restrizioni sull'uso di alcune istruzioni sensibili.
 

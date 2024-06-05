@@ -173,9 +173,21 @@ Per evitare che il chip tenti di inviare dati durante la scrittura, interferendo
 
 Entrambi i buffer sono **dispositivi a tre stati**: possono generare 0, 1 o nessuno dei due (circuito aperto). Amplificano il segnale e possono guidare più input contemporaneamente, spesso utilizzati anche quando non è richiesta l'inversione del segnale.
 
+Figura 3.28
+
 (pagine riassunte: 3)
 ### 3.3.5 - Chip di memoria
+La memoria della Figura 3.28 può essere facilmente ampliata. L'esempio descritto è una memoria $4 \times 3$, composta da quattro parole di 3 bit ciascuna. Per espanderla a $4 \times 8$, basta aggiungere cinque colonne di quattro flip-flop ciascuna e le relative linee di input e output. Per passare a $8 \times 3$, si devono aggiungere quattro righe di tre flip-flop ciascuna e una linea di indirizzo aggiuntiva, ($A_2$). Idealmente, il numero di parole dovrebbe essere una potenza di 2 per massimizzare l'efficienza, mentre il numero di bit per parola può variare.
 
+I chip di memoria di dimensioni maggiori non rendono necessariamente obsoleti quelli più piccoli, poiché bisogna bilanciare capacità, velocità, consumo energetico, prezzo e facilità di interfacciamento. I chip più grandi tendono ad essere più costosi per bit.
+
+Le dimensioni dei chip di memoria sono generalmente espresse in bit. I segnali vengono detti **asseriti** quando attivano un'azione e **negati** quando non lo fanno. Un segnale chiamato $CS$ viene asserito con il valore alto, mentre uno chiamato $\overline{CS}$ è asserito con il valore basso. Il segnale ($\overline{WE}$) (*Write Enable*) distingue tra lettura e scrittura, mentre ($\overline{OE}$) (*Output Enable*) guida i segnali di output, scollegandoli quando non è asserito.
+
+I chip di memoria più grandi sono spesso organizzati come matrici ($n \times n$) indirizzate da numeri di riga e colonna, riducendo il numero di pin necessari ma rallentando il chip perché richiede due cicli di indirizzamento. Per migliorare la velocità, alcuni chip permettono di specificare un indirizzo di riga seguito da una sequenza di indirizzi di colonna per accedere a bit consecutivi nella stessa riga.
+
+La progettazione dei chip di memoria comporta due questioni chiave: la larghezza dell'output (il numero di bit trasmessi contemporaneamente) e se gli indirizzi vengono forniti tutti insieme su pin distinti o separatamente per righe e colonne. Un ingegnere deve rispondere a queste domande prima di progettare il chip.
+
+(pagine riassunte: 3)
 ### 3.3.6 - RAM e ROM
 
 ## 3.4 - Chip della CPU e bus

@@ -274,14 +274,31 @@ A differenza della rete con commutatori a crossbar però questa è una rete **bl
 
 (Pagine riassunte: 8.5)
 ### 8.3.4 - Multiprocessori NUMA
-I processori UMA a singolo bus sono limitati a una dozzina di bus, mentre quelli con rete omega o a commutazione crossbar sono molto costosi. Per raggiungere centinaia di CPU bisogna rinunciare all'idea che tutti i moduli di memoria richiedano lo stesso tempo di accesso, proprio la filosofia di un multiprocessore di tipo **NUMA**; come i cugini UMA gestisce un solo spazio di indirizzamento, ma garantendo una maggiore velocità ai moduli circostanti.
+I processori UMA a singolo bus sono limitati a una dozzina di bus, mentre quelli con rete omega o a commutazione crossbar sono molto costosi. Per raggiungere centinaia di CPU bisogna abbandonare l'idea che tutti i moduli di memoria abbiano lo stesso tempo di accesso. Questo è il principio dei multiprocessori di tipo **NUMA** che, come i sistemi UMA, gestiscono un unico spazio di indirizzamento, ma offrono un accesso più veloce ai moduli di memoria vicini.
 
-Sono distinguibili da tre caratteristiche:
-- C'è un solo spazio degli indirizzi visibile alle CPU.
-- L'accesso alle memorie distanti si effettua tramite istruzioni LOAD e STORE.
+I sistemi NUMA si caratterizzano per tre aspetti principali:
+- Hanno un unico spazio di indirizzamento visibile a tutte le CPU.
+- L'accesso alle memorie distanti avviene tramite istruzioni LOAD e STORE.
 - L'accesso alla memoria distante è più lento rispetto a quella vicina.
 
-Si parla inoltre di **NC-NUMA** quando manca il sistema di caching oppure, viceversa, di **CC-NUMA** quando sono presenti cache coerenti. 
+Si parla di **NC-NUMA** quando manca il sistema di caching, e di **CC-NUMA** quando sono presenti cache coerenti.
+
+Un esempio di multiprocessore NC-NUMA è il Cm*. Come illustrato nella figura 8.32, ogni CPU ha una memoria locale con un proprio bus e una **MMU** (Memory Management Unit). La MMU determina se una richiesta di accesso alla memoria è locale o esterna e inoltra la richiesta rispettivamente sul bus locale o sul bus di sistema. Le richieste esterne richiedono un tempo di accesso dieci volte superiore rispetto a quelle interne, ma permettono comunque di eseguire le operazioni necessarie.
+
+Nel sistema NC-NUMA, la coerenza è garantita poiché non esiste cache, quindi ogni parola ha una sola locazione di memoria. Tuttavia, questo richiede una gestione ottimale della posizione di ogni parola.
+
+Per migliorare l'efficienza, esiste solitamente un processo demone chiamato **scanner delle pagine**. Questo scanner, eseguito a intervalli di pochi secondi, analizza le statistiche di utilizzo e rimuove le pagine mal posizionate. Quando si verifica un errore di accesso a una variabile, lo scanner sa dove posizionare correttamente la pagina. Per evitare errori, ogni pagina ha un intervallo di vita definito durante il quale non può essere eliminata.
+#### Multiprocessore NUMA con cache coerente
+All'aumentare delle CPU nel sistema, la mancanza di caching penalizza le performance; pur implementando lo snooping, sarà difficile mantenere la coerenza nella cache in sistemi di grandi dimensioni.
+
+Il metodo più comune per costruire grandi multiprocessori oggi è il **CC-NUMA** (Cache-Coherent NUMA), un sistema *multiprocessore basato su directory*. Questi sistemi sono divisi in nodi, ognuno dei quali contiene una CPU, una RAM e una *directory*. Quando una CPU emette un'istruzione e la passa alla MMU, l'indirizzo viene diviso in **nodo**, **linea** e **offset**. Se la parola richiesta si trova in un altro nodo, viene inviata una richiesta attraverso la *rete d'interconnessione* al nodo corretto per verificare se possiede la linea richiesta in cache e, in caso affermativo, dove si trovi.
+
+La richiesta viene instradata all'hardware della directory del nodo, che usa l'indice per cercare la linea nella tabella. Se la linea non è presente nella tabella (quindi non è in cache), viene estratta dalla RAM, l'elemento nella directory viene aggiornato per indicare che la linea appartiene al nodo richiedente e la linea viene inviata a quest'ultimo. Se invece la linea è presente nella cache del nodo, l'hardware aggiorna la linea imponendo come valore il nodo richiedente e chiede al nodo trovato nella directory di consegnare la linea al richiedente e invalidare la propria cache.
+
+La restrizione di questo progetto è che una linea si trovi per lo più nella cache di un solo nodo, per motivi implementativi ed economici. Si potrebbe risolvere il problema implementando in ogni directory k campi che individuano gli altri nodi, consentendo il caching di una linea in k nodi. Un'altra soluzione è sostituire ogni numero del nodo con una bitmap in cui ogni bit corrisponde a un nodo, eliminando il limite sul numero di copie di una linea, ma aumentando significativamente le informazioni accessorie. Una terza possibilità è gestire un campo a 8 bit in ogni elemento della directory che corrisponde a un puntatore a una lista concatenata di tutte le copie della linea di cache corrispondente.
+
+Non tratteremo però le migliorie specifiche.
+#### Il multiprocessore NUMA Sun Fire E25k (saltato)
 
 (Pagine riassunte: 9)
 ### 8.3.5 - Multiprocessori COMA

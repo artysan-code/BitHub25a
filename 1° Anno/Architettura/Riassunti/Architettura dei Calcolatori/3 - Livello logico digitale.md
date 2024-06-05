@@ -146,7 +146,11 @@ Per sottolinearlo ulteriormente ripetiamo la differenza che c’è tra un flip-f
 
 (pagine riassunte: 2.25)
 ### 3.3.3 - Registri
+I Flip-Flop possono essere combinati per creare dei registri che memorizzano dati composti da più bit. Otto flip-flop possono essere raggruppati per formare un registro da 8 bit. Il registro riceve in ingresso un valore di 8 bit (da IO a 17) quando vi è una transizione del clock CK. Per implementare un registro tutte le linee di clock sono collegate allo stesso segnale in ingresso CK, in modo che quando si ha una transizione di clock il registro riceve dal canale di ingresso il nuovo dato di 8 bit.
 
+Una volta progettato un registro a 8 bit, lo si può utilizzare per costruire registri più grandi. Per esempio, un registro a 32 bit può essere costruito combinando due registri a 16 bit, unendo i loro segnali di clock CK e di cancellazione CLR.
+
+(pagine riassunte: 1)
 ### 3.3.4 - Organizzazione della memoria
 
 ### 3.3.5 - Chip di memoria

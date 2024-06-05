@@ -152,7 +152,28 @@ Una volta progettato un registro a 8 bit, lo si può utilizzare per costruire re
 
 (pagine riassunte: 1)
 ### 3.3.4 - Organizzazione della memoria
+Per realizzare memorie di dimensioni maggiori, è necessaria un'organizzazione che consenta di indirizzare singole parole. Un esempio è una memoria con quattro parole a 3 bit, in cui ciascuna operazione legge o scrive un'intera parola. Questa memoria ha una capacità totale di 12 bit e richiede un numero inferiore di pin rispetto al flip-flop ottale. È anche facilmente estendibile a memorie più grandi, con il numero di parole sempre come potenza di 2.
 
+Le otto linee di input sono divise in:
+- Tre per i dati: \( I_0 \), \( I_1 \), \( I_2 \).
+- Due per l'indirizzo: \( A_0 \), \( A_1 \).
+- Tre per i controlli: CS (selezione del chip), RD (lettura/scrittura), OE (abilitazione dell'output).
+
+Le tre linee di output (\( O_0 \), \( O_1 \), \( O_2 \)) sono dedicate ai dati.
+
+Per l'uso del chip:
+- In lettura, CS e RD devono essere alti (logico 1).
+- In scrittura, CS e RD devono essere bassi (logico 0).
+
+Quando il chip è selezionato per la scrittura, la linea \( CS \cdot \overline{RD} \) diventa alta, abilitando una delle quattro porte di scrittura in base ai segnali \( A_0 \) e \( A_1 \). I dati di input vengono caricati nei flip-flop della parola selezionata. Solo la parola selezionata è scritta, mentre le altre restano invariate.
+
+In lettura, la decodifica dell'indirizzo avviene nello stesso modo, ma \( CS \cdot \overline{RD} \) è basso, disabilitando le porte di scrittura. La parola selezionata invia i propri dati alle porte OR, poiché le altre parole generano output 0, il risultato delle porte OR è identico al valore memorizzato nella parola selezionata.
+
+Per evitare che il chip tenti di inviare dati durante la scrittura, interferendo con i dati di input, si utilizza un **buffer non invertente**. Questo buffer ha un input di controllo: quando è alto, il buffer funge da collegamento; quando è basso, si comporta come un circuito aperto. Esiste anche il **buffer invertente**, che inverte il segnale quando l'input di controllo è alto e disconnette l'output quando è basso.
+
+Entrambi i buffer sono **dispositivi a tre stati**: possono generare 0, 1 o nessuno dei due (circuito aperto). Amplificano il segnale e possono guidare più input contemporaneamente, spesso utilizzati anche quando non è richiesta l'inversione del segnale.
+
+(pagine riassunte: 3)
 ### 3.3.5 - Chip di memoria
 
 ### 3.3.6 - RAM e ROM

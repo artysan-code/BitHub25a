@@ -56,7 +56,39 @@ Per i nostri scopi, consideriamo le porte logiche ideali, con output immediato a
 
 (pagine riassunte: 1.5)
 ### 3.2.2 - Reti combinatorie
+Molte applicazioni della logica digitale richiedono un circuito, chiamato **rete combinatoria**, con più input e più output, in cui gli output sono unicamente determinati dagli input. Non tutti i circuiti hanno questa proprietà; un circuito contenente elementi di memoria può per esempio generare valori che dipendono non solo dalle variabili d’ingresso, ma anche dai valori memorizzati
 
+(pagine riassunte:0.25)
+#### 3.2.2.1 - Multiplexer
+In logica digitale un ***multiplexer*** è un circuito con $2^{n}$ dati di input, un valore di output e *n* input di controllo; gli input di controllo permettono di selezionare uno dei dati di input, che viene instradato verso l'output. Un multiplexer con otto input ha tre linee di controllo. A, B e C, codificano un numero a 3 bit che specifica quale delle otto linee di input deve essere instradata verso la porta OR e quindi verso l’output. Indipendentemente dal valore definito dalle linee di controllo, sette delle porte AND genereranno sempre il valore 0, mentre quella rimanente produrrà in output 0 oppure 1, a seconda del valore della linea d’ingresso selezionata. Ciascuna porta AND può essere abilitata da una diversa combinazione degli input di controllo.
+
+Un'altra delle possibili applicazioni è la conversione di dati da parallelo a seriale. Se si immettono 8 bit di dati nelle linee di input e se si fa variare il valore (binario) delle linee di controllo da 000 a 111, si ottengono sulla linea di output gli 8 bit in serie.
+
+L’inverso del multiplexer è il **demultiplexer**, che redirige il suo segnale di input verso uno dei $2^{n}$ output in base ai valori delle linee di controllo; se il valore binario definito dalle linee di controllo è *k*, viene selezionato l’output *k*.
+
+(pagine riassunte: 2)
+#### 3.2.2.2 - Decodificatori
+Come secondo esempio analizzeremo ora un circuito, chiamato **decodificatore** (*decoder*), che accetta come input un numero a *n* bit e lo utilizza per impostare a 1 una sola delle $2^{n}$ linee di output.
+
+Per capire in quali situazioni può essere utile questo circuito immaginiamo una piccola memoria di otto chip, da 256 MB ciascuno. Gli indirizzi del chip 0 variano da 0 a 256 MB, quelli del chip 1 da 256 MB a 512 MB e così via. Quando si fornisce alla memoria un indirizzo, si utilizzano i suoi 3 bit più significativi per selezionare uno degli otto chip.
+
+Ciascuna porta AND ha tre input, il primo dei quali è $A$ o $\overline{A}$, il secondo $B$ o $\overline{B}$ e il terzo $C$ o $\overline{C}$, e viene abilitata da una diversa combinazione dei valori di input: $D_{0}$  da  $\overline{A}\ \overline{B}\ \overline{C}, D_{1}$ da $\overline{A}\quad  \overline{B}\quad  C$ e così via.
+
+(pagine riassunte: 1)
+#### 3.2.2.3 - Comparatori
+Un altro circuito particolarmente utile è il comparatore, che permette di confrontare due stringhe di bit. Il circuito è basato sulla porta logica XOR (EXCLUSIVE OR), che produce in output un valore 0 se i suoi input sono uguali e un valore 1 se sono diversi. Se due stringhe in ingresso sono uguali, tutte e quattro le porte XOR devono generare come risultato 0. Questi quattro segnali possono poi essere connessi a una stessa porta logica OR in modo da produrre un valore 0 quando gli input sono uguali e un valore 1 nel caso contrario
+
+(pagine riassunte: 0.5)
+#### 3.2.2.4 - Array logici programmabili
+Un chip molto generale che permette di calcolare somme di prodotti è l’**array logico programmabile** o **PLA** (*Programmable Logic Array*). Questo chip ha 12 ingressi e al suo interno questi valori vengono invertiti; quindi il numero totale di segnali di input diventa 24.
+
+L’uscita del circuito consiste in 6 porte OR, che possono avere fino a 50 input, corrispondenti agli output delle porte AND.
+
+Nel caso di funzioni semplici il numero di variabili rappresenta un fattore vincolante, mentre per funzioni più complesse il limite potrebbe essere rappresentato dal numero di porte AND o OR.
+
+Anche se i PLA *programmabili sul campo*, come quello appena descritto, vengono ancora utilizzati, oggi, in molte applicazioni, si preferisce impiegare dei PLA costruiti ad hoc. Questi ultimi sono più economici di quelli programmabili e, in caso di grandi volumi, vengono progettati sulla base delle specifiche del cliente.
+
+(pagine riassunte: 1.5)
 ### 3.2.3 - Circuiti per l'aritmetica
 
 ### 3.2.4 - Clock

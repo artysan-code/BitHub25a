@@ -371,6 +371,9 @@ Le tre ALU non sono identiche:
 
 L'architettura Sandy Bridge ha introdotto le istruzioni AVX (Advanced Vector Extension) che supportano operazioni a 128 bit sui vettori. 
 ### 4.6.2 - Microarchitettura della CPU OMAP4430
+Il cuore del processore OMAP4430 è costituito da due processori ARM Cortex A9.
+Il processore Cortex A9 è a 32 bit: ha registri, percorso dati e il bus di memoria a 32 bit. Questo tipo di processore è una vera e propria architettura RISC.
+#### Descrizione della microarchitettura Cortex A9 dell'OMAP4430 
 
 ### 4.6.3 - Microarchitettura del microcontrollore ATmega168
 

@@ -124,9 +124,21 @@ Un calcolatore può eseguire più eventi durante un ciclo di clock. Per una riso
 
 Associando eventi a questi quattro fronti, si può stabilire una sequenza desiderata. Se servono più di quattro riferimenti temporali in un ciclo di clock, si collegano altre linee secondarie al clock principale e si usano circuiti con ritardi diversi.
 ## 3.3 - Memoria
-
+Una componente essenziale di ogni calcolatore è la memoria; se non ci fosse non potrebbe esistere nessun calcolatore, almeno nella forma in cui lo conosciamo. La memoria è utilizzata per conservare sia le istruzioni da eseguire sia i dati.
 ### 3.3.1 - Latch
+Per creare una memoria a 1 bit è necessario disporre di un circuito che in qualche modo “ricordi" precedenti valori di input.
 
+Il circuito **latch SR** e ha due input: $S$, per impostare il valore del latch e $R$ per azzerarlo. Il circuito ha anche due output, $Q$ e $\overline{Q}$, che, come vedremo tra poco, sono complementari Puno rispetto all’altro. Diversamente dalle reti combinatorie l’ output di un latch non è determinato unicamente dai valori di input correnti.
+
+Quando $S$ è impostato temporaneamente a 1 lo stato del latch diventa $Q = 1$, indipendentemente dallo stato in cui si trovava precedentemente. Allo stesso modo quando si imposta temporaneamente $R$ a 1 si forza il latch a passare nello stato $Q = 0$. Il circuito “ricorda” quindi quale valore, se $S$ oppure $R$ è stato settato per ultimo; utilizzando questa proprietà è possibile costruire le memorie dei calcolatori.
+#### 3.3.1.1 - Latch SR temporizzato
+Per evitare che un latch cambi di stato in momenti non desiderati, si utilizza un **latch SR temporizzato**. Questo circuito include un input aggiuntivo, il clock, che solitamente vale 0. Quando il clock è 0, entrambe le porte AND generano un output di 0, impedendo al latch di cambiare stato indipendentemente dai valori di S e R. Quando il clock è 1, le porte AND permettono il passaggio dei segnali S e R, che possono quindi modificare lo stato del latch. I termini ***enable*** e ***strobe*** indicano che il clock è 1 e il circuito dipende dai valori di S e R.
+
+Se sia S che R valgono 1, il circuito diventa non deterministico finché entrambi gli input non tornano a 0. L'unico stato consistente per ($S = R = 1$) è ($Q = \overline{Q} = 0$). Quando entrambi gli input ritornano a 0, il latch deve passare istantaneamente a uno dei suoi due stati stabili. Se uno degli input torna a 0 prima dell'altro, prevale quello che rimane a 1 più a lungo. Se entrambi gli input ritornano a 0 simultaneamente, il latch passa casualmente a uno dei due stati stabili.
+#### 3.3.1.2 - Latch D temporizzato
+Un buon modo per risolvere l'ambiguità dei latch SR è... evitare che si verifichi; con un circuito che ha un solo input, D. Dato che l’input della porta AND rappresentata in basso è sempre il complemento dell’input di quella superiore, non può mai accadere che entrambi gli input valgono 1. Questo circuito, chiamato **latch D temporizzato**, è una vera e propria memoria a 1 bit, in cui il valore memorizzato è sempre disponibile sulla linea Q. Per caricare in memoria il valore corrente di D occorre spedire un impulso positivo sulla linea del clock. Il circuito appena descritto richiede 11 transistor, esistono tuttavia circuiti più sofisticati che possono memorizzare 1 bit utilizzando solo sei transistor.
+
+(pagine riassunte: 2.75)
 ### 3.3.2 - Flip-Flop
 
 ### 3.3.3 - Registri

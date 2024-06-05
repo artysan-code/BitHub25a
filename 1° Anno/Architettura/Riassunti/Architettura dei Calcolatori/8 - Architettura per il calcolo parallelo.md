@@ -243,13 +243,20 @@ Nell'analisi delle operazioni di una snooping cache, consideriamo due cache: cac
 
 Le operazioni di scrittura sono più complesse: se la CPU1 effettua una scrittura, cache 1 invia una richiesta di scrittura sul bus sia in caso di hit che di miss. Cache 2 verifica se possiede la parola da scrivere; se non la possiede, non intraprende alcuna azione. Se invece la parola è presente in cache 2, questa la invalida per evitare dati obsoleti, rimuovendo l'elemento dalla cache. Poiché tutte le cache monitorano le richieste sul bus, ogni scrittura comporta l'aggiornamento della cache del richiedente e della memoria e l'invalidazione delle copie obsolete nelle altre cache, prevenendo incoerenze. Se la CPU di cache 2 deve leggere la parola successivamente, la leggerà dalla memoria aggiornata, mantenendo la coerenza tra cache 1, cache 2 e memoria. 
 #### Protocollo MESI di coerenza delle cache
-**MESI** è un protocollo di coerenza di tipo *write-back* ed è basato sul protocollo *write-once*. Viene usato sul Pentium per lo snooping sul bus e presenta quattro stadi in cui si possono trovare gli elementi:
-- Non valido, quando l'elemento in cache non contiene dati validi.
-- Condiviso, quando la linea potrebbe essere contenuta in più di una cache, la memoria è aggiornata.
-- Esclusivo, quando la linea è unica e nessuna cache contiene la linea, la memoria è aggiornata.
-- Modificato, l'elemento è valido ma la memoria non lo è, non ci sono altre copie della linea.
+Il protocollo MESI è un protocollo di coerenza delle cache di tipo write-back, utilizzato, tra gli altri, dal Pentium 4 per lo snooping sul bus. MESI è acronimo di Modified, Exclusive, Shared e Invalid, che sono i quattro stati in cui si possono trovare gli elementi della cache. Questi stati sono: 
 
-*come prima la spiegazione passo per passo per capire è lunga e poco riassumibile, ma l'immagine aiuta*
+1. **Non valido**: l'elemento di cache non contiene dati validi.
+2. **Condiviso**: la linea potrebbe essere presente in più di una cache e la memoria è aggiornata.
+3. **Esclusivo**: nessun'altra cache contiene la linea e la memoria è aggiornata.
+4. **Modificato**: l'elemento è valido ma la memoria non è aggiornata e non ci sono altre copie della linea.
+
+Quando una CPU si avvia, tutti gli elementi della cache sono contrassegnati come non validi. Alla prima lettura, la linea referenziata viene prelevata dalla memoria e inserita nella cache della CPU con stato esclusivo, poiché è l'unica copia presente. Le letture successive utilizzano l'elemento della cache senza coinvolgere il bus. Se un'altra CPU preleva la stessa linea, la CPU originale viene informata tramite snooping e entrambe le copie vengono contrassegnate come condivise, indicando che la linea è presente in più cache e la memoria è aggiornata. 
+
+Se la CPU2 scrive in una linea di cache che si trova nello stato condiviso, emette un segnale di invalidazione sul bus, indicando alle altre CPU di eliminare le loro copie, e la linea passa allo stato modificato. Se una linea si trova nello stato esclusivo durante una scrittura, non è necessario alcun segnale di invalidazione, poiché non ci sono altre copie. 
+
+Quando la CPU3 legge una linea detenuta da CPU2 nello stato modificato, la CPU2 scrive la linea in memoria e la contrassegna come condivisa. La CPU3 può quindi prelevare la sua copia. Se la CPU2 successivamente scrive nella linea, la copia della CPU3 viene invalidata. Se la CPU1 scrive nella linea, la CPU2 richiede alla CPU1 di attendere la scrittura della linea in memoria, quindi la contrassegna come non valida. 
+
+Se si usa la politica write-allocate, la linea viene caricata nella cache e contrassegnata come modificata. Altrimenti, la scrittura avviene direttamente in memoria e la linea non viene caricata in alcuna cache.
 #### Multiprocessori UMA con commutatori crossbar
 Per quanto si possa ottimizzare il sistema, un bus non è sufficiente per 16 o 32 CPU. Per questo motivo si utilizza un meccanismo chiamato **commutatore crossbar**, utilizzato anche nei centralini telefonici, che collega k CPU a k memorie.
 

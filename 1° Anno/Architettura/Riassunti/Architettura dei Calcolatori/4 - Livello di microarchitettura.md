@@ -391,5 +391,10 @@ Il chip OMAP4430 include anche la logica per il controllo degli accessi a memori
 (pagine riassunte: 6)
 ### 4.6.3 - Microarchitettura del microcontrollore ATmega168
 
+La microarchitettura dell'Atmel ATmega168 è più semplice rispetto ad altre microarchitetture, grazie alle sue piccole dimensioni e alla necessità di economicità per l'uso nei sistemi integrati. Il cuore dell'ATmega168 è un bus principale a 8 bit che collega registri, ALU, memoria e dispositivi di input/output. Il banco dei registri contiene 32 registri a 8 bit per memorizzare valori temporanei del programma. Il registro di stato e controllo gestisce i codici condizione dell'ALU e indica la presenza di interrupt pendenti. Il program counter contiene l'indirizzo dell'istruzione in esecuzione.
 
-(pagine riassunte: )
+La SRAM dei dati è di 1KB, ma l'architettura AVR permette di costruire indirizzi di 16 bit con coppie di registri da 8 bit, supportando fino a 64KB di memoria dati. La EEPROM offre fino a 1KB di spazio di memorizzazione non volatile. Per la memoria del programma, l'architettura AVR utilizza tre registri di pagina RAM per formare indirizzi di 24 bit, permettendo uno spazio di indirizzamento per le istruzioni di 16MB.
+
+L'ATmega168 include un controllore di interrupt, un'interfaccia SPI, timer e tre porte digitali di I/O a 8 bit, per un totale di 24 collegamenti esterni. È un processore sincrono con una pipeline a due stadi (prelievo ed esecuzione), eseguendo la maggior parte delle istruzioni in un ciclo di clock senza necessità di logica di bypass o rilevamento degli stalli. Le istruzioni del programma sono eseguite in ordine e senza sovrapposizioni.
+
+(pagine riassunte: 2.5)

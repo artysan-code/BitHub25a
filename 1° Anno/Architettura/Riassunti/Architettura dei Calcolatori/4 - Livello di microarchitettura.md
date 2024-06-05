@@ -374,7 +374,15 @@ L'architettura Sandy Bridge ha introdotto le istruzioni AVX (Advanced Vector Ext
 Il cuore del processore OMAP4430 è costituito da due processori ARM Cortex A9.
 Il processore Cortex A9 è a 32 bit: ha registri, percorso dati e il bus di memoria a 32 bit. Questo tipo di processore è una vera e propria architettura RISC.
 #### Descrizione della microarchitettura Cortex A9 dell'OMAP4430 
+La microarchitettura Cortex A9 dell'OMAP4430, grazie al suo ISA meno complesso,  è più semplice rispetto alla microarchitettura Sandy Bridge del Core i7. Entrambe le architetture utilizzano cache multilivello, con il Cortex A9 che ha una cache L2 di 1MB, molto più piccola rispetto alla L3 del Core i7.
 
+La cache delle istruzioni del Cortex A9 è di 32KB, associativa a 4 vie con linee di 32 byte. L'unità di rifornimento delle istruzioni può preparare fino a quattro istruzioni per ciclo e utilizza un predittore di salti con 4K voci e una cache degli indirizzi di destinazione con 1K elementi. Il front-end può caricare cicli stretti nella cache fast-loop look-aside per migliorare l'efficienza e ridurre i consumi. Le istruzioni, dopo la decodifica e rinomina per evitare rischi di WAR, vengono poste nella coda di consegna e inviate alle unità funzionali quando pronte.
+
+L'unità di esecuzione intera del Cortex A9 include due ALLU, una pipeline per istruzioni di salto e un banco registri. La microarchitettura supporta anche un motore VEP per il calcolo in virgola mobile e la elaborazione SIMD su interi chiamata NEON.
+
+L'unità di caricamento e memorizzazione gestisce le istruzioni di memoria, con percorsi dati verso la cache dei dati (32KB, associativa a 4 vie) e il buffer di scrittura. Le istruzioni di load possono prelevare valori dal buffer di scrittura o dalla cache dei dati, e in caso di fallimento, dalla cache L2. Il Cortex A9 può eseguire il prefetching hardware dalla cache L2 alla L1.
+
+Il chip OMAP4430 include anche la logica per il controllo degli accessi a memoria, divisa in interfaccia di sistema e controllore di memoria. L'interfaccia collega la memoria su un bus LPDDR2 a 32 bit, supportando fino a 8GB di memoria esterna tramite due canali LPDDR2. Il controllore di memoria gestisce la mappatura degli indirizzi virtuali a fisici con supporto alla memoria virtuale e utilizza TLB (Translation Lookaside Buffers) per accelerare la corrispondenza degli indirizzi virtuali più recenti, con due tabelle separate per istruzioni e dati.
 ### 4.6.3 - Microarchitettura del microcontrollore ATmega168
 
 

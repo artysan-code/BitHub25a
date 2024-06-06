@@ -446,5 +446,24 @@ Infine, le **scritture non bloccanti** rappresentano una tecnica avanzata, diffi
 
 (Pagine riassunte: 6.25)
 ## 8.5 - Grid Computing
+La tecnologia che connette sistemi di calcolatori molto distanti è chiamata **grid computing** ed è simile alle strutture di parallelismo di base studiate in precedenza. Il suo scopo principale è fornire un supporto tecnico per creare una **organizzazione virtuale** che sia flessibile, capiente e capace di moderare l'intero sistema.
+
+Questo concetto può essere suddiviso in una struttura a quattro livelli:
+- **Livello struttura**, che comprende i componenti fisici e fornisce accesso ad essi.
+- **Livello risorse**, che gestisce le risorse individuali tramite un programma sulla macchina dove si trovano, permettendo un accesso sicuro.
+- **Livello di raccolta**, che gestisce gruppi di risorse fornendo una panoramica e una ricerca tra tutte queste risorse, spesso utilizzando directory o database.
+- **Livello applicativo**, che utilizza i livelli sottostanti per ottenere le credenziali che provano il diritto all'uso delle risorse, impegnarle, monitorare i progressi e gestire gli errori.
+
+Una caratteristica fondamentale di questi sistemi è la *sicurezza*, ottenuta tramite autenticazione a documenti o firme digitali che funzionano come permessi di utilizzo delle risorse. Ogni azienda nell'organizzazione vuole monitorare come vengono trattate le proprie risorse, e ci sono molti programmi di monitoraggio a disposizione.
+
+Lo schema **OGSA** rappresenta un sistema di standardizzazione per certe infrastrutture, attualmente organizzate come segue:
+- Servizi di infrastruttura (comunicazione tra risorse)
+- Servizi di gestione risorse (prenotazione e messa a disposizione delle risorse)
+- Servizi per i dati (trasferimento, duplicazione, ecc.)
+- Servizi di contesto (descrizione delle risorse richieste e politiche di utilizzo)
+- Servizi informativi
+- Servizi di amministrazione interna (garanzia della qualità del servizio)
+- Servizi di sicurezza
+- Esecuzione di servizi amministrativi (gestione dello scheduling dei compiti)
 
 (Pagine riassunte: 3)

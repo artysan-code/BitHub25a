@@ -55,11 +55,24 @@ I Core i7 ha molteplici registri, tra cui EAX, EBX, ECX ed EDX (registri a 32 bi
 ### 5.1.6 - Panoramica del livello ISA dell'OMAP4430 ARM
 L'architettura ARM è stata introdotta per la prima volta nel 1985 da Acorn Computer, ispirata dalle ricerche svolte a Berkeley negli anni '80. La versione originale, ARM2, era a 32 bit e supportava uno spazio degli indirizzi a 26 bit. L'OMAP4430 utilizza la microarchitettura ARM Cortex A9, che implementa la versione 7 dell'architettura ARM.
 
-La struttura della memoria dell'OMAP4430 è un vettore di 23 byte. I processori ARM sono bi-endian, consentendo l'accesso alla memoria nei due ordini big-endian e little-endian. È importante che l'ISA preveda uno spazio degli indirizzi più grande delle necessità implementative per consentire l'espansione futura della memoria.
+La struttura della memoria dell'OMAP4430 è chiara e semplice: la memoria indirizzabile è un vettore di 23 byte. I processori ARM sono bi-endian, consentendo l'accesso alla memoria nei due ordini big-endian e little-endian. È importante che l'ISA preveda uno spazio degli indirizzi più grande delle necessità implementative per consentire l'espansione futura della memoria.
 
-L'ISA ARM versione 8 è stata recentemente pubblicata per supportare uno spazio di indirizzamento a 64 bit, affrontando le preoccupazioni riguardanti lo spazio degli indirizzi limitato a 32 bit delle versioni precedenti.
+L'architettura mappa il program counter nel banco dei registri come R15, per permettere la creazione di salti con operazioni dell'ALU aventi R15 come registro di destinazione.
 
-L'ISA ARM presenta due gruppi principali di registri: 16 registri d'uso generale da 32 bit e, se supportato, 32 registri in virgola mobile da 32 bit. I registri d'uso generale vanno da R0 a R15 e sono utilizzati per operazioni aritmetiche e di memoria. I registri in virgola mobile possono essere trattati come valori in virgola mobile a precisione singola o doppia, a seconda dell'istruzione utilizzata.
+L'ISA ARM ha **due gruppi principali di registri**: 16 registri d'uso generale da 32 bit e, se supportato, 32 registri in virgola mobile da 32 bit. I registri d'uso generale vanno da R0 a R15 e sono utilizzati per operazioni aritmetiche e di memoria. I registri in virgola mobile possono essere trattati come valori in virgola mobile a precisione singola o doppia, a seconda dell'istruzione utilizzata.
+
+Lista dei registri:
+
+
+| Registri | Nomi alternativi | Funzione                                                    |
+| -------- | ---------------- | ----------------------------------------------------------- |
+| R0 - R3  | A1 - A4          | Contengono i parametri della procedura che viene invocata.  |
+| R4 - R11 | V1 - V8          | Contengono le variabili locali della procedura corrente.    |
+| R12      | IP               | Registro chiamata intraprocedurale (per chiamate a 32 bit). |
+| R13      | SP               | Puntatore allo stack.                                       |
+| R14      | LR               | Contiene l'indirizzo di ritorno della funzione corrente.    |
+| R15      | PC               | Program counter.                                            |
+
 
 L'architettura ARM è load/store, il che significa che le uniche operazioni che accedono direttamente alla memoria sono load e store, mentre le operazioni logiche e aritmetiche operano solo su registri o operandi all'interno dell'istruzione stessa.
 

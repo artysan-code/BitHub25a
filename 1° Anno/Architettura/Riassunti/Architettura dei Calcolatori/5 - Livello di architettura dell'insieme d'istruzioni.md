@@ -129,13 +129,8 @@ Per rappresentare numeri che non possono essere espressi come interi, come ad es
 Alcuni linguaggi di programmazione, come il COBOL, supportano anche un tipo di dati per i numeri decimali. Questi numeri vengono spesso rappresentati nell'hardware utilizzando la codifica binaria dei decimali (BCD), dove ogni cifra decimale viene codificata con 4 bit. Tuttavia, l'aritmetica dei numeri decimali impacchettati può comportare delle complicazioni, quindi possono essere necessarie istruzioni aggiuntive per la correzione dell'aritmetica decimale. 
 (pagine riassunte: 1)
 ### 5.2.2 - Tipi di dati non numerici
-Sebbene i primi computer abbiano fatto fortuna elaborando principalmente numeri, i moderni sistemi informatici sono spesso utilizzati per una vasta gamma di applicazioni non numeriche, come l'invio di email, la navigazione su Internet, la fotografia digitale, la creazione e la riproduzione di contenuti multimediali. Queste applicazioni richiedono tipi di dati diversi, che possono essere supportati dalle istruzioni del livello ISA.
+I primi computer macinavano numeri, mentre i computer moderni devono elaborare diversi tipi di dati, molto spesso non numerici.
 
-Tra questi, i caratteri giocano un ruolo centrale. I computer utilizzano comunemente codici carattere come ASCII e UNICODE, che definiscono rispettivamente caratteri di 7 e 16 bit. Le stringhe di caratteri, ovvero sequenze di caratteri, sono spesso gestite tramite istruzioni speciali nel livello ISA. Le stringhe possono essere delimitate da un carattere speciale di fine stringa o possono essere dotate di un campo lunghezza per indicare la loro estensione.
-
-I valori booleani, che possono essere solo vero o falso, sono altrettanto importanti. Sebbene teoricamente un solo bit sarebbe sufficiente per rappresentare un dato booleano, in pratica spesso si utilizzano interi byte per consentire un accesso più semplice. Comunemente, si associa il valore 0 al falso e tutti gli altri valori al vero. Tuttavia, quando si tratta di memorizzare array di booleani, spesso si adotta un approccio a "bit map", in cui una parola di 32 bit può contenere 32 valori binari.
-
-Infine, i puntatori rappresentano un altro tipo di dato importante, essenzialmente un indirizzo di memoria. Sono comunemente usati per accedere a variabili o dati memorizzati in una certa posizione di memoria. Tuttavia, l'uso dei puntatori richiede estrema cura, poiché errori nella loro gestione possono causare gravi problemi nel programma.
 
 (pagine riassunte: 1)
 ### 5.2.3 - Tipi di dati del Core i7

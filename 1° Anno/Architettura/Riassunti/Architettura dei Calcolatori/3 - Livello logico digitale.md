@@ -236,7 +236,17 @@ Oltre ai pin di indirizzo e dati, le CPU possiedono pin di controllo per gestire
 
 In sintesi, i pin della CPU sono fondamentali per la comunicazione con la memoria e altri dispositivi, influenzando direttamente le prestazioni e la funzionalità del sistema.
 ### 3.4.2 - Bus del calcolatore
+Un **bus** è un collegamento elettrico che unisce diversi dispositivi, utilizzato sia internamente alla CPU per il trasferimento di dati con l'ALU, sia esternamente per collegare la CPU alla memoria o ai dispositivi di I/O. I primi PC avevano un unico bus esterno chiamato **bus di sistema**, costituito da 50 a 100 fili paralleli inseriti nella scheda madre. Modernamente, i personal computer hanno un bus specifico tra CPU e memoria e un altro per le periferiche.
 
+All'interno della CPU, i progettisti possono utilizzare qualsiasi tipo di bus preferiscano, ma i bus esterni richiedono regole precise, dette **protocollo del bus**, e specifiche meccaniche ed elettriche per garantire compatibilità con le schede madri. Queste specifiche sono cruciali per permettere alle schede prodotte da terzi di funzionare correttamente.
+
+Nonostante i numerosi sistemi incompatibili già esistenti rendano difficile una standardizzazione, i bus devono comunque gestire dispositivi attivi (*master*) e passivi (*slave*). I *master* possono iniziare un trasferimento dati, mentre gli *slave* rispondono alle richieste. Ad esempio, la CPU è un *master* quando comanda al controllore del disco di leggere o scrivere dati, mentre il controllore del disco diventa *master* quando trasferisce dati alla memoria, che è sempre uno *slave*.
+
+I segnali digitali delle periferiche spesso non sono abbastanza forti per alimentare un bus lungo o con molti dispositivi collegati. Pertanto, i *master* sono collegati al bus tramite un **driver del bus**, che funge da amplificatore digitale, mentre gli *slave* usano un **ricevitore del bus**. Per periferiche che possono essere sia *master* sia *slave* si utilizza un **trasmettitore-ricevitore del bus**. Questi dispositivi di interfaccia sono spesso a tre stati per poter essere disconnessi quando non necessari, oppure possono utilizzare un **collettore aperto**, che permette un'organizzazione chiamata **OR-cablata** quando più dispositivi asseriscono la linea contemporaneamente.
+
+Un bus ha i propri indirizzi, dati e linee di controllo, che non necessariamente corrispondono uno-a-uno con i pin della CPU. Le principali decisioni nella progettazione di un bus includono l’ampiezza, la temporizzazione, l’arbitraggio e le operazioni consentite, tutte influenzando significativamente la velocità e la larghezza di banda del bus.
+
+(pagine riassunte: 2.5)
 ### 3.4.3 - Ampiezza del bus
 
 ### 3.4.4 - Temporizzazione del bus

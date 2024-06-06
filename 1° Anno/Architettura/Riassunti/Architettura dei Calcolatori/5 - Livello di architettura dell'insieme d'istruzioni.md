@@ -260,7 +260,7 @@ L'ATmega168 AVR dispone di sei formati d'istruzioni semplici, che possono essere
 
 1. **Primo formato:** Consiste in un opcode e due registri operandi, di cui uno è utilizzato solo in input e l'altro sia in input che in output. Ad esempio, l'istruzione ADD per i registri utilizza questo formato.
 
-2. **Secondo formato:** È di 16 bit e include un opcode aggiuntivo e un numero di registro di 5 bit. Questo formato permette di aumentare il numero di operazioni codificate dall'ISA, ma riduce il numero di operandi a uno solo. Le istruzioni che utilizzano questo formato eseguono un'operazione unaria, ricevendo in ingresso un solo registro e scrivendo l'output sullo stesso registro. Esempi di queste operazioni sono la negazione e l'incremento.
+2. **Secondo formato:** È di 16 bit e include un opcode aggiuntivo e un numero di registro di 5 bit. Questo formato permette di aumentare il numero di operazioni codificate dall'ISA, ma riduce il numero di operandi a uno solo. Esempi di queste operazioni sono la negazione e l'incremento.
 
 3. **Terzo formato:** Ha un operando immediato senza segno di 8 bit. Le istruzioni che utilizzano questa codifica possono avere un solo registro operando (utilizzato sia come input che come output) e il registro può appartenere solo all'insieme dei registri da R16 a R31. Il numero dei bit per l'opcode è dimezzato, permettendo solo a 4 istruzioni (SUBCI, SUBI, ORI, ANDI) di utilizzare questo formato.
 

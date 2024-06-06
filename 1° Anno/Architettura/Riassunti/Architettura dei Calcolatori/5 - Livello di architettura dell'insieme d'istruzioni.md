@@ -130,7 +130,8 @@ Alcuni linguaggi di programmazione, come il COBOL, supportano anche un tipo di d
 (pagine riassunte: 1)
 ### 5.2.2 - Tipi di dati non numerici
 I primi computer macinavano numeri, mentre i computer moderni devono elaborare diversi tipi di dati, molto spesso non numerici.
-
+#### 5.2.2.1 I caratteri
+Tra questi, i caratteri giocano un ruolo centrale. I computer utilizzano comunemente codici carattere come ASCII e UNICODE, che definiscono rispettivamente caratteri di 7 e 16 bit. Le stringhe di caratteri, ovvero sequenze di caratteri, sono spesso gestite tramite istruzioni speciali nel livello ISA. Le stringhe possono essere delimitate da un carattere speciale di fine stringa o possono essere dotate di un campo lunghezza per indicare la loro estensione.
 
 (pagine riassunte: 1)
 ### 5.2.3 - Tipi di dati del Core i7

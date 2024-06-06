@@ -110,17 +110,13 @@ L'ATmega168 dispone di un piccolo numero di registri specializzati. Il **registr
 Lo Stack Pointer (SP), mantiene l'indirizzo corrente dello spazio dei dati a cui le istruzioni di PUSH e POP accederanno. Lo stack pointer si trova all'indirizzo 80 della memoria di I/O.
 (pagine riassunte: 2)
 ## 5.2 - Tipi di dati
-La rappresentazione dei dati all'interno di un computer è fondamentale per il corretto funzionamento dei sistemi di calcolo. A livello ISA, sono disponibili diversi tipi di dati che possono essere manipolati dalle istruzioni del processore. Tuttavia, una delle questioni fondamentali riguarda il supporto hardware per un particolare tipo di dati.
+A livello ISA, sono disponibili diversi tipi di dati che possono essere manipolati dalle istruzioni del processore. Tuttavia, una delle questioni fondamentali è la presenza o meno di supporto hardware per un particolare tipo di dati.
 
 Il supporto hardware implica che una o più istruzioni si aspettano che i dati siano rappresentati in un formato specifico e l'utente non è libero di scegliere un formato diverso. Ad esempio, nel caso degli interi, l'hardware potrebbe aspettarsi che il bit più significativo rappresenti il segno del numero, e se questo formato non viene rispettato, il funzionamento del sistema potrebbe essere compromesso.
 
-Immaginate, ad esempio, se un responsabile del centro di calcolo di uno studio di contabilità decidesse di invertire il modo in cui i computer rappresentano i numeri negativi. Questo potrebbe causare errori nei calcoli, poiché il software è stato progettato per gestire i numeri in un formato specifico.
-
-In un contesto diverso, ad esempio per la valutazione del debito pubblico, potrebbero essere necessari numeri molto più grandi di quelli supportati nativamente dall'hardware. In questi casi, potrebbe essere necessario implementare una gestione software per la rappresentazione e l'aritmetica di numeri di dimensioni maggiori, ad esempio utilizzando due interi di 32 bit per rappresentare un singolo numero (64 bit in totale), noto come **precisione doppia**.
+In alcuni contesti, ad esempio per la valutazione del debito pubblico, potrebbero essere necessari numeri molto più grandi di quelli supportati nativamente dall'hardware. In questi casi, potrebbe essere necessario implementare una gestione software per la rappresentazione e l'aritmetica di numeri di dimensioni maggiori, ad esempio utilizzando due interi di 32 bit per rappresentare un singolo numero (64 bit in totale), anche chiamato **precisione doppia**.
 
 Il concetto di "precisione doppia" si riferisce alla capacità di rappresentare e manipolare numeri con una maggiore precisione rispetto ai numeri interi a 32 bit standard. Questo è particolarmente utile in applicazioni che richiedono una maggiore precisione numerica, come nel caso di calcoli scientifici o finanziari complessi.
-
-Nei prossimi paragrafi, esamineremo i tipi di dati supportati dall'hardware, inclusa la precisione doppia, per i quali sono richiesti formati specifici di rappresentazione per garantire il corretto funzionamento delle istruzioni di elaborazione.
 
 (pagine riassunte: 1)
 ### 5.2.1 - Tipi di dati numerici

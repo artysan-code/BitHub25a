@@ -396,7 +396,12 @@ MPI si basa su quattro concetti principali:
 
 (Pagine riassunte: 2.5)
 ### 8.4.5 - Scheduling
+La gestione dei processi e la creazione dei compiti nel sistema MPI comportano una sfida di *gestione temporale* dei job. Quando devono essere eseguiti, chi deve essere eseguito per primo, e da chi sono tutte questioni che vengono organizzate dallo *scheduler*.
 
+Lo scheduler, una volta informato del numero di CPU necessarie per un job, può gestirlo in diversi modi:
+- **FIFO**: i compiti vengono eseguiti in ordine sequenziale di arrivo. Appena c'è disponibilità di CPU, lo scheduler le associa ai job in attesa. Più job possono essere eseguiti contemporaneamente se ci sono abbastanza CPU disponibili.
+- **Senza bloccaggio testa coda**: questo metodo seleziona continuamente il primo job compatibile con l'intervallo di tempo disponibile, minimizzando il numero di CPU in idle.
+- **Tiling**: lo scheduler richiede sia il tempo necessario per completare il job in minuti, sia il numero di CPU richieste. In questo modo, può ottimizzare l'allocazione dei compiti per ridurre al minimo il tempo di idle, migliorando ulteriormente l'efficienza rispetto al metodo precedente.
 
 (Pagine riassunte: 1)
 ### 8.4.6 - Memoria condivisa a livello applicativo

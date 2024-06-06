@@ -284,7 +284,23 @@ Il principale vantaggio dei bus asincroni è la capacità di gestire dispositivi
 
 (pagine riassunte: 4.5)
 ### 3.4.5 - Arbitraggio del bus
+Nel contesto dei sistemi informatici, la CPU non è l'unico dispositivo che può agire come master del bus; anche i chip di I/O e i coprocessori devono diventare master per accedere alla memoria e gestire gli interrupt. Quando più dispositivi vogliono diventare master simultaneamente, è necessario un **arbitraggio del bus** per evitare conflitti.
 
+#### Arbitraggio Centralizzato
+In un sistema centralizzato, il bus ha una linea di richiesta OR-cablata che può essere asserita da più dispositivi. L'arbitro non può distinguere tra dispositivi specifici, solo tra "qualche richiesta" e "nessuna richiesta". Quando rileva una richiesta, concede il bus asserendo una linea di concessione. I dispositivi sono collegati in serie lungo questa linea in uno schema detto **collegamento a festone** (daisy chaining), dove il dispositivo più vicino all'arbitro ha la priorità di accesso al bus. Se questo dispositivo non ha richiesto il bus, la concessione viene propagata al dispositivo successivo, e così via, fino a che uno dei dispositivi accetta la concessione e prende il controllo del bus.
+
+Per evitare che la priorità sia sempre assegnata al dispositivo più vicino, si possono definire **livelli di priorità**, con linee separate per richiesta e concessione. L'arbitro concede il bus al dispositivo con la priorità più alta. Tra dispositivi con la stessa priorità, si utilizza ancora il collegamento a festone.
+
+Un altro miglioramento prevede una terza linea per la conferma dell'acquisizione del bus. Quando un dispositivo accetta la concessione, asserisce questa linea e può negare le altre linee di richiesta e concessione, permettendo agli altri dispositivi di richiedere il bus mentre il primo lo sta utilizzando. Questo permette una transizione più rapida tra dispositivi, migliorando l'utilizzo del bus.
+
+Nei sistemi dove la memoria è sul bus principale, la CPU compete con i dispositivi di I/O. Una soluzione è assegnare alla CPU la priorità più bassa, permettendo l'uso del bus solo quando nessun altro lo richiede, poiché la CPU può solitamente aspettare, mentre i dispositivi di I/O hanno esigenze di temporizzazione più stringenti.
+
+#### Arbitraggio Decentralizzato
+Un'alternativa è l'arbitraggio decentralizzato, che può avere fino a 16 linee di richiesta con priorità diverse. Ogni dispositivo asserisce la propria linea quando richiede il bus. Questo metodo, sebbene richieda più linee, elimina il costo dell'arbitro centrale. Tuttavia, il numero di dispositivi è limitato dal numero di linee di richiesta.
+
+Un altro schema decentralizzato utilizza solo tre linee: una linea OR-cablata per le richieste, una linea BUSY asserita dal master corrente, e una linea di arbitraggio a festone, mantenuta asserita da un'alimentazione di 5 volt. Questo sistema assegna il bus al dispositivo più a sinistra che richiede il bus, simile al collegamento a festone, ma senza un arbitro centrale. Questo rende il sistema più economico, veloce e meno suscettibile a guasti.
+
+(pagine riassunte: 3)
 ### 3.4.6 - Operazioni del bus
 
 ## 3.5 - Esempi di chip della CPU

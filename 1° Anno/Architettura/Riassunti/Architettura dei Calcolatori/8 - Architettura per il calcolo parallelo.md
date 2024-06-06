@@ -374,7 +374,25 @@ Tre lezioni chiave nella gestione dei server che Google ha appreso vi è:
 
 (Pagine riassunte: 5.5)
 ### 8.4.4 - Software di comunicazione per multicomputer
+Per la gestione effettiva della comunicazione tra i nodi di un multicomputer e la sincronizzazione. I sistemi a scambio di messaggi eseguono due o più processi in modo indipendente, anche se qualche d'uno potrebbe produrre dati che devono essere usati da altri processi. Neanche è possibile sapere se il destinatario sarà pronto quando il mittente ha i dati disponibili.
 
+Molti sistemi a scambio di messaggi forniscono delle primitive *send* e *receive* ma ci sono ulteriori metodi:
+- **Scambio sincrono di messaggi**; se il mittente esegue una send esso viene bloccato fino a che il destinatario non invia un receive. Al cedere nuovamente il controllo della chiamata al mittente, questo è sicuro che il messaggio è stato spedito e copiato correttamente. La limitazione ovviamente risiede nella sincronia (mette in attesa il mittente).
+- **Scambio di messaggi bufferizzato**; il messaggio viene inviato dal mittente direttamente in uno slot di buffer, che copierà il messaggio non appena il destinatario invierà una richiesta di receive. Il mittente può riprendere il proprio lavoro subito dopo l'invio, ma non saprà se il messaggio è arrivato correttamente.
+- **Scambio di messaggi non bloccante**, come il precedente, ma il mittente non può usare il buffer fino a che non è certo che è svuotato. Usa quindi il sistema operativo per cercare, tramite un interrupt o del *polling* sul sistema, di capire se può usare nuovamente il buffer.
+#### MPI - Interfaccia a scambio di messaggi
+Successore del precedente software **PVM** (Parallel Virtual Machine), arriva **MPI** (Message-Passing Interface), che non si occupa più di creare o gestire i processi, compito che spetta all'utente tramite chiamate di sistema locali. Una volta creati, i processi sono organizzati in gruppi statici che non possono essere modificati; MPI opera a livello di questi gruppi.
+
+MPI si basa su quattro concetti principali:
+1. **Comunicatori**: un gruppo di processi uniti a un contesto, che è un'etichetta usata per identificare una fase di esecuzione. Il contesto viene usato per evitare che i messaggi interferiscano tra loro durante la spedizione o ricezione.
+2. **Tipi di dati nei messaggi**: ogni messaggio ha un tipo che rappresenta cosa sta essendo spedito o ricevuto. Esistono tipi primitivi, come interi, caratteri o numeri in virgola mobile con precisione singola o doppia, ma anche tipi derivati.
+3. **Operazioni di comunicazione**: MPI supporta quattro modalità base di comunicazione disponibili sia in modalità bloccante che non bloccante:
+   - **Sincrona**: come descritto nell'introduzione.
+   - **Bufferizzata**: come descritto nell'introduzione.
+   - **Standard**: dipende dall'implementazione e può essere una delle modalità precedenti.
+   - **Pronto**: il mittente suppone che il destinatario sia pronto anche se non ne è certo.
+   Nelle forme di comunicazione collettiva, i processi devono effettuare la chiamata e usare in maniera appropriata gli argomenti (ad esempio, nei processi organizzati ad albero).
+4. **Topologie virtuali**: permette all'utente di specificare l'organizzazione del processo (ad albero, anello, griglia, ecc.).
 
 (Pagine riassunte: 2.5)
 ### 8.4.5 - Scheduling

@@ -189,7 +189,33 @@ La progettazione dei chip di memoria comporta due questioni chiave: la larghezza
 
 (pagine riassunte: 3)
 ### 3.3.6 - RAM e ROM
+Le memorie studiate finora possono essere lette e scritte, e sono chiamate **RAM** (*Random Access Memory*). Esistono due tipi di RAM: statiche e dinamiche. Le **RAM statiche** (SRAM) sono costruite con circuiti simili ai flip-flop D e mantengono il contenuto fintanto che sono alimentate, con tempi di accesso molto rapidi (nanosecondi). Le **RAM dinamiche** (DRAM) utilizzano un array di celle con un transistor e un piccolo condensatore per bit, richiedendo un refresh periodico per mantenere i dati, poiché la carica dei condensatori tende a disperdersi. Le DRAM hanno una densità elevata e sono utilizzate nella memoria centrale, ma sono più lente rispetto alle SRAM.
 
+Esistono vari tipi di DRAM:
+- **DRAM FPM** (*Fast Page Mode*): il tipo più datato, organizzato a matrice di bit e richiede indirizzi di riga e colonna separati.
+- **DRAM EDO** (*Extended Data Output*): migliora la larghezza di banda della memoria avviando nuovi riferimenti alla memoria prima che quelli precedenti siano completati.
+- **SDRAM** (*Synchronous DRAM*): una RAM ibrida, in parte statica e in parte dinamica, sincronizzata con il clock principale del sistema, eliminando la necessità di segnali di controllo aggiuntivi.
+- **SDRAM DDR** (*Double Data Rate*): raddoppia il tasso di trasferimento dati producendo output sia sul fronte di salita che su quello di discesa del segnale di clock.
+
+Questi tipi di RAM dinamica rappresentano un'evoluzione continua per soddisfare le esigenze di velocità dei processori sempre più rapidi.
+#### 3.3.6.1 - Chip di memoria non volatile
+Oltre alle RAM, esistono altri tipi di chip di memoria utilizzati per memorizzare permanentemente programmi e dati, anche in assenza di alimentazione. Questi sono chiamati **ROM** (*Read-Only Memory*), progettati per essere non modificabili e resistenti a cancellazioni accidentali o intenzionali. Le ROM sono programmate durante la fabbricazione e sono molto economiche per produzioni di grandi volumi, ma non sono flessibili poiché non possono essere modificate post-produzione.
+
+Per risolvere questo problema, sono state sviluppate le **PROM** (*Programmable ROM*), che possono essere programmate una volta dal produttore. Successivamente, sono state create le **EPROM** (*Erasable PROM*), che permettono la cancellazione e la riprogrammazione dei dati, rendendole ideali per fasi di test estensive. Le EPROM richiedono l'esposizione alla luce ultravioletta per essere cancellate e devono essere rimosse dal circuito per la programmazione.
+
+Le **EEPROM** (*Electrically Erasable PROM*) migliorano ulteriormente, permettendo la cancellazione tramite impulsi elettrici e la riprogrammazione senza rimuoverle dal circuito. Tuttavia, le EEPROM sono limitate in capacità, velocità e costi rispetto alle DRAM e SRAM.
+
+Un tipo più recente di EEPROM è la **memoria flash**, che consente la cancellazione e riscrittura a blocchi. La memoria flash può essere cancellata e programmata senza essere rimossa dal circuito, combinando la flessibilità delle EEPROM con una maggiore capacità e velocità.
+#### 3.3.6.2 - FPGA
+Gli **FPGA** (*Field-Programmable Gate Array*) sono circuiti integrati programmabili che permettono di configurare circuiti logici arbitrari caricando dati di configurazione specifici. Questo consente la creazione di nuovi circuiti hardware in poche ore, rispetto ai mesi necessari per la fabbricazione di circuiti integrati personalizzati.
+
+Gli FPGA contengono due componenti principali replicati molte volte: le **LUT** (*Look-Up Table*) e le **interconnessioni programmabili**. Le LUT sono piccole memorie programmabili che generano segnali di uscita, trasmessi poi alle interconnessioni programmabili e ai registri, permettendo di creare funzioni logiche arbitrarie. Ad esempio, una singola LUT a 4 ingressi può implementare un contatore a 3 bit con reset.
+
+Un vantaggio significativo degli FPGA è la rapidità di prototipazione. Un progetto FPGA può essere sviluppato rapidamente, mentre un design completamente personalizzato richiede una lunga fabbricazione. Per utilizzare un FPGA, il progetto deve essere descritto mediante una rappresentazione del circuito o un linguaggio di descrizione hardware. Successivamente, un sintetizzatore mappa il progetto sull'architettura FPGA specifica. Tuttavia, a volte il progetto non può essere completamente mappato sull'FPGA disponibile, richiedendo FPGA con più LUT, che sono più costosi.
+
+Progetti molto grandi potrebbero non rientrare nemmeno nei più grandi FPGA disponibili, costringendo il progettista a distribuire il progetto su più FPGA. Questo processo, sebbene più complesso, rimane molto più semplice rispetto alla progettazione di circuiti integrati personalizzati.
+
+(pagine riassunte: 5)
 ## 3.4 - Chip della CPU e bus
 
 ### 3.4.1 - Chip della CPU

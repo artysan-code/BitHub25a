@@ -405,7 +405,15 @@ Lo scheduler, una volta informato del numero di CPU necessarie per un job, può 
 
 (Pagine riassunte: 1)
 ### 8.4.6 - Memoria condivisa a livello applicativo
+Il sistema di scambio messaggi MPI non è molto amato dai programmatori, che preferirebbero lavorare con l'illusione di una memoria condivisa. Raggiungere sia la potenza di calcolo con macchine economiche che la semplicità di programmazione è uno degli obiettivi fondamentali di questi studi. Sebbene non esista una memoria condivisa fisica, come accennato in precedenza, questa può essere simulata a livello software, anche se non  implementabile a livello hardware.
+#### Memoria condivisa distribuita
+Un tipo di sistema a memoria condivisa a livello applicativo è quello dei sistemi basati su pagine, spesso chiamati **DSM** (Distributed Shared Memory). Un insieme di CPU di un multicomputer condivide uno spazio di indirizzi virtuali paginato (come illustrato in figura 8.46).
 
+Quando una CPU richiede una pagina locale, non ci sono problemi. Tuttavia, se la pagina non è disponibile localmente, si genera un errore. In questo caso, la pagina non viene caricata dal disco; invece, il sistema runtime o il sistema operativo inviano un segnale al nodo che possiede la pagina per trasferirla al nodo richiedente. Alla fine, l'errore è risolto poiché la pagina diventa locale per la CPU richiedente. Alcune implementazioni permettono di mantenere la pagina originale nel nodo di appartenenza e una copia nel nodo richiedente.
+
+La presenza di una sola copia di una pagina costringe il sistema a farla girare avanti e indietro, creando il problema noto come **falsa condivisione**. Una possibile ottimizzazione è di dichiarare inizialmente le pagine scrivibili come di sola lettura. Quando viene sollevato l'errore per la scrittura, il sistema crea una copia della pagina, chiamata **pagina gemella**. La pagina originale viene impostata in modalità lettura/scrittura, e le scritture successive possono procedere. Se successivamente si verifica un altro errore, la pagina viene inviata al nodo richiedente, e viene fatto un confronto parola per parola tra questa e la pagina gemella. Solo le modifiche vengono inviate, riducendo la dimensione del messaggio.
+
+Per la ricerca delle pagine non trovate, si possono implementare gli stessi metodi usati nei sistemi NUMA e COMA.
 
 (Pagine riassunte: 7.5)
 ### 8.4.7 - Prestazioni

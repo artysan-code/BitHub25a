@@ -156,10 +156,9 @@ Sono disponibili operandi in virgola mobile di 32 e 64 che rispettano lo standar
 Sad, i know.
 (pagine riassunte: 0.5)
 ### 5.2.5 - Tipi di dati dell'ATmega168
-L'ATmega168 dispone di una varietà di tipi di dati molto limitata. Tutti i registri sono lunghi 8 bit, con una sola eccezione, e così anche gli interi sono di 8 bit, così come i caratteri. In pratica, il solo tipo di dati le cui operazioni aritmetiche sono realmente supportate dall'hardware è il byte di 8 bit, come si evince dalla Figura 5.8.
+L'ATmega168 dispone di una varietà di tipi di dati molto limitata. Tutti i registri sono lunghi 8 bit, con una sola eccezione, e così anche gli interi sono di 8 bit, così come i caratteri. 
 
-Per facilitare l'accesso alla memoria, l'ATmega168 include anche un supporto limitato a puntatori senza segno di 16 bit. I puntatori da 16 bit X, Y e Z sono formati dalla concatenazione delle coppie di registri di 8 bit R26/R27, R28/R29 e R30/R31 rispettivamente. Quando un'istruzione di caricamento utilizza X, Y o Z come operando per l'indirizzo, il processore può incrementare o decrementare il valore a seconda della necessità.
-
+Per facilitare l'accesso alla memoria, l'ATmega168 include anche un supporto limitato a puntatori senza segno di 16 bit. I puntatori da 16 bit X, Y e Z sono formati dalla concatenazione delle coppie di registri di 8 bit R26/R27, R28/R29 e R30/R31 rispettivamente.
 (pagine riassunte: 0.5)
 ## 5.3 - Formati d'istruzione
 Un’istruzione consiste in un opcode (codice operativo), di solito corredato da altre informazioni quali la provenienza degli operandi e la destinazione dei risultati. L’argomento generale che tratta della provenienza degli operandi (cioè il loro indirizzo) è detto indirizzamento e verrà illustrato in dettaglio nel prosieguo di questo paragrafo. Un’istruzione è dotata di un opcode che ne specifica il comportamento, e può contenere nessuno, uno, due o tre indirizzi.

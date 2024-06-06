@@ -166,16 +166,18 @@ Un’istruzione consiste in un opcode (codice operativo), di solito corredato da
 Alcune macchine hanno tutte le istruzioni della stessa lunghezza, altre dispongono d’istruzioni di lunghezza diversa. Le istruzioni possono essere più corte, altrettanto lunghe o più lunghe della dimensione di parola. La scelta di avere tutte le istruzioni della stessa lunghezza semplifica la loro decodifica, ma spesso implica uno spreco di spazio, visto che tutte le istruzioni devono essere lunghe quanto la più lunga.
 
 (pagine riassunte: 0.5)
-### 5.3.1 - Criteri progettuali per i formati d'istruzoni
-La scelta dei formati d’istruzione richiede ai progettisti di computer di tenere conto di molti fattori. Si tratta di una decisione cruciale che deve essere presa molto presto nel processo di progettazione, poiché l'insieme d'istruzioni di un computer può persistere per decenni. È fondamentale la capacità di aggiungere nuove istruzioni all'insieme per sfruttare le opportunità che si presentano nel corso del tempo, ma ciò dipende anche dalla sopravvivenza dell'architettura e dell'azienda che l'ha progettata.
-
-L'efficienza di un ISA dipende fortemente dalla tecnologia utilizzata nell'implementazione del computer. Le scelte fatte per l'ISA possono rivelarsi problematiche nel tempo a causa dell'evoluzione tecnologica. Ad esempio, un'architettura basata sullo stack può essere efficace se gli accessi in memoria sono veloci, mentre una con molti registri può essere preferibile in altri contesti.
-
+### 5.3.1 - Criteri progettuali per i formati d'istruzioni
+L'efficienza di un ISA dipende fortemente dalla tecnologia utilizzata nell'implementazione del computer. Ad esempio, un'architettura basata sullo stack può essere efficace se gli accessi in memoria sono veloci, mentre una con molti registri può essere preferibile in altri contesti.
+Vista la sua importanza, ci sono 3 criteri che vengono affrontati nella progettazione dei formati d'istruzione:
+#### 5.3.1.1 Primo criterio: Larghezza delle istruzioni.
 La lunghezza delle istruzioni è un aspetto critico. Sebbene istruzioni più corte occupino meno spazio di memoria, possono essere più difficili da decodificare o sovrapporre. Tuttavia, istruzioni più brevi possono contribuire a velocizzare il processore, soprattutto quando si tratta di accedere alla memoria o alle cache. La dimensione delle istruzioni è quindi un compromesso tra spazio, decodifica, esecuzione e larghezza di banda della memoria.
-
+#### 5.3.1.2 Secondo criterio: Quantità di spazio per le operazioni.
 Un altro criterio progettuale riguarda lo spazio necessario per esprimere tutte le operazioni desiderate. È importante prevedere un numero sufficiente di codici operativi per supportare le funzionalità richieste, evitando così di rimanere vincolati dalle limitazioni del formato delle istruzioni.
-
+#### 5.3.1.3 Terzo criterio: Numero di bit nel campo degli indirizzi.
 Infine, il numero di bit in un campo degli indirizzi è cruciale. Maggiore risoluzione nell'accesso alla memoria può significare indirizzi più lunghi e istruzioni più complesse. Un compromesso è necessario per bilanciare la risoluzione dell'accesso alla memoria con la lunghezza delle istruzioni e le prestazioni complessive del sistema.
+
+#### 5.3.1.4 Conclusioni
+I computer moderni hanno raggiungo un compromesso... discutibile. Da un lato, si usano tanti bit quanti sono necessari per indirizzare individualmente i byte, dall'altra spesso si accede alla memoria per leggere una, due o addirittura quattro parole alla volta. 
 
 (pagine riassunte: 2.5)
 ### 5.3.2 - Codice operativo espandibile

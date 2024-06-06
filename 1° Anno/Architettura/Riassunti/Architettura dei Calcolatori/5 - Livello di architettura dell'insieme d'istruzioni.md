@@ -181,9 +181,7 @@ I computer moderni hanno raggiungo un compromesso... discutibile. Da un lato, si
 
 (pagine riassunte: 2.5)
 ### 5.3.2 - Codice operativo espandibile
-Il paragrafo esplora ulteriori compromessi relativi ai codici operativi e agli indirizzi nelle istruzioni di un computer. Si considera un'istruzione lunga di (*n* + *k*) bit, con un opcode di *k* bit e un solo indirizzo di *n* bit. Tale formato consentirebbe $2^{k}$ operazioni diverse e $2^{n}$ celle di memoria indirizzabili. Tuttavia, gli stessi (*n* + *k*) bit potrebbero essere suddivisi in (*k* - 1) bit di opcode e (*n* + 1) bit di indirizzo, dimezzando il numero di istruzioni ma raddoppiando la memoria raggiungibile o la sua risoluzione.
-
-Viene poi introdotto il concetto di **codice operativo espandibile** attraverso un esempio. Si considera una macchina con istruzioni lunghe 16 bit e indirizzi di 4 bit. Se i progettisti necessitano di varie combinazioni di istruzioni con diversi numeri di indirizzi, possono utilizzare un'approccio in cui un opcode speciale (ad esempio 15) indica che i bit 8-15 contengono l'opcode effettivo, consentendo così di interpretare gli altri bit in modi diversi a seconda del contesto.
+Introduciamo il concetto di  **codice operativo espandibile** attraverso un esempio. Si considera una macchina con istruzioni lunghe 16 bit e indirizzi di 4 bit. Se i progettisti necessitano di varie combinazioni di istruzioni con diversi numeri di indirizzi, possono utilizzare un'approccio in cui un opcode speciale (ad esempio 15) indica che i bit 8-15 contengono l'opcode effettivo, consentendo così di interpretare gli altri bit in modi diversi a seconda del contesto.
 
 Nell'esempio, si osserva un incremento progressivo della dimensione dell'opcode, che passa da 4 bit per istruzioni con tre indirizzi fino a 16 bit per istruzioni senza indirizzi. Questo evidenzia il compromesso tra lo spazio riservato all'opcode e alle altre informazioni.
 

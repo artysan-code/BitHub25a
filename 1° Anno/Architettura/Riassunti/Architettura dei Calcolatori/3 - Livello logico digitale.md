@@ -285,7 +285,6 @@ Il principale vantaggio dei bus asincroni è la capacità di gestire dispositivi
 (pagine riassunte: 4.5)
 ### 3.4.5 - Arbitraggio del bus
 Nel contesto dei sistemi informatici, la CPU non è l'unico dispositivo che può agire come master del bus; anche i chip di I/O e i coprocessori devono diventare master per accedere alla memoria e gestire gli interrupt. Quando più dispositivi vogliono diventare master simultaneamente, è necessario un **arbitraggio del bus** per evitare conflitti.
-
 #### Arbitraggio Centralizzato
 In un sistema centralizzato, il bus ha una linea di richiesta OR-cablata che può essere asserita da più dispositivi. L'arbitro non può distinguere tra dispositivi specifici, solo tra "qualche richiesta" e "nessuna richiesta". Quando rileva una richiesta, concede il bus asserendo una linea di concessione. I dispositivi sono collegati in serie lungo questa linea in uno schema detto **collegamento a festone** (daisy chaining), dove il dispositivo più vicino all'arbitro ha la priorità di accesso al bus. Se questo dispositivo non ha richiesto il bus, la concessione viene propagata al dispositivo successivo, e così via, fino a che uno dei dispositivi accetta la concessione e prende il controllo del bus.
 
@@ -294,7 +293,6 @@ Per evitare che la priorità sia sempre assegnata al dispositivo più vicino, si
 Un altro miglioramento prevede una terza linea per la conferma dell'acquisizione del bus. Quando un dispositivo accetta la concessione, asserisce questa linea e può negare le altre linee di richiesta e concessione, permettendo agli altri dispositivi di richiedere il bus mentre il primo lo sta utilizzando. Questo permette una transizione più rapida tra dispositivi, migliorando l'utilizzo del bus.
 
 Nei sistemi dove la memoria è sul bus principale, la CPU compete con i dispositivi di I/O. Una soluzione è assegnare alla CPU la priorità più bassa, permettendo l'uso del bus solo quando nessun altro lo richiede, poiché la CPU può solitamente aspettare, mentre i dispositivi di I/O hanno esigenze di temporizzazione più stringenti.
-
 #### Arbitraggio Decentralizzato
 Un'alternativa è l'arbitraggio decentralizzato, che può avere fino a 16 linee di richiesta con priorità diverse. Ogni dispositivo asserisce la propria linea quando richiede il bus. Questo metodo, sebbene richieda più linee, elimina il costo dell'arbitro centrale. Tuttavia, il numero di dispositivi è limitato dal numero di linee di richiesta.
 
@@ -302,7 +300,19 @@ Un altro schema decentralizzato utilizza solo tre linee: una linea OR-cablata pe
 
 (pagine riassunte: 3)
 ### 3.4.6 - Operazioni del bus
+Finora abbiamo esaminato i bus con un master, solitamente la CPU, che legge o scrive dalla memoria. Tuttavia, esistono altri tipi di bus che vedremo ora.
 
+Spesso è più efficiente trasferire un intero blocco di dati in una volta sola, come quando si utilizza la cache. Il master comunica allo slave quanti dati trasferire e lo slave restituisce un dato per ciclo fino a quando il conteggio non si esaurisce. Questo schema permette di ridurre il numero di cicli di bus necessari per trasferire un blocco.
+
+Nei sistemi multiprocessore, è importante evitare che più CPU accedano simultaneamente a dati critici in memoria. Si utilizza un ciclo di bus leggi-modifica-scrivi che consente a una CPU di leggere, analizzare e riscrivere dati senza rilasciare il bus, evitando interferenze da parte di altre CPU.
+
+Un altro tipo di ciclo di bus gestisce gli interrupt. L'assegnazione delle priorità e l'arbitraggio sono necessari per gestire gli interrupt da dispositivi diversi. Tipicamente, un controllore di interrupt come il 8259A di Intel viene utilizzato per gestire gli interrupt da più dispositivi di I/O.
+
+Il 8259A ha otto input che possono essere collegati a dispositivi di I/O e quando uno di essi genera un interrupt, il 8259A segnala alla CPU. La CPU risponde e il 8259A specifica quale dispositivo ha causato l'interrupt. Questo chip può essere cascato per gestire fino a 64 dispositivi di I/O.
+
+Questi concetti forniscono una base per comprendere il funzionamento dei bus e la loro interazione con le CPU. Ora passeremo a esaminare alcune CPU commerciali e i loro bus per una comprensione più dettagliata.
+
+(pagine riassunte: 2.5)
 ## 3.5 - Esempi di chip della CPU
 
 ### 3.5.1 - Intel Core i7

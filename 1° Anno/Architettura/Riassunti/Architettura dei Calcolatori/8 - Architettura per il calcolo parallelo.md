@@ -417,7 +417,32 @@ Per la ricerca delle pagine non trovate, si possono implementare gli stessi meto
 
 (Pagine riassunte: 7.5)
 ### 8.4.7 - Prestazioni
+Lo scopo del parallelismo è migliorare le performance e il lato economico di un sistema, confrontandolo a quello monocalcolatore. In questo capitolo tratteremo i parametri di analisi delle prestazioni e le ottimizzazioni che si fanno.
+#### Parametri di valutazione hardware
+I principali componenti analizzati sono la CPU, l'I/O e la rete di interconnessione. Esistono due concetti chiave per questi componenti: la **latenza** e la **larghezza di banda**.
 
+La latenza (*roundtrip latency*) è il tempo necessario affinché un pacchetto venga inviato, processato e ritorni. Questo dipende dalla destinazione del collegamento, che può essere la memoria, una CPU, o un altro dispositivo, e dal tipo di instradamento utilizzato:
+- **Commutazione di circuiti**: La latenza dipende dal tempo di configurazione e di trasferimento, inclusa l'invio di un pacchetto sonda che prepara il trasferimento allocando le risorse.
+- **Commutazione di pacchetto**: La latenza è influenzata dal tempo di configurazione e dall'assemblaggio del pacchetto, sommato al ritardo introdotto dai commutatori e al tempo necessario per attraversarli.
+- **Wormhole routing**: La latenza dipende dal tempo di configurazione iniziale per assemblare il pacchetto e dal tempo di trasferimento, con l'aggiunta del tempo di propagazione, che è spesso trascurabile.
+
+L'altra metrica hardware è la larghezza di banda, in particolare la **larghezza di banda complessiva**, che è la somma delle capacità di tutti i collegamenti e rappresenta il massimo numero di bit che può transitare simultaneamente sulla rete.
+#### Parametri di valutazione software
+Oltre all'hardware l'utente è interessato a capire quanta effettiva differenza c'è tra girare un sistema su un monoprocessore e un multicomputer.
+
+Un ottimo sistema per rappresentare ciò è un grafico dell'incremento di velocità in funzione del numero di CPU. Potrei trattare tutti gli esempi, ma generalmente ogni applicativo ha diversi grafici, più tende verso l'alto meglio è implementato e l'unico con incremento quasi lineare è il **problema degli n-corpi**.
+
+Il motivo per cui non si può raggiungere la linearità risiede nei programmi che richiedono esecuzioni sequenziali, che devono essere quindi associate ad una CPU esclusiva.
+#### Miglioramento delle prestazioni
+Generalmente, aumentare il numero di CPU fino a evitare colli di bottiglia migliora le prestazioni; tali sistemi si chiamano **scalabili**. Un esempio è il confronto tra un sistema a bus e un sistema a griglia. Idealmente, un sistema scalabile dovrebbe mantenere latenza e banda costanti, ma nella pratica l'aumento della banda provoca un notevole incremento della latenza con l'aumentare delle dimensioni del progetto. La latenza è cruciale in molte applicazioni, quindi i progettisti hanno sviluppato varie tecniche per ridurla.
+
+Una tecnica utile è il **caching**, dove una o più copie dei dati sono conservate vicino alle locazioni che li utilizzano o a cui "appartengono". Questo crea copie di livelli e gerarchie diverse, risolvendo il problema tramite un aggiornamento continuo dei dati.
+
+Un'altra tecnica è il **prefetching**, che prevede il caricamento anticipato di un dato prima che sia necessario. La lettura può essere sovrapposta alla normale esecuzione, rendendo il dato già disponibile quando richiesto. Questa operazione può essere gestita dal compilatore, se è consapevole della macchina su cui gira.
+
+Il **multithreading** è un'altra tecnica già trattata in precedenza.
+
+Infine, le **scritture non bloccanti** rappresentano una tecnica avanzata, difficile da realizzare, ma che permette di non bloccare il programma durante l'esecuzione dell'istruzione di scrittura.
 
 (Pagine riassunte: 6.25)
 ## 8.5 - Grid Computing

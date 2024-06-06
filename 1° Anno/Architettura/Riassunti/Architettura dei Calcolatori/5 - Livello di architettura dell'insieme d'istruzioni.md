@@ -132,6 +132,8 @@ Alcuni linguaggi di programmazione, come il COBOL, supportano anche un tipo di d
 I primi computer macinavano numeri, mentre i computer moderni devono elaborare diversi tipi di dati, molto spesso non numerici.
 #### 5.2.2.1 I caratteri
 Tra questi, i caratteri giocano un ruolo centrale. I computer utilizzano comunemente codici carattere come ASCII e UNICODE, che definiscono rispettivamente caratteri di 7 e 16 bit. Le stringhe di caratteri, ovvero sequenze di caratteri, sono spesso gestite tramite istruzioni speciali nel livello ISA. Le stringhe possono essere delimitate da un carattere speciale di fine stringa o possono essere dotate di un campo lunghezza per indicare la loro estensione.
+#### 5.2.2.2 I valori booleani
+I valori booleani, che possono essere solo vero o falso, sono altrettanto importanti. Sebbene teoricamente un solo bit sarebbe sufficiente per rappresentare un dato booleano, in pratica spesso si utilizzano interi byte per consentire un accesso più semplice. Comunemente, si associa il valore 0 al falso e tutti gli altri valori al vero. Tuttavia, quando si tratta di memorizzare array di booleani, spesso si adotta un approccio a "bit map", in cui una parola di 32 bit può contenere 32 valori binari.
 
 (pagine riassunte: 1)
 ### 5.2.3 - Tipi di dati del Core i7

@@ -270,7 +270,9 @@ L'ATmega168 AVR dispone di sei formati d'istruzioni semplici, che possono essere
 
 (pagine riassunte: 0.5)
 ## 5.4 - Indirizzamento 
-L'**indirizzamento** riguarda la specifica della posizione degli operandi nelle istruzioni. È un argomento centrale nell'affrontare queste problematiche.
+Molte istruzioni contengono operandi e si pone il problema di come specificarne la posizione. 
+L'**indirizzamento** è l'argomento che tratta di queste problematiche.
+
 ### 5.4.1 - Modalità d'indirizzamento
 Fino ad ora abbiamo trascurato l'interpretazione dei bit nei campi d'indirizzo per individuare gli operandi. È ora di esaminare più da vicino le modalità di indirizzamento. Vedremo che ci sono diverse modalità di implementazione. 
 ### 5.4.2 - Indirizzamento immediato

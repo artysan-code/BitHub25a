@@ -248,9 +248,41 @@ Un bus ha i propri indirizzi, dati e linee di controllo, che non necessariamente
 
 (pagine riassunte: 2.5)
 ### 3.4.3 - Ampiezza del bus
+Nella progettazione dei bus, uno dei parametri principali da considerare è l'ampiezza. Un numero maggiore di linee di indirizzo consente alla CPU di indirizzare direttamente più memoria: con *n* linee di indirizzo, la CPU può indirizzare $2^n$ locazioni di memoria. Tuttavia, bus più larghi richiedono più fili, occupano più spazio e necessitano di connettori più grandi, aumentando i costi. Ad esempio, un sistema con 64 linee di indirizzo e $2^{32}$ byte di memoria costerà più di uno con 32 linee di indirizzo e la stessa quantità di memoria, ma quest'ultimo non sarà espandibile in futuro.
 
+Col tempo, non solo aumenta il numero di linee di indirizzo, ma anche quello delle linee di dati, per aumentare la larghezza di banda. Ci sono due modi per farlo: ridurre il periodo di clock del bus o aumentare la larghezza dei dati del bus. Un'altra opzione è aumentare la velocità del bus, ma ciò può causare **disallineamento del bus**: i segnali su linee diverse viaggiano a velocità leggermente diverse, problema che diventa più marcato con bus più veloci. Inoltre, velocizzare il bus può compromettere la retrocompatibilità.
+
+Per ridurre l'ampiezza del bus senza compromettere troppo le prestazioni, si può optare per un **bus multiplexato**. In questa architettura, un certo numero di linee, ad esempio 32, è utilizzato sia per gli indirizzi sia per i dati. All'inizio di un'operazione, le linee sono utilizzate per gli indirizzi, e successivamente per i dati. Questo riduce l'ampiezza del bus, ma rende il sistema più lento. I progettisti devono quindi valutare attentamente queste opzioni per bilanciare costi, spazio e prestazioni.
 ### 3.4.4 - Temporizzazione del bus
+I bus possono essere classificati in base alla loro temporizzazione in due categorie: **sincroni** e **asincroni**.
+1. **Bus sincroni**: Hanno una linea pilotata da un oscillatore a cristalli che genera un segnale a onda quadra, con frequenze tipicamente comprese tra 5 e 100 MHz. Tutte le operazioni su questo tipo di bus richiedono un numero intero di cicli, detti **cicli di bus**.
+2. **Bus asincroni**: Non dispongono di un orologio principale, quindi i cicli di bus possono avere lunghezze variabili e non devono essere necessariamente uguali durante la comunicazione tra dispositivi.
+#### 3.4.4.1 - Bus sincroni
+Figura 3.38
 
+Il testo descrive il funzionamento di un bus sincrono utilizzando come esempio una temporizzazione specifica, illustrata nella Figura 3.38(a). Si considera un clock a 100 MHz, che corrisponde a un ciclo di bus di 10 ns. Anche se questo valore può sembrare lento rispetto alle velocità delle CPU moderne, molti bus, come il bus PCI, operano a velocità inferiori, tipicamente 33 MHz o 66 MHz. La lettura dalla memoria richiede 15 ns dal momento in cui l'indirizzo è stabile, il che implica che sono necessari tre cicli di bus per completare una lettura.
+
+Nel dettaglio, il primo ciclo inizia con il fronte di salita di T1 e il terzo ciclo termina con il fronte di salita di T4. I segnali del clock, dell'indirizzo, dei dati e di controllo sono mostrati su una scala temporale comune, con cambiamenti di valore che richiedono 1 ns. Durante T1, la CPU fornisce l'indirizzo, che si stabilizza prima dell'inizio di T2. Le linee $\overline{MREQ}$ e $\overline{RD}$ vengono asserite per indicare una lettura dalla memoria. Poiché la memoria richiede 15 ns per fornire i dati, viene asserita la linea $\overline{WAIT}$ all'inizio di T2 per inserire uno stato di attesa. 
+
+All'inizio di T3, $\overline{WAIT}$ viene negato e i dati sono disponibili sulla linea dati. Durante T3, la CPU legge i dati e quindi nega $\overline{MREQ}$ e $\overline{RD}$. Le specifiche di temporizzazione indicate nella Figura 3.38(b) comprendono vari intervalli temporali, come $T_{AD}$, $T_{DS}$, $T_{MH}$, $T_{RH}$ e $T_{DH}$, che garantiscono il corretto funzionamento del bus sincrono.
+
+Ad esempio, $T_{AD}$ è il tempo massimo entro il quale la CPU deve stabilizzare l'indirizzo dopo il fronte di salita del clock, mentre $T_{DS}$ garantisce che i dati siano disponibili sulla linea almeno 2 ns prima del fronte di discesa del clock. Questi vincoli assicurano che una memoria con un tempo di accesso di 10 ns possa rispondere correttamente entro il ciclo T3. Tuttavia, una memoria più lenta potrebbe richiedere cicli di attesa aggiuntivi.
+
+Infine, il testo sottolinea che la Figura 3.38 è una versione semplificata dei vincoli di temporizzazione reali e che la scelta dei livelli di asserzione dei segnali di controllo (alto o basso) è arbitraria, simile a una decisione di programmazione.
+#### 3.4.4.2 - Bus asincroni
+Figura 3.39
+
+I bus sincroni funzionano con intervalli temporali definiti dal clock, il che semplifica la progettazione ma introduce alcuni problemi. Ad esempio, tutte le operazioni devono allinearsi ai cicli del clock. Se una CPU e una memoria possono completare un trasferimento in 3,1 cicli, devono comunque estendere il tempo a 4 cicli, poiché non sono consentite frazioni di ciclo. Inoltre, una volta scelto un ciclo di bus, è difficile trarre vantaggio dai progressi tecnologici successivi. Anche con memorie più veloci, il tempo di lettura minimo rimane vincolato ai cicli di clock, limitando il miglioramento delle prestazioni.
+
+In un sistema con dispositivi di velocità diversa, il bus deve funzionare alla velocità del dispositivo più lento. Questo limita le prestazioni complessive, poiché i dispositivi più veloci non possono sfruttare il loro pieno potenziale.
+
+Per gestire dispositivi con prestazioni diverse, si può usare un bus asincrono, che non dipende da un clock principale. In un bus asincrono, il master del bus asserisce un segnale di sincronizzazione ($\overline{MSYN}$) dopo aver impostato l'indirizzo e i segnali necessari. Lo slave esegue l'operazione richiesta alla massima velocità possibile e, una volta completata, asserisce un segnale di sincronizzazione ($\overline{SSYN}$). Il master, vedendo $\overline{SSYN}$ asserito, sa che i dati sono pronti e procede a memorizzarli, quindi nega i segnali di controllo e $\overline{MSYN}$. Lo slave, vedendo $\overline{MSYN}$ negato, sa che l'operazione è terminata e nega $\overline{SSYN}$, riportando il sistema allo stato iniziale.
+
+I bus asincroni utilizzano un meccanismo chiamato **full handshake** per coordinare le operazioni tra master e slave, garantendo che ogni evento sia causato da un evento precedente, indipendentemente dalla temporizzazione del clock. Questo permette a dispositivi con velocità diverse di operare senza influenzarsi a vicenda.
+
+Il principale vantaggio dei bus asincroni è la capacità di gestire dispositivi con prestazioni diverse in modo efficiente. Tuttavia, la maggior parte dei bus è sincrona perché più facile da progettare e implementare. I sistemi sincroni non richiedono feedback tra i dispositivi, semplificando la progettazione, ma a costo di una minore flessibilità e adattabilità ai progressi tecnologici.
+
+(pagine riassunte: 4.5)
 ### 3.4.5 - Arbitraggio del bus
 
 ### 3.4.6 - Operazioni del bus

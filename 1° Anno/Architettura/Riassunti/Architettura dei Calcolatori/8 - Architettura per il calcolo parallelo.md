@@ -344,14 +344,33 @@ Esistono diversi modi per creare una rete di connessione (vedi fig. 8.37):
 (Pagine riassunte: 3.5)
 ### 8.4.2 - Massive Parallel Processors
 La prima categoria di multicomputer è la **MPP** (Massive Parallel Processors), enormi computer con costi di svariati milioni, successori dei mainframe. Utilizzano calcolatori standard e sono dotati di una rete di interconnessione ad alta banda e velocità, con software brevettati. Gli MPP hanno un'enorme capacità I/O e operano generalmente con trasferimenti di piccoli pacchetti. Presentano una bassa tolleranza agli errori, che possono bloccare calcoli importanti per ore, quindi sono dotati di hardware e software di controllo per mitigare questi problemi.
-#### BlueGene
+#### BlueGene (Saltato)
 
-#### Red Storm
+#### Red Storm (saltato)
 
 
 (Pagine riassunte: 10)
 ### 8.4.3 - Cluster
+Un'altra categoria di multicomputer è rappresentata dai **cluster di computer**, costituiti da migliaia di computer o workstation collegati tramite schede di rete. I cluster possono essere paragonati ai MPP come i PC ai mainframe, specialmente per quanto riguarda l'ambito di utilizzo. Grazie all'evoluzione dei computer e al mercato sempre più accessibile, i cluster rendono gli MPP utili solo in situazioni molto specifiche e di nicchia.
 
+Esistono due tipi particolari di cluster: **centralizzati** e **decentralizzati**. I cluster centralizzati sono costituiti da agglomerati di PC disposti in sale o scaffali in modo compatto (**headless workstations**), mentre i cluster decentralizzati sono formati da PC distribuiti in un edificio o campus. I cluster decentralizzati sono generalmente dotati di molte periferiche, sono eterogenei e risultano molto complessi da implementare.
+#### Google
+Uno dei più grandi colossi multinazionali gestisce il motore di ricerca più potente e veloce al mondo, se non il più utilizzato. Trova, indicizza e memorizza oltre 40 miliardi di pagine del **World Wide Web**, permettendo ricerche in meno di mezzo secondo per utenti di tutto il mondo contemporaneamente. Sebbene sia semplice da usare, il sistema è altamente complesso. Vediamolo in dettaglio.
+
+Google è strutturato in centri *decentralizzati* in tutto il mondo. Quando viene effettuata una richiesta, l'IP dell'utente viene esaminato e la richiesta viene inoltrata al centro più vicino. Questi centri utilizzano tecnologie di trasferimento ad alta velocità (2,488 Gbps) con connessioni di backup e dispongono di riserve di energia e motori di emergenza, rendendo Google quasi inarrestabile.
+
+Analizziamo una *query* inviata a Google. Il *bilanciatore di carico* instrada la richiesta verso un *interrogatore di query*, che a sua volta invia la richiesta in parallelo al *correttore ortografico* e al *server pubblicità*. Le parole di ricerca vengono analizzate in parallelo nei server degli indici, che contengono un elemento per ogni parola presente nel web. Ogni elemento presenta tutti i documenti legati a quella parola, ordinati secondo il **PageRank**, un algoritmo segreto basato principalmente sul numero di collegamenti entranti nella pagina e il rank delle pagine da cui provengono.
+
+Per incrementare le prestazioni, gli indici sono divisi in **shard**. La shard 1 contiene tutte le parole indicizzate e gli ID dei primi n documenti, la shard 2 contiene tutte le parole e gli n documenti successivi, e così via. Al crescere del web, le shard si scomporranno ulteriormente.
+
+I server degli indici restituiscono un insieme di identificativi di documenti, combinati secondo le relazioni booleane della query. Successivamente, si accede ai documenti per ottenere titoli, URL ed estratti di testo. I risultati vengono poi rispediti al gestore delle interrogazioni, che li riordina secondo il PageRank. Se vi sono errori ortografici, vengono segnalati, e vengono aggiunti annunci pubblicitari pertinenti alla ricerca. Tutti i risultati sono formattati in *HTML*.
+
+Proprio come nei cluster di workstation, Google non ha acquistato un enorme centro di calcolo dal costo di miliardi, ma ha suddiviso il carico tra molti computer economici reperibili sul mercato. Il software è progettato per gestire errori, sia hardware che software. Ironicamente, la prima soluzione a un problema è spesso riavviare il sistema interessato.
+
+Tre lezioni chiave nella gestione dei server che Google ha appreso vi è:
+- I componenti sono soggetti ad anomalie, quindi è necessario prevederle a priori.
+- Duplicare i componenti aumenta la produttività e le risorse disponibili.
+- È conveniente ottimizzare il rapporto prezzo/prestazioni.
 
 (Pagine riassunte: 5.5)
 ### 8.4.4 - Software di comunicazione per multicomputer

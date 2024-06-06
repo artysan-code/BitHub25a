@@ -243,13 +243,14 @@ Inoltre, alcune istruzioni possono essere seguite da 1, 2 o 4 byte aggiuntivi ch
 ### 5.3.4 - Formati delle istruzioni dell'OMAP4430 ARM
 L'ISA dell'OMAP4430 include istruzioni da 16 e 32 bit allineate in memoria. Le istruzioni sono progettate per essere semplici, con ciascuna che specifica una singola azione. Le istruzioni aritmetiche tipiche specificano due indirizzi come operandi sorgente e un solo registro come destinazione.
 
-Le istruzioni a 16 bit sono versioni più snelle di quelle a 32 bit, con limitazioni come l'accettazione di soli due registri come operandi e l'uso di soli primi otto registri. Questa versione ridotta dell'ISA ARM è chiamata "Thumb ISA". Alcune varianti aggiuntive permettono l'uso di costanti senza segno di varie dimensioni al posto di uno dei registri.
+Le istruzioni a 16 bit sono versioni più snelle di quelle a 32 bit, ma hanno delle limitazioni: possono accettare solo due registri come operandi, e possono utilizzare soltanto i primi 8 registri. 
+Questa versione ridotta dell'ISA ARM è chiamata  **Thumb ISA**. Alcune varianti aggiuntive permettono l'uso di costanti senza segno di varie dimensioni al posto di uno dei registri.
 
 Il formato delle istruzioni ARM a 32 bit è complesso e comprende varie modalità di encoding. Ad esempio, i bit 26 e 27 di ogni istruzione determinano il formato dell'istruzione e indicano all'hardware dove trovare il resto del codice operativo. Il campo condizione nei bit più significativi rende ogni istruzione una istruzione predicato, eseguita solo se soddisfa determinate condizioni basate sul registro di stato del processore (PSR).
 
 Nelle istruzioni a 32 bit, non è possibile includere una costante di 32 bit direttamente. L'istruzione MOVT imposta i 16 bit più significativi di un registro a 32 bit, mentre un'altra istruzione imposta i 16 bit rimanenti. Ogni istruzione a 32 bit ha un campo di 4 bit per il codice di condizione.
 
-Il formato delle istruzioni di salto incorpora un valore immediato di 24 bit per specificare l'indirizzo destinazione per i salti o le chiamate a procedura. L'indirizzo corrisponde all'indirizzo destinazione diviso per 4, consentendo un'estensione dei salti di circa 225 rispetto all'istruzione corrente.
+Il formato delle istruzioni di salto è speciale, in quanto sono necessari 24 bit per specificare l'indirizzo destinazione per i salti o le chiamate a procedura, ed ha un opcode di 3 bit.
 
 L'approccio dei progettisti dell'ISA ARM era quello di utilizzare completamente ogni combinazione di bit, anche combinazioni illegali di operandi, per specificare le istruzioni. Questo rende la logica di decodifica delle istruzioni estremamente complicata, ma consente di massimizzare il numero di operazioni codificate in istruzioni di lunghezza fissa.
 

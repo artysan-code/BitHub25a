@@ -274,7 +274,7 @@ Molte istruzioni contengono operandi e si pone il problema di come specificarne 
 L'**indirizzamento** è l'argomento che tratta di queste problematiche.
 
 ### 5.4.1 - Modalità d'indirizzamento
-Fino ad ora abbiamo trascurato l'interpretazione dei bit nei campi d'indirizzo per individuare gli operandi. È ora di esaminare più da vicino le modalità di indirizzamento. Vedremo che ci sono diverse modalità di implementazione. 
+Finora abbiamo trascurato l'interpretazione dei bit nei campi d'indirizzo per trovare gli operandi. È ora di esaminare più da vicino le modalità di indirizzamento. Vedremo che ci sono diverse modalità di implementazione. 
 ### 5.4.2 - Indirizzamento immediato
 Il metodo più semplice per specificare un operando in un'istruzione è includere direttamente l'operando nel campo destinato all'indirizzo, anziché un indirizzo o altre informazioni sulla posizione. Questo tipo di operando è chiamato **immediato**, poiché viene ottenuto direttamente dalla memoria nel momento in cui viene eseguito il fetch dell'istruzione, rendendolo immediatamente disponibile per l'uso. Tuttavia, l'indirizzamento immediato ha l'inconveniente di poter fornire solo un operando alla volta e la dimensione del campo limita il valore dell'operando. Nonostante ciò, è una tecnica utilizzata in molte architetture per specificare piccole costanti intere.
 

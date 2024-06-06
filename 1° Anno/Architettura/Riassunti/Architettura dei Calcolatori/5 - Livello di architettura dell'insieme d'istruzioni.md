@@ -189,6 +189,46 @@ I codici operativi espandibili consentono di utilizzare dimensioni di opcode var
 
 Infine, sebbene siano esistiti ISA con opcode di lunghezza variabile, come l'Intel 432, l'importanza dell'allineamento e della decodifica rapida spinge generalmente verso l'impiego di opcode allineati al byte.
 
+Facciamo un'esempio: 
+1) Opcode di 4 bit, con 15 istruzioni e tre indirizzi (x, y, z):
+
+| 0000 (istruzione 1)  | xxxx | yyyy | zzzz |
+| -------------------- | ---- | ---- | ---- |
+| 0001                 | xxxx | yyyy | zzzz |
+| ...                  | xxxx | yyyy | zzzz |
+| 1110 (istruzione 15) | xxxx | yyyy | zzzz |
+
+
+2) Opcode di 8 bit, con 14 istruzioni e due indirizzi (y, z):
+
+| 1111 | 0000 (istruzione 1)  | yyyy | zzzz |
+| ---- | -------------------- | ---- | ---- |
+| 1111 | 0001                 | yyyy | zzzz |
+| 1111 | ....                 | yyyy | zzzz |
+| 1111 | 1101 (istruzione 14) | yyyy | zzzz |
+
+
+3) Opcode di 12 bit, con 31 istruzioni e un indirizzo (z)
+
+| 1111 | 1110 | 0000 (istruzione 1)  | zzzz |
+| ---- | ---- | -------------------- | ---- |
+| 1111 | 1110 | 0001                 | zzzz |
+| 1111 | 1110 | ....                 | zzzz |
+| 1111 | 1110 | 1111 (istruzione 16) | zzzz |
+| 1111 | 1111 | 0000 (istruzione 17) | zzzz |
+| 1111 | 1111 | 0001                 | zzzz |
+| 1111 | 1111 | ....                 | zzzz |
+| 1111 | 1111 | 1110 (istruzione 31) | zzzz |
+
+4) Opcode di 16 bit, 16 istruzioni senza indirizzi
+
+| 1111 | 1111 | 1111 | 0000 (istruzione 1)  |
+| ---- | ---- | ---- | -------------------- |
+| 1111 | 1111 | 1111 | 0001 (istruzione 2)  |
+| 1111 | 1111 | 1111 | ...                  |
+| 1111 | 1111 | 1111 | 1111 (istruzione 16) |
+
+
 (pagine riassunte: 2.5)
 ### 5.3.3 - Formati delle istruzioni del Core i7
 Il formato delle istruzioni del Core i7 è complesso e irregolare, con fino a sei campi di lunghezza variabile, di cui cinque opzionali. Questa complessità deriva dall'evoluzione dell'architettura attraverso molte generazioni e dalla necessità di mantenere la retrocompatibilità. Inizialmente, tutti i codici operativi erano lunghi un byte, ma il concetto di **byte prefisso** veniva ampiamente utilizzato per modificare alcune istruzioni. Un byte prefisso è un codice operativo supplementare preposto all'inizio di un'istruzione per cambiarne il comportamento, come nel caso dell'istruzione WIDE dell'IJVM.

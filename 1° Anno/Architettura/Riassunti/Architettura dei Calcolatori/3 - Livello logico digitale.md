@@ -217,9 +217,24 @@ Progetti molto grandi potrebbero non rientrare nemmeno nei più grandi FPGA disp
 
 (pagine riassunte: 5)
 ## 3.4 - Chip della CPU e bus
+In questo paragrafo analizzeremo inizialmente alcuni aspetti generali delle CPU dal punto di vista del livello logico digitale, **contatti** compresi, e forniremo anche un’introduzione all’architettura dei bus, dato che le CPU dipendono strettamente dal modo in cui questi sono progettati.
 
+(pagine riassunte: 0.25)
 ### 3.4.1 - Chip della CPU
+Le moderne CPU sono contenute in un unico chip e interagiscono con il resto del sistema tramite pin suddivisi in tre categorie principali: indirizzi, dati e controlli. Questi pin sono collegati alla memoria o ai chip di I/O tramite un bus parallelo. Per eseguire un'istruzione, la CPU imposta l'indirizzo sui pin di indirizzamento e utilizza le linee di controllo per comunicare con la memoria. Se l'istruzione coinvolge la lettura o scrittura di dati, il processo si ripete per ogni parola di dati.
 
+Le prestazioni di una CPU dipendono in gran parte dal numero di pin di indirizzo e di dati. Un chip con *m* pin di indirizzo può indirizzare fino a ($2^m$) locazioni di memoria, mentre il numero di pin di dati (*n*) determina la dimensione della parola di dati che la CPU può leggere o scrivere in una singola operazione. Valori comuni per *m* sono 16, 20, 32 e 64.
+
+Oltre ai pin di indirizzo e dati, le CPU possiedono pin di controllo per gestire il flusso e la temporizzazione dei dati, oltre a vari altri usi. I pin di controllo si dividono in sei categorie principali:
+
+1. **Controllo del bus**: notificano quando la CPU vuole leggere o scrivere in memoria o compiere altre azioni.
+2. **Interrupt**: input dalle periferiche per segnalare alla CPU l'inizio di un'operazione di I/O.
+3. **Arbitraggio del bus**: regolano il traffico sul bus per evitare conflitti tra dispositivi che cercano di usarlo contemporaneamente.
+4. **Comunicazione con il coprocessore**: per l'interazione con coprocessori come chip in virgola mobile o grafici.
+5. **Stato**: per fornire o ricevere informazioni sullo stato del sistema.
+6. **Altro**: per reset del calcolatore, operazioni di debugging o garantire compatibilità con chip di I/O più vecchi.
+
+In sintesi, i pin della CPU sono fondamentali per la comunicazione con la memoria e altri dispositivi, influenzando direttamente le prestazioni e la funzionalità del sistema.
 ### 3.4.2 - Bus del calcolatore
 
 ### 3.4.3 - Ampiezza del bus

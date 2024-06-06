@@ -82,17 +82,21 @@ In generale, l'ISA ARM è progettata per offrire un'architettura efficiente e fl
 
 (pagine riassunte: 3)
 ### 5.1.7 - Panoramica del livello ISA dell'ATmega168 AVR
-L'ATmega168 è un microcontrollore utilizzato in sistemi integrati come semafori e radiosveglie, gestendo varie funzioni come il controllo dei pulsanti, delle luci e altre parti dell'interfaccia utente. Dal punto di vista dell'ISA, l'ATmega168 ha una sola modalità operativa e nessuna protezione hardware, poiché non esegue programmi di utenti potenzialmente ostili.
+A differenza del Core i7 (usato prevalentemente nei desktop e nelle server farm) e dell'OMAP4430 (impiegato soprattutto nei telefoni, tablet e altri dispositivi mobili), l'ATmega168 è usato **nei sistemi integrati**, quali i semafori e le radiosveglie, per il loro controllo, la gestione dei pulsanti, delle luci e delle altre parti che costituiscono l'interfaccia utente.
 
-La sua struttura di memoria è semplice: 16 KB per i programmi e 1 KB per i dati, entrambi separati. Questa divisione consente di implementare i programmi in memoria flash e i dati in SRAM.
+L'ATmega168 ha **una sola modalità e nessuna protezione hardware**, poiché non si dà mai il caso che esegua programmi di utenti potenzialmente ostili. Anche il modello della memoria è estremamente semplice: c'è uno spazio di memoria di 16 KB per i programmi e uno, distinto, di 1 KB per i dati.
+Gli spazi di programma e dati sono separati al fine di implementare lo spazio dei programmi in una memoria flash e lo spazio dei dati in una SRAM.
 
-L'ATmega168 utilizza un'organizzazione di memoria a due livelli per offrire maggiore sicurezza. La memoria flash del programma è divisa in sezione di bootloader e sezione di applicazioni, con dimensioni determinate da bit programmabili al primo avvio. Solo il codice del bootloader può aggiornare la memoria flash per motivi di sicurezza. Questo sistema consente di eseguire solo il codice approvato e firmato digitalmente da un distributore fidato.
+L'ATmega168 fa uso di un'organizzazione di **memoria a due livelli** per offrire una maggior sicurezza. La memoria flash del programma è divisa nella sezione del boot loader e nella sezione delle applicazioni
+Per ragioni di sicurezza solo il codice della sezione del boot loader può aggiornare la memoria flash. Grazie a questa funzionalità un qualsiasi codice può essere posizionato nella sezione delle applicazioni con la certezza che non possa intaccare altro codice presente nel sistema. 
 
-Il microcontrollore ha 32 registri a uso generale da 8 bit (R0 - R31), che sono anche presenti nello spazio di memoria. Ad esempio, il byte 0 dello spazio dati corrisponde a R0 e così via. Questa organizzazione facilita l'accesso ai registri tramite l'indirizzamento di memoria.
+Per vincolare maggiormente il sistema, un distributore può firmare digitalmente il codice. 
 
-Altri registri specializzati includono il registro di stato, che contiene bit di abilitazione degli interrupt, bit ausiliario di riporto, bit di segno, bit di overflow e altri, e il registro del puntatore dello stack (SP), che mantiene l'indirizzo corrente dello spazio dati per le istruzioni di PUSH e POP.
+Questo approccio è piuttosto flessibile e permette di sostituire anche il boot loader, a patto che il nuovo codice sia correttamente firmato. 
 
-Inoltre, ci sono 64 byte di registri dedicati ai dispositivi di I/O, e il registro di stato gestisce anche l'attivazione e la disattivazione degli interrupt globali tramite il bit I. Il puntatore dello stack (SP) è composto da due locazioni di memoria consecutive per indirizzare correttamente la memoria dati.
+L'ATmega168 **contiene 32 registri** a uso generale da 8 bit, chiamati RO - R31, a cui le istruzioni accedono tramite un campo di 5 bit che specifica il numero del registro. Una peculiarità dei registri dell'ATmega168 è che essi sono anche presenti nello spazio di memoria. Il byte O dello spazio dati è equivalente al registro RO e quando un'istruzione modifica il registro RO e poi legge il byte 0 di memoria, trova in questa posizione il nuovo valore scritto in RO. Analogamente, il byte 1 nella memoria è R1, e così via fino al byte 31. 
+
+Agli indirizzi di memoria da 32 a 95, immediatamente sopra ai 32 registri a uso generale, ci sono 64 byte riservati per l'accesso ai registri dei dispositivi di 1/0, inclusi i dispositivi interni al SoC
 
 (pagine riassunte: 2)
 ## 5.2 - Tipi di dati

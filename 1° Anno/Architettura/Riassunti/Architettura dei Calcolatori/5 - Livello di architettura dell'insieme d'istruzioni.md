@@ -96,8 +96,18 @@ Questo approccio è piuttosto flessibile e permette di sostituire anche il boot 
 
 L'ATmega168 **contiene 32 registri** a uso generale da 8 bit, chiamati RO - R31, a cui le istruzioni accedono tramite un campo di 5 bit che specifica il numero del registro. Una peculiarità dei registri dell'ATmega168 è che essi sono anche presenti nello spazio di memoria. Il byte O dello spazio dati è equivalente al registro RO e quando un'istruzione modifica il registro RO e poi legge il byte 0 di memoria, trova in questa posizione il nuovo valore scritto in RO. Analogamente, il byte 1 nella memoria è R1, e così via fino al byte 31. 
 
-Agli indirizzi di memoria da 32 a 95, immediatamente sopra ai 32 registri a uso generale, ci sono 64 byte riservati per l'accesso ai registri dei dispositivi di 1/0, inclusi i dispositivi interni al SoC
+Agli indirizzi di memoria da 32 a 95, immediatamente sopra ai 32 registri a uso generale, ci sono 64 byte riservati per l'accesso ai registri dei dispositivi di 1/0, inclusi i dispositivi interni al SoC.
 
+L'ATmega168 dispone di un piccolo numero di registri specializzati. Il **registro di stato** contiene:
+1) Bit di abilitazione di interrupt.
+2) Bit ausiliario di riporto.
+3) Bit di segno.
+4) Bit di overflow.
+5) Flag negativo.
+6) Flag zero.
+7) Bit di riporto.
+
+Lo Stack Pointer (SP), mantiene l'indirizzo corrente dello spazio dei dati a cui le istruzioni di PUSH e POP accederanno. Lo stack pointer si trova all'indirizzo 80 della memoria di I/O.
 (pagine riassunte: 2)
 ## 5.2 - Tipi di dati
 La rappresentazione dei dati all'interno di un computer è fondamentale per il corretto funzionamento dei sistemi di calcolo. A livello ISA, sono disponibili diversi tipi di dati che possono essere manipolati dalle istruzioni del processore. Tuttavia, una delle questioni fondamentali riguarda il supporto hardware per un particolare tipo di dati.

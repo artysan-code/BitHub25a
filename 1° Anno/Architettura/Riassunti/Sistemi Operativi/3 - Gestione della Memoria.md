@@ -4,7 +4,22 @@ Il compito del sistema operativo è di organizzarle (esclusa la cache) per esegu
 
 (Pagine riassunte: 1)
 ## 3.1 - Nessuna astrazione della memoria
+Supponendo un'organizzazione senza astrazione di memoria, un sistema può essere strutturato in tre modalità:
+- Può trovarsi *in fondo alla memoria* (fig 3.1 a) nella **RAM** (Random Access Memory).
+- Può trovarsi *in cima alla memoria* (fig 3.1 b) nella **ROM** (Read Only Memory).
+- Può trovarsi come nel primo caso, ma con i *driver dei dispositivi* in cima alla memoria nella ROM.
 
+Il primo e l'ultimo metodo sono molto rischiosi: un programma utente scritto male potrebbe eliminare o sovrascrivere il sistema operativo, perdendo così l'accesso all'intera memoria.
+
+Inoltre, generalmente non è possibile eseguire più di un programma alla volta. Si potrebbe usare la divisione in thread, ma ciò non permetterebbe l'esecuzione di due programmi non relazionati, a causa della mancanza di astrazione, che implica la mancanza ulteriore di un'astrazione dei possibili thread thread.
+#### Esecuzione di molteplici programmi senza astrazione della memoria
+Esiste un metodo con cui i creatori dei computer IBM hanno risolto il problema dell'esecuzione dei programmi. ù
+
+Sapendo che generalmente il sistema operativo esegue un programma, lo copia in un file (**swapping**) e passa al successivo, hanno implementato una suddivisione fisica della memoria in blocchi di 2 KB con una chiave di protezione di 4 bit (custodita in registri speciali nella CPU) che specifica l'accesso alla memoria. Il sistema operativo intercettava ogni tentativo di accesso alla memoria con un codice di protezione diverso dal **PSW** (Program Status Word, anch'esso con una chiave di 4 bit), impedendo ai programmi di accedere ai blocchi di memoria assegnati ad altri programmi.
+
+Tuttavia, un problema sorge quando due programmi vengono eseguiti in maniera sequenziale e sovrapposta (il primo programma parte, attende, è ancora in esecuzione e parte il secondo). Quando i due programmi hanno delle locazioni predisposte, essi sono ancora legati alle **chiamate fisiche alla memoria**, generando errori.
+
+Altre implementazioni per risolvere questo problema includono la **rilocazione statica**, che consiste nell'aggiungere n bit all'indirizzo di ogni istruzione. Tuttavia, questo sistema funziona solo in ambiti predefiniti, come elettrodomestici (lavastoviglie, lavatrici), dove il programma conosce già cosa eseguire.
 
 (Pagine riassunte: 3.5)
 ## 3.2 - Un'astrazione della memoria: gli spazi degli indirizzi

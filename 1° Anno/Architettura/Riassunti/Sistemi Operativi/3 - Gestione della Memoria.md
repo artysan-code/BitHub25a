@@ -47,9 +47,44 @@ Esiste un metodo più specifico per processi con due segmenti: un segmento heap 
 
 (Pagine riassunte: 2.25)
 ### 3.2.3 - Gestione della memoria libera
+Nella gestione della memoria ci sono molte variabili che identificano una soluzione possibile, ma l'organo che deve controllarle è il sistema operativo. Per questo motivo esistono due tipi di gestione che analizzeremo che sono i seguenti.
+#### Gestione della memoria con bitmap
+La gestione della memoria tramite **bitmap** associa a ogni elemento della bitmap un'area di memoria. Se un'area è occupata, l'elemento corrispondente della bitmap avrà valore 1, altrimenti sarà 0. Ogni elemento della bitmap mappa un intervallo specifico di memoria.
 
+Il vantaggio della bitmap è che permette di *gestire la memoria a blocchi*, consentendo di allocare blocchi specifici e di verificare se sono occupati o liberi. Tuttavia, se la bitmap mappa blocchi molto piccoli (ad esempio 4 byte), pur sembrando piccola (1/32 della memoria), dovrà leggere comunque elemento per elemento questa, e nel caso peggiore l'intera bitmap. Al contrario, se la bitmap mappa blocchi molto grandi (come 4 KB), ci sarà una maggiore perdita di spazio a causa della scarsa precisione nell'allocazione.
+#### Gestione della memoria con liste
+In questa metodologia, la memoria è divisa in sequenze (liste) che contengono: al primo indice H se la casella è vuota o P se è occupata; al secondo indice l'indirizzo di partenza; al terzo indice lo spazio del segmento; e all'ultimo un puntatore al segmento successivo. Una buona implementazione prevede un secondo collegamento alla lista precedente per facilitare il movimento.
+
+La gestione della memoria è semplificata: ad esempio, se abbiamo in ordine un processo A seguito da B e poi da un segmento vuoto, al termine di B il segmento vuoto ingloberà lo spazio di B. È quindi facile controllare i processi vicini e vedere se è possibile unire i segmenti.
+
+Grazie a questa struttura sequenziale della memoria, è facile applicare vari algoritmi:
+- **First fit** cerca la prima area di memoria disponibile che sia abbastanza grande.
+- **Next fit**, una variante del First fit, riprende la ricerca dal punto in cui era stata interrotta, risultando leggermente meno efficiente del First fit.
+- **Best fit** legge tutti gli spazi e sceglie il più adatto, tendendo a occupare spazi stretti e risultando molto più lento dei precedenti.
+- **Worst fit** fa l'opposto del Best fit per evitare di occupare spazi inutili e stretti, ma cercare lo spazio più grande lo rende anch'esso inefficiente.
+- **Quick fit** mantiene liste separate per le dimensioni più comuni. Cerca prima nella lista della dimensione richiesta e, se non trova un blocco libero, cerca in una lista di dimensioni superiori. È ottimo per la ricerca e la semplicità, ma può creare frammentazione della memoria e la gestione di molte liste può diventare complessa, richiedendo memoria aggiuntiva.
+
+Alcune buone implementazioni includono ordinare le liste per dimensione per ottimizzare First fit e Best fit, rendendoli più veloci. Un'altra è mantenere le informazioni delle liste all'interno dello spazio stesso, con le prime parole di ogni spazio che contengono le informazioni e i puntatori.
 
 (Pagine riassunte: 3)
+###### Esempio pratico (facoltativo)
+Supponiamo di avere un sistema Quick Fit con liste per blocchi di 8, 16 e 32 byte. Ecco come potrebbe avvenire una serie di operazioni di allocazione e deallocazione:
+
+1. **Allocazione di 8 byte**:
+    
+    - Il sistema controlla la lista di blocchi da 8 byte.
+    - Trova un blocco libero e lo assegna.
+2. **Allocazione di 20 byte**:
+    
+    - Non c'è una lista per 20 byte, quindi il sistema cerca in una lista di blocchi più grande, ad esempio 32 byte.
+    - Trova un blocco da 32 byte, lo assegna e segna i 12 byte rimanenti come non utilizzati (potrebbe generare frammentazione interna).
+3. **Deallocazione di 8 byte**:
+    
+    - Il blocco rilasciato viene reinserito nella lista di blocchi da 8 byte.
+4. **Allocazione di 16 byte**:
+    
+    - Il sistema controlla la lista di blocchi da 16 byte.
+    - Trova un blocco libero e lo assegna.
 ## 3.3 - Memoria virtuale
 
 

@@ -314,9 +314,46 @@ Questi concetti forniscono una base per comprendere il funzionamento dei bus e l
 
 (pagine riassunte: 2.5)
 ## 3.5 - Esempi di chip della CPU
-
+In questo paragrafo esamineremo a livello hardware, in modo piuttosto dettagliato, i chip Intel Core i7, TI OMAP4430 e Atmel ATmega168.
 ### 3.5.1 - Intel Core i7
+Il Core i7 rappresenta l'evoluzione diretta della CPU 8088 utilizzata nei primi PC IBM. La larghezza di linea dei chip, determinata dalla grandezza dei collegamenti tra i transistor, influisce sulla velocità e sulla capacità del chip stesso. Le versioni iniziali del Core i7 si basavano sull'architettura "Nahalem", mentre le successive su "Sandy Bridge", con una notevole crescita nella potenza di calcolo.
 
+Questo processore è completamente compatibile con il 8088 e può eseguire i suoi programmi senza modifiche. È una macchina a 64 bit, multicore e *hyperthreaded*, consentendo l'esecuzione simultanea di più thread hardware. Internamente, il Core i7 è una macchina superscalare a 4 livelli, capace di eseguire fino a 4 istruzioni contemporaneamente.
+
+La presenza di 3 livelli di cache migliora le prestazioni del processore, ma richiede più silicio, con modelli che possono raggiungere fino a 17 MB di cache. Per garantire la coerenza della memoria in sistemi multiprocessore, ogni CPU effettua uno **snooping** sul bus della memoria.
+
+I Core i7 utilizzano due bus esterni principali: un bus di memoria DDR3 e un bus PCI Express per i dispositivi di I/O. Inoltre, dispongono di una porta **QPI**(*Quick Path Interconnect*) per la connessione a interconnessioni esterne e per la gestione del multiprocessore.
+
+Il consumo energetico e il calore generato sono problematici, quindi il chip è progettato per essere raffreddato da dissipatori di calore e ventole. Per risparmiare energia, la CPU può entrare in stati di "riposo" o "sonno profondo" quando inattiva, con cinque stati intermedi tra l'esecuzione completa e il sonno profondo, dove alcune funzionalità sono disabilitate per ridurre il consumo energetico.
+#### 3.5.1.1 - Disposizione logica dei contatti del Core i7
+Il Core i7 ha 1155 pin, di cui 447 per segnali, 286 per alimentazione, 360 per terra, e 62 riservati per futuri utilizzi. Tuttavia, il numero effettivo di segnali distinti è 131, poiché alcuni segnali logici utilizzano più pin.
+
+Ci sono cinque gruppi principali di segnali per il bus di memoria sul lato sinistro della figura. Questi includono segnali per indirizzo, dati, controllo e clock, utilizzati per interfacciarsi con le DRAM compatibili DDR3. Un altro gruppo è l'interfaccia PCI Express, che consente la connessione diretta delle periferiche alla CPU. Il Core i7 supporta un'interfaccia x16, che gestisce 16 corsie simultaneamente per una larghezza di banda aggregata di 16 GB/sec.
+
+Il **DMI** (*Direct Media Interface*) è un altro bus utilizzato per il collegamento CPU-chipset, simile a PCI Express ma con una velocità dimezzata. Il chipset Core i7 utilizza i chip P67 e ICH10, che forniscono una vasta gamma di interfacce e circuiti, semplificando la costruzione di un PC completo.
+
+Il Core i7 può essere configurato per utilizzare gli interrupt in modo simile all'8088 oppure tramite un dispositivo chiamato **APIC** (*Advanced Programmable Interrupt Controller*). È inoltre in grado di funzionare a diverse tensioni, ma richiede la conoscenza di quella utilizzata.
+
+Nonostante una gestione avanzata dell'alimentazione, il Core i7 si riscalda notevolmente. Ogni chip contiene sensori di temperatura per la protezione dei circuiti, attivando la limitazione termica (*thermal throttling*) quando necessario.
+
+Il segnale Clock fornisce il clock di sistema al processore, utilizzato internamente per generare clock basati su multipli o frazioni. Questo può essere fatto anche con un dispositivo chiamato **DLL** (*Delay-Locked Loop*).
+
+Ci sono anche segnali per diagnostica, testing e debugging secondo lo standard IEEE 1149.1 dei test **JTAG**(*Joint Test Action Group*), oltre a vari altri segnali per utilizzi particolari.
+#### 3.5.1.2 - Pipeline sul bus di memoria DDR3 del Core i7
+Le moderne CPU come il Core i7 richiedono molto dalle memorie DRAM. I singoli processori possono generare richieste di accesso più rapidamente di quanto una DRAM lenta possa rispondere, e questo problema si amplifica con richieste simultanee da più processori. Per evitare che la CPU rimanga in attesa, è essenziale ottenere il massimo throughput dalla memoria, che può essere ottenuto attraverso l'architettura a pipeline delle memorie DRAM.
+
+Le richieste di memoria del Core i7 seguono tre fasi:
+1. **Fase di ACTIVATE**: "apre" una riga della DRAM per prepararla a successivi accessi.
+2. **Fase di READ o WRITE**: permette accessi multipli a singole parole o a una sequenza di parole della riga aperta, utilizzando il burst mode.
+3. **Fase di PRECHARGE**: "chiude" la riga corrente e prepara la memoria per il prossimo comando ACTIVATE.
+
+Il segreto dell'efficacia dell'accesso alla memoria del Core i7 risiede nella struttura a più banchi della DRAM DDR3 sul chip. Una DRAM DDR3 è tipicamente composta da 8 banchi, e l'interfaccia DDR3 consente fino a quattro accessi concorrenti su un singolo canale. Gli accessi sono sovrapposti per permettere letture parallele sullo stesso chip.
+
+L'interfaccia di memoria DDR3 ha quattro segnali principali: il *clock* del bus (CK), il segnale di *comando* (CMD), il segnale di *indirizzo* (ADDR) e quello di *dato* (DATA). Il segnale CK dirige tutte le attività del bus, CMD indica l'attività richiesta alla DRAM, e ACTIVATE specifica l'indirizzo della riga DRAM da aprire tramite ADDR.
+
+Il parallelismo delle richieste di memoria si manifesta nelle richieste READ a distinti banchi di DRAM. Il Core i7 gestisce le tempistiche delle risposte alle richieste READ e l'inizio di nuove richieste grazie a un modello completo delle attività interne di ogni DRAM DDR3 collegata. Questo è possibile perché l'interfaccia DDR3 è una **sincrona di memoria**, con ogni attività che impiega un numero noto di cicli di bus DDR3.
+
+(pagine riassunte: 7)
 ### 3.5.2 - Texas Instruments OMAP4430
 
 ### 3.5.3 - Il microcontrollore Atmel ATmega168

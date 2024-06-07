@@ -408,6 +408,15 @@ Quasi tutti i registri possono essere usati come indice o base. EBP viene solita
 
 (pagine riassunte:2)
 ### 5.4.12 - Modalità d'indirizzamento dell'OMAP4430
+Nell'ISA dell'OMAP4430, tutte le istruzioni utilizzano l'indirizzamento immediato o a registro, tranne quelle che indirizzano la memoria. Nella modalità a registro, i 5 bit specificano l'indirizzo da usare. Nella modalità immediata, i dati sono contenuti in una costante con segno di 12 bit. Non ci sono altre modalità per le istruzioni logico-aritmetiche.
+
+Le istruzioni che indirizzano la memoria sono di due tipi: load (LDR) e store (STR). Queste istruzioni possono utilizzare tre modalità di indirizzamento:
+
+1. La somma di due registri come valore di indirizzamento indiretto.
+2. La somma di un registro base e uno spiazzamento con segno di 13 bit.
+3. La somma del program counter e uno spiazzamento con segno di 13 bit.
+
+La terza modalità, chiamata indirizzamento relativo al program counter, è utile per caricare costanti memorizzate con il codice del programma.
 
 ### 5.4.13 - Modalità d'indirizzamento dell'ATmega168 AVR
 

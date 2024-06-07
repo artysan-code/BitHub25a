@@ -443,7 +443,42 @@ In sintesi, PCIe rappresenta un'evoluzione significativa rispetto ai tradizional
 
 (pagine riassunte: 5)
 ### 3.6.3 - Universal Serial Bus
+Il bus PCI e PCI Express sono ideali per collegare periferiche ad alta velocità al computer, ma risultano troppo costosi per dispositivi a bassa velocità come tastiere e mouse. Tradizionalmente, i dispositivi di I/O standard venivano connessi al computer in modo specifico, mentre gli slot ISA e PCI venivano lasciati liberi per l'aggiunta di nuovi dispositivi, creando spesso problemi.
 
+Nel 1993, sette aziende si unirono per sviluppare un metodo migliore per collegare periferiche a bassa velocità. Questo sforzo culminò nel 1998 con l'introduzione dello standard **USB** (Universal Serial Bus), oggi largamente diffuso nei personal computer.
+#### Obiettivi del Progetto USB:
+1. Evitare la necessità di impostare interruttori e contatti sulle schede dei dispositivi.
+2. Permettere l'installazione di nuovi dispositivi senza aprire il computer.
+3. Utilizzare un solo tipo di cavo per tutti i dispositivi.
+4. Fornire alimentazione ai dispositivi tramite il cavo.
+5. Consentire il collegamento di fino a 127 dispositivi a un singolo computer.
+6. Supportare dispositivi che operano in tempo reale (es. dispositivi audio, telefoni).
+7. Consentire l'installazione di dispositivi a computer acceso.
+8. Eliminare la necessità di riavviare il sistema dopo l'installazione di nuovi dispositivi.
+9. Mantenere bassi i costi di produzione del nuovo bus e dei dispositivi di I/O.
+#### Struttura e Funzionamento di USB:
+- **Hub Principale:** Collegato al bus del sistema, con prese per cavi che connettono dispositivi di I/O o hub di espansione. La topologia è ad albero, con l'hub principale come radice.
+- **Cavi USB:** Composti da quattro collegamenti: due per i dati, uno per l'alimentazione (+5 volt) e uno per la terra. La segnalazione trasmette uno 0 come una transizione di tensione e un 1 come l’assenza di transizione.
+- **Rilevamento e Configurazione:** Quando si collega un nuovo dispositivo, l'hub principale lo rileva e interrompe il sistema operativo, che interroga il dispositivo e gli assegna un indirizzo univoco (1-127) se c'è sufficiente larghezza di banda.
+- **Pipe Logiche:** Dal punto di vista logico, USB è un insieme di pipe (condotti) di bit che vanno dall'hub principale alle periferiche di I/O, con possibilità di suddividere ogni pipe in un massimo di 16 condotti per diversi tipi di dati.
+- **Sincronizzazione:** L'hub principale invia un frame in broadcast ogni 1,00 ± 0,05 ms per mantenere sincronizzati tutti i dispositivi.
+#### Tipi di Frame:
+1. **Controllo:** Per configurare i dispositivi, assegnare comandi e interrogarli.
+2. **Isocrono:** Per dispositivi in tempo reale che necessitano di dati a intervalli precisi, senza ritrasmissione in caso di errore.
+3. **Bulk:** Per trasferimenti di grandi dimensioni non in tempo reale (es. stampanti).
+4. **Interrupt:** Necessari poiché USB non supporta gli interrupt tradizionali.
+#### Tipi di Pacchetti:
+1. **Token:** Controllano il sistema, come il pacchetto SOF (Start of Frame) che marca l'inizio di ogni frame.
+2. **Dati:** Contengono il campo dati, un identificatore del tipo di pacchetto e un CRC per rilevare errori.
+3. **Handshake:** Confermano la corretta ricezione dei pacchetti (ACK), indicano errori (NAK) o segnalano occupazione (STALL).
+4. **Speciali:** Per funzionalità specifiche del sistema.
+#### Evoluzioni di USB:
+- **USB 2.0:** Introdotto nel 1998 con differenze come l'interfaccia EHCI (Enhanced Host Controller Interface) per migliorare l'efficienza.
+- **USB 3.0:** Annunciato otto anni dopo, supporta velocità fino a 5 Gbps e mantiene la retrocompatibilità con USB 2.0, adattandosi automaticamente alla velocità del cablaggio.
+
+USB ha rivoluzionato la connessione di dispositivi di I/O a bassa velocità, rendendo l'installazione più semplice e il sistema più flessibile e scalabile.
+
+(pagine riassunte: 4)
 ## 3.7 - Interfacce
 
 ### 3.7.1 - Interfacce di I/O

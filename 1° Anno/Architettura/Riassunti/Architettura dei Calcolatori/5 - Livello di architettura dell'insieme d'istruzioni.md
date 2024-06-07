@@ -427,6 +427,8 @@ L'ATmega168 presenta una struttura d'indirizzamento con quattro modalità:
 4. **Indirizzamento indiretto basato su un registro**: il registro contiene un puntatore all'operando. Visto che i registri normali sono di 8 bit, le istruzioni di load e store utilizzano coppie di registri per specificare indirizzi di memoria a 16 bit, permettendo di indirizzare fino a 64 KB di memoria. Le coppie di registri utilizzate sono chiamate X, Y e Z, formate rispettivamente dai registri R26/R27, R28/R29 e R30/R31. Per caricare un indirizzo nel registro X, ad esempio, il programma carica un valore di 8 bit nei registri R26 e R27 con due istruzioni separate.
 
 ## 5.5 - Tipi d'istruzioni
+Le istruzioni del livello ISA possono essere suddivise approssimativamente in una mezza dozzina di gruppi facilmente rintracciabili in tutte le macchine. Oltre a questi, ciascun computer dispone di una manciata d'istruzioni insolite, aggiunte per motivi di compatibilità con modelli precedenti o a seguito di un'idea brillante di un progettista, o **perché un'agenzia governativa ha pagato il produttore perché la includesse nel progetto**.
+COFF COFF
 ### 5.5.1 - Istruzioni di trasferimento dati
 
 ### 5.5.2 - Operazioni binarie

@@ -23,9 +23,17 @@ Altre implementazioni per risolvere questo problema includono la **rilocazione s
 
 (Pagine riassunte: 3.5)
 ## 3.2 - Un'astrazione della memoria: gli spazi degli indirizzi
-
+Come detto precedentemente, senza implementazione hardware o un rigoroso controllo nell'esecuzione dei programmi utente, lavorare con la memoria fisica crea enormi rischi per i sistemi operativi. Per questo motivo sono state sviluppate diverse implementazioni per mitigare questi rischi.
 ### 3.2.1 - Nozione di spazio degli indirizzi
+Abbiamo visto l'implementazione non funzionante nel sottocapitolo precedente, quindi come implementare al meglio questa memoria? La prima soluzione consiste nello **spazio degli indirizzi**, ovvero l'insieme degli indirizzi che un processo può usare (simile ai numeri di telefono, agli indirizzi IPv4, ecc.).
 
+Questo concetto non è limitato alla memoria, ma è generalizzabile, indicizzabile e strutturabile a piacimento; anche i domini .com, ad esempio, hanno uno spazio di indirizzamento.
+#### Registri base e registri limite
+Una soluzione per gestire la memoria in modo sicuro è l'utilizzo di un **registro base** e un **registro limite**, che segnano rispettivamente l'inizio e la fine della memoria assegnata a un programma. Quando un programma consulta la memoria, l'indirizzo effettivo viene calcolato sommando il registro base all'indirizzo specificato nell'istruzione. Ad esempio, se un programma ha un jump to 28 e il registro base è 4096, l'indirizzo effettivo sarà 28 + 4096.
+
+Se un'istruzione tenta di accedere a un indirizzo al di fuori dell'intervallo definito dal registro base e dal registro limite, viene generato un errore e l'operazione viene bloccata. Questo meccanismo non solo protegge le aree di memoria dei diversi programmi da accessi non autorizzati, ma consente anche l'allocazione sequenziale dei programmi in memoria, migliorando la gestione e la protezione degli indirizzi.
+
+Sebbene efficace, questa soluzione comporta un lieve impatto sulle prestazioni, poiché ogni calcolo dell'indirizzo richiede un'operazione addizionale per sommare il registro base.
 
 (Pagine riassunte: 2.5)
 ### 3.2.2 - Swapping

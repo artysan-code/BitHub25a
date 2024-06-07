@@ -362,7 +362,14 @@ La notazione polacca inversa è la notazione ideale per la valutazione di una fo
 
 (pagine riassunte: 3.5)
 ### 5.4.9 - Modalità d'indirizzamento per istruzioni di salto
-
+Le istruzioni di salto necessitano di una modalità di indirizzamento per specificare l'indirizzo di destinazione.
+#### 5.4.9.1 Indirizzamento diretto
+L'indirizzamento diretto è un'opzione possibile, dato che l'indirizzo di destinazione viene semplicemente riportato per intero all'interno dell'istruzione.
+#### 5.4.9.2 Indirizzamento a registro indiretto
+L'indirizzamento a registro indiretto consente al programma di calcolare l'indirizzo di destinazione, scriverlo in un registro e quindi effettuare il salto. È la modalità più flessibile perché l'indirizzo di destinazione può essere calcolato durante l'esecuzione, ma è anche molto incline a generare bug.
+#### 5.4.9.3 Modalità indicizzata e Indirizzamento relativo al PC
+La modalità indicizzata specifica un certo offset rispetto all'indirizzo contenuto in un registro, ed ha le stesse proprietà della modalità a registro indiretto. 
+L'indirizzamento relativo al PC (program counter) consiste in un offset (con segno) contenuto nell'istruzione stessa che viene sommato al program counter per ottenere l'indirizzo di destinazione.
 ### 5.4.10 - Modalità d'indirizzamento dei codici operativi e delle modalità d'indirizzamento
 
 ### 5.4.11 - Modalità d'indirizzamento del Core i7

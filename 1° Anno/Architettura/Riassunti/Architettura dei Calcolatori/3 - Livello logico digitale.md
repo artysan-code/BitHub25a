@@ -355,7 +355,19 @@ Il parallelismo delle richieste di memoria si manifesta nelle richieste READ a d
 
 (pagine riassunte: 7)
 ### 3.5.2 - Texas Instruments OMAP4430
+Il **SoC** (*System-on-a-Chip*) Texas Instruments (TI) OMAP4430 è una CPU che implementa il set di istruzioni ARM, progettata per applicazioni mobili ed embedded come smartphone, tablet e dispositivi Internet. Questo SoC incorpora vari dispositivi per formare un sistema completo, comprendendo due Core ARM A9, tre acceleratori (un processore grafico PowerVR SGX540, un processore di segnale di immagine ISP e un processore video IVA3), e numerose interfacce per periferiche come touchscreen, DRAM, Flash, USB e HDMI.
 
+Il SoC OMAP4430, lanciato nel 2011, ha due Core ARM A9 a 1 GHz, realizzati con tecnologia a 45 nanometri. È progettato per eseguire molti calcoli con basso consumo energetico, ideale per dispositivi mobili alimentati a batteria. Gli acceleratori programmabili SGX540, ISP e IVA3 consentono di eseguire compiti specifici in modo efficiente, riducendo il carico sui Core ARM A9 e risparmiando energia. A pieno carico, il SoC consuma solo 600 mW di potenza, una frazione di quella utilizzata da un Core i7 di fascia alta.
+
+Il SoC OMAP4430 implementa tecniche di gestione dell'energia come la *scala dinamica di tensione* e il *power gating* per ridurre ulteriormente il consumo energetico. La scala dinamica di tensione permette ai componenti di funzionare a velocità e tensioni ridotte quando non è necessaria la massima velocità, mentre il power gating disattiva completamente i componenti non utilizzati, risparmiando energia. Ad esempio, il processore video IVA3 può essere spento quando non è in uso.
+
+I Core ARM A9 dell'OMAP4430, nonostante il loro basso consumo energetico, sono capaci di decodificare ed eseguire fino a 2 istruzioni per ciclo. Il sistema di memoria dell'OMAP4430 comprende due cache L1 (32 KB ciascuna per istruzioni e dati per ogni Core) e una cache L2 condivisa da 1 MB, alimentate tramite due canali DRAM LPDDR2 a bassa potenza, ottimizzati per l'efficienza energetica. Le cache migliorano le prestazioni riducendo il tempo di accesso ai dati più frequentemente utilizzati.
+
+Il SoC è distribuito in un supporto **PBGA** (*ball grid array*) con 547 pin, simile agli LGA ma con sfere di metallo invece di pad quadrati. La matrice rettangolare di sfere evita l'inserimento errato del chip nel socket BGA.
+
+Confrontare il SoC OMAP4430 (architettura RISC) con il Core i7 (architettura CISC) basandosi solo sulla velocità di clock è difficile. Nonostante l'OMAP4430 possa eseguire quattro istruzioni per ciclo di clock come il Core i7, quest'ultimo opera a una frequenza di clock molto più alta (3,5 GHz contro 1 GHz) e dispone di più processori, rendendolo più veloce. Tuttavia, l'OMAP4430 consuma molta meno energia, rendendolo più efficiente in dispositivi alimentati a batteria.
+
+(pagine riassunte: 3.75)
 ### 3.5.3 - Il microcontrollore Atmel ATmega168
 
 ## 3.6 - Esempi di bus

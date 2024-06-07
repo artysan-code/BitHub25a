@@ -370,6 +370,7 @@ L'indirizzamento a registro indiretto consente al programma di calcolare l'indir
 #### 5.4.9.3 Modalità indicizzata e Indirizzamento relativo al PC
 La modalità indicizzata specifica un certo offset rispetto all'indirizzo contenuto in un registro, ed ha le stesse proprietà della modalità a registro indiretto. 
 L'indirizzamento relativo al PC (program counter) consiste in un offset (con segno) contenuto nell'istruzione stessa che viene sommato al program counter per ottenere l'indirizzo di destinazione.
+(pagine riassunte:0.5)
 ### 5.4.10 - Modalità d'indirizzamento dei codici operativi e delle modalità d'indirizzamento
 
 Dal punto di vista software, le istruzioni e l'indirizzamento devono avere una struttura regolare con pochi formati d'istruzioni per facilitare il lavoro del compilatore e produrre codice di qualità. Gli opcode dovrebbero supportare tutte le modalità d'indirizzamento sensate e ogni registro (inclusi FP, SP e PC) dovrebbe essere utilizzabile in tutte le modalità a registro.
@@ -391,9 +392,21 @@ Tutti i registri d'uso generale, inclusi il program counter, il puntatore allo s
 Sommare due operandi in memoria, entrambi indirizzati direttamente o con una lunga forma indicizzata, richiederebbe 96 bit e tre cicli di bus. Inoltre, sarebbero necessari tre cicli aggiuntivi per prelevare i due operandi e scrivere il risultato. Tuttavia, molte architetture RISC richiederebbero almeno 96 bit e quattro cicli di bus per operazioni simili, a seconda della modalità di indirizzamento.
 
 Per variabili oltre la sedicesima, sono necessari offset di 32 bit. Un'altra alternativa potrebbe essere un formato con un solo offset di 8 bit, riferito alla sorgente o alla destinazione. I progettisti devono bilanciare vari fattori per ottenere un progetto efficace, giocando con numerose possibilità e compromessi.
+(pagine riassunte:2)
 
 ### 5.4.11 - Modalità d'indirizzamento del Core i7
+Le modalità d'indirizzamento del Core i7 variano a seconda che l'istruzione sia in modalità di 16, 32 o 64 bit. 
+Il Pentium prevede **modalità immediata, diretta, a registro, a registro indiretto e una speciale** per l'indirizzamento di elementi di un array, ma non tutte si applicano a tutte le istruzioni, complicando il lavoro del compilatore. 
+Il **byte MODE** controlla le modalità d'indirizzamento, specificando uno degli operandi con i campi MOD e R/M, mentre l'altro è un registro determinato dal campo REG.
 
+Le colonne 01 e 10 riguardano modalità in cui il registro è sommato a un offset di 8 o 32 bit. Per esempio, un'istruzione ADD con R/M = 011, MOD = 01 e offset di 6 usa la somma di EBX e 6 come indirizzo dell'operando. 
+La colonna MOD = 11 permette di specificare due registri alla volta. Tuttavia, c'è una certa irregolarità: per esempio, EBP non può essere usato in modalità indiretta, né ESP come base di un offset.
+
+Alcune modalità includono un byte aggiuntivo, detto SIB, che specifica due registri e un fattore di scala. L'indirizzo dell'operando si calcola moltiplicando l'indice per un fattore di scala (1, 2, 4 o 8), sommando il risultato al registro base e, eventualmente, a uno spiazzamento di 8 o 32 bit. 
+
+Quasi tutti i registri possono essere usati come indice o base. EBP viene solitamente usato per puntare alla base del record d'attivazione dello stack. Un esempio di utilizzo del byte SIB è nell'accesso agli elementi di un array, dove il compilatore può usare una modalità SIB per assegnare un valore con un'unica istruzione di STORE.
+
+(pagine riassunte:2)
 ### 5.4.12 - Modalità d'indirizzamento dell'OMAP4430
 
 ### 5.4.13 - Modalità d'indirizzamento dell'ATmega168 AVR

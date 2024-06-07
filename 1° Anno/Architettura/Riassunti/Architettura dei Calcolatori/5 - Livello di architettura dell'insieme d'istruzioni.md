@@ -349,7 +349,7 @@ In questo esempio, l’offset nell’istruzione è l’indirizzo base A, e il re
 
 (pagine riassunte: 1.5)
 ### 5.4.7 - Indirizzamento indicizzato esteso
-Alcune macchine dispongono della cosiddetta modalità d'**indirizzamento indicizzato esteso**, in cui l'indirizzo di memoria è calcolato sommando tra loro il contenuto di due registri più un offset (opzionale). Un registro funge da base e l'altro da indice. Poter disporre di una modalità d’indirizzamento indiretto tramite la somma di due registri e senza offset sarebbe l 'ideale. Alternativamente, anche un’istruzione con un offset di 8 bit costituirebbe un miglioramento rispetto al codice originario, perché potremmo sempre porre entrambi gli offset a 0. D’altra parte, se gli offset fossero di 32 bit, non avremmo guadagnato nulla usando questa modalità. Nella pratica, le macchine che dispongono di questa modalità sono corredate della forma con offset di 8 o 16 bit.
+Alcune macchine dispongono della cosiddetta modalità d'**indirizzamento indicizzato esteso**, in cui l'indirizzo di memoria è calcolato sommando tra loro il contenuto di due registri più un offset (opzionale). Un registro funge da base e l'altro da indice. Nella pratica, le macchine che dispongono di questa modalità sono corredate della forma con offset di 8 o 16 bit.
 
 (pagine riassunte: 0.5)
 ### 5.4.8 - Indirizzamento a stack

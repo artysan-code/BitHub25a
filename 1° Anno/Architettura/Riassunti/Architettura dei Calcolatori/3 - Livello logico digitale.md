@@ -480,7 +480,13 @@ USB ha rivoluzionato la connessione di dispositivi di I/O a bassa velocità, ren
 
 (pagine riassunte: 4)
 ## 3.7 - Interfacce
-
+Un classico calcolatore di piccole e medie dimensioni è composto da un chip della CPU, da un chipset, da alcuni chip di memoria e da alcuni dispositivi di I/O, tutti connessi fra loro mediante un bus. A volte tutti questi componenti vengono integrati in un unico SoC, come nel caso del TI OMAP4430. È giunto ora il momento di analizzare le interfacce di I/O; è attraverso queste porte che il calcolatore comunica con il mondo esterno.
 ### 3.7.1 - Interfacce di I/O
+Numerose interfacce di I/O sono già disponibili e con il passare del tempo ne vengono introdotte sempre di nuove. Una **UART** (*Universal Asynchronous Receiver Transmitter*) è un’interfaccia che può leggere un byte da un bus di dati e generarlo in output, un bit alla volta, su una linea seriale per un terminale, oppure può ricevere input da un terminale. Le interfacce **USART** (*Universal Synchronous Asynchronous Receiver Transmitters*) possono gestire trasmissioni sincrone utilizzando vari protocolli, oltre a supportare tutte le funzionalità UART. Dato che le interfacce UART hanno perso importanza con la scomparsa dei modem telefonici, analizzeremo ora l’interfaccia parallela come esempio di chip di I/O.
+#### 3.7.1.1 - Interfacce PIO
+L'interfaccia **PIO** (*Parallel Input/Output*), basata sul progetto Intel 8255 A, è un esempio comune di interfaccia di input/output parallela. Dotata di una serie di linee di I/O, può connettere una varietà di dispositivi digitali come tastiere, interruttori, luci e stampanti, offrendo grande flessibilità al programma della CPU che può scrivere o leggere lo stato di ogni linea.
 
+Solitamente utilizzata nei sistemi integrati, l'interfaccia PIO si configura tramite un registro di configurazione a 3 bit, che determina se le tre porte indipendenti a 8 bit devono funzionare in modalità input (0) o output (1). Ogni porta è associata a un registro latch a 8 bit, e la CPU può leggere direttamente il registro per utilizzare una porta in input.
+
+È possibile realizzare interfacce PIO più avanzate, ad esempio per l'handshaking con dispositivi esterni. Dal diagramma funzionale del PIO, si notano 24 pin per le tre porte, più linee per il bus dati, la selezione del chip, lettura e scrittura, indirizzi e reset. Le linee d'indirizzo selezionano i quattro registri interni, corrispondenti alle porte A, B, C e al registro di configurazione.
 ### 3.7.2 - Decodifica dell'indirizzo

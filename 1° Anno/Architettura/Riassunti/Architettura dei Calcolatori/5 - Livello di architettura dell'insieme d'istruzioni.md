@@ -372,13 +372,31 @@ La modalità indicizzata specifica un certo offset rispetto all'indirizzo conten
 L'indirizzamento relativo al PC (program counter) consiste in un offset (con segno) contenuto nell'istruzione stessa che viene sommato al program counter per ottenere l'indirizzo di destinazione.
 ### 5.4.10 - Modalità d'indirizzamento dei codici operativi e delle modalità d'indirizzamento
 
+Dal punto di vista software, le istruzioni e l'indirizzamento devono avere una struttura regolare con pochi formati d'istruzioni per facilitare il lavoro del compilatore e produrre codice di qualità. Gli opcode dovrebbero supportare tutte le modalità d'indirizzamento sensate e ogni registro (inclusi FP, SP e PC) dovrebbe essere utilizzabile in tutte le modalità a registro.
+
+### 5.4.10.1 Esempio di Macchina a tre indirizzi
+
+Un esempio di progetto elegante è una macchina a tre indirizzi con istruzioni di 32 bit, supportando fino a 256 codici operativi. Il **formato 1** prevede due indirizzi sorgente e un indirizzo destinazione, usato per le istruzioni logico-aritmetiche. L'ultimo campo di 8 bit può essere utilizzato per distinguere ulteriormente le istruzioni, ad esempio per le operazioni in virgola mobile. Se il bit 23 è asserito, l'istruzione passa al **formato 2**, in cui il secondo operando è una costante immediata con segno di 13 bit, adatta per le istruzioni LOAD e STORE con indirizzamento indicizzato.
+
+Il **formato 3** è per i salti condizionati e altre istruzioni simili, con un proprio opcode e 24 bit per l'offset relativo al PC, coprendo un intervallo di 32 MB. Alcuni opcode potrebbero essere riservati per istruzioni LOAD e STORE con un offset lungo, limitate però a operare su un registro specifico (ad esempio, R0).
+
+### 5.4.10.2 Esempio di Macchina a due indirizzi
+
+Una macchina a due indirizzi, può specificare parole di memoria per entrambi gli operandi. Questo progetto, semplice ed efficiente, è stato utilizzato nelle macchine PDP-11 e VAX, che hanno dominato la scena informatica per vent'anni. Gli opcode sono di 8 bit, con 12 bit per specificare la sorgente e altri 12 per la destinazione, inclusi 3 bit per la modalità, 5 per il registro e 4 per l'offset. Le modalità supportate includono immediata, diretta, a registro, a registro indiretto, indicizzata, a stack, con spazio per altre due modalità.
+
+Tutti i registri d'uso generale, inclusi il program counter, il puntatore allo stack e il puntatore alle variabili locali, sono accessibili. Tuttavia, l'indirizzamento diretto richiede più bit per gli indirizzi. La soluzione del PDP-11 e del VAX era di aggiungere una parola supplementare per ogni indirizzo di operando diretto. Un'altra modalità potrebbe essere un offset di 32 bit posposto all'istruzione.
+
+### Compromessi e considerazioni
+
+Sommare due operandi in memoria, entrambi indirizzati direttamente o con una lunga forma indicizzata, richiederebbe 96 bit e tre cicli di bus. Inoltre, sarebbero necessari tre cicli aggiuntivi per prelevare i due operandi e scrivere il risultato. Tuttavia, molte architetture RISC richiederebbero almeno 96 bit e quattro cicli di bus per operazioni simili, a seconda della modalità di indirizzamento.
+
+Per variabili oltre la sedicesima, sono necessari offset di 32 bit. Un'altra alternativa potrebbe essere un formato con un solo offset di 8 bit, riferito alla sorgente o alla destinazione. I progettisti devono bilanciare vari fattori per ottenere un progetto efficace, giocando con numerose possibilità e compromessi.
+
 ### 5.4.11 - Modalità d'indirizzamento del Core i7
 
 ### 5.4.12 - Modalità d'indirizzamento dell'OMAP4430
 
 ### 5.4.13 - Modalità d'indirizzamento dell'ATmega168 AVR
-
-### 5.4.14 - Analisi delle modalità d'indirizzamento
 
 ## 5.5 - Tipi d'istruzioni
 ### 5.5.1 - Istruzioni di trasferimento dati

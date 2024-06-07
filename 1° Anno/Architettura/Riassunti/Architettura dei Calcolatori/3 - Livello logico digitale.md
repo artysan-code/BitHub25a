@@ -375,9 +375,40 @@ L'ATmega168 è un microcontrollore con 28 pin, privo di linee di indirizzo e dat
 
 Internamente, l'ATmega168 è un SoC con 16 KB di memoria flash, 1 KB di EEPROM e 1 KB di SRAM. Il processore interno esegue 131 istruzioni AVR, ognuna lunga 16 bit, operando su dati a 8 bit con registri interni da 8 bit. Include anche un orologio in tempo reale e diverse interfacce, come collegamenti seriali, PWM, I2C e controllori di I/O digitale e analogico.
 ## 3.6 - Esempi di bus
-
+I bus sono fondamentali per l'integrazione dei componenti nei sistemi di calcolo. Tra i più diffusi ci sono il bus PCI e l'Universal Serial Bus (USB). 
+- **Bus PCI**: Utilizzato principalmente per il collegamento delle periferiche nei PC, esistono due versioni principali: il tradizionale PCI e il più recente e veloce PCI Express (PCIe).
+  - **Universal Serial Bus (USB)**: Ideale per periferiche a bassa velocità come mouse e tastiere, ha guadagnato popolarità grazie alle sue nuove versioni, USB 2.0 e USB 3.0, che offrono velocità molto superiori.
+Nei paragrafi successivi verranno analizzati in dettaglio questi bus per comprendere meglio il loro funzionamento.
 ### 3.6.1 - Bus PCI
+I bus sono fondamentali per collegare i componenti nei sistemi di calcolo. In passato, il bus ISA, con una larghezza di banda massima di 16,7 MB/s, e il bus **EISA**, con 33,3 MB/s, erano utilizzati, ma non erano sufficienti per esigenze moderne come la visualizzazione di video a schermo intero. Intel ha quindi sviluppato il bus PCI (Peripheral Component Interconnect) con una larghezza di banda maggiore, fino a 528 MB/s, rendendo possibile il supporto di video Full HD.
 
+Nonostante la larghezza di banda migliorata, il bus PCI aveva due problemi principali: non poteva essere usato come bus di memoria e non era compatibile con le vecchie schede ISA. Per risolvere questi problemi, Intel progettò sistemi con tre o più bus e sviluppò chip bridge per connettere la CPU, la memoria e i bus PCI e ISA.
+
+Il bus PCI supporta diverse tensioni (5 volt per i sistemi più vecchi e 3,3 volt per quelli più recenti) e dispone di meccanismi per evitare l'inserimento errato delle schede. Negli anni '90, il bus ISA fu considerato obsoleto e sostituito dal bus **AGP** (*Accelerated Graphics Port*) per supportare risoluzioni grafiche più elevate.
+
+Il bus PCI è sincrono, con tutte le transazioni tra un master (**iniziatore**) e uno slave (**destinatario**), e utilizza linee multiplexate per indirizzi e dati per ridurre il numero di pin. Le operazioni di lettura e scrittura richiedono almeno tre cicli, con possibilità di inserire stati di attesa e trasferimenti di blocchi di dimensione illimitata.
+#### 3.6.1.1 - Arbitraggio del bus PCI
+Prima di poter utilizzare il bus PCI, i dispositivi devono acquisirlo. Nella maggior parte delle architetture l'arbitro del bus è integrato in uno dei chip bridge. Ogni dispositivo PCI ha due linee dedicate che lo collegano all'arbitro: una, $REQ\#$, per richiedere il bus, e l’altra, $GNT\#$, per riceverne la concessione.
+
+Per richiedere il bus un dispositivo PCI (compresa la CPU) deve asserire $REQ\#$ e attendere finché non veda che la linea $GNT\#$ è stata asserita dall’arbitro.
+
+Il bus viene concesso per una transazione alla volta, anche se può avere lunghezza teoricamente illimitata. Se un dispositivo vuole effettuare una seconda transazione e nessun altro dispositivo sta richiedendo il bus, allora può continuare a utilizzarlo; tuttavia tra la prima e la seconda transazione deve spesso essere inserito un ciclo di inattività. L'arbitro può negare la linea $GNT\#$ nel caso in cui un master stia effettuando un trasferimento molto lungo e contemporaneamente qualche altro dispositivo richieda il bus. Dato che il master del bus deve monitorare la linea $GNT\#$, esso deve rilasciare il bus al ciclo successivo non appena vede che la linea è stata negata. Questo schema permette trasferimenti molto lunghi quando c'è un solo candidato master, ma allo stesso tempo continua a garantire una risposta veloce quando più dispositivi competono per l'utilizzo del bus.
+#### 3.6.1.2 - Segnali del bus PCI
+Il bus PCI è costituito da segnali obbligatori e opzionali. I segnali obbligatori includono $CLK$, che sincronizza il bus; $AD$, per indirizzi e dati; $PAR$, un segnale di parità per $AD$; $C/BE\#$, per comandi e byte validi; $FRAME\#$, per iniziare una transazione; $IRDY\#$, per indicare la disponibilità dei dati in ingresso; $IDSEL$, per selezionare un dispositivo PCI; e $DEVSEL\#$, per annunciare la prontezza dello slave.
+
+I segnali asseriti dallo slave includono $TRDY\#$, per indicare la disponibilità dei dati in uscita; $STOP\#$, per annullare una transazione in caso di errore; $PERR\#$, per segnalare errori di parità sui dati; e $SERR\#$, per notificare errori di sistema.
+
+I segnali $REQ64\#$ e $ACK64\#$ gestiscono le transazioni a 64 bit, mentre $LOCK$ permette di bloccare il bus. Altri segnali includono $INTx$ per richiedere interrupt, $JTAG$ per il testing e $M66EN$ per impostare la velocità di clock.
+#### 3.6.1.3 - Transazioni del bus PCI
+Figura 3.55
+
+Il bus PCI è semplice nel funzionamento. Consideriamo il diagramma di temporizzazione di una transazione di lettura seguita da una di scrittura. Durante T1, al fronte di discesa del clock, il master inserisce l'indirizzo di memoria su $AD$ e il comando su $C/BE\#$, e asserisce $FRAME\#$ per iniziare la transazione.
+
+In T2, il master rilascia l'indirizzo per permettere allo slave di pilotarlo in T3, e modifica $C/BE\#$ per indicare quali byte leggere. In T3, lo slave asserisce $DEVSEL\#$ per confermare la ricezione dell'indirizzo, scrive i dati su $AD$, e asserisce $TRDY\#$. Se lo slave non può rispondere immediatamente, deve comunque asserire $DEVSEL\#$ ma lasciare $TRDY\#$ negato fino a quando i dati sono pronti, inserendo stati di attesa se necessario.
+
+Dopo un ciclo di inattività, in T5 il master inizia una scrittura, inserendo indirizzo e comando su $AD$ e $C/BE\#$ e asserendo i dati già in T6, senza bisogno di inversione del bus poiché il master continua a pilotare $AD$. In T7, la memoria accetta i dati.
+
+(pagine riassunte: 8.75)
 ### 3.6.2 - PCI Express
 
 ### 3.6.3 - Universal Serial Bus

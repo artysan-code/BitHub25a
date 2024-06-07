@@ -37,7 +37,13 @@ Sebbene efficace, questa soluzione comporta un lieve impatto sulle prestazioni, 
 
 (Pagine riassunte: 2.5)
 ### 3.2.2 - Swapping
+Lo **swapping** consiste nel suddividere due stati di processi: *dormiente* e *attivo*. Un processo attivo risiede nella memoria volatile e rimane in esecuzione, mentre un processo dormiente viene trasferito nella *swap*, un'area di memoria fisica che conserva i programmi non più eseguiti ma pronti per essere rieseguiti. 
 
+Una soluzione ancora più avanzata per migliorare questo metodo è la **memoria virtuale**, che permette ai programmi di essere eseguiti anche quando sono solo parzialmente presenti in memoria.
+
+Quando lo swapping genera molti spazi vuoti (a causa della de-allocazione per inserire nella swap), è possibile eliminarli tramite la **memory compaction**. Tuttavia, questa operazione è molto costosa per la CPU. Inoltre, i programmi con allocazione dinamica possono avere difficoltà a trovare spazio aggiuntivo intorno al loro indirizzo. Per questo motivo, generalmente si alloca più spazio del necessario se si prevede che il programma possa richiedere più memoria, mettendo in swap il processo adiacente o spostando il processo principale.
+
+Esiste un metodo più specifico per processi con due segmenti: un segmento heap per le variabili allocate e rilasciate dinamicamente e un segmento stack per le variabili locali e gli indirizzi di ritorno. Il segmento heap si espande verso l'alto, mentre lo stack si espande verso il basso. Quando non c'è più spazio disponibile, non invadono i processi adiacenti; invece, si cerca un nuovo spazio più grande o si termina il processo.
 
 (Pagine riassunte: 2.25)
 ### 3.2.3 - Gestione della memoria libera

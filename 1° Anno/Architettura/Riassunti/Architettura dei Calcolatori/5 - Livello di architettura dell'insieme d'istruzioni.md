@@ -320,6 +320,19 @@ I programmi auto-modificanti, proposti da John Von Neumann, erano utili sui prim
 ### 5.4.6 - Indirizzamento indicizzato
 L’indirizzamento indicizzato consente di referenziare una parola di memoria a un dato spiazzamento dal contenuto di un registro. Ad esempio, in IJVM le variabili locali sono referenziate specificando il loro spiazzamento rispetto a LV. Questa modalità combina un registro con un offset costante.
 Consideriamo due vettori, A e B, di 1024 parole ciascuno. Vogliamo calcolare \($A_{i}$ AND $B_{i}$\) per ogni elemento e fare l’OR di questi risultati per verificare se c'è almeno una coppia di componenti non nulla. Possiamo salvare gli indirizzi di A e B in due registri e usare l’indirizzamento indicizzato per accedere agli elementi degli array.
+```
+codice: 
+		MOV R1,#0
+		MOV R2,#0
+		MOV R3,#4096
+CICLO:  MOV R4,A(R2)
+		AND R4,B(R2)
+		OR R1,R4
+		ADD R2,#4
+		CMP R2,R3
+		BLT CICLO
+
+```
 Per questo programma, usiamo quattro registri:
 1. R1 - contiene l’OR cumulativo dei prodotti logici.
 2. R2 - l’indice *i* per visitare gli array.

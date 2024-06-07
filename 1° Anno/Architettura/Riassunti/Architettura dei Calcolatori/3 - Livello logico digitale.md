@@ -369,7 +369,11 @@ Confrontare il SoC OMAP4430 (architettura RISC) con il Core i7 (architettura CIS
 
 (pagine riassunte: 3.75)
 ### 3.5.3 - Il microcontrollore Atmel ATmega168
+Il Core i7 e l'OMAP4430 sono piattaforme ad alte prestazioni progettate per differenti tipi di dispositivi: il Core i7 è destinato principalmente alle applicazioni desktop, mentre l'OMAP4430 è rivolto alle applicazioni mobili. Tuttavia, esiste un altro settore molto vasto: quello dei sistemi integrati, dove il microcontrollore Atmel ATmega168 è particolarmente diffuso per il suo basso costo e versatilità.
 
+L'ATmega168 è un microcontrollore con 28 pin, privo di linee di indirizzo e dati esterne, poiché tutta la memoria (SRAM e Flash) è integrata nel chip stesso. Questo microcontrollore dispone di 27 porte di I/O (8 ciascuna nelle porte B e D, 7 nella porta C), configurabili come input o output tramite software. Sei segnali della porta C possono anche essere configurati come I/O analogici per leggere o impostare livelli di tensione.
+
+Internamente, l'ATmega168 è un SoC con 16 KB di memoria flash, 1 KB di EEPROM e 1 KB di SRAM. Il processore interno esegue 131 istruzioni AVR, ognuna lunga 16 bit, operando su dati a 8 bit con registri interni da 8 bit. Include anche un orologio in tempo reale e diverse interfacce, come collegamenti seriali, PWM, I2C e controllori di I/O digitale e analogico.
 ## 3.6 - Esempi di bus
 
 ### 3.6.1 - Bus PCI

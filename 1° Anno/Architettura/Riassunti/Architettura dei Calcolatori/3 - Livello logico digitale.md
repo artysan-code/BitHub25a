@@ -410,7 +410,38 @@ Dopo un ciclo di inattività, in T5 il master inizia una scrittura, inserendo in
 
 (pagine riassunte: 8.75)
 ### 3.6.2 - PCI Express
+Il bus PCI, pur essendo adeguato per molte applicazioni, non riesce a soddisfare la crescente domanda di larghezza di banda per l'I/O. La frequenza di clock non può essere ulteriormente aumentata a causa di problemi tecnici come il disallineamento del bus e le interferenze. Per i dispositivi di I/O troppo veloci, Intel ha aggiunto porte speciali nel chip bridge per bypassare il bus PCI, ma questa non è una soluzione sostenibile a lungo termine.
 
+Un altro limite del bus PCI è la dimensione delle schede, che sono troppo grandi per laptop e dispositivi mobili. La soluzione vincente è stata il **PCI Express**, che, nonostante il nome, ha poco a che fare con il bus PCI tradizionale e non è un vero e proprio bus. Oggi, il PCI Express è lo standard nei computer.
+#### 3.6.2.1 - Architettura di PCI Express
+Il PCI Express (PCIe) si distingue radicalmente dal tradizionale bus PCI adottando un'architettura basata su connessioni seriali punto-a-punto ad alta velocità invece di un bus parallelo con molteplici master e slave. Questo approccio innovativo, ispirato dalla commutazione Ethernet nelle reti locali, fornisce un commutatore centrale per connettere i chip tramite collegamenti seriali.
+
+Le principali differenze rispetto al bus PCI sono tre:
+1. **Commutatore centralizzato**: Sostituisce il bus con un dispositivo centrale per gestire le connessioni.
+2. **Connessioni seriali punto-a-punto**: Al posto del bus parallelo, ogni chip ha una connessione dedicata composta da due fili (uno per il segnale e uno per la terra) per migliorare l'immunità al rumore.
+3. **Modello di trasferimento dati a pacchetti**: Anziché un master che comanda uno slave, il PCIe utilizza un modello in cui i dispositivi si scambiano pacchetti di dati, ciascuno contenente un'intestazione e un campo dati.
+
+In aggiunta, il PCIe utilizza codici di rilevazione degli errori per maggiore affidabilità, supporta connessioni fino a 50 cm di lunghezza per un migliore partizionamento del sistema, permette l'espansione tramite ulteriori commutatori, e le connessioni seriali più piccole permettono dispositivi più compatti. In sostanza, PCIe rappresenta un significativo cambiamento rispetto al tradizionale bus PCI.
+#### 3.6.2.2 - Pila di protocolli di PCI Express
+Il sistema PCI Express (PCIe) adotta un'architettura stratificata di **protocolli**, ispirata al modello delle reti a commutazione di pacchetto. Una pila di protocolli è una gerarchia che separa le diverse funzioni di comunicazione in livelli distinti, favorendo una progettazione modulare e flessibile. Questo approccio, comune nel software delle reti, viene applicato qui all'hardware del bus.
+##### Livello fisico
+Il livello fisico gestisce la trasmissione dei bit lungo le connessioni punto-a-punto, composte da coppie di collegamenti simplex chiamate **corsie**. Ogni corsia ha due fili, uno per il segnale e uno per la terra, assicurando un'elevata immunità al rumore. A differenza dei bus tradizionali, PCIe non ha un clock principale; i dispositivi trasmettono dati non appena disponibili, utilizzando la **codifica 8b/10b** per distinguere i dati da un collegamento inattivo.
+##### Livello di trasmissione
+Il livello di trasmissione si occupa della trasmissione dei pacchetti. Aggiunge a ogni pacchetto un numero di sequenza e un codice **CRC** per la correzione degli errori. Il destinatario verifica il CRC e, se corretto, invia un **pacchetto di acknowledgment**. In caso contrario, richiede una ritrasmissione. Questo livello include anche un meccanismo di controllo di flusso per evitare il sovraccarico del destinatario.
+##### Livello di transazione
+Il livello di transazione gestisce le operazioni sul bus, suddividendo le connessioni in più **circuiti virtuali** per gestire diverse classi di traffico. Le transazioni possono riguardare quattro spazi di indirizzi:
+1. **Spazio di memoria** per letture e scritture ordinarie.
+2. **Spazio di I/O** per indirizzare i registri del dispositivo.
+3. **Spazio di configurazione** per l'inizializzazione del sistema.
+4. **Spazio dei messaggi** per segnalazioni e interrupt.
+##### Livello software
+Il livello software interfaccia il sistema PCIe con il sistema operativo, emulando il bus PCI per garantire la retrocompatibilità. Tuttavia, per sfruttare appieno le capacità di PCIe, i sistemi operativi devono essere aggiornati.
+##### Processo di trasmissione
+Quando un comando viene passato dal livello software, il livello di transazione lo riformula in termini di intestazione e campo dati. Il livello di trasmissione aggiunge il numero di sequenza e il CRC, mentre il livello fisico completa il pacchetto con le informazioni necessarie per la trasmissione. Il destinatario esegue l'operazione inversa per ricevere il pacchetto.
+
+In sintesi, PCIe rappresenta un'evoluzione significativa rispetto ai tradizionali bus PCI, implementando una struttura a livelli simile a quella delle reti, ma interamente in hardware.
+
+(pagine riassunte: 5)
 ### 3.6.3 - Universal Serial Bus
 
 ## 3.7 - Interfacce

@@ -419,6 +419,12 @@ Le istruzioni che indirizzano la memoria sono di due tipi: load (LDR) e store (S
 La terza modalità, chiamata indirizzamento relativo al program counter, è utile per caricare costanti memorizzate con il codice del programma.
 
 ### 5.4.13 - Modalità d'indirizzamento dell'ATmega168 AVR
+L'ATmega168 presenta una struttura d'indirizzamento con quattro modalità:
+
+1. **Indirizzamento a registro**: l'operando è un registro, utilizzato sia come sorgente che come destinazione.
+2. **Indirizzamento immediato**: un valore immediato senza segno di 8 bit è codificato nell'istruzione.
+3. **Indirizzamento diretto**: utilizzato dalle istruzioni di load e store, l'operando è in memoria a un indirizzo contenuto nell'istruzione stessa. Le istruzioni a 16 bit limitano l'indirizzamento diretto a 7 bit (indirizzi da 0 a 127). Esiste anche un'istruzione a 32 bit per ospitare un indirizzo di 16 bit, supportando così 64 KB di memoria.
+4. **Indirizzamento indiretto basato su un registro**: il registro contiene un puntatore all'operando. Visto che i registri normali sono di 8 bit, le istruzioni di load e store utilizzano coppie di registri per specificare indirizzi di memoria a 16 bit, permettendo di indirizzare fino a 64 KB di memoria. Le coppie di registri utilizzate sono chiamate X, Y e Z, formate rispettivamente dai registri R26/R27, R28/R29 e R30/R31. Per caricare un indirizzo nel registro X, ad esempio, il programma carica un valore di 8 bit nei registri R26 e R27 con due istruzioni separate.
 
 ## 5.5 - Tipi d'istruzioni
 ### 5.5.1 - Istruzioni di trasferimento dati

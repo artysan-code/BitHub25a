@@ -489,4 +489,23 @@ L'interfaccia **PIO** (*Parallel Input/Output*), basata sul progetto Intel 8255 
 Solitamente utilizzata nei sistemi integrati, l'interfaccia PIO si configura tramite un registro di configurazione a 3 bit, che determina se le tre porte indipendenti a 8 bit devono funzionare in modalità input (0) o output (1). Ogni porta è associata a un registro latch a 8 bit, e la CPU può leggere direttamente il registro per utilizzare una porta in input.
 
 È possibile realizzare interfacce PIO più avanzate, ad esempio per l'handshaking con dispositivi esterni. Dal diagramma funzionale del PIO, si notano 24 pin per le tre porte, più linee per il bus dati, la selezione del chip, lettura e scrittura, indirizzi e reset. Le linee d'indirizzo selezionano i quattro registri interni, corrispondenti alle porte A, B, C e al registro di configurazione.
+
+(pagine riassunte: 1.5)
 ### 3.7.2 - Decodifica dell'indirizzo
+Un semplice calcolatore integrato a 16 bit include una CPU, una EPROM da 2KB per il programma, una RAM da 2KB per i dati, e un'interfaccia PIO. L'interfaccia PIO può essere selezionata come dispositivo di I/O o come parte della memoria. Se utilizzata come I/O mappato in memoria, richiede 4 byte dello spazio di memoria per le tre porte e il registro di controllo.
+#### Assegnazione degli Indirizzi:
+- **EPROM**: Occupa gli indirizzi da 0 a 2KB.
+- **RAM**: Occupa gli indirizzi da 32KB a 34KB.
+- **Chip PIO**: Occupa gli ultimi 4 byte dello spazio degli indirizzi, da 65532 a 65535.
+#### Decodifica degli Indirizzi:
+- **EPROM**: Può essere selezionata con indirizzi della forma $00000xxxxxxxxxxx$. Utilizzando una porta OR a cinque ingressi collegata alle linee d'indirizzo $A_{11}$ a $A_{15}$, si realizza una **decodifica piena degli indirizzi**.
+- **RAM**: Risponde agli indirizzi $10000xxxxxxxxxxx$. La logica di decodifica può essere semplificata collegando $\overline{CS}$ direttamente a $A_{15}$, poiché tutti gli indirizzi della EPROM hanno $A_{15}$ a 0.
+- **Chip PIO**: Viene selezionato da indirizzi della forma $11111111111111xx$. Con decodifica parziale degli indirizzi, la RAM viene decodificata con due bit e il chip PIO con tre bit. La logica per la decodifica completa può essere implementata con due porte NAND e un invertitore.
+#### Decodifica Parziale dell’Indirizzo:
+- **EPROM**: Selezionata con $\overline{CS}$ collegato a $A_{15}$.
+- **RAM**: Selezionata con gli indirizzi $10xxxxxxxxxxxxxx$.
+- **Chip PIO**: Selezionato con indirizzi che iniziano con 11.
+#### Tecnica di Indirizzamento con Decodificatore:
+Un decodificatore può connettere le tre linee dell'indirizzo più significative a otto output, ognuno corrispondente a un settore di 8KB. Questo è utile per calcolatori con otto RAM da 8K x 8 o otto chip di memoria da 2K x 8, posizionati in diversi settori da 8KB dello spazio degli indirizzi.
+
+(pagine riassunte: 2)

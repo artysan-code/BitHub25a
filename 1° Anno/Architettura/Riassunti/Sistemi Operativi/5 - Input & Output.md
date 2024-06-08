@@ -130,9 +130,24 @@ Il principale vantaggio del DMA è la riduzione del numero di interrupt da uno p
 
 (pagine riassunte: 0.25)
 ## 5.3 - Livelli del software di I/O
-
+Il software di I/O è generalmente organizzato in quattro livelli ciascuno dei quali ha una funzione ben definita da eseguire e un’interfaccia ben definita verso i livelli adiacenti. La funzionalità e le interfacce sono diverse a seconda del sistema, così l’analisi seguente, che esamina tutti i livelli partendo dal basso, non è specifica di una macchina.
 ### 5.3.1 - Gestori  degli interrupt
+L'I/O programmato è utile in alcuni casi, ma per la maggior parte delle operazioni di I/O, l'uso degli interrupt è inevitabile. Il metodo migliore per gestirli è far sì che il driver che ha iniziato un'operazione di I/O si blocchi fino al completamento dell'operazione e al verificarsi dell'interrupt. Quando avviene l'interrupt, la procedura di gestione deve completare le sue operazioni e sbloccare il driver in attesa. Questo metodo funziona meglio se i driver sono strutturati come processi con i loro stati, stack e contatori di programma.
 
+L'elaborazione di un interrupt va oltre la semplice gestione dell'interrupt e il ritorno al processo precedente. Il sistema operativo deve eseguire una serie di passaggi, che includono:
+
+1. Salvataggio di tutti i registri non ancora salvati dall'interrupt hardware.
+2. Impostazione di un contesto per la procedura di servizio dell'interrupt, che potrebbe coinvolgere TLB, MMU e tabelle delle pagine.
+3. Impostazione di uno stack per la procedura di servizio dell'interrupt.
+4. Conferma al controller degli interrupt o riabilitazione degli interrupt se manca un controller centralizzato.
+5. Copia dei registri salvati nella tabella dei processi.
+6. Esecuzione della procedura di servizio dell'interrupt, estraendo informazioni dai registri del controller del dispositivo.
+7. Scelta del prossimo processo da eseguire, privilegiando quelli a priorità alta sbloccati dall'interrupt.
+8. Impostazione del contesto della MMU per il nuovo processo da eseguire.
+9. Caricamento dei nuovi registri del processo, incluso il PSW.
+10. Avvio dell'esecuzione del nuovo processo.
+
+Questa elaborazione è complessa e richiede molte istruzioni della CPU, soprattutto su macchine con memoria virtuale, dove è necessario gestire le tabelle delle pagine, il TLB e la cache della CPU.
 
 (pagine riassunte: 1.5)
 ### 5.3.2 - Driver di dispositivo

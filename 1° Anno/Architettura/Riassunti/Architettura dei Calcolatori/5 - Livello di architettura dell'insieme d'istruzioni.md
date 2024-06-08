@@ -425,12 +425,25 @@ L'ATmega168 presenta una struttura d'indirizzamento con quattro modalità:
 2. **Indirizzamento immediato**: un valore immediato senza segno di 8 bit è codificato nell'istruzione.
 3. **Indirizzamento diretto**: utilizzato dalle istruzioni di load e store, l'operando è in memoria a un indirizzo contenuto nell'istruzione stessa. Le istruzioni a 16 bit limitano l'indirizzamento diretto a 7 bit (indirizzi da 0 a 127). Esiste anche un'istruzione a 32 bit per ospitare un indirizzo di 16 bit, supportando così 64 KB di memoria.
 4. **Indirizzamento indiretto basato su un registro**: il registro contiene un puntatore all'operando. Visto che i registri normali sono di 8 bit, le istruzioni di load e store utilizzano coppie di registri per specificare indirizzi di memoria a 16 bit, permettendo di indirizzare fino a 64 KB di memoria. Le coppie di registri utilizzate sono chiamate X, Y e Z, formate rispettivamente dai registri R26/R27, R28/R29 e R30/R31. Per caricare un indirizzo nel registro X, ad esempio, il programma carica un valore di 8 bit nei registri R26 e R27 con due istruzioni separate.
-
+(pagine riassunte: 1)
 ## 5.5 - Tipi d'istruzioni
 Le istruzioni del livello ISA possono essere suddivise approssimativamente in una mezza dozzina di gruppi facilmente rintracciabili in tutte le macchine. Oltre a questi, ciascun computer dispone di una manciata d'istruzioni insolite, aggiunte per motivi di compatibilità con modelli precedenti o a seguito di un'idea brillante di un progettista, o **perché un'agenzia governativa ha pagato il produttore perché la includesse nel progetto**.
 COFF COFF
+(pagine riassunte: 0.4)
 ### 5.5.1 - Istruzioni di trasferimento dati
+Ci sono due ragioni per copiare i dati da una locazione ad un'altra, una delle quali è fondamentale: 
+1) l'assegnazione di valori a variabili. 
+```
+L'assegnamento:
 
+Palle = Testicoli
+
+si implementa con la copia del valore all'indirizzo di memoria B nella locazione di memoria A.
+```
+1) preparare i dati a un accesso e a un uso efficiente.
+
+I dati possono provenire da due sorgenti, e (di media) vengono utilizzati quattro diversi tipi di trasferimento. Alcuni computer dispongono di quattro istruzioni diverse, altri di una sola istruzione per tutte le situazioni. Altri usano LOAD per trasferire dalla memoria verso i registri, STORE dai registri alla memoria e MOVE per i trasferimenti tra registri.
+(pagine riassunte: 1)
 ### 5.5.2 - Operazioni binarie
 
 ### 5.5.3 - Operazioni unarie

@@ -469,9 +469,7 @@ Un uso importante di OR è quello di impacchettare bit in una parola, che è l'o
 | 0000 | 0000 | 0000 | 1011 | C              |
 | ==== | ==== | ==== | ==== | ====           |
 | 1010 | 1101 | 1110 | 1011 | (A AND B) OR C |
-
-
-
+(pagine riassunte:1)
 ### 5.5.3 - Operazioni unarie
 Le operazioni unarie sono operazioni che prendono in ingresso un operando, e restituiscono un risultato. Un'esempio sono le istruzioni di scorrimento (shift) o rotazione.
 Esempio di shift e rotazione:
@@ -513,11 +511,21 @@ Ora vediamo le differenze più in dettaglio
 - **Operazioni logiche e di scorrimento**: Spesso usate insieme per l'estrazione di dati.
 
 In sintesi, gli scorrimenti e le rotazioni sono strumenti fondamentali per l'efficienza delle operazioni aritmetiche e logiche, mentre le istruzioni unarie ottimizzano operazioni comuni, migliorando la performance complessiva del sistema.
-
-
-
+(pagine riassunte: 2)
 ### 5.5.4 - Confronti e salti condizionati
+I programmi devono esaminare i dati e modificare l'esecuzione delle istruzioni in base ai risultati. Ad esempio, una funzione che calcola la radice quadrata deve controllare se un numero è negativo e agire di conseguenza, restituendo un errore o procedendo con il calcolo.
+#### Salti condizionati
+Un metodo comune per modificare l'esecuzione è l'uso di salti condizionati, che verificano una condizione e saltano a un indirizzo specifico se la condizione è soddisfatta. L'indirizzo di destinazione è spesso relativo all'istruzione corrente. Le condizioni testate frequentemente includono il controllo di specifici bit della macchina, come il bit di segno di un numero. Se il bit di segno è 1, il programma salta a un'etichetta, eseguendo istruzioni specifiche solo per numeri negativi.
+#### Bit di condizione
+Molti processori usano bit di condizione per indicare vari stati. Ad esempio:
 
+- **Bit di overflow**: Indicato quando un'operazione aritmetica produce un risultato errato.
+- **Bit di riporto**: Segnala un riporto all'ultimo bit di sinistra, importante per l'aritmetica in precisione multipla.
+- **Bit zero**: Indica se una parola è zero, utile per cicli e altre operazioni. Le macchine spesso offrono istruzioni di confronto per verificare se un'intera parola è zero.
+#### Confronti tra parole o caratteri
+I confronti sono essenziali per verificare uguaglianze o stabilire l'ordine. Questi confronti richiedono tre indirizzi: due per i dati e uno per il salto se la condizione è vera. I computer con istruzioni a tre indirizzi gestiscono facilmente questo scenario, mentre altri usano espedienti, come impostare bit di condizione che una successiva istruzione può esaminare per decidere il salto.
+#### Architetture moderne
+Processori come il Core i7, l'OMAP4430 ARM e l'ATmega168 AVR utilizzano bit di condizione per gestire i confronti. Questi bit memorizzano i risultati del confronto, che poi determinano se eseguire un salto basato su condizioni come uguaglianza, diversità, o superiorità di un valore rispetto a un altro.
 ### 5.5.5 - Invocazione di procedura
 
 ### 5.5.6 - Istruzioni di ciclo
@@ -525,11 +533,11 @@ In sintesi, gli scorrimenti e le rotazioni sono strumenti fondamentali per l'eff
 ### 5.5.7 - Input/Output
 
 ### 5.5.8 - Istruzioni del Core i7
-
+SKIPPED 
 ### 5.5.9 - Istruzioni della CPU ARM OMAP4430
-
+SKIPPED
 ### 5.5.10 - Istruzioni dell'ATmega168 AVR
-
+SKIPPED
 ### 5.5.11 - Insieme d'istruzioni a confronto
 
 ## 5.6 - Controllo del flusso

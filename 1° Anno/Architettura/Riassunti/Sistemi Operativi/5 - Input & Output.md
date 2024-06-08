@@ -39,7 +39,27 @@ Entrambi gli approcci presentano compromessi e richiedono decisioni di progettaz
 
 (pagine riassunte: 3.25)
 ### 5.1.4 - Direct memory access (DMA)
-
+La CPU può comunicare con i controller dei dispositivi tramite l'accesso diretto alla memoria (DMA). Il DMA consente il trasferimento di dati tra memoria e dispositivi senza coinvolgere continuamente la CPU, migliorando l'efficienza.
+#### Processo di DMA:
+1. **Programmazione del Controller DMA**: La CPU configura il controller DMA impostando i registri per specificare il trasferimento dei dati.
+2. **Richiesta di Lettura**: Il controller DMA invia una richiesta di lettura al controller del disco.
+3. **Scrittura in Memoria**: Il controller DMA esegue l'operazione di scrittura in memoria.
+4. **Conferma**: Il controller del disco invia un segnale di conferma al controller DMA.
+5. **Aggiornamento degli Indirizzi**: Il controller DMA incrementa l'indirizzo di memoria e decrementa il conteggio dei byte.
+#### Modalità di Operazione del DMA:
+- **Cycle Stealing**: Il controller DMA ruba cicli di bus dalla CPU per trasferire i dati, rallentando leggermente la CPU.
+- **Modalità Burst**: Il controller DMA acquisisce il bus per una serie di trasferimenti consecutivi, rilasciandolo poi. Questa modalità è più efficiente.
+#### Fly-by Mode:
+In questa modalità, il controller DMA dirige il trasferimento dei dati direttamente dalla periferica alla memoria principale senza intermediari, sebbene alcuni controller DMA utilizzino un ciclo extra per trasferire dati da dispositivo a dispositivo o da memoria a memoria.
+#### Utilizzo di Buffer Interni:
+I controller del disco utilizzano buffer interni per:
+- Verificare la checksum prima del trasferimento per assicurarsi che i dati non siano corrotti.
+- Gestire la velocità costante dei bit in arrivo dal disco, evitando perdite di dati.
+#### Vantaggi e Svantaggi del DMA:
+- **Vantaggi**: Efficienza nel trasferimento dei dati e riduzione del carico sulla CPU.
+- **Svantaggi**: La CPU potrebbe essere più veloce del controller DMA in alcuni sistemi, rendendo il DMA superfluo e aumentando i costi di implementazione.
+#### Applicazione nei Sistemi:
+Il DMA è comune nei sistemi con controller dedicati e complessi, mentre nei sistemi a basso costo (come quelli embedded), la CPU potrebbe gestire direttamente i trasferimenti per risparmiare sui costi hardware.
 
 (pagine riassunte: 3)
 ### 5.1.5 - Ancora sugli interrupt
@@ -105,4 +125,4 @@ Entrambi gli approcci presentano compromessi e richiedono decisioni di progettaz
 ## 5.9 - Stato della ricerca sull'input/output
 
 
-[[8 - Sistemi a più processori|Prossimo Capitolo]]
+[[|Prossimo Capitolo]]

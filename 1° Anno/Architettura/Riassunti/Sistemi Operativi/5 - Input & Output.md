@@ -83,15 +83,46 @@ Infine, è importante notare che anche le istruzioni transitorie, annullate a se
 
 (pagine riassunte: 3.5)
 ## 5.2 - Principi del software di I/O
-
+Per prima cosa analizzeremo gli obiettivi del software di I/O e successivamente i diversi modi in cui può essere gestito l’I/O dal punto di vista del sistema operativo.
 ### 5.2.1 - Obbiettivi del software di I/O
+Nella progettazione del software di I/O, uno dei concetti fondamentali è l'**indipendenza dal dispositivo**, che permette di scrivere programmi che accedono a qualsiasi dispositivo di I/O senza dover specificare quale dispositivo utilizzare. Il sistema operativo si occupa delle differenze tra i dispositivi e delle sequenze di comandi necessarie per leggere o scrivere.
 
+L'indipendenza dal dispositivo è collegata alla denominazione uniforme (**uniform naming**), che consente di utilizzare nomi di file o dispositivi come semplici stringhe o numeri, indipendentemente dal dispositivo stesso. Ad esempio, una penna USB può essere **montata** in una directory specifica, e copiare un file in quella directory significa copiarlo nella penna USB.
+
+La **gestione degli errori** è un'altra questione importante: gli errori dovrebbero essere gestiti il più vicino possibile all'hardware. Se un controller rileva un errore di lettura, dovrebbe cercare di correggerlo autonomamente; altrimenti, il driver del dispositivo dovrebbe intervenire, magari tentando una rilettura del blocco.
+
+I trasferimenti di I/O possono essere **sincroni** (bloccanti) o **asincroni** (gestiti tramite interrupt). L'I/O fisico è principalmente asincrono, ma i programmi utente sono più facili da scrivere se le operazioni di I/O sono bloccanti. Il sistema operativo deve quindi far sembrare le operazioni asincrone come se fossero bloccanti per i programmi utente. Tuttavia, alcune applicazioni ad alte prestazioni necessitano di controllare i dettagli dell'I/O, per cui l'I/O asincrono è reso disponibile.
+
+La **bufferizzazione** è un'altra sfida: spesso i dati in uscita da un dispositivo non possono essere memorizzati direttamente nella destinazione finale. Alcuni dispositivi, come quelli audio digitali, richiedono la bufferizzazione per sincronizzare la velocità di riempimento e svuotamento del buffer ed evitare il buffer underrun.
+
+Infine, i dispositivi possono essere condivisibili o dedicati. Dischi e SSD possono essere usati contemporaneamente da più utenti, mentre i dispositivi dedicati, come alcune stampanti o unità nastro, richiedono una gestione specifica per evitare problemi come i deadlock. Il sistema operativo deve gestire entrambi i tipi di dispositivi per garantire un funzionamento efficiente e privo di errori.
+
+(pagine riassunte: 1.25)
 ### 5.2.2 - I/O programmato
+L'I/O programmato è un metodo di esecuzione dell'I/O in cui la CPU si occupa interamente del processo. Un esempio per illustrare questo metodo può essere il caso di un processo utente che voglia scrivere una stringa di otto caratteri ("ABCDEFGH") su una stampante tramite un'interfaccia seriale. 
+1. **Preparazione e Richiesta della Risorsa:**
+   - Il processo utente crea un buffer con la stringa e fa una chiamata di sistema per aprire la stampante.
+   - Se la stampante è già in uso, la chiamata può fallire o il processo può restare bloccato fino a quando la stampante diventa disponibile.
+2. **Scrittura dei Dati:**
+   - Una volta ottenuta la stampante, il sistema operativo copia il buffer dalla memoria utente allo spazio del kernel.
+   - Poi, controlla se la stampante è pronta. Se non lo è, attende.
+   - Quando la stampante è pronta, il sistema operativo copia il primo carattere nel registro dei dati della stampante, attivandola.
+3. **Controllo e Polling:**
+   - Dopo aver copiato il primo carattere, il sistema operativo verifica se la stampante è pronta per ricevere il prossimo carattere.
+   - Questo viene fatto leggendo un secondo registro che indica lo stato della stampante.
+   - Il ciclo continua con la CPU che controlla continuamente lo stato della stampante e copia i caratteri successivi fino a completare la stampa della stringa.
 
+L'aspetto chiave dell'I/O programmato è che la CPU, dopo aver inviato un carattere, interroga costantemente il dispositivo per verificare se è pronta a ricevere il prossimo carattere, un processo noto come **polling** o **busy waiting**. Questo metodo è semplice ma inefficiente, poiché la CPU rimane occupata fino al completamento dell'I/O.
+
+(pagine riassunte: 1.5)
 ### 5.2.3 - I/O guidato dagli interrupt
 
+
+(pagine riassunte: 1)
 ### 5.2.4 - I/O con DMA
 
+
+(pagine riassunte: 0.25)
 ## 5.3 - Livelli del software di I/O
 
 ### 5.3.1 - Gestori  degli interrupt

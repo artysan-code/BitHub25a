@@ -172,11 +172,23 @@ Ad ogni page fault, abbiamo un insieme di pagine in memoria, a ciascuna delle qu
 
 (Pagine riassunte: 0.5)
 ### 3.4.2 - Not recently used (NRU)
+ Prima di parlarne confermiamo le informazioni di cui siamo in possesso; ogni pagina è fornita di due bit **R** che se asserito afferma che la pagina è stata referenziata recentemente e **M** che se asserito afferma che la pagina è stata modificata recentemente.
 
+Ogni ciclo di clock R viene impostato a 0 per far capire che non sta più essendo referenziato, M invece viene usato per capire se copiare la pagina sul disco.
+
+L'algoritmo NRU divide le pagine in quattro classi:
+- **Classe 0**, non referenziato, non modificato
+- **Classe 1**, non referenziato, modificato
+- **Classe 2**, referenziato, non modificato
+- **Classe 3**, referenziato, modificato
+
+L'algoritmo sceglie una pagina a caso dalla classe non vuota con il numero più basso. Algoritmo adeguato anche se non molto veloce.
 
 (Pagine riassunte: 1)
 ### 3.4.3 - First-in, first-out (FIFO)
+L'algoritmo fa uso di una tabella del sistema operativo che contiene una lista delle pagine attualmente in memoria, con l'arrivo recente in coda e il più vecchio in testa. Ad ogni page fault, la pagina in testa viene rimossa e messa in coda la nuova pagina sostituita.
 
+Non viene usato quasi mai nella sua forma rigida in quanto non ha nessuna precisione sulle casistiche.
 
 (Pagine riassunte: 0.5)
 ### 3.4.4 - Seconda chance

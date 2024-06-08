@@ -115,7 +115,32 @@ Analizziamo ora le voci della tabella delle pagine:
 
 (Pagine riassunte: 2)
 ### 3.3.3 - Velocizzare la paginazione
+I principi fondamentali per la velocità del sistema precedentemente trattato sono i seguenti:
+- Il mappaggio dall'indirizzo virtuale a quello fisico deve essere veloce.
+- Lo spazio virtuale degli indirizzi è grande quindi la tabella sarà grande di conseguenza. Inoltre, ogni programma ha con se una tabella privata degli indirizzi.
 
+Nei sistemi moderni c'è sempre più bisogno di indirizzi grandi, come a 32 bit che mappano milioni di pagine o a 64 bit che nemmeno possiamo immaginare. La velocità richiesta è fondamentale per avere un sistema senza colli di bottiglia, vediamo allora diverse soluzioni.
+#### Translation lookaside buffer
+Analizziamo ora come ottimizzare questa metodologia di gestione della memoria. La tabella delle pagine risiede nella memoria, il che influisce significativamente sulle performance poiché, ad ogni accesso, la CPU deve consultare la tabella delle pagine e poi accedere alla memoria, dimezzando di fatto le performance.
+
+Una soluzione è equipaggiare i PC con un hardware che mappa gli indirizzi virtuali su quelli fisici senza consultare direttamente la tabella delle pagine; questo dispositivo è chiamato **TLB** (Translation Lookaside Buffer) o **memoria associativa**. Si trova all'interno della MMU e contiene un numero ridotto di voci (solitamente 8, ma può arrivare a 256 o più), memorizzando le mappature come nella tabella delle pagine, ma con l'aggiunta del numero di pagina. La CPU, infatti, tende a richiedere accesso alle stesse poche pagine ripetutamente.
+
+Quando la CPU fa una richiesta, la MMU interroga il TLB tramite un hardware specializzato:
+- Se il TLB contiene un riscontro valido e non protetto, il frame viene preso direttamente dal TLB.
+- Se il riscontro è valido ma protetto, si genera un errore di protezione.
+- Se non trova un riscontro, la MMU rileva un **TLB miss** e consulta la tabella delle pagine, sostituendo una delle voci del TLB con la nuova mappatura prelevata. Successivamente, se la stessa pagina verrà richiesta di nuovo, si avrà un **TLB hit**, con l'operazione eseguita correttamente e rapidamente.
+#### Gestione software del TLB
+Quando la MMU non trova una voce nel TLB, non interroga direttamente la tabella delle pagine, ma genera un errore e passa il compito al sistema operativo. L'OS trova la pagina, sostituisce una voce nel TLB con la nuova mappatura e riavvia l'istruzione. Questo processo avviene in poche istruzioni poiché i TLB miss sono molto più frequenti di un page fault.
+
+Un approccio efficace, sebbene generico, è permettere al sistema operativo di *anticipare* alcune sostituzioni, prevedendo quali pagine potrebbero essere richieste più frequentemente.
+
+Per evitare ulteriori errori durante un TLB miss mentre si cerca nella tabella delle pagine, viene mantenuta una *cache software estesa* delle voci TLB in una posizione fissa che l'OS controlla prima di accedere al TLB.
+
+Esistono due tipi di TLB miss:
+- **TLB soft-miss**: quando una pagina non è nel TLB ma è presente nella tabella delle pagine, quindi il TLB viene aggiornato.
+- **TLB hard-miss**: quando una pagina non è nel TLB né nella memoria, causando un page fault, che è molto più lento.
+
+Una miss può essere sia soft che hard, o una combinazione delle due. Se un programma tenta di accedere a un indirizzo non valido, non è necessario aggiornare il TLB poiché si registra come un **errore di segmentazione**, causato da un errore del programmatore.
 
 (Pagine riassunte: 3.5)
 ### 3.3.4 - Tabelle delle pagine per grandi memorie

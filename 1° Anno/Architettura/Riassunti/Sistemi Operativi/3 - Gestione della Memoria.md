@@ -162,11 +162,13 @@ Le ottimizzazioni includono l'uso del TLB, che filtra parte delle chiamate, e di
 
 (Pagine riassunte: 3.5)
 ## 3.4 - Algoritmi di sostituzione delle pagine
-
+Analizzeremo ora degli algoritmi di sostituzione delle pagine, che vengono usati per scegliere il modo più conveniente di sostituire le pagine e pulire la memoria. Lo tratteremo principalmente sulla memoria, ma può avere diverse applicazioni in diversi ambiti.
 
 (Pagine riassunte: 0.75)
 ### 3.4.1 - L'algoritmo ottimale di sostituzione delle pagine
+Il primo algoritmo è il più semplice da descrivere ma impossibile da implementare.
 
+Ad ogni page fault, abbiamo un insieme di pagine in memoria, a ciascuna delle quali associamo un'etichetta contenente il numero di istruzioni prima di essere referenziata nuovamente. Sostituiamo la pagina con l'etichetta più alta, ovvero quella che verrà usata più tardi. Tuttavia, questo è irrealizzabile perché il sistema operativo non può sapere quanti cicli mancano prima che una pagina venga referenziata di nuovo. Si può solo fare una stima di quale pagina verrà referenziata prossimamente, come vedremo nei prossimi algoritmi.
 
 (Pagine riassunte: 0.5)
 ### 3.4.2 - Not recently used (NRU)

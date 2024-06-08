@@ -527,7 +527,12 @@ I confronti sono essenziali per verificare uguaglianze o stabilire l'ordine. Que
 #### Architetture moderne
 Processori come il Core i7, l'OMAP4430 ARM e l'ATmega168 AVR utilizzano bit di condizione per gestire i confronti. Questi bit memorizzano i risultati del confronto, che poi determinano se eseguire un salto basato su condizioni come uguaglianza, diversità, o superiorità di un valore rispetto a un altro.
 ### 5.5.5 - Invocazione di procedura
-
+Una procedura è un insieme di istruzioni che svolge un compito specifico e può essere chiamata da vari punti di un programma. Il termine **subroutine** è usato spesso per indicare le procedure, specialmente nei programmi in linguaggio assemblativo. In C, queste sono chiamate funzioni, mentre in Java sono chiamate metodi. Quando una procedura termina, l'esecuzione deve riprendere dall'istruzione successiva alla chiamata, per cui l'indirizzo di ritorno deve essere passato o salvato in modo da poter essere recuperato.
+#### Metodi di salvataggio dell'indirizzo di ritorno
+1. **Memoria fissa**: Salvare l'indirizzo di ritorno in una locazione di memoria fissa è inefficiente, poiché se la procedura chiama un'altra procedura, l'indirizzo di ritorno della prima verrebbe perso.
+2. **Prima parola della procedura**: Far sì che l'istruzione di chiamata di procedura salvi l'indirizzo di ritorno nella prima parola della procedura è un lieve miglioramento. Tuttavia, questo metodo fallisce in caso di ricorsione o chiamate indirette, poiché l'indirizzo di ritorno verrebbe sovrascritto. Questo metodo fu utilizzato nel CDC 6600, ma era limitato poiché il linguaggio FORTRAN utilizzato non supportava la ricorsione.
+3. **Registro**: Un miglioramento sostanziale si ottiene ponendo l'indirizzo di ritorno in un registro, con la procedura che si occupa di salvarlo in un posto sicuro. Questo metodo richiede attenzione per gestire correttamente la ricorsione, salvando ogni indirizzo di ritorno in un posto diverso per ogni invocazione.
+4. **Stack**: La soluzione più efficiente è salvare l'indirizzo di ritorno in cima a uno stack. Quando la procedura termina, effettua un pop dell'indirizzo di ritorno e lo scrive nel program counter. Questo metodo gestisce perfettamente la ricorsione, poiché ogni indirizzo di ritorno viene salvato automaticamente senza sovrascrivere quelli precedenti.
 ### 5.5.6 - Istruzioni di ciclo
 
 ### 5.5.7 - Input/Output

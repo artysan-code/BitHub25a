@@ -534,7 +534,12 @@ Una procedura è un insieme di istruzioni che svolge un compito specifico e può
 3. **Registro**: Un miglioramento sostanziale si ottiene ponendo l'indirizzo di ritorno in un registro, con la procedura che si occupa di salvarlo in un posto sicuro. Questo metodo richiede attenzione per gestire correttamente la ricorsione, salvando ogni indirizzo di ritorno in un posto diverso per ogni invocazione.
 4. **Stack**: La soluzione più efficiente è salvare l'indirizzo di ritorno in cima a uno stack. Quando la procedura termina, effettua un pop dell'indirizzo di ritorno e lo scrive nel program counter. Questo metodo gestisce perfettamente la ricorsione, poiché ogni indirizzo di ritorno viene salvato automaticamente senza sovrascrivere quelli precedenti.
 ### 5.5.6 - Istruzioni di ciclo
-
+Le istruzioni di ciclo sono fondamentali per eseguire un gruppo di istruzioni un numero prefissato di volte. Queste istruzioni utilizzano un contatore che viene incrementato o decrementato a ogni iterazione del ciclo. Il ciclo termina quando si verifica una certa condizione predefinita.
+#### Ciclo con valutazione in coda
+Un metodo comune prevede di inizializzare il contatore al di fuori del ciclo e quindi cominciare immediatamente l'esecuzione. L'ultima istruzione del ciclo aggiorna il contatore e verifica la condizione di terminazione. Se la condizione non è soddisfatta, il ciclo riparte dalla prima istruzione; altrimenti, il ciclo termina e l'esecuzione prosegue dalla prima istruzione dopo il ciclo. Questo tipo di ciclo è detto "con valutazione in coda". La figura 5.29(a) mostra un esempio in linguaggio C.
+Un ciclo con valutazione in coda viene eseguito almeno una volta, anche se il valore iniziale di `n` è minore o uguale a 0. Ad esempio, in un programma che gestisce le schede del personale di una ditta, se il programma legge che un impiegato ha `n` figli, esegue un ciclo `n` volte per leggere i dettagli di ogni figlio. Se `n` è 0, il ciclo verrà comunque eseguito una volta, il che può causare errori.
+#### Ciclo con valutazione in testa
+Un altro metodo per evitare errori quando `n` è minore o uguale a 0 è il ciclo con valutazione in testa. In questo caso, la condizione viene verificata prima dell'esecuzione del ciclo, garantendo che il ciclo non venga eseguito se `n` è 0 o negativo. Il confronto cambia tra i due metodi e, se incremento e valutazione sono effettuati da un'unica istruzione ISA, i progettisti devono scegliere una delle due modalità.
 ### 5.5.7 - Input/Output
 
 ### 5.5.8 - Istruzioni del Core i7

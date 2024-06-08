@@ -151,7 +151,17 @@ Questa elaborazione è complessa e richiede molte istruzioni della CPU, soprattu
 
 (pagine riassunte: 1.5)
 ### 5.3.2 - Driver di dispositivo
+Il controllo dei dispositivi di I/O richiede specifici codici chiamati **driver di dispositivo**. Questi driver, solitamente forniti dal produttore, sono necessari per ogni sistema operativo. Un driver di dispositivo gestisce generalmente un tipo o una classe di dispositivi, anche se possono esistere eccezioni. Ad esempio, i driver USB sono strutturati su uno stack, con vari livelli che gestiscono diverse funzioni, dal livello hardware fino alle API di alto livello.
 
+Per accedere all'hardware del dispositivo, i driver devono solitamente essere parte del kernel del sistema operativo, isolando così il kernel dai driver stessi per migliorare l'affidabilità del sistema. I progettisti di sistemi operativi devono garantire un modello ben definito per l'interazione dei driver con il sistema. I driver sono classificati principalmente in due categorie: **dispositivi a blocchi** (es. dischi) e **dispositivi a caratteri** (es. stampanti).
+
+Storicamente, i sistemi operativi includevano tutti i driver necessari in un unico binario. Tuttavia, con l'aumento della varietà di dispositivi I/O nei personal computer, questo modello è diventato inefficace. Ora, i driver vengono caricati dinamicamente durante l'esecuzione del sistema operativo.
+
+Le principali funzioni di un driver di dispositivo includono l'accettazione di richieste di lettura e scrittura e la loro esecuzione concreta. I driver devono inoltre gestire vari aspetti come la validazione dei parametri di input, il controllo dello stato del dispositivo, l'invio di comandi al controller del dispositivo e la gestione degli interrupt.
+
+Quando un dispositivo è occupato, le richieste vengono messe in coda. Se un dispositivo è inattivo, il driver verifica lo stato dell'hardware per vedere se può gestire immediatamente la richiesta. I driver devono gestire anche situazioni in cui un dispositivo viene rimosso o aggiunto "a caldo".
+
+I driver non possono fare chiamate di sistema dirette, ma possono interagire con il kernel tramite chiamate a specifiche procedure del kernel per gestire vari aspetti come l'MMU, i timer, il controller DMA e il controller degli interrupt.
 
 (pagine riassunte: 3.5)
 ### 5.3.3 - Software per l'I/O indipendente dal dispositivo

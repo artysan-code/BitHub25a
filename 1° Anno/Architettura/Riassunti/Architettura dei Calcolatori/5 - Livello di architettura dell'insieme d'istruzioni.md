@@ -584,7 +584,27 @@ SKIPPED
 ### 5.5.10 - Istruzioni dell'ATmega168 AVR
 SKIPPED
 ### 5.5.11 - Insieme d'istruzioni a confronto
+I tre esempi di insiemi di istruzioni (ISA) esaminati sono molto diversi tra loro:
 
+1. **Core i7**:
+    - **Tipo**: Macchina CISC a 32 bit e a due indirizzi.
+    - **Caratteristiche**: Ha una lunga storia, modalità di indirizzamento peculiari e irregolari, e molte istruzioni per l'accesso in memoria.
+    - **Progetto**: Fortemente influenzato dalla retrocompatibilità. La necessità di mantenere compatibilità con versioni precedenti ha portato a un design complesso e irregolare, con pochi registri e diversi tra loro.
+    - **Implicazioni**: La scrittura dei compilatori è complicata e la mancanza di registri costringe a frequenti operazioni di memorizzazione e caricamento. Tuttavia, l'implementazione complessa e avanzata consente comunque alte prestazioni.
+    
+1. **ARM OMAP4430**:
+    - **Tipo**: Macchina RISC a 32 bit e a tre indirizzi.
+    - **Caratteristiche**: Architettura load/store, poche modalità di indirizzamento, e un set di istruzioni efficiente e compatto.
+    - **Progetto**: ISA moderno, con molte operazioni a tre registri e un piccolo gruppo di istruzioni LOAD e STORE. Tutte le istruzioni sono della stessa lunghezza, rendendo l'implementazione semplice ed efficiente nonostante la varietà di formati.
+    - **Tendenza**: Molti nuovi progetti di ISA tendono a somigliare a questa architettura, ma con meno formati di istruzione.
+	
+1. **ATmega168 AVR**:
+    - **Tipo**: Processore integrato su un solo chip.
+    - **Caratteristiche**: ISA semplice e regolare, con poche istruzioni e modalità di indirizzamento. Dotato di 32 registri di 8 bit per l'accesso rapido ai dati.
+    - **Progetto**: I registri sono accessibili nello spazio di memoria, e include potenti istruzioni di manipolazione dei bit. Richiede un numero limitato di transistori, consentendo la produzione economica in grandi quantità.
+    - **Vantaggi**: Costo unitario molto contenuto grazie all'efficienza nell'implementazione.
+
+Ogni macchina è progettata in modo specifico per soddisfare esigenze diverse, dal mantenimento della retrocompatibilità nel caso del Core i7, alla semplicità ed efficienza nel caso dell'OMAP4430 e dell'ATmega168 AVR.
 ## 5.6 - Controllo del flusso
 ### 5.6.1 - Flusso sequenziale e diramazioni
 

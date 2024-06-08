@@ -473,6 +473,48 @@ Un uso importante di OR è quello di impacchettare bit in una parola, che è l'o
 
 
 ### 5.5.3 - Operazioni unarie
+Le operazioni unarie sono operazioni che prendono in ingresso un operando, e restituiscono un risultato. Un'esempio sono le istruzioni di scorrimento (shift) o rotazione.
+Esempio di shift e rotazione:
+
+| 0000 | 0000 | 0000 | 0101 | A                                                                              |
+| ---- | ---- | ---- | ---- | ------------------------------------------------------------------------------ |
+| 0000 | 0000 | 0000 | 0001 | A scorso verso destra di 2 bit <br>(i dati usciti vengono persi)               |
+| 0100 | 0000 | 0000 | 0001 | A ruotato verso destra di 2 bit <br>(i dati usciti vengono rimessi all'inizio) |
+Ora vediamo le differenze più in dettaglio
+### Scorrimenti e rotazioni
+
+**Scorrimenti e rotazioni**: Utili in entrambe le direzioni. Ruotare una parola di n bit verso sinistra di k bit equivale a ruotarla verso destra di n-k bit. Gli scorrimenti verso destra sono spesso associati all'estensione del segno, mantenendo la natura positiva o negativa del numero.
+
+**Applicazioni**:
+
+- **Moltiplicazione e divisione per potenze di 2**: Scorrendo un intero positivo verso sinistra di k bit si moltiplica per 2^k, verso destra si divide per 2^k.
+- **Ottimizzazione aritmetica**: Per esempio, 18 x n può essere calcolato con due scorrimenti e un'addizione invece di una moltiplicazione completa.
+
+**Numeri negativi**:
+
+- Lo scorrimento a sinistra di numeri negativi in complemento a uno non equivale a moltiplicare per 2 e può produrre risultati inaspettati.
+- Lo scorrimento a destra simula correttamente la divisione.
+
+**Rotazioni**:
+
+- Utili per impacchettare e spacchettare sequenze di bit. Permettono di esaminare una parola bit per bit senza perdita di informazione, ripristinando la parola originale dopo la rotazione completa.
+
+### Istruzioni unarie
+
+**Istruzioni unarie**: Alcune operazioni binarie sono così frequenti che gli ISA dispongono di istruzioni unarie per migliorarne l'efficienza. Esempi:
+
+- **CLR (clear)**: Azzera una locazione di memoria o un registro.
+- **INC (increment)**: Incrementa di 1, spesso usata per contare.
+- **NEG (negazione)**: Calcola l'opposto di un numero, che dà 0 se sommato al numero originale, diverso dall'operazione logica **NOT** che inverte i bit della parola.
+
+**Raggruppamento di istruzioni**:
+
+- **Operazioni aritmetiche**: Inclusa la negazione.
+- **Operazioni logiche e di scorrimento**: Spesso usate insieme per l'estrazione di dati.
+
+In sintesi, gli scorrimenti e le rotazioni sono strumenti fondamentali per l'efficienza delle operazioni aritmetiche e logiche, mentre le istruzioni unarie ottimizzano operazioni comuni, migliorando la performance complessiva del sistema.
+
+
 
 ### 5.5.4 - Confronti e salti condizionati
 

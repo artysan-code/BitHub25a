@@ -63,7 +63,23 @@ Il DMA è comune nei sistemi con controller dedicati e complessi, mentre nei sis
 
 (pagine riassunte: 3)
 ### 5.1.5 - Ancora sugli interrupt
+Gli interrupt hardware funzionano come segue: quando un dispositivo di I/O completa un'operazione, invia un segnale di interrupt tramite una linea del bus al controller degli interrupt della scheda madre. Il controller decide come gestire l'interrupt in base alla priorità e, se necessario, lo invia alla CPU interrompendo l'attuale esecuzione. La CPU utilizza il numero dell'interrupt per accedere a una tabella, chiamata vettore degli interrupt, che contiene gli indirizzi delle procedure di servizio degli interrupt.
 
+Durante un interrupt, la CPU salva le informazioni essenziali, come il contatore di programma, per poter riprendere l'esecuzione interrotta. Queste informazioni sono generalmente salvate nello stack, che può essere problematico se si tratta dello stack utente, portando a errori gravi. Usare lo stack del kernel è più sicuro, ma può comportare la necessità di cambiare il contesto della MMU e invalidare la cache, aumentando il tempo di gestione dell'interrupt.
+
+Il software gioca un ruolo importante nella gestione degli interrupt, coordinando con l'hardware per garantire che le operazioni di I/O siano eseguite correttamente e efficientemente.
+#### 5.1.5.1 - Interrupt precisi e imprecisi
+In sistemi informatici moderni, soprattutto quelli che utilizzano pipeline e architetture superscalari, la gestione degli interrupt presenta sfide particolari. Nei vecchi sistemi, quando si verificava un interrupt, tutte le istruzioni fino a quel momento erano già state eseguite completamente. Tuttavia, con l'introduzione della pipeline e delle architetture superscalari, questo non è sempre vero.
+
+Nei moderni processori, se si verifica un interrupt mentre la pipeline è piena, molte istruzioni potrebbero essere in vari stati di esecuzione. Anche in architetture superscalari, le istruzioni possono essere divise in micro-operazioni e eseguite in ordine sparso. Questo può portare a una situazione in cui, al momento dell'interrupt, molte istruzioni sono in vari stati di avanzamento, complicando la gestione dell'interrupt.
+
+Un interrupt che lascia la macchina in uno stato ben definito è detto **interrupt preciso** e presenta quattro proprietà chiave. In primo luogo, il valore del program counter (PC) è salvato in un luogo noto. In secondo luogo, tutte le istruzioni eseguite prima del PC sono state completate, mentre nessuna istruzione successiva è stata eseguita. In terzo luogo, lo stato di esecuzione dell'istruzione puntata dal PC è noto. Infine, non vi è alcuna restrizione sull'avvio di istruzioni oltre a quella puntata dal PC, ma qualsiasi modifica apportata ai registri o alla memoria deve essere completamente annullata quando si verifica l'interrupt.
+
+Al contrario, un interrupt che non soddisfa questi requisiti è detto **interrupt impreciso**, il che rende la gestione dell'interrupt più complessa. In particolare, le macchine con interrupt imprecisi tendono a salvare molte informazioni sullo stack per consentire al sistema operativo di capire lo stato della macchina al momento dell'interrupt.
+
+Alcune macchine, come la famiglia x86, supportano interrupt precisi per garantire la compatibilità con il software esistente. Tuttavia, questo comporta una maggiore complessità nella logica dell'interrupt all'interno della CPU.
+
+Infine, è importante notare che anche le istruzioni transitorie, annullate a seguito di un'interrupt, possono rappresentare un rischio per la sicurezza, poiché lasciano tracce nella microarchitettura della CPU che potrebbero essere sfruttate da potenziali attaccanti.
 
 (pagine riassunte: 3.5)
 ## 5.2 - Principi del software di I/O

@@ -541,7 +541,42 @@ Un ciclo con valutazione in coda viene eseguito almeno una volta, anche se il va
 #### Ciclo con valutazione in testa
 Un altro metodo per evitare errori quando `n` è minore o uguale a 0 è il ciclo con valutazione in testa. In questo caso, la condizione viene verificata prima dell'esecuzione del ciclo, garantendo che il ciclo non venga eseguito se `n` è 0 o negativo. Il confronto cambia tra i due metodi e, se incremento e valutazione sono effettuati da un'unica istruzione ISA, i progettisti devono scegliere una delle due modalità.
 ### 5.5.7 - Input/Output
+Le istruzioni di I/O (Input/Output) variano notevolmente tra diverse macchine e attualmente nei personal computer si usano tre schemi principali:
 
+1. **I/O programmato con attesa attiva**
+2. **I/O interrupt driven (innescato dagli interrupt)**
+3. **I/O con DMA (Direct Memory Access)**
+
+### I/O Programmato
+Il metodo di I/O più semplice è l'I/O programmato, comunemente utilizzato nei microprocessori di fascia bassa, sistemi integrati e sistemi in tempo reale. Questo metodo impiega una sola istruzione di input e una sola di output, trasferendo un carattere per volta da un registro prefissato al dispositivo di I/O selezionato. Il processore esegue una sequenza di istruzioni per ogni carattere letto o scritto.
+
+Esempio:
+- Un terminale con quattro registri di 1 byte: due per lo stato e i dati in input, e due per lo stato e i dati in output.
+- I registri possono far parte dello spazio degli indirizzi della memoria del computer se l'I/O è mappato in memoria o essere gestiti tramite istruzioni speciali di I/O (IN e OUT).
+#### Funzionamento:
+- **Input**: La CPU legge ripetutamente il registro di stato della tastiera finché il bit che indica l'arrivo di un carattere diventa 1. Poi legge il carattere dal registro buffer della tastiera.
+- **Output**: La CPU legge il registro di stato dello schermo per assicurarsi che il bit PRONTO sia 1. Una volta pronto, scrive il carattere nel registro buffer dello schermo.
+
+**Svantaggi**: L'I/O programmato implica attesa attiva, dove la CPU passa gran parte del tempo in cicli serrati aspettando che il dispositivo sia pronto. Questo approccio è inefficiente se la CPU ha altri compiti da svolgere.
+
+### I/O Interrupt Driven
+Per evitare l'attesa attiva, la CPU può avviare il dispositivo di I/O e ordinargli di generare un interrupt quando ha finito. Questo metodo permette alla CPU di svolgere altri compiti mentre aspetta la conclusione dell'operazione di I/O.
+
+**Funzionamento**: Il software abilita gli interrupt e aspetta che l'operazione di I/O generi un interrupt segnalando il completamento. Tuttavia, questo metodo richiede un interrupt per ogni carattere trasferito, il che può essere gravoso.
+### I/O con DMA
+Il DMA permette di ridurre il numero di interrupt delegando il trasferimento dei dati a un controllore DMA. Questo chip ha accesso diretto al bus e gestisce i trasferimenti di dati tra la memoria e il dispositivo di I/O.
+
+**Funzionamento**:
+- Il chip DMA dispone di registri che contengono l'indirizzo di memoria di partenza, il numero di byte da trasferire, il dispositivo di I/O desiderato e il tipo di operazione (lettura o scrittura).
+- La CPU inizializza questi registri e il DMA gestisce il trasferimento dei dati, inviando un interrupt alla CPU solo al completamento dell'operazione.
+
+**Vantaggi**:
+- La CPU viene sollevata dal carico dell'I/O e può svolgere altri compiti.
+- La necessità di gestire un interrupt per ogni byte trasferito viene eliminata.
+
+**Svantaggi**:
+- Il DMA può sottrarre cicli di bus alla CPU durante i trasferimenti, fenomeno noto come "cycle stealing" (furto di cicli).
+- Tuttavia, il guadagno complessivo in efficienza compensa ampiamente questo svantaggio.
 ### 5.5.8 - Istruzioni del Core i7
 SKIPPED 
 ### 5.5.9 - Istruzioni della CPU ARM OMAP4430

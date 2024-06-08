@@ -86,11 +86,23 @@ Supponiamo di avere un sistema Quick Fit con liste per blocchi di 8, 16 e 32 byt
     - Il sistema controlla la lista di blocchi da 16 byte.
     - Trova un blocco libero e lo assegna.
 ## 3.3 - Memoria virtuale
+Con l'avanzare del tempo si vedeva come i sistemi a registri base e limite non potevano funzionare; le implementazioni fatte erano molto complesse e comunque non potevano reggere l'aumento esponenziale del software.
 
+Lo swapping era una soluzione parziale al problema del poco spazio di memoria, serviva una gestione più efficiente della memoria; pochi programmatori si impegnavano nel ottimizzare i propri programmi e non riuscivano comunque ad implementarlo al meglio.
+
+Per questo si arrivò alla coniazione della **memoria virtuale**: ogni programma ha il suo spazio suddiviso in **pagine**, che sono intervalli di indirizzi contigui. L'implementazione è simile ad una generalizzazione della precedente (registri base e limite) ma ora la vedremo al meglio
 
 (Pagine riassunte: 1.25)
 ### 3.3.1 - Paginazione
+Uno dei sistemi più utilizzati di memoria virtuale è chiamato **paginazione**. Su qualsiasi computer, i programmi referenziano un insieme di indirizzi di memoria. Gli **indirizzi virtuali** possono essere generati tramite indicizzazione, registri base o altre tecniche, ma nella memoria virtuale le chiamate vengono generalmente passate direttamente alla **MMU** (Memory Management Unit), che mappa gli indirizzi virtuali su quelli fisici.
 
+Gli indirizzi virtuali mascherano la memoria fisica effettiva gestita dalla MMU, permettendo l'esecuzione di programmi da 64 KB su memorie da 32 KB caricando solo le pagine utilizzate.
+
+Lo spazio virtuale è diviso in intervalli definiti di memoria chiamati **pagine** (virtuali). Le unità fisiche corrispondenti sono invece chiamate **frame** o **page frame**. Tuttavia, questa suddivisione non risolve la differenza di spazio tra le pagine presenti e i frame presenti. Come fare allora?
+
+Quando un programma fa riferimento a un'area di memoria non esistente, l'MMU rileva che la pagina non è mappata e causa una **trap** della CPU verso il sistema operativo, chiamata **page fault**. L'OS prende un frame poco usato, lo carica sul disco liberandolo, lo mappa con il nuovo indirizzo non mappato e riesegue l'istruzione che era in trap.
+
+Il modo di tradurre un indirizzo virtuale in uno fisico avviene tramite la **tabella delle pagine**. Gli indirizzi virtuali arrivano divisi in *numero di pagina* e *offset della pagina*; trovato il corrispondente numero di pagina nella tabella, esso si traduce in un nuovo indirizzo fisico che ha come page number il corrispondente nella tabella e come offset quello presente nell'indirizzo virtuale. 
 
 (Pagine riassunte: 3.5)
 ### 3.3.2 - Tabelle delle pagine

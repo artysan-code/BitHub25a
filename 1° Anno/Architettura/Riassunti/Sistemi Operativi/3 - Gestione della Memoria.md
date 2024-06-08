@@ -102,11 +102,16 @@ Lo spazio virtuale è diviso in intervalli definiti di memoria chiamati **pagine
 
 Quando un programma fa riferimento a un'area di memoria non esistente, l'MMU rileva che la pagina non è mappata e causa una **trap** della CPU verso il sistema operativo, chiamata **page fault**. L'OS prende un frame poco usato, lo carica sul disco liberandolo, lo mappa con il nuovo indirizzo non mappato e riesegue l'istruzione che era in trap.
 
-Il modo di tradurre un indirizzo virtuale in uno fisico avviene tramite la **tabella delle pagine**. Gli indirizzi virtuali arrivano divisi in *numero di pagina* e *offset della pagina*; trovato il corrispondente numero di pagina nella tabella, esso si traduce in un nuovo indirizzo fisico che ha come page number il corrispondente nella tabella e come offset quello presente nell'indirizzo virtuale. 
-
 (Pagine riassunte: 3.5)
 ### 3.3.2 - Tabelle delle pagine
-
+Il modo di tradurre un indirizzo virtuale in uno fisico avviene tramite la **tabella delle pagine**. Gli indirizzi virtuali arrivano divisi in *numero di pagina* e *offset della pagina*; trovato il corrispondente numero di pagina nella tabella, esso si traduce in un nuovo indirizzo fisico che ha come page number il corrispondente nella tabella e come offset quello presente nell'indirizzo virtuale. 
+#### Struttura di una voce della tabella delle pagine
+Analizziamo ora le voci della tabella delle pagine:
+- I primi bit corrispondono al **numero del frame**, specificando dove la pagina sarà fisicamente situata.
+- Il bit *presente/assente* indica se la pagina è effettivamente esistente (1) o se la pagina virtuale non è replicabile sulla memoria fisica (0), causando un *page fault* in quest'ultimo caso.
+- I bit di **protezione** specificano le operazioni eseguibili, come lettura/scrittura (1) o sola lettura (0), ma possono avere più modalità.
+- Il bit **modificato** (o *dirty bit*) e il bit **referenziato** tengono traccia dell'uso della pagina. Quando una pagina viene scritta, il bit modificato viene impostato a 1. Se il bit modificato è 1, l'OS lo copia sul disco e poi lo pulisce; se è 0, può direttamente rimuovere la pagina. Il bit referenziato indica se la pagina è stata utilizzata: 1 se precedentemente utilizzata, 0 se inutilizzata. Sono utili per le scelte del sistema operativo.
+- L'ultimo bit consente di *disabilitare il caching* per programmi che supportano la scrittura in cache dei dispositivi.
 
 (Pagine riassunte: 2)
 ### 3.3.3 - Velocizzare la paginazione

@@ -445,6 +445,32 @@ si implementa con la copia del valore all'indirizzo di memoria B nella locazione
 I dati possono provenire da due sorgenti, e (di media) vengono utilizzati quattro diversi tipi di trasferimento. Alcuni computer dispongono di quattro istruzioni diverse, altri di una sola istruzione per tutte le situazioni. Altri usano LOAD per trasferire dalla memoria verso i registri, STORE dai registri alla memoria e MOVE per i trasferimenti tra registri.
 (pagine riassunte: 1)
 ### 5.5.2 - Operazioni binarie
+Le operazioni binarie sono quelle che producono un risultato dalla combinazione di due operandi. Presso a che tutti gli ISA hanno istruzioni per l'addizione, sottrazione, moltiplicazione e divisione.
+
+Oltre a questo, hanno un insieme di operazioni binarie che comprende le istruzioni booleane. Visto che esistono 16 funzioni booleane in due variabili, ben poche macchine (forse nessuna) dispongono d'istruzioni per tutte e 16. In genere sono disponibili AND, OR e NOT, qualche volta anche XOR (OR ESCLUSIVO), NOR e NAND.
+
+#### 5.5.2.1 Uso importante di AND:
+Un uso importante di AND è l'estrazione di bit da una parola.
+L'estrazione del carattere avviene facendo l'AND della parola con una costante, detta maschera. Il risultato di questa operazione è che tutti i bit indesiderati vengono posti a zero, vale a dire mascherati:
+
+| 1010 | 1101 | 1110 | 0101 | A           |
+| ---- | ---- | ---- | ---- | ----------- |
+| 0000 | 1111 | 0000 | 0000 | B (mschera) |
+| ==== | ==== | ==== | ==== | ====        |
+| 0000 | 1101 | 0000 | 0000 | A AND B     |
+#### 5.5.2.2 Uso importante di OR:
+Un uso importante di OR è quello di impacchettare bit in una parola, che è l'operazione inversa dell'estrazione. Per cambiare gli 8 bit meno significativi di una parola da 32 bit senza modificare gli altri, per prima cosa mascheriamo gli 8 bit indesiderati, dopodiché il nuovo carattere è inserito facendone l'OR, come mostrato di seguito.
+
+| 1010 | 1101 | 1110 | 0101 | A              |
+| ---- | ---- | ---- | ---- | -------------- |
+| 1111 | 1111 | 1111 | 0000 | B (mschera)    |
+| ==== | ==== | ==== | ==== | ====           |
+| 1010 | 1101 | 1110 | 0000 | A AND B        |
+| 0000 | 0000 | 0000 | 1011 | C              |
+| ==== | ==== | ==== | ==== | ====           |
+| 1010 | 1101 | 1110 | 1011 | (A AND B) OR C |
+
+
 
 ### 5.5.3 - Operazioni unarie
 

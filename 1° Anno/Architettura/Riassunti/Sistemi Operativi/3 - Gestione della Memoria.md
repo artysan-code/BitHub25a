@@ -144,7 +144,21 @@ Una miss può essere sia soft che hard, o una combinazione delle due. Se un prog
 
 (Pagine riassunte: 3.5)
 ### 3.3.4 - Tabelle delle pagine per grandi memorie
+Un problema del TLB può essere lavorare con indirizzi virtuali molto grandi.
+#### Tabelle delle pagine multilivello (fatto con GPT da rivedere in quanto difficile)
+Consideriamo le tabelle delle pagine multilivello. Un esempio è un indirizzo virtuale a 32 bit diviso in PT1 (10 bit), PT2 (10 bit) e Offset (12 bit), con pagine da 4 KB. Questo metodo evita di mantenere tutte le tabelle in memoria, mettendo da parte quelle non necessarie. Un processo con 12 MB di spazio indirizzi ha un grande spazio vuoto tra i dati e lo stack.
 
+Con una tabella delle pagine a due livelli, l'indirizzo virtuale viene usato per indicizzare nella tabella di livello superiore (PT1) e poi nella tabella di livello inferiore (PT2). Ad esempio, l'indirizzo 0x00403004 ha PT1=1, PT2=2 e Offset=4. La MMU usa PT1 per trovare la tabella inferiore e PT2 per trovare il frame della pagina. Se la pagina non è in memoria, si verifica un page fault.
+
+Questo sistema riduce il numero di tabelle necessarie in memoria. Le voci inutilizzate nella tabella di livello superiore hanno bit Presente/Assente a 0, causando un page fault se vengono accedute. La tabella delle pagine a due livelli può essere estesa a tre o più livelli per maggiore flessibilità.
+
+Processori come l'Intel 80386 usavano tabelle a due livelli per indirizzare 4 GB di memoria. Il Pentium Pro ha introdotto un terzo livello per indirizzare oltre 4 GB. Con il supporto ai 64 bit, si è aggiunto un quarto livello, consentendo di indirizzare fino a 256 TB di memoria. Alcuni nuovi processori supportano un quinto livello per estendere gli indirizzi fino a 57 bit, permettendo di indirizzare fino a 128 PB di memoria, rendendo però più costosi i page table walk.
+#### Tabelle delle pagine invertite
+In questo tipo di progettazione, c'è una sola voce per frame nella memoria reale, riducendo il numero totale di voci. Ogni voce tiene traccia di ciò che è memorizzato nel frame.
+
+Il problema sorge quando lo spazio degli indirizzi virtuali è molto più grande della memoria fisica. Quando il processo \( n \) referenzia la pagina virtuale \( p \), l'hardware deve cercare la voce \((n, p)\) nella tabella delle pagine invertite.
+
+Le ottimizzazioni includono l'uso del TLB, che filtra parte delle chiamate, e di una funzione hash per l'indirizzo virtuale. Se la hash table ha tante voci quanti sono i frame in memoria, la catena media avrà solo una voce, ottimizzando notevolmente il mappaggio.
 
 (Pagine riassunte: 3.5)
 ## 3.4 - Algoritmi di sostituzione delle pagine

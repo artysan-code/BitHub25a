@@ -116,60 +116,106 @@ L'aspetto chiave dell'I/O programmato è che la CPU, dopo aver inviato un caratt
 
 (pagine riassunte: 1.5)
 ### 5.2.3 - I/O guidato dagli interrupt
+Consideriamo una stampante che stampa un carattere alla volta senza buffer, con una velocità di 100 caratteri al secondo, ovvero 10 ms per carattere. In questo scenario, dopo aver scritto un carattere nel registro dei dati della stampante, la CPU rimane inattiva per 10 ms in attesa che la stampante sia pronta per il carattere successivo. Questo tempo di inattività è sufficiente per eseguire un cambio di contesto e far eseguire altri processi per quasi tutto il periodo di attesa, evitando sprechi.
 
+Per sfruttare questo tempo, si possono utilizzare gli **interrupt**. Dopo che il processo utente richiede la stampa di una stringa tramite una chiamata di sistema, il buffer della stringa viene copiato nello spazio del kernel. La CPU copia il primo carattere nella stampante non appena questa è pronta. Successivamente, la CPU può eseguire altri processi tramite lo scheduler mentre il processo di stampa rimane bloccato fino al completamento della stampa.
+
+Quando la stampante ha finito di stampare un carattere ed è pronta per il successivo, genera un interrupt. Questo interrompe il processo attuale, salvando il suo stato. La procedura di servizio di interrupt della stampante viene eseguita: se ci sono ancora caratteri da stampare, il successivo viene inviato alla stampante, l’interrupt viene riconosciuto e il processo interrotto riprende da dove era stato lasciato. Se invece non ci sono più caratteri, il gestore dell’interrupt sblocca il processo utente che aveva richiesto la stampa.
 
 (pagine riassunte: 1)
 ### 5.2.4 - I/O con DMA
+Uno svantaggio dell'I/O guidato dagli interrupt è che avviene un interrupt per ogni carattere, causando un notevole spreco di tempo della CPU. Una soluzione a questo problema è l'uso del **DMA**. In questo schema, il controller DMA gestisce l'invio dei caratteri alla stampante uno alla volta, senza coinvolgere la CPU principale. Questa tecnica richiede un controller DMA speciale, ma permette alla CPU di eseguire altre operazioni durante l'I/O.
 
+Il principale vantaggio del DMA è la riduzione del numero di interrupt da uno per carattere a uno per buffer, migliorando notevolmente l'efficienza quando si trattano molti caratteri e gli interrupt sono lenti. Tuttavia, il controller DMA è generalmente più lento della CPU principale, quindi se non è in grado di operare alla velocità massima del dispositivo, o se la CPU non ha altre operazioni da eseguire durante l'attesa dell'interrupt del DMA, potrebbe essere preferibile utilizzare l'I/O gestito dagli interrupt o l'I/O programmato. Nonostante ciò, nella maggior parte dei casi, l'uso del DMA risulta vantaggioso.
 
 (pagine riassunte: 0.25)
 ## 5.3 - Livelli del software di I/O
 
 ### 5.3.1 - Gestori  degli interrupt
 
+
+(pagine riassunte: 1.5)
 ### 5.3.2 - Driver di dispositivo
 
+
+(pagine riassunte: 3.5)
 ### 5.3.3 - Software per l'I/O indipendente dal dispositivo
 
+
+(pagine riassunte: 5.25)
 ### 5.3.4 - Software di I/O nello spazio utente
 
+
+(pagine riassunte: 1.5)
 ## 5.4 - Dischi
 
 ### 5.4.1 - Hardware dei dischi
 
+
+(pagine riassunte: 6.25)
 ### 5.4.2 - Formattazione dei dischi
 
+
+(pagine riassunte: 3.5)
 ### 5.4.3 - Algoritmi di scheduling del braccio del disco
 
+
+(pagine riassunte: 3.25)
 ### 5.4.4 - Gestione degli errori
 
+
+(pagine riassunte: 2.5)
 ### 5.4.5 - Memoria stabile
 
+
+(pagine riassunte: 3)
 ## 5.5 - Clock
 
 ### 5.5.1 - Hardware del clock
 
+
+(pagine riassunte: 1.25)
 ### 5.5.2 - Software del clock
 
+
+(pagine riassunte: 2.75)
 ### 5.5.3 - Soft timer
 
+
+(pagine riassunte: 1.5)
 ## 5.6 - Interfacce utente: tastiera, mouse e monitor
 
 ### 5.6.1 - Software di input
 
+
+(pagine riassunte: 5)
 ### 5.6.2 - Software di output
 
+
+(pagine riassunte: 15.75)
 ## 5.7 - Thin client
 
+
+(pagine riassunte: 1.25)
 ## 5.8 - Gestione del risparmio energetico
 
+
+(pagine riassunte: 1)
 ### 5.8.1 - Problemi relativi all'hardware
 
+
+(pagine riassunte: 1.5)
 ### 5.8.2 - Problemi relativi al sistema operativo
 
+
+(pagine riassunte: 5.25)
 ### 5.8.3 - Questioni relative ai programmi applicativi
 
+
+(pagine riassunte: 1)
 ## 5.9 - Stato della ricerca sull'input/output
 
+
+(pagine riassunte: 1.5)
 
 [[|Prossimo Capitolo]]

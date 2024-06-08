@@ -27,7 +27,15 @@ I monitor LCD hanno rapidamente sostituito i vecchi monitor a **tubo catodico** 
 
 (pagine riassunte: 1)
 ### 5.1.3 - Input/Output mappato in memoria
+I dispositivi di I/O comunicano con la CPU tramite registri di controllo e buffer di dati. Il sistema operativo scrive nei registri per dare comandi al dispositivo e legge da essi per conoscere lo stato del dispositivo.
 
+Due approcci per la comunicazione CPU-dispositivo sono: l'uso di **porte di I/O** e l'**I/O mappato in memoria**. Nel primo metodo, i registri di controllo hanno un numero di porta di I/O associato e sono accessibili tramite istruzioni speciali IN e OUT. Nel secondo metodo, i registri di controllo sono mappati nello spazio della memoria.
+
+L'I/O mappato in memoria ha vantaggi come l'accessibilità dai linguaggi ad alto livello, la facilità di protezione dai processi utente e la possibilità di riferimento tramite istruzioni di memoria. Tuttavia, richiede complessità aggiuntiva per gestire la cache e potrebbe causare conflitti in sistemi con più bus.
+
+L'utilizzo di porte di I/O è più semplice in termini di gestione della cache ma potrebbe causare ritardi nel bus della memoria dedicato. Soluzioni alternative includono l'uso di un dispositivo "spia" sul bus della memoria o il filtraggio degli indirizzi sul bridge PCI.
+
+Entrambi gli approcci presentano compromessi e richiedono decisioni di progettazione ponderate, specialmente per garantire la compatibilità con sistemi legacy.
 
 (pagine riassunte: 3.25)
 ### 5.1.4 - Direct memory access (DMA)

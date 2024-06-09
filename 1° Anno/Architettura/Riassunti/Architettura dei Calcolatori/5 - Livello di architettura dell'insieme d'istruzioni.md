@@ -612,9 +612,17 @@ Il controllo del flusso riguarda la sequenza con cui le istruzioni vengono esegu
 Se un programma non contiene salti, il codice viene eseguito nello stesso ordine con la quale è salvato in memoria: questo fa si che il program counter diventi una sorta di linea temporale, che può essere usata per tenere conto del programma in esecuzione. 
 Quando invece il programma contiene salti, questo non vale più: il che rende difficile tenere traccia del programma e di come si comporta. 
 Per questo Dijkstra scrisse una nota (al quanto controversa) affermando che i salti sono pericolosi, in particolar modo l'istruzione GO TO.
-
 ### 5.6.2 - Procedure
+Le procedure alterano il flusso esecutivo tanto quanto i salti, ma differiscono perché restituiscono il controllo al comando o all'istruzione che ha invocato la procedura. Una tipologia di procedure interessanti è la **procedura ricorsiva**, ovvero una procedura che richiama se stessa. 
 
+Al fine di poter gestire le procedure ricorsive abbiamo bisogno di uno stack per memorizzare i parametri e le variabili locali a ogni invocazione. 
+Ogni volta che una procedura viene chiamata, in cima allo stack viene allocato un record d'attivazione per la procedura stessa. 
+Il record d'attivazione di creazione più recente è quello in uso corrente. Nei nostri esempi lo stack cresce verso l'alto, dagli indirizzi di memoria più piccoli ai più grandi, proprio come nell'IJVM. Perciò il record d'attivazione più recente è caratterizzato da un indirizzo maggiore di tutti gli altri. Oltre al puntatore allo stack, che punta alla cima della pila, risulta spesso conveniente avere un puntatore al record d'attivazione, FP (frame pointer), che punta a una locazione nota del record d'attivazione (per esempio il puntatore di collegamento, come nell'IJVM, o la prima variabile locale).
+
+Il codice che si preoccupa di salvare il vecchio FP, che stabilisce il nuovo FP e accresce il puntatore allo stack per riservare spazio alle variabili locali si chiama **prologo della procedura**(procedure prolog). All'uscita dalla procedura si rende invece necessario ripulire lo stack, che rappresenta la fase di epilogo della procedura. Due delle caratteristiche più importanti di ogni computer sono la **brevità e la velocità** dei **meccanismi di prologo ed epilogo delle procedure**. 
+
+Le istruzioni **ENTER** e **LEAVE** del Core i7 sono state progettate proprio per far funzionare i prologhi e gli epiloghi delle procedure in modo efficiente. Naturalmente queste istruzioni hanno un loro modello di gestione del puntatore al record d'attivazione, per cui se il compilatore ha un modello diverso deve fare a meno di usarle.
+(pagine riassunte: 4.5).
 ### 5.6.3 - Coroutine
 
 ### 5.6.4 - Trap

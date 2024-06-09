@@ -209,7 +209,11 @@ Gli SSD e i dischi possono avere pagine flash e settori di diverse dimensioni. I
 
 (pagine riassunte: 5.25)
 ### 5.3.4 - Software di I/O nello spazio utente
+La gestione dell'I/O in un sistema operativo include anche componenti al di fuori del kernel, come librerie collegate ai programmi utente e programmi eseguiti separatamente. Le chiamate di sistema per l'I/O, come `write` in C, sono generalmente eseguite da procedure di libreria incluse nel programma binario. Queste procedure formattano input e output, come avviene con `printf` e `scanf` in C, che preparano stringhe formattate per la scrittura o lettura.
 
+Oltre alle procedure di libreria, esistono altri software di I/O a livello utente, come i sistemi di spooling. Lo spooling gestisce l'uso di dispositivi dedicati in un sistema multiprogrammato, ad esempio una stampante. Invece di permettere a qualsiasi processo di accedere direttamente alla stampante, si utilizza un daemon e una directory di spooling. I file da stampare vengono depositati nella directory di spooling e il daemon, unico autorizzato a utilizzare la stampante, li gestisce evitando che la stampante resti inutilmente occupata.
+
+Il sistema di I/O è organizzato in vari livelli: hardware, gestori degli interrupt, driver dei dispositivi, software indipendente dai dispositivi e processi utente. Quando un programma utente effettua una richiesta di I/O, il software indipendente dai dispositivi controlla, ad esempio, nella cache del buffer. Se il dato non è presente, il driver del dispositivo inoltra la richiesta all'hardware. Il processo utente viene sospeso finché l'operazione non si conclude. Quando l'operazione è completata, l'hardware genera un interrupt, il gestore degli interrupt risponde, recupera lo stato del dispositivo e risveglia il processo utente per completare la richiesta di I/O e proseguire l'esecuzione.
 
 (pagine riassunte: 1.5)
 ## 5.4 - Dischi

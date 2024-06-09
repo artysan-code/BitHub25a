@@ -15,7 +15,10 @@ Il **ciclo esecutivo delle istruzioni** sono i passaggi per permettere alla CPU 
 - Prelevare l'istruzione successiva della memoria e portarla nell'IR. 
 - Modificare il PC per puntarlo all'istruzione seguente.
 - Decodificare l'istruzione interna all'IR.
-- Se l'istruzione usa una parola di memoria
+- Se l'istruzione usa una parola in memoria, determinare dove si trova;
+- se necessario, prelevare la parola per portarla in un registro della CPU;
+- eseguire l'istruzione;
+- tornare al punto 1 per iniziare l'esecuzione dell'istruzione successiva.
 
 La precedente descrizione somiglia quasi ad un programma scritto in *pseudo-codifica*, il che implica che possiamo scrivere un programma che esegua queste istruzioni. Questo programma è proprio un **interprete**, quindi possiamo creare una "CPU Virtuale" che gira un un linguaggio compatibile con quella macchina (Concetto di interpreti e linguaggi interpreti).
 

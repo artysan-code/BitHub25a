@@ -606,6 +606,8 @@ I tre esempi di insiemi di istruzioni (ISA) esaminati sono molto diversi tra lor
 
 Ogni macchina è progettata in modo specifico per soddisfare esigenze diverse, dal mantenimento della retrocompatibilità nel caso del Core i7, alla semplicità ed efficienza nel caso dell'OMAP4430 e dell'ATmega168 AVR.
 ## 5.6 - Controllo del flusso
+Il controllo del flusso riguarda la sequenza con cui le istruzioni vengono eseguite durante l'esecuzione del programma. Vedremo le chiamate di procedura, le coroutine, le trap e gli interrupt.
+(pagine riassunte:0.5)
 ### 5.6.1 - Flusso sequenziale e diramazioni
 
 ### 5.6.2 - Procedure

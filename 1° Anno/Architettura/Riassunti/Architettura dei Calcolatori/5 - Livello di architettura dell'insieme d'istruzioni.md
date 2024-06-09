@@ -609,6 +609,9 @@ Ogni macchina è progettata in modo specifico per soddisfare esigenze diverse, d
 Il controllo del flusso riguarda la sequenza con cui le istruzioni vengono eseguite durante l'esecuzione del programma. Vedremo le chiamate di procedura, le coroutine, le trap e gli interrupt.
 (pagine riassunte:0.5)
 ### 5.6.1 - Flusso sequenziale e diramazioni
+Se un programma non contiene salti, il codice viene eseguito nello stesso ordine con la quale è salvato in memoria: questo fa si che il program counter diventi una sorta di linea temporale, che può essere usata per tenere conto del programma in esecuzione. 
+Quando invece il programma contiene salti, questo non vale più: il che rende difficile tenere traccia del programma e di come si comporta. 
+Per questo Dijkstra scrisse una nota (al quanto controversa) affermando che i salti sono pericolosi, in particolar modo l'istruzione GO TO.
 
 ### 5.6.2 - Procedure
 

@@ -192,16 +192,19 @@ Non viene usato quasi mai nella sua forma rigida in quanto non ha nessuna precis
 
 (Pagine riassunte: 0.5)
 ### 3.4.4 - Seconda chance
-
+Una modifica all'algoritmo precedente sta nel verificare il bit R ad ogni page fault: se è 0 allora la pagina non è referenziata e possiamo tranquillamente sostituirla, se è 1 viene azzerato e la pagina viene messa in coda alla lista. Questo algoritmo è chiamato **Seconda Chance**.
 
 (Pagine riassunte: 0.5)
 ### 3.4.5 - Clock
-
+Migliore implementazione del precedente è di tenere tutti i frame su una lista circolare (come se fosse un orologio). Quando vi è un page fault uno ad uno vengono controllati e se il bit R è 1 esso viene azzerato; quando si trova una pagina con il bit R a 0 viene scelta quella. Questo algoritmo è chiamato **Clock**.
 ### 3.4.6 - Least recently used (LRU)
-
+ Una buona osservazione rispetto all'NRU, che non verifica l'età della pagina stessa, ma prende una qualsiasi. Con il **Least Recently Used** invece cerchiamo di basarci sulla pagina più conveniente. Viene implementato con una lista collegata di tutte le pagine in memoria, con avanti quelle più usate e dietro quelle meno usate; il metodo più efficiente è quello di usare un contatore che è associato ad ogni voce di pagina nella tabella delle pagine. Quando viene eseguita una trap, il sistema operativo confronta tutti i contatori e seleziona la pagina col contatore più alto.
 
 (Pagine riassunte: 1)
-### 3.4.7 - (Saltato)
+### 3.4.7 - Simulare l'algoritmo LRU via software
+I precedenti algoritmi sono implementabili, ma sono poche se non nessuna le macchine con l'hardware adatto, bisogna implementarli a livello software. Una possibile implementazione è l'algoritmo **NFU** (Not Frequently Used).
+
+(Pagine riassunte: 1.5)
 ### 3.4.8 - Working set
 
 

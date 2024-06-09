@@ -28,9 +28,9 @@ Grazie alla suddivisione della macchina in livelli, abbiamo distinto concettualm
 
 Nel 1951, Maurice Wilkes propose di invertire questa tendenza attraverso l'**astrazione logica**, progettando ciò che oggi definiamo un microprogramma, che traduceva un programma ISA in un linguaggio logico con istruzioni molto semplici, riducendo errori hardware e il dispendio di risorse. 
 
-Negli anni '60, per ridurre i lunghi tempi di compilazione ed esecuzione dei programmi (spesso eseguiti su macchine condivise e lente), fu creato un programma definitivo, chiamato **sistema operativo**, per automatizzare molti processi di compilazione ed esecuzione dei programmi. Col tempo, si concluse che per ottenere nuove funzioni "hardware" bastava studiarle a livello software. 
+Negli anni '60, per ridurre i lunghi tempi di compilazione ed esecuzione dei programmi (spesso eseguiti su macchine condivise e lente), fu creato un programma definitivo, chiamato **sistema operativo**, per automatizzare molti processi di compilazione ed esecuzione dei programmi. 
 
-Tuttavia, questo metodo rallentò l'esecuzione dei microprogrammi con l'aumentare delle funzioni aggiunte, portando infine a un ritorno all'approccio iniziale, eliminando la microprogrammazione e riducendo il carico di istruzioni che il processore doveva gestire.
+Col tempo, si concluse che per ottenere nuove funzioni "hardware" bastava studiarle a livello software. Tuttavia, questo metodo rallentò l'esecuzione dei microprogrammi con l'aumentare delle funzioni aggiunte, portando infine a un ritorno all'approccio iniziale, eliminando la microprogrammazione e riducendo il carico di istruzioni che il processore doveva gestire.
 
 (Pagine riassunte: 5)
 ## 1.2 - Pietre militari nell'architettura dei computer

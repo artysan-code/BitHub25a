@@ -165,7 +165,47 @@ I driver non possono fare chiamate di sistema dirette, ma possono interagire con
 
 (pagine riassunte: 3.5)
 ### 5.3.3 - Software per l'I/O indipendente dal dispositivo
+Sebbene parte del software per l’I/O sia specifico di un determinato dispositivo, altre parti sono indipendenti dal dispositivo stesso (device independent). Il limite esatto fra i driver e il software indipendente dal dispositivo dipende dal sistema e dal dispositivo, poiché alcune funzioni che potrebbero essere svolte in modalità indipendente dal dispositivo sono effettivamente svolte dai driver, sia per efficienza sia per altre ragioni.
 
+La funzione base del software indipendente dal dispositivo è quella di eseguire tutte quelle funzioni di I/O trasversali a tutti i dispositivi e di fornire un’interfaccia uniforme al software a livello utente.
+#### 5.3.3.1 - Interfacciamento uniforme dei driver dei dispositivi
+Un problema centrale nei sistemi operativi è uniformare i dispositivi e i driver, evitando modifiche al sistema operativo per ogni nuovo dispositivo. L'interfaccia tra i driver e il sistema operativo deve essere standardizzata per facilitare l'integrazione di nuovi driver.
+
+Un'interfaccia diversa per ogni driver richiederebbe notevoli sforzi di programmazione per l'integrazione. Invece, un'interfaccia comune per tutti i driver semplifica l'inserimento di nuovi driver, che devono solo conformarsi a questa interfaccia standard. Anche se i dispositivi non sono identici, i tipi di dispositivi sono pochi e le loro differenze sono gestibili.
+
+Il sistema operativo definisce per ogni classe di dispositivi un insieme di funzioni che i driver devono supportare. Ad esempio, per i dischi, queste funzioni includono lettura, scrittura, accensione, spegnimento e formattazione. Il sistema operativo registra la tabella di puntatori a funzioni del driver, permettendo chiamate indirette alle funzioni necessarie. Questa tabella definisce l'interfaccia tra il driver e il sistema operativo, e tutti i dispositivi di una classe devono rispettarla.
+
+Anche la denominazione dei dispositivi di I/O contribuisce all'uniformità dell'interfaccia. In UNIX, ad esempio, un nome come _/dev/disk0_ identifica univocamente il dispositivo tramite il **major device number** e il **minor device number**. Il numero di dispositivo primario localizza il driver appropriato, mentre il numero secondario specifica l'unità da leggere o scrivere.
+
+Infine, la protezione dell'accesso ai dispositivi è gestita come per i file. Sia in UNIX sia in Windows, i dispositivi appaiono nel file system come oggetti denominati, e le regole di protezione dei file si applicano anche ai dispositivi di I/O. L'amministratore di sistema può quindi impostare i permessi adeguati per ciascun dispositivo.
+#### 5.3.3.2 - Buffering
+Il buffering è una tecnica cruciale per gestire l'I/O sia per i dispositivi a blocchi sia per quelli a caratteri, ma presenta sfide significative. Ecco le strategie di buffering:
+1. **Buffering con processo utente bloccato**: Un processo utente può eseguire una chiamata di sistema read per attendere un carattere in ingresso, ma riavviare il processo per ogni carattere è inefficiente. Migliorare questa tecnica prevedendo un buffer di _n_ caratteri nello spazio utente può aumentare l'efficienza, ma introduce problemi se il buffer viene paginato fuori.
+2. **Buffering nel kernel**: Creare un buffer nel kernel permette di accumulare i caratteri prima di copiarli in blocco nel buffer dell'utente. Questo metodo è più efficiente, ma deve gestire i caratteri che arrivano mentre il buffer dell'utente viene paginato.
+3. **Buffering doppio**: Utilizzando due buffer nel kernel, uno per raccogliere nuovi caratteri mentre l'altro viene copiato nello spazio utente, si può mantenere l'efficienza e gestire i caratteri in arrivo senza perdita.
+4. **Buffer circolare**: Un buffer circolare usa due puntatori per gestire la scrittura e la lettura dei dati in un'area di memoria continua, migliorando la gestione dell'I/O in tempo reale.
+5. **Buffering nell'output**: Per l'output, come l'invio di dati tramite un modem, il buffering nel kernel permette di sbloccare immediatamente il processo utente. Il kernel gestisce poi l'I/O effettivo, evitando problemi di sincronizzazione.
+6. **Effetti negativi del buffering e copia dei dati**: Ogni operazione di buffering e copia dei dati introduce un overhead. Ad esempio, nella trasmissione su rete, il pacchetto viene copiato dal buffer dell'utente al buffer del kernel, poi al buffer del controller, e infine inviato. Questo processo rallenta la velocità di trasmissione a causa delle multiple copie necessarie.
+
+In sintesi, il buffering è essenziale per un I/O efficiente, ma deve essere gestito con attenzione per evitare problemi di prestazioni dovuti a paginazione, sincronizzazione e overhead di copia dei dati.
+#### 5.3.3.3 - Segnalazione degli errori
+Gli errori di I/O sono comuni e devono essere gestiti dal sistema operativo in modo efficiente. Ci sono diverse classi di errori, ognuna con una gestione specifica:
+1. **Errori di programmazione**: Si verificano quando un processo richiede operazioni impossibili, come scrivere su un dispositivo di input o leggere da un dispositivo di output, fornire indirizzi di buffer non validi, o specificare dispositivi inesistenti. In questi casi, il sistema operativo invia un codice d'errore al chiamante.
+2. **Errori di I/O propriamente detti**: Questi includono tentativi di scrivere su blocchi danneggiati o leggere da dispositivi spenti. Il driver del dispositivo tenta di gestirli; se non riesce, il problema passa al software indipendente dal dispositivo.
+	   - **Gestione interattiva**: Se c'è un utente interattivo, il sistema può chiedere all'utente come procedere (riprovare, ignorare, terminare il processo).
+	   - **Gestione automatica**: Senza un utente disponibile, il sistema probabilmente riporta un codice d'errore e fallisce la chiamata di sistema.
+1. **Errori critici**: Alcuni errori, come la distruzione di strutture dati critiche (es. directory radice o lista dei blocchi liberi), non possono essere risolti semplicemente. In questi casi, il sistema potrebbe dover visualizzare un messaggio d'errore e terminare.
+
+Queste strategie assicurano che il sistema operativo possa gestire gli errori di I/O in modo robusto e appropriato, minimizzando l'impatto sull'utente e sul sistema.
+#### 5.3.3.4 - Allocazione e rilascio dei dispositivi dedicati
+Alcuni dispositivi, come le stampanti, possono essere utilizzati da un solo processo alla volta. Il sistema operativo gestisce le richieste di accesso a questi dispositivi, accettandole o rifiutandole in base alla disponibilità. 
+**Metodi di gestione delle richieste:**
+1. **Accesso tramite file speciali**: I processi fanno una `open` su file speciali che rappresentano i dispositivi. La `close` di questi file rilascia il dispositivo.
+2. **Meccanismi speciali di richiesta e rilascio**: Se un dispositivo non è disponibile, il tentativo di acquisirlo blocca il processo chiamante, mettendolo in una coda. Quando il dispositivo diventa disponibile, il primo processo in coda lo acquisisce e continua l'esecuzione.
+
+Questi metodi garantiscono che i dispositivi dedicati siano utilizzati in modo ordinato e senza conflitti tra i processi.
+#### 5.3.3.5 - Dimensione dei blocchi indipendente dal dispositivo
+Gli SSD e i dischi possono avere pagine flash e settori di diverse dimensioni. Il software indipendente dal dispositivo ha il compito di uniformare queste differenze, fornendo una dimensione di blocco uniforme ai livelli superiori del sistema operativo. Questo consente ai livelli superiori di interagire con dispositivi astratti usando la stessa dimensione di blocco logico, indipendentemente dalle dimensioni fisiche dei settori. Allo stesso modo, i dispositivi a caratteri che forniscono dati in unità diverse possono essere gestiti in modo da occultare queste differenze, rendendo l'interazione più coerente.
 
 (pagine riassunte: 5.25)
 ### 5.3.4 - Software di I/O nello spazio utente

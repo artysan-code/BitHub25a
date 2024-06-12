@@ -1,4 +1,4 @@
-Un calcolatore digitale è una macchina in grado di eseguire operazioni per le persone tramite istruzioni fornite da queste ultime. Una sequenza di istruzioni da eseguire si chiama **programma** e deve essere scritta in un _linguaggio_ comprensibile dalla macchina.
+ Un calcolatore digitale è una macchina in grado di eseguire operazioni per le persone tramite istruzioni fornite da queste ultime. Una sequenza di istruzioni da eseguire si chiama **programma** e deve essere scritta in un _linguaggio_ comprensibile dalla macchina.
 
 Questo linguaggio, chiamato **linguaggio macchina**, contiene un insieme di istruzioni fornite dal produttore della macchina. Poiché il linguaggio macchina è difficile da comprendere e utilizzare, sono stati creati livelli di astrazione per semplificare il lavoro del **programmatore**. Questo approccio di astrazione è noto come **approccio strutturale**.
 

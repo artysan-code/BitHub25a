@@ -15,11 +15,11 @@ Per implementare efficacemente questi metodi, i linguaggi $L_1$ e $L_0$ devono a
 (Pagine riassunte: 2.75)
 ### 1.1.2 - Attuali macchine multi-livello
 Le **macchine multilivello attuali** sono divise logicamente in livelli da 0 a 5:
-- **Livello Logico Digitale**: formato principalmente da porte logiche che implementano la logica booleana, formate da transistor che ricevono input digitali dai registri.
-- **Livello Micro-Architettura**: comprende il circuito *ALU* (Arithmetic Logic Unit) che esegue operazioni semplici su dati ottenuti dai registri (generalmente da 8 a 32), formando un *datapath*. Questo livello è gestito da un *microprogramma* o direttamente dall'hardware.
+- **Livello Logico Digitale**: formato principalmente da porte logiche che implementano la logica booleana, formate da uno o due transistor. Importante è l'elemento del **registro**, memorie a 16, 32 e 64 bit che possono salvare dati.
+- **Livello Micro-Architettura**: comprende il circuito *ALU* (Arithmetic Logic Unit) che esegue operazioni semplici su dati ottenuti dai registri (generalmente da 8 a 32), formando un *datapath* o *percorso dati*. Questo livello è gestito da un *microprogramma* o direttamente dall'hardware.  
 - **Livello ISA** (Instruction Set Architecture): contiene un *insieme di istruzioni* fornite dal produttore, interpretate dal microprogramma o dai circuiti elettronici.
-- **Livello Macchina del Sistema Operativo**: una versione ibrida del livello ISA, contenente istruzioni ISA e implementando funzionalità utili. Alcune istruzioni sono interpretate dal Sistema Operativo, altre dal microprogramma.
-- **Livello del Linguaggio Assemblativo**: semplifica la scrittura di programmi per i livelli sottostanti. I linguaggi assemblativi sono tradotti in un linguaggio virtuale inferiore e poi interpretati. Il traduttore utilizzato è chiamato assemblatore.
+- **Livello Macchina del Sistema Operativo**: una versione ibrida del livello ISA, contenente istruzioni ISA e nuove implementazioni. Alcune istruzioni sono interpretate dal Sistema Operativo, altre come nel precedente livello.
+- **Livello del Linguaggio Assemblativo**: semplifica la scrittura di programmi a differenza i livelli sottostanti. I linguaggi assemblativi sono tradotti in un linguaggio virtuale inferiore e poi interpretati. Il traduttore utilizzato è chiamato assemblatore.
 - **Livello del Linguaggio ad Alto Livello**: comprende linguaggi moderni molto più semplici da usare, tradotti nei livelli sottostanti da un compilatore o interpretati direttamente.
 
 (Pagine riassunte: 2.5)

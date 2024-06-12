@@ -27,7 +27,7 @@ Grazie alle architetture, si potevano inviare aggiornamenti di alcune istruzioni
 Tradizionalmente, c'è sempre stata una tendenza a sviluppare nuove tecnologie in grado di implementare istruzioni sempre più complesse. L'ultima tendenza è stata quella di _interpretare_ le istruzioni, con l'obiettivo finale di ridurre il divario tra l'hardware progettato e il software scritto dai programmatori. Questo ha portato a una nuova tipologia di implementazione dei calcolatori e la divisione in due tipologie di esse.
 
 Seguendo il modello di _Seymour Cray_, fu inventato un nuovo tipo di microcomputer ad alte prestazioni che suscitò l'interesse di alcuni progettisti, i quali tentarono di seguire lo stile di quella architettura. Questo portò all'avvio di un progetto chiamato **RISC** (Reduced Instruction Set Computer), che si proponeva di sviluppare una tecnologia con le seguenti caratteristiche:
-- Non doveva essere retrocompatibile con altre architetture.
+- Non doveva essere retro-compatibile con altre architetture.
 - Doveva essere progettato per massimizzare **l'emissione delle istruzioni**, relegando in secondo piano il tempo effettivo di esecuzione delle istruzioni.
 
 In contrapposizione abbiamo invece i calcolatori di tipo **CISC** (Complex Instruction Set Computer) che seguivano la precedente moda.
@@ -60,18 +60,13 @@ In pratica la tecnica di *prefetching* divide l'esecuzione dell'istruzione in du
 - esecuzione dell'istruzione
 Il concetto di *pipeline* spinge questa strategia molto più avanti; invece di dividere l'esecuzione di un'istruzione solamente in due fasi, la divide in un numero maggiore di parti (~12) che possono essere eseguite in parallelo: ciascuna di queste parti è gestita da componenti hardware dedicati.
 
-Durante il primo ciclo di clock, lo stadio S1 preleva l'istruzione 1 dalla memoria. Nel secondo ciclo, S2 decodifica l'istruzione 1 mentre S1 preleva l'istruzione 2. Nel terzo ciclo, S3 preleva gli operandi per l'istruzione 2 e l'istruzione 1, S2 decodifica l'istruzione 2, e S1 preleva la terza istruzione. Durante il quarto ciclo, S4 esegue l'istruzione 1, S3 preleva gli operandi per l'istruzione 2, S2 decodifica l'istruzione 3, e S1 preleva l'istruzione 4. Infine, nell'ultimo ciclo, S5 scrive il risultato dell'istruzione 1, mentre gli altri stadi continuano a lavorare sulle istruzioni successive.
-
-Supponendo un ciclo di clock di 2 ns e 10 ns per completare i cinque stadi della pipeline, la macchina sembrerebbe avere una velocità di 100 MIPS. Tuttavia, poiché viene completata un'istruzione ogni 2 ns, la vera velocità di elaborazione è di 500 MIPS anziché solo 100.
+Supponendo un ciclo di clock di 2 ns e 10 ns per completare cinque stadi della pipeline, la macchina sembrerebbe avere una velocità di 100 MIPS. Tuttavia, poiché viene completata un'istruzione ogni 2 ns, la vera velocità di elaborazione è di 500 MIPS anziché solo 100.
 
 L'uso della pipeline bilancia la **latenza** e la **larghezza di banda del processore**. Con un ciclo di clock di T ns e una pipeline a n stadi, la latenza è di nT ns, poiché ogni istruzione attraversa n stadi, ciascuno richiedente T ns. Sebbene si potrebbe teoricamente misurare la velocità di esecuzione in BIPS$^{3}$ anziché in MIPS, questa pratica non è comune e quindi non verrà adottata.
-Figura 2.4
 #### 2.1.5.2 - Architetture superscalari
 Se è bene avere una pipeline, averne due è sicuramente meglio. La Figura 2.5 mostra un ipotetico progetto di una CPU con due pipeline, entrambe basate sullo schema della Figura 2.4. In questa situazione una singola unità di fetch preleva due istruzioni alla volta e le inserisce nelle pipeline, ognuna delle quali è dotata di una ALU. Affinché le due istruzioni possano essere eseguite in parallelo, non devono però esserci conflitti nell'uso delle risorse e nessuna delle due istruzioni deve dipendere dal risultato dell’altra. Come nel caso della singola pipeline, o è il compilatore a occuparsi di gestire correttamente questa situazione oppure i conflitti sono rilevati ed eliminati durante l’esecuzione per mezzo di componenti hardware ad hoc.
 
 La pipeline principale, chiamata **pipeline u**, poteva eseguire una qualsiasi istruzione Pentium. La seconda pipeline, chiamata **pipeline v**, poteva invece eseguire solamente semplici istruzioni su interi.
-
-Figura 2.5
 
 Alcune regole determinavano se due istruzioni potevano essere eseguite in parallelo. Se non erano sufficientemente semplici o compatibili, solo la prima veniva eseguita subito, mentre la seconda veniva trattenuta per essere accoppiata all'istruzione successiva. Le istruzioni erano sempre eseguite in ordine. Compilatori specifici per il Pentium, capaci di produrre coppie di istruzioni compatibili, potevano generare programmi più veloci rispetto ai vecchi compilatori. Un'architettura con quattro pipeline richiederebbe la duplicazione di molti componenti hardware, quindi nelle CPU di gamma alta si utilizza un approccio diverso, con una singola pipeline associata a più unità funzionali. Questo approccio, chiamato **architettura superscalare** dal 1987, risale al calcolatore CDC 6600, che prelevava un'istruzione ogni 100 ns e la passava a una delle 10 unità funzionali che lavoravano in parallelo mentre la CPU avviava l'istruzione successiva.
 
@@ -80,7 +75,7 @@ Nel corso del tempo la definizione di “superscalare” si è in qualche modo e
 (pagine riassunte: 4)
 
 ### 2.1.6 - Parallelismo a livello di processore
-La richiesta di calcolatori sempre più veloci è inarrestabile. Tuttavia, poiché le CPU continuano a diventare più veloci, si incontreranno problemi legati alla velocità della luce, con un ritardo di propagazione di 20 cm/ns nei cavi di rame e nelle fibre ottiche. Inoltre, chip più veloci generano più calore, il cui smaltimento rappresenta un problema significativo. La difficoltà di dissipare il calore è la principale ragione per cui la velocità di clock delle CPU è stagnata negli ultimi dieci anni. Il parallelismo a livello d'istruzione aiuta, ma il miglioramento delle prestazioni tramite pipeline e operazioni superscalari è limitato. Per ottenere guadagni significativi, l'unica soluzione è progettare calcolatori con più CPU. Pertanto, verrà ora analizzata l'organizzazione di alcuni di questi sistemi.
+La richiesta di calcolatori sempre più veloci è inarrestabile. Tuttavia, poiché le CPU continuano a diventare più veloci, si incontreranno problemi legati alla velocità della luce, con un ritardo di propagazione di 20 cm/ns nei cavi di rame e nelle fibre ottiche. Inoltre, chip più veloci generano più calore, il cui smaltimento rappresenta un problema significativo. La difficoltà di dissipare il calore è la principale ragione per cui la velocità di clock delle CPU è stagnata negli ultimi dieci anni. Il parallelismo a livello d'istruzione aiuta, ma il miglioramento delle prestazioni tramite pipeline e operazioni superscalari è limitato. Per ottenere guadagni significativi, l'unica soluzione è progettare calcolatori con più CPU. Questo argomento verrà meglio trattato nel [[8 - Architettura per il calcolo parallelo|Capitolo VIII]].
 #### 2.1.6.1 - Computer con parallelismo sui dati
 
 Molti problemi computazionali, come quelli in fisica, ingegneria e computer graphic, presentano strutture regolari con cicli e array che si ripetono su diversi insiemi di dati. Questa regolarità li rende ideali per l'esecuzione parallela, migliorando le prestazioni. Due metodi principali per eseguire questi programmi rapidamente ed efficientemente sono i processori SIMD e i processori vettoriali. I processori SIMD sono considerati calcolatori paralleli, mentre i processori vettoriali sono estensioni di un singolo processore.
@@ -114,9 +109,9 @@ La **memoria** è quella parte del calcolatore in cui sono depositati programmi 
 ### 2.2.1 - Bit
 L’unità base della memoria è la cifra binaria, chiamata **bit**. Un bit può avere valore 0 oppure i ed è l’unità più semplice possibile.
 
-Quando si dice che i calcolatori utilizzano l’aritmetica binaria perché è "efficiente” , s’intende che l’informazione digitale può essere memorizzata utilizzando dei valori di una certa quantità fisica continua, come la tensione o la corrente. Se occorre distinguere più valori, allora ci deve essere una minor separazione tra valori adiacenti e la memoria risulta di conseguenza meno affidabile.
+Quando si dice che i calcolatori utilizzano l’aritmetica binaria perché è "efficiente”, s’intende che l’informazione digitale può essere memorizzata utilizzando dei valori di una certa quantità fisica continua, come la tensione o la corrente. Se occorre distinguere più valori, allora ci deve essere una minor separazione tra valori adiacenti e la memoria risulta di conseguenza meno affidabile.
 
-Alcuni calcolatori sono pubblicizzati affermando che sono dotati di aritmetica decimale oltre di quella binaria. Il trucco utilizzato consiste nell’usare 4 bit per memorizzare una cifra decimale mediante un codice chiamato BCD (*Binary Coded Decimal*). Quattro bit forniscono 16 combinazioni, di cui 10 sono utilizzate per le cifre da 0 a 9, mentre 6 sono inutilizzate.
+Alcuni calcolatori sono pubblicizzati affermando che sono dotati di aritmetica decimale oltre di quella binaria. Il trucco utilizzato consiste nell'usare 4 bit per memorizzare una cifra decimale mediante un codice chiamato BCD (*Binary Coded Decimal*). Quattro bit forniscono 16 combinazioni, di cui 10 sono utilizzate per le cifre da 0 a 9, mentre 6 sono inutilizzate.
 
 (pagine riassunte: 1)
 ### 2.2.2 - Indirizzi di memoria
@@ -126,9 +121,7 @@ La cella rappresenta la più piccola unità indirizzabile; negli ultimi anni qua
 
 (pagine riassunte: 2)
 ### 2.2.3 - Ordinamento dei byte
-All'interno di una parola i byte possono essere numerati da destra a sinistra o da sinistra a destra. Questa scelta presenta degli importanti risvolti. Il primo sistema, in cui la numerazione comincia a partire dall'estremo più "grande" è chiamato *big endian*, in contrapposizione con il sistema *little endian* della figura 2.11.
-
-Figura 2.11
+All'interno di una parola i byte possono essere numerati da destra a sinistra o da sinistra a destra. Questa scelta presenta degli importanti risvolti. Il primo sistema, in cui la numerazione comincia a partire dall'estremo più "grande" è chiamato *big endian*, in contrapposizione con il sistema *little endian*.
 
 Nei sistemi *big endian* e *little endian*, un intero a 32 bit con valore 6 è rappresentato dai bit 110 nei 3 bit più a destra e zero nei 29 bit più a sinistra. Nel sistema *big endian*, i bit 110 sono nel byte 3, mentre nel sistema *little endian* sono nel byte 0. Entrambe le rappresentazioni sono corrette e coerenti internamente. I problemi sorgono quando uno di questi sistemi invia un record all'altro via rete. Se una macchina *big endian* invia un record a una *little endian*, byte per byte, l'ordine dei byte risulta invertito, causando errori nella lettura di valori numerici.
 
@@ -144,8 +137,9 @@ Un esempio semplice di codice di correzione è l'uso di un singolo **bit di pari
 
 (pagine riassunte: 4.25)
 ### 2.2.5 - Memoria cache
-Storicamente, le CPU sono sempre state più veloci delle memorie. Mentre le CPU hanno migliorato le loro prestazioni tramite architetture a pipeline e superscalari, le memorie hanno aumentato principalmente la loro capacità, peggiorando lo squilibrio tra i due componenti. Questo squilibrio si manifesta quando la CPU deve attendere diversi cicli per ottenere i dati richiesti dalla memoria. Esistono due approcci per affrontare questo problema:
+Storicamente, le CPU sono sempre state più veloci delle memorie. Mentre le CPU hanno migliorato le loro prestazioni tramite architetture a pipeline e superscalari, le memorie hanno aumentato principalmente la loro capacità, peggiorando lo squilibrio tra i due componenti. 
 
+Questo squilibrio si manifesta quando la CPU deve attendere diversi cicli per ottenere i dati richiesti dalla memoria. Esistono due approcci per affrontare questo problema:
 1. **Lettura anticipata e blocco della CPU**: le istruzioni di lettura dalla memoria iniziano appena vengono incontrate, ma la CPU si blocca se tenta di utilizzare una parola non ancora arrivata.
 2. **Compilatori ottimizzati**: i compilatori generano codice che evita di utilizzare parole prima che siano disponibili, ma questo approccio è difficile da implementare.
 
@@ -189,11 +183,11 @@ Muovendosi verso il basso della gerarchia aumentano tre parametri chiave. Innanz
 
 (pagine riassunte: 1)
 ### 2.3.2 - Dischi magnetici
-Un disco magnetico è composto da piatti di alluminio rivestiti di materiale magnetico, con diametri variabili tra 3 e 9 cm. La testina del disco, sospesa su un cuscinetto d'aria, scrive e legge i dati magnetizzando la superficie del disco. Le sequenze circolari di bit scritti durante una rotazione completa del disco sono chiamate **tracce**, suddivise in **settori** di lunghezza fissa, tipicamente 512 byte. Ogni settore è preceduto da un **preambolo** per la sincronizzazione della testina e seguito da un codice di correzione degli errori, come il codice **Reed-Solomon**. Tra i settori ci sono piccoli spazi chiamati **spazi tra settori**.
+Un disco magnetico è composto da piatti di alluminio rivestiti di materiale magnetico, con diametri variabili tra 3 e 9 cm. La testina del disco, sospesa su un cuscinetto d'aria, scrive e legge i dati magnetizzando la superficie del disco. Le sequenze circolari di bit scritti durante una rotazione completa del disco sono chiamate **tracce**, suddivise in **settori** di lunghezza fissa, tipicamente 512 byte. Ogni settore è preceduto da un **preambolo** per la sincronizzazione della testina e seguito da un codice di correzione degli errori, come il codice **Reed-Solomon** (diversamente da Hamming può correggere più errori). Tra i settori ci sono piccoli spazi chiamati **spazi tra settori**.
 
 I dischi hanno bracci mobili che posizionano la testina su diverse tracce concentriche. La densità lineare dei bit lungo le tracce è diversa dalla densità radiale. I dischi ad alta densità usano la **registrazione perpendicolare**, che permette una maggiore densità di dati. Alcuni dischi sono sigillati per prevenire la polvere, noti come **dischi Winchester**, e oggi chiamati hard disk.
 
-I dischi con più piatti impilati verticalmente formano cilindri di tracce allineate. Le prestazioni dei dischi dipendono dal **tempo di ricerca** (tra 5 e 10 ms), dalla **latenza rotazionale** (tra 3 e 6 ms), e dal tempo di trasferimento dei dati (13-16 ns per settore di 512 byte). La lettura di settori sparsi è inefficiente a causa di questi tempi.
+I dischi con più piatti impilati verticalmente formano cilindri di tracce allineate. Le prestazioni dei dischi dipendono dal **tempo di ricerca** (tra 5 e 10 ms), dalla **latenza rotazionale** (tra 3 e 6 ms), e dal tempo di **trasferimento dei dati** (13-16 ns per settore di 512 byte). La lettura di settori sparsi è inefficiente a causa di questi tempi.
 
 La differenza tra **burst rate** e **sustained rate** di un disco è significativa: il burst rate è la velocità di lettura immediata, mentre il sustained rate è la velocità media di lettura, che include i tempi di ricerca e latenza.
 

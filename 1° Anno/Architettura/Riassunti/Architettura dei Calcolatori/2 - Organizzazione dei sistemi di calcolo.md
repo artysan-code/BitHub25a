@@ -197,7 +197,7 @@ Ogni disco ha un controllore dedicato che gestisce comandi, movimento del bracci
 ### 2.3.3 - Dischi IDE
 I dischi dei moderni personal computer sono l'evoluzione di quelli presenti nei PC XT della IBM. Il sistema operativo leggeva e scriveva sul disco utilizzando il **BIOS**, situato in una memoria di sola lettura integrata nel PC, che lanciava le istruzioni necessarie per il trasferimento dei dati.
 
-Con l'introduzione delle unità **IDE** (_Integrated Drive Electronics_) negli anni '80, il controllo divenne integrato con l'unità stessa anziché essere su una scheda separata. Tuttavia, le chiamate al BIOS per l'indirizzamento dei settori rimasero invariate, basate su una geometria specifica. Questo causò problemi di retrocompatibilità e rese necessaria la remappatura virtuale della geometria reale.
+Con l'introduzione delle unità **IDE** (_Integrated Drive Electronics_) negli anni '80, il controllo divenne integrato con l'unità stessa anziché essere su una scheda separata. Tuttavia, le chiamate al BIOS per l'indirizzamento dei settori rimasero invariate, basate su una geometria specifica. Questo causò problemi di retrocompatibilità e rese necessaria la mappatura virtuale della geometria reale.
 
 Le unità IDE evolsero in unità **EIDE** (_Extended_ IDE), che supportavano anche l'indirizzamento **LBA** (_Logical Block Addressing_), superando i limiti precedenti. Tuttavia, questo nuovo schema comportò un nuovo collo di bottiglia.
 

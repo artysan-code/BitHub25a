@@ -242,17 +242,13 @@ Per mitigare questo problema, gli SSD utilizzano una mappa logica dei blocchi pe
 ### 2.3.7 - CD-ROM
 I dischi ottici, sviluppati inizialmente per registrare programmi televisivi, sono oggi utilizzati ampiamente come dispositivi di memorizzazione per computer, grazie alla loro grande capacità e basso costo. Sono comuni per distribuire software, libri, film e dati vari, oltre che per creare copie di backup degli hard disk.
 
-Nel 1980, Philips e Sony svilupparono il CD (Compact Disc), che sostituì rapidamente i dischi in vinile per la musica. I dettagli tecnici del CD furono pubblicati nello Standard Internazionale IS 10149, noto come **Libro rosso** (Red Book). La standardizzazione internazionale delle specifiche di dischi e lettori consentì l'interoperabilità tra CD e lettori di diversi produttori.
-
-La produzione di un CD coinvolge l'uso di un laser infrarosso ad alta potenza per creare buchi (pit) su un disco di vetro fotosensibile, creando uno stampo per il policarbonato liquido. I pit e le aree non incise (land) consentono la lettura dei dati tramite un diodo laser a bassa potenza che distingue tra pit e land. I dati sono codificati come transizioni pit/land o land/pit.
-
-Nel 1984, Philips e Sony pubblicarono il **Libro giallo** (Yellow Book), definendo lo standard per i CD-ROM (Compact Disc-Read Only Memory), compatibili con i CD audio per dimensioni e metodi di produzione. Questo standard includeva miglioramenti per la correzione degli errori, fondamentali per la memorizzazione affidabile dei dati dei computer.
-
-Il **Libro giallo** definisce due modalità di dati. Il **Modo 1** comprende 16 byte di preambolo, 2048 byte di dati e 288 byte di codice di correzione degli errori. Il **Modo 2** combina dati e campi ECC in un campo dati di 2336 byte, adatto per applicazioni come audio e video che non richiedono correzione degli errori.
-
-Nel 1986, Philips introdusse il **Libro verde** (Green Book), che aggiunse grafica e la possibilità di combinare audio, video e dati in un singolo settore per i CD-ROM multimediali.
-
-Per l'uso universale dei CD-ROM su diversi computer, fu creato il file system **High Sierra**, diventato lo Standard Internazionale ISO 9660. Questo file system ha tre livelli: il **livello 1** supporta nomi di file con un massimo di 8 caratteri più un'estensione di 3 caratteri, con file contigui; il **livello 2** permette nomi di file fino a 32 caratteri; il **livello 3** consente file non contigui.
+Possiamo classificare le versioni di CD in tre diversi "libri":
+- Il **libro rosso**, rilasciato nel 1980 dalla Philips e Sony, divenne presto uno standard che sostituì facilmente i vinili. Il motivo del rilasciare la progettazione era creare un layer di compatibilità generale per la tecnologia e renderla disponibile a tutti. Vengono preparati per mezzo di un laser infrarosso molto potente copiando sul disco delle scanalature da 0.8 micron del *glass master*. Le scanalature (che significano 1) si chiamano pit, i punti dove non sono presenti (che significano 0) si chiamano land. Essi sono disposti in una spirale che parte dal centro e arriva all'esterno. All'allontanarsi (durante la lettura) verso l'esterno i giri/min diminuiscono a causa della grandezza del disco.
+- Il **libro giallo** definisce invece lo standard dei **CD-ROM**, con le stesse dimensioni fisiche dei precedenti ma compatibili ora con i calcolatori e non solo con la musica. Erano forniti di una nuova formattazione e di correzione degli errori, secondo la seguente gerarchia:
+	- Ogni byte veniva codificato con 14 bit (per la correzione errori) (simbolo)
+	- Un gruppo di 42 simboli formano un frame a 588 bit ognuno contenente 24 byte di dati e restante per correzione errori.
+	- Un settore sono un gruppo di 98 frame (Aggiunta rispetto al libro rosso). Nel **modo 1** un settore ha 16 byte di preambolo, 2048 byte di dati e 288 byte di ECC (correzione errori). Il **modo 2** unisce la parte di dati con la parte ECC per applicazioni in cui non serve la correzione.
+- Il **libro verde** aggiunse grafica e la possibilità di combinare audio, video e dati in un singolo settore per i CD-ROM multimediali. Per l'uso universale dei CD-ROM su diversi computer, fu creato il file system **High Sierra**, diventato lo Standard Internazionale ISO 9660. Questo file system ha tre livelli: il **livello 1** supporta nomi di file con un massimo di 8 caratteri più un'estensione di 3 caratteri, con file contigui; il **livello 2** permette nomi di file fino a 32 caratteri; il **livello 3** consente file non contigui.
 
 (pagine riassunte: 4)
 ### 2.3.8 - CD-registrabili

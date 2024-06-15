@@ -289,7 +289,7 @@ Come sappiamo un calcolatore è composto da tre componenti principali: la CPU, l
 ### 2.4.1 - Bus
 La configurazione tipica di un computer consiste in una scatola metallica contenente una **scheda madre**. Questa scheda ospita il chip della CPU, slot per moduli DIMM e altri chip di supporto, oltre a un bus lungo la sua lunghezza con prese per i connettori delle schede di I/O.
 
-Ogni dispositivo di I/O ha due componenti principali: il **controllore**, che contiene la maggior parte dell'elettronica, e il dispositivo stesso, come un lettore di dischi. Il controllore può essere integrato sulla scheda madre o situato su una scheda aggiuntiva. Ad esempio, il controllore video spesso si trova su una scheda aggiuntiva per offrire opzioni avanzate come acceleratori hardware e memoria aggiuntiva. Il controllore gestisce il dispositivo di I/O e il suo accesso al bus, eseguendo operazioni di **Direct Memory Access (DMA)**, che permette di leggere e scrivere dati in memoria senza l'intervento della CPU. Una volta completato il trasferimento, il controllore genera un **interrupt** che fa sospendere alla CPU il programma corrente per eseguire una speciale procedura chiamata **gestore dell'interrupt**.
+Ogni dispositivo di I/O ha due componenti principali: il **controllore**, che contiene la maggior parte dell'elettronica, e il dispositivo stesso, come un lettore di dischi. Il controllore può essere integrato sulla scheda madre o situato su una scheda aggiuntiva. Ad esempio, il controllore video spesso si trova su una scheda aggiuntiva per offrire opzioni avanzate come acceleratori hardware e memoria aggiuntiva. Il controllore gestisce il dispositivo di I/O e il suo accesso al bus, eseguendo operazioni di **Direct Memory Access (DMA)**, che permette di leggere e scrivere dati in memoria senza l'intervento della CPU. Una volta completato il trasferimento, il controllore genera un **interrupt** che fa sospendere alla CPU il programma corrente per eseguire una speciale procedura chiamata **gestore dell'interrupt** che controlla se ci sono stati errori o semplicemente avvisa l'OS che il trasferimento è finito.
 
 Se la CPU e un controllore di I/O cercano di usare il bus contemporaneamente, un **arbitro del bus** decide i turni, generalmente dando priorità alle periferiche di I/O per evitare perdite di dati. Questo processo, noto come **furto di cicli**, può rallentare le prestazioni del computer.
 
@@ -301,7 +301,7 @@ Nel mondo dei computer, la velocità è sempre un problema e anche i bus PCI fur
 
 Il PCIe rappresenta una svolta rispetto al PCI, non essendo nemmeno un bus tradizionale, ma una rete punto a punto che utilizza linee seriali di bit e commutazione di pacchetto, simile a Internet.
 
-Le principali differenze del PCIe includono:
+Le principali aggiunte del PCIe includono:
 1. **Connessione seriale**: la trasmissione avviene su una linea di 1 bit piuttosto che 8, 16, 32 o 64 bit, evitando problemi di *skew* che limitano la velocità in connessioni parallele.
 2. **Comunicazioni punto a punto**: quando la CPU comunica con un dispositivo, invia un pacchetto che passa attraverso la root complex sulla scheda madre e talvolta attraverso uno switch. Questo sistema ricorda lo sviluppo di Ethernet, passata da trasmissioni in broadcast a comunicazioni punto a punto tramite switch.
 
@@ -327,10 +327,9 @@ Nonostante le tastiere continuino ad essere utilizzate, un nuovo dispositivo di 
 #### 2.4.2.3 - Schermi piatti
 I primi schermi dei computer utilizzavano tubi catodici (CRT) simili a quelli delle vecchie televisioni. Oggi, la tecnologia più comune è quella degli schermi a cristalli liquidi (LCD).
 
-Gli **LCD** utilizzano cristalli liquidi, che sono molecole organiche viscose con proprietà ottiche che possono essere controllate elettricamente. Uno schermo LCD è composto da due lastre di vetro parallele contenenti cristalli liquidi, con elettrodi trasparenti collegati a ciascuna lastra. Una luce retroilluminante illumina lo schermo, mentre i campi elettrici creati dagli elettrodi regolano l'intensità della luce che passa attraverso i cristalli liquidi, permettendo di visualizzare immagini.
+Gli **LCD** utilizzano cristalli liquidi, che sono molecole organiche viscose con proprietà ottiche che possono essere controllate elettricamente. Uno schermo LCD è composto da due lastre di vetro parallele contenenti cristalli liquidi, con elettrodi trasparenti collegati a ciascuna lastra. Una luce retro-illuminante illumina lo schermo, mentre i campi elettrici creati dagli elettrodi regolano l'intensità della luce che passa attraverso i cristalli liquidi, permettendo di visualizzare immagini.
 
 Un esempio di schermo LCD è lo schermo **TN** (*Twisted Nematic*), dove le molecole del cristallo liquido si allineano lungo solchi orizzontali e verticali su due lastre, causando una torsione di 90 gradi. Questo tipo di schermo può usare due schemi per l'applicazione della tensione: 
-
 1. **Schermi a matrice passiva**: Economici, utilizzano fili paralleli per controllare i pixel.
 2. **Schermi a matrice attiva**: Più costosi ma di qualità superiore, utilizzano un piccolo elemento di commutazione, chiamato **thin film transistor** (TFT), per ogni pixel. La maggior parte dei laptop e dei monitor a schermo piatto usano la tecnologia TFT.
 

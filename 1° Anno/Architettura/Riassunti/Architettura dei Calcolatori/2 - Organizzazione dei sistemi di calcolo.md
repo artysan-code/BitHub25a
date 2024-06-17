@@ -52,7 +52,7 @@ Il parallelismo può essere presente in due forme:
 - *a livello di processore*: sono presenti più CPU che lavorano congiuntamente su uno stesso problema
 
 In questo paragrafo analizziamo il primo tipo, nel prossimo, invece, quello a livello di processore.
-#### 2.1.5.1 - Pipelining
+#### Pipelining
 Per migliorare la velocità di esecuzione delle istruzioni, sin dagli anni '50 (come con IBM Stretch), i computer sono stati dotati di **buffer di prefetch**, registri in grado di anticipare il prelievo delle istruzioni dalla memoria. Ciò ha permesso di avere le istruzioni pronte per l'esecuzione senza dover attendere la loro lettura dalla memoria principale al momento del bisogno.
 
 In pratica la tecnica di *prefetching* divide l'esecuzione dell'istruzione in due parti:
@@ -63,7 +63,7 @@ Il concetto di *pipeline* spinge questa strategia molto più avanti; invece di d
 Supponendo un ciclo di clock di 2 ns e 10 ns per completare cinque stadi della pipeline, la macchina sembrerebbe avere una velocità di 100 MIPS. Tuttavia, poiché viene completata un'istruzione ogni 2 ns, la vera velocità di elaborazione è di 500 MIPS anziché solo 100.
 
 L'uso della pipeline bilancia la **latenza** e la **larghezza di banda del processore**. Con un ciclo di clock di T ns e una pipeline a n stadi, la latenza è di nT ns, poiché ogni istruzione attraversa n stadi, ciascuno richiedente T ns. Sebbene si potrebbe teoricamente misurare la velocità di esecuzione in BIPS$^{3}$ anziché in MIPS, questa pratica non è comune e quindi non verrà adottata.
-#### 2.1.5.2 - Architetture superscalari
+#### Architetture superscalari
 Se è bene avere una pipeline, averne due è sicuramente meglio. La Figura 2.5 mostra un ipotetico progetto di una CPU con due pipeline, entrambe basate sullo schema della Figura 2.4. In questa situazione una singola unità di fetch preleva due istruzioni alla volta e le inserisce nelle pipeline, ognuna delle quali è dotata di una ALU. Affinché le due istruzioni possano essere eseguite in parallelo, non devono però esserci conflitti nell'uso delle risorse e nessuna delle due istruzioni deve dipendere dal risultato dell’altra. Come nel caso della singola pipeline, o è il compilatore a occuparsi di gestire correttamente questa situazione oppure i conflitti sono rilevati ed eliminati durante l’esecuzione per mezzo di componenti hardware ad hoc.
 
 La pipeline principale, chiamata **pipeline u**, poteva eseguire una qualsiasi istruzione Pentium. La seconda pipeline, chiamata **pipeline v**, poteva invece eseguire solamente semplici istruzioni su interi.
@@ -76,7 +76,7 @@ Nel corso del tempo la definizione di “superscalare” si è in qualche modo e
 
 ### 2.1.6 - Parallelismo a livello di processore
 La richiesta di calcolatori sempre più veloci è inarrestabile. Tuttavia, poiché le CPU continuano a diventare più veloci, si incontreranno problemi legati alla velocità della luce, con un ritardo di propagazione di 20 cm/ns nei cavi di rame e nelle fibre ottiche. Inoltre, chip più veloci generano più calore, il cui smaltimento rappresenta un problema significativo. La difficoltà di dissipare il calore è la principale ragione per cui la velocità di clock delle CPU è stagnata negli ultimi dieci anni. Il parallelismo a livello d'istruzione aiuta, ma il miglioramento delle prestazioni tramite pipeline e operazioni superscalari è limitato. Per ottenere guadagni significativi, l'unica soluzione è progettare calcolatori con più CPU. Questo argomento verrà meglio trattato nel [[8 - Architettura per il calcolo parallelo|Capitolo VIII]].
-#### 2.1.6.1 - Computer con parallelismo sui dati
+#### Computer con parallelismo sui dati
 
 Molti problemi computazionali, come quelli in fisica, ingegneria e computer graphic, presentano strutture regolari con cicli e array che si ripetono su diversi insiemi di dati. Questa regolarità li rende ideali per l'esecuzione parallela, migliorando le prestazioni. Due metodi principali per eseguire questi programmi rapidamente ed efficientemente sono i processori SIMD e i processori vettoriali. I processori SIMD sono considerati calcolatori paralleli, mentre i processori vettoriali sono estensioni di un singolo processore.
 
@@ -90,13 +90,13 @@ Entrambi i processori SIMD e vettoriali lavorano su array di dati ed eseguono si
 
 Le istruzioni SSE (Streaming SIMD Extension) dell'architettura Intel Core utilizzano questo modello per accelerare programmi altamente regolari, come applicazioni multimediali e software scientifico.
 
-#### 2.1.6.2 - Multiprocessori
+#### Multiprocessori
 In un processore parallelo sui dati, le unità di elaborazione non sono CPU indipendenti poiché condividono un'unica unità di controllo. Il primo sistema parallelo con più CPU complete che analizziamo è il **multiprocessore**, composto da più CPU che condividono una memoria comune. Ogni CPU può leggere e scrivere in qualsiasi parte della memoria, quindi devono coordinarsi tramite software per evitare conflitti. Quando due o più CPU interagiscono così strettamente, si dice che sono *tightly coupled*.
 
 Sono possibili vari schemi d’implcmentazione, il più semplice dei quali consiste nell’avere un singolo bus con più CPU, tutte connesse a un’unica memoria.
 
 È facile prevedere conflitti quando molti processori veloci tentano di accedere alla memoria attraverso lo stesso bus. Per ridurre queste contese e migliorare le prestazioni, i progettisti di multiprocessori hanno ideato vari schemi. Una soluzione, mostrata nella Figura 2.8, prevede che ogni processore abbia una propria memoria locale non accessibile agli altri. Questa memoria può contenere il codice del programma e i dati non condivisi, riducendo significativamente il traffico sul bus principale. Oltre a questo schema, ne esistono altri. Rispetto ad altri tipi di calcolatori paralleli, i multiprocessori offrono il vantaggio di un modello di programmazione basato sulla memoria condivisa. Poiché ogni processore può accedere all'intera memoria, non ci sono problemi se lo studio di una cellula supera i limiti della regione assegnata.
-#### 2.1.6.3 - Multicomputer
+#### Multicomputer
 Se da un lato è relativamente semplice costruire multiprocessori composti da un modesto numero di processori (non più di 256), è invece decisamente più complicato realizzarne di più grandi. La difficoltà risiede nel connettere tutti i processori alla memoria. Per aggirare questi problemi molti progettisti hanno semplicemente abbandonato l’idea di avere una memoria condivisa e hanno costruito sistemi composti da un gran numero di calcolatori interconnessi, ciascuno dotato di una memoria privata. Questi sistemi sono detti **multicomputer**. In questi sistemi le CPU sono dette con legame lasco (*loosely coupled*), in contrapposizione con quelle che compongono i multiprocessori.
 
 Le CPU dei multicomputer comunicano fra loro inviandosi messaggi, simili alle e-mail, ma molto più veloci. Nel caso di grandi sistemi, dato che non è efficiente connettere mutualmente tutti i calcolatori, si utilizzano topologie diverse come griglie 2D e 3D, alberi e anelli.
@@ -242,22 +242,26 @@ Per mitigare questo problema, gli SSD utilizzano una mappa logica dei blocchi pe
 ### 2.3.7 - CD-ROM
 I dischi ottici, sviluppati inizialmente per registrare programmi televisivi, sono oggi utilizzati ampiamente come dispositivi di memorizzazione per computer, grazie alla loro grande capacità e basso costo. Sono comuni per distribuire software, libri, film e dati vari, oltre che per creare copie di backup degli hard disk.
 
-Possiamo classificare le versioni di CD in tre diversi "libri":
-- Il **libro rosso**, rilasciato nel 1980 dalla Philips e Sony, divenne presto uno standard che sostituì facilmente i vinili. Il motivo del rilasciare la progettazione era creare un layer di compatibilità generale per la tecnologia e renderla disponibile a tutti. Vengono preparati per mezzo di un laser infrarosso molto potente copiando sul disco delle scanalature da 0.8 micron del *glass master*. Le scanalature (che significano 1) si chiamano pit, i punti dove non sono presenti (che significano 0) si chiamano land. Essi sono disposti in una spirale che parte dal centro e arriva all'esterno. All'allontanarsi (durante la lettura) verso l'esterno i giri/min diminuiscono a causa della grandezza del disco.
-- Il **libro giallo** definisce invece lo standard dei **CD-ROM**, con le stesse dimensioni fisiche dei precedenti ma compatibili ora con i calcolatori e non solo con la musica. Erano forniti di una nuova formattazione e di correzione degli errori, secondo la seguente gerarchia:
-	- Ogni byte veniva codificato con 14 bit (per la correzione errori) (simbolo)
-	- Un gruppo di 42 simboli formano un frame a 588 bit ognuno contenente 24 byte di dati e restante per correzione errori.
-	- Un settore sono un gruppo di 98 frame (Aggiunta rispetto al libro rosso). Nel **modo 1** un settore ha 16 byte di preambolo, 2048 byte di dati e 288 byte di ECC (correzione errori). Il **modo 2** unisce la parte di dati con la parte ECC per applicazioni in cui non serve la correzione.
-- Il **libro verde** aggiunse grafica e la possibilità di combinare audio, video e dati in un singolo settore per i CD-ROM multimediali. Per l'uso universale dei CD-ROM su diversi computer, fu creato il file system **High Sierra**, diventato lo Standard Internazionale ISO 9660. Questo file system ha tre livelli: il **livello 1** supporta nomi di file con un massimo di 8 caratteri più un'estensione di 3 caratteri, con file contigui; il **livello 2** permette nomi di file fino a 32 caratteri; il **livello 3** consente file non contigui.
+Nel 1980, Philips e Sony svilupparono il CD (Compact Disc), che sostituì rapidamente i dischi in vinile per la musica. I dettagli tecnici del CD furono pubblicati nello Standard Internazionale IS 10149, noto come **Libro rosso** (Red Book). La standardizzazione internazionale delle specifiche di dischi e lettori consentì l'interoperabilità tra CD e lettori di diversi produttori.
+
+La produzione di un CD coinvolge l'uso di un laser infrarosso ad alta potenza per creare buchi (pit) su un disco di vetro fotosensibile, creando uno stampo per il policarbonato liquido. I pit e le aree non incise (land) consentono la lettura dei dati tramite un diodo laser a bassa potenza che distingue tra pit e land. I dati sono codificati come transizioni pit/land o land/pit.
+
+Nel 1984, Philips e Sony pubblicarono il **Libro giallo** (Yellow Book), definendo lo standard per i CD-ROM (Compact Disc-Read Only Memory), compatibili con i CD audio per dimensioni e metodi di produzione. Questo standard includeva miglioramenti per la correzione degli errori, fondamentali per la memorizzazione affidabile dei dati dei computer.
+
+Il **Libro giallo** definisce due modalità di dati. Il **Modo 1** comprende 16 byte di preambolo, 2048 byte di dati e 288 byte di codice di correzione degli errori. Il **Modo 2** combina dati e campi ECC in un campo dati di 2336 byte, adatto per applicazioni come audio e video che non richiedono correzione degli errori.
+
+Nel 1986, Philips introdusse il **Libro verde** (Green Book), che aggiunse grafica e la possibilità di combinare audio, video e dati in un singolo settore per i CD-ROM multimediali.
+
+Per l'uso universale dei CD-ROM su diversi computer, fu creato il file system **High Sierra**, diventato lo Standard Internazionale ISO 9660. Questo file system ha tre livelli: il **livello 1** supporta nomi di file con un massimo di 8 caratteri più un'estensione di 3 caratteri, con file contigui; il **livello 2** permette nomi di file fino a 32 caratteri; il **livello 3** consente file non contigui.
 
 (pagine riassunte: 4)
-### 2.3.8 - CD-R (Registrabili)
+### 2.3.8 - CD-registrabili
 Inizialmente, l'attrezzatura per produrre i master dei CD-ROM era molto costosa, ma a partire dalla metà degli anni '90, i masterizzatori CD divennero comuni e accessibili. Questi dispositivi, noti come **CD-R**, sono simili ai CD-ROM ma con una scanalatura di 0,6 mm per guidare il laser durante la scrittura. I primi CD-R erano dorati a causa dell'uso dell'oro per lo strato riflettente, a differenza dell'alluminio utilizzato nei CD-ROM.
 
-Il **Libro arancione**, pubblicato nel 1989, definiva i CD-R e il formato **CD-ROM XA**, che permetteva la scrittura incrementale sui CD-R, consentendo di aggiungere settori in momenti diversi. Un insieme di settori scritti in una volta è chiamato **traccia del CD-ROM**. Questo metodo crea tracce multiple, ciascuna con il proprio **VTOC** (Volume Table of Contents), per gestire i file presenti. Tuttavia, i CD-ROM multisessione non sono leggibili dai lettori standard di CD audio, che si aspettano una singola VTOC all'inizio del disco.
+Il **Libro arancione**, pubblicato nel 1989, definiva i CD-R e il formato **CD-ROM XA**, che permetteva la scrittura incrementale sui CD-R, consentendo di aggiungere settori in momenti diversi. Un insieme di settori scritti in una volta è chiamato **traccia del CD-ROM**.Questo metodo crea tracce multiple, ciascuna con il proprio **VTOC** (Volume Table of Contents), per gestire i file presenti. Tuttavia, i CD-ROM multisessione non sono leggibili dai lettori standard di CD audio, che si aspettano una singola VTOC all'inizio del disco.
 
 (pagine riassunte: 2.5)
-### 2.3.9 - CD-RW (Riscrivibili)
+### 2.3.9 - CD-riscrivibili
 Una tecnologia oggi disponibile è quella dei **CD-RW** (CD-ReWritable), che usano supporti della stessa dimensione dei CD-R. I CD-RW però, invece di usare la cianina o la ftalocianina per lo strato sul quale registrare, impiegano una lega di argento, indio, antimonio e tellurio. Questa lega ha due stati stabili, quello cristallino e quello amorfo, con diverse proprietà riflettenti. 
 
 I lettori CD-RW utilizzano laser che funzionano a tre potenze distinte. 
@@ -275,13 +279,13 @@ Esistono quattro formati di DVD per soddisfare diverse esigenze di capacità:
 3. Doppio lato, singolo strato (9.4 GB)
 4. Doppio lato, doppio strato (17 GB)
 
-La tecnologia a doppio strato utilizza uno strato riflettente inferiore coperto da uno semiriflettente, permettendo al laser di leggere su due livelli differenti. Il livello inferiore richiede *pit* e *land* leggermente più grandi, riducendo leggermente la capacità risp etto allo strato superiore.
+La tecnologia a doppio strato utilizza uno strato riflettente inferiore coperto da uno semiriflettente, permettendo al laser di leggere su due livelli differenti. Il livello inferiore richiede *pit* e *land* leggermente più grandi, riducendo leggermente la capacità rispetto allo strato superiore.
 
 Tra le funzionalità standard dei DVD vi sono l'omissione in tempo reale delle scene scabrose, l'audio a sei canali e il supporto per il *Pan-and-Scan*.
 
 (pagine riassunte: 2.25)
 ### 2.3.11 - Blu-Ray
-Il DVD è stato appena introdotto e già il suo successore minaccia di renderlo obsoleto; si tratta del **Blu-Ray**, chiamato in questo modo poiché utilizza un laser blu invece di quello rosso dei DVD. I laser blu hanno una lunghezza d’onda più piccola di quelli rossi, il che permette una messa a fuoco più accurata e l’uso di pit e land più piccoli. Ci si aspetta che alla fine Blu-Ray sostituirà i CD-ROM e i DVD, ma questo passaggio potrebbe richiedere degli anni.
+Il DVD è stato appena introdotto e già il suo successore minaccia di renderlo obsoleto; si tratta del **Blu-Ray**, chiamato in questo modo poiché utilizza un laser blu invece di quello rosso dei DVD. I laser blu hanno una lunghezza d’onda più piccola di quelli rossi, il che permette una messa a fuoco più accurata e l’uso di pii e land più piccoli. Ci si aspetta che alla fine Blu-Ray sostituirà i CD-ROM e i DVD, ma questo passaggio potrebbe richiedere degli anni.
 
 (pagine riassunte: 0.25)
 ## 2.4 - Input/Output
@@ -289,19 +293,19 @@ Come sappiamo un calcolatore è composto da tre componenti principali: la CPU, l
 ### 2.4.1 - Bus
 La configurazione tipica di un computer consiste in una scatola metallica contenente una **scheda madre**. Questa scheda ospita il chip della CPU, slot per moduli DIMM e altri chip di supporto, oltre a un bus lungo la sua lunghezza con prese per i connettori delle schede di I/O.
 
-Ogni dispositivo di I/O ha due componenti principali: il **controllore**, che contiene la maggior parte dell'elettronica, e il dispositivo stesso, come un lettore di dischi. Il controllore può essere integrato sulla scheda madre o situato su una scheda aggiuntiva. Ad esempio, il controllore video spesso si trova su una scheda aggiuntiva per offrire opzioni avanzate come acceleratori hardware e memoria aggiuntiva. Il controllore gestisce il dispositivo di I/O e il suo accesso al bus, eseguendo operazioni di **Direct Memory Access (DMA)**, che permette di leggere e scrivere dati in memoria senza l'intervento della CPU. Una volta completato il trasferimento, il controllore genera un **interrupt** che fa sospendere alla CPU il programma corrente per eseguire una speciale procedura chiamata **gestore dell'interrupt** che controlla se ci sono stati errori o semplicemente avvisa l'OS che il trasferimento è finito.
+Ogni dispositivo di I/O ha due componenti principali: il **controllore**, che contiene la maggior parte dell'elettronica, e il dispositivo stesso, come un lettore di dischi. Il controllore può essere integrato sulla scheda madre o situato su una scheda aggiuntiva. Ad esempio, il controllore video spesso si trova su una scheda aggiuntiva per offrire opzioni avanzate come acceleratori hardware e memoria aggiuntiva. Il controllore gestisce il dispositivo di I/O e il suo accesso al bus, eseguendo operazioni di **Direct Memory Access (DMA)**, che permette di leggere e scrivere dati in memoria senza l'intervento della CPU. Una volta completato il trasferimento, il controllore genera un **interrupt** che fa sospendere alla CPU il programma corrente per eseguire una speciale procedura chiamata **gestore dell'interrupt**.
 
 Se la CPU e un controllore di I/O cercano di usare il bus contemporaneamente, un **arbitro del bus** decide i turni, generalmente dando priorità alle periferiche di I/O per evitare perdite di dati. Questo processo, noto come **furto di cicli**, può rallentare le prestazioni del computer.
 
 Il bus **ISA (Industry Standard Architecture)**, utilizzato nei vecchi PC, continuò ad essere usato da molti produttori di cloni e periferiche, anche dopo l'introduzione del nuovo e più veloce bus del PS/2 di IBM. Questo portò IBM alla situazione paradossale di essere l'unico produttore di PC non compatibili con lo standard IBM.
-#### 2.4.1.1 - I bus PCI e PCIe
+#### I bus PCI e PCIe
 Nonostante le pressioni di mercato per mantenere lo status quo, i vecchi bus divennero troppo lenti, portando allo sviluppo di macchine con più bus, come il vecchio bus ISA o il suo successore retrocompatibile **EISA** (Extended ISA). Alla fine, il bus **PCI** (Peripheral Component Interconnect) di Intel prevalse.
 
 Nel mondo dei computer, la velocità è sempre un problema e anche i bus PCI furono ritenuti troppo lenti, portando alla nascita dei bus PCIe. I computer moderni supportano sia PCI che PCIe, consentendo la connessione di dispositivi nuovi e veloci al bus PCIe e dispositivi più vecchi e lenti al bus PCI.
 
 Il PCIe rappresenta una svolta rispetto al PCI, non essendo nemmeno un bus tradizionale, ma una rete punto a punto che utilizza linee seriali di bit e commutazione di pacchetto, simile a Internet.
 
-Le principali aggiunte del PCIe includono:
+Le principali differenze del PCIe includono:
 1. **Connessione seriale**: la trasmissione avviene su una linea di 1 bit piuttosto che 8, 16, 32 o 64 bit, evitando problemi di *skew* che limitano la velocità in connessioni parallele.
 2. **Comunicazioni punto a punto**: quando la CPU comunica con un dispositivo, invia un pacchetto che passa attraverso la root complex sulla scheda madre e talvolta attraverso uno switch. Questo sistema ricorda lo sviluppo di Ethernet, passata da trasmissioni in broadcast a comunicazioni punto a punto tramite switch.
 
@@ -310,11 +314,11 @@ Le principali aggiunte del PCIe includono:
 Esistono diverse tipologie di dispositivi di I/O. I terminali sono costituiti da due componenti principali: la tastiera e il monitor. Nei mainframe, questi componenti sono spesso integrati in un unico dispositivo collegato al calcolatore principale tramite una linea seriale o un cavo telefonico. Questi terminali sono ancora ampiamente utilizzati nelle prenotazioni delle compagnie aeree, nelle banche e in altri sistemi basati su mainframe. Nei personal computer, invece, tastiera e monitor sono dispositivi separati, anche se la tecnologia utilizzata è sostanzialmente la stessa.
 
 (pagine riassunte: 0.25)
-#### 2.4.2.1 - Tastiere
+#### Tastiere
 La pressione di un tasto di un PC genera un interrupt che stimola una parte del sistema operativo, chiamata gestore dell’interrupt della tastiera. Questa routine, leggendo un registro hardware della tastiera, ricava il numero associato al tasto premuto. Anche quando si rilascia un tasto viene generato un interrupt. La gestione di sequenze multi-tasto che coinvolgono i tasti SHIFT, CTRL e ALT è fatta interamente via software.
 
 (pagine riassunte: 0.5)
-#### 2.4.2.2 - Touch screen
+#### Touch screen
 Nonostante le tastiere continuino ad essere utilizzate, un nuovo dispositivo di input ha guadagnato popolarità: il touch screen. Tipici dispositivi touch includono touchpad nei portatili e schermi di smartphone o tablet. I touch screen più comuni sono di tipo resistivo, capacitivo o a infrarossi.
 
 **Touch screen a infrarossi**: Utilizzano trasmettitori di raggi infrarossi e ricevitori disposti ai lati dello schermo. Quando un oggetto opaco interrompe i fasci di luce, il ricevitore rileva la caduta del segnale e comunica le coordinate al sistema operativo.
@@ -324,12 +328,13 @@ Nonostante le tastiere continuino ad essere utilizzate, un nuovo dispositivo di 
 **Touch screen capacitivi a proiezione**: Utilizzati in gran parte degli smartphone e tablet, particolarmente quelli a **mutua capacitanza**, sono in grado di riconoscere il tocco di più dita contemporaneamente, abilitando gesti come espansione e pizzicamento. Questi schermi non reagiscono a oggetti non conduttivi come penne o dita coperte da guanti. Durante l’uso, le tensioni applicate ai "fili" dello schermo rilevano i cambiamenti di capacitanza causati dal tocco delle dita.
 
 (pagine riassunte: 1.75)
-#### 2.4.2.3 - Schermi piatti
+#### Schermi piatti
 I primi schermi dei computer utilizzavano tubi catodici (CRT) simili a quelli delle vecchie televisioni. Oggi, la tecnologia più comune è quella degli schermi a cristalli liquidi (LCD).
 
-Gli **LCD** utilizzano cristalli liquidi, che sono molecole organiche viscose con proprietà ottiche che possono essere controllate elettricamente. Uno schermo LCD è composto da due lastre di vetro parallele contenenti cristalli liquidi, con elettrodi trasparenti collegati a ciascuna lastra. Una luce retro-illuminante illumina lo schermo, mentre i campi elettrici creati dagli elettrodi regolano l'intensità della luce che passa attraverso i cristalli liquidi, permettendo di visualizzare immagini.
+Gli **LCD** utilizzano cristalli liquidi, che sono molecole organiche viscose con proprietà ottiche che possono essere controllate elettricamente. Uno schermo LCD è composto da due lastre di vetro parallele contenenti cristalli liquidi, con elettrodi trasparenti collegati a ciascuna lastra. Una luce retroilluminante illumina lo schermo, mentre i campi elettrici creati dagli elettrodi regolano l'intensità della luce che passa attraverso i cristalli liquidi, permettendo di visualizzare immagini.
 
 Un esempio di schermo LCD è lo schermo **TN** (*Twisted Nematic*), dove le molecole del cristallo liquido si allineano lungo solchi orizzontali e verticali su due lastre, causando una torsione di 90 gradi. Questo tipo di schermo può usare due schemi per l'applicazione della tensione: 
+
 1. **Schermi a matrice passiva**: Economici, utilizzano fili paralleli per controllare i pixel.
 2. **Schermi a matrice attiva**: Più costosi ma di qualità superiore, utilizzano un piccolo elemento di commutazione, chiamato **thin film transistor** (TFT), per ogni pixel. La maggior parte dei laptop e dei monitor a schermo piatto usano la tecnologia TFT.
 
@@ -361,7 +366,7 @@ Il software del computer traduce i movimenti del mouse in coordinate sullo scher
 (pagine riassunte: 2)
 ### 2.4.4 - Controller per videogiochi
 Grazie alle molteplici esigenze degli utilizzatori di videogiochi il mercato delle console di gioco ha sviluppato dispositivi di input specializzati.
-#### 2.4.4.1 - Il controller Wiimote
+#### Il controller Wiimote
 Il **Wiimote** interagisce in tempo reale con la console di gioco tramite un sistema bluetooth. Grazie ai sensori di movimento, il Wiimote può rilevare movimenti in tre dimensioni e, se puntato verso il televisore, offre una precisa funzione di puntamento.
 
 Il monitoraggio dei movimenti tridimensionali è effettuato tramite un accelerometro a tre assi. Ogni massa dell'accelerometro risponde all'accelerazione lungo il proprio asse, modificando la capacitanza rispetto a una parete fissa di metallo. Misurando queste variazioni, si rileva l'accelerazione lungo le tre direzioni.
@@ -369,7 +374,7 @@ Il monitoraggio dei movimenti tridimensionali è effettuato tramite un accelerom
 Tuttavia, gli accelerometri, pur efficaci nel rilevare movimenti tridimensionali, non sono sufficientemente precisi per controllare un puntatore sullo schermo televisivo a causa di un margine di errore che aumenta nel tempo.
 
 Per una rilevazione più precisa, il Wiimote utilizza tecnologie di computer vision. Una **sensor bar** posta sopra il televisore contiene LED a distanza fissa. Il Wiimote, dotato di una videocamera, può determinare la distanza e l'orientamento rispetto allo schermo osservando questi LED. La distanza tra i LED nel campo visivo del Wiimote è proporzionale alla distanza del controller dalla sensor bar, e la posizione dei LED indica la direzione di puntamento. Monitorando continuamente questa orientazione, il Wiimote offre una capacità di puntamento precisa senza gli errori degli accelerometri.
-#### 2.4.4.2 - Il controller Kinect
+#### Il controller Kinect
 Il dispositivo Kinect utilizza tecniche di computer vision per determinare le interazioni dell'utente con la console di gioco. Il suo funzionamento si basa sulla rilevazione della posizione dell'utente nella stanza, dell'orientamento e dei movimenti del corpo.
 
 La capacità di rilevazione di Kinect dipende da una fotocamera di profondità e da una videocamera. La fotocamera di profondità misura la distanza degli oggetti nel campo visivo emettendo un fascio di raggi laser infrarossi e catturando i riflessi con una camera a infrarossi.
@@ -379,7 +384,7 @@ L'informazione sulla profondità viene combinata con i dati strutturali della vi
 (pagine riassunte: 2)
 ### 2.4.5 - Stampanti
 I computer spesso dispongono di stampanti per poter stampare il proprio lavoro, ne parleremo in questo paragrafo.
-#### 2.4.5.1 - Stampanti laser
+#### Stampanti laser
 Dopo l'invenzione della stampa, il progresso più significativo nella riproduzione dei testi è rappresentato dalla **stampante laser**. Questo dispositivo offre alta qualità dell'immagine, eccellente flessibilità, grande velocità e costi contenuti.
 
 Il cuore della stampante laser è un tamburo rotante caricato elettricamente e rivestito di materiale fotosensibile. Un laser, modulato per produrre regioni luminose e scure, disegna l'immagine desiderata sul tamburo, scaricando le aree colpite dalla luce. Il tamburo, ruotando, passa attraverso il toner, che si attacca alle aree caricate elettricamente. Il toner viene poi trasferito su un foglio di carta, creando l'immagine finale.
@@ -389,19 +394,19 @@ Questo complesso processo combina fisica, chimica, meccanica e ottica. Alcuni pr
 Le stampanti laser utilizzano linguaggi di programmazione specializzati come PCL di HP, PostScript di Adobe o PDF per descrivere come devono essere stampate le pagine.
 
 Per riprodurre la scala dei grigi, viene usata la tecnica dei mezzitoni, che divide l'immagine in celle di 6x6 pixel. Il numero di pixel neri in ogni cella determina la percezione di tonalità di grigio. La risoluzione effettiva dell'immagine si riduce a 100 celle per pollice, misurata in **lpi** (linee per pollice).
-#### 2.4.5.2 - Stampanti a colori
+#### Stampanti a colori
 Sebbene la maggior parte delle stampanti laser sia monocromatica, le stampanti laser a colori stanno diventando sempre più comuni. Le immagini a colori possono essere viste in due modi: tramite luce trasmessa (come sui monitor) o tramite luce riflessa (come nelle fotografie su carta). 
 
 Le immagini su monitor sono create combinando i tre colori primari additivi: rosso, verde e blu (RGB). Al contrario, le immagini su carta sono create sovrapponendo i tre colori primari sottrattivi: ciano, magenta e giallo (CMY). Tuttavia, poiché è difficile ottenere un nero puro con questi tre colori, le stampanti a colori usano anche il nero (K), risultando nel sistema CMYK.
 
 Il **gamut** o **gamma dei colori** è l'insieme completo dei colori che un dispositivo può rappresentare. Né i monitor né le stampanti possono riprodurre tutti i colori del mondo reale. I monitor utilizzano luce trasmessa e hanno un fondo nero, mentre le stampanti usano luce riflessa e hanno un fondo chiaro. Inoltre, i monitor generano 256 intensità per colore e le stampanti usano i mezzitoni, rendendo complessa la conversione accurata delle immagini dal monitor alla stampa. Le gamme di colori RGB e CMYK sono diverse, complicando ulteriormente questa conversione.
-#### 2.4.5.3 - Stampanti a getto d'inchiostro
+#### Stampanti a getto d'inchiostro
 Per le stampe casalinghe a basso costo, molti preferiscono le **stampanti a getto d’inchiostro**. La testina di stampa mobile, che contiene le cartucce di inchiostro, si muove orizzontalmente lungo la carta spruzzando inchiostro attraverso piccoli ugelli. Le goccioline di inchiostro hanno un volume di circa 1 picolitro. Esistono due tipi principali di stampanti a getto d’inchiostro: *piezoelettriche* e *termiche*.
 
 Le stampanti piezoelettriche utilizzano un cristallo particolare che si deforma quando gli viene applicata una tensione, spruzzando così una goccia di inchiostro. Le stampanti termiche, invece, hanno una resistenza che riscalda rapidamente l’inchiostro fino a farlo evaporare, formando una bolla di gas che spruzza l’inchiostro attraverso l'ugello.
 
 Per ottenere risultati migliori, è importante usare carte e inchiostri speciali. Ci sono due tipi di inchiostro: a **base di coloranti** e a **pigmenti**. Gli inchiostri a base di coloranti producono colori luminosi e fluiscono facilmente, ma tendono a sbiadire sotto la luce solare. Gli inchiostri a base di pigmenti contengono particelle solide che non sbiadiscono facilmente, ma sono meno luminosi e possono bloccare gli ugelli, necessitando di una pulizia periodica.
-#### 2.4.5.4 - Stampanti speciali
+#### Stampanti speciali
 Oltre alle comuni stampanti laser e a getto d'inchiostro, esistono altri tipi di stampanti utilizzate in contesti che richiedono particolari requisiti di qualità del colore e costi. Le **stampanti a inchiostro solido** usano blocchi di inchiostro ceroso che vengono sciolti e spruzzati sulla carta, dove si solidificano e si fondono grazie a rulli rigidi. Queste stampanti possono richiedere fino a 10 minuti per riscaldare l'inchiostro all'accensione.
 
 Le **stampanti a getto di cera** impiegano un nastro rivestito di inchiostri cerosi, che vengono fusi e trasferiti sulla carta come pixel tramite elementi riscaldanti, utilizzando il sistema CMYK.
@@ -413,8 +418,8 @@ Infine, le **stampanti termiche** impiegano una testina con piccoli aghi che si 
 (pagine riassunte: 5)
 ### 2.4.6 - Apparecchiature per telecomunicazioni
 Al giorno d’oggi la maggior parte dei calcolatori è connessa a una rete di calcolatori, che spesso è Internet.
-#### 2.4.6.1 - Modem
-L'uso diffuso dei computer ha reso comune la necessità di comunicare tra loro. Le linee telefoniche, progettate per la voce, non sono adatte a trasmettere i segnali digitali dei computer senza distorsione. Per risolvere questo problema, si utilizza un segnale sinusoidale chiamato **portante**, che può essere trasmesso con minore distorsione. Variando l'ampiezza, la frequenza o la fase di questo segnale, è possibile trasmettere dati digitali. Questo processo è noto come **modulazione** e i dispositivi che lo realizzano si chiamano modem, da MOdulator DEModulator.
+#### Modem
+L'uso diffuso dei computer ha reso comune la necessità di comunicare tra loro. Le linee telefoniche, progettate per la voce, non sono adatte a trasmettere i segnali digitali dei computer senza distorsione. Per risolvere questo problema, si utilizza un segnale sinusoidale chiamato **portante**, che può essere trasmesso con minore distorsione. Variando l'ampiezza, la frequenza o la fase di questo segnale, è possibile trasmettere dati digitali. Questo processo è noto come **modulazione** e i dispositivi che lo realizzano si chiamano modem.
 
 Esistono diversi tipi di modulazione:
 - **Modulazione d'ampiezza**: utilizza due tensioni diverse per rappresentare 0 e 1.
@@ -422,7 +427,7 @@ Esistono diversi tipi di modulazione:
 - **Modulazione di fase**: mantiene costanti ampiezza e frequenza, invertendo la fase di 180 gradi per i cambiamenti di bit. In versioni più sofisticate, la fase cambia di 45, 135, 225 o 315 gradi, rappresentando 2 bit per intervallo, noto come **modulazione a coppia di bit**.
 
 I modem moderni operano a 56 Kbps, combinando diverse tecniche di modulazione. Questi modem sono **full-duplex**, capaci di trasmettere simultaneamente in entrambe le direzioni. I modem che trasmettono in una sola direzione per volta sono **half-duplex**, mentre le linee che trasmettono solo in una direzione sono **simplex**.
-#### 2.4.6.2 - Digital subscriber line
+#### Digital subscriber line
 Quando le società telefoniche raggiunsero la velocità di 56 Kbps, l'industria della TV via cavo offriva già velocità superiori a 10 Mbps e la TV satellitare raggiungeva i 50 Mbps. Con l'aumento dell'importanza dell'accesso a Internet, le società telefoniche, note come **telcos**, dovettero offrire un servizio più competitivo rispetto alle linee *dial-up*. La loro risposta fu l'introduzione di servizi a **banda larga** (broadband), inclusi i servizi **xDSL** (*Digital Subscriber Line*), tra cui il più diffuso è l'**ADSL** (Asymmetric DSL).
 
 La lentezza dei modem tradizionali è dovuta all'ottimizzazione del sistema telefonico per la voce umana, con il **ciclo locale** limitato a 3000 Hz, riducendo la velocità di trasferimento dati tramite un filtro nell'ufficio della compagnia telefonica. L'ADSL divide il ciclo locale in 256 canali di 4312,5 Hz ciascuno: il canale 0 per il servizio telefonico tradizionale **POTS** (Plain Old Telephone Service), i canali 1-5 non utilizzati per evitare interferenze tra voce e dati, e i rimanenti 250 canali per la trasmissione dei dati, con due canali per il controllo del traffico.
@@ -430,7 +435,7 @@ La lentezza dei modem tradizionali è dovuta all'ottimizzazione del sistema tele
 Un dispositivo d’interfaccia **NID** (*Network Interface Device*) viene installato presso l'edificio del cliente per segnare il confine tra la proprietà della compagnia telefonica e quella dell'utente. Un **divisore** (*splitter*) separa la banda 0-4000 Hz per il servizio telefonico dai dati, instradando il segnale POTS verso il telefono o il fax e il segnale dati verso un modem ADSL.
 
 All'altro capo del cavo, presso la compagnia telefonica, un altro divisore separa il segnale vocale, instradandolo verso un commutatore per la voce, mentre i segnali a frequenza maggiore di 26 kHz sono inviati a un dispositivo **DSLAM** (*DSL Access Multiplexer*). Il DSLAM riconverte il segnale digitale in un flusso di bit e crea pacchetti di dati da spedire all'ISP.
-#### 2.4.6.3 - Internet via cavo
+#### Internet via cavo
 In ogni grande città c’è una sede principale dell’operatore via cavo, collegata a diverse **stazioni di testa** tramite fibre ottiche o cavi ad alta larghezza di banda. Le stazioni di testa, a loro volta, connettono centinaia di case e uffici attraverso un cavo condiviso con una larghezza di banda di circa 750 MHz. Questo sistema condiviso pone il problema di gestire chi può trasmettere dati, quando e a quale frequenza.
 
 I canali TV via cavo nel Nord America occupano l'intervallo tra 50 e 550 MHz, con canali di 6 MHz ciascuno. In Europa, i canali partono da 65 MHz e occupano tra i 6 e gli 8 MHz. La parte inferiore della banda non è utilizzata per la TV.
@@ -458,13 +463,13 @@ Infine, l’immagine viene memorizzata su una memoria flash o un piccolo hard di
 (pagine riassunte: 2.25)
 ### 2.4.8 - Codifica dei caratteri
 Ogni calcolatore ha un insieme di caratteri che, come minimo indispensabile, comprende le 26 lettere maiuscole, le 26 lettere minuscole, le cifre da 0 a 9 e un insieme di simboli speciali, come spazio, punto, virgola, segno meno e ritorno a capo. La corrispondenza tra caratteri e numeri naturali costituisce un **codice di caratteri**. È necessario che due calcolatori che comunicano fra loro utilizzino lo stesso codice, altrimenti non saranno in grado di capirsi.
-#### 2.4.8.1 - ASCII
+#### ASCII
 Un codice ampiamente utilizzato si chiama **ASCII** (*American Standard Code for Information Interchange*). I caratteri ASCII sono definiti da 7 bit, permettendo così un totale di 128 caratteri distinti. Ciononostante, visto che i computer sono orientati ai byte, ogni carattere ASCII viene normalmente memorizzato in un byte distinto. I codici compresi tra 0 e 1F (in esadecimale) sono caratteri di controllo e non vengono stampati. I codici da 128 a 255 non fanno parte della codifica ASCII, ma i PC IBM li hanno utilizzati per caratteri speciali come le emoticon e la maggior parte dei computer attuali li utilizza ancora.
 
 Molti dei caratteri di controllo ASCII sono pensati per la trasmissione di dati.
 
-I caratteri ASCII stampabili comprendono lettere maiuscole e minuscole, cifre, sim- boli di punteggiatura e alcuni simboli matematici.
-#### 2.4.8.2 - UNICODE
+I caratteri ASCII stampabili comprendono lettere maiuscole e minuscole, cifre, simboli di punteggiatura e alcuni simboli matematici.
+#### UNICODE
 Il primo tentativo di espandere il codice ASCII fu il codice IS 646, che aggiungeva 128 caratteri per trasformarlo in un codice a 8 bit chiamato **Latin-1**. Successivamente, il codice IS 8859 introdusse il concetto di **code page**, un insieme di 256 caratteri specifici per una lingua o gruppo di lingue. Tuttavia, il code page presentava problemi di gestione e non supportava lingue come giapponese o cinese.
 
 Per risolvere questi problemi, un consorzio di produttori di computer creò **UNICODE**, diventato poi uno Standard Internazionale (IS 10646). UNICODE assegna a ogni carattere un valore a 16 bit chiamato **code point**, semplificando la scrittura dei programmi poiché non esistono caratteri speciali composti da più byte.
@@ -472,7 +477,7 @@ Per risolvere questi problemi, un consorzio di produttori di computer creò **UN
 I code point di UNICODE sono divisi in blocchi multipli di 16 e assegnati a vari alfabeti principali, segni diacritici, simboli di punteggiatura, caratteri soprascritti e sottoscritti, simboli matematici, forme geometriche e simboli ornamentali. Include anche i simboli richiesti per le lingue cinese, giapponese e coreana.
 
 Nonostante UNICODE risolva molti problemi di internazionalizzazione, non risolve tutti i problemi globali. Ad esempio, i caratteri Han non sono ordinati come nei dizionari e l'aggiunta di nuove parole in lingue come il giapponese richiede nuovi code point. Inoltre, UNICODE utilizza lo stesso code point per caratteri con aspetti simili ma significati diversi in giapponese e cinese.
-#### 2.4.8.3 - UTF-8
+#### UTF-8
 Nonostante fosse un miglioramento rispetto all'ASCII, Unicode ha esaurito i code point disponibili e utilizza 16 bit per carattere, risultando inefficiente per il testo ASCII puro. Per affrontare questi problemi è stato sviluppato **UTF-8 (UCS Transformation Format)**, che codifica i caratteri in una lunghezza variabile da 1 a 4 byte e può rappresentare circa due miliardi di caratteri. UTF-8 è diventato il sistema di codifica dominante sul Web.
 
 UTF-8 ha numerosi vantaggi: i codici da 0 a 127 corrispondono esattamente ai caratteri ASCII, permettendo di rappresentarli con un solo byte, mentre per gli altri caratteri il bit più significativo del primo byte è impostato a 1, indicando la presenza di byte aggiuntivi. Questo schema consente di codificare i caratteri ASCII con 8 bit, riducendo lo spreco di spazio. Inoltre, il primo byte di ogni carattere UTF-8 determina univocamente il numero di byte del carattere e i byte successivi iniziano sempre con 10, rendendo UTF-8 auto sincronizzante e facilitando l'analisi e la gestione del testo.

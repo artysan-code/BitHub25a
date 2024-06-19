@@ -21,3 +21,5 @@ A(CB+1)=A  & \text{Assortimento}\\
 A(1)=A  & \text{Elemento neutro}\\
 A=A
 \end{array}$$
+
+Esistono esercizi in cui bisogna sviluppare le formule di un determinato caso (come es. 7 e 8 pag. 39 e 40). In questi esercizi bisogna ragionare per formulare la giusta formula.

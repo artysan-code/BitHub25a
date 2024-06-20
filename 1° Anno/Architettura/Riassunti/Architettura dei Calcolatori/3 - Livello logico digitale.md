@@ -1,4 +1,4 @@
- Inizieremo il nostro studio partendo da questi componenti elementari c dalla particolare algebra a due valori (algebra di Boole) che si utilizza per analizzarli. Successivamente esamineremo alcuni circuiti fondamentali, tra cui quelli per eseguire calcoli aritmetici costruiti mediante semplici combinazioni di porte logiche. L’ argomento successivo sarà l’organizzazione della memoria, ovvero com'è possibile combinare le porte logiche per memorizzare informazioni. In seguito verrà affrontato il tema delle CPU e in particolare il modo in cui CPU composte da un unico chip si interfacciano con memoria e periferiche. Nella parte finale del capitolo saranno presentati, a titolo di esempio, numerosi prodotti reali.
+Inizieremo il nostro studio partendo da questi componenti elementari c dalla particolare algebra a due valori (algebra di Boole) che si utilizza per analizzarli. Successivamente esamineremo alcuni circuiti fondamentali, tra cui quelli per eseguire calcoli aritmetici costruiti mediante semplici combinazioni di porte logiche. L’ argomento successivo sarà l’organizzazione della memoria, ovvero com'è possibile combinare le porte logiche per memorizzare informazioni. In seguito verrà affrontato il tema delle CPU e in particolare il modo in cui CPU composte da un unico chip si interfacciano con memoria e periferiche. Nella parte finale del capitolo saranno presentati, a titolo di esempio, numerosi prodotti reali.
 ## 3.1 - Porte logiche e algebra di Boole
 I circuiti digitali possono essere costruiti combinando tra loro un piccolo numero di componenti elementari.
 ### 3.1.1 - Porte logiche
@@ -56,9 +56,9 @@ Per i nostri scopi, consideriamo le porte logiche ideali, con output immediato a
 
 (pagine riassunte: 1.5)
 ### 3.2.2 - Reti combinatorie
-Molte applicazioni della logica digitale richiedono un circuito, chiamato **rete combinatoria**, con più input e più output, in cui gli output sono unicamente determinati dagli input. Non tutti i circuiti hanno questa proprietà; un circuito contenente elementi di memoria può per esempio generare valori che dipendono non solo dalle variabili d’ingresso, ma anche dai valori memorizzati.
+Molte applicazioni della logica digitale richiedono un circuito, chiamato **rete combinatoria**, con più input e più output, in cui gli output sono unicamente determinati dagli input. Non tutti i circuiti hanno questa proprietà; un circuito contenente elementi di memoria può per esempio generare valori che dipendono non solo dalle variabili d’ingresso, ma anche dai valori memorizzati
 
-(Pagine riassunte: 0.25)
+(pagine riassunte:0.25)
 #### Multiplexer
 In logica digitale un ***multiplexer*** è un circuito con $2^{n}$ dati di input, un valore di output e *n* input di controllo; gli input di controllo permettono di selezionare uno dei dati di input, che viene instradato verso l'output. Un multiplexer con otto input ha tre linee di controllo. A, B e C, codificano un numero a 3 bit che specifica quale delle otto linee di input deve essere instradata verso la porta OR e quindi verso l’output. Indipendentemente dal valore definito dalle linee di controllo, sette delle porte AND genereranno sempre il valore 0, mentre quella rimanente produrrà in output 0 oppure 1, a seconda del valore della linea d’ingresso selezionata. Ciascuna porta AND può essere abilitata da una diversa combinazione degli input di controllo.
 
@@ -66,7 +66,7 @@ Un'altra delle possibili applicazioni è la conversione di dati da parallelo a s
 
 L’inverso del multiplexer è il **demultiplexer**, che redirige il suo segnale di input verso uno dei $2^{n}$ output in base ai valori delle linee di controllo; se il valore binario definito dalle linee di controllo è *k*, viene selezionato l’output *k*.
 
-(Pagine riassunte: 2)
+(pagine riassunte: 2)
 #### Decodificatori
 Come secondo esempio analizzeremo ora un circuito, chiamato **decodificatore** (*decoder*), che accetta come input un numero a *n* bit e lo utilizza per impostare a 1 una sola delle $2^{n}$ linee di output.
 
@@ -79,7 +79,7 @@ Ciascuna porta AND ha tre input, il primo dei quali è $A$ o $\overline{A}$, il 
 Un altro circuito particolarmente utile è il comparatore, che permette di confrontare due stringhe di bit. Il circuito è basato sulla porta logica XOR (EXCLUSIVE OR), che produce in output un valore 0 se i suoi input sono uguali e un valore 1 se sono diversi. Se due stringhe in ingresso sono uguali, tutte e quattro le porte XOR devono generare come risultato 0. Questi quattro segnali possono poi essere connessi a una stessa porta logica OR in modo da produrre un valore 0 quando gli input sono uguali e un valore 1 nel caso contrario
 
 (pagine riassunte: 0.5)
-#### Array logici programmabili
+#### Array logici programmabili (Da Rivedere)
 Un chip molto generale che permette di calcolare somme di prodotti è l’**array logico programmabile** o **PLA** (*Programmable Logic Array*). Questo chip ha 12 ingressi e al suo interno questi valori vengono invertiti; quindi il numero totale di segnali di input diventa 24.
 
 L’uscita del circuito consiste in 6 porte OR, che possono avere fino a 50 input, corrispondenti agli output delle porte AND.
@@ -92,11 +92,13 @@ Anche se i PLA *programmabili sul campo*, come quello appena descritto, vengono 
 ### 3.2.3 - Circuiti per l'aritmetica
 Inizieremo con un semplice registro a scorrimento (*shifter*) a 8 bit. continueremo guardando com'è costruito un sommatore e infine esamineremo le unità aritmetico-logiche che svolgono un ruolo centrale all'interno di tutti i calcolatori.
 #### Registri a scorrimento
-Il primo circuito aritmetico MSI che analizziamo ha otto input e otto output. Gli input sono collegati alle linee $D_{0}, ..., D_{7}$ mentre l’output, corrispondente all’input traslato di un bit, risulta disponibile sulle linee $S_{0}, ..., S_{7}$ La linea di controllo, C, ha valore 0 se lo spostamento deve avvenire verso sinistra, e 1 in caso contrario. Nel caso di uno spostamento a sinistra si inserisce uno 0 nel bit 7, e nel caso di uno shift a destra si inserisce uno 0 nel bit 0. Quando $C = 1$ la porta che si trova a destra in ciascuna coppia viene abilitata, lasciando passare il bit corrispondente verso l’output. Dato che la porta AND è collegata all’input della porta OR alla sua destra, si ottiene uno scorrimento verso destra. Quando $C = 0$ è la porta AND di sinistra in ciascuna coppia a essere abilitata, producendo uno spostamento verso sinistra.
+Il primo circuito aritmetico MSI che analizziamo ha otto input e otto output. Gli input sono collegati alle linee $D_{0}, ..., D_{7}$ mentre l’output, corrispondente all’input traslato di un bit, risulta disponibile sulle linee $S_{0}, ..., S_{7}$.
+
+La linea di controllo, C, ha valore 0 se lo spostamento deve avvenire verso sinistra, e 1 in caso contrario. Nel caso di uno spostamento a sinistra si inserisce uno 0 nel bit 7, e nel caso di uno shift a destra si inserisce uno 0 nel bit 0. Quando $C = 1$ la porta che si trova a destra in ciascuna coppia viene abilitata, lasciando passare il bit corrispondente verso l’output. Dato che la porta AND è collegata all’input della porta OR alla sua destra, si ottiene uno scorrimento verso destra. Quando $C = 0$ è la porta AND di sinistra in ciascuna coppia a essere abilitata, producendo uno spostamento verso sinistra.
 
 Figura 3.15
 #### Sommatori
-La Figura 3.16(b) mostra un **half adder** (*semisommatore*), che calcola il bit della somma e il bit del riporto. Questo circuito può sommare i bit meno significativi di due stringhe binarie, ma non gestisce il riporto da posizioni precedenti, quindi non può sommare correttamente gli altri bit. Per questo è necessario un **sommatore**.
+La Figura 3.16 mostra un **half adder** (*semisommatore*), che calcola il bit della somma e il bit del riporto. Questo circuito può sommare i bit meno significativi di due stringhe binarie, ma non gestisce il riporto da posizioni precedenti, quindi non può sommare correttamente gli altri bit. Per questo è necessario un **sommatore**.
 
 In un sommatore, il riporto in uscita di un bit è usato come riporto in entrata per il bit successivo a sinistra. Il riporto in entrata del bit più a destra è impostato a 0. Questo tipo di sommatore è chiamato **sommatore a propagazione di riporto**, poiché nel caso peggiore, sommando 1 a 111...111, la somma si completa solo dopo che il riporto si è propagato lungo tutta la parola binaria. Esistono sommatori più veloci che non hanno questo ritardo.
 

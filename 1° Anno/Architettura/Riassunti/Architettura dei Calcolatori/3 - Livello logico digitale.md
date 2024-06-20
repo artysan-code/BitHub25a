@@ -111,6 +111,8 @@ La Figura 3.18 mostra la struttura della ALU:
 - **In alto a sinistra**: le porte logiche per calcolare ($A \ AND\ B$), ($A \ OR\ B$) e ($\overline{B}$). Solo uno di questi risultati viene passato alla porta logica finale OR, in base alle linee di attivazione.
 - **In basso a destra**: un sommatore che calcola la somma di A e B e gestisce i riporti, permettendo a vari circuiti dello stesso tipo di collegarsi tra loro per operazioni su intere parole. Questi circuiti, chiamati **bit slices**, permettono di costruire ALU di larghezza arbitraria.
 
+L'interfaccia è composta da 7 input che sono: **INVA**, **ENA** e **ENB** che tratteremo in seguito, **A** e **B** che sono i dati e infine **$F_0$** e **$F_{1}$** che servono per selezionare l'operazione da eseguire sui precedenti.
+
 Figura 3.18
 
 (pagine riassunte: 4.5)
@@ -130,7 +132,7 @@ Una componente essenziale di ogni calcolatore è la memoria; se non ci fosse non
 ### 3.3.1 - Latch
 Per creare una memoria a 1 bit è necessario disporre di un circuito che in qualche modo “ricordi" precedenti valori di input.
 
-Il circuito **latch SR** e ha due input: $S$, per impostare il valore del latch e $R$ per azzerarlo. Il circuito ha anche due output, $Q$ e $\overline{Q}$, che, come vedremo tra poco, sono complementari Puno rispetto all’altro. Diversamente dalle reti combinatorie l’ output di un latch non è determinato unicamente dai valori di input correnti.
+Il circuito **latch SR** e ha due input: $S$, per impostare il valore del latch e $R$ per azzerarlo. Il circuito ha anche due output, $Q$ e $\overline{Q}$, che, come vedremo tra poco, sono complementari l'uno rispetto all'altro. Diversamente dalle reti combinatorie l’ output di un latch non è determinato unicamente dai valori di input correnti.
 
 Quando $S$ è impostato temporaneamente a 1 lo stato del latch diventa $Q = 1$, indipendentemente dallo stato in cui si trovava precedentemente. Allo stesso modo quando si imposta temporaneamente $R$ a 1 si forza il latch a passare nello stato $Q = 0$. Il circuito “ricorda” quindi quale valore, se $S$ oppure $R$ è stato settato per ultimo; utilizzando questa proprietà è possibile costruire le memorie dei calcolatori.
 #### 3.3.1.1 - Latch SR temporizzato

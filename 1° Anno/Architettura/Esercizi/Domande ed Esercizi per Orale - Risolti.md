@@ -1,0 +1,1 @@
+Domande fornite dal professore sul sito internet di informatica ma con le dovute risposte (non vi è certezza della correttezza):

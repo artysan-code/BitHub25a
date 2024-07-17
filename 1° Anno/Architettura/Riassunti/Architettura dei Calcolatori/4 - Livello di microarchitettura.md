@@ -1,5 +1,6 @@
 La progettazione della microarchitettura dipende non solo dall'ISA da implementare, ma anche dagli obiettivi di costo e prestazioni del calcolatore. Molti ISA moderni, specialmente le architetture RISC, includono istruzioni semplici eseguibili in un ciclo di clock. Invece, ISA più complessi come quello del Core i7 possono richiedere più cicli per eseguire un'istruzione, dovendo localizzare gli operandi in memoria, leggerli e memorizzare il risultato. Questa complessità comporta una strategia di controllo diversa rispetto agli ISA più semplici.
-(pagine riassunte: 0.5)
+
+(Pagine riassunte: 0.5)
 ## 4.1 - Esempio di microarchitettura
 Ogni ISA è unico: usando un sottoinsieme della Java Virtual Machine, chiamato **IJVM** (contenente solo istruzioni su interi), studieremo un'esempio pratico.
 

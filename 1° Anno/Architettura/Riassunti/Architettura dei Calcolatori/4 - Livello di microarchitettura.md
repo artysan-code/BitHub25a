@@ -6,15 +6,16 @@ Ogni ISA è unico: usando un sottoinsieme della Java Virtual Machine, chiamato *
 
 Per implementare IJVM, descriveremo la microarchitettura necessaria. Le architetture con istruzioni complesse spesso usano la microprogrammazione. Nonostante IJVM sia piccolo, è un buon punto di partenza per descrivere controllo e ordinamento delle istruzioni.
 
-La nostra microarchitettura includerà un microprogramma in una ROM per prelevare, decodificare ed eseguire le istruzioni IJVM. Per progettare una microarchitettura, è bene concepirla come un problema di programmazione, in cui ogni istruzione del livello ISA è una funzione richiamata in un loop che gira all'infinito.
+La nostra microarchitettura includerà un microprogramma in una ROM per prelevare, decodificare ed eseguire le istruzioni IJVM. Per progettare una microarchitettura, è bene concepirla come un problema di programmazione, dove il programma principale è un loop che esegue funzioni ed istruzioni.
 
 Il **microprogramma** ha variabili che rappresentano lo **stato** del calcolatore, cambiato da ogni funzione. Il _Program Counter_ (PC) è una di queste variabili e punta all indirizzo di memoria della prossima istruzione da eseguire, avanzando (ovvero puntando sempre all istruzione successiva) durante l'esecuzione.
 
-Le istruzioni IJVM sono corte, composte da campi specifici. Ad esempio, il primo campo è il  **codice operativo** (opcode): identifica il tipo di istruzione, ovvero se è di tipo ADD, BRANCH, ecc. Questo modello di esecuzione, chiamato **fetch-decodifica-esecuzione**, è utile a livello astratto e può essere la base per implementare ISA complessi come IJVM. L'insieme delle microistruzioni formano il microprogramma, e ciascuna di loro ha il controllo del percorso dati durante un ciclo.
+Le istruzioni ISA IJVM sono corte, composte da campi specifici. Ad esempio, il primo campo è il **codice operativo** (opcode): identifica il tipo di istruzione, ovvero se è di tipo ADD, BRANCH, ecc. Questo modello di esecuzione, chiamato **fetch-decodifica-esecuzione**, è utile a livello astratto e può essere la base per implementare ISA complessi come IJVM. L'insieme delle microistruzioni formano il microprogramma, e ciascuna di loro ha il controllo del percorso dati durante un ciclo.
 
 (pagine riassunte: 1)
 ### 4.1.1 - Percorso dati
 Il **percorso dati** della CPU contiene la ALU, i suoi input e output. Il nostro percorso dati ha registri a 32 bit (chiamati PC, SP, MDR) , accessibili solo a livello di microarchitettura. La maggior parte dei registri può inviare il contenuto sul bus B, collegato all'input della ALU, il cui output guida lo _shifter_, che invia il risultato sul bus C. 
+
 I valori del bus C possono essere scritti simultaneamente in uno o più registri. Al momento, non c'è un bus A.
 
 Figura 4.1
@@ -24,18 +25,19 @@ La ALU richiede due dati in ingresso, ovvero un input sinistro (A) e uno destro 
 1) L'input sinistro è collegato un registro H, ovvero un registro holding, di mantenimento.
 2) L'input destro è collegato il bus B, che può essere caricato con i valori di una qualsiasi delle nove sorgenti collegate al bus B.
 
- È possibile caricare un valore in H scegliendo una funzione della ALU, il cui compito è semplicemente quello di far passare l'input destro (dal bus B), direttamente nel suo output, senza modificarlo. 
- (si può ottenere lo stesso risultato disabilitando l'input input sinistro, forzandolo ad essere 0, tramite il registro ENA).
- L'output della ALU è gestito da altre due linee di controllo, SLL8 e SRA1.
- 1) SLL8 trasla a sinistra di un byte, impostando a 0 gli 8 bit meno significativi
+ È possibile caricare un valore in H scegliendo una funzione della ALU, il cui compito è semplicemente quello di far passare l'input destro (dal bus B), direttamente nel suo output, senza modificarlo (si può ottenere lo stesso risultato disabilitando l'input input sinistro, forzandolo ad essere 0, tramite il registro ENA).
+ 
+ L'output della ALU è gestito da altre due linee di controllo, SLL8 (Shift Left Logical) e SRA1 (Shift Right Arithmetic).
+ 1) SLL8 trasla a sinistra di un byte, impostando a 0 gli 8 bit meno significativi.
  2) SRA1 trasla a destra di un bit, mantenendo il bit più significativo.
 
 È possibile leggere e scrivere lo stesso registro in un ciclo: questo è possibile perché anche se avviene nello stesso ciclo, avviene in momenti diversi (sempre nello stesso ciclo di clock).
 Per incrementare SP di 1, è possibile portare il valore di SP sul bus B, disabilitando l'input sinistro della ALU, abilitando INC e si memorizza il risultato (incrementato di 1) di nuovo in SP. Quando un registro è selezionato come input destro della ALU, i suoi valori vengono mantenuti sul bus B per tutto il ciclo. 
+
 La ALU opera e il risultato arriva al bus C attraverso lo shifter. Verso la fine del ciclo (ovvero quando gli output della ALU e dello shifter sono sicuramente stabili), un segnale di clock da il via alla memorizzazione del contenuto del bus C in uno o più registri, che può essere lo stesso registro di input di B. Questa temporizzazione precisa permette di leggere e scrivere lo stesso registro in un ciclo.
 
 (pagine riassunte: 3)
-#### 4.1.1.1 - Temporizzazione del percorso dati
+#### Temporizzazione del percorso dati
 All'inizio di ogni ciclo di clock viene generato un breve impulso, sincronizzato con il clock principale. Al fronte di discesa dell'impulso, i bit di controllo delle porte logiche vengono impostati, operazione che richiede un tempo $\Delta w$. Successivamente, il registro selezionato invia il suo contenuto sul bus B, stabilizzandosi dopo un tempo $\Delta x$. A questo punto, la ALU e lo shifter operano sui dati, con output stabili dopo un tempo $\Delta y$. Dopo un ulteriore tempo $\Delta z$, i risultati si propagano lungo il bus C fino ai registri, che vengono caricati al fronte di salita dell'impulso successivo. Questo caricamento è rapido, garantendo che le modifiche degli input non influenzino immediatamente il bus C.
 
 Figura 4.3
@@ -44,8 +46,7 @@ All'interno del percorso dati, c'è un tempo di propagazione finito, anche senza
 
 Per far funzionare questa architettura, è necessaria una temporizzazione rigida: un ciclo di clock lungo, un ritardo di propagazione della ALU noto e un caricamento veloce dei registri dal bus C. Con un'attenta progettazione, il percorso dati può funzionare correttamente in ogni momento, come accade nelle macchine reali.
 
-Il ciclo del percorso dati può essere visto come diviso in sottocicli, con l'inizio del sottociclo 1 guidato dal fronte di discesa del clock:
-
+Il ciclo del percorso dati può essere visto come diviso in sottocicli, con l'inizio del primo sottociclo guidato dal fronte di discesa del clock:
 1. Impostazione dei segnali di controllo ($\Delta w$)
 2. Caricamento dei registri nel bus B ($\Delta x$)
 3. Operazioni della ALU e dello shifter ($\Delta y$)
@@ -58,15 +59,13 @@ L'unico segnali espliciti che guidano il percorso dati sono il fronte di salita/
 È responsabilità dell'ingegnere progettista assicurarsi che $\Delta w+\Delta x+\Delta y+\Delta z$ sia sufficientemente breve rispetto al fronte di salita del clock, garantendo il corretto caricamento dei registri.
 
 (pagine riassunte: 2)
-#### 4.1.1.1.1\ - Operazioni della memoria
+#### Operazioni della memoria (Da rivedere)
 La nostra macchina ha **due diverse modalità di comunicazione con la memoria**: una porta a 32 bit con indirizzi espressi in parole e una porta a 8 bit con indirizzi espressi in byte. 
 La porta a 32 bit è controllata dai registri MAR (Memory Address Register) e MDR (Memory Data Register), mentre la porta a 8 bit è controllata dal registro PC, che legge un byte negli 8 bit meno significativi di MBR. La porta a 8 bit può solo leggere dati dalla memoria.
 
 Ogni registro è controllato da uno o due **segnali di controllo**. Una freccia bianca sotto un registro indica un segnale di controllo che abilita l'output del registro verso il bus B. Una freccia nera indica un segnale di controllo che scrive nel registro un valore proveniente dal bus C. Per iniziare una lettura o una scrittura, bisogna caricare il registro di memoria appropriato e inviare un segnale di scrittura alla memoria.
-MAR contiene gli indirizzi espressi in parole: con i valori (esempio) 1,2,3 ecc.. si fa riferimento a parole consecutive.
-PC contiene gli indirizzi espressi in byte: con i valori (esempio) 1,2,3 ecc.. si fa riferimento a byte consecutivi.
 
-Le due modalità di accesso sono necessarie perché MAR e PC si riferiscono a diverse parti della memoria.La combinazione di MAR/MDR è utilizzata per leggere e scrivere parole di dati a livello ISA, mentre la combinazione di PC/MBR è utilizzata per leggere il programma eseguibile a livello ISA, che consiste in un flusso di byte.
+Le due modalità di accesso sono necessarie perché MAR e PC si riferiscono a diverse parti della memoria. La combinazione di MAR/MDR è utilizzata per leggere e scrivere parole di dati a livello ISA, mentre la combinazione di PC/MBR è utilizzata per leggere il programma eseguibile a livello ISA, che consiste in un flusso di byte.
 
 Nelle implementazioni reali esiste una sola memoria, orientata al byte. È possibile utilizzare MAR per contare il numero di parole, anche se gli indirizzi sono espressi in byte. Quando MAR viene portato sul bus degli indirizzi, i suoi 32 bit non sono mappati direttamente sulle 32 linee. 
 I 2 bit più alti di MAR vengono scartati perché inutili per la nostra macchina, che ha un limite di indirizzamento di 4 GB. Il bit 0 di MAR viene mappato alla linea 2 del bus, il bit 1 alla linea 3, ecc.
@@ -77,34 +76,30 @@ Per convertire il registro MBR a 8 bit in una parola a 32 bit, si tratta come un
 (pagine riassunte: 2)
 ### 4.1.2 - Microistruzioni
 Per controllare il percorso dati, utilizziamo 29 segnali, suddivisi in cinque gruppi funzionali:
-
-1. 9 segnali per controllare la scrittura dei dati dal bus C all'interno dei registri.
-2. 9 segnali per abilitare i registri sul bus B come input per la ALU.
-3. 8 segnali per controllare le funzioni della ALU e dello shifter.
-4. 2 segnali (non mostrati) per indicare alla memoria di leggere (scrivere) attraverso MAR e MDR.
-5. 1 segnale (non mostrato) per indicare il prelievo dalla memoria attraverso PC o MBR.
+- 9 segnali per controllare la scrittura dei dati dal bus C all'interno dei registri.
+- 9 segnali per abilitare i registri sul bus B come input per la ALU.
+- 8 segnali per controllare le funzioni della ALU e dello shifter. 
+- 2 segnali (non mostrati) per indicare alla memoria di leggere (scrivere) attraverso MAR e MDR.
+- 1 segnale (non mostrato) per indicare il prelievo dalla memoria attraverso PC o MBR.
 
 Questi 29 segnali specificano le operazioni da eseguire durante un ciclo del percorso dati, che include:
-
-1. Portare i valori dei registri sul bus B.
-2. Propagare i segnali attraverso ALU e shifter.
-3. Guidare i risultati sul bus C.
-4. Scrivere i risultati nei registri appropriati.
+- Portare i valori dei registri sul bus B.
+- Propagare i segnali attraverso ALU e shifter.
+- Guidare i risultati sul bus C.
+- Scrivere i risultati nei registri appropriati.
 
 Se viene asserito il segnale per una lettura dalla memoria, l'operazione inizia alla fine del ciclo del percorso dati, dopo il caricamento di MAR. Una lettura della memoria avviata alla fine del ciclo k+1 trasmette dati utilizzabili solo a partire dal ciclo k+2. In altre parole, carichiamo MAR alla fine del ciclo e avviamo l'operazione di memoria subito dopo. Poiché la memoria richiede un ciclo di clock, i dati non saranno disponibili in MDR all'inizio del ciclo successivo, soprattutto con impulsi di clock brevi. Deve quindi trascorrere un ciclo completo del percorso dati tra l'inizio di una lettura della memoria e l'utilizzo del risultato. Durante questo ciclo è possibile eseguire altre operazioni, basta che non richiedono dati dalla memoria.
 
 In alcuni casi può essere utile scrivere l'output presente sul bus C in più di un registro, mentre non ha senso abilitare più di un registro sul bus B contemporaneamente.
 
 Ci sono soltanto 9 registri di input che guidano il bus B: possiamo codificare in 4 bit l'informazione del bus B e utilizzare un decoder per generare 16 segnali di controllo,  7 de quali non vengono utilizzati. Quindi, possiamo controllare il percorso dati con 9+4+8+2+1 = 24 segnali (24 bit):
-
 - 9 per la scrittura dal bus C ai registri.
 - 4 (ottimizzati con coder e decoder) per abilitare i registri sul bus B.
 - 8 per controllare ALU e shifter.
 - 2 per le operazioni di memoria.
 - 1 per il prelievo dalla memoria attraverso PC o MBR.
 
-Questi bit controllano il percorso dati solo per un ciclo. Per determinare le operazioni del ciclo successivo, aggiungiamo due campi: NEXT_ADDRESS e JAM. 
-
+Questi bit controllano il percorso dati solo per un ciclo. Per determinare le operazioni del ciclo successivo, aggiungiamo due campi: NEXT_ADDRESS e JAM. Questa è la composizione (in gruppi) di una microistruzione:
 1) Addr: Contiene l'indirizzo di una potenziale successiva microistruzione.
 2) JAM: Determina come viene selezionata la successiva microistruzione.
 3) ALU: Seleziona le funzioni della ALU e dello shifter.
@@ -114,9 +109,7 @@ Questi bit controllano il percorso dati solo per un ciclo. Per determinare le op
 
 (pagine riassunte 3)
 ### 4.1.3 - Unità di controllo microprogrammata: Mic-1
-
 Finora abbiamo descritto come viene controllato il microprogramma, ma non abbiamo ancora spiegato come si decide quale dei segnali di controllo abilitare durante ciascun ciclo. Ciò è determinato da un **sequenzializzatore** che ha la responsabilità di far avanzare passo passo la sequenza di operazioni necessarie per eseguire una singola istruzione ISA. Durante ogni ciclo, il sequenzializzatore deve produrre due tipi di informazioni:
-
 1. Lo stato di ogni segnale di controllo del sistema.
 2. L'indirizzo della microistruzione da eseguire subito dopo.
 

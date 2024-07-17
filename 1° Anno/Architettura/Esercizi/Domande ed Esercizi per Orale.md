@@ -1,3 +1,4 @@
+#### Domande Teoriche
 Le domande pubblicate sul sito dal professore sono le seguenti:
 1) Il teorema del campionamento assicura che l'approssimazione discreta di un segnale analogico a banda limitata, è senza perdita di informazione utile se... 
 2) La macchina di von Neumann è composta da? 

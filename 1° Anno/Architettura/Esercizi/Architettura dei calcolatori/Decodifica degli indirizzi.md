@@ -20,11 +20,11 @@ La memoria ROM è da 16 KB quindi, grazie alla formula otteniamo che:$$\begin{ar
 \implies n=14
 \end{array}$$Visto che inizia dall'indirizzo $8000_{H}$, il suo spazio di indirizzamento sarà: 
 ![[Es_indirizzi_1.png|400]]
-Quindi occupa la memoria $8000_{H}\div BFFF_{H}$ e se deve essere effettuato un accesso in memoria verra asserito : $\overline{\overline{MREQ}\cdot A_{15}\cdot \overline{A_{14}}}$.
+Quindi occupa la memoria $8000_{H}\div BFFF_{H}$ e se deve essere effettuato un accesso in memoria verrà asserito : $\overline{\overline{MREQ}\cdot A_{15}\cdot \overline{A_{14}}}$.
 
 Dovendo la RAM collocarsi subito dopo essa comincerà da $C000_{H}$. La sua dimensione è do 8 KB, seguendo sempre la formula $2^n\cdot p$ essa ha $n=13$, ed il suo spazio di indirizzamento sarà:
 ![[Es_indirizzi_2.png|400]]
-Quindi occupa la memoria $C000_{H}\div DFFF_{H}$ e se deve essere effettuato un accesso in memoria verra asserito : $\overline{\overline{MREQ}\cdot A_{15}\cdot A_{14}\cdot \overline{A_{13}}}$.
+Quindi occupa la memoria $C000_{H}\div DFFF_{H}$ e se deve essere effettuato un accesso in memoria verrà asserito : $\overline{\overline{MREQ}\cdot A_{15}\cdot A_{14}\cdot \overline{A_{13}}}$.
 
 L'Intel 8255A (24 pin, 3 porte da 8 bit) memory-mapped ha 3 modi di funzionamento:
 0. le porte A e B possono essere programmate in modalità di ingresso o di uscita, la porta C può essere suddivisa in due sottoporte da 4 bit  e programmate in ingresso o uscita.

@@ -52,3 +52,57 @@ Sia $a\in f^{-1}(X/Y)\implies f(a)\in X/Y\implies f(a)\in X$ e $f(a)\notin Y\imp
 
 Viceversa
 Sia $a\in f^{-1}(X)/f^{-1}(Y)\implies a\in f^{-1}(X)$ e $a\notin f^{-1}(Y)\implies f(a)\in X$ e $f(a)\notin Y\implies$$f(a)\in X/Y\implies a\in f^{-1}(X/Y)\Box$
+
+## Es. Generale
+
+Sia $A=\mathbb{Z}$. Sia $R$ la relazione su $\mathbb{Z}$ definita $aRb\iff 3|(b-a)\quad\quad \forall a,b\in\mathbb{Z}$ 
+$R$ di equivalenza?
+
+Riflessiva
+Sia $a\in\mathbb{Z}$ allora $a-a=0$ e $3|0\implies 3|a-a \implies aRa$
+
+Simmetrica
+Siano $a,b\in \mathbb{Z}$ tali che $aRb\implies a|(b-a)\implies \exists\ k\in \mathbb{Z}$ tale che $b-a=3\cdot k$
+$\implies a-b=3\cdot(-k) \implies 3|a-b$   (se $k\in\mathbb{Z}\implies-k\in\mathbb{Z}$)
+
+Transitiva
+Siano $a,b,c\in\mathbb{Z}$ tali che $aRb$ e $bRc$ $\implies 3|b-a\ e\ 3|c-b\implies \exists\ k,l\in\mathbb{Z}$ tali che $b-a=3\cdot k\ e\ c-b=3\cdot l\implies c-a=c-b+b-a= 3\cdot l+3\cdot k=3(l+k)$ ma $l+k\in\mathbb{Z}\implies_{3}|c-a\implies aRc$
+
+Quindi $R$ è di equivalenza$\Box$
+
+Chi sono le classi di equivalenza?
+
+$$\begin{array}{l}
+[0]=\{a\in\mathbb{Z}:aR0\}=\{a\in\mathbb{Z}:3|(a-0)\}=\{a\in\mathbb{Z}:3|a\}= \\
+=\{3\cdot k: k\in\mathbb{Z}\}=\{0,3,-3,6,-6,\dots\} \\ \\
+[1]=\{a\in\mathbb{Z}:aR1\}=\{a\in\mathbb{Z}:3|(a-1)\}=\{a\in\mathbb{Z}:a\cdot1=3\cdot k,\text{per qualche }k\in\mathbb{Z}\}= \\
+=\{3\cdot k+1:k\in\mathbb{Z}\}=\{1,-2,4,-5,7,\dots\} \\ \\
+[2]=\{a\in\mathbb{Z}:aR2\}=\{a\in\mathbb{Z}:3|(a-2)\}=\{a\in\mathbb{Z}:a\cdot2=3\cdot k,\text{per qualche }k\in\mathbb{Z}\}= \\
+=\{3\cdot k+2:k\in\mathbb{Z}\}=\{2,-1,5,-4,8,\dots\}
+\end{array}$$
+In generale
+$[i]=\{3\cdot k+i\mathbf{k}\in\mathbb{Z}\}\quad(i\in\mathbb{Z})$
+
+Quindi 
+$$\begin{array}{}
+[0]=[3]=[-3]=[6]=[-6]=\dots \\
+[1]=[4]=[-2]=[7]=[-5]=\dots \\
+[2]=[5]=[-1]=[8]=[-4]=\dots
+\end{array}$$
+
+Quindi $R$ ha 3 classi di equivalenza distinte
+
+## Es. \[2-\] (da svolgere)
+Sia $R$ la relazione su $\mathbb{Z}$ ponendo 
+$aRb\iff b-a$ è pari        ($\forall\ a,b\in\mathbb{Z}$)
+
+Relazione di equivalenza?
+
+## Es. \[2\] (da svolgere)
+Sia $P=1\quad 27\quad 2\quad 28\quad 3\quad 29\quad\dots\quad 25\quad 51\quad 26\quad 52(\implies p\in S_{52})$
+
+Calcolare il minimo $k\in\mathbb{P}$ tale che 
+$p\ \circ\ p\ \circ\ p\ \circ\ ..\ \circ\ p=Id_{[52]}=1\quad2\quad3\quad4\quad\dots51\quad52$
+
+Osservazione
+$p$ è la smazzata perfetta quindi $k$ è il minimo numero di smazzate perfette dopo le quali il mazzo torna nell'ordinamento iniziale

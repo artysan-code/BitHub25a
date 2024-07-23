@@ -97,7 +97,7 @@ x=\frac{-0\pm\sqrt{0^2-4\cdot2}}{2}=\frac{\pm\sqrt{-8}}{2}=\frac{\pm\sqrt{4(-2)}
 Pertanto le radice dell'equazione sono $$\begin{array}{}
 \delta_{1}=-2, & \delta_{2}=i\sqrt{2}, & \delta_{3}=-i\sqrt{2}
 \end{array}$$di molteplicità $d_{1}=1,\ d_{2}=1,\ d_{3}=1$. Sappiamo dalla teoria che $\exists\ P_{1}(x),P_{2}(x),P_{3}(x)\in\mathbb{C}$ tali che $deg(P_{1})\leq d_{1}-1,\ deg(P_{2})\leq d_{2}-1,\ deg(P_{3})\leq d_{3}-1$ e $$f(n)=P_{1}(n)\cdot(\delta_{1})^n+P_{2}(n)\cdot(\delta_{2})^n+P_{3}(n)\cdot(\delta_{3})^n\quad\quad\forall\ n\in\mathbb{N}$$
-Quindi $\exists\ a,b,c\in\mathbb{C}$ tali che $f(n)=a\cdot(-2)^n+b\cdot(i\sqrt{2})^n+c\cdot(-i\sqrt{2})^n\quad\quad\forall\ n\in\mathbb{N}$. 
+Quindi $\exists\ a,b,c\in\mathbb{C}$ tali che $$f(n)=a\cdot(-2)^n+b\cdot(i\sqrt{2})^n+c\cdot(-i\sqrt{2})^n\quad\quad\forall\ n\in\mathbb{N}$$
 Per trovare $a,b,c\in\mathbb{C}$ usiamo le C.I.
 $$\begin{array}{l}
 0=f(0)=a+b+c \\
@@ -187,4 +187,8 @@ b=1-\frac{1+\sqrt{5}}{2\sqrt{5}}=\frac{\sqrt{5}-1}{2\sqrt{5}}
 concludendo $$F_{n}=\frac{1+\sqrt{5}}{2\sqrt{5}}(\frac{1+\sqrt{5}}{2})^n+\frac{\sqrt{5}-1}{2\sqrt{5}}(\frac{1-\sqrt{5}}{2})^n\quad\quad\forall\ n\in\mathbb{N}$$
 
 ## Es.
-Dieci persone  si dividono in 5 gruppi, ognuno di 2 persone. In quanti modi può avvenire questo? Le persone sono tra loro distinguibili. Quindi $$\{\text{Persone}\}\leftrightarrow[10]$$
+Dieci persone  si dividono in 5 gruppi, ognuno di 2 persone. In quanti modi può avvenire questo? Le persone sono tra loro distinguibili. Quindi $$\begin{array}{}
+\{\text{Persone}\}\leftrightarrow[10] & \text{e} & \{\text{Gruppi}\}\leftrightarrow\{\text{Scatole}\}
+\end{array}$$
+Pertanto il numero è $$\binom{10}{2,2,2,2,2}=\frac{10\cdot9\cdot8\cdot7\cdot6\cdot5\cdot4\cdot3\cdot2}{2\cdot2\cdot2\cdot2\cdot2}=5\cdot9\cdot7\cdot3\cdot5\cdot2\cdot3\cdot4$$
+## Es.

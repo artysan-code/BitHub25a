@@ -48,7 +48,7 @@ f(n)=2f(n-1)+f(n-2) & \forall\ n\geq 2 & (*) \\
 $f(0)=1,\ f(1)=3$
 
 Portiamo la ricorsione in forma standard:
-$f(n+2)=2f(n+1)+f(n)\quad\quad\forall\ n\geq 0$
+$$f(n+2)=2f(n+1)+f(n)\quad\quad\forall\ n\geq 0$$
 
 L'equazione caratteristica è $x^2-2x-1=0$
 Le sue radici sono: $$x=\frac{2\pm\sqrt{(-2)^2+4}}{2}=\frac{2\pm\sqrt{8}}{2}=\frac{2\pm2\sqrt{2}}{2} $$e quindi $$\begin{array}{}
@@ -137,4 +137,54 @@ a=b-c=\frac{-i}{\sqrt{2}}-\frac{i}{\sqrt{2}}=0
 
 Concludendo $f(n)=\frac{-i}{\sqrt{2}}(i\sqrt{2})^n+\frac{i}{\sqrt{2}}(-i\sqrt{2})^n\quad\quad\forall\ n\in\mathbb{N}$
 
+## Es. 
+$n=6$ $$f(5)=|\{(2,2,1),()\}|$$
+
+## Es. (successione di Fibonacci)
+Trovare una formula per la successione di Fibonacci.
+Sappiamo che la successione di Fibonacci $\{f_{n}\}_{n=0,1,\dots}$ è tale che $$F_{n}=F_{n-1}+F_{n-2}\quad\quad\forall\ n\in\mathbb{N},\ n\geq 2\quad\quad(*)$$
+con condizioni iniziali  $F_{0}=F_{1}=1$
+
+Risolviamo la ricorsione lineare a coefficienti costanti $(*)$.
+L'equazione caratteristica è 
+$x^2=x+1$
+
+Le radici sono $$x=\frac{1\pm \sqrt{1^2+4}}{2}=\frac{1\pm \sqrt{5}}{2}=\begin{cases}
+\frac{1+\sqrt{5}}{2} \\ \\
+\frac{1-\sqrt{5}}{2}
+\end{cases}$$
+Quindi abbiamo $\delta_{1}=\frac{1+\sqrt{5}}{2},\ \delta_{2}=\frac{1-\sqrt{5}}{2}$(in effetti $x^2-x-1=(x-\frac{1+\sqrt{5}}{2})^1(x-\frac{1-\sqrt{5}}{2})^2$)
+
+Sappiamo dalla teoria che $\exists\ P_{1}(x),P_{2}(x)\in\mathbb{R}[x]$ tali che $deg(P_{1})\leq 1-1$ e $deg(P_{2})\leq 1-1$ e $$F_{n}=P_{1}(n)\cdot(\delta_{1})^n+P_{2}(n)\cdot(\delta_{2})^n\quad\quad\forall\ n\in\mathbb{N}$$
+Quindi $\exists\ a,b\in\mathbb{C}$ tali che $$F_{n}=a(\frac{1+\sqrt{5}}{2})^n+b(\frac{1-\sqrt{5}}{2})^n\quad\quad\forall\ n\in\mathbb{N}$$
+Per trovare $a$ e $b$ usiamo le condizioni iniziali. Abbiamo $$\begin{array}{l}
+\begin{cases}
+1=F_{0}=a+b \\
+1=F_{1}=a(\frac{1+\sqrt{5}}{2})+b(\frac{1-\sqrt{5}}{2})
+\end{cases} \\\quad\quad\quad\quad\quad\Downarrow \\
+\begin{cases}
+a+b=1 \\
+a(\frac{1+\sqrt{5}}{2})+b(\frac{1-\sqrt{5}}{2})=1
+\end{cases} \\\quad\quad\quad\quad\quad\Downarrow \\
+\begin{cases}
+b=1-a \\
+a(1+\sqrt{5})+(1-a)(1-\sqrt{5})=2
+\end{cases} \\\quad\quad\quad\quad\quad\Downarrow \\
+\begin{cases}
+b=1-a \\
+a(1+\sqrt{5}-1+\sqrt{5})=2-1+\sqrt{5}
+\end{cases}\\\quad\quad\quad\quad\quad\Downarrow \\
+\begin{cases}
+b=1-a \\
+a(2\sqrt{5})=1+\sqrt{5}
+\end{cases}\\\quad\quad\quad\quad\quad\Downarrow \\
+\begin{cases}
+b=1-a \\
+a=\frac{1+\sqrt{5}}{2\sqrt{5}}
+\end{cases} \\\quad\quad\quad\quad\quad\Downarrow \\
+b=1-\frac{1+\sqrt{5}}{2\sqrt{5}}=\frac{\sqrt{5}-1}{2\sqrt{5}}
+\end{array}$$
+concludendo $$F_{n}=\frac{1+\sqrt{5}}{2\sqrt{5}}(\frac{1+\sqrt{5}}{2})^n+\frac{\sqrt{5}-1}{2\sqrt{5}}(\frac{1-\sqrt{5}}{2})^n\quad\quad\forall\ n\in\mathbb{N}$$
+
 ## Es.
+Dieci persone  si dividono in 5 gruppi, ognuno di 2 persone. In quanti modi può avvenire questo? Le persone sono tra loro distinguibili. Quindi $$\{\text{Persone}\}\leftrightarrow[10]$$

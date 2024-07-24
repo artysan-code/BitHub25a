@@ -77,7 +77,7 @@ $|X\cup Y|=8!+8!-7!$
 Concludendo
 $|\{f\in S_{9}:f(2)\not=2\text{ e }f(4)\not=4\}|=9!-(|X\cup Y)=9!-8!-8!+7!=7!(9\cdot8-8-8+1)=57\cdot 7!$
 
-## Es. (inclusione-esclusion)
+## Es. (inclusione-esclusione)
 Quanti numeri di cellulare ci sono che hanno tre cifre consecutive uguali?
 
 Vogliamo calcolare 
@@ -113,9 +113,9 @@ $|A_{2}\cap A_{3}|=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{2}=x_{3}=x_{4}=x_{5}\}|=1
 $|A_{3}\cap A_{4}|=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{3}=x_{4}=x_{5}=x_{6}\}|=10^4$
 $|A_{4}\cap A_{5}|=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{4}=x_{5}=x_{6}=x_{7}\}|=10^4$
 anche
-$A_{1}\cap A_{3}=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{1}=x_{2}=x_{3}=x_{4}=x_{5}\}|=10^3$
-$A_{2}\cap A_{4}=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{2}=x_{3}=x_{4}=x_{5}=x_{6}\}|=10^3$
-$A_{3}\cap A_{5}=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{3}=x_{4}=x_{5}=x_{6}=x_{7}\}|=10^3$
+$|A_{1}\cap A_{3}|=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{1}=x_{2}=x_{3}=x_{4}=x_{5}\}|=10^3$
+$|A_{2}\cap A_{4}|=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{2}=x_{3}=x_{4}=x_{5}=x_{6}\}|=10^3$
+$|A_{3}\cap A_{5}|=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{3}=x_{4}=x_{5}=x_{6}=x_{7}\}|=10^3$
 anche 
 $|A_{1}\cap A_{4}|=|\{(x_{1},\dots,x_{7})\in[0,9]^7:x_{1}=x_{2}=x_{3}=x_{4}=x_{5}=x_{6}\}|=10^3$
 e similmente

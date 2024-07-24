@@ -41,7 +41,7 @@ $f(2)=3,f(1)=2$
 e
 $f(n)=f(n-1)+f(n-2)$ se $n\geq 3$
 
-## Es. (Ricorsione lineare a coefficienti costanti)
+## Es. (Ric. lin. a coeff. cost.)
 Risolvere la ricorsione lineare a coefficienti costanti $$\begin{array}{}
 f(n)=2f(n-1)+f(n-2) & \forall\ n\geq 2 & (*) \\
 \end{array}$$Condizioni iniziali
@@ -73,7 +73,7 @@ b=1-a=1-\frac{1+\sqrt{2}}{2}=\frac{1-\sqrt{2}}{2}
 concludendo
 $f(n)=\frac{1+\sqrt{2}}{2}\cdot(1+\sqrt{2})^n+\frac{1-\sqrt{2}}{2}(1-\sqrt{2})^n\quad\quad\forall\ n\in\mathbb{N}$
 
-## Es. (Ricorsione lineare a coefficienti costanti)
+## Es. (Ric. lin. a coeff. cost.)
 Risolvere la ricorsione lineare a coefficienti costanti $$f(n+3)=-2f(n+2)-2f(n+1)-4f(n)\quad\quad\forall\ n\in\mathbb{N}$$con le condizioni iniziali 
 $f(0)=0, f(1)=2, f(2)=0$
 
@@ -191,4 +191,59 @@ Dieci persone  si dividono in 5 gruppi, ognuno di 2 persone. In quanti modi può
 \{\text{Persone}\}\leftrightarrow[10] & \text{e} & \{\text{Gruppi}\}\leftrightarrow\{\text{Scatole}\}
 \end{array}$$
 Pertanto il numero è $$\binom{10}{2,2,2,2,2}=\frac{10\cdot9\cdot8\cdot7\cdot6\cdot5\cdot4\cdot3\cdot2}{2\cdot2\cdot2\cdot2\cdot2}=5\cdot9\cdot7\cdot3\cdot5\cdot2\cdot3\cdot4$$
-## Es.
+## Es. (Ric. lin. a coeff. cost. (molteplicità 2))
+Risolvere la ricorsione lineare a coefficienti costanti 
+$$f(n+3)=-3f(n+2)+4f(n)$$
+con condizioni iniziali $f(0)=5,\ f(1)=-5,\ f(2)=9$
+
+Portiamo la ricorsione in forma standard:$$f(n+3)+3f(n+2)-4f(n)=0$$$$x^3+3x^2-4=0$$
+Usiamo Ruffini: $$\begin{array}{c|ccc|c}
+ & 1 & +3 & 0 & - 4 \\
+ -2&  & -2 & -2 & +4\\
+\hline
+ & 1 & 1 & -2 & 0
+\end{array}$$
+quindi abbiamo $x^3+3x^2-4=(x+2)(x^2+x-2)$
+
+Troviamo le radici $$x=\frac{-1\pm \sqrt{1^2+8}}{2}=\frac{1\pm3}{2}=\begin{cases}
+\frac{2}{2}=1 \\ \\
+\frac{-4}{2}=-2
+\end{cases}$$
+Quindi abbiamo come radici $\delta_{1}=-2$ e $\delta_{2}=1$ le cui molteplicità sono $d_{1}=2$ e $d_{2}=1$. Sappiamo dalla teoria che $\exists\ P_{1}(x),P_{2}(x)\in\mathbb{C}$ tali che $deg(P_{1})\leq d_{1}-1,\ deg(P_{2})\leq d_{2}-1$ e $$f(n)=P_{1}(n)(\delta_{1})^n+P_{2}(n)(\delta_{3})^n\quad\quad\forall\ n\in\mathbb{N}$$
+Quindi $\exists\ a,b,c\in\mathbb{C}$ tali che
+$$f(n)=(a+b\cdot n)(\delta_{1})^n+c(\delta_{3})^n\quad\quad\forall\ n\in\mathbb{N}$$
+Per trovare $a,b,c$ usiamo le C.I. $$\begin{array}{l}
+\begin{cases}
+5=f(0)=a+c \\
+-5=f(1)=(a+b\cdot 1)(-2)+c(1) \\
+9=f(2)=(a+b\cdot 2)(-2)^2+c(1)^2
+\end{cases}\\\quad\quad\quad\quad\quad\Downarrow \\
+\begin{cases}
+5=a+c \\
+-5=-2a-2b+c \\
+9=4a+8b+c
+\end{cases}\\\quad\quad\quad\quad\quad\Downarrow \\
+a=5-c \\
+\begin{cases}
+-5=-2(5-c)-2b+c \\
+9=4(5-c)+8b+c
+\end{cases}\\\quad\quad\quad\quad\quad\Downarrow \\
+\begin{cases}
+-5=-10+3c-2b \\
+9=20-3c+8b
+\end{cases}\\\quad\quad\quad\quad\quad\Downarrow \\
+\begin{cases}
+c=\frac{2b+5}{3} \\
+9=20-\not3(\frac{2b+5}{\not3})+8b
+\end{cases}\\\quad\quad\quad\quad\quad\Downarrow \\
+\begin{cases}
+c=\frac{-2+5}{3} \\
+b=-1
+\end{cases} \\\quad\quad\quad\quad\quad\Downarrow \\
+c=\frac{3}{3}=1\\\quad\quad\quad\quad\quad\Downarrow \\
+a=5-c=5-1=4
+\end{array}$$
+concludendo $$f(n)=(4+(-1)\cdot n)(-2)^n+1(1)^n$$
+
+## Es. 
+

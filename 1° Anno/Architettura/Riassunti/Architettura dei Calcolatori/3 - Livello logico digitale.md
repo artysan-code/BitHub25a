@@ -274,8 +274,6 @@ Ad esempio, $T_{AD}$ è il tempo massimo entro il quale la CPU deve stabilizzare
 
 Infine, il testo sottolinea che la Figura 3.38 è una versione semplificata dei vincoli di temporizzazione reali e che la scelta dei livelli di asserzione dei segnali di controllo (alto o basso) è arbitraria, simile a una decisione di programmazione.
 #### 3.4.4.2 - Bus asincroni
-Figura 3.39
-
 I bus sincroni funzionano con intervalli temporali definiti dal clock, il che semplifica la progettazione ma introduce alcuni problemi. Ad esempio, tutte le operazioni devono allinearsi ai cicli del clock. Se una CPU e una memoria possono completare un trasferimento in 3,1 cicli, devono comunque estendere il tempo a 4 cicli, poiché non sono consentite frazioni di ciclo. Inoltre, una volta scelto un ciclo di bus, è difficile trarre vantaggio dai progressi tecnologici successivi. Anche con memorie più veloci, il tempo di lettura minimo rimane vincolato ai cicli di clock, limitando il miglioramento delle prestazioni.
 
 In un sistema con dispositivi di velocità diversa, il bus deve funzionare alla velocità del dispositivo più lento. Questo limita le prestazioni complessive, poiché i dispositivi più veloci non possono sfruttare il loro pieno potenziale.
@@ -308,6 +306,10 @@ Finora abbiamo esaminato i bus con un master, solitamente la CPU, che legge o sc
 
 Spesso è più efficiente trasferire un intero blocco di dati in una volta sola, come quando si utilizza la cache. Il master comunica allo slave quanti dati trasferire e lo slave restituisce un dato per ciclo fino a quando il conteggio non si esaurisce. Questo schema permette di ridurre il numero di cicli di bus necessari per trasferire un blocco.
 
+
+Un altro tipo di ciclo di bus gestisce gli interrupt. L'assegnazione delle priorità e l'arbitraggio sono necessari per gestire gli interrupt da dispositivi diversi. Tipicamente, un controllore di interrupt come il 8259A di Intel viene utilizzato per gestire gli interrupt da più dispositivi di I/O.
+
+Il 8259A ha otto input che posso
 Nei sistemi multiprocessore, è importante evitare che più CPU accedano simultaneamente a dati critici in memoria. Si utilizza un ciclo di bus leggi-modifica-scrivi che consente a una CPU di leggere, analizzare e riscrivere dati senza rilasciare il bus, evitando interferenze da parte di altre CPU.
 
 Un altro tipo di ciclo di bus gestisce gli interrupt. L'assegnazione delle priorità e l'arbitraggio sono necessari per gestire gli interrupt da dispositivi diversi. Tipicamente, un controllore di interrupt come il 8259A di Intel viene utilizzato per gestire gli interrupt da più dispositivi di I/O.

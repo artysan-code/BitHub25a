@@ -400,6 +400,12 @@ Sebbene la maggior parte delle stampanti laser sia monocromatica, le stampanti l
 Le immagini su monitor sono create combinando i tre colori primari additivi: rosso, verde e blu (RGB). Al contrario, le immagini su carta sono create sovrapponendo i tre colori primari sottrattivi: ciano, magenta e giallo (CMY). Tuttavia, poiché è difficile ottenere un nero puro con questi tre colori, le stampanti a colori usano anche il nero (K), risultando nel sistema CMYK.
 
 Il **gamut** o **gamma dei colori** è l'insieme completo dei colori che un dispositivo può rappresentare. Né i monitor né le stampanti possono riprodurre tutti i colori del mondo reale. I monitor utilizzano luce trasmessa e hanno un fondo nero, mentre le stampanti usano luce riflessa e hanno un fondo chiaro. Inoltre, i monitor generano 256 intensità per colore e le stampanti usano i mezzitoni, rendendo complessa la conversione accurata delle immagini dal monitor alla stampa. Le gamme di colori RGB e CMYK sono diverse, complicando ulteriormente questa conversione.
+
+#### Stampanti ad impatto a matrice
+Le stampanti a matrice di punti funzionano grazie a una testina che contiene una matrice di punzoni elettromagnetici. Questa testina si muove longitudinalmente mentre il foglio scorre sotto di essa. La qualità di stampa può essere migliorata utilizzando un maggior numero di aghi sulla testina o ripassando più volte le linee di stampa, una tecnica nota come overlapping.
+
+Le stampanti a matrice di punti sono solitamente monocromatiche, economiche, lente, rumorose e caratterizzate da una bassa qualità grafica. Tuttavia, hanno il vantaggio di avere un nastro che si usura meno rispetto alle cartucce delle stampanti a getto d'inchiostro o laser. Queste stampanti sono utilizzate principalmente per la stampa su moduli prestampati con molte colonne, su fogli di piccola dimensione come le ricevute dei registratori di cassa e delle macchine ATM, e per la stampa di ricevute multi-copia.
+
 #### Stampanti a getto d'inchiostro
 Per le stampe casalinghe a basso costo, molti preferiscono le **stampanti a getto d’inchiostro**. La testina di stampa mobile, che contiene le cartucce di inchiostro, si muove orizzontalmente lungo la carta spruzzando inchiostro attraverso piccoli ugelli. Le goccioline di inchiostro hanno un volume di circa 1 picolitro. Esistono due tipi principali di stampanti a getto d’inchiostro: *piezoelettriche* e *termiche*.
 

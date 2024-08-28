@@ -399,4 +399,167 @@ A\text{ e }B\text{ sono indipendenti} & \implies A\text{ e }B^{c}\text{ sono ind
 
 <----- Fine lezione 2 ----->
 
-## 
+Ora consideriamo l'indipendenza tra più eventi.
+
+### Definizione
+Sia $\{A_{i}\}_{i\in I}$ una famiglia di eventi.
+Allora si ha una famiglia di eventi indipendenti se:
+- se la famiglia è finita(es. $\{A_{1},\dots,A_{n}\}$) ogni salto ????? di almeno due insiemi $\{A_{i_{1}},\dots,A_{ik}\}$ con $k\geq 2$ si ha $$P(A_{i_{1}}\cap\dots\cap A_{ik})=P(A_{i1})\dots P(A_{ik})$$
+- se la famiglia è infinita, ogni sottofamiglia finita lo è in accordo con quanto detto sopra.
+
+#### Esempio (Famiglia di 3 eventi non indipendenti, ma indipendenti a due a due)
+
+**Premessa**
+Consideriamo 3 eventi $\{A_{1},A_{2},A_{3}\}$ allora c'è indipendenza se: $$\begin{array}{}
+P(A_{1}\cap A_{2})=P(A_{1})P(A_{2}) \\
+P(A_{1}\cap A_{3})=P(A_{1})P(A_{3}) & \text{e }P(A_{1}\cap A_{2}\cap A_{3})=P(A_{1})P(A_{2})P(A_{3}) \\
+P(A_{2}\cap A_{3})=P(A_{2})P(A_{3})
+\end{array}$$
+
+Consideriamo la seguente situazione 
+Una urna ha 4 carte numerate come segue e si estrae una carta a caso.
+$$\begin{array}{|c|c|}
+[1] & [2]  \\
+[3] & [123] \\
+\hline
+\end{array}$$
+Consideriamo gli eventi $A_{1}=\{$la carta estratta ha il numero $i\}_{i=1,2,3}$, allora $$\begin{array}{l}
+P(A_{1})= P(A_{2})=P(A_{3})\overset{\overset{[i]\ \ [123]}{\downarrow}}{=}\frac{2}{4}=\frac{1}{2}\\
+P(A_{1}\cap A_{2})= P(A_{1}\cap A_{3})=P(A_{2}\cap A_{3})\overset{\overset{[123]}{\downarrow}}{=}\frac{1}{4}\\
+P(A_{1}\cap A_{2}\cap A_{3})\overset{\overset{[123]}{\downarrow}}{=}\frac{1}{4}
+\end{array}$$
+quindi $\underset{\frac{1}{4}}{P(A_{1}\cap A_{2})}\underset{=}{=}\underset{\frac{1}{2}\cdot \frac{1}{2}}{P(A_{1})P(A_{2})},\quad\underset{\frac{1}{4}}{P(A_{1}\cap A_{3})}\underset{=}{=}\underset{\frac{1}{2}\cdot \frac{1}{2}}{P(A_{1})P(A_{3})},\quad\underset{\frac{1}{4}}{P(A_{2}\cap A_{3})}\underset{=}{=}\underset{\frac{1}{2}\cdot \frac{1}{2}}{P(A_{2})P(A_{3})}$
+e $P(A_{1}\cap A_{2}\cap A_{3})\neq P(A_{1}P(A_{2})P(A_{3}))\quad$ (si ha $\frac{1}{4}\neq \frac{1}{8}$)
+
+**Conclusione**
+Eventi non indipendenti ma indipendenti a due a due
+
+### Proposizione (senza dimostrazione)
+Se $\{A_{i}\}_{i\in I}$ è una famiglia di eventi indipendenti, allora lo è anche qualsiasi altra famiglia ottenuta considerando il complementare di alcuni (o tutti) gli eventi.
+
+#### Commento (con esempio)
+L'ipotesi di indipendenza spesso segue dal modello in esame. 
+Ad esempio si hanno eventi indipendenti nel caso di eventi legati a diversi lanci di moneta, diversi lanci di dado, diverse estrazioni da un insieme di oggetti (urna con palline, mazzo di carte, ecc) con reinserimento.
+In altri casi gli eventi indipendenti escono fuori in maniera opportuna. Consideriamo il seguente esempio.
+Si lanciano 3 monete eque e consideriamo i seguenti eventi $$A=\{\text{esce testa al 1° lancio}\}\quad\quad B=\{\text{escono esattamente 2 teste consecutive}\}$$
+l'insieme di riferimento è $$\ohm=\{(T,T,T),(T,T,C),(T,C,T),(T,C,C),(C,T,T),(C,T,C),(C,C,T),(C,C,C)\}$$
+Ognuno di questi 8 elementi ha probabilità $\frac{1}{2}\cdot \frac{1}{2}\cdot \frac{1}{2}=\frac{1}{8}\implies(\text{ spazio di probabilità uniforme ottenuto})$
+perché i lanci di moneta sono indipendenti.
+Si ha $$\begin{array}{l}
+P(A)=P(\{(T,T,T),(T,T,C),(T,C,T),(T,C,C)\})=\frac{4}{8}=\frac{1}{2} \\
+P(B)=P(\{(T,T,C),(C,T,T)\})= \frac{2}{8}=\frac{1}{4}\\
+P(A\cap B)=P(\{(T,T,C)\})=\frac{1}{4} \\
+P(A)P(B)=\frac{1}{2}\cdot\frac{1}{4}=\frac{1}{8}
+\end{array}$$
+Quindi $A$ e $B$ sono indipendenti e non era prevedibile a priori
+
+## Cenni di calcolo combinatorio
+
+Consideriamo un insieme di $n\geq 1$ elementi; senza perdere di generalità supponiamo che sia l'insieme $\{1,\dots,n\}$.
+Siamo interessati al seguente insieme (**Disposizioni semplici**) $$D_{n,k}=\{i_{1},\dots,i_{k}\}$$
+sequenza ordinata di elementi in $\{1,\dots,n\}$, senza ripetizioni, di lunghezza $k\in\{1,\dots,n\}$
+
+Ci si chiede quanto vale $\#D_{n,k}$
+
+**Risposta**
+Si hanno $n$ scelte per $i_{1},n-1$ scelte per $i_{2},\dots$ fino ad avere $n-(k-1)$ scelte per $i_{k}$. Quindi $$\#D_{n,k}=n(n-1)\dots(n-(k-1))=n(n-1)\dots(n-k+1)$$
+Se si vuole fare riferimento al fattoriale si ha $$\#D_{n,k}=n(n-1)\dots(n-k+1)\quad \frac{(n-k)!}{(n-k)!}= \frac{n!}{(n-k)!}$$
+nel caso $k=n$ si ha $$\#D_{n,k}=\frac{n!}{(n-k)!}= \frac{n!}{0!}=n!$$
+in questo caso gli elementi si dicono permutazioni di $\{1,\dots,n\}$
+
+Ora consideriamo il seguenti insieme: $$C_{n,k}=\{\{i_{1},\dots,i_{k}\}\}$$
+sottoinsiemi di $\{1,\dots,n\}$ di $k$  elementi distinti (**Combinazioni semplici**)
+Ci si chiede quanto vale $\#C_{n,k}$
+
+Si ha $C_{n,0}=\{\varnothing\}\implies\#C_{n,0}=1$
+e $C_{n,n}=\{\{1,\dots,n\}\}\implies\#C_{n,n}=1$
+ora consideriamo $k$ con $k\in\{1,\dots,n-1\}$ allora preso un sottoinsieme $\{i_{1},\dots,i_{k}\}$, considerando tutte le permutazioni di $\{i_{1},\dots,i_{k}\}$ danno origine a particolari sequenze ordinate in $D_{n,k}$; poi tutti gli elementi di $D_{n,k}$, possono essere visti come una particolare permutazione di elementi di un certo insieme.
+
+#### Esempio
+$$\begin{array}{}
+n=4\quad k=2 & C_{n,k}= & \{\{1,2\}, & \{1,3\}, & \{1,4\}, & \{2,3\}, & \{2,4\}, & \{3,4\}\} \\
+\text{elementi di }D_{4,2} & \rightarrow &  (1,2) & (1,3) & (1,4) & (2,3) & (2,4) & (3,4) \\
+ &  & \underset{\uparrow }{(2,1)} & \underset{}{(3,1)} & \underset{}{(4,1)} & (3,2) & (4,2) & (4,3) \\
+ &  & (k!=2!=2 & \underset{\text{permutazioni}}{} & \underset{\text{per ogni}}{} & \underset{\text{elemento di }}{} & C_{4,2})
+\end{array}$$
+In effetti $\#D_{4,2}=\frac{4!}{(4-2)!}=\frac{4\cdot 3\cdot 2}{2}=12$
+
+A partire da questo esempio possiamo dire che $\#C_{n,k}\cdot k!=\#D_{n,k}$
+da cui segue $$\#C_{n,k}=\frac{\#D_{n,k}}{k!}=\frac{n!}{k!(n-k)!}$$
+l'espressione ottenuta è il coefficiente binomiale e si usa la notazione $\binom{n}{k}=\frac{n!}{k!(n-k)!}$. Questa formula vale anche per $k=0$ e per $k=n$.
+
+#### Commenti
+In generale si ha $$\binom{n}{k}=\binom{n}{n-k}$$
+ad ogni sottoinsieme di $k$ elementi corrisponde il suo complementare di $n-k$ elementi; quindi $\#C_{n,k}=\#C_{n,n-k}$ 
+Perché $$\binom{n}{n-k}=\frac{n!}{(n-k)!(n-(n-k))!}=\frac{n!}{(n-k)!k!}=\binom{n}{k}$$
+In particolare per $k=0$ e $k=1$ si ha $$\begin{array}{l}
+\binom{n}{0}=\binom{n}{n}=\frac{n!}{n!(n-n)!}=\frac{\not n!}{\not n!\ 0!}=1 & \leftarrow\underset{\text{con }n\text{ elementi c'è solo }\{1,\dots,n\}}{\text{con 0 elementi c'è solo }\varnothing} \\
+\binom{n}{1}=\binom{n}{n-1}=\frac{n!}{1!(n-1)!}=\frac{n(n-1)!}{1\cdot(n-1)!}=n & \leftarrow\underset{\text{con }n-1\text{ elementi ci sono }i\text{ ???? complementari}}{\text{con 1 elemento ci sono }\{1\},\{2\},\dots,\{n\}}
+\end{array}$$
+## Applicazione di formule di calcolo combinatorio:
+### Estrazioni casuali in blocco
+Abbiamo oggetti di 2 tipi: $n_{1}$ di tipo 1, $n_{2}$ di tipo 2 $$\begin{array}{|c|c|}
+n_{1} & n_{2} \\
+1 & 2 \\
+\hline
+\end{array}$$
+Si estraggano a caso in blocco (cioè contemporaneamente) $n$ oggetti, dove $n<n_{1}+n_{2}$.
+
+Quanto vale la probabilità di estrarre $k$ oggetti di tipo 1?
+(quindi contemporaneamente si estraggono $n-k$ oggetti di tipo 2).
+
+Indichiamo questa probabilità con $p_{k}$ e si ha $$p_{k}=\begin{cases}
+0 & \text{se }k>n_{1}\text{ oppure se }n-k>n_{2} \\
+\text{"da calcolare"} & se \begin{cases}
+0\leq k\leq n_{1} \\
+0\leq n-k\leq n_{2}
+\end{cases}
+\end{cases}$$
+Bisogna osservare che in generale abbiamo $\binom{n_{1}+n_{2}}{n}$ casi possibili e tutti equiparabili da tutti i sottoinsiemi di $n$ elementi a partire da $n_{1}+n_{2}$ elementi.
+I casi favorevoli all'evento di "estrarre $k$ oggetti 1 e oggetti 2" devono essere pensati come sottoinsiemi del tipo $$\{\underset{\text{sottinsieme di }\{1,\dots,n_{1}\}}{\underbrace{i_{1},\dots,i_{k}}},\underset{\text{sottoinsieme di }\{n_{1}+1,\dots,n_{1}+n_{2}\}}{\underbrace{j_{1},\dots,j_{n-k}}}\}$$
+Abbiamo $\binom{n_{1}}{k}$ scelte per $\{i_{1},\dots,i_{k}\}$ e $\binom{n_{2}}{n-k}$ scelte per $\{j_{1},\dots,j_{n-k}\}$.
+In conclusione il numero di casi favorevoli è dato dal prodotto $\binom{n_{1}}{k}\binom{n_{2}}{n-k}$ e quindi $$p_{k}=\frac{\binom{n_{1}}{k}\binom{n_{2}}{n-k}}{\binom{n_{1}+n_{2}}{n}}$$
+
+#### Osservazione
+Questa formula vale anche se $k>n_{1}$ oppure $n-k>n_{2}$ usando la convenzione che $\binom{a}{b}=0$ quando $b>a$
+
+#### Esempio
+$$\begin{matrix}
+n_{1}=3,n_{2}=2,n=3 & \binom{n_{1}+n_{2}}{n}=\binom{3+2}{3}=\binom{5}{3}=\frac{5\cdot 4\cdot 3!}{3!\cdot2!}=\frac{5\cdot 4}{2}=10 \\
+\begin{array}{|c|c|}
+3 & 2 \\
+1 & 2 \\
+\hline
+\end{array} & \text{convenzione }\begin{cases}
+\text{tipo }1 & 1,2,3 \\
+\text{tipo }2 & 4,5
+\end{cases}
+\end{matrix}$$
+In quello che segue scrivo i $\binom{5}{3}=10$ sottoinsiemi e indico accanto il numero di elementi del tipo 1 $$\begin{array}{}
+\{1,2,3\}\rightarrow3 & \{1,2,4\}\rightarrow2 & \{1,2,5\}\rightarrow2 \\
+\{1,3,4\}\rightarrow2 & \{1,3,5\}\rightarrow2 & \{1,4,5\}\rightarrow1 \\
+\{2,3,4\}\rightarrow2 & \{2,3,5\}\rightarrow2 & \{2,4,5\}\rightarrow1 \\
+\{3,4,5\}\rightarrow1
+\end{array}$$Quindi $p_{0}=0,p_{1}=\frac{3}{10},p_{2}=\frac{6}{10},p_{3}=\frac{1}{10}$ (perché i 10 casi hanno tutti probabilità $\frac{1}{10}$)
+Questi valori sono in accordo con la formula $$p_{k}=\frac{\binom{3}{k}\binom{2}{3-k}}{\binom{5}{3}}=\frac{\binom{3}{k}\binom{2}{3-k}}{10}=\begin{cases}
+k=0 & 0\text{ perché }\binom{2}{3}=0 & \text{almeno 1 elemento di tipo 1} \\
+k=1 & \frac{3\cdot1}{10}=\frac{3}{10} \\
+k=2 & \frac{3\cdot2}{10}=\frac{6}{10} \\
+k=3 & \frac{1\cdot1}{10}=\frac{1}{10}
+\end{cases}$$
+### Estensione al caso con più di 2 tipi
+
+Supponiamo di avere $$\begin{array}{|c|c|}
+n_{1} & \dots & n_{r} \\
+1 & \dots & r \\
+\hline
+\end{array}$$
+e di estrarre a caso $n$ oggetti in blocco con $n<n_{1}+n_{2}+\dots+n_{r}$
+
+Quanto vale la probabilità di estrarre $k_{1}\text{ oggetti tipo 1},\dots,k_{r}\text{ oggetti tipo }r$, dove $k_{1}+\dots+k_{r}=n$?
+
+Con ragionamenti simili si vede che $$p_{k_{1}}=\frac{\binom{n_{1}}{k_{1}}\cdot\dots \cdot\binom{n_{r}}{k_{r}}}{\binom{n_{1}+\dots+n_{r}}{n}}\quad\quad\text{con }\binom{a}{b}=0\text{ per }b>a$$
+
+## Esercizi riepilogo del capitolo
+
+Presenti sul pdf Lezione 03 a pagina 8 e 9

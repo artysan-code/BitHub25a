@@ -494,7 +494,7 @@ ad ogni sottoinsieme di $k$ elementi corrisponde il suo complementare di $n-k$ e
 Perché $$\binom{n}{n-k}=\frac{n!}{(n-k)!(n-(n-k))!}=\frac{n!}{(n-k)!k!}=\binom{n}{k}$$
 In particolare per $k=0$ e $k=1$ si ha $$\begin{array}{l}
 \binom{n}{0}=\binom{n}{n}=\frac{n!}{n!(n-n)!}=\frac{\not n!}{\not n!\ 0!}=1 & \leftarrow\underset{\text{con }n\text{ elementi c'è solo }\{1,\dots,n\}}{\text{con 0 elementi c'è solo }\varnothing} \\
-\binom{n}{1}=\binom{n}{n-1}=\frac{n!}{1!(n-1)!}=\frac{n(n-1)!}{1\cdot(n-1)!}=n & \leftarrow\underset{\text{con }n-1\text{ elementi ci sono }i\text{ ???? complementari}}{\text{con 1 elemento ci sono }\{1\},\{2\},\dots,\{n\}}
+\binom{n}{1}=\binom{n}{n-1}=\frac{n!}{1!(n-1)!}=\frac{n(n-1)!}{1\cdot(n-1)!}=n & \leftarrow\underset{\text{con }n-1\text{ elementi ci sono i loro complementari}}{\text{con 1 elemento ci sono }\{1\},\{2\},\dots,\{n\}}
 \end{array}$$
 ## Applicazione di formule di calcolo combinatorio:
 ### Estrazioni casuali in blocco

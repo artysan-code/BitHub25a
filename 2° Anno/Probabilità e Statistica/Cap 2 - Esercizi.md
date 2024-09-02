@@ -48,7 +48,7 @@ Qui si considera la formula delle probabilità totali a denominatore rispetto al
 Osservazione
 $M_{1}=T_{1}\cap T_{2}$
 
-$$=\frac{\frac{n_{1}}{n_{1}+n_{2}+n_{3}}}{1\cdot\frac{n_{1}}{n_{1}+n_{2}+n_{3}}+0\cdot\frac{n_{2}}{n_{1}+n_{2}+n_{3}}+\frac{1}{2}\cdot \frac{n_{3}}{n_{1}+n_{2}+n_{3}}}=\frac{n_{1}}{n_{1}+0+\frac{n_{3}}{2}}\overset{\text{x} \frac{2}{2}}{=} \frac{2n_{2}}{2n_{1}+n_{3}}$$
+$$=\frac{\frac{n_{1}}{n_{1}+n_{2}+n_{3}}}{1\cdot\frac{n_{1}}{n_{1}+n_{2}+n_{3}}+0\cdot\frac{n_{2}}{n_{1}+n_{2}+n_{3}}+\frac{1}{2}\cdot \frac{n_{3}}{n_{1}+n_{2}+n_{3}}}=\frac{n_{1}}{n_{1}+0+\frac{n_{3}}{2}}\overset{\times \frac{2}{2}}{=} \frac{2n_{2}}{2n_{1}+n_{3}}$$
 
 Osservazione
 Il risultato $P(T_{2}|T_{1})=\frac{2n_{1}}{2n_{1}+n_{3}}$ ha la seguente interpretazione:

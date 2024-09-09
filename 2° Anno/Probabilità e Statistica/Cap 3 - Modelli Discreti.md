@@ -189,3 +189,103 @@ P_{X}(3)=P(\{(1,1,1)\})
 \end{array}$$
 
 --- Fine lezione 05 ---
+
+
+Qui abbiamo un altra cosa che accadrà nei due casi che vedremo, nei casi 1) e 2) avremo che: $$X(w)=X(w')\implies P(\{w\}=P(\{w'\}))$$Cioè, date due qualsiasi sequenza $w$ e $w'$ con lo stesso numero di successi, le rispettive probabilità coincidono
+
+Allora sarà conveniente dire che $$\begin{array}{}
+\forall\ k\in\delta_{X}=\{0,1,\dots,n\},\quad\quad\text{esiste }q_{k}\text{ tale che} \\
+X(w)=k\implies P(\{w\})=q_{k}
+\end{array}$$
+#### Esempio
+con $n=3$, esistono $q_{0},q_{1},q_{2},q_{2}\geq 0$ tali che $$\begin{cases}
+P(\{0,0,0\})=q_{0} \\
+P(\{1,0,0\})=P(\{(0,1,0)\})=P(\{0,0,1\})=q_{1} \\
+P(\{1,1,0\})=P(\{(1,0,1)\})=P(\{(0,1,1)\})=q_{2} \\
+P(\{(1,1,1)\})=q_{3}
+\end{cases}$$Ovviamente si dovrà avere $q_{0}+3q_{1}+3q_{2}+q_{3}=1$
+
+In corrispondenza, se poniamo (nuova notazione)$$r_{n,k}=\#\{w:X(w)=k\}$$per ogni $k\in\delta_{X}=\{0,1,\dots,n\}$ si ha $$P_{X}(k)\overset{(*)}{=}\sum_{w:X(w)=k}P(\{w\})=\sum_{w:X(w)=k}q_{k}=\underset{r_{n,k}\text{ volte}}{\underbrace{q_{k}+\dots+q_{k}}}=r_{n,k}\cdot q_{k}$$Il valore di $q_{k}$ verrà determinato dalle ipotesi dei casi 1) e 2)
+Il valore di $r_{n,k}$ possiamo calcolarlo facilmente e si ha: $r_{n,k}=\binom{n}{k}$
+Quindi nei casi 1) e 2) avremmo $$P_{X}(k)=\binom{n}{k}q_{k}\quad\quad\text{ per }k\in\{0,1,\dots,n\}\quad\quad(\diamondsuit)$$
+
+#### Proposizione
+Si ha $r_{n,k}=\binom{n}{k}$
+
+**Dimostrazione**
+Ad ogni sequenza di lunghezza $n$ e con esattamente $k$ volte "1" possiamo abbinare il sottoinsieme di $\{1,\dots,n\}$ delle posizioni degli "1": $$\begin{array}{}
+w=(w_{1},\dots,w_{n}) & \longleftrightarrow & \{i_{1},\dots,i_{k}\}\subset\{1,\dots,n\} \\
+\text{osservazione 1} &  & \text{osservazione 2}
+\end{array}$$
+#### Osservazione 1
+Il numero di stringhe di "questo tipo" è proprio $r_{n,k}=\#\{w:X(w)=k\}$
+
+#### Osservazione 2
+Noi sappiamo che i sottoinsiemi di "questo tipo" sono in tutto $\binom{n}{k}$
+
+
+
+Si ha una **corrispondenza biunivoca** tra l'insieme di sequenze e l'insieme dei sottoinsiemi. Essendo una corrispondenza biunivoca tra due insiemi finiti, hanno lo stesso numero di elementi $\Box$ 
+
+
+#### Esempio (corrispondenza biunivoca)
+$n=4$,$k=2$ $$\begin{array}{}
+\text{sequenze} &  & \text{sottoinsiemi} & (\text{sono }\binom{4}{2}=6) \\
+(1,1,0,0) & \longleftrightarrow & \{1,2\} \\
+(1,0,1,0) & \longleftrightarrow & \{1,3\} \\
+(1,0,0,1) & \longleftrightarrow & \{1,4\} \\
+(0,1,1,0) & \longleftrightarrow & \{2,3\} \\
+(0,1,0,1) & \longleftrightarrow & \{2,4\} \\
+(0,0,1,1) & \longleftrightarrow & \{3,4\}
+\end{array}$$Questo spiega che abbiamo $r_{4,2}=6$ sequenze binarie di lunghezza 4 e con esattamente 2 volte "1".
+
+### Caso 1): distribuzione binomiale
+Si usa per le v.a. che conta il numero di successi su $n$ prove indipendenti, con probabilità di successo $p$ in ogni prova (quindi in ogni prova c'è una probabilità di fallimento $1-p$)
+
+#### Esempi:
+- $n$ lanci di moneta (o lanci di $n$ monete dello stesso tipo) e il successo è "esce testa" (oppure "esce croce")
+- $n$ lanci di dado (o lanci di $n$ dadi dello stesso tipo) e il successo è "esce un numero in $S$" dove $S\subset\{1,2,3,4,5,6\}$ fissato
+- $n$ estrazioni casuali di un oggetto alla volta con reinserimento da un insieme di $n_{1}$ oggetti di tipo 1 e $n_{2}$ oggetti di tipo 2; e il successo è "estratto il tipo 1" (oppure "estratto il tipo 2")
+
+Dobbiamo attribuire i valori $P(\{w\})$ per $w\in\ohm$
+
+#### Osservazione
+$\#\ohm=2^{n}$
+
+
+
+Per fissare le idee consideriamo il caso $n=3$. Si ha $\#\ohm=2^{3}=8$. $$\begin{array}{rrl}
+P(\{(0,0,0)\})= & (1-p)(1-p)(1-p)= & (1-p)^{3}\\
+P(\{(1,0,0)\})= & p(1-p)(1-p)= & p(1-p)^{2} \\
+P(\{(0,1,0)\})= & (1-p)p(1-p)= & p(1-p)^{2} \\
+P(\{(0,0,1)\})= & (1-p)(1-p)p= & p(1-p)^{2} \\
+P(\{(1,1,0)\})= & p\cdot p(1-p)= & (1-p)p^{2} \\
+P(\{(1,0,1)\})= & p(1-p)p= & (1-p)p^{2}\\
+P(\{(0,1,1)\})= & (1-p)p\cdot p= & (1-p)p^{2} \\
+P(\{(1,1,1)\})= & p\cdot p\cdot p= & p^{3}
+\end{array}$$Si vede che $$\begin{array}{l}
+X(w)=0\implies P(\{w\})=(1-p)^{3} & \longleftrightarrow  q_{0} \\
+X(w)=1\implies P(\{w\})=p(1-p)^{2} & \longleftrightarrow q_{1} \\
+X(w)=2\implies P(\{w\})=p^{2}(1-p) & \longleftrightarrow q_{2} \\
+X(w)=3\implies P(\{w\})=p^{3} & \longleftrightarrow q_{3} \\
+\end{array}$$
+
+Ora consideriamo il caso generale. Si ha $$\begin{array}{}
+P(w)= & \underset{1^{\text{a}}\text{ prova}}{\underbrace{p^{w_{1}}(1-p)^{1-w_{1}}}}\quad \underset{2^{\text{a}}\text{ prova}}{\underbrace{p^{w_{2}}(1-p)^{1-w_{2}}}}\quad\dots\quad\underset{n^{\text{a}}\text{ prova}}{\underbrace{p^{w_{n}}(1-p)^{1-w_{n}}}} \\
+ & =p^{w_{1}+\dots+w_{n}}(1-p)^{1-w_{1}+1-w_{2}+\dots+1-w_{n}\quad\longleftrightarrow(n-(w_{1}+\dots+w_{n}))} \\
+ & =p^{X(w)}(1-p)^{n-X(w)}
+\end{array}$$
+
+#### Osservazione
+Per ogni $k\in\delta_{X}=\{0,1,\dots,n\}$ possiamo dire che:
+per ogni $w$ tale che $X(w)=k$ si ha $$P(\{w\})=p^{k}(1-p)^{n-k}$$Quindi per ogni sequenza di $n$ prove con esattamente $k$ successi si ha la stessa probabilità.
+Il valore $p^{k}(1-p)^{n-k}$ rappresenta il valore $q_{n}$ introdotto in passato.
+A questo punto, con riferimento alla formula ($\diamondsuit$), si ha $$P_{X}(k)=\binom{n}{k}\underset{=q_{k}}{\underbrace{p^{k}(1-p)^{n-k}}}\quad\quad\forall\ k\in\{0,1,\dots,n\}$$Questa è la densità discreta delle v.a. con distribuzione binomiale.
+Abbiamo due parametri:$$\begin{cases}
+n=\# \text{ delle prove indipendenti} \\
+p=\text{probabilità di successo di ogni prova}
+\end{cases}$$
+
+#### Osservazioni
+1) Si deve avere $\displaystyle\sum_{n=0}^{n}P_{X}(k)=1$. In effetti $\displaystyle\sum_{n=0}^{n}\binom{n}{k}p^{k}(1-p)^{n-k}=(p+(1-p))^{n}=1^{n}=1$
+2) Per $p=\frac{1}{2}$

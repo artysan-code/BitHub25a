@@ -1,4 +1,4 @@
-## Lezione I
+## Lezione I (Introduzione)
 #### Algoritmi e Programmi
 - Ogni algoritmo fornisce il procedimento per giungere alla soluzione di un dato problema di calcolo (essenza computazionale).
 - L'algoritmo è diverso da un programma
@@ -125,4 +125,109 @@ Alg4 è un algoritmo ottimo per il problema.
 #### Da fare
 - Implementare immagini e schemi
 
-## Lezione II
+## Lezione II (Introduzione informale agli algoritmi)
+#### Problema "i numeri di Fibonacci"
+Passiamo quindi ora ad un modello di calcolo più simile la computer e ragioniamo in modo più qualitativo rispetto alla complessità temporale degli algoritmi.
+##### L'isola dei conigli
+Quanto velocemente si riprodurrebbe una popolazione di conigli in certe condizioni? Questa è la domanda che si è fatto Leonardo da Pisa, partendo da un isola deserta con due conigli.
+
+Le regole ci permettono di studiare meglio questo problema sono le seguenti:
+- Una coppia di conigli concepisce due coniglietti di sesso diverso ogni anno, i quali formeranno una nuova coppia.
+- La gestazione dura un anno.
+- I conigli cominciano a riprodursi soltanto al secondo anno dopo la loro nascita.
+- I conigli sono immortali.
+
+Possiamo descrivere questa riproduzione con il seguente albero:
+
+![[Pasted image 20241009091317.png]]
+
+##### La regola di espansione
+Abbiamo che nell'anno $n$ ci sono tutte le coppie dell'anno precedente e una nuova coppia di conigli per ogni coppia presente due anni prima. Chiamiamo allora $F_n$ il numero di coppie rispetto all'anno n e imponiamo la seguente relazione di ricorrenza:$$t$$
+#### Ma come calcoliamo $F_n$?
+##### Algoritmo Uno
+Possiamo usare un approccio numerico che calcoli direttamente i numeri di Fibonacci.
+![[Pasted image 20241009091702.png]]
+
+Quindi l'algoritmo uno è:
+
+![[Pasted image 20241009091900.png]]
+
+Ma questo algoritmo è corretto? Beh... 
+
+A causa dell'approssimazione dei due $\phi$ non riusciamo ad approssimare sempre al valore corretto. Aumentando però l'approssimazione troveremo sempre verso infinito un numero che verrà approssimato in maniera errata.
+
+##### Algoritmo Due
+Usando invece una funzione ricorsiva possiamo fare:
+
+```
+algoritmo fibonacci2(intero n) -> intero
+	if (n <= 2) then return 1
+	else return fibonacci2(n-1) + fibonacci2(n-2)
+```
+
+Questa tecnica rispetta il *divide et impera*. Però grazie a questa tecnica ora l'algoritmo è **corretto**!
+
+Ma è efficiente?
+
+In ogni modello di calcolo rudimentale ogni linea di codice costa un'unità di tempo. Di conseguenza calcoliamo le linee di codice mandate in esecuzione:
+- Se $n\leq 2$ allora abbiamo una linea di codice
+- Se $n = 3$ ci sono quattro linee di codice, due per la chiamata fibonacci2(3) e una per fibonacci2(2) e fibonacci2(1)
+- Se invece è $n$? Cerchiamo di studiarlo tramite una funzione $f(n)$.
+
+Quindi definendo $f(n)$ come $\text{\# di linee di codice eseguite dall'algoritmo sull'input n}$.
+
+Quindi $f(n)=2+f(n-1)+f(n-2)$  e  $f(1)=f(2)=1$ ma a cosa corrisponde? Dobbiamo risolvere questa **equazione di ricorrenza**.
+
+Per risolverlo usiamo un **albero della ricorsione**:
+![[Pasted image 20241009093520.png]]
+
+I nodi alla base dell'albero sono i **casi base**, in quanto non eseguono ricorsioni. Per dedurre una formula dobbiamo capire quante foglie e nodi interni possiede l'albero.
+
+##### Primo Lemma 
+Il numero di foglie dell'albero della ricorsione di *fibonacci2(n)* è pari a $F_n$. ( #lemma1 )
+**Dimostrazione**
+guarda il file
+##### Secondo Lemma
+Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1. ( #lemma2 )
+**Dimostrazione**
+(Per induzione sul numero di nodi dell'albero n)
+
+In totale le linee di codice eseguite sono:$$F_n + 2(F_n -1)=3F_n-2$$
+fibonacci2 è molto lento...
+
+Infatti già a n=100 sarà impossibile calcolare il numero.
+
+##### Algoritmo Tre
+L'idea è di memorizzare i valori calcolati per permettere a "calcoli di Fibonacci successivi" di essere semplificati in linea di tempo.
+```
+algoritmo fibonacci3(intero n) -> intero
+	sia Fib un array di n interi
+	Fib[1] <- 1; Fib[2] <- 1
+	for i = 3 to n do
+		Fib[i] <- Fib[i - 1] + Fib[i - 2]
+	return Fib[n]
+```
+
+Tempo di esecuzione? Beh
+
+La prima, la seconda e l'ultima riga di codice vengono eseguite una sola volta, mentre la terza e la quarta linea vengono eseguite n volte. Quindi:$$T(n)\leq n+n+3=2n + 3$$
+fibonacci3 impiega un tempo lineare (proporzionale a n) rispetto a fibonacci2 che invece impiega un tempo esponenziale.
+##### Algoritmo Quattro
+Proviamo ad ottimizzare lo spazio occupato dall'algoritmo precedente
+
+#### Notazione Asintotica
+Vogliamo esprimere $T(n)$ in modo qualitativo anche perdendo un po' di **precisione**, ma guadagnando semplicità.
+
+Ignorando le costanti moltiplicative e i termini di ordine inferiore, otteniamo:$$\begin{array}{}
+T(n) = 5n + 3 = O(n)\\
+T(n) = 5n^2 + 5n - 3 = O(n^2)
+\end{array}$$
+Ma è comunque sensato misurare la complessità di un algoritmo contando le righe di codice eseguite? si vedrà!
+
+Si dice che $f(n)=O(g(n))$ se $f(n) \leq c(g(n))$ con c che è una costante e n che è abbastanza grande.
+
+Si può sperare di calcolare $F_n$ in un tempo minore a $O(n)$?
+
+##### Lemma Tre
+$$\begin{pmatrix}1&1\\1&0\end{pmatrix}^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$$
+##### Algoritmo Cinque

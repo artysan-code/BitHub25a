@@ -1,0 +1,1 @@
+In questa sezione vengono forniti appunti e materiale didattico riguardo il corso di **Calcolo delle probabilità e statistica**. Come ogni corso non è detto venga completato il percorso degli appunti.

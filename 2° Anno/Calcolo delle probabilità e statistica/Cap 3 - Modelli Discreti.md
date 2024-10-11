@@ -1,5 +1,4 @@
-
-In questo capitolo tratteremo essenzialmente Variabili Aleatorie Discrete (spesso definite su spazi di probabilità ($\ohm,\mathcal{A},P$) con $r$ discreto, cioè finito o numerabile)
+In questo capitolo tratteremo essenzialmente Variabili Aleatorie Discrete (spesso definite su spazi di probabilità ($\ohm,\mathcal{A},P$) con $r$ discreto, cioè finito o numerabile).
 
 In ogni caso nella parte iniziale di questa lezione diremo alcune cose sulle variabili aleatorie in generale. Spesso useremo l'abbreviazione "v.a.".
 

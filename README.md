@@ -10,6 +10,21 @@ Al momento, il progetto si trova nella sua fase iniziale, con GitHub come unico 
 ## Aggiornamenti 2024/2025
 - A causa dell'elevato numero di materiale didattico fornito dai professori, verrà studiato un metodo online di trasferimento per i materiali didattici (che può essere drive, come anche un possibile sito internet).
 
+## Liste di attesa e aggiornamento
+In attesa di preparazione e/o ultimazione degli appunti:
+- Logica e Reti Logiche
+- Programmazione dei Calcolatori
+- Geometria e Algebra
+- Algoritmi e Strutture Dati
+- Sistemi Operativi e Reti Logiche
+- Linguaggi e Metodologie di Programmazione
+- Analisi Matematica
+- Calcolo delle probabilità e statistica
+
+Attualmente non sotto aggiornamenti:
+- Matematica Discreta
+- Architettura dei Calcolatori
+- Ricerca Operativa
 ## Sono gli appunti e le informazioni attendibili?
 Il materiale didattico è stato elaborato con cura da noi e altri studenti del corso, che partecipano attivamente alle lezioni e si impegnano nel mantenere aggiornate le informazioni. Tuttavia, è importante tenere presente che gli aggiornamenti richiedono tempo e sforzi, che vengono dedicati con sacrificio da parte di studenti universitari già impegnati. Di conseguenza, potrebbe accadere che le informazioni non siano sempre aggiornate all'ultimo minuto.
 

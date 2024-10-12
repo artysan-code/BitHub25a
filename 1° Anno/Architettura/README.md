@@ -4,6 +4,9 @@ Questa è la zona di repository dell'esame di Architettura dei Sistemi di Elabor
 ## Dispense
 In questa categoria, si cerca ogni anno di accumunare tutte le risorse fornite dal corso. La maggior parte dei materiali non sono possibili da condividere a causa di problemi con le licenze d'uso. Attualmente la sezione è sospesa in quanto vi sono pochi materiali disponibili.
 
+Aggiornamenti:
+- La sezione è inutilizzabile in quanto non vi è materiale didattico ritenuto integrante per l'esame.
+
 ## Esercizi
 In questa categoria si cerca di fornire spiegazioni sugli esercizi (la maggior parte) da saper svolgere con il professore. Verranno aggiunti ulteriori esercizi in futuro, se richiesti, con collegamenti alla teoria.
 

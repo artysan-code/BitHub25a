@@ -1,3 +1,4 @@
+## Anno 2023/2024
 Ricevimento Brenti:
 - Su appuntamento
 - Scrivere a brenti@mat.uniroma2.it
@@ -21,7 +22,7 @@ In tutti gli esami saranno presenti
 
 Il programma del corso è quello che si trova qui sotto.
 
-# Programma didattico
+### Programma didattico
 ##### Tipo Verde 
  - [ ] La nozione di insieme e di appartenenza di un elemento ad un insieme. 
  - [ ] Sottoinsiemi di un insieme: inclusione di un insieme in un altro. 
@@ -204,3 +205,6 @@ Il programma del corso è quello che si trova qui sotto.
  - [ ] Sentieri critici.
  - [ ] Profondita' di un elemento in un digrafo aciclico.
  - [ ] Un orario parallelo di tempo minimo in un digrafo aciclico e' dato dalla partizione il cui blocco i-esimo consiste di tutti gli elementi di profondita' i. 
+
+## Anno 2024/2025
+Non vi sono attualmente informazioni.

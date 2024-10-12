@@ -244,6 +244,3 @@ c=\frac{3}{3}=1\\\quad\quad\quad\quad\quad\Downarrow \\
 a=5-c=5-1=4
 \end{array}$$
 concludendo $$f(n)=(4+(-1)\cdot n)(-2)^n+1(1)^n$$
-
-## Es. 
-

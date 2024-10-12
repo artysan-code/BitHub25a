@@ -139,7 +139,7 @@ Le regole ci permettono di studiare meglio questo problema sono le seguenti:
 
 Possiamo descrivere questa riproduzione con il seguente albero:
 
-![[Pasted image 20241009091317.png]]
+![[lectio-2-1.png]]
 
 ##### La regola di espansione
 Abbiamo che nell'anno $n$ ci sono tutte le coppie dell'anno precedente e una nuova coppia di conigli per ogni coppia presente due anni prima. Chiamiamo allora $F_n$ il numero di coppie rispetto all'anno n e imponiamo la seguente relazione di ricorrenza:$$t$$
@@ -179,7 +179,7 @@ Quindi definendo $f(n)$ come $\text{\# di linee di codice eseguite dall'algoritm
 Quindi $f(n)=2+f(n-1)+f(n-2)$  e  $f(1)=f(2)=1$ ma a cosa corrisponde? Dobbiamo risolvere questa **equazione di ricorrenza**.
 
 Per risolverlo usiamo un **albero della ricorsione**:
-![[Pasted image 20241009093520.png]]
+![[lectio-2-2.png]]
 
 I nodi alla base dell'albero sono i **casi base**, in quanto non eseguono ricorsioni. Per dedurre una formula dobbiamo capire quante foglie e nodi interni possiede l'albero.
 

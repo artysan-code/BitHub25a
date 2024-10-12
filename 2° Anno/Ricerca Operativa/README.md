@@ -1,0 +1,1 @@
+Materiale riguardo Ricerca Operativa che NON è completo ma erano gli argomenti chiesti al nostro pre-appello (2023-2024 --- 21/05/2024).

@@ -1,20 +1,18 @@
-## Lezione I
-(Introduttiva)
 ## Lezione II
 #### Cos'è un sistema operativo?
-- Un moderno calcolatore è tipicamente formato da:
+Un moderno calcolatore è tipicamente formato da:
 	- Uno o più processori
 	- Memoria Centrale.
 	- Dischi.
 	- Stampanti e altre periferiche I/O.
-- I dettagli di basso livello (livelli inferiori) sono molto complessi.
-- La gestione di tutti i componenti richiede uno strato intermedio software: il **Sistema Operativo**.
+
+I dettagli di basso livello (livelli inferiori) sono molto complessi. La gestione di tutti i componenti richiede uno strato intermedio software: il **Sistema Operativo**.
 
 Il sistema operativo deve gestire:
 - Processori, Memorie e componenti interni.
 - Interfacce esterne I/O o moduli esterni.
 - Periferiche esterne come mouse, tastiera, monitor e stampanti.
-Deve fungere da maschera tra il livello sottostante e il livello superiore, per gestire al meglio le componenti. Quindi funziona come **gestore delle risorse**, per permettere all'utente di usare al meglio il proprio hardware senza fatiche.
+Deve fungere da maschera tra il livello sottostante e il livello superiore (**astrazione**), per gestire al meglio le componenti. Quindi funziona come **gestore delle risorse**, per permettere all'utente di usare al meglio il proprio hardware senza fatiche o problemi.
 
 Ci sono due modalità supportate dall'hardware:
 - Modalità kernel (o supervisor).
@@ -23,17 +21,15 @@ Ci sono due modalità supportate dall'hardware:
 Il sistema operativo è modalità kernel, mentre i programmi e il software usato dall'utente si trovano appunto in modalità utente. Questa divisione garantisce anche un interfaccia tra software e sistema operativo, permettendo quindi una divisione di aree di scrittura e lettura. 
 
 Vi sono diversi concetti del sistema operativo:
-- L'idea di **astrazione**: il sistema operativo si pone tra hardware e software utente
-- Visione **top-down**: il sistema operativo 
-- Visione **bottom-up**:
+- L'idea di **astrazione**: il sistema operativo si pone tra hardware e software utente gestendo autonomamente ogni risorsa.
+- Visione **top-down**: il sistema operativo fornisce astrazioni ai programmi applicativi.
+- Visione **bottom-up**: il sistema operativo fornisce un’allocazione ordinata e controllata di processori, memorie e unità I/O ai vari programmi che li richiedono.
 
 Il sistema operativo deve poter:
-- Eseguire più programmi per più utenti.
 - Un'organizzazione ordinata e controllata delle risorse.
 - Astrazione dei concetti (non più hardware, ma file, database, etc...).
-- **Multiplexing** nel tempo e spazio della cpu.
-
-#### Storia dei Sistemi Operativi
+- **Multiplexing** nel tempo e spazio della CPU, che corrisponde alla gestione di molteplici richieste da parte di utenti per diverse operazioni.
+#### Storia dei Sistemi Operativi (Non rivisto sul libro)
 ##### Prima generazione - Vacuum tubes
 Sviluppo storico:
 - John Atanasoff / clifford Berry:
@@ -49,7 +45,7 @@ La prima volta fu la creazione delle **schede perforate**, per trattenere inform
 Negli anni '50 nacquero nuove invenzioni e concetti:
 - Grazie ai **transistor** i computer diventano affidabili per grandi enti.
 	- Nasce un'organizzazione interna: progettisti, costruttori, programmatori e operatori.
-	- **Mainframe**: grandi macchine, chiuse in sale condizionate egestite da personale professionale.
+	- **Mainframe**: grandi macchine, chiuse in sale condizionate e gestite da personale professionale.
 - Introduzione del **Sistema Batch**.
 	- Step by step
 		- Prima bisogna trascrivere i dati su nastro magnetico o inserire il nastro magnetico.

@@ -317,6 +317,55 @@ Dal riepilogo finale:
 | fibonacci5 | $$O(n)$$            | $$O(1)$$               |
 | fibonacci6 | $$O(\log_{2}(n))$$  | $$O(\log_{2}(n))$$     |
 Possiamo notare quello che è stato detto precedentemente, nell'ottimizzazione si può dover "spendere" dello spazio per ottenere del tempo o viceversa.
+## Lezione III
+E' sensato misurare la complessità di un algoritmo contando il numero di linee di codice?
+##### Modelli di calcolo
+Un modello più realistico di calcolo è quello della **RAM**, cioè della macchina a registri. Possiede: un programma finito, un nastro di input/output, una memoria strutturata come array e una CPU esegue istruzioni.
 
+Tramite questo modello analizziamo il programma basandoci sul concetto di **passo elementare**. I passi elementari su una **RAM** sono:
+- Istruzione di ingresso/uscita (I/O).
+- Operazione aritmetico/logica.
+- Accesso/modifica contenuto in memoria.
+
+Ma quanto costano queste operazioni?
+
+###### Criterio di costo uniforme
+Tutte le operazioni hanno lo stesso costo e la complessità temporale è misurata come **numero di passi elementari eseguiti**.
+###### Criterio di costo logaritmico
+Il costo dell'operazione singola dipende dalla dimensione degli operandi dell'istruzione. Quindi un'operazione con un operando di valore $x$ costerà $\log(x)$. Modella meglio la complessità di **algoritmi "numerici"**.
+##### Caso peggiore e caso medio
+Misurando il tempo di esecuzione di un algoritmo in funzione della dimensione n delle istanze, noteremo che **istanze diverse**, a parità di dimensione, potrebbero richiedere tempo diverso.
+
+Ma cosa vuol dire caso medio e caso peggiore?
+
+Sia **tempo(I)** il tempo di esecuzione di un algoritmo di sull'istanza **I**, il **caso peggiore**:$$T_{worst}(n)=max_{istanze\ I\ di\ dimensione\ n}\{tempo(I)\}$$
+Rappresenta quindi il tempo che viene impiegato quando le istanze di input comportano più lavoro all'algoritmo. Rappresenta una **garanzia** sul tempo di esecuzione.
+
+
+Sia **P(I)** la probabilità di occorrenza dell'istanza **I**:$$T_{avg}(n)=\sum_{\text{istanze I di dimensione n}}\{P(I) tempo(I)\}$$
+Quindi $T_{avg}(n)$ è intuitivamente il tempo di esecuzione nel **caso medio**, ovvero sulle istanze di input tipiche del problema. Ma come conosco la **distribuzione di probabilità sulle istanze?** Semplice! (di solito) Non puoi!
+
+Bisogna dedurre e fare una assunzione (spesso non realistica).
+##### Esercizio
+Analizzare la complessità nel caso medio del primo algoritmo di pesatura (Alg1) presentato nella prima lezione. Rispetto alla distribuzione di probabilità sulle istanze, si assuma che la moneta falsa possa trovarsi in modo equiprobabile in una qualsiasi delle n  posizioni.
+##### Notazione Asintotica
+Esprimiamo la complessità computazionale di un algoritmo espressa con una funzione $T(n)$.$$T(n): \#\text{passi elementari eseguti su RAM nel caso peggiore su un'istanza di dimensione n}$$
+L'idea è descrivere T(n) in modo qualitativo. Perdiamo un po’ in precisione (senza perdere l’essenziale) e guadagniamo semplicità.
+
+Esempio:
+
+Tempi di esecuzione di differenti algoritmi per istanze di dimensioni crescenti su un processore che sa eseguire milioni di istruzioni di alto livello al secondo. L'indicazione **very long** indica che il tempo di calcolo supera $10^{25}$ anni.
+
+![[Pasted image 20241015094744.png]]
+##### Notazione asintotica O
+$f(n)=O(g(n))$ se $\exists$ due costanti $c>0\ e\ n_{0}\geq 0$ tali che $0\leq f(n) \leq g(n)\quad \forall n \geq n_{0}$. Quindi:
+
+Sia $f(n)=2n^2+3n$ allora:
+- $f(n)=O(n^3)\quad\quad\quad(c=1,n_{0}=3)$
+- $f(n)=O(n^2)\quad\quad\quad (c=3,n_{0}=3$
+- $f(n)\not=O(n)$
+
+##### Notazione asintotica $\Omega$
+Sia $f(n)=O(g(n))\text{ se } \exists\ c>0\ \ e\ \ n_{0}\geq 0\ |\ f(n) \geq c\cdot g(n) \geq 0$.
 ## To Do List
 - Aggiungere gli pseudo-codici in maniera consona accanto al codice python di ogni algoritmo.

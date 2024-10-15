@@ -154,6 +154,7 @@ Tutte le informazioni vengono trovate ad[[2 - Organizzazione dei sistemi di calc
 (Fino a 1.3)
 ## Lezione III
 #### Sistemi Operativi
+Quanti sistemi operativi esistono?
 - **Sistemi Operativi per Mainframe**
 - **Sistemi Operativi per Server**
 - **Sistemi Operativi per Personal Computer**

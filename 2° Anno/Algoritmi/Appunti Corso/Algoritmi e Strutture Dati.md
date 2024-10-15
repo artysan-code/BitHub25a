@@ -356,8 +356,19 @@ Esempio:
 
 Tempi di esecuzione di differenti algoritmi per istanze di dimensioni crescenti su un processore che sa eseguire milioni di istruzioni di alto livello al secondo. L'indicazione **very long** indica che il tempo di calcolo supera $10^{25}$ anni.
 
-![[Pasted image 20241015094744.png]]
-##### Notazione asintotica O
+
+|               |  $n$   | $n \log_n n$ |  $n^2$  |    $n^3$     |   $1,5^n$    |      $2^n$      |      $n!$       |
+| :-----------: | :----: | :----------: | :-----: | :----------: | :----------: | :-------------: | :-------------: |
+|    $n=10$     | <1 sec |    <1 sec    | <1 sec  |    <1 sec    |    <1 sec    |     <1 sec      |      4 sec      |
+|    $n=30$     | <1 sec |    <1 sec    | <1 sec  |    <1 sec    |    <1 sec    |     18 min      | $10^{25}$ years |
+|    $n=50$     | <1 sec |    <1 sec    | <1 sec  |    <1 sec    |    11 min    |    36 years     |    very long    |
+|    $n=100$    | <1 sec |    <1 sec    | <1 sec  |    1 sec     | 12.892 years | $10^{17}$ years |    very long    |
+|   $n=1.000$   | <1 sec |    <1 sec    |  1 sec  |    18 min    |  very long   |    very long    |    very long    |
+|  $n=10.000$   | <1 sec |    <1 sec    |  2 min  |   12 days    |  very long   |    very long    |    very long    |
+|  $n=100.000$  | <1 sec |    2 sec     | 3 hours |   32 years   |  very long   |    very long    |    very long    |
+| $n=1.000.000$ | 1 sec  |    20 sec    | 12 days | 31.710 years |  very long   |    very long    |    very long    |
+
+##### Notazione asintotica O 
 $f(n)=O(g(n))$ se $\exists$ due costanti $c>0\ e\ n_{0}\geq 0$ tali che $0\leq f(n) \leq g(n)\quad \forall n \geq n_{0}$. Quindi:
 
 Sia $f(n)=2n^2+3n$ allora:
@@ -366,6 +377,11 @@ Sia $f(n)=2n^2+3n$ allora:
 - $f(n)\not=O(n)$
 
 ##### Notazione asintotica $\Omega$
-Sia $f(n)=O(g(n))\text{ se } \exists\ c>0\ \ e\ \ n_{0}\geq 0\ |\ f(n) \geq c\cdot g(n) \geq 0$.
+Sia $f(n)=\Omega(g(n))\text{ se } \exists\ c>0\ \ e\ \ n_{0}\geq 0\ |\ f(n) \geq c\cdot g(n) \geq 0\text{ tali che } f(n)\geq c\  g(n)\geq 0 \text{ per ogni }n\geq n_{0}$.
+
+Sia $f(n)=2n^2-3n$, allora 
+- $f(n)=\Omega(n)\quad\quad\quad(c=1,n_{0}=2)$
+- $f(n)=\Omega(n^2)\quad\quad\quad(c=1,n_{0}=3)$
+- $f(n)\neq\Omega(n^3)$
 ## To Do List
 - Aggiungere gli pseudo-codici in maniera consona accanto al codice python di ogni algoritmo.

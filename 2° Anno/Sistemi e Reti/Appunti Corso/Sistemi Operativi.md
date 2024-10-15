@@ -153,3 +153,60 @@ Tutte le informazioni vengono trovate ad[[2 - Organizzazione dei sistemi di calc
 
 (Fino a 1.3)
 ## Lezione III
+#### Sistemi Operativi
+- **Sistemi Operativi per Mainframe**
+- **Sistemi Operativi per Server**
+- **Sistemi Operativi per Personal Computer**
+- **Sistemi Operativi per Smartphone**
+- **Sistemi Operativi per IoT e Embedded**
+- **Sistemi Operativi Real-Time**
+- **Sistemi Operativi per Smart Card**
+Cosa hanno in comune?
+- Extended Machine
+	- Estensione delle funzionalità hardware
+	- Astrazione Hardware
+	- Nascondere i dettagli al programmatore
+- Resource Manager
+	- Proteggere l'uso simultaneo delle risorse
+	- Condivisione equa delle risorse
+	- Resource accounting/limiting
+#### Concetti base di un sistema operativo
+Il sistema operativo offre funzionalità, chiamate **servizi**, attraverso chiamate di sistema. Esempi di servizi sono il **File System Service** e **Process Management Service**.
+##### L'astrazione del Processo
+I **processi** sono astrazioni a livello utente per poter eseguire un programma per conto di un utente. Ogni processo ha il proprio spazio di indirizzamento e i dati usati nell'elaborazione vengono recuperati e salvati in file.
+
+I file persistono rispetto ai processi.
+
+Il programma in esecuzione è un processo a cui è associato:
+- Uno spazio di indirizzi
+- Un insieme di risorse
+	- Registri
+	- File Aperti
+	- Allarmi
+	- ...
+Il processo può essere visto come un container, che contiene tutte le informazioni necessarie all'esecuzione del programma.
+
+Un processo può essere descritto tramite un **layout**:
+- Stack
+- Data
+- Text
+
+Ogni layout dipende dal **sistema operativo**, **l'architettura della macchina** e 
+
+I processi vengono salvati in una **tabella dei processi** del sistema operativo, un processo sospeso consiste in una voce di questa tabella e del suo spazio degli indirizzi.
+
+Ogni processo può essere **creato**, **terminato**, **messo in pausa** e **rieseguito**. Ogni processo può creare un altro **processo figlio** (crea una gerarchia di processi).
+
+Ogni processo è di proprietà di un **utente** identificato da un UID (condiviso generalmente anche dal processo). Su UNIX un processo figlio ha lo stesso UID del processo padre ad esempio. Gli utenti possono essere membri di un gruppo identificato da un GUID.
+
+Un processo **root/superuser/administrator** è speciale ed ha più permessi.
+##### L'astrazione del File
+Il file è un'astrazione di un dispositivo di memorizzazione reale (ad esempio un disco). Possiamo leggere e scrivere dati da/su un file fornendo una posizione e la quantità di dati da trasferire.
+
+I file sono contenuti e organizzati in **directory** che ha un suo identificatore (la directory è un file), da cui la filosofia UNIX "everything is a file".
+
+Le directory formano con i file una gerarchia, alla base abbiamo la **radice (root)** che ci permette di accedere ai file tramite il **percorso assoluto (absolute path)**. Esistono però anche dei **percorsi relativi (relative path)** che dipendono dalla directory di lavoro.
+
+Altri file system possono essere montati da **mount** nella root: `/mnt/windows`.
+
+###### Diritti di accesso

@@ -416,6 +416,31 @@ f(n)=\Theta(g(n))  & \iff & f(n)=O(g(n))\ \ e\ \ f(n)=\Omega(g(n))
 Infine, per studiare matematicamente meglio le funzioni, abbiamo anche che:$$\begin{array}{}
 \text{Se } \lim_{ n \to \infty } \frac{f(n)}{g(n)}=c>0 \text{ allora } f(n)=\Theta(g(n))
 \end{array}$$
+
+### Proprietà della notazione asintotica
+#### Transitività
+$$\begin{matrix}
+f(n)=\Theta(g(n)) & e & g(n)=\Theta(h(n)) & \implies & f(n)=\Theta(h(n)) \\
+f(n)=O(g(n)) & e & g(n)=O(h(n)) & \implies & f(n)=O(h(n)) \\
+f(n)=\Omega(g(n)) & e & g(n)=\Omega(h(n)) & \implies & f(n)=\Omega(h(n)) \\
+f(n)=o(g(n)) & e & g(n)=o(h(n)) & \implies & f(n)=o(h(n)) \\
+f(n)=\omega(g(n)) & e & g(n)=\omega(h(n)) & \implies & f(n)=\omega(h(n))
+\end{matrix}$$
+#### Riflessività
+$$\begin{array}{}
+f(n)=\Theta(f(n)) \\
+f(n)=O(f(n)) \\
+f(n)=\Omega(f(n))
+\end{array}$$
+#### Simmetria
+$$\begin{array}{}
+f(n)=\Theta(g(n)) & \iff & g(n)=\Theta(f(n))
+\end{array}$$
+#### Simmetria trasposta
+$$\begin{array}{}
+f(n)=O(g(n)) & \iff & g(n)=\Omega(f(n)) \\
+f(n)=o(g(n)) & \iff & g(n)=\omega(f(n))
+\end{array}$$
 ## Lezione IV
 ### Studio della complessità
 #### Algoritmo Ricerca Sequenziale

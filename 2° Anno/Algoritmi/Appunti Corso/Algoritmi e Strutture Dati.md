@@ -1,5 +1,5 @@
 ## Lezione I (Introduzione)
-#### Algoritmi e Programmi
+### Algoritmi e Programmi
 - Ogni algoritmo fornisce il procedimento per giungere alla soluzione di un dato problema di calcolo (essenza computazionale).
 - L'algoritmo è diverso da un programma
 	- Il programma è la codifica di un algoritmo
@@ -14,7 +14,7 @@ L'algoritmica è un linguaggio che ci permette di descrivere i problemi e le lor
 Ogni algoritmo ha due componenti fondamentali:
 - Identificazione della appropriata tecnica di progetto algoritmico.
 - Individuazione del nucleo matematico del problema stesso.
-#### Concetti fondamentali dell'algoritmo
+### Concetti fondamentali dell'algoritmo
 I costrutti con cui definiamo un algoritmo sono i seguenti:
 - **Istanza**: un input del problema.
 - **Dimensione dell'istanza**: la quantità di istanze che vi sono nel problema desiderato (che viene generalmente identificato con il valore n).
@@ -29,8 +29,8 @@ L'algoritmo allora è la strategia di risoluzione (la strategia di pesatura per 
 - **La complessità temporale**: il numero di passi eseguiti prima di identificare la soluzione. Dipende dall'istanza e dalla dimensione della stessa.
 - **La complessità temporale nel caso peggiore**: invece corrisponde al # massimo di istruzioni che deve eseguire su una istanza di una certa dimensione. E' una delimitazione superiore a quanto costa risolvere una generica istanza.
 - **L'efficienza dell'algoritmo**: velocità dell'algoritmo.
-#### Esempio della moneta falsa
-###### Algoritmo Uno
+### Esempio della moneta falsa
+#### Algoritmo Uno
 Uso la prima moneta e la confronto con le altre.
 
 ``` Copy
@@ -44,7 +44,7 @@ E' corretto, ma quante pesate fa? Nel caso peggiore fa n-1 pesate.
 E' efficiente l'algoritmo? La domanda da fare sarebbe **posso fare di meglio**? Si
 
 Osserviamo che l'ultima pesata non serve, quindi il caso peggiore diventerebbe n-2. Ma questo non basta.
-###### Algoritmo Due
+#### Algoritmo Due
 Peso le monete a coppie confrontandole.
 ```
 Alg2 (X=[x_1, x_2, ...])
@@ -58,7 +58,7 @@ Alg2 (X=[x_1, x_2, ...])
 E' corretto? Si
 Quante istruzioni fa nel caso peggiore? N/2
 E' efficiente? Ma ancora meglio **si può fare di meglio**? Si
-###### Algoritmo Tre
+#### Algoritmo Tre
 Peso le monete dividendole ogni volta in due gruppi
 ```
 Alg3 (X=[x_1, x_2, ...])
@@ -82,7 +82,7 @@ Quando $\lfloor\frac{n}{2^i}\rfloor = 1$? Per $i = \lfloor log_2(n)\rfloor$
 
 Efficiente? Si può fare di meglio.
 
-###### Algoritmo quattro
+#### Algoritmo quattro
 Posso dividere in tre gruppi invece che due.
 ```Copy
 Alg4(X):
@@ -113,7 +113,7 @@ $P(n^{'})=P(\frac{n^{'}}{3})+1 =P(\frac{n^{'}}{3^i})+i = P(1) + k = k$
 
 Molto più veloce degli altri.
 
-#### Lower Bound
+### Lower Bound
 Il **lower bound** è la delimitazione inferiore alla complessità di un problema (non si può andare più veloci).
 
 Un qualsiasi algoritmo che correttamente individua la moneta falsa
@@ -122,9 +122,9 @@ pesate.
 
 Alg4 è un algoritmo ottimo per il problema.
 ## Lezione II (Introduzione informale agli algoritmi)
-#### Problema "i numeri di Fibonacci"
+### Problema "i numeri di Fibonacci"
 Passiamo quindi ora ad un modello di calcolo più simile la computer e ragioniamo in modo più qualitativo rispetto alla complessità temporale degli algoritmi.
-##### L'isola dei conigli
+#### L'isola dei conigli
 Quanto velocemente si riprodurrebbe una popolazione di conigli in certe condizioni? Questa è la domanda che si è fatto Leonardo da Pisa, partendo da un isola deserta con due conigli.
 
 Le regole ci permettono di studiare meglio questo problema sono le seguenti:
@@ -137,15 +137,15 @@ Possiamo descrivere questa riproduzione con il seguente albero:
 
 ![[l2-2.png]]
 
-##### La regola di espansione
+#### La regola di espansione
 Abbiamo che nell'anno $n$ ci sono tutte le coppie dell'anno precedente e una nuova coppia di conigli per ogni coppia presente due anni prima. Chiamiamo allora $F_n$ il numero di coppie rispetto all'anno n e imponiamo la seguente relazione di ricorrenza:$$
 F_{n}=
 \begin{cases}
 F_{n-1} + F_{n-2}&&se\ n\geq 3 \\
 1&&se\ n =1,2
 \end{cases}$$
-#### Ma come calcoliamo $F_n$?
-##### Algoritmo Uno
+### Ma come calcoliamo $F_n$?
+#### Algoritmo Uno
 Possiamo usare un approccio numerico che calcoli direttamente i numeri di Fibonacci.$$\begin{array}{l}
 F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\overset{\wedge}{\phi^n})&dove \\
 \phi = \frac{1 + \sqrt{ 5 }}{2} \approx +1.618 \\
@@ -163,7 +163,7 @@ Ma questo algoritmo è corretto? Beh...
 
 A causa dell'approssimazione dei due $\phi$ non riusciamo ad approssimare sempre al valore corretto. Aumentando però l'approssimazione troveremo sempre verso infinito un numero che verrà approssimato in maniera errata.
 
-##### Algoritmo Due
+#### Algoritmo Due
 Usando invece una funzione ricorsiva possiamo fare:
 
 ```python
@@ -192,11 +192,11 @@ Per risolverlo usiamo un **albero della ricorsione**:
 
 I nodi alla base dell'albero sono i **casi base**, in quanto non eseguono ricorsioni. Per dedurre una formula dobbiamo capire quante foglie e nodi interni possiede l'albero.
 
-###### Primo Lemma 
+##### Primo Lemma 
 Il numero di foglie dell'albero della ricorsione di *fibonacci2(n)* è pari a $F_n$. ( #lemma1 )
 **Dimostrazione**
 guarda il file
-###### Secondo Lemma
+##### Secondo Lemma
 Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1. ( #lemma2 )
 **Dimostrazione**
 (Per induzione sul numero di nodi dell'albero n)
@@ -206,7 +206,7 @@ fibonacci2 è molto lento...
 
 Infatti già a n=100 sarà impossibile calcolare il numero.
 
-##### Algoritmo Tre
+#### Algoritmo Tre
 L'idea è di memorizzare i valori calcolati per permettere a "calcoli di Fibonacci successivi" di essere semplificati in linea di tempo.
 ```python
 def fibonacci3(n: int) -> int:
@@ -221,7 +221,7 @@ Tempo di esecuzione? Beh
 
 La prima, la seconda e l'ultima riga di codice vengono eseguite una sola volta, mentre la terza e la quarta linea vengono eseguite n volte. Quindi:$$T(n)\leq n+n+3=2n + 3$$
 fibonacci3 impiega un tempo lineare (proporzionale a n) rispetto a fibonacci2 che invece impiega un tempo esponenziale. L'altra faccia della medaglia però è lo spazio occupato, che sarà proporzionale all'input.
-##### Algoritmo Quattro
+#### Algoritmo Quattro
 Proviamo ad ottimizzare lo spazio occupato dall'algoritmo precedente:
 ```python
 def fibonacci4(n: int) -> int:
@@ -235,9 +235,9 @@ def fibonacci4(n: int) -> int:
 ```
 
 Non è il miglior algoritmo possibile e possiamo usare il **lemma tre** per poter ottimizzare l'algoritmo.
-###### Terzo Lemma
+##### Terzo Lemma
 $$\begin{pmatrix}1&1\\1&0\end{pmatrix}^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$$
-##### Notazione Asintotica
+#### Notazione Asintotica
 Vogliamo esprimere $T(n)$ in modo qualitativo anche perdendo un po' di **precisione**, ma guadagnando semplicità.
 
 Ignorando le costanti moltiplicative e i termini di ordine inferiore, otteniamo:$$\begin{array}{}
@@ -249,7 +249,7 @@ Ma è comunque sensato misurare la complessità di un algoritmo contando le righ
 Si dice che $f(n)=O(g(n))$ se $f(n) \leq c(g(n))$ con c che è una costante e n che è abbastanza grande.
 
 Si può sperare di calcolare $F_n$ in un tempo minore a $O(n)$?
-##### Algoritmo Cinque
+#### Algoritmo Cinque
 ```python
 def fibonacci5(n: int) -> int:
 	N = np.array([[1, 1], [1, 0]])
@@ -262,12 +262,12 @@ Usiamo la libreria numpy come np in quanto ci permette di eseguire le moltiplica
 
 Il risultato non sembra aver ottimizzato niente, eppure:
 
-###### Calcolo di potenze
+##### Calcolo di potenze
 Si può calcolare l'ennesima potenza, elevando al quadrato la $\left\lfloor  \frac{n}{2}  \right\rfloor$-esima potenza. Se n è dispari basta eseguire un'ulteriore moltiplicazione.$$\begin{array}{}
 3^2=9 & 3^4=9^2=81 & 3^8=81^2=6561
 \end{array}$$
 Abbiamo eseguito 3 prodotti invece che 7!
-##### Algoritmo Sei
+#### Algoritmo Sei
 ```python
 def fibonacci6(n: int) -> int:
 	A = np.array([[1, 1], [1, 0]])
@@ -296,7 +296,7 @@ T(n) \leq i\cdot c + T\left( \left\lfloor  \frac{n}{2^i}  \right\rfloor  \right)
 Quindi, per $i=\lfloor \log_{2}(n) \rfloor$ si ottiene:$$T(n) \leq c \cdot \lfloor \log_{2}(2) \rfloor + T(1) = O(\log_{2}(n))$$
 Molto più veloce rispetto ai precedenti!
 
-##### Quanta memoria usa un algoritmo?
+#### Quanta memoria usa un algoritmo?
 - **Algoritmo non ricorsivo**: dipende dalla memoria allocata (variabili, array, matrici e strutture dati).
 - **Algoritmo ricorsivo**: dipende dalla memoria allocata ad ogni chiamata e dal numero di chiamate che sono contemporaneamente attive.
 
@@ -306,7 +306,7 @@ Molto più veloce rispetto ai precedenti!
 Esempio in **fibonacci2** le chiamate attive formano un cammino (P) radice-nodo, P ha al più n nodi.
 
 Mentre in **fibonacci6** l'albero ha un'altezza $O(\log(n))$, ogni nodo/chiamata usa memoria costante, quindi lo spazio è $O(\log(n))$.
-##### Riepilogo finale
+#### Riepilogo finale
 Dal riepilogo finale:
 
 |            | Tempo di Esecuzione | Occupazione di Memoria |
@@ -319,7 +319,9 @@ Dal riepilogo finale:
 Possiamo notare quello che è stato detto precedentemente, nell'ottimizzazione si può dover "spendere" dello spazio per ottenere del tempo o viceversa.
 ## Lezione III
 E' sensato misurare la complessità di un algoritmo contando il numero di linee di codice?
-##### Modelli di calcolo
+### Modelli di calcolo
+Un modello utilizzato ampiamente nel passato era quello della **macchina di Turing**, ch era composto di un meccanismo di controllo, un nastro di memorizzazione e una testina di lettura e scrittura. Questo modello però è poco vicino alla macchina che noi studiamo.
+
 Un modello più realistico di calcolo è quello della **RAM**, cioè della macchina a registri. Possiede: un programma finito, un nastro di input/output, una memoria strutturata come array e una CPU esegue istruzioni.
 
 Tramite questo modello analizziamo il programma basandoci sul concetto di **passo elementare**. I passi elementari su una **RAM** sono:
@@ -327,35 +329,37 @@ Tramite questo modello analizziamo il programma basandoci sul concetto di **pass
 - Operazione aritmetico/logica.
 - Accesso/modifica contenuto in memoria.
 
-Ma quanto costano queste operazioni?
-
-###### Criterio di costo uniforme
+Ma quanto costano queste operazioni? (Il metodo per calcolarlo nel generico è quello del **costo uniforme**)
+##### Criterio di costo uniforme
 Tutte le operazioni hanno lo stesso costo e la complessità temporale è misurata come **numero di passi elementari eseguiti**.
-###### Criterio di costo logaritmico
+##### Criterio di costo logaritmico
 Il costo dell'operazione singola dipende dalla dimensione degli operandi dell'istruzione. Quindi un'operazione con un operando di valore $x$ costerà $\log(x)$. Modella meglio la complessità di **algoritmi "numerici"**.
-##### Caso peggiore e caso medio
+### Caso peggiore e caso medio
 Misurando il tempo di esecuzione di un algoritmo in funzione della dimensione n delle istanze, noteremo che **istanze diverse**, a parità di dimensione, potrebbero richiedere tempo diverso.
 
 Ma cosa vuol dire caso medio e caso peggiore?
 
-Sia **tempo(I)** il tempo di esecuzione di un algoritmo di sull'istanza **I**, il **caso peggiore**:$$T_{worst}(n)=max_{istanze\ I\ di\ dimensione\ n}\{tempo(I)\}$$
+Sia **tempo(I)** il tempo di esecuzione di un algoritmo di sull'istanza **I**, il **caso peggiore**:$$T_{worst}(n)=max_{\text{ istanze I di dimensione n }}\{tempo(I)\}$$
 Rappresenta quindi il tempo che viene impiegato quando le istanze di input comportano più lavoro all'algoritmo. Rappresenta una **garanzia** sul tempo di esecuzione.
 
 
-Sia **P(I)** la probabilità di occorrenza dell'istanza **I**:$$T_{avg}(n)=\sum_{\text{istanze I di dimensione n}}\{P(I) tempo(I)\}$$
+Sia **P(I)** la probabilità di occorrenza dell'istanza **I**:$$\begin{array}{}
+T_{avg}(n)=\displaystyle\sum_{I}^n\{P(I) tempo(I)\} & \text{dove I sono le istanze e n il numero di esse}
+\end{array}$$
 Quindi $T_{avg}(n)$ è intuitivamente il tempo di esecuzione nel **caso medio**, ovvero sulle istanze di input tipiche del problema. Ma come conosco la **distribuzione di probabilità sulle istanze?** Semplice! (di solito) Non puoi!
 
-Bisogna dedurre e fare una assunzione (spesso non realistica).
-##### Esercizio
+Bisogna fare una assunzione (spesso non realistica).
+### Esercizio
 Analizzare la complessità nel caso medio del primo algoritmo di pesatura (Alg1) presentato nella prima lezione. Rispetto alla distribuzione di probabilità sulle istanze, si assuma che la moneta falsa possa trovarsi in modo equiprobabile in una qualsiasi delle n  posizioni.
-##### Notazione Asintotica
+### Notazione Asintotica
 Esprimiamo la complessità computazionale di un algoritmo espressa con una funzione $T(n)$.$$T(n): \#\text{passi elementari eseguti su RAM nel caso peggiore su un'istanza di dimensione n}$$
 L'idea è descrivere T(n) in modo qualitativo. Perdiamo un po’ in precisione (senza perdere l’essenziale) e guadagniamo semplicità.
 
-Esempio:
+Si ignorano:
+- Costanti moltiplicative
+- Termini di ordine inferiore
 
 Tempi di esecuzione di differenti algoritmi per istanze di dimensioni crescenti su un processore che sa eseguire milioni di istruzioni di alto livello al secondo. L'indicazione **very long** indica che il tempo di calcolo supera $10^{25}$ anni.
-
 
 |               |  $n$   | $n \log_n n$ |  $n^2$  |    $n^3$     |   $1,5^n$    |      $2^n$      |      $n!$       |
 | :-----------: | :----: | :----------: | :-----: | :----------: | :----------: | :-------------: | :-------------: |
@@ -368,20 +372,129 @@ Tempi di esecuzione di differenti algoritmi per istanze di dimensioni crescenti 
 |  $n=100.000$  | <1 sec |    2 sec     | 3 hours |   32 years   |  very long   |    very long    |    very long    |
 | $n=1.000.000$ | 1 sec  |    20 sec    | 12 days | 31.710 years |  very long   |    very long    |    very long    |
 
-##### Notazione asintotica O 
+### Notazione asintotica O 
 $f(n)=O(g(n))$ se $\exists$ due costanti $c>0\ e\ n_{0}\geq 0$ tali che $0\leq f(n) \leq g(n)\quad \forall n \geq n_{0}$. Quindi:
 
 Sia $f(n)=2n^2+3n$ allora:
 - $f(n)=O(n^3)\quad\quad\quad(c=1,n_{0}=3)$
-- $f(n)=O(n^2)\quad\quad\quad (c=3,n_{0}=3$
+- $f(n)=O(n^2)\quad\quad\quad (c=3,n_{0}=3)$
 - $f(n)\not=O(n)$
 
-##### Notazione asintotica $\Omega$
-Sia $f(n)=\Omega(g(n))\text{ se } \exists\ c>0\ \ e\ \ n_{0}\geq 0\ |\ f(n) \geq c\cdot g(n) \geq 0\text{ tali che } f(n)\geq c\  g(n)\geq 0 \text{ per ogni }n\geq n_{0}$.
+Dire che $O(n^2)=4n^2+3n$ è un'abuso di notazione, si dovrebbe scrivere $4n^2+3n \in O(n^2)$.
+Inoltre, se:$$\lim_{ n \to \infty  }\frac{f(n)}{g(n)}=0 \implies f(n)=O(g(n)) $$
+Ma:$$\begin{array}{}
+f(n)=O(g(n)) \not\to \lim_{ n \to \infty } \frac{f(n)}{g(n)}=0 \\
+f(n)=O(g(n)) \to \lim_{ n \to \infty } \frac{f(n)}{g(n)} < \infty \text{ (se esiste) }
+\end{array}$$
+### Notazione asintotica $\Omega$
+Sia $f(n)=\Omega(g(n))\text{ se } \exists\ c>0\ \ e\ \ n_{0}\geq 0\ |\ f(n) \geq c\cdot g(n) \geq 0\text{ per ogni }n\geq n_{0}$.
 
 Sia $f(n)=2n^2-3n$, allora 
 - $f(n)=\Omega(n)\quad\quad\quad(c=1,n_{0}=2)$
 - $f(n)=\Omega(n^2)\quad\quad\quad(c=1,n_{0}=3)$
 - $f(n)\neq\Omega(n^3)$
+
+Inoltre:$$\begin{array}{}
+\lim_{ n \to \infty  }\frac{f(n)}{g(n)}=\infty \implies f(n)=\Omega (g(n)) \\
+f(n)=\Omega(g(n)) \not\to \lim_{ n \to \infty  }\frac{f(n)}{g(n)}= \infty \\
+f(n)=\Omega(g(n)) \implies \lim_{ n \to \infty  }\frac{f(n)}{g(n)} > 0 \text{ (se esiste) }
+\end{array}$$
+### Notazione asintotica $\Theta$
+$f(n)=\Theta (g(n))$ se $\exists$ tre costanti $c_{1}, c_{2} > 0$ e $n_{0}\geq 0$ tali che $c_{1}\cdot g(n) \leq f(n) \leq c_{2}\cdot g(n)$ per ogni $n\geq n_{0}$.
+
+Ad esempio data $f(n)=2n^2-3n$ allora:
+- $f(n)=\Theta(n^2)\quad\quad\quad (c_{1}=1,c_{2}=2,n_{0}=3)$
+- $f(n)\not=\Theta(n)$
+- $f(n)\not=\Theta(n^3)$
+
+Inoltre:$$\begin{array}{}
+f(n)=\Theta(g(n)) &  \overset{\text{non il contrario} }{\implies} & f(n)=O(g(n)) \\
+f(n)=\Theta(g(n)) &  \overset{\text{non il contrario} }{\implies} & f(n)=\Omega(g(n)) \\
+ & \text{ma} \\
+f(n)=\Theta(g(n))  & \iff & f(n)=O(g(n))\ \ e\ \ f(n)=\Omega(g(n))
+\end{array}$$
+Infine, per studiare matematicamente meglio le funzioni, abbiamo anche che:$$\begin{array}{}
+\text{Se } \lim_{ n \to \infty } \frac{f(n)}{g(n)}=c>0 \text{ allora } f(n)=\Theta(g(n))
+\end{array}$$
+## Lezione IV
+### Studio della complessità
+#### Algoritmo Ricerca Sequenziale
+Dato il seguente algoritmo, in cui cerchiamo un elemento in un array non ordinato:
+```
+algoritmo RicercaSequenziale(array L, elem x) → intero
+1. n = lunghezza di L
+2. i=1
+3. for i=1 to n do
+4. if (L[i]=x) then return i \\trovato
+5. return -1 \\non trovato
+```
+
+Qual'è la sua complessità nel caso peggiore? Beh è $\Omega(n)$, in quanto non è possibile cercare un elemento se non li guardiamo tutti prima.
+
+Mentre nel caso medio abbiamo 
+#### Algoritmo Ricerca Sequenziale Array Ordinato
+Dato invece un algoritmo in cui l'array è ordinato e dobbiamo trovare un elemento:
+```
+algoritmo RicercaBinariaRic(array L, elem x, int i, int j) → intero
+1. if (i>j) then return -1
+2. m= (i+j)/2
+3. if (L[m]=x) then return m
+4. if (L[m]>x) then return RicercaBinariaRic(L, x, i, m-1)
+5. else return RicercaBinariaRic(L, x, m+1,j)
+```
+
+Si può usare l'algoritmo di **ricerca binaria**
+### Algoritmi Ricorsivi
+Un algoritmo ricorsivo è quello ad esempio di **fibonacci2**, analizziamolo quindi la sua **equazione di ricorrenza**. Essa sarà:
+$T(n)=T(n-1)+T(n-2)+O(1)$
+
+Mentre per l'algoritmo **alg4** per il peso delle monete? Beh:
+$T(n)=T\left( \frac{n}{3} \right)+O(1)$
+
+Allora per la **ricerca binaria**?
+$T(n)=T\left( \frac{n}{2} \right) + O(1)$
+
+Generalmente la **complessità computazionale** di un algoritmo ricorsivo è descrivibile tramite la sua **equazione di ricorrenza**.
+#### Metodo dell'iterazione (o srotolamento)
+Immaginiamo che la nostra equazione di ricorrenza è:$$T(n)=c+T\left( \frac{n}{2} \right) = 2c + T\left( \frac{n}{4} \right)=ic+T\left( \frac{n}{2^i} \right)$$
+Quindi per $i=\log_{2}(n)$ abbiamo che $T(n)=c\log_{2}(n) + T(1) = \Theta(\log_{2}(n))$
+
+Se $T(n)=T(n-1)+1$, allora:$$T(n)=T(n-1)+1=T(n-2)+1+1=T(n-i)+i$$
+E se $i=n-1$ allora $T(n)=T(1)+n-1=\Theta(n)$
+
+Vediamone uno un po' più difficile:$$\begin{array}{} \\
+T(n)=2T(n-1)+1=2(2T(n-2)+1)+1=4T(n-2)+2+1= \\
+=4(2T(n--3)+1)+2+1=8T(n-3)+4+2+1=2^iT(n-i)+\displaystyle \sum_{j=o}^{i-1}2^j
+\end{array}$$
+Quindi per $i=n-1$ abbiamo che:$$T(n)=2^{n-1} T(1)+\displaystyle\sum_{j=0}^{n-2}2^j=\Theta(2^n)$$
+
+Allora per Fibonacci ricorsivo?$$\begin{array}{}
+T(n)=T(n-1)+T(n-2)+1=T(n-1)+2T(n-3)+T(n-4)+3=\dots?
+\end{array}$$
+Possiamo provare ad analizzare con **l'albero della ricorsione**.
+#### Tecnica dell'Albero della ricorsione
+Per disegnare l'albero della ricorsione dobbiamo:
+- disegnare l’albero delle chiamate ricorsive indicando la dimensione di ogni nodo
+- stimare il tempo speso da ogni nodo dell’albero
+- stimare il tempo complessivo “sommando” il tempo speso da ogni nodo
+
+Per $T(n)=T(n-1)+1$ abbiamo che ogni nodo possibile costa **uno** ma, quanti nodi abbiamo?$$n \to n-1 \to n-2 \to n-i \to 2 \to 1$$ Quindi abbiamo n nodi, allora $\Theta(n)$.
+
+Mentre per $T(n)=T(n-1)+n$ abbiamo che ogni nodo costa n a causa del termine n, ma quanti nodi abbiamo?$$n \to n-1 \to n-2 \to n-i \to 2 \to 1$$ 
+Beh sempre n!
+Quindi possiamo sicuramente fissare un **Upper Bound** con $O(n^2)$. Ma se calcoliamo solo la prima parte dell'albero generico che abbiamo fatto:$$n \to n-1 \to n-2 \to n-i$$
+Abbiamo $\frac{n}{2}$ nodi e ognuno di loro costa almeno $\frac{n}{2}$, quindi:$$T(n)=\frac{n}{2}\cdot \frac{n}{2}=\frac{n^2}{4}$$
+Quindi possiamo fissare un **Lower Bound** di $\Omega(n^2)$, che ci porta insieme all'upper bound a dire che l'algoritmo è $\Theta(n^2)$.
+
+Ritorniamo ad una precedente equazione ricorsiva:$$T(n)=2T(n-1)+1$$
+Sappiamo sicuramente che ogni chiamata costa uno, quindi ogni nodo costa uno. Sappiamo anche che l'altezza dell'albero è n-1:
+![[Pasted image 20241016101318.png]]
+
+Quanti nodi ha un albero binario completo di altezza h? $\displaystyle\sum_{i=0}^h 2^i=2^{h-1}-1$. Quindi possiamo dire che $T(n)\leq n2^n=\Theta(n2^n) \implies T(n)=O(n 2^n)$
+
+Allora adesso arriviamo a ciò che volevamo analizzare **fibonacci2**:
+![[Pasted image 20241016101756.png]]
+Ogni nodo costa uno, ma quanti nodi ha? Lo sappiamo dalla definizione $\Theta(\phi^n)$ quindi $T(n)=o(2^n)$.
+
 ## To Do List
 - Aggiungere gli pseudo-codici in maniera consona accanto al codice python di ogni algoritmo.

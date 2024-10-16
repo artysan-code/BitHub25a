@@ -155,14 +155,45 @@ Tutte le informazioni vengono trovate ad[[2 - Organizzazione dei sistemi di calc
 ## Lezione III
 #### Sistemi Operativi
 Quanti sistemi operativi esistono?
-- **Sistemi Operativi per Mainframe**
-- **Sistemi Operativi per Server**
-- **Sistemi Operativi per Personal Computer**
-- **Sistemi Operativi per Smartphone**
-- **Sistemi Operativi per IoT e Embedded**
-- **Sistemi Operativi Real-Time**
-- **Sistemi Operativi per Smart Card**
-Cosa hanno in comune?
+##### Sistemi Operativi per Mainframe
+- Funzioni principali:
+	- **Batch processing**: esegue lavori senza interazione dell'utente
+	- **Elaborazione di transizioni**: gestisce numerose richieste simultanee
+	- **Timesharing**: molti utenti eseguono lavori simultaneamente
+	  
+- Esempi: Z/OS usato per applicazioni mission-critical (banche, e-commerce)
+##### Sistemi Operativi per Server
+Utilizzato su server che servono più utenti attraverso la rete
+- Funzioni principali:
+	- **File sharing**
+	- **Database**
+	- **Stampa**
+	- **Hosting Web**
+- Esempi: Linux, FreeBSD, Windows Server, Solaris
+##### Sistemi Operativi per Personal Computer
+Supportano un singolo utente con multiprogrammazione e architetture multiprocessore
+- Utilizzati per compiti quotidiani: Videoscrittura, navigazione web, fogli di calcolo
+- Esempi: Windows, MacOS, Linux, FreeBSD
+- Caratterizzato da facilità d'uso, interfaccia grafica, supporto per applicazioni di produttività
+##### Sistemi Operativi per Smartphone
+- Mercato dominato da **Android** (google) e **iOS** (apple)
+- Supportano CPU multicore, GPS, fotocamere e numerose app di terze parti
+##### Sistemi Operativi per IoT e Embedded
+Usati in dispositivi connessi (frigoriferi, lavatrici, telecamere di sicurezza). Sono tipicamente leggeri con funzioni specifiche e limitate
+- Caratteristiche: footprint ridotto (RIOT può girare su meno di 10 KB)
+- Esempi: Embedded Linux, QNX, TinyOS
+##### Sistemi Operativi Real-Time
+Progettati per rispettare scadenze rigide nei processi industriali e militari
+- Funzioni principali:
+	- **Hard real-time**: risposte immediate e precise
+	- **Soft real-time**: occasionali ritardi tollerabili
+- Esempi: eCos, VxWorks
+##### Sistemi Operativi per Smart Card
+Usati in smart card per pagamenti, autenticazioni e altro. Alimentate con contatti o induzione, con capacità limitate
+- Java-oriented: alcune eseguono applet java per multiprogrammazione
+- Esempi: Sistemi proprietari, JavaCard per applet multiprogrammate
+
+##### Cosa hanno in comune?
 - Extended Machine
 	- Estensione delle funzionalità hardware
 	- Astrazione Hardware
@@ -178,7 +209,7 @@ I **processi** sono astrazioni a livello utente per poter eseguire un programma 
 
 I file persistono rispetto ai processi.
 
-Il programma in esecuzione è un processo a cui è associato:
+##### Il programma in esecuzione è un processo a cui è associato:
 - Uno spazio di indirizzi
 - Un insieme di risorse
 	- Registri
@@ -192,8 +223,8 @@ Un processo può essere descritto tramite un **layout**:
 - Data
 - Text
 
-Ogni layout dipende dal **sistema operativo**, **l'architettura della macchina** e 
-
+Ogni layout dipende dal **sistema operativo**, **l'architettura della macchina** e **il programma**.
+##### Ciclo di vita dei processi
 I processi vengono salvati in una **tabella dei processi** del sistema operativo, un processo sospeso consiste in una voce di questa tabella e del suo spazio degli indirizzi.
 
 Ogni processo può essere **creato**, **terminato**, **messo in pausa** e **rieseguito**. Ogni processo può creare un altro **processo figlio** (crea una gerarchia di processi).
@@ -201,7 +232,7 @@ Ogni processo può essere **creato**, **terminato**, **messo in pausa** e **ries
 Ogni processo è di proprietà di un **utente** identificato da un UID (condiviso generalmente anche dal processo). Su UNIX un processo figlio ha lo stesso UID del processo padre ad esempio. Gli utenti possono essere membri di un gruppo identificato da un GUID.
 
 Un processo **root/superuser/administrator** è speciale ed ha più permessi.
-##### L'astrazione del File
+##### File
 Il file è un'astrazione di un dispositivo di memorizzazione reale (ad esempio un disco). Possiamo leggere e scrivere dati da/su un file fornendo una posizione e la quantità di dati da trasferire.
 
 I file sono contenuti e organizzati in **directory** che ha un suo identificatore (la directory è un file), da cui la filosofia UNIX "everything is a file".
@@ -210,4 +241,14 @@ Le directory formano con i file una gerarchia, alla base abbiamo la **radice (ro
 
 Altri file system possono essere montati da **mount** nella root: `/mnt/windows`.
 
-###### Diritti di accesso
+##### Diritti di accesso
+I file sono "protetti" da tuple a 3 bit per il **proprietario** (owner), il **gruppo** (group) e gli **altri utenti** (other users) 
+
+Le tuple contengono un bit r (read), w (write) ed e (execute) (tuttavia sono disponibili più bit)
+
+Esempio:
+![[Pasted image 20241016170838.png]]
+
+
+## To Do List
+- continuare da pag 16 del file 3_concetti_base

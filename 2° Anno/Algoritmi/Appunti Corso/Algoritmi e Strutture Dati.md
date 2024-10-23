@@ -417,6 +417,16 @@ Infine, per studiare matematicamente meglio le funzioni, abbiamo anche che:$$\be
 \displaystyle \text{Se } \lim_{ n \to \infty } \frac{f(n)}{g(n)}=c>0 \text{ allora } f(n)=\Theta(g(n))
 \end{array}$$
 
+### Notazione asintotica o
+Data la funzione $g(n: N\to R)$, si denota con $o(g(n))$ l'insieme di funzioni $f(n): N \to R$:$$o(g(n))=\{f(n): \forall\ c > 0,\ \exists\ n_{0}\ \ tale\ che\ \ \forall\ n \geq n_{0}\ \ e\ \ 0 \leq f(n) < c \cdot g(n)\}$$
+Definizione alternativa:$$f(n)=\omega(g(n)) \iff \lim_{ n \to \infty } \frac{f(n)}{g(n)}= \infty $$
+### Notazione asintotica $\omega$
+Data una funzione $g(n): N \to R$ si denota con $\omega (g(n))$ l'insieme delle funzioni f(n):$$\begin{array}{}
+\omega(g(n))= \{f(n): \forall\ c > 0\ \exists\ n_{0}\ tale\ che\ \forall\ n \geq n_{0}\quad 0 \leq c \cdot g(n)< f(n) \} \\
+ \\
+\omega(g(n)) \subset \Omega (g(n))
+\end{array}$$
+Definizione alternativa:$$f(n)=\omega(g(n)) \iff \lim_{ n \to \infty } \frac{f(n)}{g(n)}= \infty $$
 ### Proprietà della notazione asintotica
 #### Transitività
 $$\begin{matrix}
@@ -441,6 +451,10 @@ $$\begin{array}{}
 f(n)=O(g(n)) & \iff & g(n)=\Omega(f(n)) \\
 f(n)=o(g(n)) & \iff & g(n)=\omega(f(n))
 \end{array}$$
+### Velocità delle funzioni composte
+Per una funzione composta lineare (cioè $f(n) + g(n)$), l'intera funzione è veloce quanto la più veloce tra le sotto-funzioni.
+
+La velocità ad andare a infinito della funzione $f(n)\cdot g(n)$ e la velocità di f(n) “più” la velocità di g(n). La velocità ad andare a infinito della funzione $\frac{f(n)}{g(n)}$ e la velocità di f(n) “meno” la velocità di g(n).
 ## Lezione IV
 ### Studio della complessità
 #### Algoritmo Ricerca Sequenziale

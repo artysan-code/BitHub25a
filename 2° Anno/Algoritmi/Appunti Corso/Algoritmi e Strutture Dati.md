@@ -317,7 +317,7 @@ Dal riepilogo finale:
 | fibonacci5 | $$O(n)$$            | $$O(1)$$               |
 | fibonacci6 | $$O(\log_{2}(n))$$  | $$O(\log_{2}(n))$$     |
 Possiamo notare quello che è stato detto precedentemente, nell'ottimizzazione si può dover "spendere" dello spazio per ottenere del tempo o viceversa.
-## Lezione III
+## Lezione III (Modelli di calcolo e notazione asintotica)
 E' sensato misurare la complessità di un algoritmo contando il numero di linee di codice?
 ### Modelli di calcolo
 Un modello utilizzato ampiamente nel passato era quello della **macchina di Turing**, che era composto di un meccanismo di controllo, un nastro di memorizzazione e una testina di lettura e scrittura. Questo modello però è poco vicino alla macchina che noi studiamo.
@@ -455,7 +455,7 @@ f(n)=o(g(n)) & \iff & g(n)=\omega(f(n))
 Per una funzione composta lineare (cioè $f(n) + g(n)$), l'intera funzione è veloce quanto la più veloce tra le sotto-funzioni.
 
 La velocità ad andare a infinito della funzione $f(n)\cdot g(n)$ e la velocità di f(n) “più” la velocità di g(n). La velocità ad andare a infinito della funzione $\frac{f(n)}{g(n)}$ e la velocità di f(n) “meno” la velocità di g(n).
-## Lezione IV
+## Lezione IV (Metodo Srotolamento / Albero Ricorrenza)
 ### Studio della complessità
 #### Algoritmo Ricerca Sequenziale
 Dato il seguente algoritmo, in cui cerchiamo un elemento in un array non ordinato:
@@ -470,7 +470,7 @@ algoritmo RicercaSequenziale(array L, elem x) → intero
 
 Qual'è la sua complessità nel caso peggiore? Beh è $\Omega(n)$, in quanto non è possibile cercare un elemento se non li guardiamo tutti prima.
 
-Mentre nel caso medio abbiamo 
+Mentre nel caso medio abbiamo:$$T_{avg} = \frac{n+1}{2}$$
 #### Algoritmo Ricerca Sequenziale Array Ordinato
 Dato invece un algoritmo in cui l'array è ordinato e dobbiamo trovare un elemento:
 ```
@@ -483,7 +483,7 @@ algoritmo RicercaBinariaRic(array L, elem x, int i, int j) → intero
 ```
 
 Si può usare l'algoritmo di **ricerca binaria**
-### Algoritmi Ricorsivi
+### Equazioni di ricorrenza
 Un algoritmo ricorsivo è quello ad esempio di **fibonacci2**, analizziamolo quindi la sua **equazione di ricorrenza**. Essa sarà:
 $T(n)=T(n-1)+T(n-2)+O(1)$
 
@@ -512,7 +512,7 @@ T(n)=T(n-1)+T(n-2)+1=T(n-1)+2T(n-3)+T(n-4)+3=\dots?
 \end{array}$$
 Possiamo provare ad analizzare con **l'albero della ricorsione**.
 #### Tecnica dell'Albero della ricorsione
-Per disegnare l'albero della ricorsione dobbiamo:
+Per disegnare l'albeo della ricorsione dobbiamo:
 - disegnare l’albero delle chiamate ricorsive indicando la dimensione di ogni nodo
 - stimare il tempo speso da ogni nodo dell’albero
 - stimare il tempo complessivo “sommando” il tempo speso da ogni nodo
@@ -523,19 +523,17 @@ Mentre per $T(n)=T(n-1)+n$ abbiamo che ogni nodo costa n a causa del termine n, 
 Beh sempre n!
 Quindi possiamo sicuramente fissare un **Upper Bound** con $O(n^2)$. Ma se calcoliamo solo la prima parte dell'albero generico che abbiamo fatto:$$n \to n-1 \to n-2 \to n-i$$
 Abbiamo $\frac{n}{2}$ nodi e ognuno di loro costa almeno $\frac{n}{2}$, quindi:$$T(n)=\frac{n}{2}\cdot \frac{n}{2}=\frac{n^2}{4}$$
-Quindi possiamo fissare un **Lower Bound** di $\Omega(n^2)$, che ci porta insieme all'upper bound a dire che l'algoritmo è $\Theta(n^2)$.
+Avendo imposto che un dominio ridotto, corrisponde comunque a circa $n^2$ possiamo fissare un **Lower Bound** di $\Omega(n^2)$, che ci porta insieme all'upper bound a dire che l'algoritmo tende a $\Theta(n^2)$.
 
 Ritorniamo ad una precedente equazione ricorsiva:$$T(n)=2T(n-1)+1$$
-Sappiamo sicuramente che ogni chiamata costa uno, quindi ogni nodo costa uno. Sappiamo anche che l'altezza dell'albero è n-1:
-![[Pasted image 20241016101318.png]]
+Sappiamo sicuramente che ogni chiamata costa uno, quindi ogni nodo costa uno. Sappiamo anche che l'altezza dell'albero è n-1:![[l42.png]]
 
 Quanti nodi ha un albero binario completo di altezza h? $\displaystyle\sum_{i=0}^h 2^i=2^{h-1}-1$. Quindi possiamo dire che $T(n)\leq n2^n=\Theta(n2^n) \implies T(n)=O(n 2^n)$
 
-Allora adesso arriviamo a ciò che volevamo analizzare **fibonacci2**:
-![[Pasted image 20241016101756.png]]
+Allora adesso arriviamo a ciò che volevamo analizzare **fibonacci2**:![[l43.png]]
 Ogni nodo costa uno, ma quanti nodi ha? Lo sappiamo dalla definizione $\Theta(\phi^n)$ quindi $T(n)=o(2^n)$.
 
-## Lezione V
+## Lezione V (Metodi di risoluzione equazioni ricorrenza)
 Metodi per risolvere le equazioni di ricorrenza:
 - iterazione
 - albero della ricorsione
@@ -543,17 +541,24 @@ Metodi per risolvere le equazioni di ricorrenza:
 - teorema Master
 - cambiamento di variabile
 ### Metodo della sostituzione
+
+^5d7100
+
 Dobbiamo:
 - Indovinare la forma della soluzione.
 - Usare l'induzione matematica per provare che la soluzione è quella intuita
 
 Esempio:$$T(n)=n+T\left( \frac{n}{2} \right),\ T(1)=1$$
-Possiamo pensare che tenda a $T(n)=n\log_{2}(n)$ oppure $T(n)=n$ ma tra i due vince il secondo. Ora proviamo a dimostrare che $T(n)\leq c\cdot n$:$$\begin{array}{l}
+Possiamo pensare che tenda a $T(n)=n\log_{2}(n)$ oppure $T(n)=n$ ma supponiamo di scegliere il secondo. Ora proviamo a dimostrare che $T(n)\leq c\cdot n$:$$\begin{array}{l}
 \text{Passo base: } & T(1)=1 \leq c \cdot 1 \quad \forall\ c \geq 1 \\
 \text{Passo induttivo: } \\
 \text{Assumo che } T(k) \leq c \cdot k\quad \forall\ k<n \\
-T(n)=n+T\left( \frac{n}{2} \right)\leq n+c \cdot \left( \frac{n}{2} \right)
+T(n)=n+T\left( \frac{n}{2} \right)\leq n+c \cdot \left( \frac{n}{2} \right) \implies T(n)=\left( \frac{c}{2} +1\right)n \\
 \end{array}$$
+Quindi abbiamo che:$$\left( \frac{c}{2}+1 \right) \leq c \implies c \geq 2$$
+
+### Metodo del Teorema Master
+### Metodo del cambiamento di variabile
 ## Lezione VI (Algoritmi di Ordinamento)
 ### Ordinamento
 Dato un insieme S di n oggetti presi da un dominio totalmente **ordinato**, ordinare S.
@@ -707,3 +712,4 @@ L'algoritmo **QuickSort** randomizzato ordina in loco un array di lunghezza n in
 
 ## To Do List
 - Aggiungere gli pseudo-codici in maniera consona accanto al codice python di ogni algoritmo.
+- Aggiungere esempi per il[[#^5d7100| metodo della sostituzione]].

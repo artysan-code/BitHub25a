@@ -122,7 +122,7 @@ pesate.
 
 Alg4 è un algoritmo ottimo per il problema.
 ## Lezione II (Introduzione informale agli algoritmi)
-### Problema "i numeri di Fibonacci"
+### Problema di Fibonacci
 Passiamo quindi ora ad un modello di calcolo più simile la computer e ragioniamo in modo più qualitativo rispetto alla complessità temporale degli algoritmi.
 #### L'isola dei conigli
 Quanto velocemente si riprodurrebbe una popolazione di conigli in certe condizioni? Questa è la domanda che si è fatto Leonardo da Pisa, partendo da un isola deserta con due conigli.
@@ -144,7 +144,7 @@ F_{n}=
 F_{n-1} + F_{n-2}&&se\ n\geq 3 \\
 1&&se\ n =1,2
 \end{cases}$$
-### Ma come calcoliamo $F_n$?
+### Come si calcola $F_n$?
 #### Algoritmo Uno
 Possiamo usare un approccio numerico che calcoli direttamente i numeri di Fibonacci.$$\begin{array}{l}
 F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\overset{\wedge}{\phi^n})&dove \\
@@ -333,7 +333,7 @@ Ma quanto costano queste operazioni? (Il metodo per calcolarlo nel generico è q
 ##### Criterio di costo uniforme
 Tutte le operazioni hanno lo stesso costo e la complessità temporale è misurata come **numero di passi elementari eseguiti**.
 ##### Criterio di costo logaritmico
-Il costo dell'operazione singola dipende dalla dimensione degli operandi dell'istruzione. Quindi un'operazione con un operando di valore $x$ costerà $\log(x)$. Modella meglio la complessità di **algoritmi "numerici"**.z
+Il costo dell'operazione singola dipende dalla dimensione degli operandi dell'istruzione. Quindi un'operazione con un operando di valore $x$ costerà $\log(x)$. Modella meglio la complessità di **algoritmi "numerici"**.
 ### Caso peggiore e caso medio
 Misurando il tempo di esecuzione di un algoritmo in funzione della dimensione n delle istanze, noteremo che **istanze diverse**, a parità di dimensione, potrebbero richiedere tempo diverso.
 

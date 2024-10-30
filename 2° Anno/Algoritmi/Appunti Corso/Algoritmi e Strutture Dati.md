@@ -31,6 +31,9 @@ L'algoritmo allora è la strategia di risoluzione (la strategia di pesatura per 
 - **L'efficienza dell'algoritmo**: velocità dell'algoritmo.
 ### Esempio della moneta falsa
 #### Algoritmo Uno
+
+^055dc9
+
 Uso la prima moneta e la confronto con le altre.
 
 ``` pseudo-codice
@@ -349,9 +352,7 @@ T_{avg}(n)=\displaystyle\sum_{I}^n\{P(I) tempo(I)\} & \text{dove I sono le istan
 Quindi $T_{avg}(n)$ è intuitivamente il tempo di esecuzione nel **caso medio**, ovvero sulle istanze di input tipiche del problema. Ma come conosco la **distribuzione di probabilità sulle istanze?** Semplice! (di solito) Non puoi!
 
 Bisogna fare una assunzione (spesso non realistica).
-### Esercizio
-Analizzare la complessità nel caso medio del primo algoritmo di pesatura (Alg1) presentato nella prima lezione. Rispetto alla distribuzione di probabilità sulle istanze, si assuma che la moneta falsa possa trovarsi in modo equiprobabile in una qualsiasi delle n posizioni.
-### Notazione Asintotica
+### Notazioni Asintotiche
 Esprimiamo la complessità computazionale di un algoritmo espressa con una funzione $T(n)$.$$T(n): \#\text{passi elementari eseguti su RAM nel caso peggiore su un'istanza di dimensione n}$$
 L'idea è descrivere T(n) in modo qualitativo. Perdiamo un po’ in precisione (senza perdere l’essenziale) e guadagniamo semplicità.
 
@@ -428,7 +429,7 @@ Data una funzione $g(n): N \to R$ si denota con $\omega (g(n))$ l'insieme delle 
 \end{array}$$
 Definizione alternativa:$$f(n)=\omega(g(n)) \iff \lim_{ n \to \infty } \frac{f(n)}{g(n)}= \infty $$
 ### Proprietà della notazione asintotica
-#### Transitività
+Proprietà transitive:
 $$\begin{matrix}
 f(n)=\Theta(g(n)) & e & g(n)=\Theta(h(n)) & \implies & f(n)=\Theta(h(n)) \\
 f(n)=O(g(n)) & e & g(n)=O(h(n)) & \implies & f(n)=O(h(n)) \\
@@ -436,17 +437,17 @@ f(n)=\Omega(g(n)) & e & g(n)=\Omega(h(n)) & \implies & f(n)=\Omega(h(n)) \\
 f(n)=o(g(n)) & e & g(n)=o(h(n)) & \implies & f(n)=o(h(n)) \\
 f(n)=\omega(g(n)) & e & g(n)=\omega(h(n)) & \implies & f(n)=\omega(h(n))
 \end{matrix}$$
-#### Riflessività
+Proprietà riflessive:
 $$\begin{array}{}
 f(n)=\Theta(f(n)) \\
 f(n)=O(f(n)) \\
 f(n)=\Omega(f(n))
 \end{array}$$
-#### Simmetria
+Proprietà simmetriche:
 $$\begin{array}{}
 f(n)=\Theta(g(n)) & \iff & g(n)=\Theta(f(n))
 \end{array}$$
-#### Simmetria trasposta
+Proprietà di simmetria trasposta:
 $$\begin{array}{}
 f(n)=O(g(n)) & \iff & g(n)=\Omega(f(n)) \\
 f(n)=o(g(n)) & \iff & g(n)=\omega(f(n))
@@ -592,8 +593,14 @@ T(n)=\text{\# operazioni elementari sul modello RAM a costi uniformi} \\
 Se ogni linea di codice costa $O(1)$ e ogni ciclo (come si può vedere) viene eseguito al più n volte, avendo due cicli:$$T(n)\leq 5n^2\cdot O(1)=\Theta (n^2) \implies T(n) =O(n^2)$$
 Ma l'analisi è **stretta**? Cioè, $T(n)=\Theta(n^2)$? Analizziamo la linea più importante nel codice che corrisponde a: `if (A[j] < A[m]) then m=j`. Quindi:$$T(n)\geq \displaystyle\sum_{k=0}^{n-2} (n-k-1)=\displaystyle\sum_{k=0}^{n-1} \frac{n(n-1)}{2}=\Theta (n^2) \implies T(n) = \Omega (n^2) \implies T(n)=\Theta (n^2)$$
 #### Insertion Sort
+
+^fccf0b
+
 Estendiamo l'ordinamento da k a k+1 elementi, posizioniamo l'elemento (k+1)-esimo nella posizione corretta rispetto ai primi k elementi.![[l62.png]]
 #### Bubble Sort
+
+^0a2155
+
 Eseguiamo n-1 scansioni, dove ad ogni scansione guardiamo le coppie di elementi adiacenti e li scambiamo nell'ordine corretto.![[l63.png]]
 ### Ordinare in tempo meno del quadratico
 #### Merge Sort
@@ -649,15 +656,15 @@ La complessità spaziale del Merge Sort è di $\Theta (n)$:
 - Il numero di chiamate attive contemporaneamente è di $O(\log(n))$.
 
 Il Merge Sort non **ordina in loco**.
-### Algoritmo di Quick Sort (divide et impera)
+### Algoritmo di Quick Sort
 Vi sono diverse versioni del quick sort: caso peggiore, caso medio e versione randomizzata.
 
-Utilizza la tecnica del divide et impera:
+Generalmente però, usa la tecnica del **divide et impera**:
 - **Divide**: scegli un elemento x della sequenza (perno) e partiziona la sequenza in elementi $\leq$ x e in elementi $\geq$ x.
 - Risolvi i due problemi ricorsivamente.
 - **Impera**: restituisci la concatenazione delle due sotto-sequenze ordinate.
-#### Partizione (perno)
-Scegli un perno (ad esempio il primo elemento), scorri l'array in parallelo da sinistra verso destra fermandoci su un elemento maggiore del perno e viceversa fermandoci su uno minore del perno, scambia gli elementi e riprendi la scansione. Fermati quando i due indici sono incrociati:![[l65.png]]
+#### Funzione Partizione
+Scegli un **perno** (ad esempio il primo elemento), scorri l'array in parallelo da sinistra verso destra fermandoci su un elemento maggiore del perno e viceversa fermandoci su uno minore del perno, scambia gli elementi e riprendi la scansione. Fermati quando i due indici sono incrociati:![[l65.png]]
 ```
 Partition (A, i, f)
 1.  x=A[i]
@@ -787,7 +794,7 @@ heapSort(A)
 
 Ordina in loco $O(n\cdot \log(n))$
 
-## Lezione VIII ()
+## Lezione VIII (Lower Bound Alg. Ord. & Alg. Lineari)
 ### Sommario
 - delimitazioni inferiori e superiori (di algoritmi e problemi)
 - quanto velocemente si possono ordinare n elementi?
@@ -809,8 +816,7 @@ Un problema P ha una complessità O(f(n)) rispetto ad una risorsa di calcolo se 
 
 Un problema P ha una complessità $\Omega$(f(n)) rispetto ad una risorsa di calcolo se **ogni algoritmo** che risolve P ha costo di esecuzione nel caso peggiore $\Omega$(f(n)) rispetto quella risorsa
 
-### Ottimalità di un algoritmo
-
+### Algoritmo Ottimo
 Dato un problema P con complessità $\Omega$(f(n)) rispetto ad una risorsa di calcolo, un algoritmo che risolve P è (asintoticamente) **ottimo** se ha costo di esecuzione O(f(n)) rispetto a quella risorsa
 
 ###  Complessità temporale del problema dell'ordinamento

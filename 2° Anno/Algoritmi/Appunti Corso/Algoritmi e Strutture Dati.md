@@ -809,11 +809,11 @@ Un problema P ha una complessità O(f(n)) rispetto ad una risorsa di calcolo se 
 
 Un problema P ha una complessità $\Omega$(f(n)) rispetto ad una risorsa di calcolo se **ogni algoritmo** che risolve P ha costo di esecuzione nel caso peggiore $\Omega$(f(n)) rispetto quella risorsa
 
-### Ottimalita' di un algoritmo
+### Ottimalità di un algoritmo
 
 Dato un problema P con complessità $\Omega$(f(n)) rispetto ad una risorsa di calcolo, un algoritmo che risolve P è (asintoticamente) **ottimo** se ha costo di esecuzione O(f(n)) rispetto a quella risorsa
 
-###  Complessita' temporale del problema dell'ordinamento
+###  Complessità temporale del problema dell'ordinamento
 - Upper bound: $O(n^2)$
 	- insertion sort, selection sort, quick sort, bubble sort
 - Un upper bound **migliore**: $O(n\log n)$
@@ -827,16 +827,29 @@ abbiamo un gap di $\log n$ tra upper e lower bound. Si può fare di meglio?
 Dati due elementi $a_{i}$ ed $a_{j}$ , per determinarne l’ordinamento relativo effettuiamo una delle seguenti operazioni di confronto: $$a_{i}<a_{j};\quad a_{i}\leq a_{j};\quad a_{i}=a_{j};\quad a_{i}\geq a_{j};\quad a_{i}>a_{j}$$Non si possono esaminare i valori degli elementi o ottenere informazioni sul loro ordine in altro modo.
 
 Tutti gli algoritmi di prima sono algoritmi di ordinamento per confronto
-
 #### Teorema
 Ogni algoritmo basato su confronti che ordina n elementi deve fare nel caso peggiore $\Omega(n\log n)$ confronti
 
 
 quindi il # di confronti che un algoritmo esegue e' un lower bound di # di passi elementari che esegue
-
 #### Corollario
 Il merge sort e il quick sort sono algoritmi ottimi (almeno dentro la classe di algoritmi basati su confronti)
+### Albero di decisione
+Gli algoritmi di ordinamento per confronto posso essere descritti in modo astratto tramite gli **alberi di decisione**.
+
+Un generico algoritmo di confronto lavora in questo modo:
+- Confronta due elementi $a_{i}$ e $a_{j}$.
+- Riordina e passa al successivo.
+
+Quindi descrive i confronti di un algoritmo su un determinato input, guardando ogni casistica possibile di confronto. Vengono ignorati i movimenti di dati. Quindi:
+- Descrive le diverse sequenze di confronti che A potrebbe fare su un input n.
+- Ogni **nodo interno** ha un confronto di tipo $i:j$ con due possibilità.
+- Ogni **nodo foglia** è un risultato di un determinato caso.
+
+L'albero di decisione non **è legato al problema** e non è **associato solo ad un algoritmo**.
+
+### Algoritmi di ordinamento senza confronto
+#### IntegerSort
 
 ## To Do List
-- Aggiungere gli pseudo-codici in maniera consona accanto al codice python di ogni algoritmo.
 - Aggiungere esempi per il[[#^5d7100| metodo della sostituzione]].

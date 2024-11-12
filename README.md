@@ -1,5 +1,4 @@
 # BitHub25a Comunità Educativa
-
 Il nostro team di BitHub25a si propone di creare uno spazio web dove poter accedere a informazioni e risorse sul Corso di Informatica dell'Università Tor Vergata.
 
 Per ora questo è solo un repository GitHub contenente tutte le risorse per ogni lezione di questo corso, con tutte le note e le informazioni che possiamo creare e ottenere. Inoltre, questo repository è pubblico, quindi qualsiasi utente può segnalare problemi e inviare richieste per migliorare ulteriormente il progetto.Verrà in futuro creata una pagina web dedicata a fornire risorse e informazioni riguardanti il Corso di Informatica presso l'Università di Tor Vergata.
@@ -7,24 +6,6 @@ Per ora questo è solo un repository GitHub contenente tutte le risorse per ogni
 Attualmente, abbiamo creato una repository su GitHub che contiene una vasta gamma di risorse per ciascuna materia del corso, compresi appunti e informazioni provenienti da varie fonti. Questa repository è pubblica, consentendo a ogni utente di segnalare problemi e inviare richieste per migliorare costantemente il progetto.
 
 Al momento, il progetto si trova nella sua fase iniziale, con GitHub come unico punto centrale. Tuttavia, prevediamo di espanderci ulteriormente creando un sito web dedicato. Questa piattaforma consentirà agli utenti di scambiare materiali, informazioni e opinioni in un ambiente simile a un forum attivo.
-## Aggiornamenti 2024/2025
-- A causa dell'elevato numero di materiale didattico fornito dai professori, verrà studiato un metodo online di trasferimento per i materiali didattici (che può essere drive, come anche un possibile sito internet).
-
-## Liste di attesa e aggiornamento
-In attesa di preparazione e/o ultimazione degli appunti:
-- Logica e Reti Logiche
-- Programmazione dei Calcolatori
-- Geometria e Algebra
-- Algoritmi e Strutture Dati
-- Sistemi Operativi e Reti Logiche
-- Linguaggi e Metodologie di Programmazione
-- Analisi Matematica
-- Calcolo delle probabilità e statistica
-
-Attualmente non sotto aggiornamenti:
-- Matematica Discreta
-- Architettura dei Calcolatori
-- Ricerca Operativa
 ## Sono gli appunti e le informazioni attendibili?
 Il materiale didattico è stato elaborato con cura da noi e altri studenti del corso, che partecipano attivamente alle lezioni e si impegnano nel mantenere aggiornate le informazioni. Tuttavia, è importante tenere presente che gli aggiornamenti richiedono tempo e sforzi, che vengono dedicati con sacrificio da parte di studenti universitari già impegnati. Di conseguenza, potrebbe accadere che le informazioni non siano sempre aggiornate all'ultimo minuto.
 
@@ -39,7 +20,7 @@ Per quanto riguarda segnalazioni di errori o altre modifiche necessarie, è poss
 
 ---
 
-# BitHub25a Educational Community (EN)
+# BitHub25a Educational Community
 Our goal at BitHub25a is to develop a web platform dedicated to providing resources and information regarding the Computer Science Course at the University of Tor Vergata.
 
 Currently, we have created a repository on GitHub that contains a wide range of resources for each course subject, including notes and information from various sources. This repository is public, allowing any user to report issues and submit requests to constantly improve the project.

@@ -1,8 +1,9 @@
 
-def Banale(A,x):    #O(n^2)
-for i=1 in range(n-1):
-	for j=i+1 in range(n):
-		if (A[i]+A[j]=x) then return (i,j)
+def Banale(A,n):    #O(n^2)
+for i in range(1,n-1):
+    for j in range(i+1,n):
+	    if (A[i]+A[j]=x):
+            return (i,j)
 return (-1,-1)
 
 def MenoBanale(A,x):    #O(n log(n))
@@ -23,8 +24,12 @@ def MenoBanale(A,x):    #O(n log(n))
 def Lineare(A,x):
     i=1,j=x
     while i<j:
-        if A[i]+A[j] == x then return (i,j)
-        if A[i]+A[j] < x then i=i+1 else j=j-1
+        if A[i]+A[j] == x:
+            return (i,j)
+        if A[i]+A[j] < x:
+            i=i+1 
+        else :
+            j=j-1
     return (-1,-1)
 
 A = [2, 5, 9, 14, 20, 21, 25, 40]

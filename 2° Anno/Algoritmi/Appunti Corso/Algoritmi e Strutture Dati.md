@@ -1,3 +1,14 @@
+## Preambolo
+### Esonero Febbraio
+L'esonero di febbraio risulterà in uno scritto e un orale del modulo I e, se superato, varrà come modulo I superato (e farà media all'esame).
+### Problem Set
+Esercizi da risolvere da solo o insieme ad un gruppo di max 3/4 persone. Sono più difficili del normale ma, se risolti, forniscono punti bonus per l'esame.
+
+### Consigli (??)
+- Studiare giorno per giorno (farò 40km di corsa??).
+- Lavorare sui problemi assegnati in gruppo (troppi esercizi, mi sentirò stupido, quindi meglio 3 stupidi e devo spiegare da stupido a degli stupidi cosa non ho capito).
+- Scrivere/formalizzare la soluzione individualmente (così ci esplodono i thread).
+- Cercate di divertirvi (ha detto... sesso e samba?)
 ## Lezione I (Introduzione)
 ### Algoritmi e Programmi
 - Ogni algoritmo fornisce il procedimento per giungere alla soluzione di un dato problema di calcolo (essenza computazionale).
@@ -85,7 +96,7 @@ Quando $\lfloor\frac{n}{2^i}\rfloor = 1$? Per $i = \lfloor log_2(n)\rfloor$
 
 Efficiente? Si può fare di meglio.
 
-#### Algoritmo quattro
+#### Algoritmo Quattro
 Posso dividere in tre gruppi invece che due.
 ```Copy
 Alg4(X):
@@ -137,7 +148,6 @@ Le regole ci permettono di studiare meglio questo problema sono le seguenti:
 - I conigli sono immortali.
 
 Possiamo descrivere questa riproduzione con il seguente albero:
-
 ![[l2-2.png]]
 
 #### La regola di espansione
@@ -149,6 +159,9 @@ F_{n-1} + F_{n-2}&&se\ n\geq 3 \\
 \end{cases}$$
 ### Come si calcola $F_n$?
 #### Algoritmo Uno
+
+^66510c
+
 Possiamo usare un approccio numerico che calcoli direttamente i numeri di Fibonacci.$$\begin{array}{l}
 F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\overset{\wedge}{\phi^n})&dove \\
 \phi = \frac{1 + \sqrt{ 5 }}{2} \approx +1.618 \\
@@ -156,8 +169,6 @@ F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\overset{\wedge}{\phi^n})&dove \\
 \end{array}$$
 Quindi l'algoritmo uno è:
 ```python
-from math import sqrt
-
 def fibonacci1(n: int) -> int:
 	return int((pow((1+sqrt(5))/2, n) - pow((1-sqrt(5))/2, n)) / sqrt(5))
 ```
@@ -167,8 +178,10 @@ Ma questo algoritmo è corretto? Beh...
 A causa dell'approssimazione dei due $\phi$ non riusciamo ad approssimare sempre al valore corretto. Aumentando però l'approssimazione troveremo sempre verso infinito un numero che verrà approssimato in maniera errata.
 
 #### Algoritmo Due
-Usando invece una funzione ricorsiva possiamo fare:
 
+^2bb139
+
+Usando invece una funzione ricorsiva possiamo fare:
 ```python
 def fibonacci2(n: int) -> int:
 	if n < 2:
@@ -186,20 +199,26 @@ In ogni modello di calcolo rudimentale ogni linea di codice costa un'unità di t
 - Se $n = 3$ ci sono quattro linee di codice, due per la chiamata fibonacci2(3) e una per fibonacci2(2) e fibonacci2(1)
 - Se invece è $n$? Cerchiamo di studiarlo tramite una funzione $f(n)$.
 
-Quindi definendo $f(n)$ come $\text{\# di linee di codice eseguite dall'algoritmo sull'input n}$.
+Quindi definendo $f(n)$ come *# di linee di codice eseguite dall'algoritmo sull'input n*.
 
-Quindi $f(n)=2+f(n-1)+f(n-2)$  e  $f(1)=f(2)=1$ ma a cosa corrisponde? Dobbiamo risolvere questa **equazione di ricorrenza**.
+Quindi $f(n)=2+f(n-1)+f(n-2)$  e  $f(1)=f(2)=1$ ma a cosa corrisponde? Questa è quella che chiamiamo **equazione di ricorrenza**.
 
-Per risolverlo usiamo un **albero della ricorsione**:
+Per risolverla usiamo un **albero della ricorsione**:
 ![[l2-3.png]]
 
 I nodi alla base dell'albero sono i **casi base**, in quanto non eseguono ricorsioni. Per dedurre una formula dobbiamo capire quante foglie e nodi interni possiede l'albero.
 
 ##### Primo Lemma 
-Il numero di foglie dell'albero della ricorsione di *fibonacci2(n)* è pari a $F_n$. ( #lemma1 )
+
+^bcd178
+
+Il numero di foglie dell'albero della ricorsione di *fibonacci2(n)* è pari a $F_n$.
 **Dimostrazione**
 guarda il file
 ##### Secondo Lemma
+
+^9ac909
+
 Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1. ( #lemma2 )
 **Dimostrazione**
 (Per induzione sul numero di nodi dell'albero n)
@@ -220,7 +239,7 @@ def fibonacci3(n: int) -> int:
 ```
 Prendiamo il valore a $n-1$ in quanto l'array in programmazione inizia da 0 e non da 1 come nello pseudo-codice.
 
-Tempo di esecuzione? Beh
+Tempo di esecuzione? Beh...
 
 La prima, la seconda e l'ultima riga di codice vengono eseguite una sola volta, mentre la terza e la quarta linea vengono eseguite n volte. Quindi:$$T(n)\leq n+n+3=2n + 3$$
 fibonacci3 impiega un tempo lineare (proporzionale a n) rispetto a fibonacci2 che invece impiega un tempo esponenziale. L'altra faccia della medaglia però è lo spazio occupato, che sarà proporzionale all'input.
@@ -230,16 +249,16 @@ Proviamo ad ottimizzare lo spazio occupato dall'algoritmo precedente:
 def fibonacci4(n: int) -> int:
 	a = 1 # F_n-1
 	b = 1 # F_n-2
-	for _ in range(3, n+1):
+	i = 3
+	while (i<=n):
 		c = a + b # F_n
 		a = b
 		b = c
+		i += 1
 	return c
 ```
 
 Non è il miglior algoritmo possibile e possiamo usare il **lemma tre** per poter ottimizzare l'algoritmo.
-##### Terzo Lemma
-$$\begin{pmatrix}1&1\\1&0\end{pmatrix}^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$$
 #### Notazione Asintotica
 Vogliamo esprimere $T(n)$ in modo qualitativo anche perdendo un po' di **precisione**, ma guadagnando semplicità.
 
@@ -253,6 +272,9 @@ Si dice che $f(n)=O(g(n))$ se $f(n) \leq c(g(n))$ con c che è una costante e n 
 
 Si può sperare di calcolare $F_n$ in un tempo minore a $O(n)$?
 #### Algoritmo Cinque
+##### Terzo Lemma
+Grazie alle proprietà delle matrici, è dimostrabile che:$$\begin{pmatrix}1&1\\1&0\end{pmatrix}^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$$
+##### Algoritmo
 ```python
 def fibonacci5(n: int) -> int:
 	N = np.array([[1, 1], [1, 0]])
@@ -264,7 +286,6 @@ def fibonacci5(n: int) -> int:
 Usiamo la libreria numpy come np in quanto ci permette di eseguire le moltiplicazioni tra matrici.
 
 Il risultato non sembra aver ottimizzato niente, eppure:
-
 ##### Calcolo di potenze
 Si può calcolare l'ennesima potenza, elevando al quadrato la $\left\lfloor  \frac{n}{2}  \right\rfloor$-esima potenza. Se n è dispari basta eseguire un'ulteriore moltiplicazione.$$\begin{array}{}
 3^2=9 & 3^4=9^2=81 & 3^8=81^2=6561
@@ -287,18 +308,17 @@ def potenzadiMatrice(A: np.array, k: int) -> np.array:
 ```
 
 Iniziamo a notare andando avanti con gli algoritmi che, pur sembrando più righe l'algoritmo invece è sempre più veloce. Infatti:
-- Il tempo speso dentro `potenzadiMatrice` è costante.
+- Il tempo speso dentro `potenzadiMatrice` è costante (Per definizione).
 - Si esegue una chiamata ricorsiva di `potenzadiMatrice` con input $\left\lfloor  \frac{n}{2}  \right\rfloor$ 
 
-L'equazione di ricorrenza è pertanto:$$\begin{array}{}
-T(n) \leq T\left( \left\lfloor  \frac{n}{2}  \right\rfloor  \right)+c \\
-T(n) \leq T\left( \left\lfloor  \frac{n}{4}  \right\rfloor  \right)+2c \\
-T(n) \leq T\left( \left\lfloor  \frac{n}{8}  \right\rfloor  \right)+3c \\
-T(n) \leq i\cdot c + T\left( \left\lfloor  \frac{n}{2^i}  \right\rfloor  \right)
+L'equazione di ricorrenza è pertanto (Metodo dell'iterazione, che vedremo successivamente):$$\begin{array}{l}
+\displaystyle T(n) \leq T\left( \left\lfloor  \frac{n}{2}  \right\rfloor  \right)+c \\
+\displaystyle T(n) \leq T\left( \left\lfloor  \frac{n}{4}  \right\rfloor  \right)+2c \\
+\displaystyle T(n) \leq T\left( \left\lfloor  \frac{n}{8}  \right\rfloor  \right)+3c \\
+\displaystyle T(n) \leq i\cdot c + T\left( \left\lfloor  \frac{n}{2^i}  \right\rfloor  \right)
 \end{array}$$
 Quindi, per $i=\lfloor \log_{2}(n) \rfloor$ si ottiene:$$T(n) \leq c \cdot \lfloor \log_{2}(2) \rfloor + T(1) = O(\log_{2}(n))$$
 Molto più veloce rispetto ai precedenti!
-
 #### Quanta memoria usa un algoritmo?
 - **Algoritmo non ricorsivo**: dipende dalla memoria allocata (variabili, array, matrici e strutture dati).
 - **Algoritmo ricorsivo**: dipende dalla memoria allocata ad ogni chiamata e dal numero di chiamate che sono contemporaneamente attive.
@@ -306,7 +326,7 @@ Molto più veloce rispetto ai precedenti!
 - Ogni chiamata usa almeno **memoria costante** (anche senza variabili).
 - Per analizzare le ricorsioni è bene usare sempre **l'albero delle ricorsioni**.
 
-Esempio in **fibonacci2** le chiamate attive formano un cammino (P) radice-nodo, P ha al più n nodi.
+Esempio in **fibonacci2** le chiamate attive formano un cammino (P) radice-nodo, dove P ha al più n nodi.
 
 Mentre in **fibonacci6** l'albero ha un'altezza $O(\log(n))$, ogni nodo/chiamata usa memoria costante, quindi lo spazio è $O(\log(n))$.
 #### Riepilogo finale
@@ -372,7 +392,6 @@ Tempi di esecuzione di differenti algoritmi per istanze di dimensioni crescenti 
 |  $n=10.000$   | <1 sec |    <1 sec    |  2 min  |   12 days    |  very long   |    very long    |    very long    |
 |  $n=100.000$  | <1 sec |    2 sec     | 3 hours |   32 years   |  very long   |    very long    |    very long    |
 | $n=1.000.000$ | 1 sec  |    20 sec    | 12 days | 31.710 years |  very long   |    very long    |    very long    |
-
 ### Notazione asintotica O 
 $f(n)=O(g(n))$ se $\exists$ due costanti $c>0\ e\ n_{0}\geq 0$ tali che $0\leq f(n) \leq g(n)\quad \forall n \geq n_{0}$. Quindi:
 

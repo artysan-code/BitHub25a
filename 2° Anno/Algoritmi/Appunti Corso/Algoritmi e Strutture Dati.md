@@ -162,11 +162,17 @@ F_{n-1} + F_{n-2}&&se\ n\geq 3 \\
 
 ^66510c
 
-Possiamo usare un approccio numerico che calcoli direttamente i numeri di Fibonacci.$$\begin{array}{l}
-F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\overset{\wedge}{\phi^n})&dove \\
-\phi = \frac{1 + \sqrt{ 5 }}{2} \approx +1.618 \\
-\overset{\wedge}{\phi} = \frac{1 - \sqrt{ 5 }}{2} \approx -0.618
-\end{array}$$
+Possiamo usare un approccio numerico che calcoli direttamente i numeri di Fibonacci.
+$\displaystyle F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi^n})$ dove
+$\displaystyle \phi = \frac{1 + \sqrt{ 5 }}{2} \approx +1.618$
+$\displaystyle \hat{\phi} = \frac{1 - \sqrt{ 5 }}{2} \approx -0.618$
+
+Il pseudo-codice è:
+``` pseudo-codice
+algoritmo fibonacci1(intero n)-> intero
+	return (1/sqrt(5) * (phi^n-hat(phi)^n))
+```
+
 Quindi l'algoritmo uno è:
 ```python
 def fibonacci1(n: int) -> int:
@@ -180,6 +186,13 @@ A causa dell'approssimazione dei due $\phi$ non riusciamo ad approssimare sempre
 #### Algoritmo Due
 
 ^2bb139
+Il pseudo-codice è:
+```
+algoritmo fibonacci2(intero n) → intero 
+	if (n≤2) then return 1 
+	else return fibonacci2(n-1) + fibonacci2(n-2)
+```
+
 
 Usando invece una funzione ricorsiva possiamo fare:
 ```python
@@ -213,15 +226,36 @@ I nodi alla base dell'albero sono i **casi base**, in quanto non eseguono ricors
 ^bcd178
 
 Il numero di foglie dell'albero della ricorsione di *fibonacci2(n)* è pari a $F_n$.
+
 **Dimostrazione**
-guarda il file
+induzione su n
+con $n=1,2$        abbiamo # foglie = 1 = $F_{1}$ = $F_{2}$
+
+con $n>2$            abbiamo # foglie T = $F_{n-1} + F_{n-2}$ = $F_{n}$
+
 ##### Secondo Lemma
 
 ^9ac909
 
-Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1. ( #lemma2 )
+Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1.
+
 **Dimostrazione**
-(Per induzione sul numero di nodi dell'albero n)
+Per induzione sul numero di nodi dell'albero (n)
+f = # foglie
+i = # nodi interni
+
+con $n\leq 2$         i=0, f=1
+
+con $n>2$         per costruzione i' = i-1 e f' = f-1
+
+per ipotesi induttiva:
+	i'=f'-1
+
+quindi:
+i-1=f-1-1 
+cioè i=f-1
+
+
 
 In totale le linee di codice eseguite sono:$$F_n + 2(F_n -1)=3F_n-2$$
 fibonacci2 è molto lento...

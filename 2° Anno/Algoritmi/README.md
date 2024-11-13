@@ -20,3 +20,8 @@
 - [ ] Lezione IX
 - [ ] Lezione X
 - [ ] Lezione XI
+- [ ] Lezione XII
+	- [ ] Possibile riorganizzazione
+	- [ ] Finire implementazione Dizionario
+	- [ ] Inserire link alla spiegazione degli albero nell'organizzazione gerarchica dei dati
+	- [ ] Vettore posizionale

@@ -162,11 +162,17 @@ F_{n-1} + F_{n-2}&&se\ n\geq 3 \\
 
 ^66510c
 
-Possiamo usare un approccio numerico che calcoli direttamente i numeri di Fibonacci.$$\begin{array}{l}
-F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\overset{\wedge}{\phi^n})&dove \\
-\phi = \frac{1 + \sqrt{ 5 }}{2} \approx +1.618 \\
-\overset{\wedge}{\phi} = \frac{1 - \sqrt{ 5 }}{2} \approx -0.618
-\end{array}$$
+Possiamo usare un approccio numerico che calcoli direttamente i numeri di Fibonacci.
+$\displaystyle F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi^n})$ dove
+$\displaystyle \phi = \frac{1 + \sqrt{ 5 }}{2} \approx +1.618$
+$\displaystyle \hat{\phi} = \frac{1 - \sqrt{ 5 }}{2} \approx -0.618$
+
+Il pseudo-codice è:
+``` pseudo-codice
+algoritmo fibonacci1(intero n)-> intero
+	return (1/sqrt(5) * (phi^n-hat(phi)^n))
+```
+
 Quindi l'algoritmo uno è:
 ```python
 def fibonacci1(n: int) -> int:
@@ -180,6 +186,13 @@ A causa dell'approssimazione dei due $\phi$ non riusciamo ad approssimare sempre
 #### Algoritmo Due
 
 ^2bb139
+Il pseudo-codice è:
+```
+algoritmo fibonacci2(intero n) → intero 
+	if (n≤2) then return 1 
+	else return fibonacci2(n-1) + fibonacci2(n-2)
+```
+
 
 Usando invece una funzione ricorsiva possiamo fare:
 ```python
@@ -213,15 +226,36 @@ I nodi alla base dell'albero sono i **casi base**, in quanto non eseguono ricors
 ^bcd178
 
 Il numero di foglie dell'albero della ricorsione di *fibonacci2(n)* è pari a $F_n$.
+
 **Dimostrazione**
-guarda il file
+induzione su n
+con $n=1,2$        abbiamo # foglie = 1 = $F_{1}$ = $F_{2}$
+
+con $n>2$            abbiamo # foglie T = $F_{n-1} + F_{n-2}$ = $F_{n}$
+
 ##### Secondo Lemma
 
 ^9ac909
 
-Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1. ( #lemma2 )
+Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1.
+
 **Dimostrazione**
-(Per induzione sul numero di nodi dell'albero n)
+Per induzione sul numero di nodi dell'albero (n)
+f = # foglie
+i = # nodi interni
+
+con $n\leq 2$         i=0, f=1
+
+con $n>2$         per costruzione i' = i-1 e f' = f-1
+
+per ipotesi induttiva:
+	i'=f'-1
+
+quindi:
+i-1=f-1-1 
+cioè i=f-1
+
+
 
 In totale le linee di codice eseguite sono:$$F_n + 2(F_n -1)=3F_n-2$$
 fibonacci2 è molto lento...
@@ -1088,5 +1122,50 @@ alg(A)
 			j*=max[i+1]
 			delta=A[i*]-A[j*]
 ```
+## Lezione XII (Strutture dati elementari)
+### Tipo di Dato e Struttura di Dati
+### Struttura dati Dizionario
+Riceve un insieme S di coppie (e, k), cioè valore-chiave,  e supporta le seguenti **operazioni**:
+- **Insert**, aggiungere ad S una nuova coppia (e, k).
+- **Delete**, cancella da S l'elemento con chiave k.
+- **Search**, fornisce l'elemento nel dizionario con chiave k, se non esiste restituisce null.
+#### Implementazione
+Vi sono diverse tipologie di implementazioni, a seconda di come viene strutturata la lista delle chiavi
+### Struttura dati Pila
+Riceve una sequenza S di *n elementi* e supporta le seguenti operazioni:
+- **isEmpty() -> result**, restituisce *true* se S è vuota e *false* altrimenti.
+- **push(elem e)**, aggiunge *e* come ultimo elemento di S.
+- **pop() -> elem**, toglie l'ultimo elemento di S e lo restituisce.
+- **top() -> elem**, restituisce l'ultimo elemento di S senza toglierlo.
+### Struttura dati Coda
+Riceve una sequenza S di *n elementi* e supporta le seguenti operazioni:
+- **isEmpty() -> result**, restituisce *true* se S è vuota e *false* altrimenti.
+- **enqueue(elem e)**, aggiunge e come ultimo elemento di S.
+- **dequeue() -> elem**, toglie da S il primo elemento e lo restituisce.
+- **first() -> elem**, restituisce il primo elemento da S, senza toglierlo.
+### Rappresentazione dei dati
+Esistono due tipologie fondamentali di rappresentazione dei dati:
+- **Rappresentazioni indicizzate**, che usano array e matrici e sfruttano l'indicizzazione di essi. Possiede vantaggi e svantaggi:
+	- Gli indici delle celle di un array sono numeri consecutivi.
+	- Non è possibile aggiungere nuove celle ad un array.
+- **Rappresentazione collegate**, che usano i record (costituenti di base) collegati fra loro tramite puntatori. I record possono essere distrutti e creati dinamicamente. Anche questo possiede vantaggi e svantaggi:
+	- Possiamo aggiungere e togliere un record a una struttura collegata
+	- Gli indirizzi dei record non sono necessariamente consecutivi.
+
+### Organizzazione gerarchica dei dati
+Consiste nell'organizzazione dei dati in una gerarchia e delle relazioni tramite gli alberi. Ci sono diverse definizioni aggiuntive per gli [[|alberi]]:
+- Il grado di un nodo è il numero dei suoi figli.
+- u antenato di v se u è raggiungibile da v risalendo di padre in padre v discendente di u se u è un antenato di v.
+![[l121.png]]
+
+Come possiamo rappresentare un albero in maniera indicizzata? (Quindi con array)
+##### Vettore dei padri
+L'idea è di associare ad ogni cella l'informazione di un nodo e la posizione del padre, in un vettore almeno di dimensione n. Quindi una generica cella contiene l'informazione (info, parent) dove:
+- Info è il contenuto informativo del nodo i
+- Parent è l'indice nell'array del padre.
+
+Quindi le operazioni di ricerca hanno i seguenti costi:
+- Ricerca di un padre **O(1)** mentre ricerca di un figlio **O(n)**.
+##### Vettore posizionale (da fare)
 ## To Do List
 - Aggiungere esempi per il [[#^5d7100|metodo della sostituzione]].

@@ -10,3 +10,6 @@ temporale (nel caso peggiore):
 - Dati n dischi di diametro diverso e 3 pali, spostare i dischi da un palo ad un altro facendo meno spostamenti possibili. Si può spostare un disco alla volta e non si può mettere un disco di diametro più grande sopra uno di diametro più piccolo.
 ### Lezione VI
 Scrivere lo pseudo-codice del [[Algoritmi e Strutture Dati#^0a2155|Bubble Sort]] e dell'[[Algoritmi e Strutture Dati#^fccf0b|InsertionSort]] e fare l'analisi della complessità temporale nel caso peggiore. 
+### Lezione XII
+- Progettare una struttura dati indicizzata che implementi il tipo di dato Pila e il tipo di dato Coda. Le operazioni devo avere complessità temporale costante.
+- Progettare una struttura dati collegata che implementi il tipo di dato Pila e il tipo di dato Coda. Le operazioni devo avere complessità temporale costante.

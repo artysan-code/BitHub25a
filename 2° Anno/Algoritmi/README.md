@@ -25,3 +25,5 @@
 	- [ ] Finire implementazione Dizionario
 	- [ ] Inserire link alla spiegazione degli albero nell'organizzazione gerarchica dei dati
 	- [ ] Vettore posizionale
+- [ ] Lezione XIII
+- [ ] Lezione XIV

@@ -1125,6 +1125,9 @@ alg(A)
 ## Lezione XII (Strutture dati elementari)
 ### Tipo di Dato e Struttura di Dati
 ### Struttura dati Dizionario
+
+^4be009
+
 Riceve un insieme S di coppie (e, k), cioè valore-chiave,  e supporta le seguenti **operazioni**:
 - **Insert**, aggiungere ad S una nuova coppia (e, k).
 - **Delete**, cancella da S l'elemento con chiave k.
@@ -1215,6 +1218,17 @@ trovare il numero di nodi di T con profondità almeno h
 #### Definizione
 la profondità di un nodo e' la distanza (# di archi) dalla radice
 
+
+## Lezione XIV (Problema del Dizionario)
+Data la struttura dati del [[Algoritmi e Strutture Dati#^4be009|Dizionario]] analizziamo una sua buona implementazione dove ogni operazione è garantita di avere $O(\log(n))$. Le idee sono:
+- Definire un albero binario tale che ogni operazione richiede $O(altezza\ albero)$
+- Fare in modo che l'altezza dell'albero sia sempre $\log(n)$ 
+### Alberi binari di ricerca (BST)
+Un **BST** rispetta le seguenti proprietà:
+- Ogni *nodo v* contiene un elemento $elem(v)$ cui è associata una chiave $chiave(v)$ presa da un dominio totalmente ordinato.
+- Per ogni nodo v vale che:
+	- Le chiavi che si trovano nel sotto-albero sinistro di v sono $\leq$ $chiave(v)$.
+	- Le chiavi che si trovano nel sotto-albero destro di v sono $>$ $chiave(v)$.
 
 ## To Do List
 - Aggiungere esempi per il [[#^5d7100|metodo della sostituzione]].

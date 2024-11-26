@@ -22,10 +22,27 @@ T(n)=n+T\left( \frac{n}{2} \right)\leq n+c \cdot \left( \frac{n}{2} \right) \imp
 Quindi abbiamo che:$$\left( \frac{c}{2}+1 \right) \leq c \implies c \geq 2 \quad\quad quindi\quad\quad T(n)\leq 2n \implies T(n)=O(n) $$
 
 
-### Metodo del Teorema Master
+### Divide et Impera
+Gli algoritmi basati sul **divide et impera** sono descrivibili in semplici step:
+- Dividi il problema (di dimensione *n*) in *a* sotto-problemi di dimensione $\displaystyle\frac{n}{b}$.
+- Risolvi i sotto-problemi ricorsivamente.
+- Riunisci le soluzioni.
 
+Dato $f(n)$, cioè il tempo per dividere e ricombinare istanze di dimensione n, allora la **relazione di ricorrenza** è la seguente:$$T(n)=\begin{cases}
+a\cdot T\left( \frac{n}{b} \right)+ f(n) & \text{se}\ \ n>1 \\
+\Theta(1) & \text{se}\ \ n=1
+\end{cases}$$
+### Metodo del Teorema Master
 ^ea5acf
-#### Divide et Impera
+
+Analizzando la precedente relazione di ricorrenza, possiamo imporre una "lotta" tra $\displaystyle n^{\log_{b}(a)}$ e $f(n)$. Quindi:
+- Se sono dello stesso ordine asintotico allora $T(n)=\Theta(f(n)\log (n))$
+- Se una delle due è più veloce, allora T(n) tende ad essa.
+
+Analizzando più affondo possiamo dire che possono esserci quindi **tre soluzioni**:
+- $\displaystyle  T(n)=\Theta (n^{\log_{b}(a)})$  se  $\displaystyle f(n)=O(n^{\log_{b}(a-\epsilon)})$ per $\displaystyle \epsilon>0$
+- $T(n)=\Theta(n^{\log_{b}(a)\cdot \log(n)})$  se  $f(n)=\Theta(n^{\log_{b}(a)})$
+- $T(n)=\Theta(f(n))$  se  $\displaystyle f(n)=\Omega(n^{\log_{b}(a+\epsilon)})$ per $\displaystyle \epsilon>0$ e $\displaystyle \forall\ f\left( \frac{n}{b} \right) \leq c \cdot f(n)$ per $c<1$ e n sufficientemente grande
 
 ### Metodo del cambiamento di variabile
 

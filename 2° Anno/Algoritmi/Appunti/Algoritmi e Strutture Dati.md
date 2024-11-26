@@ -642,5 +642,26 @@ Un **BST** rispetta le seguenti proprietà:
 	- Le chiavi che si trovano nel sotto-albero sinistro di v sono $\leq$ $chiave(v)$.
 	- Le chiavi che si trovano nel sotto-albero destro di v sono $>$ $chiave(v)$.
 
+
+## Lezione XV (Problem Set)
+
+### Il problema del dizionario
+
+```
+tipo Dizionario:
+dati un insieme S di coppie (elem,chiave)
+operazioni
+	insert(elem e,chiave k)
+		aggiunge a S una nuova coppia (e,k)
+	
+	delete(elem e)
+		cancella da S l'elemento e
+	
+	search(chiave k)--> elem
+		se una chiave k e' presente in S restituiesce un element e ad essa
+		associato e null altrimenti
+```
+
+
 ## To Do List
 - Aggiungere esempi per il [[#^5d7100|metodo della sostituzione]].

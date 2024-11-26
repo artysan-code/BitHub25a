@@ -1,5 +1,5 @@
 [[2 - Introduzione informale agli algoritmi|Torna alla lezione precedente]]
-[[4 - Metodo dello Srotolamento e Albero di Ricorrenza|Continua alla lezione successiva.]]
+[[4 - Metodo dello Srotolamento e Albero di ricorsione|Continua alla lezione successiva.]]
 ## Modelli di calcolo
 Un modello utilizzato ampiamente nel passato era quello della **macchina di Turing**, che era composto di un meccanismo di controllo, un nastro di memorizzazione e una testina di lettura e scrittura. Questo modello però è poco vicino alla macchina che noi studiamo.
 

@@ -39,6 +39,9 @@ $T(n)=T\left( \frac{n}{2} \right) + O(1)$
 
 Generalmente la **complessità computazionale** di un algoritmo ricorsivo è descrivibile tramite la sua **equazione di ricorrenza**.
 ## Metodo dell'iterazione (o srotolamento)
+
+^40e417
+
 Immaginiamo che la nostra equazione di ricorrenza è:$$T(n)=c+T\left( \frac{n}{2} \right) = 2c + T\left( \frac{n}{4} \right)=ic+T\left( \frac{n}{2^i} \right)$$
 Quindi per $i=\log_{2}(n)$ abbiamo che $T(n)=c\log_{2}(n) + T(1) = \Theta(\log_{2}(n))$
 
@@ -56,6 +59,9 @@ T(n)=T(n-1)+T(n-2)+1=T(n-1)+2T(n-3)+T(n-4)+3=\dots?
 \end{array}$$
 Possiamo provare ad analizzare con **l'albero della ricorsione**.
 ## Tecnica dell'Albero della ricorsione
+
+^dbadd5
+
 Per disegnare l'albeo della ricorsione dobbiamo:
 - disegnare l’albero delle chiamate ricorsive indicando la dimensione di ogni nodo
 - stimare il tempo speso da ogni nodo dell’albero

@@ -1,7 +1,7 @@
 """
     TODO: Add the calc of execution time. 
 """
-
+import time
 from math import sqrt
 import numpy as np
 
@@ -63,22 +63,33 @@ class Fibonacci:
     @staticmethod
     def calc(ist: int, num: int) -> None:
         if (ist >= 1) and (ist <= 6):
-            print("Il numero di Fibonacci di " + str(num) + " è: ")
+            print(f"Il numero di Fibonacci di {num} è: ")
+        
+        start_time = time.time()
+        
+        result = None
         match ist:
             case 1:
-                print(Fibonacci.alg1(num))
+                result = Fibonacci.alg1(num)
             case 2:
-                print(Fibonacci.alg2(num))
+                result = Fibonacci.alg2(num)
             case 3:
-                print(Fibonacci.alg3(num))
+                result = Fibonacci.alg3(num)
             case 4:
-                print(Fibonacci.alg4(num))
+                result = Fibonacci.alg4(num)
             case 5:
-                print(Fibonacci.alg5(num))
+                result = Fibonacci.alg5(num)
             case 6:
-                print(Fibonacci.alg6(num))
+                result = Fibonacci.alg6(num)
             case _:
                 print("Non esiste questo algoritmo richiesto.")
+                return
+
+        end_time = time.time()
+        execution_time = end_time - start_time
+        
+        print(f"Risultato: {result}")
+        print(f"Tempo di esecuzione: {execution_time:.6f} secondi")
 
 Soluzione = Fibonacci()
 ist = int(input("Inserisci il tipo di algoritmo che vuoi eseguire (1-6): "))

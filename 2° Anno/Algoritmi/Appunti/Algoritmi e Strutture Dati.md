@@ -1,30 +1,6 @@
 
 ## Lezione V (Metodi di risoluzione equazioni ricorrenza)
-Metodi per risolvere le equazioni di ricorrenza:
-- iterazione
-- albero della ricorsione
-- sostituzione
-- teorema Master
-- cambiamento di variabile
-### Metodo della sostituzione
 
-^5d7100
-
-Dobbiamo:
-- Indovinare la forma della soluzione.
-- Usare l'induzione matematica per provare che la soluzione è quella intuita
-
-Esempio:$$T(n)=n+T\left( \frac{n}{2} \right),\ T(1)=1$$
-Possiamo pensare che tenda a $T(n)=n\log_{2}(n)$ oppure $T(n)=n$ ma supponiamo di scegliere il secondo. Ora proviamo a dimostrare che $T(n)\leq c\cdot n$:$$\begin{array}{l}
-\text{Passo base: } & T(1)=1 \leq c \cdot 1 \quad \forall\ c \geq 1 \\
-\text{Passo induttivo: } \\
-\text{Assumo che } T(k) \leq c \cdot k\quad \forall\ k<n \\
-T(n)=n+T\left( \frac{n}{2} \right)\leq n+c \cdot \left( \frac{n}{2} \right) \implies T(n)=\left( \frac{c}{2} +1\right)n \\
-\end{array}$$
-Quindi abbiamo che:$$\left( \frac{c}{2}+1 \right) \leq c \implies c \geq 2$$
-
-### Metodo del Teorema Master
-### Metodo del cambiamento di variabile
 ## Lezione VI (Algoritmi di Ordinamento)
 ### Ordinamento
 Dato un insieme S di n oggetti presi da un dominio totalmente **ordinato**, ordinare S.
@@ -643,24 +619,8 @@ Un **BST** rispetta le seguenti proprietà:
 	- Le chiavi che si trovano nel sotto-albero destro di v sono $>$ $chiave(v)$.
 
 
-## Lezione XV (Problem Set)
-
+## Lezione XV (Problema del Dizionario II)
 ### Il problema del dizionario
-
-```
-tipo Dizionario:
-dati un insieme S di coppie (elem,chiave)
-operazioni
-	insert(elem e,chiave k)
-		aggiunge a S una nuova coppia (e,k)
-	
-	delete(elem e)
-		cancella da S l'elemento e
-	
-	search(chiave k)--> elem
-		se una chiave k e' presente in S restituiesce un element e ad essa
-		associato e null altrimenti
-```
 
 
 ## To Do List

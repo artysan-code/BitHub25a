@@ -33,7 +33,7 @@ $\displaystyle \hat{\phi} = \frac{1 - \sqrt{ 5 }}{2} \approx -0.618$
 
 L'algoritmo quindi è descrivibile con il seguente pseudo-codice:
 > $\displaystyle\text{algoritmo fibonacci1(int n)} \to \text{int}:$
-> $\displaystyle\quad\text{return }\left( \frac{\phi^n-\hat{\phi}^n}{\sqrt{ 5 }} \right)$
+> 	$\displaystyle\text{return }\left( \frac{\phi^n-\hat{\phi}^n}{\sqrt{ 5 }} \right)$
 
 Dato lo pseudo-codice una possibile implementazione in python è la seguente:
 ```python
@@ -44,15 +44,14 @@ def fibonacci1(n: int) -> int:
 Ma questo algoritmo è corretto? Beh... 
 
 A causa dell'approssimazione dei due $\phi$ non riusciamo ad approssimare sempre al valore corretto. Aumentando però l'approssimazione troveremo sempre verso infinito un numero che verrà approssimato in maniera errata.
-
 ### Algoritmo Due
 
 ^2bb139
 Questo algoritmo è quello che viene generalmente studiato in matematica.
 
-> $\text{algoritmo fibonacci2(n)} \to \text{int}:$
-> $\quad \text{if } (n\leq 2) \text{ then return 1}$
-> $\quad \text{else return fibonacci}(n-1)+\text{fibonacci2}(n-2)$
+> $\text{algoritmo fibonacci2(int n)} \to \text{int}:$
+> 	$\text{if } (n\leq 2) \text{ then return 1}$
+> 	$\text{else return fibonacci}(n-1)+\text{fibonacci2}(n-2)$
 
 Usando invece una funzione ricorsiva possiamo fare:
 ```python
@@ -85,17 +84,14 @@ I nodi alla base dell'albero sono i **casi base**, in quanto non eseguono ricors
 
 ^bcd178
 
-> [!NOTE] Primo Lemma
 > Il numero di foglie dell'albero della ricorsione di *fibonacci2(n)* è pari a $F_n$.
 
 > ![[l24.png]]
-
-
 ### Secondo Lemma
 
 ^9ac909
 
-Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1.
+>Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1.
 
 **Dimostrazione**
 Per induzione sul numero di nodi dell'albero (n)
@@ -124,8 +120,11 @@ Infatti già a n=100 sarà impossibile calcolare il numero.
 L'idea è di memorizzare i valori calcolati per permettere a "calcoli di Fibonacci successivi" di essere semplificati in linea di tempo.
 
 > $\text{algoritmo fibonacci3(int n)} \to \text{int}$
-> $\quad \text{sia Fib un array di interi}$
-> $\quad Fib[1] \to$
+> 	$\text{sia Fib un array di interi}$
+> 	$Fib[1] \gets 1,Fib[2]\gets 1$
+> 	for $i=3$ to $n$ do
+> 		$Fib[i]\gets Fib[i-1]+Fib[i-2]$
+> 	return $Fib[n]$
 
 ```python
 def fibonacci3(n: int) -> int:
@@ -142,6 +141,15 @@ La prima, la seconda e l'ultima riga di codice vengono eseguite una sola volta, 
 fibonacci3 impiega un tempo lineare (proporzionale a n) rispetto a fibonacci2 che invece impiega un tempo esponenziale. L'altra faccia della medaglia però è lo spazio occupato, che sarà proporzionale all'input.
 ### Algoritmo Quattro
 Proviamo ad ottimizzare lo spazio occupato dall'algoritmo precedente:
+
+>algoritmo fibonacci4(intero $n$)$\to$ intero
+>	$a\gets 1,b\gets 1$
+>	for $i$=3 to $n$ do 
+>		$c\gets a+b$
+>		$a\gets b$
+>		$b\gets c$
+>	return $c$
+
 ```python
 def fibonacci4(n: int) -> int:
 	a = 1 # F_n-1
@@ -169,9 +177,16 @@ Si dice che $f(n)=O(g(n))$ se $f(n) \leq c(g(n))$ con c che è una costante e n 
 
 Si può sperare di calcolare $F_n$ in un tempo minore a $O(n)$?
 ### Algoritmo Cinque
-### Terzo Lemma
-Grazie alle proprietà delle matrici, è dimostrabile che:$$\begin{pmatrix}1&1\\1&0\end{pmatrix}^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$$
-### Algoritmo
+#### Terzo Lemma
+>Grazie alle proprietà delle matrici, è dimostrabile che:$$\begin{pmatrix}1&1\\1&0\end{pmatrix}^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$$
+
+Dimostrazione:
+![[l27.png]]
+![[l28.png]]
+#### Algoritmo
+
+![[l25.png]]
+
 ```python
 def fibonacci5(n: int) -> int:
 	N = np.array([[1, 1], [1, 0]])
@@ -183,12 +198,15 @@ def fibonacci5(n: int) -> int:
 Usiamo la libreria numpy come np in quanto ci permette di eseguire le moltiplicazioni tra matrici.
 
 Il risultato non sembra aver ottimizzato niente, eppure:
-### Calcolo di potenze
+#### Calcolo di potenze
 Si può calcolare l'ennesima potenza, elevando al quadrato la $\left\lfloor  \frac{n}{2}  \right\rfloor$-esima potenza. Se n è dispari basta eseguire un'ulteriore moltiplicazione.$$\begin{array}{}
 3^2=9 & 3^4=9^2=81 & 3^8=81^2=6561
 \end{array}$$
 Abbiamo eseguito 3 prodotti invece che 7!
 ### Algoritmo Sei
+
+![[l26.png]]
+
 ```python
 def fibonacci6(n: int) -> int:
 	A = np.array([[1, 1], [1, 0]])

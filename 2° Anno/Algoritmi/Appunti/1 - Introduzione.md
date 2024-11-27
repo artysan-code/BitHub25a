@@ -5,7 +5,6 @@
 	- Il programma è la codifica di un algoritmo
 	- L'algoritmo è un programma distillato dal linguaggio di programmazione.
 
-> [!NOTE]
 > L'**algoritmo "buono"** deve essere:
 > - *Corretto*: fare ciò per cui è stato progettato.
 > - *Efficiente*: usano poche risorse di calcolo, tempo e memoria (algoritmi veloci). Alcuni algoritmi necessitano velocità per funzionare. L'efficienza si può usare per "pagare altre caratteristiche".
@@ -35,12 +34,10 @@ L'algoritmo è la strategia di risoluzione (la strategia di pesatura per il nost
 
 Uso la prima moneta e la confronto con le altre.
 
-``` pseudo-codice
-Alg1 (X=[x_1, x_2, ...])
-	for i=2 to n do
-		if peso(x_1) > peso(x_i) then return x_1
-		if peso(x_1) < peso(x_i) then return x_i
-```
+> Alg1 $(X=[x_1, x_2, ...])$
+ 	for $i=2$ to $n$ do
+ 		if peso($x_1$) > peso($x_i$) then return $x_1$
+ 		if peso($x_1$) < peso($x_i$) then return $x_i$
 
 E' corretto, ma quante pesate fa? Nel caso peggiore fa n-1 pesate.
 E' efficiente l'algoritmo? La domanda da fare sarebbe **posso fare di meglio**? Si
@@ -48,30 +45,26 @@ E' efficiente l'algoritmo? La domanda da fare sarebbe **posso fare di meglio**? 
 Osserviamo che l'ultima pesata non serve, quindi il caso peggiore diventerebbe n-2. Ma questo non basta.
 ### Algoritmo Due
 Peso le monete a coppie confrontandole.
-```
-Alg2 (X=[x_1, x_2, ...])
-	k = [n/2]
-	for i=1 to k do
-		if peso(x_2i-1) > peso (x_2i) then return x_2i-1
-		if peso(x_2i-1) < peso (x_2i) then return x_2i
+
+>Alg2 $(X=[x_1, x_2, ...])$
+	$k = \left[ \frac{n}{2} \right]$
+	for $i=1$ to $k$ do
+		if peso($x_{2i}-1$) > peso ($x_{2i}$) then return $x_{2i-1}$
+		if peso($x_{2i-1}$) < peso ($x_{2i}$) then return $x_{2i}$
 	return x_n
-```
 
 E' corretto? Si
 Quante istruzioni fa nel caso peggiore? N/2
 E' efficiente? Ma ancora meglio **si può fare di meglio**? Si
 ### Algoritmo Tre
 Peso le monete dividendole ogni volta in due gruppi
-```
-Alg3 (X=[x_1, x_2, ...])
-	if( |X|=1 ) then return x_1
 
-	dividi X in due gruppi X_1 e X_2 e se |X| è dispari una ulteriore moneta y
+>Alg3 $(X=[x_1, x_2, ...])$
+	if( $|X|=1$ ) then return $x_1$
+>Dividi $X$ in due gruppi $X_1$ e $X_2$ e se $|X|$ è dispari una ulteriore moneta $y$
+	if peso($X_1$) = peso($X_2$) then return $y$
+	if peso($X_1$) > peso($X_2$) then return Alg3($X_1$) else return Alg3($X_2$)
 
-	if peso(X_1) = peso(X_2) then return y
-
-	if peso(X_1) > peso(X_2) then return Alg3(X_1) else return Alg3(X_2)
-```
 Corretto? SI, istruzioni nel caso peggiore? $\lfloor log_2(n)\rfloor$
 Complessità? Allora:
 
@@ -86,17 +79,15 @@ Efficiente? Si può fare di meglio.
 
 ### Algoritmo Quattro
 Posso dividere in tre gruppi invece che due.
-```Copy
-Alg4(X):
-	if (|X|=!) then return unica moneta in X
-	
-	dividi X in tre gruppi X_1, X_2, X_3 di dimensione bilanciata con X_1 e X_2 i
-	gruppi con la stessa dimensione.
-	
-	if peso(X_1) = peso(X_2) then return Alg4(X_3)
-	if peso(X_1) > peso(X_2) then return Alg4(X_1)
-	else return Alg4(X_2)
-```
+
+>Alg4($X$):
+	if ($|X|=1$) then return unica moneta in $X$
+>dividi $X$ in tre gruppi $X_1, X_2, X_3$ di dimensione bilanciata con $X_1$ e $X_2$ i
+>gruppi con la stessa dimensione.
+	if peso($X_1$) = peso($X_2$) then return Alg4($X_3$)
+	if peso($X_1$) > peso($X_2$) then return Alg4($X_1$)
+	else return Alg4($X_2$)
+
 
 Corretto? Si
 Pesate nel caso peggiore? $\lceil log_{_3}(n)\rceil$

@@ -3,14 +3,11 @@
 ## Studio della complessità
 ## Algoritmo Ricerca Sequenziale
 Dato il seguente algoritmo, in cui cerchiamo un elemento in un array non ordinato:
-```
-algoritmo RicercaSequenziale(array L, elem x) → intero
-1. n = lunghezza di L
-2. i=1
-3. for i=1 to n do
-4. if (L[i]=x) then return i \\trovato
-5. return -1 \\non trovato
-```
+> $\text{algoritmo RicercaSequenziale}(array\ L,\ elem\ x)\to intero$
+> $\quad i=1$
+> $\quad \text{i = 1 to } n\text{ do}$
+> $\quad\quad if (L[i]=x)\text{ then return i}$
+> $\quad \text{return -1}$
 
 Qual'è la sua complessità nel caso peggiore? Beh è $\Omega(n)$, in quanto non è possibile cercare un elemento se non li guardiamo tutti prima.
 

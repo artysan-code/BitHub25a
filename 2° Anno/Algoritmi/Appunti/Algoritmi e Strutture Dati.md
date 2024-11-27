@@ -1,6 +1,4 @@
 
-## Lezione V (Metodi di risoluzione equazioni ricorrenza)
-
 ## Lezione VI (Algoritmi di Ordinamento)
 ### Ordinamento
 Dato un insieme S di n oggetti presi da un dominio totalmente **ordinato**, ordinare S.

@@ -23,11 +23,9 @@ F_{n-1} + F_{n-2}&&se\ n\geq 3 \\
 \end{cases}$$
 ## Come si calcola $F_n$?
 ### Algoritmo Uno
-
 ^66510c
-
 Possiamo usare un approccio numerico che calcoli direttamente i numeri di Fibonacci.
-$\displaystyle F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi^n})$ dove
+$\displaystyle F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi^n})$  dove
 $\displaystyle \phi = \frac{1 + \sqrt{ 5 }}{2} \approx +1.618$
 $\displaystyle \hat{\phi} = \frac{1 - \sqrt{ 5 }}{2} \approx -0.618$
 
@@ -43,17 +41,16 @@ def fibonacci1(n: int) -> int:
 
 Ma questo algoritmo è corretto? Beh... 
 
-A causa dell'approssimazione dei due $\phi$ non riusciamo ad approssimare sempre al valore corretto. Aumentando però l'approssimazione troveremo sempre verso infinito un numero che verrà approssimato in maniera errata.
+A causa dell'approssimazione dei due $\phi$ non riusciamo ad arrivare sempre al valore corretto. Aumentando però l'approssimazione troveremo sempre verso infinito un numero che verrà calcolato in maniera errata, quindi non è corretto.
 ### Algoritmo Due
-
 ^2bb139
-Questo algoritmo è quello che viene generalmente studiato in matematica.
+Questo algoritmo è quello che viene generalmente studiato in matematica e rispetta la definizione base di Fibonacci. Il suo pseudo-codice è questo:
 
 > $\text{algoritmo fibonacci2(int n)} \to \text{int}:$
 > 	$\text{if } (n\leq 2) \text{ then return 1}$
 > 	$\text{else return fibonacci}(n-1)+\text{fibonacci2}(n-2)$
 
-Usando invece una funzione ricorsiva possiamo fare:
+Quindi una sua implementazione ricorsiva in Python è la seguente:
 ```python
 def fibonacci2(n: int) -> int:
 	if n < 2:
@@ -62,14 +59,14 @@ def fibonacci2(n: int) -> int:
 		return fibonacci2(n-1) + fibonacci2(n-2)
 ```
 
-Questa tecnica rispetta il *divide et impera*. Però grazie a questa tecnica ora l'algoritmo è **corretto**!
+Questa tecnica rispetta la tecnica del *divide et impera*. Però grazie a questa tecnica ora l'algoritmo è **corretto**!
 
 Ma è efficiente?
 
 In ogni modello di calcolo rudimentale ogni linea di codice costa un'unità di tempo. Di conseguenza calcoliamo le linee di codice mandate in esecuzione:
-- Se $n\leq 2$ allora abbiamo una linea di codice
-- Se $n = 3$ ci sono quattro linee di codice, due per la chiamata fibonacci2(3) e una per fibonacci2(2) e fibonacci2(1)
-- Se invece è $n$? Cerchiamo di studiarlo tramite una funzione $f(n)$.
+- Se $n\leq 2$ allora abbiamo una linea di codice.
+- Se $n = 3$ ci sono quattro linee di codice, due per la chiamata fibonacci2(3) e una per fibonacci2(2) e fibonacci2(1).
+- Se invece è $n$? Cerchiamo di studiarlo tramite una funzione $f(n)$..
 
 Quindi definendo $f(n)$ come *# di linee di codice eseguite dall'algoritmo sull'input n*.
 
@@ -79,42 +76,13 @@ Per risolverla usiamo un **albero della ricorsione**:
 ![[l23.png]]
 
 I nodi alla base dell'albero sono i **casi base**, in quanto non eseguono ricorsioni. Per dedurre una formula dobbiamo capire quante foglie e nodi interni possiede l'albero.
-
 ### Primo Lemma 
-
 ^bcd178
-
 > Il numero di foglie dell'albero della ricorsione di *fibonacci2(n)* è pari a $F_n$.
-
-> ![[l24.png]]
+ ![[l24.png]]
 ### Secondo Lemma
-
 ^9ac909
-
->Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1.
-
-**Dimostrazione**
-Per induzione sul numero di nodi dell'albero (n)
-f = # foglie
-i = # nodi interni
-
-con $n\leq 2$         i=0, f=1
-
-con $n>2$         per costruzione i' = i-1 e f' = f-1
-
-per ipotesi induttiva:
-	i'=f'-1
-
-quindi:
-i-1=f-1-1 
-cioè i=f-1
-
-
-
-In totale le linee di codice eseguite sono:$$F_n + 2(F_n -1)=3F_n-2$$
-fibonacci2 è molto lento...
-
-Infatti già a n=100 sarà impossibile calcolare il numero.
+>Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1.![[l29.png]]
 
 ### Algoritmo Tre
 L'idea è di memorizzare i valori calcolati per permettere a "calcoli di Fibonacci successivi" di essere semplificati in linea di tempo.
@@ -133,14 +101,14 @@ def fibonacci3(n: int) -> int:
 		Fib.append(Fib[i-1] + Fib[i-2])
 	return Fib[n-1]
 ```
-Prendiamo il valore a $n-1$ in quanto l'array in programmazione inizia da 0 e non da 1 come nello pseudo-codice.
+Prendiamo il valore $Fib[n-1]$ in quanto l'array in programmazione inizia da 0 e non da 1 come nello pseudo-codice. (Si poteva implementare diversamente semplicemente imponendo il range fino a $n-1$).
 
 Tempo di esecuzione? Beh...
 
 La prima, la seconda e l'ultima riga di codice vengono eseguite una sola volta, mentre la terza e la quarta linea vengono eseguite n volte. Quindi:$$T(n)\leq n+n+3=2n + 3$$
 fibonacci3 impiega un tempo lineare (proporzionale a n) rispetto a fibonacci2 che invece impiega un tempo esponenziale. L'altra faccia della medaglia però è lo spazio occupato, che sarà proporzionale all'input.
 ### Algoritmo Quattro
-Proviamo ad ottimizzare lo spazio occupato dall'algoritmo precedente:
+Proviamo ad ottimizzare lo spazio occupato dall'algoritmo precedente, eseguendo un salvataggio delle ultime variabili per calcolare il numero di Fibonacci:   
 
 >algoritmo fibonacci4(intero $n$)$\to$ intero
 >	$a\gets 1,b\gets 1$
@@ -178,13 +146,11 @@ Si dice che $f(n)=O(g(n))$ se $f(n) \leq c(g(n))$ con c che è una costante e n 
 Si può sperare di calcolare $F_n$ in un tempo minore a $O(n)$?
 ### Algoritmo Cinque
 #### Terzo Lemma
->Grazie alle proprietà delle matrici, è dimostrabile che:$$\begin{pmatrix}1&1\\1&0\end{pmatrix}^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$$
-
-Dimostrazione:
+>Grazie alle proprietà< delle matrici, è dimostrabile che:$$\begin{pmatrix}1&1\\1&0\end{pmatrix}^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$$
 ![[l27.png]]
 ![[l28.png]]
 #### Algoritmo
-
+Utilizzando il Lemma precedentemente dimostrato, possiamo migliorare ulteriormente il calcolo di $F_{n}$ in un tempo inferiore a $O(n)$:
 ![[l25.png]]
 
 ```python
@@ -197,14 +163,14 @@ def fibonacci5(n: int) -> int:
 ```
 Usiamo la libreria numpy come np in quanto ci permette di eseguire le moltiplicazioni tra matrici.
 
-Il risultato non sembra aver ottimizzato niente, eppure:
+Il risultato non sembra essere più ottimizzato, sembra aver solo cambiato il metodo del calcolo, eppure possiamo cercare di migliorarlo (quindi facendo eseguire meno passi) tramite un miglior **calcolo delle potenze**.
 #### Calcolo di potenze
 Si può calcolare l'ennesima potenza, elevando al quadrato la $\left\lfloor  \frac{n}{2}  \right\rfloor$-esima potenza. Se n è dispari basta eseguire un'ulteriore moltiplicazione.$$\begin{array}{}
 3^2=9 & 3^4=9^2=81 & 3^8=81^2=6561
 \end{array}$$
 Abbiamo eseguito 3 prodotti invece che 7!
 ### Algoritmo Sei
-
+Applicando quindi il calcolo delle potenze ottimizzato, otteniamo il seguente pseudo-codice:
 ![[l26.png]]
 
 ```python

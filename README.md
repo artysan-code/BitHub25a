@@ -12,11 +12,11 @@
 	- [ ] Lezione II
 		- [x] Inserire pseudo-codici per tutta la lezione
 		- [x] Restyle grafico appunti (Codice e Latex)
-			- [ ] [[Algoritmi e Strutture Dati#^66510c|Algoritmo Uno]]
-			- [ ] [[Algoritmi e Strutture Dati#^2bb139|Algoritmo Due]]
-		- [ ] Dimostrazioni Mancanti
-			- [ ] [[Algoritmi e Strutture Dati#^bcd178| Primo Lemma]]
-			- [ ] [[Algoritmi e Strutture Dati#^9ac909|Secondo Lemma]]
+			- [x] [[Algoritmi e Strutture Dati#^66510c|Algoritmo Uno]]
+			- [x] [[Algoritmi e Strutture Dati#^2bb139|Algoritmo Due]]
+		- [x] Dimostrazioni Mancanti
+			- [x] [[Algoritmi e Strutture Dati#^bcd178| Primo Lemma]]
+			- [x] [[Algoritmi e Strutture Dati#^9ac909|Secondo Lemma]]
 	- [ ] Lezione III
 		- [ ] Scrivere proprietà approssimazione polinomi
 		- [ ] Parte finale sulla Notazione asintotica nelle analisi

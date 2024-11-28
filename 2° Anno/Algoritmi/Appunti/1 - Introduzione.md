@@ -29,9 +29,7 @@ L'algoritmo è la strategia di risoluzione (la strategia di pesatura per il nost
 - **L'efficienza dell'algoritmo**: velocità dell'algoritmo.
 ## Esempio della moneta falsa
 ### Algoritmo Uno
-
 ^055dc9
-
 Uso la prima moneta e la confronto con le altre.
 
 > Alg1 $(X=[x_1, x_2, ...])$
@@ -54,25 +52,31 @@ Peso le monete a coppie confrontandole.
 	return x_n
 
 E' corretto? Si
-Quante istruzioni fa nel caso peggiore? N/2
-E' efficiente? Ma ancora meglio **si può fare di meglio**? Si
+Quante istruzioni vengono eseguite nel caso peggiore?  $\displaystyle \frac{n}{2}$
+E' efficiente? Ma ancora meglio **si può fare di meglio**? Ovviamente!
 ### Algoritmo Tre
 Peso le monete dividendole ogni volta in due gruppi
 
 >Alg3 $(X=[x_1, x_2, ...])$
 	if( $|X|=1$ ) then return $x_1$
->Dividi $X$ in due gruppi $X_1$ e $X_2$ e se $|X|$ è dispari una ulteriore moneta $y$
+      Dividi $X$ in due gruppi $X_1$ e $X_2$ e se $|X|$ è dispari una ulteriore moneta $y$
 	if peso($X_1$) = peso($X_2$) then return $y$
 	if peso($X_1$) > peso($X_2$) then return Alg3($X_1$) else return Alg3($X_2$)
 
-Corretto? SI, istruzioni nel caso peggiore? $\lfloor log_2(n)\rfloor$
+Corretto? Si, ma quante istruzioni nel caso peggiore? $\lfloor log_2(n)\rfloor$
 Complessità? Allora:
 
 P(n): # di passi che Alg3 esegue nel caso peggiore su un'istanza di dimensione n
 
 $P(n) = P(\lfloor\frac{n}{2}\rfloor) + 1\quad\quad\quad P(1) = 0$
 
-$P(n) = P(\lfloor\frac{n}{2}\rfloor) + 1 = P(\lfloor\frac{n}{2}\lfloor\frac{n}{2}\rfloor\rfloor)) + 2 \leq P(\lfloor\frac{n}{4}\rfloor) + 2 \leq\ ...\ \leq P(\lfloor\frac{n}{2^i}\rfloor) + i \leq P(1) + \lfloor log_2(n)\rfloor = \lfloor log_2(n)\rfloor$
+$$\begin{array}{}
+P(n) = P(\lfloor\frac{n}{2}\rfloor) + 1 = \\
+=P(\lfloor\frac{1}{2}\lfloor\frac{n}{2}\rfloor\rfloor)) + 2 \leq\\
+\leq P(\lfloor\frac{n}{4}\rfloor) + 2 \leq\\
+\ ...\ \\\leq P(\lfloor\frac{n}{2^i}\rfloor) + i \leq\\
+\leq P(1) + \lfloor log_2(n)\rfloor =\\ =\lfloor log_2(n)\rfloor
+\end{array}$$
 Quando $\lfloor\frac{n}{2^i}\rfloor = 1$? Per $i = \lfloor log_2(n)\rfloor$
 
 Efficiente? Si può fare di meglio.
@@ -82,12 +86,11 @@ Posso dividere in tre gruppi invece che due.
 
 >Alg4($X$):
 	if ($|X|=1$) then return unica moneta in $X$
->dividi $X$ in tre gruppi $X_1, X_2, X_3$ di dimensione bilanciata con $X_1$ e $X_2$ i
->gruppi con la stessa dimensione.
+	dividi $X$ in tre gruppi $X_1, X_2, X_3$ di dimensione bilanciata con $X_1$ e $X_2$ i
+	gruppi con la stessa dimensione.
 	if peso($X_1$) = peso($X_2$) then return Alg4($X_3$)
 	if peso($X_1$) > peso($X_2$) then return Alg4($X_1$)
 	else return Alg4($X_2$)
-
 
 Corretto? Si
 Pesate nel caso peggiore? $\lceil log_{_3}(n)\rceil$
@@ -105,11 +108,9 @@ $P(n) \leq P(n^{'})=k=\lceil log_{_3}(n)\rceil$
 $P(n^{'})=P(\frac{n^{'}}{3})+1 =P(\frac{n^{'}}{3^i})+i = P(1) + k = k$ 
 
 Molto più veloce degli altri.
-
 ## Lower Bound
 Il **lower bound** è la delimitazione inferiore alla complessità di un problema (non si può andare più veloci).
 
-> [!NOTE]
 > Un qualsiasi algoritmo che correttamente individua la moneta falsa fra n monete deve effettuare nel caso peggiore almeno $\lceil log_{_3}(n)\rceil$ pesate.
 
 Alg4 è un algoritmo ottimo per il problema.

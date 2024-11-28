@@ -1,6 +1,6 @@
 Vi sono diverse metodologie per studiare e risolvere le equazioni di ricorrenza, tra questi tratteremo:
-- [[4 - Metodo dello Srotolamento e Albero di ricorsione#^40e417|Metodo dell'Iterazione]]
-- [[4 - Metodo dello Srotolamento e Albero di ricorsione#^dbadd5|Albero della ricorsione]]
+- [[4 - Metodo dell'iterazione e Albero di ricorsione#^40e417|Metodo dell'Iterazione]]
+- [[4 - Metodo dell'iterazione e Albero di ricorsione#^dbadd5|Albero della ricorsione]]
 - [[5 - Metodi di risoluzione equazioni ricorrenza#^5d7100|Metodo della sostituzione]]
 - [[5 - Metodi di risoluzione equazioni ricorrenza#^ea5acf|Teorema Master]]
 - [[5 - Metodi di risoluzione equazioni ricorrenza#^87cfb5|Cambiamento di Variabile]]

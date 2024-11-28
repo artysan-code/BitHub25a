@@ -1,29 +1,25 @@
 [[3 - Modelli di calcolo e Notazione Asintotica|Torna alla lezione precedente]]
 [[5 - Metodi di risoluzione equazioni ricorrenza|Continua alla lezione successiva.]]
-## Studio della complessità
 ## Algoritmo Ricerca Sequenziale
 Dato il seguente algoritmo, in cui cerchiamo un elemento in un array non ordinato:
 > $\text{algoritmo RicercaSequenziale}(array\ L,\ elem\ x)\to intero$
 > $\quad i=1$
 > $\quad \text{i = 1 to } n\text{ do}$
-> $\quad\quad if (L[i]=x)\text{ then return i}$
+> $\quad\quad \text{if }(L[i]=x)\text{ then return i}$
 > $\quad \text{return -1}$
 
-Qual'è la sua complessità nel caso peggiore? Beh è $\Omega(n)$, in quanto non è possibile cercare un elemento se non li guardiamo tutti prima.
-
+Ovviamente l'algoritmo è corretto, ma qual'è la sua complessità nel caso peggiore?$$T_{worst}(n)=n$$
 Mentre nel caso medio abbiamo:$$T_{avg} = \frac{n+1}{2}$$
 ## Algoritmo Ricerca Sequenziale Array Ordinato
-Dato invece un algoritmo in cui l'array è ordinato e dobbiamo trovare un elemento:
-```
-algoritmo RicercaBinariaRic(array L, elem x, int i, int j) → intero
-1. if (i>j) then return -1
-2. m= (i+j)/2
-3. if (L[m]=x) then return m
-4. if (L[m]>x) then return RicercaBinariaRic(L, x, i, m-1)
-5. else return RicercaBinariaRic(L, x, m+1,j)
-```
+Dato invece un algoritmo in cui l'array è ordinato e dobbiamo trovare un elemento, possiamo usare la **Ricerca Binaria**:
+> $\text{algoritmo RicercaBinariaRic}(array\ L,\ elem\ x,\ int\ i,\ int\ j) → int$
+	$\text{if}(i>j)\text{ then return -1}$
+	 $m=(i+j)/2$
+	 $\text{if}(L[m]=x)\text{ then return m}$
+	 $\text{if}(L[m]>x)\text{ then return }RicercaBinariaRic(L, x, i, m-1)$
+	 $\text{else return }RicercaBinariaRic(L, x, m+1,j)$
 
-Si può usare l'algoritmo di **ricerca binaria**
+Gli indici i e j indicano la porzione di L in cui cercare l'elemento x; l'algoritmo torna la posizione di x in L, se c'è, sennò -1.
 ## Equazioni di ricorrenza
 Un algoritmo ricorsivo è quello ad esempio di **fibonacci2**, analizziamolo quindi la sua **equazione di ricorrenza**. Essa sarà:
 $T(n)=T(n-1)+T(n-2)+O(1)$

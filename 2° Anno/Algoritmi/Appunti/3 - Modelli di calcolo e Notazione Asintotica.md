@@ -1,5 +1,5 @@
 [[2 - Introduzione informale agli algoritmi|Torna alla lezione precedente]]
-[[4 - Metodo dello Srotolamento e Albero di ricorsione|Continua alla lezione successiva.]]
+[[4 - Metodo dell'iterazione e Albero di ricorsione|Continua alla lezione successiva.]]
 ## Modelli di calcolo
 Un modello utilizzato ampiamente nel passato era quello della **macchina di Turing**, che era composto di un meccanismo di controllo, un nastro di memorizzazione e una testina di lettura e scrittura. Questo modello però è poco vicino alla macchina che noi studiamo.
 
@@ -51,7 +51,7 @@ Tempi di esecuzione di differenti algoritmi per istanze di dimensioni crescenti 
 |  $n=10.000$   | <1 sec |    <1 sec    |  2 min  |   12 days    |  very long   |    very long    |    very long    |
 |  $n=100.000$  | <1 sec |    2 sec     | 3 hours |   32 years   |  very long   |    very long    |    very long    |
 | $n=1.000.000$ | 1 sec  |    20 sec    | 12 days | 31.710 years |  very long   |    very long    |    very long    |
-### Notazione asintotica O 
+### Notazione asintotica O
 >$f(n)=O(g(n))$ se $\exists$ due costanti $c>0\ e\ n_{0}\geq 0$ tali che $0\leq f(n) \leq g(n)\quad \forall n \geq n_{0}$.
 
 Quindi:
@@ -100,7 +100,7 @@ Infine, per studiare matematicamente meglio le funzioni, abbiamo anche che:$$\be
 
 ### Notazione asintotica o
 >Data la funzione $g(n: N\to R)$, si denota con $o(g(n))$ l'insieme di funzioni $f(n): N \to R$:$$o(g(n))=\{f(n): \forall\ c > 0,\ \exists\ n_{0}\ \ tale\ che\ \ \forall\ n \geq n_{0}\ \ e\ \ 0 \leq f(n) < c \cdot g(n)\}$$
-Definizione alternativa:$$f(n)=\omega(g(n)) \iff \lim_{ n \to \infty } \frac{f(n)}{g(n)}= \infty $$
+Definizione alternativa:$$f(n)=o(g(n)) \iff \lim_{ n \to \infty } \frac{f(n)}{g(n)}= 0 $$
 ### Notazione asintotica $\omega$
 >Data una funzione $g(n): N \to R$ si denota con $\omega (g(n))$ l'insieme delle funzioni f(n):$$\begin{array}{}
 \omega(g(n))= \{f(n): \forall\ c > 0\ \exists\ n_{0}\ tale\ che\ \forall\ n \geq n_{0}\quad 0 \leq c \cdot g(n)< f(n) \} \\

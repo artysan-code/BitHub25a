@@ -32,10 +32,8 @@ $T(n)=T\left( \frac{n}{2} \right) + O(1)$
 
 Generalmente la **complessità computazionale** di un algoritmo ricorsivo è descrivibile tramite la sua **equazione di ricorrenza**.
 ## Metodo dell'iterazione (o srotolamento)
-
 ^40e417
-
-Immaginiamo che la nostra equazione di ricorrenza è:$$T(n)=c+T\left( \frac{n}{2} \right) = 2c + T\left( \frac{n}{4} \right)=ic+T\left( \frac{n}{2^i} \right)$$
+Immaginiamo che la nostra equazione di ricorrenza corrisponde a:$$T(n)=c+T\left( \frac{n}{2} \right) = 2c + T\left( \frac{n}{4} \right)=ic+T\left( \frac{n}{2^i} \right)$$
 Quindi per $i=\log_{2}(n)$ abbiamo che $T(n)=c\log_{2}(n) + T(1) = \Theta(\log_{2}(n))$
 
 Se $T(n)=T(n-1)+1$, allora:$$T(n)=T(n-1)+1=T(n-2)+1+1=T(n-i)+i$$
@@ -50,12 +48,10 @@ Quindi per $i=n-1$ abbiamo che:$$T(n)=2^{n-1} T(1)+\displaystyle\sum_{j=0}^{n-2}
 Allora per Fibonacci ricorsivo?$$\begin{array}{}
 T(n)=T(n-1)+T(n-2)+1=T(n-1)+2T(n-3)+T(n-4)+3=\dots?
 \end{array}$$
-Possiamo provare ad analizzare con **l'albero della ricorsione**.
+Possiamo provare ad analizzarlo con **l'albero della ricorsione**.
 ## Tecnica dell'Albero della ricorsione
-
 ^dbadd5
-
-Per disegnare l'albeo della ricorsione dobbiamo:
+Per disegnare l'albero della ricorsione dobbiamo:
 - disegnare l’albero delle chiamate ricorsive indicando la dimensione di ogni nodo
 - stimare il tempo speso da ogni nodo dell’albero
 - stimare il tempo complessivo “sommando” il tempo speso da ogni nodo
@@ -71,7 +67,7 @@ Avendo imposto che un dominio ridotto, corrisponde comunque a circa $n^2$ possia
 Ritorniamo ad una precedente equazione ricorsiva:$$T(n)=2T(n-1)+1$$
 Sappiamo sicuramente che ogni chiamata costa uno, quindi ogni nodo costa uno. Sappiamo anche che l'altezza dell'albero è n-1:![[l42.png]]
 
-Quanti nodi ha un albero binario completo di altezza h? $\displaystyle\sum_{i=0}^h 2^i=2^{h-1}-1$. Quindi possiamo dire che $T(n)\leq n2^n=\Theta(n2^n) \implies T(n)=O(n 2^n)$
+Quanti nodi ha un albero binario completo di altezza h? $\displaystyle\sum_{i=0}^h 2^i=2^{h-1}-1$. Quindi, grazie all'altezza dell'albero e al numero dei nodi, possiamo dire che $T(n)\leq n2^n=\Theta(n2^n) \implies T(n)=O(n 2^n)$
 
 Allora adesso arriviamo a ciò che volevamo analizzare **fibonacci2**:![[l43.png]]
 Ogni nodo costa uno, ma quanti nodi ha? Lo sappiamo dalla definizione $\Theta(\phi^n)$ quindi $T(n)=o(2^n)$.

@@ -9,7 +9,7 @@
 - [ ] Algoritmi
 	- [x] Lezione I
 		- [x] Revisione appunti generica
-	- [ ] Lezione II
+	- [x] Lezione II
 		- [x] Inserire pseudo-codici per tutta la lezione
 		- [x] Restyle grafico appunti (Codice e Latex)
 			- [x] [[Algoritmi e Strutture Dati#^66510c|Algoritmo Uno]]
@@ -17,10 +17,9 @@
 		- [x] Dimostrazioni Mancanti
 			- [x] [[Algoritmi e Strutture Dati#^bcd178| Primo Lemma]]
 			- [x] [[Algoritmi e Strutture Dati#^9ac909|Secondo Lemma]]
-	- [ ] Lezione III
-		- [ ] Scrivere proprietà approssimazione polinomi
-		- [ ] Parte finale sulla Notazione asintotica nelle analisi
-	- [ ] Lezione IV
+	- [x] Lezione III
+		- [x] Scrivere proprietà approssimazione polinomi
+	- [x] Lezione IV
 	- [ ] Lezione V
 	- [ ] Lezione VI
 	- [ ] Lezione VII

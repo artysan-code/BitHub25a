@@ -1,9 +1,7 @@
-### Ordinamento
+### Problema dell'Ordinamento
 Dato un insieme S di n oggetti presi da un dominio totalmente **ordinato**, ordinare S.
 
-### Problema dell'Ordinamento
-Abbiamo un **input** di n numeri e vogliamo in **output** una *permutazione* del primo ordinata in maniera crescente o decrescente. Ci sono diversi metodi per farlo e hanno ottimizzazioni e casi diversi.
-
+Abbiamo un **input** di n numeri e vogliamo in **output** una *permutazione* del primo ordinata in maniera crescente o decrescente. Vi sono diversi metodi per farlo e hanno ottimizzazioni e casi diversi.
 ### Ordinare in tempo quadratico
 #### Selection Sort
 In questo algoritmo, in modo iterativo, cerco l'elemento minimo dell'array e lo sostituisco con la k-esima posizione (quindi estendiamo l'ordinamento a k+1).![[l61.png]]

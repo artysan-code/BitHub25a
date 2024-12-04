@@ -20,7 +20,7 @@
 	- [x] Lezione III
 		- [x] Scrivere proprietà approssimazione polinomi
 	- [x] Lezione IV
-	- [ ] Lezione V
+	- [x] Lezione V
 	- [ ] Lezione VI
 	- [ ] Lezione VII
 	- [ ] Lezione VIII
@@ -34,6 +34,9 @@
 		- [ ] Vettore posizionale
 	- [ ] Lezione XIII
 	- [ ] Lezione XIV
+	- [ ] Lezione XV
+	- [ ] Lezione XVI
+	- [ ] Lezione XVII
 - [ ] Sistemi
 - [ ] Linguaggi
 - [ ] Basi di Dati

@@ -1,3 +1,5 @@
+[[4 - Metodo dell'iterazione e Albero di ricorsione|Torna alla lezione precedente]]
+[[6 - Algoritmi di Ordinamento|Continua alla lezione successiva]]
 Vi sono diverse metodologie per studiare e risolvere le equazioni di ricorrenza, tra questi tratteremo:
 - [[4 - Metodo dell'iterazione e Albero di ricorsione#^40e417|Metodo dell'Iterazione]]
 - [[4 - Metodo dell'iterazione e Albero di ricorsione#^dbadd5|Albero della ricorsione]]
@@ -34,8 +36,12 @@ a\cdot T\left( \frac{n}{b} \right)+ f(n) & \text{se}\ \ n>1 \\
 \end{cases}$$
 ### Metodo del Teorema Master
 ^ea5acf
-
-Analizzando la precedente relazione di ricorrenza, possiamo imporre una "lotta" tra $\displaystyle n^{\log_{b}(a)}$ e $f(n)$. Quindi:
+Da ciò imparato precedentemente:
+$$T(n)=\begin{cases}
+a\cdot T\left( \frac{n}{b} \right)+ f(n) & \text{se}\ \ n>1 \\
+\Theta(1) & \text{se}\ \ n=1
+\end{cases}$$
+Analizzando quindi relazione di ricorrenza, possiamo imporre una "lotta" tra $\displaystyle n^{\log_{b}(a)}$ e $f(n)$. Quindi:
 - Se sono dello stesso ordine asintotico allora $T(n)=\Theta(f(n)\log (n))$
 - Se una delle due è più veloce, allora T(n) tende ad essa.
 
@@ -45,5 +51,5 @@ Analizzando più affondo possiamo dire che possono esserci quindi **tre soluzion
 - $T(n)=\Theta(f(n))$  se  $\displaystyle f(n)=\Omega(n^{\log_{b}(a+\epsilon)})$ per $\displaystyle \epsilon>0$ e $\displaystyle \forall\ f\left( \frac{n}{b} \right) \leq c \cdot f(n)$ per $c<1$ e n sufficientemente grande
 
 ### Metodo del cambiamento di variabile
-
 ^87cfb5
+![[l51.png]]

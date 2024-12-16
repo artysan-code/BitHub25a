@@ -1,6 +1,3 @@
-"""
-    TODO: Add the calc of execution time. 
-"""
 import time
 from math import sqrt
 import numpy as np

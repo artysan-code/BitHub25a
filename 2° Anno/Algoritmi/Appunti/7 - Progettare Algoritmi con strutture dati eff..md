@@ -29,11 +29,15 @@ Il vettore che lo rappresenta generalmente è più grande del numero di elementi
 #### Funzione Fix-Heap
 Data v la radice dell'Heap, si assume che i sotto alberi destri e sinistri siano heap, ma la proprietà di ordinamento delle chiavi non vale.
 > $\text{fixHeap}(nodo\ v,\ heap\ H)$
-> 1.   $\text{if }(\text{v non è una foglia})\text{ then}$
-> 2.     $\text{sia u il figlio di v con chiave massima}$ 
-> 3.     $\text{if }(chiave(v) < chiave(u))\text{ then}$
-> 4. 		$\text{scambia chiave(v) con chiave(u)}$
-> 5.          $\text{fixHeap}(u,\ H)$
+> 1.    $s=sin(i)$
+> 2.     $d=des(i)$
+> 3.     $\textbf{if }(s\leq heapsize[A]\text{ e }A[s]>A[i])$
+> 4.         $\textbf{then }massimo=s$
+> 5.     $\textbf{else }massimo=i$
+> 6.     $\textbf{if }(d\leq heapsize[A]\text{ e }A[d]>A[massimo])$
+> 8.     $\textbf{if }(massimo\not=i)$
+> 9.         $\textbf{then }\text{scambia }A[i]\text{ e }A[massimo]$
+> 10.            $fixHeap(massimo,\ A)$
 
 L'algoritmo non fa altro che spostare le chiavi che non rispettano l'heap verso il basso, con la chiave del figlio con valore minore. Essendo che nel caso peggiore deve spostare v alla fine dell'albero, dovrà fare almeno $O(\log(n))$ operazioni di spostamento, che valgono ciascuna $O(1)$. Quindi in totale la complessità è $O(\log(n))$.
 

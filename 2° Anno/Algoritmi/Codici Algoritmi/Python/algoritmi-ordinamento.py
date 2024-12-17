@@ -36,20 +36,17 @@ class SortingAlgorithms:
                     arr[j], arr[j+1] = arr[j+1], arr[j]
         return [arr, "O(n^2)"]
     
+    # Implementazione che rispetta pseudocodice del professore
     def merge_sort(self) -> list:
         arr = self.array.copy()
         self._merge_sort_helper(arr, 0, len(arr) - 1)
         return [arr, "O(n log n)"]
-    
     def _merge_sort_helper(self, arr: list, left: int, right: int)-> None: 
         if left < right:
             mid = (left + right) // 2
             self._merge_sort_helper(arr, left, mid)
             self._merge_sort_helper(arr, mid + 1, right)
             self._merge(arr, left, mid, right)
-        else:
-            print("Critical Error with Algorithm")
-            
     def _merge(self, arr: list, left: int, mid: int, right: int) -> None:
         arr_aux = []
         left_c, right_c = left, mid + 1
@@ -70,49 +67,57 @@ class SortingAlgorithms:
         arr = self.array.copy()
         self._quick_sort_helper(arr, 0, len(arr) - 1)
         return [arr, "O(n log n)"]
-
-    def _partition(self, arr, low, high):
-        pivot = arr[high]
-        i = low - 1
-        for j in range(low, high):
-            if arr[j] <= pivot:
-                i += 1
-                arr[i], arr[j] = arr[j], arr[i]
-        arr[i + 1], arr[high] = arr[high], arr[i + 1]
-        return i + 1
-
-    def _quick_sort_helper(self, arr, low, high):
-        if low < high:
-            pi = self._partition(arr, low, high)
-            self._quick_sort_helper(arr, low, pi - 1)
-            self._quick_sort_helper(arr, pi + 1, high)
+    
+    def _quick_sort_helper(self, arr, init, final):
+        if init < final:
+            pivot = self._partition(arr, init, final)
+            self._quick_sort_helper(arr, init, pivot - 1)
+            self._quick_sort_helper(arr, pivot + 1, final)
+    
+    def _partition(self, arr, init, final):
+        pivot_index = random.randint(init, final)
+        arr[init], arr[pivot_index] = arr[pivot_index], arr[init]
+        pivot = arr[init]
+        left = init
+        right = final + 1
+        while True:
+            left += 1
+            while left <= final and arr[left] <= pivot:
+                left += 1
+            right -= 1
+            while arr[right] > pivot:
+                right -= 1
+            if left >= right: break
+            arr[left], arr[right] = arr[right], arr[left]
+        arr[init], arr[right] = arr[right], arr[init]
+        return right
 
     def generate_random_array(self, num_elements):
-        self.array = [random.randint(0, 2000) for _ in range(num_elements)]
+        self.array = [random.randint(0, num_elements*5) for _ in range(num_elements)]
         print(f"Generated array: {self.array}")
 
     def select_sorting_algorithm(self):
         print("Select sorting algorithm:")
-        print("1. Bubble Sort")
-        print("2. Selection Sort")
-        print("3. Insertion Sort")
-        print("4. Quick Sort")
-        print("5. Merge Sort")
+        print("1. Selection Sort")
+        print("2. Insertion Sort")
+        print("3. Bubble Sort")
+        print("4. Merge Sort")
+        print("5. Quick Sort (Random Version)")
         
         choice = int(input("Enter choice (1/2/3/4/5): "))
         
         start_time = time.time()
         
         if choice == 1:
-            sorted_array, cost = self.bubble_sort()
-        elif choice == 2:
             sorted_array, cost = self.selection_sort()
-        elif choice == 3:
+        elif choice == 2:
             sorted_array, cost = self.insertion_sort()
+        elif choice == 3:
+            sorted_array, cost = self.bubble_sort()
         elif choice == 4:
-            sorted_array, cost = self.quick_sort()
-        elif choice == 5:
             sorted_array, cost = self.merge_sort()
+        elif choice == 5:
+            sorted_array, cost = self.quick_sort()
         else:
             print("Invalid choice")
             return
@@ -120,12 +125,18 @@ class SortingAlgorithms:
         end_time = time.time()
         elapsed_time = end_time - start_time
         
-        print(f"Algorithm Cost: {cost}")
         print(f"Sorted array: {sorted_array}")
+        print(f"Algorithm Cost: {cost}")
         print(f"Time taken: {elapsed_time:.6f} seconds")
 
 if __name__ == "__main__":
-    lenght = int(input("Enter the number of elements for the array: "))
-    sorting_algorithms = SortingAlgorithms([])
-    sorting_algorithms.generate_random_array(lenght)
+    choice = input("Do you want to input the array elements manually? (y/n): ").strip().lower()
+    if choice in ["y", "yes", "Y", "YES", "", " ", None]:
+        array = list(map(int, input("Enter the elements of the array separated by space: ").split()))
+        sorting_algorithms = SortingAlgorithms(array)
+    else:
+        length = int(input("Enter the number of elements for the array: "))
+        sorting_algorithms = SortingAlgorithms([])
+        sorting_algorithms.generate_random_array(length)
+    
     sorting_algorithms.select_sorting_algorithm()

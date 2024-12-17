@@ -113,45 +113,45 @@ Il Merge Sort non **ordina in loco**.
 ^ea3233
 
 Vi sono diverse versioni del quick sort: caso peggiore, caso medio e versione randomizzata.
-
 Generalmente però, usa la tecnica del **divide et impera**:
-- **Divide**: scegli un elemento x della sequenza (perno) e partiziona la sequenza in elementi $\leq$ x e in elementi $\geq$ x.
+- **Divide**: scegli un elemento x della sequenza (perno) e partiziona la sequenza in elementi $\leq x$ e in elementi $>x$.
 - Risolvi i due problemi ricorsivamente.
 - **Impera**: restituisci la concatenazione delle due sotto-sequenze ordinate.
 ##### Funzione Partizione
-Scegli un **perno** (ad esempio il primo elemento), scorri l'array in parallelo da sinistra verso destra fermandoci su un elemento maggiore del perno e viceversa fermandoci su uno minore del perno, scambia gli elementi e riprendi la scansione. Fermati quando i due indici sono incrociati:![[l65.png]]
-```
-Partition (A, i, f)
-1.  x=A[i]
-2.  inf = i
-3.  sup = f + 1
-4.  while (true) do
-5.    do (inf = inf + 1) while (inf <= f e A[inf] <= x)
-6.    do (sup = sup - 1) while (A[sup] > x)
-7.    if (inf < sup) then scambia A[inf] e A[sup]
-8.    else break
-9.  scambia A[i] e A[sup] // mette il perno al centro
-10. return sup // restituisce la posizione del perno
-```
+La funzione partizione usa un **perno** (ad esempio il primo elemento), scorrendo l'array in parallelo da sinistra verso destra fermandosi su un elemento maggiore del perno e viceversa fermandoci su uno minore del perno, scambia gli elementi e riprendi la scansione. Fermati quando i due indici sono incrociati:![[l65.png]]
 
-Che tempo di esecuzione abbiamo? Beh dovendo leggere tutto l'array il tempo di esecuzione è $O(n)$.
+Lo pseudo-codice è appunto:
+> $\text{Partition}(array\ A,\ int\ i,\ int\ f)\to int$
+> 1.   $x=A[i]$
+> 2.   $inf = i$
+> 3.   $sup = f + 1$
+> 4.   $\text{while }(true)\text{ do}$
+> 5.      $\text{do }(inf = inf + 1)\text{ while } (inf \leq f\ \ and\ \ A[inf] \leq x)$
+> 6.      $\text{do }(sup = sup - 1)\text{ while }(A[sup] > x)$
+> 7.       $\text{if }(inf < sup)\text{ then scambia }A[inf] e A[sup]$
+> 8.      $\textbf{else break}$
+> 9.    $\text{scambia }A[i]\text{ e }A[sup]\text{ // mette il perno al centro}$
+> 10.  $\textbf{return}\text{ sup // restituisce la posizione del perno}$
+
+Abbiamo una proprietà **invariante**: in ogni istante gli elementi $A[i],\ \dots,\ A[inf-1]$ sono $\leq$ del perno, mentre gli altri ($A[sup+1],\ \dots,\ A[f]$) sono $>$ del perno.
+ 
+Che complessità ha? Beh dovendo leggere tutto l'array il tempo di esecuzione è $O(n)$.
 ##### Implementazione Quick Sort
 Allora impacchettiamo tutto, il quick sort corrisponde a:
-```
-QuickSort (A, i, f)
-1. if (i < f) then
-2.   m = Partition(A, i, f)
-3.   QuickSort(A, i, m - 1)
-4.   QuickSort(A, m + 1, f)
-```
+> $\text{QuickSort}(\array A,\ int\ i,\ int\ f)$
+> 1.   $\text{if }(i < f)\text{ then}$
+> 2.     $m = \text{Partition}(A,\ i,\ f)$
+> 3.     $\text{QuickSort}(A,\ i,\ m - 1)$
+> 4.     $\text{QuickSort}(A,\ m + 1,\ f)$
 
 Quindi risulterà così:![[l66.png]]
 
-Corretto? Certamente, dopo Partition $A[i:m-1]$ contiene $elem \leq perno$, $A[m]$ il perno, $A[m+1:f]\ \ elementi > perno$. Le chiamate ricorsive ritornano $A[i:f]$
+Corretto? Certamente!
+Dopo Partition $A[i:m-1]$ contiene $elem \leq perno$, $A[m]$ il perno, $A[m+1:f]\ \ elementi > perno$. Le chiamate ricorsive ordinano $A[i:f]$.
 Complessità?
 
-##### Complessità nel caso peggiore
-Ogni volta che invochiamo partition posiziona almeno un elemento in modo corretto (il perno). Quindi dopo n invocazioni di partition, con costo ognuna di $O(n)$ ho un array ordinato. Quindi il costo complessivo è $O(n^2)$.
+##### Complessità nel caso peggiore o migliore
+Ogni volta che invochiamo partition posiziona almeno un elemento in modo corretto (il perno). Quindi dopo n invocazioni di partition, con costo ognuna di  ho un array ordinato. Quindi il costo complessivo è .
 
 Questo si verifica quando il perno scelto ad ogni passo è il minimo o il massimo degli elementi dell'array. La complessità in questo caso è:$$\begin{array}{l}
 T(n) & = T(n-1)+T(0) + O(n) \\
@@ -159,15 +159,13 @@ T(n) & = T(n-1)+T(0) + O(n) \\
 & = T(n-1) + O(n) \\
  &  & T(n) = O(n^2)
 \end{array}$$
-Se fosse perfettamente bilanciato allora nel caso migliore avremmo $O(n\cdot \log(n))$. Ma nel caso medio?
+Se fosse perfettamente bilanciato allora nel caso migliore avremmo $O(n\cdot \log(n))$. 
+![[l67.png]]
+**Ma nel caso medio?**
 ##### Intuizioni nel caso medio
-La partizione può essere sbilanciata, ma più è bilanciata più è veloce, dovremmo trovare ogni volta un perno pessimo per rovinare l'ottimizzazione dell'algoritmo. Sbilanciando però anche a 99-1 troviamo che...
-
+La partizione può essere sbilanciata, ma più è bilanciata più è veloce, dovremmo trovare ogni volta un perno pessimo per rovinare l'ottimizzazione dell'algoritmo. Sbilanciando però anche a 99-1, sembrando quindi molto instabile, troviamo che...![[l68.png]]
 La complessità è sempre $O(n\log(n))$!
 
-E se le istanze non sono equiprobabili? Possiamo randomizzare la scelta del perno x.
+E se le istanze non sono equiprobabili? Possiamo randomizzare la scelta del perno x. Nella nostra implementazione infatti abbiamo usato un algoritmo Quick Sort Randomizzato.
 ##### Teorema
-L'algoritmo **QuickSort** randomizzato ordina in loco un array di lunghezza n in tempo $O(n^2)$ nel caso peggiore e $O(n \cdot \log (n))$ con alta probabilità, ovvero con probabilità almeno 1 - 1/n.
-
-> [!NOTE]
-> Algoritmi randomizzati ampia e importante area di studio e ricerca, Pasquale è molto bravo in questo.
+L'algoritmo **QuickSort** randomizzato ordina in loco un array di lunghezza n in tempo $O(n^2)$ nel caso peggiore e $O(n \cdot \log (n))$ con alta probabilità, ovvero con probabilità almeno $\displaystyle1 - \frac{1}{n}$.

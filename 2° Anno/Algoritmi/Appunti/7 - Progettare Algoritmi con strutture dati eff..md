@@ -5,7 +5,8 @@ Una **struttura dati** è, invece, un'organizzazione dei dati che permette di me
 ### Heap Sort
 Ha lo stesso approccio incrementale del Selection-Sort, seleziona gli elementi dal più grande al più piccolo usando una **struttura di dati efficiente** (estrazione in tempo $O(\log(n))$ massimo).
 
-Quindi bisogna generare una struttura dati H che abbia i seguenti attributi:
+Quindi bisogna generare una struttura dati H che abbia i seguenti attributi:**
+- Gli heap con struttura rafforzata possono essere rappresentati 
 - Dato un array A, generare velocemente H
 - Trovare il più grande oggetto in H
 - Cancellare il più grande oggetto in H
@@ -17,8 +18,7 @@ Per questo usiamo la struttura dati **heap** associata ad un insieme S, cioè un
 
 Un heap ha le seguenti **proprietà salienti**:
 - Il massimo è contenuto nella radice.
-- L'albero con n nodi ha **altezza $O(\log(n))$**
-- Gli heap con struttura rafforzata possono essere rappresentati in array di dimensione n.
+- L'albero con n nodi ha **altezza $O(\log(n))$in array di dimensione n.
 
 Rispettando quindi tutte queste proprietà, l'heap ottiene le seguenti relazioni (i è la posizione dell'elemento da relazionare):
 - Il **figlio sinistro** di un elemento è in posizione $2i$.

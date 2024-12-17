@@ -37,6 +37,8 @@
 	- [ ] Lezione XV
 	- [ ] Lezione XVI
 	- [ ] Lezione XVII
+	- [ ] Pseudo-codici
+		- [ ] Implementare bold per parole chiave
 - [ ] Sistemi
 - [ ] Linguaggi
 - [ ] Basi di Dati

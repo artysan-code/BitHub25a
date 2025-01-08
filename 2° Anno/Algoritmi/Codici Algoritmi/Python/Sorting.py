@@ -67,13 +67,11 @@ class Sorting:
         arr = self.array.copy()
         self._quick_sort_helper(arr, 0, len(arr) - 1)
         return [arr, "O(n log n)"]
-    
     def _quick_sort_helper(self, arr, init, final):
         if init < final:
             pivot = self._partition(arr, init, final)
             self._quick_sort_helper(arr, init, pivot - 1)
             self._quick_sort_helper(arr, pivot + 1, final)
-    
     def _partition(self, arr, init, final):
         pivot_index = random.randint(init, final)
         arr[init], arr[pivot_index] = arr[pivot_index], arr[init]
@@ -91,6 +89,9 @@ class Sorting:
             arr[left], arr[right] = arr[right], arr[left]
         arr[init], arr[right] = arr[right], arr[init]
         return right
+    
+    def integer_sort(self):
+        pass
 
     def generate_random_array(self, num_elements):
         self.array = [random.randint(0, num_elements*5) for _ in range(num_elements)]

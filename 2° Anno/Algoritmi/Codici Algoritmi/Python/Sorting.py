@@ -1,7 +1,7 @@
 import time
 import random
 
-class SortingAlgorithms:
+class Sorting:
     def __init__(self, array):
         self.array = array
 
@@ -133,10 +133,10 @@ if __name__ == "__main__":
     choice = input("Do you want to input the array elements manually? (y/n): ").strip().lower()
     if choice in ["y", "yes", "Y", "YES", "", " ", None]:
         array = list(map(int, input("Enter the elements of the array separated by space: ").split()))
-        sorting_algorithms = SortingAlgorithms(array)
+        sorting = Sorting(array)
     else:
         length = int(input("Enter the number of elements for the array: "))
-        sorting_algorithms = SortingAlgorithms([])
-        sorting_algorithms.generate_random_array(length)
+        sorting = Sorting([])
+        sorting.generate_random_array(length)
     
-    sorting_algorithms.select_sorting_algorithm()
+    sorting.select_sorting_algorithm()

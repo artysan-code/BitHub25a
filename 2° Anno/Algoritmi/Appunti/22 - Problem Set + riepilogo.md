@@ -72,4 +72,4 @@ Obbiettivi principali corso:
 		- trovare ordinamento topologico (DAG)
 		- componenti fortemente connesse
 	- algoritmo di Dijkstra (letto Daikstra)
-		- SPT / ??? per  grafi pesati $\geq 0$   $O(n+???)$
+		- SPT / ??? per  grafi pesati $\geq 0$   $O(m+r\log m)$

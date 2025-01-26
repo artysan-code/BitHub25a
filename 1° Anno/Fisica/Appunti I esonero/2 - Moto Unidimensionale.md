@@ -72,4 +72,20 @@ $\displaystyle t_{f}-t_{i}=n\cdot\Delta t$.
 Siano $\displaystyle \Delta x_{1},\Delta x_{2},\dots,\Delta x_{n}$ i corrispondenti spostamenti in ciascuno di questi "intervallini"; risulta quindi $\displaystyle t_{f}-t_{i}=\Delta x_{1}+\Delta x_{2}+\dots+\Delta x_{n}$.
 Allora otteniamo:
 $\displaystyle v_{x,med}=\frac{x_{f}-x_{i}}{t_{f}-t_{i}}=\frac{\Delta x_{1}+\Delta x_{2}+\dots+\Delta x_{n}}{n\Delta t}=\frac{1}{n}\left( \frac{\Delta x_{1}}{\Delta t} + \frac{\Delta x_{2}}{\Delta t} + \dots + \frac{\Delta x_{n}}{\Delta t}\right)$
-per $n$ molto grande gli intervallini $\Delta t$ diventano molto piccoli, per cui tutti i rapporti $\displaystyle\frac{\Delta x_{1}}{\Delta t},\frac{\Delta x_{2}}{\Delta t},\dots,\frac{\Delta x_{n}}{\Delta t}$ tendono alla velocità istantanea $v_{x}$ che per ipotesi e' costante.
+per $n$ molto grande gli intervallini $\Delta t$ diventano molto piccoli, per cui tutti i rapporti $\displaystyle\frac{\Delta x_{1}}{\Delta t},\frac{\Delta x_{2}}{\Delta t},\dots,\frac{\Delta x_{n}}{\Delta t}$ tendono alla velocità istantanea $v_{x}$ che per ipotesi e' costante. Allora otteniamo infine: $$\displaystyle v_{x,med}=\frac{1}{N}\cdot nv_{x}=v_{x}$$
+e questo dimostra il teorema.
+
+Visto che $v_{x,med}=v_{x}$ possiamo scrivere $$\displaystyle\frac{x_{f}-x_{i}}{t_{f}-t_{i}}=v_{x}\implies x_{f}-x_{i}=v_{x}(t_{f}-t_{i})\implies x_{f}=x_{i}+v_{x}(t_{f}-t_{i})$$
+preso  $t_{i}=0$ e $t_{f}=t$, possiamo scrivere 
+>Legge oraria del moto rettilineo uniforme
+>$$x_{f}(t)=x_{i}+v_{x}t$$
+
+In definitiva il moto rettilineo uniforme e' descritto dalle seguenti leggi: $$\begin{cases}
+v_{x}(t)=v_{x} &  & \text{costante} \\
+x(t)=x_{0}+v_{x}t &  & x_{i}=x(t=0)=x_{0}
+\end{cases}$$
+
+E' essenziale considerare l'"interpretazione geometrica" del moto rettilineo uniforme. Consideriamo il grafico della funzione $v_{x}(t)=v_{x}$ costante nel piano cartesiano $(t,v_{x})$:
+![[1° Anno/Fisica/Appunti I esonero/Assets/l23.png]]
+L'area del rettangolo avente per lati i due intervalli $[0,t]$ e $[0,v_{x}]$ e' chiaramente uguale a $v_{x}\cdot t$.
+Ma abbiamo visto che risulta $v_{x}t=x(t)-x_{0}$ ; dunque nel piano cartesiano $(t,v_x)$ l'area delimitata tra l'asse dei tempi e il grafico 

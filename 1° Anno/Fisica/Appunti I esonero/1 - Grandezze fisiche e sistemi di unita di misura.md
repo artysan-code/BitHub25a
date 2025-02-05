@@ -14,13 +14,13 @@ Le tre grandezze fondamentali che vengono utilizzate in questa prima parte del c
 |   tempo   |   secondo ($s$)   |
 |   massa   | kilogrammo ($kg$) |
 ### Lunghezza
-E' una delle grandezze fondamentali. In generale indica la distanza tra i due estremi di un segmento.
+é una delle grandezze fondamentali. In generale indica la distanza tra i due estremi di un segmento.
 
 ### Tempo
-E' una delle grandezze fondamentali. Conviene dare una definizione operativa di **Intervallo di tempo**. Uno strumento che misura gli intervalli di tempo è detto Cronometro o Orologio; tale strumento si basa su un fenomeno che si ripete regolarmente.
+é una delle grandezze fondamentali. Conviene dare una definizione operativa di **Intervallo di tempo**. Uno strumento che misura gli intervalli di tempo è detto Cronometro o Orologio; tale strumento si basa su un fenomeno che si ripete regolarmente.
 
 ### Massa
-E' una delle grandezze fondamentali. Per il momento ci limitiamo a dire che è un parametro caratteristico di ogni corpo fisico, che influisce sul cambiamento dello stato di moto del corpo quando questo è sottoposto a sollecitazioni esterne.
+é una delle grandezze fondamentali. Per il momento ci limitiamo a dire che è un parametro caratteristico di ogni corpo fisico, che influisce sul cambiamento dello stato di moto del corpo quando questo è sottoposto a sollecitazioni esterne.
 ### Altre grandezze fondamentali
 Nel sistema internazionale, oltre alle tre grandezze sopra menzionate, sono introdotte queste ulteriori grandezze fondamentali:
 
@@ -35,10 +35,10 @@ La temperatura sara' introdotta e discussa quando studieremo la termodinamica, c
 La corrente elettrica sara' introdotta e discussa quando studieremo l'elettromagnetismo.
 ### Esempi di grandezze derivate
 - Area di un rettangolo $A=a\cdot b$
-	E' il prodotto di due lunghezze. L'unita' di misura di $A$ si ottiene semplicemente moltiplicando le unita' di misura dei fattori: $m\cdot m=m^2$
+	é il prodotto di due lunghezze. L'unita' di misura di $A$ si ottiene semplicemente moltiplicando le unita' di misura dei fattori: $m\cdot m=m^2$
 	
 - Volume di un parallelepipedo rettangolo $V=a\cdot b\cdot c$
-	E' il prodotto di tre lunghezze. L'unita' di misura $V$ si ottiene semplicemente moltiplicando tra loro le unita' di misura dei fattori: $m\cdot m\cdot m=m^3$
+	é il prodotto di tre lunghezze. L'unita' di misura $V$ si ottiene semplicemente moltiplicando tra loro le unita' di misura dei fattori: $m\cdot m\cdot m=m^3$
 	
 - Velocità' media di un corpo in un dato intervallo di tempo $T$: $\displaystyle V_{m}=\frac{D}{T}$
 	dove $D$ è la distanza percorsa dal corpo nell'intervallo $T$. L'unita' di misura di $V_{m}$ è data dal rapporto tra l'unita' di misura di $D$ e l'unita' di misura di $T$: $\displaystyle \frac{m}{s}=m\cdot s^{-1}$
@@ -83,6 +83,6 @@ Se l'incertezza è associata alla lettura diretta dello strumento di misura, tip
 Se la misura è indiretta, cioè se le grandezze derivano da una legge matematica, spesso conviene scrivere il valore fino alla seconda cifra affetta da incertezza.
 
 Per questa ragione è importante in molti casi operare un **arrotondamento** del valore fino alla cifra più a destra che è possibile scrivere.
-Il numero di **cifre significative** di un dato valore e' dato dal numero di cifre di tale valore, contato dalla prima cifra non nulla da sinistra fino alla prima cifra affetta da incertezza.
+Il numero di **cifre significative** di un dato valore é dato dal numero di cifre di tale valore, contato dalla prima cifra non nulla da sinistra fino alla prima cifra affetta da incertezza.
 
 [[2 - Moto Unidimensionale|Prossima lezione]]

@@ -156,6 +156,12 @@ class Sorting:
         print(f"Sorted array: {sorted_array}")
         print(f"Algorithm Cost: {cost}")
         print(f"Time taken: {elapsed_time:.6f} seconds")
+        print(f"Is the array really sorted? ")
+        temp=sorted_array.copy()
+        if sorted(temp) == sorted_array:
+            print("Yes")
+        else:
+            print("No")
 
 if __name__ == "__main__":
     choice = input("Do you want to input the array elements manually? (y/n): ").strip().lower()

@@ -64,7 +64,7 @@ Lo pseudo-codice è quindi il seguente:
 > 5.  $\textbf{for }i=1\textbf{ to}\text{ k}\textbf{ do }$
 > 6.    $\textbf{while }(Y[i]>0)\textbf{ do}$
 > 7.      $X[j]=i$
-> 8.      $\text{incrementa i}$
+> 8.      $\text{incrementa j}$
 > 9.      $\text{decrementa }Y[i]$
 
 Fissato i abbiamo **# volte eseguite** è al più $1+Y[i]$ quindi:$$\displaystyle\sum_{i=1}^{k}(1+Y[i])=\sum_{i+1}^{k}1+\sum_{i+1}^{k}Y[i]=k+n\implies O(k+n)$$

@@ -37,7 +37,7 @@ Quindi descrive i confronti di un algoritmo su un determinato input, guardando o
 - Ogni **nodo foglia** è un risultato di un determinato caso.
 
 L'albero di decisione non **è legato al problema** e non è **associato solo ad un algoritmo**.
-![[Pasted image 20250108140111.png]]
+![[l81.png]]
 L'albero di decisione è però legato ad un algoritmo e ad una dimensione di istanza, descrivendo le diverse casistiche che possono avvenire di output su una generica istanza di dimensione n. Corrisponde ad una descrizione alternativa di un algoritmo.
 #### Proprietà
 - I confronti eseguiti sull'algoritmo rappresentano un cammino radice-foglia.
@@ -53,8 +53,8 @@ Allora possiamo dedurre che:$$h\geq \log_{2}(n!)>\log_{2}\left( \frac{n}{e} \rig
 ### Algoritmi di ordinamento senza confronto
 #### IntegerSort
 L'algoritmo ordina n interi con i valori da 1 a k mantenendo un *array Y* di contatori dove possiamo definire che $Y[x]=\text{numero di volte che appare }x\text{ in X}$. Dopodiché scorriamo l'array ausiliario Y e scriviamo $Y[x]$ volte ogni valore in ordine.
-![[Pasted image 20250108151415.png]]
-![[Pasted image 20250108151434.png]]
+![[l82.png]]
+![[l83.png]]
 Lo pseudo-codice è quindi il seguente:
 > $IntergerSort(X,\ k)$
 > 1.  $\text{Sia Y un array di }k\text{ elementi}$

@@ -89,9 +89,33 @@ class Sorting:
             arr[left], arr[right] = arr[right], arr[left]
         arr[init], arr[right] = arr[right], arr[init]
         return right
-    
+
     def integer_sort(self):
-        pass
+        arr = self.array.copy()
+        if not arr:
+            return [arr, "O(n + k)"]
+        
+        max_val = max(arr)
+        min_val = min(arr)
+        range_val = max_val - min_val + 1
+        
+        count = [0] * range_val
+        output = [0] * len(arr)
+        
+        # Store count of each element
+        for num in arr:
+            count[num - min_val] += 1
+        
+        # Modify count array to store actual positions
+        for i in range(1, len(count)):
+            count[i] += count[i - 1]
+        
+        # Build output array
+        for i in range(len(arr) - 1, -1, -1):
+            output[count[arr[i] - min_val] - 1] = arr[i]
+            count[arr[i] - min_val] -= 1
+        
+        return [output, "O(n + k)"]
 
     def generate_random_array(self, num_elements):
         self.array = [random.randint(0, num_elements*5) for _ in range(num_elements)]
@@ -104,8 +128,9 @@ class Sorting:
         print("3. Bubble Sort")
         print("4. Merge Sort")
         print("5. Quick Sort (Random Version)")
+        print("6. Integer Sort")
         
-        choice = int(input("Enter choice (1/2/3/4/5): "))
+        choice = int(input("Enter choice (1/2/3/4/5/6): "))
         
         start_time = time.time()
         
@@ -119,6 +144,8 @@ class Sorting:
             sorted_array, cost = self.merge_sort()
         elif choice == 5:
             sorted_array, cost = self.quick_sort()
+        elif choice == 6:
+            sorted_array, cost = self.integer_sort()
         else:
             print("Invalid choice")
             return

@@ -1,12 +1,11 @@
+def Banale(A,n):    
+    for i in range(1,n-1):
+        for j in range(i+1,n):
+            if (A[i]+A[j]==x):
+                return (i,j)
+    return (-1,-1)
 
-def Banale(A,n):    #O(n^2)
-for i in range(1,n-1):
-    for j in range(i+1,n):
-	    if (A[i]+A[j]=x):
-            return (i,j)
-return (-1,-1)
-
-def MenoBanale(A,x):    #O(n log(n))
+def MenoBanale(A,x):
     for i in range(len(A)):
         val = x - A[i]
         low = 0

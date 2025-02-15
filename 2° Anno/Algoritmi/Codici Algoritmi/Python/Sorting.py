@@ -5,6 +5,7 @@ class Sorting:
     def __init__(self, array):
         self.array = array
 
+# ------ Sezione Selection-Sort ------
     def selection_sort(self):
         arr = self.array.copy()
         n = len(arr)
@@ -16,6 +17,7 @@ class Sorting:
             arr[i], arr[min_idx] = arr[min_idx], arr[i]
         return [arr, "O(n^2)"]
 
+# ------ Sezione Insertion-Sort ------
     def insertion_sort(self):
         arr = self.array.copy()
         for i in range(1, len(arr)):
@@ -27,6 +29,7 @@ class Sorting:
             arr[j + 1] = key
         return [arr, "O(n^2)"]
 
+# ------ Sezione Bubble-Sort ------
     def bubble_sort(self):
         arr = self.array.copy()
         n = len(arr)
@@ -35,18 +38,21 @@ class Sorting:
                 if arr[j] > arr[j+1]:
                     arr[j], arr[j+1] = arr[j+1], arr[j]
         return [arr, "O(n^2)"]
-    
+
+# ------ Sezione Merge-Sort ------
     # Implementazione che rispetta pseudocodice del professore
     def merge_sort(self) -> list:
         arr = self.array.copy()
         self._merge_sort_helper(arr, 0, len(arr) - 1)
         return [arr, "O(n log n)"]
+
     def _merge_sort_helper(self, arr: list, left: int, right: int)-> None: 
         if left < right:
             mid = (left + right) // 2
             self._merge_sort_helper(arr, left, mid)
             self._merge_sort_helper(arr, mid + 1, right)
             self._merge(arr, left, mid, right)
+    
     def _merge(self, arr: list, left: int, mid: int, right: int) -> None:
         arr_aux = []
         left_c, right_c = left, mid + 1
@@ -63,15 +69,18 @@ class Sorting:
             arr_aux.extend(arr[right_c:right + 1])
         arr[left:right + 1] = arr_aux
 
+# ------ Sezione Quick-Sort Randomizzato ------
     def quick_sort(self):
         arr = self.array.copy()
         self._quick_sort_helper(arr, 0, len(arr) - 1)
         return [arr, "O(n log n)"]
+    
     def _quick_sort_helper(self, arr, init, final):
         if init < final:
             pivot = self._partition(arr, init, final)
             self._quick_sort_helper(arr, init, pivot - 1)
             self._quick_sort_helper(arr, pivot + 1, final)
+    
     def _partition(self, arr, init, final):
         pivot_index = random.randint(init, final)
         arr[init], arr[pivot_index] = arr[pivot_index], arr[init]
@@ -90,6 +99,7 @@ class Sorting:
         arr[init], arr[right] = arr[right], arr[init]
         return right
 
+# ------ Sezione Integer-Sort ------
     def integer_sort(self):
         arr = self.array.copy()
         if not arr:
@@ -117,10 +127,12 @@ class Sorting:
         
         return [output, "O(n + k)"]
 
+# ------ Generazione array casuale ------
     def generate_random_array(self, num_elements):
         self.array = [random.randint(0, num_elements*5) for _ in range(num_elements)]
         print(f"Generated array: {self.array}")
 
+# ------ Sezione selezione algoritmo------
     def select_sorting_algorithm(self):
         print("Select sorting algorithm:")
         print("1. Selection Sort")
@@ -163,6 +175,7 @@ class Sorting:
         else:
             print("No")
 
+# ------ Sezione Main ------
 if __name__ == "__main__":
     choice = input("Do you want to input the array elements manually? (y/n): ").strip().lower()
     if choice in ["y", "yes", "Y", "YES", "", " ", None]:

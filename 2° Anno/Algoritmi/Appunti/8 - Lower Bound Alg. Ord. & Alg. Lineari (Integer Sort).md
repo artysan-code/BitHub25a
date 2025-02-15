@@ -1,14 +1,14 @@
 ### Delimitazioni inferiori e superiori
 #### Complessità di un algoritmo
-Un *algoritmo A* ha complessità (costo di esecuzione) O(f(n)) rispetto ad una certa risorsa di calcolo, se la quantità r(n) di risorsa usata da A nel caso peggiore su n istanze rispetta la relazione $r(n)=O(f(n))$.
+Un *algoritmo A* ha complessità (costo di esecuzione) $O(f(n))$ rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da A nel caso peggiore su $n$ istanze rispetta la relazione $r(n)=O(f(n))$.
 
-Un algoritmo A ha complessità (costo di esecuzione) $\Omega$(f(n)) rispetto ad una certa risorsa di calcolo, se la quantità r(n) di risorsa usata da A nel caso peggiore su n istanze verifica la relazione $r(n)= \Omega(f(n))$.
+Un algoritmo A ha complessità (costo di esecuzione) $\Omega$(f(n)) rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da A nel caso peggiore su $n$ istanze verifica la relazione $r(n)= \Omega(f(n))$.
 #### Complessità di un problema
-Un problema P ha una complessità O(f(n)) rispetto ad una risorsa di calcolo se **esiste** un algoritmo che risolve P il cui costo di esecuzione rispetto quella risorsa è O(f(n)).
+Un problema P ha una complessità $O(f(n))$ rispetto ad una risorsa di calcolo se **esiste** un algoritmo che risolve P il cui costo di esecuzione rispetto quella risorsa è $O(f(n))$.
 
 Un problema P ha una complessità $\Omega$(f(n)) rispetto ad una risorsa di calcolo se **ogni algoritmo** che risolve P ha costo di esecuzione nel caso peggiore $\Omega$(f(n)) rispetto quella risorsa.
 ### Algoritmo Ottimo
-Dato un problema P con complessità $\Omega$(f(n)) rispetto ad una risorsa di calcolo, un algoritmo che risolve P è (asintoticamente) **ottimo** se ha costo di esecuzione O(f(n)) rispetto a quella risorsa.
+Dato un problema P con complessità $\Omega$(f(n)) rispetto ad una risorsa di calcolo, un algoritmo che risolve P è (asintoticamente) **ottimo** se ha costo di esecuzione $O(f(n))$ rispetto a quella risorsa.
 ###  Complessità temporale del problema dell'ordinamento
 - Upper bound: $O(n^2)$
 	- insertion sort, selection sort, quick sort, bubble sort
@@ -21,7 +21,7 @@ Abbiamo un gap di $\log n$ tra upper e lower bound. Si può fare di meglio?
 ### Ordinamento per confronti
 Dati due elementi $a_{i}$ ed $a_{j}$ , per determinarne l’ordinamento relativo effettuiamo una delle seguenti operazioni di confronto: $$a_{i}<a_{j};\quad a_{i}\leq a_{j};\quad a_{i}=a_{j};\quad a_{i}\geq a_{j};\quad a_{i}>a_{j}$$Non si possono esaminare i valori degli elementi o ottenere informazioni sul loro ordine in altro modo.
 
-> Ogni algoritmo basato su confronti che ordina n elementi deve fare nel caso peggiore $\Omega(n\log n)$ confronti quindi il # di confronti che un algoritmo esegue e' un lower bound di # di passi elementari che esegue
+> Ogni algoritmo basato su confronti che ordina $n$ elementi deve fare nel caso peggiore $\Omega(n\log n)$ confronti quindi il $\#\text{ di confronti}$ che un algoritmo esegue e' un lower bound di $\#\text{ di passi elementari}$ che esegue
 
 > Il MergeSort e il QuickSort sono algoritmi ottimi (almeno dentro la classe di algoritmi basati su confronti)
 ### Albero di decisione

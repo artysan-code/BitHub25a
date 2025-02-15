@@ -19,7 +19,7 @@ Possiamo pensare che tenda a $T(n)=n\log_{2}(n)$ oppure $T(n)=n$ ma supponiamo d
 \text{Passo base: } & T(1)=1 \leq c \cdot 1 \quad \forall\ c \geq 1 \\
 \text{Passo induttivo: } \\
 \text{Assumo che } T(k) \leq c \cdot k\quad \forall\ k<n \\
-T(n)=n+T\left( \frac{n}{2} \right)\leq n+c \cdot \left( \frac{n}{2} \right) \implies T(n)=\left( \frac{c}{2} +1\right)n \\
+\displaystyle T(n)=n+T\left( \frac{n}{2} \right)\leq n+c \cdot \left( \frac{n}{2} \right) \implies T(n)=\left( \frac{c}{2} +1\right)n \\
 \end{array}$$
 Quindi abbiamo che:$$\left( \frac{c}{2}+1 \right) \leq c \implies c \geq 2 \quad\quad quindi\quad\quad T(n)\leq 2n \implies T(n)=O(n) $$
 
@@ -43,12 +43,12 @@ a\cdot T\left( \frac{n}{b} \right)+ f(n) & \text{se}\ \ n>1 \\
 \end{cases}$$
 Analizzando quindi relazione di ricorrenza, possiamo imporre una "lotta" tra $\displaystyle n^{\log_{b}(a)}$ e $f(n)$. Quindi:
 - Se sono dello stesso ordine asintotico allora $T(n)=\Theta(f(n)\log (n))$
-- Se una delle due è più veloce, allora T(n) tende ad essa.
+- Se una delle due è più veloce, allora $T(n)$ tende ad essa.
 
 Analizzando più affondo possiamo dire che possono esserci quindi **tre soluzioni**:
 - $\displaystyle  T(n)=\Theta (n^{\log_{b}(a)})$  se  $\displaystyle f(n)=O(n^{\log_{b}(a-\epsilon)})$ per $\displaystyle \epsilon>0$
 - $T(n)=\Theta(n^{\log_{b}(a)\cdot \log(n)})$  se  $f(n)=\Theta(n^{\log_{b}(a)})$
-- $T(n)=\Theta(f(n))$  se  $\displaystyle f(n)=\Omega(n^{\log_{b}(a+\epsilon)})$ per $\displaystyle \epsilon>0$ e $\displaystyle \forall\ f\left( \frac{n}{b} \right) \leq c \cdot f(n)$ per $c<1$ e n sufficientemente grande
+- $T(n)=\Theta(f(n))$  se  $\displaystyle f(n)=\Omega(n^{\log_{b}(a+\epsilon)})$ per $\displaystyle \epsilon>0$ e $\displaystyle \forall\ f\left( \frac{n}{b} \right) \leq c \cdot f(n)$ per $c<1$ e $n$ sufficientemente grande
 
 ### Metodo del cambiamento di variabile
 ^87cfb5

@@ -1,14 +1,14 @@
 ### Delimitazioni inferiori e superiori
 #### Complessità di un algoritmo
-Un *algoritmo A* ha complessità (costo di esecuzione) $O(f(n))$ rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da A nel caso peggiore su $n$ istanze rispetta la relazione $r(n)=O(f(n))$.
+Un algoritmo $A$ ha complessità (costo di esecuzione) $O(f(n))$ rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da $A$ nel caso peggiore su $n$ istanze rispetta la relazione $r(n)=O(f(n))$.
 
-Un algoritmo A ha complessità (costo di esecuzione) $\Omega$(f(n)) rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da A nel caso peggiore su $n$ istanze verifica la relazione $r(n)= \Omega(f(n))$.
+Un algoritmo $A$ ha complessità (costo di esecuzione) $\Omega$(f(n)) rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da $A$ nel caso peggiore su $n$ istanze verifica la relazione $r(n)= \Omega(f(n))$.
 #### Complessità di un problema
-Un problema P ha una complessità $O(f(n))$ rispetto ad una risorsa di calcolo se **esiste** un algoritmo che risolve P il cui costo di esecuzione rispetto quella risorsa è $O(f(n))$.
+Un problema $P$ ha una complessità $O(f(n))$ rispetto ad una risorsa di calcolo se **esiste** un algoritmo che risolve $P$ il cui costo di esecuzione rispetto quella risorsa è $O(f(n))$.
 
-Un problema P ha una complessità $\Omega$(f(n)) rispetto ad una risorsa di calcolo se **ogni algoritmo** che risolve P ha costo di esecuzione nel caso peggiore $\Omega$(f(n)) rispetto quella risorsa.
+Un problema $P$ ha una complessità $\Omega(f(n))$ rispetto ad una risorsa di calcolo se **ogni algoritmo** che risolve $P$ ha costo di esecuzione nel caso peggiore $\Omega(f(n))$ rispetto quella risorsa.
 ### Algoritmo Ottimo
-Dato un problema P con complessità $\Omega$(f(n)) rispetto ad una risorsa di calcolo, un algoritmo che risolve P è (asintoticamente) **ottimo** se ha costo di esecuzione $O(f(n))$ rispetto a quella risorsa.
+Dato un problema $P$ con complessità $\Omega(f(n))$ rispetto ad una risorsa di calcolo, un algoritmo che risolve $P$ è (asintoticamente) **ottimo** se ha costo di esecuzione $O(f(n))$ rispetto a quella risorsa.
 ###  Complessità temporale del problema dell'ordinamento
 - Upper bound: $O(n^2)$
 	- insertion sort, selection sort, quick sort, bubble sort

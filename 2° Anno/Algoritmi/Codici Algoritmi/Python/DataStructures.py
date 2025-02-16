@@ -2,7 +2,7 @@ class Heap:
     def __init__(self, heap: list):
         self.heap = heap
 
-    def fixHeap(self, i: int) -> str:
+    def fixHeap(self, i: int) -> None:
         sin = 2 * i
         des = 2 * i + 1
         if (sin <= len(self.heap) - 1 and self.heap[sin] > self.heap[i]):
@@ -16,21 +16,21 @@ class Heap:
             self.fixHeap(max_idx)
         return "O(log n)"
 
-    def extractMax(self) -> tuple:
+    def extractMax(self) -> int:
         if len(self.heap) < 2:
-            return None, "O(log n)"
+            return None
         max_value = self.heap[1]
         self.heap[1] = self.heap[-1]
         self.heap.pop()
         self.fixHeap(1)
         return max_value, "O(log n)"
 
-    def heapify(self) -> str:
+    def heapify(self) -> None:
         for i in range((len(self.heap) - 1) // 2, 0, -1):
             self.fixHeap(i)
         return "O(n)"
 
-    def heapSort(self) -> tuple:
+    def heapSort(self) -> list:
         self.heapify()
         sorted_arr = []
         while len(self.heap) > 1:
@@ -40,7 +40,7 @@ class Heap:
         return sorted_arr, "O(n log n)"
 
     @staticmethod
-    def getArrayInput() -> tuple:
+    def getArrayInput():
         import random
         print("Do you want a random array to sort?")
         choice = input("Enter your choice (y/n): ")

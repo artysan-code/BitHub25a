@@ -5,8 +5,7 @@ class Sorting:
     def __init__(self, array):
         self.array = array
 
-# ------ Sezione Selection-Sort ------
-    def selection_sort(self):
+    def selectionSort(self):
         arr = self.array.copy()
         n = len(arr)
         for i in range(n):
@@ -17,8 +16,7 @@ class Sorting:
             arr[i], arr[min_idx] = arr[min_idx], arr[i]
         return [arr, "O(n^2)"]
 
-# ------ Sezione Insertion-Sort ------
-    def insertion_sort(self):
+    def insertSort(self):
         arr = self.array.copy()
         for i in range(1, len(arr)):
             key = arr[i]
@@ -29,8 +27,7 @@ class Sorting:
             arr[j + 1] = key
         return [arr, "O(n^2)"]
 
-# ------ Sezione Bubble-Sort ------
-    def bubble_sort(self):
+    def bubbleSort(self):
         arr = self.array.copy()
         n = len(arr)
         for i in range(n):
@@ -39,21 +36,17 @@ class Sorting:
                     arr[j], arr[j+1] = arr[j+1], arr[j]
         return [arr, "O(n^2)"]
 
-# ------ Sezione Merge-Sort ------
-    # Implementazione che rispetta pseudocodice del professore
-    def merge_sort(self) -> list:
+    def mergeSort(self) -> list:
         arr = self.array.copy()
-        self._merge_sort_helper(arr, 0, len(arr) - 1)
+        self.mergeSortHelper(arr, 0, len(arr) - 1)
         return [arr, "O(n log n)"]
-
-    def _merge_sort_helper(self, arr: list, left: int, right: int)-> None: 
+    def mergeSortHelper(self, arr: list, left: int, right: int)-> None: 
         if left < right:
             mid = (left + right) // 2
-            self._merge_sort_helper(arr, left, mid)
-            self._merge_sort_helper(arr, mid + 1, right)
-            self._merge(arr, left, mid, right)
-    
-    def _merge(self, arr: list, left: int, mid: int, right: int) -> None:
+            self.mergeSortHelper(arr, left, mid)
+            self.mergeSortHelper(arr, mid + 1, right)
+            self.Merge(arr, left, mid, right)
+    def Merge(self, arr: list, left: int, mid: int, right: int) -> None:
         arr_aux = []
         left_c, right_c = left, mid + 1
         while (left_c <= mid) and (right_c <= right):
@@ -69,19 +62,16 @@ class Sorting:
             arr_aux.extend(arr[right_c:right + 1])
         arr[left:right + 1] = arr_aux
 
-# ------ Sezione Quick-Sort Randomizzato ------
-    def quick_sort(self):
+    def quickSort(self):
         arr = self.array.copy()
-        self._quick_sort_helper(arr, 0, len(arr) - 1)
+        self.quickSortHelper(arr, 0, len(arr) - 1)
         return [arr, "O(n log n)"]
-    
-    def _quick_sort_helper(self, arr, init, final):
+    def quickSortHelper(self, arr, init, final):
         if init < final:
-            pivot = self._partition(arr, init, final)
-            self._quick_sort_helper(arr, init, pivot - 1)
-            self._quick_sort_helper(arr, pivot + 1, final)
-    
-    def _partition(self, arr, init, final):
+            pivot = self.Partition(arr, init, final)
+            self.quickSortHelper(arr, init, pivot - 1)
+            self.quickSortHelper(arr, pivot + 1, final)
+    def Partition(self, arr, init, final):
         pivot_index = random.randint(init, final)
         arr[init], arr[pivot_index] = arr[pivot_index], arr[init]
         pivot = arr[init]
@@ -99,8 +89,7 @@ class Sorting:
         arr[init], arr[right] = arr[right], arr[init]
         return right
 
-# ------ Sezione Integer-Sort ------
-    def integer_sort(self):
+    def integerSort(self):
         arr = self.array.copy()
         if not arr:
             return [arr, "O(n + k)"]
@@ -127,12 +116,29 @@ class Sorting:
         
         return [output, "O(n + k)"]
 
-# ------ Generazione array casuale ------
+    def bucketSort(self):
+        arr = self.array.copy()
+        if not arr:
+            return [arr, "O(n + k)"]
+
+        k = max(arr)
+        n = len(arr)
+        buckets = [[] for _ in range(k + 1)]
+        
+        for val in arr:
+            buckets[val].append(val)
+        
+        sorted_arr = []
+        for bucket in buckets:
+            bucket.sort()
+            sorted_arr.extend(bucket)
+
+        return [sorted_arr, "O(n + k)"]
+
     def generate_random_array(self, num_elements):
         self.array = [random.randint(0, num_elements*5) for _ in range(num_elements)]
         print(f"Generated array: {self.array}")
 
-# ------ Sezione selezione algoritmo------
     def select_sorting_algorithm(self):
         print("Select sorting algorithm:")
         print("1. Selection Sort")
@@ -147,17 +153,17 @@ class Sorting:
         start_time = time.time()
         
         if choice == 1:
-            sorted_array, cost = self.selection_sort()
+            sorted_array, cost = self.selectionSort()
         elif choice == 2:
-            sorted_array, cost = self.insertion_sort()
+            sorted_array, cost = self.insertSort()
         elif choice == 3:
-            sorted_array, cost = self.bubble_sort()
+            sorted_array, cost = self.bubbleSort()
         elif choice == 4:
-            sorted_array, cost = self.merge_sort()
+            sorted_array, cost = self.mergeSort()
         elif choice == 5:
-            sorted_array, cost = self.quick_sort()
+            sorted_array, cost = self.quickSort()
         elif choice == 6:
-            sorted_array, cost = self.integer_sort()
+            sorted_array, cost = self.integerSort()
         else:
             print("Invalid choice")
             return

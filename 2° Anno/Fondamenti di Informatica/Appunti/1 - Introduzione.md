@@ -44,7 +44,7 @@ dipende da chi risolve il problema
 somma di 2 numeri e' semplice? 
 No, dovrei memorizzare una tabellina di dimensioni infinite (volendo sommare 2 numeri qualunque)
 
-poche = deve essere indipendente dall'istanza del problema (deve essere costante)
+**poche** = deve essere indipendente dall'istanza del problema (deve essere costante)
 $$\begin{array}{r}
 7854321\ + \\
 663959\ = \\

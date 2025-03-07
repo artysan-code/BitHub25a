@@ -1,27 +1,18 @@
-Chi deve dare modulo 1 contattare Gambosi
-Chi deve dare modulo 2 solo esame
+>Un **problema** è la descrizione di un insieme di parametri che chiamiamo **dati**, tra i quali sussiste un certo insieme di relazioni da cui si vogliono derivare un altro insieme di parametri che corrisponderà successivamente alla **soluzione**.
 
-voto esame scritto:
-<15 bocciato
-15-17 orale
-18-24 non obbligatori orale
-\>25 orale non necessario ma voto finale =24
+Vi è una precisa differenza tra istanze di problema e il problema stesso, un esempio lo possiamo avere con la *somma*:
 
+**Problema**: Dati due numeri naturali, n e k, calcolare il valore della somma di n con k (ossia, n + k).
+**Istanza di un problema**: Calcolare il valore di 2 + 7.
 
-## Problemi risolti automaticamente
+L'*istanza di un problema* è un'insieme di valori associati ai dati parametri del problema. Risolvere un'istanza può essere fatto sfruttando le caratteristiche del problema, ma non sempre è possibile:
 
->Definizione **problema**
->e' la descrizione di un insieme di oggetti tra i quali sussiste una relazione e un altro insieme di oggetti tra i quali sussiste una relazione tra i due
+Calcolare $2+7$ è semplice, mentre calcolare $\sqrt{ 2 }$ può essere notevolmente difficile, ma esistono anche casi in cui non è possibile calcolare un'istanza (ad esempio $\sqrt{ -4 }$). Queste istanze sono chiamate **istanze negative**, e saranno fondamentali.
 
-Somma: dati 2 interi $n$ e $k$, trovare un terzo intero $s$ tale che $s=n+k$
+> Per **risolvere** un problema corrisponde ad individuare un metodo che mi permette di associare ad ogni istanza una soluzione, ovvero data una qualunque istanza indicare la sequenza di azioni per trovare una soluzione.
 
-trovare la somma di 3+2 e' trovare la soluzione di un istanza di somma
-(3,2) = istanza
+Ciò implica ovviamente riconoscere se un'istanza è negativa.
 
->**Risolvere** un problema
-trovare un metodo che mi permette di associare ad ogni istanza una soluzione
-
-(789437217455, 6789678954321)
 
 >Definizione **procedimento**
 il procedimento specifica le istruzioni da eseguire e l'ordine in cui eseguirle

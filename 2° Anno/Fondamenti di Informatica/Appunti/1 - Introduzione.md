@@ -11,60 +11,46 @@ Calcolare $2+7$ è semplice, mentre calcolare $\sqrt{ 2 }$ può essere notevolme
 
 > Per **risolvere** un problema corrisponde ad individuare un metodo che mi permette di associare ad ogni istanza una soluzione, ovvero data una qualunque istanza indicare la sequenza di azioni per trovare una soluzione.
 
-Ciò implica ovviamente riconoscere se un'istanza è negativa.
+Ciò implica ovviamente riconoscere se un'istanza è negativa. Iniziamo quindi a porre le definizioni di questo processo.
 
+>Un **procedimento** un'insieme di azioni di cui viene specificato l'ordine in cui eseguirle.
 
->Definizione **procedimento**
-il procedimento specifica le istruzioni da eseguire e l'ordine in cui eseguirle
+Quindi un'**azione** corrisponde ad una *istruzione* semplice da eseguire, ad esempio:
 
-Radice quadrata: data $x$ trovare $\sqrt{ x }$ 
-$\sqrt{ -1 }$
+Data una funzione $f: ℝ → ℝ+$ e dati due numeri reali $a$ e $b$, calcolare la misura dell’area della regione di piano compresa fra la funzione, l’asse x e le rette $y=a$ e $y=b$.
 
-Calcolare l'area della regione piana compresa fra $x=0,\ x=1,\ y=0,\ y=f(x)$:
-1) calcolare la primitiva $F$ di $f$
-2) $sol=F(1)-F(0)$
+PROCEDIMENTO: 
+1) Calcola la funzione primitiva $F(x)$ di $f(x)$
+2) Calcola $F(b)\ –\ F(a)$
 
->Da cosa dipende elementare:
-dipende da chi risolve il problema
+Ma cos'è un'istruzione semplice... un'**istruzione elementare**? Beh dipende da chi deve eseguirle.
 
->**Istruzione elementare**(secondo Turing):
->1) Un istruzione e' elementare se la scelgo in un insieme di piccole dimensioni(*"poche" istruzioni possibili*)
->2) *"poche" azioni possibili*
->3) Ogni istruzione può essere eseguita ricordando "poche" cose (*"poca" memoria*)
+>**Istruzione elementare** è descrivibile (secondo Turing) in questa maniera:
+> 1) deve essere scelta in un insieme di *"poche" istruzioni possibili*.
+> 2) deve scegliere l’azione da eseguire all'interno di un insieme di *"poche" azioni possibili*.
+> 3) deve poter essere eseguita ricordando una quantità limitata di dati, ossia, in termini
+    più tecnici, utilizzando *"poca" memoria*.
 
-somma di 2 numeri e' semplice? 
-No, dovrei memorizzare una tabellina di dimensioni infinite (volendo sommare 2 numeri qualunque)
+Potremmo pensare che sommare due numeri (Quindi il *problema della somma*) sia semplice, lo sappiamo fare dalle elementari. In realtà no, dovrei memorizzare una tabellina di dimensioni infinite, in quanto i numeri sono infiniti.
 
-**poche** = deve essere indipendente dall'istanza del problema (deve essere costante)
-$$\begin{array}{r}
-7854321\ + \\
-663959\ = \\
-\hline \\
+Invece di inventarci una enorme tabella, usiamo un *procedimento*.
 
-\end{array}$$
+1) mi posiziono alla coppia di cifre più a destra e definisco $r=0$.
+2) fino a quando leggi una coppia di cifre, esegui la somma della coppia di cifre sulle quali sei posizionato, aggiungi r a tale valore e scrivi una cifra del risultato calcolando anche il nuovo valore di r, e poi spostati a sinistra – ossia:
+	1) se r = 0 e le due cifre sono 0 e 0, allora scrivi 0, poni r = 0, e spostati di una posizione a sinistra.
+	2) se r = 1 e le due cifre sono 0 e 0 e allora scrivi 1, poni r = 0, e spostati di una posizione a sinistra.
+	3) ...
+	4) se r = 0 e le due cifre sono 9 e 9, allora scrivi 8, poni r = 1,e spostati di una posizione a sinistra.
+	5) se r = 1 e le due cifre sono 9 e 9, allora scrivi 9, poni r = 1, e spostati di una posizione a sinistra.
+3) [ ... continua ... ]
 
-leggo prima cifra della colonna
-leggo seconda cifra della colonna
-se r=0 e leggo  (0,0) allora scrivo 0, pongo r =0 e mi sposto a sinistra
-(tutte le possibili casistiche)
-quindi abbiamo $100*2$ istruzioni =200 + le casistiche delle somme di valori ad inesistente ($9*2$=18) e la somma di due valori inesistenti
-se r=0 e leggo ($\Box,\Box$) allora scrivo $\Box$ e termino
+Dunque eseguirò l'unica azione a me possibile fino a quando non arriverò ad un istruzione che mi dice di terminare, quindi saranno una serie di **se** e **allora**. L'istruzione e' composta da due parti: condizione e azione:
+- (r=0 e leggo le due cifre 0 e 0) è una **condizione**.
+- (scrivo 0, pongo r =0 e mi sposto a sinistra) è una **azione**.
 
-Dunque eseguirò l'unica azione a me possibile fino a quando non arriverò ad un istruzione che mi dice di terminare, quindi saranno una serie di **se** e **allora**.
+Queste istruzioni possono essere eseguite da chiunque e' capace di leggere (e scrivere) anche se non conosce i concetti. Quindi alla fine dell'esecuzione sara completato in modo "automatico" nonostante non si abbia la conoscenza della somma; il risultato verrà da solo.
 
-(r=0 e leggo  (0,0)) = condizione 
-(scrivo 0, pongo r =0 e mi sposto a sinistra) = azione
-l'istruzione e' composta da due parti:
-condizione e azione
-
-Ad ogni condizione corrisponde un azione
-
-Se vengono soddisfatte due condizioni uguali vengono anche eseguite entrambe le azioni
-
-Queste istruzioni possono essere eseguite da chiunque e' capace di leggere (e scrivere) anche se non conosce i concetti
-Quindi alla fine dell'esecuzione sara completato in modo "automatico" nonostante non si abbia la conoscenza della somma; il risultato verrà da solo.
-
-Pero scrivere tutto questo e' stancante quindi definiamo 
+Pero scrivere tutto questo è stancante quindi definiamo 
 $<q_{0},(9,5),4,q_{1},S>$
 $q_{1}$
 

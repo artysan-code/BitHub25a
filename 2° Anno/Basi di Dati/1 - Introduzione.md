@@ -35,4 +35,29 @@ Diamo allora una migliore definizione ai DBMS:
 > - Persistenti (rimangano disponibili per un periodo di vita definito o non definito)
 > - Condivise (Usate da applicazioni e utenti diversi)
 
-Il DBMS garantisce affidabilità e sicurezza dei dati che organizza, inoltre deve essere **efficiente** ed **efficacie**. La logica di coerenza non viene imposta dal DBMS, ma dalla logica fornita dal linguaggio che utilizza questo primo.
+^98fc74
+
+Il DBMS garantisce affidabilità e sicurezza dei dati che organizza, inoltre deve essere **efficiente** ed **efficacie**. Offre anche soprattutto **privatezza**, con un sistema di gestione degli accessi. La logica di coerenza non viene imposta dal DBMS, ma dalla logica fornita dal linguaggio che utilizza questo primo.
+
+## Archivio di file
+L'approccio classico usato dai programmi che compongono il sistema informativo per la gestione delle 
+informazioni è un **archivio basato su files**. Ogni programma ha accesso al file system gestito dal sistema operativo per creare uno o più files.
+
+I file possono avere diverse tipologie di formati **non compatibili** tra loro, i programmi si devono adeguare di conseguenza a diverse convenzioni. Questo rende la condivisione dei dati attraverso applicazioni differenti difficoltosa. 
+
+I dati **non memorizzati su file condivisi** vengono replicati con spreco di risorse di memorizzazione e possibili problemi legati a inconsistenze. Questo problema ha portato gli sviluppatori a voler trovare una **soluzione ad-hoc** per la gestione.
+
+## Condivisione
+Ogni organizzazione generalmente è divisa in settori, a cui è associato un sottosistema informativo che possono però avere **risorse condivise** tra di loro. Una base di dati è una risorsa **integrata**, in quanto condivisa da vari settori.
+
+Una base di dati permette di:
+- **Ridurre la ridondanza**, permette di ridurre le repliche di dati che possono aumentare lo spazio utilizzato e quindi rendere meno efficiente la memorizzazione.
+- **Ridurre l'inconsistenza**: permette di non avere diverse copie di un dato con diverse versioni, così da trattenere la consistenza attraverso delle tecniche gestite internamente.
+
+Queste *best-practice* permetto a sistemi DBMS di fornire 
+- *Efficienza* ed *Efficacia*
+- *Affidabilità*
+- *Concorrenza*
+- *Privatezza*
+- *Riduzione del tempo di sviluppo*
+- *Semplificazione e standardizzazione dello sviluppo*

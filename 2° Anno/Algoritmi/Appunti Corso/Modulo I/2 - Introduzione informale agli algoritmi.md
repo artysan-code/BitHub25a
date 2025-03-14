@@ -1,4 +1,4 @@
-[[2° Anno/Algoritmi/Appunti/1 - Introduzione|Torna alla lezione precedente]]
+[[2° Anno/Algoritmi/Appunti Corso/Modulo I/1 - Introduzione|Torna alla lezione precedente]]
 [[3 - Modelli di calcolo e Notazione Asintotica|Continua alla lezione successiva.]]
 ## Problema di Fibonacci
 Passiamo quindi ora ad un modello di calcolo più simile la computer e ragioniamo in modo più qualitativo rispetto alla complessità temporale degli algoritmi.
@@ -12,7 +12,7 @@ Le regole ci permettono di studiare meglio questo problema sono le seguenti:
 - I conigli sono immortali.
 
 Possiamo descrivere questa riproduzione con il seguente albero:
-![[l22.png]]
+![[2° Anno/Algoritmi/Appunti Corso/Assets/l22.png]]
 
 ### La regola di espansione
 Abbiamo che nell'anno $n$ ci sono tutte le coppie dell'anno precedente e una nuova coppia di conigli per ogni coppia presente due anni prima. Chiamiamo allora $F_n$ il numero di coppie rispetto all'anno n e imponiamo la seguente relazione di ricorrenza:$$
@@ -73,16 +73,16 @@ Quindi definendo $f(n)$ come *# di linee di codice eseguite dall'algoritmo sull'
 Quindi $f(n)=2+f(n-1)+f(n-2)$  e  $f(1)=f(2)=1$ ma a cosa corrisponde? Questa è quella che chiamiamo **equazione di ricorrenza**.
 
 Per risolverla usiamo un **albero della ricorsione**:
-![[l23.png]]
+![[2° Anno/Algoritmi/Appunti Corso/Assets/l23.png]]
 
 I nodi alla base dell'albero sono i **casi base**, in quanto non eseguono ricorsioni. Per dedurre una formula dobbiamo capire quante foglie e nodi interni possiede l'albero.
 ### Primo Lemma 
 ^bcd178
 > Il numero di foglie dell'albero della ricorsione di *fibonacci2(n)* è pari a $F_n$.
- ![[l24.png]]
+ ![[2° Anno/Algoritmi/Appunti Corso/Assets/l24.png]]
 ### Secondo Lemma
 ^9ac909
->Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1.![[l29.png]]
+>Il numero di nodi interni di un albero in cui ogni nodo interno ha due figli è pari al numero di foglie - 1.![[2° Anno/Algoritmi/Appunti Corso/Assets/l29.png]]
 
 ### Algoritmo Tre
 L'idea è di memorizzare i valori calcolati per permettere a "calcoli di Fibonacci successivi" di essere semplificati in linea di tempo.
@@ -147,11 +147,11 @@ Si può sperare di calcolare $F_n$ in un tempo minore a $O(n)$?
 ### Algoritmo Cinque
 #### Terzo Lemma
 >Grazie alle proprietà< delle matrici, è dimostrabile che:$$\begin{pmatrix}1&1\\1&0\end{pmatrix}^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$$
-![[l27.png]]
-![[l28.png]]
+![[2° Anno/Algoritmi/Appunti Corso/Assets/l27.png]]
+![[2° Anno/Algoritmi/Appunti Corso/Assets/l28.png]]
 #### Algoritmo
 Utilizzando il Lemma precedentemente dimostrato, possiamo migliorare ulteriormente il calcolo di $F_{n}$ in un tempo inferiore a $O(n)$:
-![[l25.png]]
+![[2° Anno/Algoritmi/Appunti Corso/Assets/l25.png]]
 
 ```python
 def fibonacci5(n: int) -> int:
@@ -171,7 +171,7 @@ Si può calcolare l'ennesima potenza, elevando al quadrato la $\left\lfloor  \fr
 Abbiamo eseguito 3 prodotti invece che 7!
 ### Algoritmo Sei
 Applicando quindi il calcolo delle potenze ottimizzato, otteniamo il seguente pseudo-codice:
-![[l26.png]]
+![[2° Anno/Algoritmi/Appunti Corso/Assets/l26.png]]
 
 ```python
 def fibonacci6(n: int) -> int:

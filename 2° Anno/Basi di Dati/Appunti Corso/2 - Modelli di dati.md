@@ -1,4 +1,4 @@
-## DBMS vs Filesystem
+## DBMS vs File system
 L'efficienza di un modello si misura come in ogni sistema informatico tramite:
 - il **tempo** di esecuzione.
 - la **memoria** (principale e secondaria).
@@ -53,5 +53,45 @@ Qui possiamo quindi dedurre tre tipologie di schemi fondamentali:
 - **Schema Fisico o Interno** che invece è la sua effettiva rappresentazione per mezzo di strutture di memorizzazione.
 ## Linguaggi per basi di dati
 Esistono due tipologie di linguaggi utilizzati nelle basi di dati:
-- **DDL: data definition language**.
-- **DML: data manipulation language**.
+- **DDL: data definition language**. Un'operazione DDL si presenta come:
+```SQL
+create table orario(
+	insegnamento char(20) ,
+	docente char(20) ,
+	aula char(4),
+	ora char(5)
+)
+```
+- **DML: data manipulation language**. Un'operazione in DML si presenta come:
+```MySQL
+select docente
+from orario
+where aula = 'N1';
+```
+
+I DBMS dispongono di diversi linguaggi e interfacce diverse:
+- I **linguaggi testuali interattivi** come *SQL*.
+- Dei **comandi** come nei linguaggi interattivi, immersi in un *linguaggio ospite* o con un *linguaggio ad hoc*.
+- Con interfacce grafiche più *amichevoli*.
+
+## Attori del sistema
+A livello professionale le figure applicate alle Basi di Dati sono le seguenti:
+- **Progettisti di DBMS**.
+- **Progettisti di Basi di Dati** (DBA).
+- **Progettisti di Applicazioni** (Software Engineers).
+- **Utenti**:
+		- **finali**, che eseguono delle applicazioni definite (*transazioni*).
+		- **casuali**, che eseguono operazioni non previste usando interfacce o linguaggi interattivi.
+
+Le **transazioni** sono attività eseguite periodicamente e di cui vengono calcolate e previste le eccezioni. Inoltre, il termine transazione ha un’altra accezione, più specifica: sequenza indivisibile di operazioni (o vengono eseguite tutte o nessuna). Spesso queste sono eseguite con linguaggi ad hoc o ospiti.
+
+Ecco alcuni pro e contro dell'uso dei DBMS:
+- Pro
+	- dati come risorsa comune, base di dati come modello della realtà 
+	- gestione centralizzata con possibilità di standardizzazione ed “economia di scala” 
+	- disponibilità di servizi integrati 
+	- riduzione di ridondanze e inconsistenze
+	- indipendenza dei dati (favorisce lo sviluppo e la manutenzione delle applicazioni) 
+- Contro
+	- costo dei prodotti e della transizione verso di essi 
+	- non scorporabilità delle funzionalità (con riduzione di efficienza)

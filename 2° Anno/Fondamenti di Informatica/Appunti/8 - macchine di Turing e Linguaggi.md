@@ -66,7 +66,8 @@ THM: $L_{H}$ e' accettabile
 $V'$:  con input $(i,x)$
 1) verifica se $i$ e' la codifica di una TM: 
    se no $\implies$ rigetta, altrimenti 2)
-2) simula $U(i,x)$: se  $o_{U}(i,x)\in\{o_{i_{a}},q_{R}\}\implies$ accetta
-   $L_{H}$ e' accettabile
-                    $\implies L_{H}^{c}$ non e' accettabile
-   $L_{H}$ e' non decidibile
+2) simula $U(i,x)$: se  $o_{U}(i,x)\in\{o_{i_{a}},q_{R}\}\implies$ accetta   $$\begin{array}{}
+L_{H}\text{ e' accettabile} \\
+ & \implies L_{H}^{c}\text{ non e' accettabile} \\
+L_{H}\text{e' non decidibile}
+\end{array}$$

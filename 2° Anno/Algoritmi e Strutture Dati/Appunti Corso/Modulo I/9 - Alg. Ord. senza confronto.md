@@ -1,5 +1,5 @@
 ### BucketSort
-Questo algoritmo ordina n record con chiavi intere in [1,k]. Un esempio dell'ordinare n record con campi può essere:
+Questo algoritmo ordina n **record** con chiavi intere in [1,k]. Un esempio dell'ordinare n record con campi può essere:
 - nome, cognome, anno di nascita, matricola, etc... Supponendo di voler ordinare per matricola o anno di nascita.
 
 Quindi l'input del problema è il seguente:

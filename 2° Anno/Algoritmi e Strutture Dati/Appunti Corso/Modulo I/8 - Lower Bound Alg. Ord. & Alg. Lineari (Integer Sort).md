@@ -1,19 +1,19 @@
 ### Delimitazioni inferiori e superiori
 #### Complessità di un algoritmo
-Un algoritmo $A$ ha complessità (costo di esecuzione) $O(f(n))$ rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da $A$ nel caso peggiore su $n$ istanze rispetta la relazione $r(n)=O(f(n))$.
+> Un algoritmo $A$ ha complessità (costo di esecuzione) $O(f(n))$ rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da $A$ nel caso peggiore su $n$ istanze rispetta la relazione $r(n)=O(f(n))$.
 
-Un algoritmo $A$ ha complessità (costo di esecuzione) $\Omega$(f(n)) rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da $A$ nel caso peggiore su $n$ istanze verifica la relazione $r(n)= \Omega(f(n))$.
+> Un algoritmo $A$ ha complessità (costo di esecuzione) $\Omega$(f(n)) rispetto ad una certa risorsa di calcolo, se la quantità $r(n)$ di risorsa usata da $A$ nel caso peggiore su $n$ istanze verifica la relazione $r(n)= \Omega(f(n))$.
 #### Complessità di un problema
-Un problema $P$ ha una complessità $O(f(n))$ rispetto ad una risorsa di calcolo se **esiste** un algoritmo che risolve $P$ il cui costo di esecuzione rispetto quella risorsa è $O(f(n))$.
+> Un problema $P$ ha una complessità $O(f(n))$ rispetto ad una risorsa di calcolo se **esiste** un algoritmo che risolve $P$ il cui costo di esecuzione rispetto quella risorsa è $O(f(n))$.
 
-Un problema $P$ ha una complessità $\Omega(f(n))$ rispetto ad una risorsa di calcolo se **ogni algoritmo** che risolve $P$ ha costo di esecuzione nel caso peggiore $\Omega(f(n))$ rispetto quella risorsa.
+> Un problema $P$ ha una complessità $\Omega(f(n))$ rispetto ad una risorsa di calcolo se **ogni algoritmo** che risolve $P$ ha costo di esecuzione nel caso peggiore $\Omega(f(n))$ rispetto quella risorsa.
 ### Algoritmo Ottimo
 Dato un problema $P$ con complessità $\Omega(f(n))$ rispetto ad una risorsa di calcolo, un algoritmo che risolve $P$ è (asintoticamente) **ottimo** se ha costo di esecuzione $O(f(n))$ rispetto a quella risorsa.
 ###  Complessità temporale del problema dell'ordinamento
 - Upper bound: $O(n^2)$
-	- insertion sort, selection sort, quick sort, bubble sort
+	- InsertionSort, SelectionSort, QuickSort, BubbleSort.
 - Un Upper bound **migliore**: $O(n\log n)$
-	- MergeSort, HeapSort
+	- MergeSort, HeapSort.
 - Lower bound: $\Omega(n)$
 	- Banale: ogni algoritmo che ordina n elementi li deve almeno leggere tutti
 
@@ -45,7 +45,6 @@ L'albero di decisione è però legato ad un algoritmo e ad una dimensione di ist
 - Il numero di confronti nel caso peggiore è pari all'**altezza dell'albero di decisione**.
 - Un albero di decisione di un *algoritmo corretto* che riordina per confronto n elementi deve necessariamente avere **n! foglie**.
 
-> #Lemma
 > Un **albero binario T** con k foglie ha altezza almeno $\log_{2}(n)$.
 #### Il Lower Bound $\Omega(n\log(n))$
 Considerando un *qualsiasi algoritmo* che risolve un problema di ordinamento per confronto di n elementi, l'altezza dell'albero di decisione di almeno $\log_{2}(n!)$. Quindi dalla [[4.5 Prodotti#^0c4ae5|Formula di Stirling]] sappiamo che:$$n!=\sqrt{ 2\pi n }\cdot\left( \frac{n}{e} \right)^n$$
@@ -74,3 +73,5 @@ Abbiamo i seguenti costi quindi:
 - $O(n+k)$ per ricostruire X.
 
 Abbiamo però un tempo lineare se $k=O(n)$, che supera il Lower Bound $\Omega(n\log(n))$ in certe istanze non basandosi sui confronti. 
+
+Implementazione in **Codici -> Sorting.py**.

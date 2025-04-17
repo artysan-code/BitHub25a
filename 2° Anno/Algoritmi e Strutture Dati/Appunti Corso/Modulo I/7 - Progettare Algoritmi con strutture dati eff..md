@@ -1,9 +1,9 @@
-### Tipo di dato vs Struttura Dati
-Un **tipo di dato** è una specifica collezioni di oggetti e di operazioni eseguibili su di essi (Es. dizionario mantiene un insieme di elementi con chiavi associate per op. di inserimento, cancellazione e ricerca).
+### Tipi di dato e Strutture di Dati
+> Un **tipo di dato** è una specifica collezioni di oggetti e di operazioni eseguibili su di essi (Es. dizionario mantiene un insieme di elementi con chiavi associate per op. di inserimento, cancellazione e ricerca).
 
-Una **struttura dati** è, invece, un'organizzazione dei dati che permette di memorizzare la collezione e supportare operazioni di un tipo di dato usando meno risorse di calcolo possibili.
+> Una **struttura dati** è, invece, un'organizzazione dei dati che permette di memorizzare la collezione e supportare operazioni di un tipo di dato usando meno risorse di calcolo possibili.
 
-Per progettare una struttura dati bisogna poter eseguire efficientemente le seguenti operazioni:
+Per progettare una **struttura dati** bisogna poter eseguire efficientemente le seguenti operazioni:
 - Dato un array A, generare velocemente H
 - Trovare il più grande oggetti in H
 - Cancellare il più grande oggetto da H

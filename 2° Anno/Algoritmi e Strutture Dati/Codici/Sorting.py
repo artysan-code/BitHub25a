@@ -121,23 +121,27 @@ class Sorting:
         if not arr:
             return [arr, "O(n + k)"]
 
-        k = max(arr)
-        n = len(arr)
-        buckets = [[] for _ in range(k + 1)]
-        
-        for val in arr:
-            buckets[val].append(val)
-        
-        sorted_arr = []
-        for bucket in buckets:
-            bucket.sort()
-            sorted_arr.extend(bucket)
+        return [arr, "O(n + k)"]
 
-        return [sorted_arr, "O(n + k)"]
 
     def generate_random_array(self, num_elements):
         self.array = [random.randint(0, num_elements*5) for _ in range(num_elements)]
         print(f"Generated array: {self.array}")
+
+    def generate_random_buckets_array(self, num_elements, satellite_info_count=3):
+        # Create buckets where first element is the key and others are satellite info
+        self.array = []
+        for _ in range(num_elements):
+            # The first element is the key for sorting
+            key = random.randint(0, num_elements*5)
+            # The rest are satellite information
+            satellite_info = [random.randint(1, 100) for _ in range(satellite_info_count)]
+            # Combine key with satellite info to form a bucket
+            bucket = [key] + satellite_info
+            self.array.append(bucket)
+        
+        print(f"Generated bucket array: {self.array}")
+        print(f"Format: [key, satellite_info1, satellite_info2, ...]")
 
     def select_sorting_algorithm(self):
         print("Select sorting algorithm:")
@@ -164,6 +168,9 @@ class Sorting:
             sorted_array, cost = self.quickSort()
         elif choice == 6:
             sorted_array, cost = self.integerSort()
+        elif choice == 7:
+            sorted_array, cost = self.bucketSort()
+
         else:
             print("Invalid choice")
             return

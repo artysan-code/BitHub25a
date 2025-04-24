@@ -10,7 +10,7 @@ Quindi l'input del problema è il seguente:
 
 Infine basta mantenere un array di liste, anziché di contatori, ed operare come per IntegerSort. La lista Y[i] conterrà gli elementi con chiave uguale a i e infine concateniamo le liste.
 
-Otteniamo un tempo O(n+k) come per IntegerSort. L'algoritmo può essere descritto quindi così:
+Otteniamo un tempo $O(n+k)$ come per IntegerSort. L'algoritmo può essere descritto quindi così:
 > $BucketSort (X,\ k)$ 
 > 1.  $\text{Sia Y un array di dimensione k}$
 > 2.  $\textbf{for }i=1\text{ to }k\textbf{ do }Y[i]=\text{lista vuota}$ 

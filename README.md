@@ -1,4 +1,3 @@
-# Todo
 ## BitHub25a Comunità Educativa
 Il nostro team di BitHub25a si propone di creare uno spazio web dove poter accedere a informazioni e risorse sul Corso di Informatica dell'Università Tor Vergata.
 

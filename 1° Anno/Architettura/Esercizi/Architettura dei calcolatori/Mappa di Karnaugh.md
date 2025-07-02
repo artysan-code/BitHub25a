@@ -1,4 +1,4 @@
-Avendo una formula booleana in forma canonica (DNF o CNF) possiamo utilizzare la mappa di Karnaugh per semplificare ulteriormente la formula. Prendiamo in considerazione la seguente formula $F=A\cdot B+\overline{A}\cdot C+\overline{B}\cdot\overline{C}$ la sua mappa verrà rappresentata con valori uno dove appunto avremo $A=1,B=1$ (gruppo giallo), dove $A=0,C=1$ (gruppo blu) e dove $B=0,C=0$ (gruppo rosso) quindi:
+ Avendo una formula booleana in forma canonica (DNF o CNF) possiamo utilizzare la mappa di Karnaugh per semplificare ulteriormente la formula. Prendiamo in considerazione la seguente formula $F=A\cdot B+\overline{A}\cdot C+\overline{B}\cdot\overline{C}$ la sua mappa verrà rappresentata con valori uno dove appunto avremo $A=1,B=1$ (gruppo giallo), dove $A=0,C=1$ (gruppo blu) e dove $B=0,C=0$ (gruppo rosso) quindi:
 
 ![[Karnaugh.png|300]]
 

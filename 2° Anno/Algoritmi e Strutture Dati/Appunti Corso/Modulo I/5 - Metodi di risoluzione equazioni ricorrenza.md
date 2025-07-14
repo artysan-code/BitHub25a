@@ -47,8 +47,8 @@ Analizzando quindi relazione di ricorrenza, possiamo imporre una "lotta" tra $\d
 
 Analizzando più affondo possiamo dire che possono esserci quindi **tre soluzioni**:
 - $\displaystyle  T(n)=\Theta (n^{\log_{b}(a)})$  se  $\displaystyle f(n)=O(n^{\log_{b}(a-\epsilon)})$ per $\displaystyle \epsilon>0$
-- $T(n)=\Theta(n^{\log_{b}(a)\cdot \log(n)})$  se  $f(n)=\Theta(n^{\log_{b}(a)})$
-- $T(n)=\Theta(f(n))$  se  $\displaystyle f(n)=\Omega(n^{\log_{b}(a+\epsilon)})$ per $\displaystyle \epsilon>0$ e $\displaystyle \forall\ f\left( \frac{n}{b} \right) \leq c \cdot f(n)$ per $c<1$ e $n$ sufficientemente grande
+- $\displaystyle T(n)=\Theta(n^{\log_{b}(a)\cdot \log(n)})$  se  $\displaystyle f(n)=\Theta(n^{\log_{b}(a)})$
+- $\displaystyle T(n)=\Theta(f(n))$  se  $\displaystyle f(n)=\Omega(n^{\log_{b}(a+\epsilon)})$ per $\displaystyle \epsilon>0$ e $\displaystyle \forall\ f\left( \frac{n}{b} \right) \leq c \cdot f(n)$ per $c<1$ e $n$ sufficientemente grande
 
 ### Metodo del cambiamento di variabile
 ^87cfb5

@@ -36,7 +36,7 @@ Data v la radice dell'Heap, si assume che i sotto alberi destri e sinistri siano
 > 2.     $d=des(i)$
 > 3.     $\textbf{if }(s\leq heapsize[A]\text{ e }A[s]>A[i]) \textbf{ then }massimo=s$
 > 4.     $\textbf{else }massimo=i$
-> 5.     $\textbf{if }(d\leq heapsize[A]\text{ e }A[d]>A[massimo])$
+> 5.     $\textbf{if }(d\leq heapsize[A]\text{ e }A[d]>A[massimo]) \textbf{ then }massimo=d$
 > 6.     $\textbf{if }(massimo\not=i)$
 > 7.         $\textbf{then }\text{scambia }A[i]\text{ e }A[massimo]$
 > 8.            $fixHeap(massimo,\ A)$

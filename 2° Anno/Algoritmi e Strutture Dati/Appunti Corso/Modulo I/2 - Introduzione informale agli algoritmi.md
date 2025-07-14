@@ -165,7 +165,7 @@ Usiamo la libreria numpy come np in quanto ci permette di eseguire le moltiplica
 
 Il risultato non sembra essere più ottimizzato, sembra aver solo cambiato il metodo del calcolo, eppure possiamo cercare di migliorarlo (quindi facendo eseguire meno passi) tramite un miglior **calcolo delle potenze**.
 #### Calcolo di potenze
-Si può calcolare l'ennesima potenza, elevando al quadrato la $\left\lfloor  \frac{n}{2}  \right\rfloor$-esima potenza. Se n è dispari basta eseguire un'ulteriore moltiplicazione.$$\begin{array}{}
+Si può calcolare l'ennesima potenza, elevando al quadrato la $\displaystyle\left\lfloor  \frac{n}{2}  \right\rfloor$-esima potenza. Se n è dispari basta eseguire un'ulteriore moltiplicazione.$$\begin{array}{}
 3^2=9 & 3^4=9^2=81 & 3^8=81^2=6561
 \end{array}$$
 Abbiamo eseguito 3 prodotti invece che 7!
@@ -190,7 +190,7 @@ def potenzadiMatrice(A: np.array, k: int) -> np.array:
 
 Iniziamo a notare andando avanti con gli algoritmi che, pur sembrando più righe l'algoritmo invece è sempre più veloce. Infatti:
 - Il tempo speso dentro `potenzadiMatrice` è costante (Per definizione).
-- Si esegue una chiamata ricorsiva di `potenzadiMatrice` con input $\left\lfloor  \frac{n}{2}  \right\rfloor$ 
+- Si esegue una chiamata ricorsiva di `potenzadiMatrice` con input $\displaystyle\left\lfloor  \frac{n}{2}  \right\rfloor$ 
 
 L'equazione di ricorrenza è pertanto (Metodo dell'iterazione, che vedremo successivamente):$$\begin{array}{l}
 \displaystyle T(n) \leq T\left( \left\lfloor  \frac{n}{2}  \right\rfloor  \right)+c \\

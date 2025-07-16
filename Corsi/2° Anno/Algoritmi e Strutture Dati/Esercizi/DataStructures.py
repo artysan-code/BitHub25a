@@ -1,22 +1,32 @@
+from typing import Any
+
+
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+        self.height = 1
+
 class Heap:
     def __init__(self, heap: list):
         self.heap = heap
 
-    def fixHeap(self, i: int) -> None:
+    def fixHeap(self, i: int) -> str:
         sin = 2 * i
         des = 2 * i + 1
-        if (sin <= len(self.heap) - 1 and self.heap[sin] > self.heap[i]):
+        if sin <= len(self.heap) - 1 and self.heap[sin] > self.heap[i]:
             max_idx = sin
         else:
             max_idx = i
-        if (des <= len(self.heap) - 1 and self.heap[des] > self.heap[max_idx]):
+        if des <= len(self.heap) - 1 and self.heap[des] > self.heap[max_idx]:
             max_idx = des
         if max_idx != i:
             self.heap[i], self.heap[max_idx] = self.heap[max_idx], self.heap[i]
             self.fixHeap(max_idx)
         return "O(log n)"
 
-    def extractMax(self) -> int:
+    def extractMax(self) -> tuple[int, str] | None:
         if len(self.heap) < 2:
             return None
         max_value = self.heap[1]
@@ -25,12 +35,12 @@ class Heap:
         self.fixHeap(1)
         return max_value, "O(log n)"
 
-    def heapify(self) -> None:
+    def heapify(self) -> str:
         for i in range((len(self.heap) - 1) // 2, 0, -1):
             self.fixHeap(i)
         return "O(n)"
 
-    def heapSort(self) -> list:
+    def heapSort(self) -> tuple[list, str]:
         self.heapify()
         sorted_arr = []
         while len(self.heap) > 1:
@@ -54,13 +64,6 @@ class Heap:
             user_input = input("Enter numbers separated by commas: ")
             typed_list = [int(x.strip()) for x in user_input.split(',')]
             return [None] + typed_list, "O(n)"
-
-class Node:
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
-        self.height = 1
 
 class BST:
     def __init__(self):

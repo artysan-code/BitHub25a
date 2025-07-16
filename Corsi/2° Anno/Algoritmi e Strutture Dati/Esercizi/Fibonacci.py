@@ -36,7 +36,7 @@ class Fibonacci:
         a = 1
         b = 1
         i = 3
-        while (i<=n):
+        while i<=n:
             c = a + b
             a = b
             b = c

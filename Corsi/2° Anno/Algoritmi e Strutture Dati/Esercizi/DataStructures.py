@@ -64,6 +64,8 @@ class Heap:
             user_input = input("Enter numbers separated by commas: ")
             typed_list = [int(x.strip()) for x in user_input.split(',')]
             return [None] + typed_list, "O(n)"
+        return None
+
 
 class BST:
     def __init__(self):

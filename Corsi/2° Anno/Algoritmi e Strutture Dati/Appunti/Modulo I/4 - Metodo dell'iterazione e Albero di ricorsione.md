@@ -39,8 +39,12 @@ Se $T(n)=T(n-1)+1$, allora:$$T(n)=T(n-1)+1=T(n-2)+1+1=T(n-i)+i$$
 E se $i=n-1$ allora $T(n)=T(1)+n-1=\Theta(n)$
 
 Vediamone uno un po' più difficile:$$\begin{array}{} \\
-T(n)=2T(n-1)+1=2(2T(n-2)+1)+1=4T(n-2)+2+1= \\
-=4(2T(n-3)+1)+2+1=8T(n-3)+4+2+1=2^iT(n-i)+\displaystyle \sum_{j=o}^{i-1}2^j
+T(n)=2T(n-1)+1= \\
+=2(2T(n-2)+1)+1= \\
+=4T(n-2)+2+1= \\
+=4(2T(n-3)+1)+2+1= \\
+=8T(n-3)+4+2+1= \\
+=2^iT(n-i)+\displaystyle \sum_{j=o}^{i-1}2^j
 \end{array}$$
 Quindi per $i=n-1$ abbiamo che:$$T(n)=2^{n-1} T(1)+\displaystyle\sum_{j=0}^{n-2}2^j=\Theta(2^n)$$
 

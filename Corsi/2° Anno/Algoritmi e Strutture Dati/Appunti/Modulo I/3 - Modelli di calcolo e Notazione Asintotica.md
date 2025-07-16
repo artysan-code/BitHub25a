@@ -52,7 +52,7 @@ Tempi di esecuzione di differenti algoritmi per istanze di dimensioni crescenti 
 |  $n=100.000$  | <1 sec |    2 sec     | 3 hours |   32 years   |  very long   |    very long    |    very long    |
 | $n=1.000.000$ | 1 sec  |    20 sec    | 12 days | 31.710 years |  very long   |    very long    |    very long    |
 ### Notazione asintotica O
->$f(n)=O(g(n))$ se $\exists$ due costanti $c>0\ e\ n_{0}\geq 0$ tali che $0\leq f(n) \leq g(n)\quad \forall n \geq n_{0}$.
+>Sia $f(n)=O(g(n))$ se $\exists$ due costanti $c>0\ e\ n_{0}\geq 0$ tali che $0\leq f(n) \leq g(n)\ \ \forall n \geq n_{0}$.
 
 Quindi:
 
@@ -68,7 +68,7 @@ Ma:$$\begin{array}{}
 \displaystyle f(n)=O(g(n)) \to \lim_{ n \to \infty } \frac{f(n)}{g(n)} < \infty \text{ (se esiste) }
 \end{array}$$
 ### Notazione asintotica $\Omega$
->Sia $f(n)=\Omega(g(n))\text{ se } \exists\ c>0\ \ e\ \ n_{0}\geq 0\ |\ f(n) \geq c\cdot g(n) \geq 0\text{ per ogni }n\geq n_{0}$.
+>Sia $f(n)=\Omega(g(n))\ \text{ se }\ \exists\ c>0\ \ e\ \ n_{0}\geq 0\quad |\quad 0 \leq c\cdot g(n) \leq f(n)\quad \forall n\geq n_{0}$.
 
 Sia $f(n)=2n^2-3n$, allora 
 - $f(n)=\Omega(n)\quad\quad\quad(c=1,n_{0}=2)$

@@ -1,4 +1,4 @@
-[[4 - Metodo dell'iterazione e Albero di ricorsione|Torna alla lezione precedente]]
+	[[4 - Metodo dell'iterazione e Albero di ricorsione|Torna alla lezione precedente]]
 [[6 - Algoritmi di Ordinamento|Continua alla lezione successiva]]
 Vi sono diverse metodologie per studiare e risolvere le equazioni di ricorrenza, tra questi tratteremo:
 - [[4 - Metodo dell'iterazione e Albero di ricorsione#^40e417|Metodo dell'Iterazione]]

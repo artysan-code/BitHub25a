@@ -8,45 +8,40 @@ $$\begin{array}{}
 \end{array}$$
 In genere si introduce una "famiglia di eventi" $A$ che viene individuato da una famiglia di sottoinsiemi di $\ohm$
 
-Si vuole fare riferimento a "famiglie di eventi con buone probabilità" si intende che, facendo operazioni insiemistiche in elementi di $A$, si ottiene ancora un elemento di $A$
+Si vuole fare riferimento a "famiglie di eventi con buone probabilità" si intende che, facendo operazioni insiemistiche in elementi di $A$, si ottiene ancora un elemento di $A$.
 
 ### Definizione ($\delta$-algebra)
-
-Sia $\ohm$ un insieme non vuoto e sia $A\subset P(\ohm)$ 
-Allora A è una 
+Sia $\ohm$ un insieme non vuoto e sia $A\subset P(\ohm)$. Allora A è una $\delta$-algebra (di evento) se:
 1) $\ohm\in A$
 2) $\forall A\in A\implies A^c\in A$ ^96616b
-3) $\forall\{a_{n}\}_{n\geq1}\subset A\implies\underset{n\geq 1}{\bigcup}A_{n}\in A$
+3) $\forall\{A_{n}\}_{n\geq1}\subset A\implies\underset{n\geq 1}{\bigcup}A_{n}\in A$
 
-$P(\ohm)$ = insieme delle parti di $\ohm$
-### Osservazione
+Definiamo $P(\ohm)$ l'insieme delle parti di $\ohm$.
 
-Si vede facilmente che anche $\varnothing\in A$ e che $\underset{n\geq 1}{\bigcap}A_{n}\in A$ nella $3)$ 
-### Osservazione
+#### Osservazione
+Si vede facilmente che anche $\varnothing\in A$ e che $\underset{n\geq 1}{\bigcap}A_{n}\in A$ nel punto 3) della definizione. 
 
-La richiesta della numerabilità viene fatta per semplificare alcune cose successivamente (non trattato nel corso)
+#### Osservazione
+La richiesta della numerabilità viene fatta per semplificare alcune cose successivamente (non trattato nel corso).
 
-### Osservazione
-
-Si può prendere $A=P(\ohm)$
-Questa scelta da altri problemi se $\ohm$ è più che numerabile (non trattato nel corso)
-Per questo motivo il caso di $\ohm$ DISCRETO viene trattato più diffusamente nel corso.
-
+#### Osservazione
+Definito $A=P(\ohm)$. Questa scelta da altri problemi se $\ohm$ è *più che numerabile* (non trattato nel corso). Per questo motivo il caso di $\ohm$ *discreto* viene trattato più diffusamente nel corso.
 
 ### Definizione (Misure di Probabilità)
-
-Sia $\ohm$ un insieme non vuoto e $A$ una $\delta$-algebra di eventi allora una funzione $P;[0,\infty)$ è una misura di probabilità se:
+Sia $\ohm$ un insieme non vuoto e $A$ una $\delta$-algebra di eventi allora una funzione $P: A \to[0,\infty)$ è una **misura di probabilità** se:
 1) $P(\ohm)=1$
-2) $\forall\{A_{n}\}_{n\geq 1}\subset A$ t.c. $$\begin{matrix}
+2) $$\begin{matrix} 
+\forall\{A_{n}\}_{n\geq 1}\subset A\quad \text{tale che}\\ \\
+
 {\left[\begin{array}{}
 A_{m}\cap A_{n}=\varnothing \\
 \text{per } m\not=n
-\end{array}\right]} \\
-\text{disgiunti a due a due}
-\end{matrix}$$
- si ha $P\left(\underset{n\geq 1}{\bigcup}A_{n}\right)=\displaystyle\sum_{n\geq 1}P(A_{n})$ 
+\end{array}\right]}\quad
+\text{disgiunti a due a due} \\\\
+\text{si ha}\quad P\left(\underset{n\geq 1}{\bigcup}A_{n}\right)=\displaystyle\sum_{n\geq 1}P(A_{n})\quad
+\end{matrix}$$ 
 
-la terna $(\ohm, A, P)$ è detta spazio di probabilità
+**Terminologia**: la terna $(\ohm, A, P)$ è detta *spazio di probabilità*.
 
 ##### Commenti
 - La misura di probabilità $P:A\to[0,\infty)$ in realtà assume valori in $[0,1]$ 

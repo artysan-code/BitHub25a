@@ -13,24 +13,24 @@
 
 ## Ordinamento Confronto
 
-| Nome Algoritmo | Costo (memoria) | Tempo             | Caso Migliore      | Caso Peggiore |
-| -------------- | --------------- | ----------------- | ------------------ | ------------- |
-| Selection Sort | $O(1)$          | $\Theta(n^{2})$   | $\Omega(n^{2})$    | $O(n^{2})$    |
-| Insertion Sort | $O(1)$          | $\Theta(n^{2})$   | $\Omega (n)$       | $O(n^{2})$    |
-| Merge Sort     | $O(1)$          | $\Theta(n\log n)$ | $\Omega (n\log n)$ | $O(n^{2})$    |
-| Quick Sort     | $O(\log n)$     | $\Theta(n\log n)$ | $\Omega (n\log n)$ | $O(n^{2})$    |
-| Quick sort rnd | $O(\log n)$     | $\Theta(n\log n)$ | $\Omega (n\log n)$ | $O(n^{2})$    |
+| Nome Algoritmo | Costo (memoria) | Tempo             | Caso Migliore      | Caso Peggiore   |
+| -------------- | --------------- | ----------------- | ------------------ | --------------- |
+| Selection Sort | $O(1)$          | $\Theta(n^{2})$   | $\Theta(n^{2})$    | $\Theta(n^{2})$ |
+| Insertion Sort | $O(1)$          | $\Theta(n^{2})$   | $\Omega (n)$       | $O(n^{2})$      |
+| Merge Sort     | $O(n)$          | $\Theta(n\log n)$ | $\Theta (n\log n)$ | $\Theta(n^{2})$ |
+| Quick Sort     | $O(\log n)$     | $\Theta(n\log n)$ | $\Theta (n\log n)$ | $O(n^{2})$      |
+| Quick sort rnd | $O(\log n)$     | $\Theta(n\log n)$ | $\Theta (n\log n)$ | $O(n^{2})$      |
 
 
 ## Ordinamento non Confronto
 
-| Nome Algoritmo | Costo (memoria) | Tempo             | Caso Migliore      | Caso Peggiore |
-| -------------- | --------------- | ----------------- | ------------------ | ------------- |
-| Heap Sort      | $O(1)$          | $\Theta(n\log n)$ | $\Omega (n\log n)$ | $O(n\log n)$  |
-| Integer Sort   | $O(n+k)$        | $\Theta(n+k)$     | $\Omega (n+k)$     | $O(n+k)$      |
-| Bucket Sort    | $O(n+k)$        | $\Theta(n+k)$     | $\Omega (n+k)$     | $O(n^{2})$    |
-| Radix Sort     | $O(n+k)$        | $\Theta(nk)$      | $\Omega (n+k)$     | $O(nk)$       |
-|                |                 |                   |                    |               |
+| Nome Algoritmo | Costo (memoria) | Tempo             | Caso Migliore      | Caso Peggiore     |
+| -------------- | --------------- | ----------------- | ------------------ | ----------------- |
+| Heap Sort      | $O(1)$          | $\Theta(n\log n)$ | $\Theta (n\log n)$ | $\Theta(n\log n)$ |
+| Integer Sort   | $\Theta(k)$     | $\Theta(n+k)$     | $\Theta (n+k)$     | $\Theta(n+k)$     |
+| Bucket Sort    | $\Theta(n+k)$   | $\Theta(n+k)$     | $\Theta (n+k)$     | $O(n^{2})$        |
+| Radix Sort     | $O(n+b)$        | $\Theta(d(n+b))$  | $\Theta(d(n+b))$   | $\Theta(d(n+b))$  |
+
 ## Heap
 
 | Nome Funzione | Costo (memoria) | Tempo         | Caso Migliore | Caso Peggiore | Descrizione                                      |

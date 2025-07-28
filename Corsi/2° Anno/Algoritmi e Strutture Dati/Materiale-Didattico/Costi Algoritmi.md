@@ -7,9 +7,6 @@
 | Fibonacci 4    | $O(1)$          | $O(n)$          | Variabili Temporanee |
 | Fibonacci 5    | $O(1)$          | $O(n)$          | Matrici              |
 | Fibonacci 6    | $O(\log_{2} n)$ | $O(\log_{2} n)$ | Potenza Matrici      |
-|                |                 |                 |                      |
-|                |                 |                 |                      |
-|                |                 |                 |                      |
 
 ## Ordinamento Confronto
 
@@ -39,12 +36,18 @@
 | extractMax    | $O(1)$          | $O(\log(n))$  | X             | X             | Salva il massimo (radice) e lo rimuove dall'heap |
 | heapify       | $O(1)$          | $O(n)$        | X             | X             | Costruisce un Heap usando ricorsivamente fixHeap |
 | heapSort      | $O(n)$          | $O(n\log(n))$ | X             | X             | Heapify + n volte extractMax                     |
-## Dizionario
-| Nome Funzione | Costo (Array Non Ord.) | Costo (Array Ord.) | Costo (Array Ord.) (Lista) | Costo (Array Non Ord.) (Lista) |
-| ------------- | ---------------------- | ------------------ | -------------------------- | ------------------------------ |
-| insert        | $O(1)$                 | $O(n)$             | $O(n)$                     | $O(1)$                         |
-| delete        | $O(n)$                 | $O(n)$             | $O(n)$                     | $O(n)$                         |
-| search        | $O(n)$                 | $O(\log(n))$       | $O(n)$                     | $O(n)$                         |
+## Strutture Dati
+
+| Struttura Dati              | $search$    | $insert$    | $delete$    | Spazio |
+| --------------------------- | ----------- | ----------- | ----------- | ------ |
+| Array non ordinato          | $O(n)$      | $O(1)$      | $O(n)$      | $O(N)$ |
+| Array ordinato              | $O(\log n)$ | $O(n)$      | $O(n)$      | $O(N)$ |
+| Lista non ordinata          | $O(n)$      | $O(1)$      | $O(n)$      | $O(n)$ |
+| Lista ordinata              | $O(n)$      | $O(n)$      | $O(n)$      | $O(n)$ |
+| BST (caso peggiore)         | $O(n)$      | $O(n)$      | $O(n)$      | $O(n)$ |
+| BST (caso medio/bilanciato) | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ | $O(n)$ |
+| Albero AVL                  | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ | $O(n)$ |
+$N$ è la dimensione preallocata dell'array
 ## Visite Alberi
 
 | Tipo di Visita                 | Costo Temporale |

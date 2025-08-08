@@ -30,12 +30,19 @@
 
 ## Heap
 
-| Nome Funzione | Costo (memoria) | Tempo         | Caso Migliore | Caso Peggiore | Descrizione                                      |
-| ------------- | --------------- | ------------- | ------------- | ------------- | ------------------------------------------------ |
-| fixHeap       | $O(1)$          | $O(\log(n))$  | X             | X             | Ripara l'Heap                                    |
-| extractMax    | $O(1)$          | $O(\log(n))$  | X             | X             | Salva il massimo (radice) e lo rimuove dall'heap |
-| heapify       | $O(1)$          | $O(n)$        | X             | X             | Costruisce un Heap usando ricorsivamente fixHeap |
-| heapSort      | $O(n)$          | $O(n\log(n))$ | X             | X             | Heapify + n volte extractMax                     |
+| Nome Funzione    | Costo (memoria) | Tempo         | Caso Migliore | Caso Peggiore | Descrizione                                      |
+| ---------------- | --------------- | ------------- | ------------- | ------------- | ------------------------------------------------ |
+| fixHeap          | $O(1)$          | $O(\log(n))$  | X             | X             | Ripara l'Heap                                    |
+| extractMax       | $O(1)$          | $O(\log(n))$  | X             | X             | Salva il massimo (radice) e lo rimuove dall'heap |
+| heapify          | $O(1)$          | $O(n)$        | X             | X             | Costruisce un Heap usando ricorsivamente fixHeap |
+| heapSort         | $O(n)$          | $O(n\log(n))$ | X             | X             | Heapify + n volte extractMax                     |
+
+|                  | FindMin     | Insert      | Delete          | DelMin          | IncKey          | DecKey      | merge       |
+| ---------------- | ----------- | ----------- | --------------- | --------------- | --------------- | ----------- | ----------- |
+| d-Heap (d cost.) | $O(1)$      | $O(\log n)$ | $O(\log n)$     | $O(\log n)$     | $O(\log n)$     | $O(\log n)$ | $O(n)$      |
+| Heap Binomiali   | $O(\log n)$ | $O(\log n)$ | $O(\log n)$     | $O(\log n)$     | $O(\log n)$     | $O(\log n)$ | $O(\log n)$ |
+| Heap Fibonacci   | $O(1)$      | $O(1)$      | $O(\log n)^{*}$ | $O(\log n)^{*}$ | $O(\log n)^{*}$ | $O(1)^{*}$  | $O(1)$      |
+$^{*}=$ analisi ammortizzata 
 ## Strutture Dati
 
 | Struttura Dati              | $search$    | $insert$    | $delete$    | Spazio |
@@ -48,15 +55,23 @@
 | BST (caso medio/bilanciato) | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ | $O(n)$ |
 | Albero AVL                  | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ | $O(n)$ |
 $N$ è la dimensione preallocata dell'array
+
+|                                      | Spazio     | Elenco archi incidenti in v | presenza arco$(u,v)$            |
+| ------------------------------------ | ---------- | --------------------------- | ------------------------------- |
+| Matrici di Adiacenza (grafi)         | $O(n^{2})$ | $O(n)$                      | $O(1)$                          |
+| Liste di Adiacenza (grafi)           | $O(n+m)$   | $O(\delta(v))$              | $O(min\{\delta(u),\delta(v)\})$ |
+| Matrici di Adiacenza (grafi diretti) | $O(n^{2})$ | $O(n)$                      | $O(1)$                          |
+| Liste di Adiacenza (grafi diretti)   | $O(n+m)$   | $O(\delta(v))$              | $O(\delta(u))$                  |
+
 ## Visite Alberi
 
-| Tipo di Visita                 | Costo Temporale |
-| ------------------------------ | --------------- |
-| Visita DFS (Depth)             | $O(n)$          |
-| Visita BFS (Breatdh)           | $O(n)$          |
-| Calcolo Altezza Albero B.      | $O(n)$          |
-| Calcola num foglie             | $O(n)$          |
-| Calcolo grado medio            | $O(n)$          |
-| Somma gradi                    | $O(n)$          |
-| Ricerca elemento dentro albero | $O(n)$          |
+| Tipo di Visita                 | Costo Temporale | Costo con Liste<br>di Adiacenza | Costo con Matrici<br>di Adiacenza |
+| ------------------------------ | --------------- | ------------------------------- | --------------------------------- |
+| Visita DFS (Depth)             | $O(n)$          | $O(m+n)$                        | $O(n^{2})$                        |
+| Visita BFS (Breatdh)           | $O(n)$          |                                 |                                   |
+| Calcolo Altezza Albero B.      | $O(n)$          |                                 |                                   |
+| Calcola num foglie             | $O(n)$          |                                 |                                   |
+| Calcolo grado medio            | $O(n)$          |                                 |                                   |
+| Somma gradi                    | $O(n)$          |                                 |                                   |
+| Ricerca elemento dentro albero | $O(n)$          |                                 |                                   |
 

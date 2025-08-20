@@ -164,7 +164,7 @@ Questi sono due sottospazi fondamentali associati a ogni applicazione lineare $f
   Il Nucleo è una misura di "quanta informazione viene persa" nella trasformazione.
 	- Se $Ker(f)={0_V​}$ (contiene solo il vettore nullo), significa che nessun vettore non nullo viene annullato. La trasformazione è **iniettiva**: vettori distinti in $V$ vengono mandati in vettori distinti in $W$.
 	- Se $Ker(f)$ ha dimensione maggiore di zero, l'applicazione "schiaccia" interi sottospazi di $V$ su un singolo punto (l'origine). La trasformazione *non* è *iniettiva*. Per esempio, nella proiezione da $\mathbb{R}^{3}$ a un piano, il nucleo è la retta perpendicolare al piano passante per l'origine.
-# 4.1 - Rango e Ripasso Strategico
+# 4.1 - Rango
 ## Rango di un'applicazione lineare
 Il **rango** (o caratteristica) di un'applicazione lineare $f$, denotato con $rank(f)$ o $rg(f)$, è semplicemente la **dimensione dello spazio Immagine**.$$rank(f)=dim(\mathrm{Im}(f))$$
 - Il rango ci dice quante sono le "dimensioni effettive" dell'output. Una trasformazione può partire da uno spazio a 10 dimensioni ($V=\mathbb{R}^{10}$) e arrivare in uno spazio a 20 dimensioni ($W=\mathbb{R}^{20}$), ma se la sua immagine è un piano, il suo rango è 2. Ci dice quanto "complesso" o "dimensionale" è il risultato della trasformazione.
@@ -182,4 +182,399 @@ Se scopriamo che il nucleo ha dimensione 2 (cioè, c'è un intero piano in $\mat
 Questo significa che l'applicazione è **suriettiva** (la sua immagine copre tutto il codominio $\mathbb{R}^{3}$).
 	Questo è estremamente utile: calcolare la dimensione del nucleo (risolvendo il sistema omogeneo $Ax=0$) è spesso molto più semplice che calcolare una base per l'immagine. 
 	Il teorema ci regala la dimensione dell'immagine senza sforzo.
-# 5 - Sistemi Lineari: Teoria
+## Esercizi
+#### Esercizio 1: Verifica di Indipendenza Lineare in $\mathbb{R}^{2}$  
+I vettori $v_{1}​=(2,1)$ e $v_{2}​=(−4,−2)$ di $\mathbb{R}^{2}$ sono linearmente indipendenti o dipendenti?
+**Soluzione Spiegata:** 
+Per verificare l'indipendenza lineare, dobbiamo vedere se l'unica combinazione lineare dei vettori che dà il vettore nullo è quella con coefficienti tutti nulli. 
+Impostiamo l'equazione: $c_{1}v_{1}+c_{2}v_{2}​=0$$$c_1 (2, 1) + c_2 (-4, -2) = (0, 0)$$
+Questo si traduce nel sistema di equazioni lineari:$$\begin{cases} 2c_1 - 4c_2 = 0 \\ 1c_1 - 2c_2 = 0 \end{cases} $$ Notiamo subito che la prima equazione è esattamente il doppio della seconda. Questo significa che le due equazioni sono dipendenti e il sistema ha infinite soluzioni. Per esempio, dalla seconda equazione otteniamo $c_{1}=2c_{2}$​. Se scegliamo $c_{2}​=1$, allora $c_{1}​=2$. Infatti:$$2⋅(2,1)+1⋅(−4,−2)=(4,2)+(−4,−2)=(0,0)$$
+Abbiamo trovato una soluzione non banale (con coefficienti non tutti nulli).
+
+**Conclusione:** 
+I vettori sono **linearmente dipendenti**. 
+Geometricamente, questo significa che i due vettori giacciono sulla stessa retta passante per l'origine.
+
+#### Esercizio 2: Verifica di Indipendenza Lineare in $\mathbb{R}^{3}$ 
+Determinare se i vettori $u=(1,2,3)$, $v=(0,1,2)$ e $w=(2,0,1)$ in $\mathbb{R}^{3}$ sono linearmente indipendenti.
+**Soluzione Spiegata:** 
+Il metodo più rapido per 3 vettori in $\mathbb{R}^{3}$(o $n$ vettori in $\mathbb{R}^{n}$) è calcolare il **determinante** della matrice che ha questi vettori come colonne (o righe). 
+Se il determinante è diverso da zero, i vettori sono linearmente indipendenti.
+Costruiamo la matrice A:$$A=\begin{pmatrix}
+1 & 0 & 2 \\
+2 & 1 & 0 \\
+3 & 2 & 1
+\end{pmatrix}$$Calcoliamo il determinante (usando lo sviluppo di Laplace lungo la prima riga):
+$$\begin{array}{l}
+det(A)=1⋅(1⋅1−0⋅2)−0⋅(…)+2⋅(2⋅2−1⋅3) \\
+det(A)=1⋅(1)+2⋅(4−3)=1+2⋅(1)=3
+\end{array}$$
+Poiché $det(A)=3\neq0$.
+**Conclusione:** 
+I vettori sono **linearmente indipendenti**. 
+Questo implica anche che essi formano una **base** per $\mathbb{R}^{3}$, poiché sono 3 vettori linearmente indipendenti in uno spazio di dimensione 3.
+#### Esercizio 3: I Vettori formano una Base?
+I vettori $v_1 ​=(1,1,0)$, $v_2 ​=(1,0,1)$ e $v_3 ​=(0,1,−1)$ formano una base per $\mathbb{R}^{3}$?
+**Soluzione Spiegata:** 
+Per formare una base di $\mathbb{R}^{3}$, abbiamo bisogno di 3 vettori linearmente indipendenti. Come nell'esercizio precedente, usiamo il determinante.$$\begin{array}{l}
+A=\begin{pmatrix}
+1 & 1 & 0 \\
+1 & 0 & 1 \\
+0 & 1 & -1
+\end{pmatrix} \\
+det(A)=1⋅(0⋅(−1)−1⋅1)−1⋅(1⋅(−1)−1⋅0)+0⋅(…) \\
+det(A)=1⋅(−1)−1⋅(−1)=−1+1=0
+\end{array}$$Poiché il determinante è zero, i vettori non sono linearmente indipendenti.
+**Conclusione:** 
+I vettori **non formano una base** per $\mathbb{R}^{3}$. 
+Infatti, esiste una relazione di dipendenza lineare tra loro: si può notare che $v_3 ​=v_1 ​−v_2$ ​.
+
+#### Esercizio 4: Trovare le Coordinate di un Vettore rispetto a una Base
+Data la base $B={b_{1}​=(1,1),b_{2}​=(1,−1)}$ di $\mathbb{R}^{2}$, trovare le coordinate del vettore $v=(3,5)$ rispetto a questa base.
+**Soluzione Spiegata:** 
+Cercare le coordinate di $v$ rispetto a $B$ significa trovare due scalari $c_1 ​,c_2$ ​ tali che: $v=c_1 ​b_1​+c_2 ​b_2$​$$(3, 5) = c_1 (1, 1) + c_2 (1, -1)$$Questo porta al sistema:$$\begin{cases} c_1 + c_2 = 3 \\ c_1 - c_2 = 5 \end{cases} $$Sommando le due equazioni, otteniamo:
+$$2c_1 ​=8\implies c_1 ​=4$$
+Sostituendo $c_1 ​=4$ nella prima equazione:$$4+c_2 ​=3\implies c_2 ​=−1$$Le coordinate di v rispetto alla base $B$ sono ($4,−1$).
+**Conclusione:** 
+Il vettore delle coordinate è $[v]_{\mathcal{B}}​=(4−1​)$.
+#### Esercizio 5: Estrarre una Base da un Insieme di Generatori
+Dato l'insieme di vettori $S=\{v_1 ​=(1,0,1),v_2 ​=(0,1,1),v_3 ​=(1,1,2),v_{4}=(2,1,3)\}$ in $\mathbb{R}^{3}$, trovare una base per il sottospazio $W=Span(S)$ e determinarne la dimensione.
+**Soluzione Spiegata:** 
+Per trovare una base, dobbiamo scartare i vettori che sono combinazione lineare degli altri. 
+Disponiamo i vettori come colonne di una matrice e la riduciamo a scala (metodo di *eliminazione di Gauss*). 
+Le colonne che conterranno i **pivot** corrisponderanno ai vettori linearmente indipendenti dell'insieme originale. $$A=\begin{pmatrix}
+1 & 0 & 1 & 2 \\
+0 & 1 & 1 & 1 \\
+1 & 1 & 2 & 3
+\end{pmatrix}$$Applichiamo le operazioni elementari sulle righe ($R_3 ​→R_3 ​−R_1$ ​ e poi $R_3 ​→R_3 ​−R_2$​): $$\begin{pmatrix}
+1 & 0 & 1 & 2 \\
+0 & 1 & 1 & 1 \\
+1 & 1 & 2 & 3
+\end{pmatrix}\overset{R_{3}-R_{1}}{\longrightarrow}
+\begin{pmatrix}
+1 & 0 & 1 & 2 \\
+0 & 1 & 1 & 1 \\
+0 & 1 & 1 & 1
+\end{pmatrix}\overset{R_{3}-R_{2}}{\longrightarrow}
+\begin{pmatrix}
+\underline{1} & 0 & 1 & 2 \\
+0 & \underline{1} & 1 & 1 \\
+0 & 0 & 0 & 0
+\end{pmatrix}$$La matrice ridotta a scala ha due pivot (gli elementi sottolineati), nelle colonne 1 e 2. Questo significa che i vettori originali corrispondenti a queste colonne, $v_1$ ​ e $v_2$ ​, formano una base per $W$.
+**Conclusione:** 
+Una base per $W$ è $\mathcal{B}_{W}​={(1,0,1),(0,1,1)}$. 
+La dimensione di $W$ è il numero di vettori nella sua base, quindi $dim(W)=2$.
+
+#### Esercizio 6: Completamento a Base
+Dato il vettore $v_1 ​=(1,2,0)$ in $\mathbb{R}^{3}$, completarlo a una base di $\mathbb{R}^{3}$.
+**Soluzione Spiegata:** 
+Dobbiamo trovare altri due vettori, $v_2$ ​ e $v_3$ ​, tali che {$v_1 ​,v_2 ​,v_3$} sia un insieme di vettori linearmente indipendenti. 
+Il modo più semplice è scegliere vettori "facili" (ad esempio dalla base canonica) e verificare l'indipendenza.
+1. Aggiungiamo un vettore della base canonica, ad esempio $e_{1}​=(1,0,0)$. 
+   I vettori $v_1 ​=(1,2,0)$ e $e_{1}​=(1,0,0)$ non sono uno multiplo dell'altro, quindi sono linearmente indipendenti.
+2. Ora cerchiamo un terzo vettore $v_3$ ​ tale che il determinante della matrice formata da $v_1$ ​,$e_{1}$,$v_3$ ​ sia non nullo. 
+	Proviamo con $e_{3}​=(0,0,1)$. $$A = \begin{pmatrix} 1 & 1 & 0 \ 2 & 0 & 0 \ 0 & 0 & 1 \end{pmatrix}$$
+Calcoliamo il determinante sviluppando lungo la terza colonna: $$\det(A) = +1 \cdot \det \begin{pmatrix} 1 & 1 \\ 2 & 0 \end{pmatrix} = 1 \cdot (1 \cdot 0 - 1 \cdot 2) = -2$$Poiché $\det(A) = -2 \neq 0$, i tre vettori sono linearmente indipendenti. 
+**Conclusione:** 
+Una possibile base è $\mathcal{B} = \{ (1, 2, 0), (1, 0, 0), (0, 0, 1) \}$. 
+La soluzione non è unica. 
+#### Esercizio 7: Spazi di Polinomi
+Nello spazio vettoriale $\mathbb{R}_2[x]$ dei polinomi di grado al più 2, determinare se i polinomi $p_1(x) = 1 + x$, $p_2(x) = x + x^2$ e $p_3(x) = 1 - x^2$ sono linearmente indipendenti. 
+**Soluzione Spiegata:** 
+Associamo a ogni polinomio il suo vettore di coordinate rispetto alla base canonica $\mathcal{C} = \{1, x, x^2\}$: * $$p_1(x) \implies [\mathbf{p}_1]_{\mathcal{C}} = (1, 1, 0)$$ $$p_2(x) \implies [\mathbf{p}_2]_{\mathcal{C}} = (0, 1, 1)$$ $$p_3(x) \implies [\mathbf{p}_3]_{\mathcal{C}} = (1, 0, -1)$$Ora il problema è diventato: i vettori $(1, 1, 0), (0, 1, 1), (1, 0, -1)$ sono linearmente indipendenti in $\mathbb{R}^3$? Calcoliamo il determinante della matrice associata:$$A = \begin{pmatrix} 1 & 0 & 1 \ 1 & 1 & 0 \ 0 & 1 & -1 \end{pmatrix}$$ $$\det(A) = 1(1 \cdot (-1) - 0 \cdot 1) - 0(\dots) + 1(1 \cdot 1 - 1 \cdot 0) = -1 + 1 = 0$$Il determinante è nullo. 
+**Conclusione:**
+I polinomi sono **linearmente dipendenti**. 
+#### Esercizio 8: Indipendenza Lineare con un Parametro
+Discutere al variare del parametro $k \in \mathbb{R}$ l'indipendenza lineare dei vettori $\mathbf{v}_1 = (1, k, 0)$, $\mathbf{v}_2 = (k, 1, 1)$, $\mathbf{v}_3 = (1, 1, k)$. Per quali valori di $k$ formano una base di $\mathbb{R}^3$? 
+**Soluzione Spiegata:** 
+I tre vettori formano una base di $\mathbb{R}^3$ se e solo se sono linearmente indipendenti, ovvero se il determinante della matrice che li ha per colonne è diverso da zero.$$A_k = \begin{pmatrix} 1 & k & 1 \ k & 1 & 1 \ 0 & 1 & k \end{pmatrix}$$Calcoliamo il determinante:$$\det(A_k) = 1(1 \cdot k - 1 \cdot 1) - k(k \cdot k - 1 \cdot 0) + 1(k \cdot 1 - 1 \cdot 0)$$$$\det(A_k) = k - 1 - k^3 + k = -k^3 + 2k - 1$$I vettori sono linearmente dipendenti quando $\det(A_k) = 0$, quindi risolviamo l'equazione $k^3 - 2k + 1 = 0$. 
+Si nota per ispezione che $k=1$ è una radice. 
+Dividendo il polinomio per $(k-1)$ (con la regola di Ruffini), otteniamo $(k-1)(k^2 + k - 1) = 0$. 
+Le radici di $k^2 + k - 1 = 0$ sono $\displaystyle k = \frac{-1 \pm \sqrt{1^2 - 4(1)(-1)}}{2} = \frac{-1 \pm \sqrt{5}}{2}$. 
+**Conclusione:** 
+I vettori sono **linearmente dipendenti** (e non formano una base) per $\displaystyle k \in \{ 1, \frac{-1 + \sqrt{5}}{2}, \frac{-1 - \sqrt{5}}{2} \}$. 
+I vettori sono **linearmente indipendenti** (e formano una base) per $\displaystyle k \in \mathbb{R} \setminus \{ 1, \frac{-1 \pm \sqrt{5}}{2} \}$. 
+#### Esercizio 9: Dimensione e Base di un Sottospazio Intersezione
+Siano $U = \text{Span}\{(1,1,0), (0,1,1)\}$ e $V = \text{Span}\{(1,0,1), (0,0,1)\}$ due sottospazi di $\mathbb{R}^3$. 
+Trovare la dimensione e una base per il sottospazio intersezione $U \cap V$. 
+**Soluzione Spiegata:** 
+**Scriviamo le equazioni cartesiane dei sottospazi.** 
+	Per $U$: un generico vettore $(x,y,z) \in U$ si scrive come $a(1,1,0) + b(0,1,1) = (a, a+b, b)$. 
+	Da cui $x=a, z=b \implies y = x+z$. 
+	L'equazione di $U$ è $x - y + z = 0$. 
+	Per $V$: un generico vettore $(x,y,z) \in V$ si scrive come $c(1,0,1) + d(0,0,1) = (c, 0, c+d)$. 
+	L'equazione di $V$ è chiaramente $y=0$. 2. 
+	L'intersezione $U \cap V$ è l'insieme dei vettori che soddisfano entrambe le equazioni. 
+	Mettiamo a sistema le equazioni cartesiane:$$\begin{cases} x - y + z = 0 \\ y = 0 \end{cases}$$Sostituendo la seconda nella prima otteniamo $x+z=0$, cioè $x=-z$. 
+	Un generico vettore di $U \cap V$ ha quindi la forma $(x,y,z) = (-z, 0, z)$. 
+	Possiamo scriverlo come $z(-1, 0, 1)$. 
+**Conclusione:** 
+	Una base per $U \cap V$ è $\displaystyle \mathcal{B}_{U \cap V} = \{ (-1, 0, 1) \}$. 
+	La dimensione dell'intersezione è $\dim(U \cap V) = 1$. 
+#### Esercizio 10: Spazio di Matrici
+Nello spazio vettoriale $M_{2,2}(\mathbb{R})$ delle matrici $2 \times 2$, considerare il sottospazio $W$ delle matrici simmetriche. 
+Trovare una base per $W$ e calcolarne la dimensione. 
+**Soluzione Spiegata:** 
+Una matrice $A \in M_{2,2}(\mathbb{R})$ è simmetrica se $A = A^T$. 
+Una generica matrice $A$ si scrive come:$$A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$$La condizione $A = A^T$ implica $b=c$. Quindi, una generica matrice simmetrica $2 \times 2$ ha la forma:$$A = \begin{pmatrix} a & b \\ b & d \end{pmatrix}$$dove $a,b,d$ sono scalari reali arbitrari. Possiamo decomporre questa matrice generica come una combinazione lineare:$$\begin{pmatrix} a & b \\ b & d \end{pmatrix} = a \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix} + b \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} + d \begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}$$
+Le tre matrici che appaiono nella combinazione lineare generano lo spazio $W$ e sono anche linearmente indipendenti.
+**Conclusione:**
+Una base per il sottospazio $W$ delle matrici simmetriche $2\times2$ è $$\mathcal{B}_W = \left\{ \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}, \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix} \right\}$$
+La $Dim(W)=3$.
+# 5 - Sistemi Lineari
+In questa sezione, esploreremo i concetti fondamentali relativi ai sistemi di equazioni lineari, dalla loro rappresentazione matriciale ai teoremi che ne governano le soluzioni, fino all'algoritmo pratico per risolverli.
+## Sistemi Lineari - Teoria
+### Formulazione Matriciale
+Un qualsiasi sistema di $m$ equazioni lineari in $n$ incognite può essere scritto in una forma molto più compatta ed elegante utilizzando le matrici.
+
+Consideriamo un generico sistema:
+$$\begin{cases} a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = b_1 \\ a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n = b_2 \\ \vdots \\ a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n = b_m \end{cases} $$Questo sistema può essere rappresentato come un'unica equazione matriciale: **$A\mathbf{x} = \mathbf{b}$** Dove: $A$ è la **matrice dei coefficienti**, una matrice di dimensione $m \times n$:
+$$A = \begin{pmatrix} a\_{11} & a\_{12} & \dots & a\_{1n} \\
+ a\_{21} & a\_{22} & \dots & a\_{2n} \\
+ \vdots & \vdots & \ddots & \vdots \\
+ a\_{m1} & a\_{m2} & \dots & a\_{mn}
+\end{pmatrix} $$
+- $\mathbf{x}$ è il **vettore colonna delle incognite**, di dimensione $n\times1$: $$\mathbf{x} = \begin{pmatrix} 
+x\_1 \\
+x\_2 \\
+\vdots \\
+x\_n
+\end{pmatrix}$$
+- $\mathbf{b}$ è il **vettore colonna dei termini noti**, di dimensione $m\times1$:
+$$\mathbf{b} = \begin{pmatrix}
+b\_1 \\
+b\_2 \\
+\vdots \\
+b\_m \end{pmatrix}$$
+Questa formulazione non è solo una notazione più comoda, ma è fondamentale perché permette di applicare tutta la potenza dell'algebra delle matrici per studiare e risolvere i sistemi.
+
+### Teorema di Struttura per le Soluzioni
+Questo teorema descrive come è fatto l'insieme di tutte le soluzioni di un sistema lineare $A\mathbf{x}=\mathbf{b}$.
+Il teorema afferma che: 
+La soluzione generale di un sistema **lineare non omogeneo** ($A\mathbf{x}=\mathbf{b}$) è data dalla somma di una soluzione particolare ($\mathbf{x}_p$) del sistema stesso e della soluzione generale del sistema omogeneo associato ($A\mathbf{x}=\mathbf{0}$).
+In simboli: $\mathbf{x}_{gen}=\mathbf{x}_p+\mathbf{x}_0$
+Dove:
+- $\mathbf{x}_{gen}$ è l'insieme di *tutte* le possibili soluzioni del sistema $A\mathbf{x}=\mathbf{b}$.
+- $\mathbf{x}_p$ è una *qualsiasi* soluzione che soddisfa l'equazione $A\mathbf{x}=\mathbf{b}$.
+- $\mathbf{x}_0$ è l'insieme di tutte le soluzioni del **sistema omogeneo associato** $A\mathbf{x}=\mathbf{0}$. L'insieme di queste soluzioni forma uno spazio vettoriale, chiamato **spazio nullo** o **kernel** della matrice $A$.
+#### In pratica, cosa significa?
+Significa che se trovi anche solo *una* soluzione al tuo sistema, puoi trovare tutte le altre aggiungendo a quella le soluzioni del sistema omogeneo associato. Questo "sposta" geometricamente lo spazio nullo (che passa sempre per l'origine) facendolo passare per il punto rappresentato dalla soluzione particolare.
+
+### Teorema di Rouché-Capelli
+Questo è il teorema più importante per determinare se un sistema ammette soluzioni e, in caso affermativo, quante.
+Per enunciarlo, abbiamo bisogno di due matrici:
+1. La *matrice dei coefficienti* ($A$), come definita prima.
+2. La *matrice completa* (o *orlata*) $[A|\mathbf{b}]$, ottenuta affiancando alla matrice $A$ la colonna dei termini noti $b$$$[A|\mathbf{b}] = \begin{pmatrix}
+a\_{11} & \dots & a\_{1n} & | & b\_1 \\
+\vdots & \ddots & \vdots & | & \vdots \\
+a\_{m1} & \dots & a\_{mn} & | & b\_m \end{pmatrix}$$Il teorema afferma che:
+3. **Esistenza delle soluzioni**: Un sistema lineare $A\mathbf{x}=\mathbf{b}$ ammette soluzioni *se e solo se* il rango della matrice dei coefficienti è uguale al rango della matrice completa. $$rg(A)=rg([A|\mathbf{b}])$$ 
+   Se i ranghi sono diversi, il sistema è detto *impossibile*.
+4. **Numero delle soluzioni**: Se il sistema ammette soluzioni (cioè $rg(A)=rg([A|\mathbf{b}])=r$), allora:
+    - Se il rango $r$ è uguale al numero di incognite $n$ ($r=n$), il sistema ha **una e una sola soluzione**. (Sistema *determinato*)
+    - Se il rango $r$ è minore del numero di incognite $n$ ($r<n$), il sistema ha **infinite soluzioni**. (Sistema *indeterminato*) 
+      Le infinite soluzioni dipendono da $n−r$ parametri liberi. 
+      Si dice che il sistema ha $\infty^{n-r}$ soluzioni.
+
+## Sistemi Lineari - Pratica (Gauss)
+### Algoritmo di Eliminazione di Gauss
+L'algoritmo di Gauss (o metodo di eliminazione gaussiana) è una procedura sistematica per risolvere i sistemi lineari. L'idea è quella di trasformare, tramite operazioni elementari sulle righe, la matrice completa del sistema in una **matrice a scala** (o a gradini), dalla quale le soluzioni si possono ricavare facilmente.
+Passaggi dell'algoritmo:
+
+1. Scrivere la matrice completa $[A|\mathbf{b}]$ del sistema.
+2. Trasformare la matrice in forma a scala usando le seguenti **mosse di Gauss** (operazioni elementari sulle righe), che non alterano le soluzioni del sistema:
+    - *Scambiare* due righe tra loro.
+    - *Moltiplicare* una riga per un numero diverso da zero.
+    - *Sommare* a una riga un multiplo di un'altra riga.
+    L'obiettivo è creare degli zeri sotto il primo elemento non nullo di ogni riga (chiamato **pivot**). Si procede colonna per colonna, da sinistra verso destra.
+    - *Fase 1* (Prima colonna): 
+      Usa la prima riga per annullare i primi elementi di tutte le righe sottostanti. Se il primo elemento della prima riga è zero, scambia la riga con una sottostante che abbia un primo elemento non nullo.
+    - *Fase 2* (Seconda colonna): 
+      Ignora la prima riga e la prima colonna. Ripeti il procedimento sulla sottomatrice rimanente, usando la seconda riga per annullare gli elementi della seconda colonna sotto di essa.
+    - *Continuare* così finché la matrice non è in forma a scala.
+3. **Analizzare e risolvere il sistema a scala:**
+- Una volta ottenuta la matrice a scala, si riscrive il sistema di equazioni associato.
+- Si applica il *Teorema di Rouché-Capelli* per verificare l'esistenza e il numero di soluzioni. 
+  Il **rango** è semplicemente il numero di righe non nulle nella matrice a scala.
+- Se il sistema è compatibile, si risolve partendo dall'ultima equazione e risalendo verso la prima (procedimento di **sostituzione all'indietro**). 
+  Le incognite che non corrispondono a un pivot possono essere trattate come parametri liberi.
+
+**Esempio pratico:** Risolviamo il sistema:
+$$\begin{cases} x + 2y + z = 2 \\ 3x + 8y + z = 12 \\ 4y + z = 2 \end{cases} $$
+1. **Matrice completa:**
+$$\begin{pmatrix} 1 & 2 & 1 & | & 2 \\ 3 & 8 & 1 & | & 12 \\ 0 & 4 & 1 & | & 2 \end{pmatrix} $$
+2. **Eliminazione di Gauss:**
+   Vogliamo uno zero al posto del 3 nella seconda riga. Sostituiamo la seconda riga ($R_2$) con $R_2−3R_1$:   $$\begin{pmatrix} 1 & 2 & 1 & | & 2 \\ 0 & 2 & -2 & | & 6 \\ 0 & 4 & 1 & | & 2 \end{pmatrix}$$Vogliamo uno zero al posto del 4 nella terza riga. Sostituiamo la terza riga ($R_3$) con $R_3−2R_2$:$$\begin{pmatrix} 1 & 2 & 1 & | & 2 \\ 0 & 2 & -2 & | & 6 \\ 0 & 0 & 5 & | & -10 \end{pmatrix}$$La matrice è ora a scala.
+3. **Risoluzione:**
+   Il rango della matrice incompleta e completa è 3 ($r=3$). Il numero di incognite è 3 ($n=3$). Poiché $r=n$, il sistema ha **una sola soluzione**.
+   Riscriviamo il sistema:$$\begin{cases} x + 2y + z = 2 \\ 2y - 2z = 6 \\ 5z = -10 \end{cases}$$ Risolviamo con sostituzione all'indietro:
+    - Dalla terza equazione: $5z=-10\implies\mathbf{z}=−2$  
+    - Sostituiamo z nella seconda: $2y-2(-2)=6\implies2y+4=6\implies2y=2\implies\mathbf{y}=1$  
+    - Sostituiamo y e z nella prima: $x+2(1)+(-2)=2\implies x+2-2=2\implies\mathbf{x}=2$
+    La soluzione è $(2,1,−2)$.
+
+## Esercizi
+#### 1. Sistema $2\times2$ Determinato
+$$\begin{cases} 2x - 3y = 7 \\ x + 4y = -2 \end{cases} $$**Passaggi:** 
+1. Matrice completa: $$\begin{pmatrix} 2 & -3 & | & 7 \\ 1 & 4 & | & -2 \end{pmatrix}$$
+2. Scambiamo $R_1$ con $R_2$ per avere un pivot uguale a 1: $$\begin{pmatrix} 1 & 4 & | & -2 \\ 2 & -3 & | & 7 \end{pmatrix}$$
+3.  Applichiamo $R\_2 \to R\_2 - 2R\_1$: $$\begin{pmatrix} 1 & 4 & | & -2 \\ 0 & -11 & | & 11 \end{pmatrix}$$
+4. **Analisi:** $rg(A) = rg(A|b) = 2$. 
+   Numero incognite $n=2$. 
+   Poiché $r=n$, la soluzione è unica. 
+5. **Soluzione:**
+   Dall'ultima riga: $-11y = 11 \implies y = -1$ 
+   Sostituendo nella prima: $x + 4(-1) = -2 \implies x - 4 = -2 \implies x = 2$ 
+   **Soluzione:** $(2, -1)$ 
+#### 2. Sistema $3\times3$ Determinato 
+$$\begin{cases} x + y - z = 0 \\ 2x - y + 3z = 9 \\ -x + 2y + 2z = 3 \end{cases} $$**Passaggi:** 
+1. Matrice completa: $\begin{pmatrix} 1 & 1 & -1 & | & 0 \\ 2 & -1 & 3 & | & 9 \\ -1 & 2 & 2 & | & 3 \end{pmatrix}$ 
+2. Applichiamo $R_2 \to R_2 - 2R_1$ e $R_3 \to R_3 + R_1$: $\begin{pmatrix} 1 & 1 & -1 & | & 0 \\ 0 & -3 & 5 & | & 9 \\ 0 & 3 & 1 & | & 3 \end{pmatrix}$ 
+3. Applichiamo $R_3 \to R_3 + R_2$: $\begin{pmatrix} 1 & 1 & -1 & | & 0 \\ 0 & -3 & 5 & | & 9 \\ 0 & 0 & 6 & | & 12 \end{pmatrix}$ 
+4. **Analisi:** $rg(A) = rg(A|b) = 3$. 
+   Numero incognite $n=3$.
+   Soluzione unica. 
+5. **Soluzione:** 
+   $6z = 12 \implies z = 2$
+   $-3y + 5(2) = 9 \implies -3y = -1 \implies y = 1/3$
+   $x + (1/3) - 2 = 0 \implies x = 5/3$ 
+6. **Soluzione:** $(5/3, 1/3, 2)$
+#### 3. Sistema $3\times3$ Indeterminato
+$$\begin{cases} x + 2y - z = 4 \\ 2x + y + 3z = 5 \\ x - y + 4z = 1 \end{cases} $$**Passaggi:**
+
+1. Matrice completa: $$\begin{pmatrix} 1 & 2 & -1 & | & 4 \\ 2 & 1 & 3 & | & 5 \\ 1 & -1 & 4 & | & 1 \end{pmatrix}$$
+2. Applichiamo $R_2\to R_2−2R_1$ e $R_3\to R_3-R_1$: $$\begin{pmatrix} 1 & 2 & -1 & | & 4 \\ 0 & -3 & 5 & | & -3 \\ 0 & -3 & 5 & | & -3 \end{pmatrix}$$
+3. Applichiamo $R_3\to R_3-R_2$: $$\begin{pmatrix} 1 & 2 & -1 & | & 4 \\ 0 & -3 & 5 & | & -3 \\ 0 & 0 & 0 & | & 0 \end{pmatrix}$$
+4. **Analisi:** $rg(A)=rg(A∣b)=2$. 
+   Numero incognite $n=3$. 
+   Poiché $r<n$, il sistema ha $\infty^{3-2}=\infty^{1}$ soluzioni.
+5. **Soluzione:** 
+   Poniamo $z=t$ (parametro libero).
+   $−3y+5t=−3implies3y=5t+3impliesy=frac53t+1$
+   $x+2\left( \frac{5}{3}t+1 \right)-t=4\implies x+ \frac{10}{3}t+2−t=4\implies x=2-\frac{7}{3}t$ 
+- **Soluzione:** ($2-\frac{7}{3}t,1+\frac{5}{3}t,t$) per ogni $t\in\mathbb{R}$.
+
+#### 4. Sistema $3\times3$ Impossibile
+$$\begin{cases} x - y + 2z = 1 \\ x + y + z = 2 \\ 2x + 4z = 5 \end{cases} $$**Passaggi:**
+1. Matrice completa: $$\begin{pmatrix} 1 & -1 & 2 & | & 1 \\ 1 & 1 & 1 & | & 2 \\ 2 & 0 & 4 & | & 5 \end{pmatrix}$$ 
+2. Applichiamo $R_2\to R_2−R_1$ e $R_3toR_3−2R_1$: $$\begin{pmatrix} 1 & -1 & 2 & | & 1 \\ 0 & 2 & -1 & | & 1 \\ 0 & 2 & 0 & | & 3 \end{pmatrix}$$  
+3. Applichiamo $R_3\to R_3−R_2$: $$\begin{pmatrix} 1 & -1 & 2 & | & 1 \\ 0 & 2 & -1 & | & 1 \\ 0 & 0 & 1 & | & 2 \end{pmatrix}$$  
+4. **Errore nel calcolo precedente, ricalcoliamo:** 
+   $R_3\to R_3−2R_1$ dà $(2,0,4,5)−2(1,−1,2,1)=(0,2,0,3)$. Corretto.
+   $R_3\to R_3−R_2$ dà $(0,2,0,3)−(0,2,−1,1)=(0,0,1,2)$. Corretto. 
+   **Rivediamo il sistema originale:** 
+   $2x+4z=5$ è la somma di $2\times(x−y+2z=1)$ e $2\times(y−z=...)$? 
+   Sommando le prime due equazioni: $2x+3z=3$. 
+   Confrontando con la terza $2x+4z=5$, sottraendo si ottiene $z=2$. 
+   Se $z=2, 2x+3(2)=3\implies2x=−3\implies x=−3/2$. 
+   Dalla seconda eq: $−3/2+y+2=2\implies y=3/2$. 
+   Dalla prima: $−3/2−3/2+2(2)=−3+4=1$. 
+   La soluzione esiste ed è unica. **Il sistema è determinato, non impossibile. Correggiamo l'etichetta e la soluzione.**
+5. **Analisi:** $rg(A)=rg(A∣b)=3, n=3$. Soluzione unica.
+6. **Soluzione:**
+    - $z=2$  
+    - $2y−z=1\implies 2y−2=1\implies2y=3\implies y=3/2$  
+    - $x−y+2z=1\implies x−3/2+4=1\implies x=1−4+3/2=−3+3/2=−3/2$ 
+    **Soluzione:** $\left( -\frac{3}{2}, \frac{3}{2},2 \right)$  
+
+#### 5. Sistema $2\times3$
+
+$$\begin{cases} x + y - 2z = 5 \\ 2x - y - z = 1 \end{cases}$$ **Passaggi:** 
+1. Matrice completa: $$\begin{pmatrix} 1 & 1 & -2 & | & 5 \\ 2 & -1 & -1 & | & 1 \end{pmatrix}$$ 
+2. Applichiamo $R\_2 \to R\_2 - 2R\_1$:$ $$\begin{pmatrix} 1 & 1 & -2 & | & 5 \\ 0 & -3 & 3 & | & -9 \end{pmatrix}$$ 
+3. Possiamo semplificare $R\_2 \to R\_2 / (-3)$: $$\begin{pmatrix} 1 & 1 & -2 & | & 5 \\ 0 & 1 & -1 & | & 3 \end{pmatrix}$$ 
+4. **Analisi:** $rg(A) = rg(A|b) = 2$. Numero incognite $n=3$. Poiché $r < n$, il sistema ha $\infty^{3-2} = \infty^1$ soluzioni. 
+5. **Soluzione:** Poniamo $z=t$. - $y - t = 3 \\implies y = t + 3$ - $x + (t+3) - 2t = 5 \\implies x - t + 3 = 5 \\implies x = t + 2$ 
+6. **Soluzione:** $(t+2, t+3, t)$ per ogni $t \\in \\mathbb{R}$. 
+#### 6\. Sistema $3\times2$ 
+$$\begin{cases} x + y = 3 \\ 2x - y = 0 \\ x + 3y = 5 \end{cases} $$**Passaggi:** 
+1. Matrice completa: $$\begin{pmatrix} 1 & 1 & | & 3 \\ 2 & -1 & | & 0 \\ 1 & 3 & | & 5 \end{pmatrix}$$ 
+2. Applichiamo $R\_2 \\to R\_2 - 2R\_1$ e $R\_3 \\to R\_3 - R\_1$: $$\begin{pmatrix} 1 & 1 & | & 3 \\ 0 & -3 & | & -6 \\ 0 & 2 & | & 2 \end{pmatrix}$$ 
+3. Semplifichiamo $R\_2 \\to R\_2 / (-3)$ e $R\_3 \\to R\_3 / 2$:$$\begin{pmatrix} 1 & 1 & | & 3 \\ 0 & 1 & | & 2 \\ 0 & 1 & | & 1 \end{pmatrix}$$
+4. Applichiamo $R\_3 \\to R\_3 - R\_2$: $$\begin{pmatrix} 1 & 1 & | & 3 \\ 0 & 1 & | & 2 \\ 0 & 0 & | & -1 \end{pmatrix}$$
+5. **Analisi:** L'ultima riga corrisponde a $0 = -1$, che è un'assurdità. $rg(A) = 2$ mentre $rg(A|b) = 3$. Il sistema è **impossibile**. 
+6. **Soluzione:** Nessuna.
+#### 7. Sistema Omogeneo
+$$\begin{cases} x + 3y - 2z = 0 \\ 2x - y + 4z = 0 \\ x - 11y + 14z = 0 \end{cases}$$**Passaggi:**
+1. Matrice dei coefficienti: $$\begin{pmatrix} 1 & 3 & -2 \\ 2 & -1 & 4 \\ 1 & -11 & 14 \end{pmatrix}$$  
+2. Applichiamo $R_2\to R_2−2R_1$ e $R_3\to R_3−R_1$: $$\begin{pmatrix} 1 & 3 & -2 \\ 0 & -7 & 8 \\ 0 & -14 & 16 \end{pmatrix}$$  
+3. Applichiamo$R_3\to R_3−2R_2$: $$\begin{pmatrix} 1 & 3 & -2 \\ 0 & -7 & 8 \\ 0 & 0 & 0 \end{pmatrix}$$
+4. **Analisi:** $rg(A)=2$. 
+   Numero incognite $n=3$. 
+   Poiché $r<n$, il sistema omogeneo ha $\infty^{3−2}=\infty^1$ soluzioni (oltre a quella banale).
+5. **Soluzione:** Poniamo $z=t$.
+- $−7y+8t=0\implies7y=8t\implies y=\frac{8}{7}t$  
+- $x+3\left( \frac{8}{7}t \right)−2t=0\implies x+ \frac{24}{7}t− \frac{14}{7}t=0\implies x=−\frac{10}{7}t$
+**Soluzione:** ($-\frac{10}{7}t, \frac{8}{7}t,t$) per ogni $t\in\mathbb{R}$.
+
+#### 8. Sistema $4\times4$
+$$\begin{cases} x + y + w = 4 \ y + z = 3 \ x - z - w = -1 \ y + w = 3 \end{cases} $$**Passaggi:**
+1. Matrice completa (ordine incognite $x,y,z,w$): $$\begin{pmatrix} 1 & 1 & 0 & 1 & | & 4 \\ 0 & 1 & 1 & 0 & | & 3 \\ 1 & 0 & -1 & -1 & | & -1 \\ 0 & 1 & 0 & 1 & | & 3 \end{pmatrix}$$  
+2. Applichiamo $R_3\to R_3−R_1$: $$\begin{pmatrix} 1 & 1 & 0 & 1 & | & 4 \\ 0 & 1 & 1 & 0 & | & 3 \\ 0 & -1 & -1 & -2 & | & -5 \\ 0 & 1 & 0 & 1 & | & 3 \end{pmatrix}$$  
+3. Applichiamo $R_3\to R_3+R_2$ e $R_4\to R_4−R_2$: $$\begin{pmatrix} 1 & 1 & 0 & 1 & | & 4 \\ 0 & 1 & 1 & 0 & | & 3 \\ 0 & 0 & 0 & -2 & | & -2 \\ 0 & 0 & -1 & 1 & | & 0 \end{pmatrix}$$  
+4. Scambiamo $R_3$ e $R_4$: $$\begin{pmatrix} 1 & 1 & 0 & 1 & | & 4 \\ 0 & 1 & 1 & 0 & | & 3 \\ 0 & 0 & -1 & 1 & | & 0 \\ 0 & 0 & 0 & -2 & | & -2 \end{pmatrix}$$  
+5. **Analisi:** $rg(A)=rg(A∣b)=4$. 
+   Numero incognite $n=4$. 
+   Soluzione unica.
+6. **Soluzione:**
+    - $−2w=−2\implies w=1$  
+    - $−z+w=0\implies−z+1=0\implies z=1$  
+    - $y+z=3\implies y+1=3\implies y=2$  
+    - $x+y+w=4\implies x+2+1=4\implies x=1$ 
+    **Soluzione:** $(1,2,1,1)$
+
+#### 9. Sistema con parametro (k)
+Discutere le soluzioni al variare di $k\in\mathbb{R}$:$$\begin{cases} x + y + kz = 1 \\ x + ky + z = 1 \\ kx + y + z = 1 \end{cases} $$**Passaggi:** 
+1. Matrice completa: $$\begin{pmatrix}
+1 & 1 & k & | & 1 \\
+1 & k & 1 & | & 1 \\
+k & 1 & 1 & | & 1
+\end{pmatrix}$$
+2. Eliminazione di Gauss (primo passo): 
+   Applichiamo $R_2toR_2−R_1$ e $R_3toR_3−kR_1$:$$\begin{pmatrix} 1 & 1 & k & | & 1 \\ 0 & k-1 & 1-k & | & 0 \\ 0 & 1-k & 1-k^2 & | & 1-k \end{pmatrix}$$ 
+3. Eliminazione di Gauss (secondo passo): 
+   Applichiamo $R_3toR_3+R_2$:$$\begin{pmatrix} 1 & 1 & k & | & 1 \\ 0 & k-1 & 1-k & | & 0 \\ 0 & 0 & (1-k^2)+(1-k) & | & 1-k \end{pmatrix}$$ L'elemento in posizione (3,3) si semplifica in: $1−k^{2}+1−k=−k^{2}−k+2=−(k+2)(k−1)$.
+4. Discussione:
+    - **Caso 1**: $k\neq1$ e $k\neq−2$. 
+      I pivot sulla diagonale sono tutti non nulli. Il rango della matrice dei coefficienti e della matrice completa è 3, uguale al numero di incognite. 
+      Il sistema è **determinato** (ha una sola soluzione).
+    - **Caso 2**: k=1. La matrice diventa:$$\begin{pmatrix} 1 & 1 & 1 & | & 1 \\ 0 & 0 & 0 & | & 0 \\ 0 & 0 & 0 & | & 0 \end{pmatrix}$$
+      Il rango di entrambe le matrici è 1, minore del numero di incognite (3). 
+      Il sistema è **indeterminato** con $\infty^{2}$ soluzioni, descritte dall'equazione $x+y+z=1$.
+    - **Caso 3**: $k=−2$. La matrice diventa:$$\begin{pmatrix} 1 & 1 & -2 & | & 1 \\ 0 & -3 & 3 & | & 0 \\ 0 & 0 & 0 & | & 3 \end{pmatrix}$$
+    - L'ultima riga corrisponde all'equazione impossibile $0=3$. 
+      Il rango della matrice dei coefficienti è 2, mentre quello della matrice completa è 3. 
+      Il sistema è **impossibile**.
+**Soluzione Riassuntiva:**
+- Se $k\neq1$ e $k\neq−2$: **Soluzione unica**.
+- Se $k=1$: **Infinite soluzioni** date da $x=1−y−z$.
+- Se $k=−2$: **Nessuna soluzione**.
+#### 10. Sistema con parametro (a)
+
+Discutere le soluzioni al variare di $a\in\mathbb{R}$:$$\begin{cases} x + y - z = 1 \\ 2x + 3y + az = 3 \\ x + ay + 3z = 2 \end{cases} $$**Passaggi:** 
+1. Matrice completa: $$\begin{pmatrix}
+1 & 1 & -1 & | & 1 \\
+2 & 3 & a & | & 3 \\
+1 & a & 3 & | & 2
+\end{pmatrix}$$
+2. Eliminazione di Gauss (primo passo): Applichiamo $R_2\to R_2−2R_1$ e R$_3\to R_3−R_1$:$$\begin{pmatrix} 1 & 1 & -1 & | & 1 \\ 0 & 1 & a+2 & | & 1 \\ 0 & a-1 & 4 & | & 1 \end{pmatrix}$$
+3. Eliminazione di Gauss (secondo passo): Applichiamo $R_3\to R_3−(a−1)R_2$:$$\begin{pmatrix} 1 & 1 & -1 & | & 1 \\ 0 & 1 & a+2 & | & 1 \\ 0 & 0 & 4-(a-1)(a+2) & | & 1-(a-1) \end{pmatrix} $$
+   L'elemento in posizione $(3,3)$ è $4−(a^{2}+a−2)=−a^{2}−a+6=−(a+3)(a−2)$. 
+   Il termine noto nella terza riga è $1−(a−1)=2−a$.
+4. **Discussione:**
+    - **Caso 1**: $a\neq2$ e $a\neq−3$. 
+      Il pivot in posizione (3,3) è non nullo. 
+      Il rango di entrambe le matrici è 3. 
+      Il sistema è **determinato**
+    - **Caso 2**: $a=2$. 
+      L'ultima riga della matrice diventa ($0,0,0,∣,0$). 
+      Il rango di entrambe le matrici è 2, minore del numero di incognite (3). 
+      Il sistema è **indeterminato** con $\infty^1$ soluzioni.
+    - **Caso 3**: $a=−3$. 
+      L'ultima riga della matrice diventa ($0,0,0,∣,5$). 
+      Il rango della matrice dei coefficienti è 2, mentre quello della matrice completa è 3. 
+      Il sistema è **impossibile**.
+**Soluzione Riassuntiva:**
+- Se $a\neq2$ e $a\neq−3$: **Soluzione unica**.
+- Se $a=2$: **Infinite soluzioni**.
+- Se $a=−3$: **Nessuna soluzione**.

@@ -578,3 +578,79 @@ Discutere le soluzioni al variare di $a\in\mathbb{R}$:$$\begin{cases} x + y - z 
 - Se $a\neq2$ e $a\neq−3$: **Soluzione unica**.
 - Se $a=2$: **Infinite soluzioni**.
 - Se $a=−3$: **Nessuna soluzione**.
+
+
+# 6 - Determinanti e Invertibilità
+Il **determinante** è un numero scalare associato a ogni matrice quadrata che ne descrive importanti proprietà algebriche e geometriche. Si indica con $det(A)$ o $|A|$.
+## Proprietà Fondamentali del Determinante
+1. **Matrice Identità**: $det(I) = 1$.
+2. **Matrici Triangolari**: Il determinante è il *prodotto degli elementi sulla diagonale principale*.
+3. **Scambio di Righe/Colonne**: Se si scambiano due righe (o colonne), il determinante *cambia di segno*. 
+   Di conseguenza, se una matrice ha due righe/colonne identiche, il suo determinante è **zero**.
+4. **Moltiplicazione per Scalare**: Se una _singola_ riga (o colonna) è moltiplicata per $k$, il determinante è moltiplicato per $k$. 
+   Per una matrice $A$ di ordine $n$, $det(kA) = k^n * det(A)$.
+5. **Righe/Colonne Nulle**: Se una matrice ha una riga o colonna di zeri, il suo determinante è **zero**.
+6. **Dipendenza Lineare**: Se una riga (o colonna) è combinazione lineare di altre, il determinante è **zero**.
+7. **Operazioni di Gauss**: Aggiungere a una riga un multiplo di un'altra **non altera il determinante**. Questa è la proprietà più utile per semplificare i calcoli.
+## Calcolo: Sviluppo di Laplace
+Il Teorema di Laplace fornisce un metodo ricorsivo per il calcolo. Si sceglie una riga $i$ o una colonna $j$ e si calcola:
+- **Sviluppo lungo la riga i-esima**:$$det(A)=\sum_{j=1}^n​(−1)^{i+j}a_{ij}​M_{ij​}$$
+- **Sviluppo lungo la colonna j-esima**:$$det(A)=\sum_{i=1}^n​(−1)^{i+j}a_{ij​}M_{ij}​$$
+Dove:
+- $a_{ij}$ è l'elemento in posizione $(i, j)$.
+- $M_{ij}$ è il **minore complementare**, cioè il determinante della sottomatrice ottenuta eliminando la riga $i$ e la colonna $j$.
+- Il termine $(-1)^{(i+j)}$ definisce il segno del cofattore.
+**Consiglio**: Scegliere sempre la riga o la colonna con più zeri.
+## Teorema di Binet
+**Teorema di Binet**: Date due matrici quadrate $A$ e $B$ dello stesso ordine:$$det(A⋅B)=det(A)⋅det(B)$$
+## Matrice inversa
+**Invertibilità**: Una matrice quadrata $A$ è **invertibile** se e solo se **$det(A) ≠ 0$**. 
+In tal caso, esiste un'unica matrice $A^{-1}$ tale che $A\cdot A^{-1}=A^{-1}\cdot A=I$.
+La formula per l'inversa è:$$A^{-1}=\frac{1}{det(A)}\cdot agg(A)$$
+dove $agg(A)$ è la **matrice aggiunta** (la trasposta della matrice dei cofattori).
+# 7 - Autovalori e Autovettori
+Questi concetti sono fondamentali per analizzare le direzioni "privilegiate" di una trasformazione lineare.
+## Definizioni
+Sia $A$ una matrice quadrata $n\times n$.
+- **Autovettore**: Un vettore **non nullo** $v$ tale che la sua direzione non viene cambiata quando viene trasformato da $A$. Matematicamente:$$A\vec{v}=\lambda\vec{v}$$
+- **Autovalore**: Lo scalare $\lambda$ che misura di quanto l'autovettore $v$ viene "stirato" o "compresso" dalla trasformazione.
+- **Autospazio $V_\lambda$**: L'insieme di tutti gli autovettori associati a un autovalore $\lambda$, unito al vettore nullo. 
+  È un sottospazio vettoriale.
+## Calcolo dello Spettro
+Per trovare gli autovalori e gli autovettori, si parte dall'equazione $A \vec{v} = \lambda \vec{v}$, che può essere riscritta come:$$(A−\lambda I)\vec{v}=\vec{0}$$
+Poiché cerchiamo autovettori $v$ non nulli, il sistema omogeneo deve ammettere soluzioni non banali. 
+Ciò accade se e solo se la matrice dei coefficienti $(A - \lambda I)$ è singolare, ovvero:$$det(A−\lambda I)=0$$
+Questa è l'**equazione caratteristica**.
+- **Polinomio Caratteristico** $p(\lambda)$: 
+  È il polinomio nella variabile $\lambda$ ottenuto calcolando $det(A−\lambda I)$. 
+  La sua importanza è cruciale non solo perché le sue radici sono esattamente gli autovalori della matrice $A$, ma anche perché il polinomio stesso è un **invariante per similitudine**. 
+  Questo significa che se due matrici A e B sono simili (cioè $B=P^{-1}AP$ per una qualche matrice invertibile $P$), allora avranno lo stesso polinomio caratteristico. 
+  Di conseguenza, matrici simili condividono gli stessi autovalori, la stessa traccia e lo stesso determinante. 
+  Per una matrice $A$ di ordine $n$, il polinomio caratteristico $p(\lambda)$ ha sempre grado $n$. 
+  I suoi coefficienti sono legati a importanti proprietà intrinseche della matrice che non cambiano al variare della base scelta per rappresentare la trasformazione lineare. 
+  I due coefficienti più noti sono:
+	- Il **termine noto** (coefficiente di $\lambda^{0}$), che è uguale a $p(0)=det(A−0⋅I)=det(A)$.
+	- Il coefficiente di $\lambda^{n-1}$, che è uguale a $(-1)^{n-1}tr(A)$, dove $tr(A)$ è la **traccia** della matrice (la somma degli elementi sulla diagonale principale). 
+	  Questa invarianza dei coefficienti è una proprietà potente, poiché ci permette di calcolare traccia e determinante, che sono proprietà fondamentali della trasformazione, indipendentemente dalla base scelta.
+- **Autovalori**: Sono le radici del polinomio caratteristico, ovvero le soluzioni dell'equazione caratteristica $p(\lambda)=0$. 
+  La molteplicità di un autovalore come radice del polinomio è detta **molteplicità algebrica**.
+- **Spettro $\sigma(A)$**: È l'insieme di tutti gli autovalori di $A$.
+## Procedura Pratica
+1. **Costruire la matrice $(A - \lambda I)$**: Sottrai $\lambda$ da ogni elemento della diagonale principale di $A$.
+2. **Calcolare $p(\lambda) = det(A - \lambda I)$**.
+3. **Trovare gli autovalori**: Risolvi l'equazione $p(\lambda) = 0$ per trovare le radici $\lambda_i$.
+4. **Trovare gli autospazi**: Per ogni autovalore $\lambda_i$, risolvi il sistema lineare omogeneo $(A - \lambda_i I)\vec{v} = \vec{0}$. Le soluzioni non nulle sono gli autovettori associati a $\lambda_i$.
+
+**Esempio**: Sia $A = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$.
+1. **Polinomio caratteristico**: $det(A - \lambda I) = \begin{vmatrix} 2-\lambda& 1 \\ 1 & 2-\lambda\end{vmatrix} = (2-\lambda)^2 - 1 = \lambda^2 - 4\lambda+ 3$
+2. **Autovalori**: $\lambda^2 - 4\lambda + 3 = 0 \implies (\lambda- 1)(\lambda- 3) = 0$ 
+   Lo spettro è $σ(A) = {1, 3}$.
+3. **Autospazi**:
+    - Per $\lambda₁ = 1$: 
+      Risolvi $(A - I)\vec{v} = \vec{0}$, ovvero $\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$. 
+      L'equazione è $x + y = 0$. 
+      L'autospazio $V₁$ è generato da $(1, -1)$.
+    - Per $\lambda₂ = 3$: 
+      Risolvi $(A - 3I)\vec{v} = \vec{0}$, ovvero $\begin{pmatrix} -1 & 1 \\ 1 & -1 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$. 
+      L'equazione è $-x + y = 0$. 
+      L'autospazio $V₃$ è generato da $(1, 1)$.

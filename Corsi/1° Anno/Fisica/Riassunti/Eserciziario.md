@@ -1,4 +1,7 @@
 # File: b-Esercizi Moto Bidimensionale
+
+^b4aa15
+
 ### Esercizio 1 (Serway 1.73)
 
 Un cannoncino a molla si trova sul bordo di un tavolo, a un'altezza di **1,2 m** dal pavimento. Il cannoncino spara orizzontalmente una biglia di acciaio con una velocità vettoriale istantanea di modulo $v_{i}​$ e un alzo di 35°.
@@ -12,7 +15,9 @@ f) Si descriva la forma generale della curva $x(v_{i}​)$
 #### Soluzione
 ##### a)Posizione orizzontale x(vi​)
 Dati del problema:
-$h=1,2 m\quad\quad\theta_{i}​=35\quad\quad v_{i}​$
+$h=1,2\ m$
+$\theta_{i}​=35$
+$v_{i}​$
 Le equazioni del moto per la pallina sono:$$\begin{cases} x(t) = (v_i \cos \theta_i) t \\ y(t) = h + (v_i \sin \theta_i) t - \frac{1}{2}gt^2 \end{cases} $$Ricaviamo il tempo $t$ dalla prima equazione: $$ t = \frac{x(t)}{v_i \cos \theta_i} $$Sostituiamo questa espressione per $t$ nella seconda equazione per ottenere l'equazione della traiettoria: $$ y(x) = h + (v_i \sin \theta_i) \left(\frac{x(t)}{v_i \cos \theta_i}\right) - \frac{1}{2}g \left(\frac{x(t)}{v_i \cos \theta_i}\right)^2 $$$$ y(x) = h + (\tan \theta_i) x(t) - \frac{g}{2 v_\hat{i}2 \cos^2 \theta_i} x(t)^2$$ La pallina colpisce il pavimento quando $y(t) = 0$. Dobbiamo quindi risolvere la seguente equazione di secondo grado in $x(t)$:  $$\frac{g}{2 v_\hat{i}2 \cos^2 \theta_i} x(t)^2 - (\tan \theta_i) x(t) - h = 0$$ Riordinando i termini, si ottiene: $$x(t)^2 - \left(\frac{2 v_\hat{i}2 \sin \theta_i \cos \theta_i}{g}\right) x(t) - \frac{2h v_\hat{i}2 \cos^2 \theta_i}{g} = 0$$ Risolvendo con la formula quadratica e scegliendo la radice positiva (poiché la posizione orizzontale non può essere negativa), si ottiene: $$x(v_i) = \frac{v_\hat{i}2 \sin \theta_i \cos \theta_i}{g} + \sqrt{\left(\frac{v_\hat{i}2 \sin \theta_i \cos \theta_i}{g}\right)^2 + \frac{2h v_\hat{i}2 \cos^2 \theta_i}{g}}$$ Questa espressione può essere riscritta in una forma più compatta: $$x(v_i) = \frac{v_\hat{i}2 \sin \theta_i \cos \theta_i}{g} \left[ 1 + \sqrt{1 + \frac{2gh}{v_\hat{i}2 \sin^2 \theta_i}} \right]$$ 
 ##### b) Calcolo per $v_i = 0,1 \ m/s$ 
 Sostituendo i valori numerici, si ottiene: $$x(0,1 \ m/s) = 0,041 \ m = 4,1 \ cm$$ 
@@ -39,7 +44,7 @@ Wile E. Coyote indossa pattini a rotelle a propulsione che forniscono un'acceler
 Il Coyote parte da fermo da un punto posto a 70 m dal ciglio di un burrone, nell'istante in cui Beep Beep gli passa davanti correndo verso il burrone. 
 **Domande:**
 a) Quale deve essere la velocità costante minima che Beep Beep deve mantenere per arrivare all'orlo del burrone prima del Coyote? 
-b) Arrivato al ciglio, il Coyote continua dritto nel vuoto. La sua accelerazione in volo è $\vec{a} = (15\hat{i} - 9,81\hat{j}) \frac{m}{s^2}$. Se il burrone è profondo 100 m, a che distanza dalla parete verticale atterra il Coyote? 
+b) Arrivato al ciglio, il Coyote continua dritto nel vuoto. La sua accelerazione in volo è $\\overset{\rightarrow}{a} = (15\hat{i} - 9,81\hat{j}) \frac{m}{s^2}$. Se il burrone è profondo 100 m, a che distanza dalla parete verticale atterra il Coyote? 
 c) Si determinino le componenti della velocità del Coyote nell'istante del suo impatto con il fondo. 
 #### **Soluzione**
 ##### **a) Velocità minima di Beep Beep** 
@@ -50,18 +55,21 @@ Prima, calcoliamo la velocità orizzontale del Coyote, $v_{x,1}$, quando raggiun
 Le componenti della velocità al tempo $t_3$ sono: 
 **Componente orizzontale:** $$v_x(t_3) = v_{x,1} + a_x t_3 = \sqrt{2la_x} + a_x \sqrt{\frac{2H}{|a_y|}}$$ $$v_x(t_3) = \sqrt{2100} + 15 \sqrt{\frac{200}{9,81}} \approx 45,83 + 67,7 = 113,53 \ m/s$$  **Componente verticale:** $$v_y(t_3) = a_y t_3 = -|a_y| \sqrt{\frac{2H}{|a_y|}} = -\sqrt{2|a_y|H}$$ $$v_y(t_3) = -\sqrt{2 \cdot 9,81 \cdot 100} = -\sqrt{1962} \approx -44,29 \ m/s$$
 # File: c-Esercizi Leggi Del Moto 
+
+^3b4ad7
+
 ### Esercizio 1 (Serway, n. 85) 
 Un corpo di massa M è mantenuto in posizione da una forza $\vec{F}$ e da un sistema di pulegge ideali (prive di massa e attrito), come mostrato in figura. 
 **Domande:** 
 a) Disegnare i diagrammi delle forze agenti su ogni puleggia. 
 b) Determinare le tensioni in ciascun tratto di corda (1, 2, 3, 4) e la forza di reazione nel punto di sostegno 5. 
 c) Determinare il modulo della forza $\vec{F}$. 
-#### **Soluzione** 
-##### **a) Diagrammi delle forze**
+#### Soluzione 
+##### a) Diagrammi delle forze
 **Puleggia inferiore:** Su di essa agiscono verso l'alto le tensioni dei due tratti di corda che la sorreggono (che chiameremo $T_{corda}$), e verso il basso la tensione $T_4$ del filo che sostiene la massa M. All'equilibrio: $T_4 = 2 T_{corda}$. 
 **Puleggia superiore:** Su di essa agiscono verso il basso le tensioni dei tre tratti di corda ($T_1$, $T_2$, $T_3$) e verso l'alto la reazione del sostegno $R_5$. All'equilibrio: $R_5 = T_1 + T_2 + T_3$.
 
-##### **b) e c) Calcolo delle tensioni e della forza F** 
+##### b) e c) Calcolo delle tensioni e della forza F 
 Dato che la corda è unica e le pulegge sono ideali, la tensione è la stessa in tutti i suoi segmenti. Chiamiamola $T$. $$T = |\vec{F}| = T_1 = T_2 = T_3$$ Analizziamo l'equilibrio della massa M e della puleggia inferiore: 
 1. **Corpo M:** La tensione $T_4$ nel filo che lo sostiene deve equilibrare il suo peso. $$T_4 = Mg$$
 2. **Puleggia inferiore:** La tensione $T_4$ verso il basso è bilanciata dalle tensioni dei due segmenti di corda (segmenti 2 e 3 del disegno originale) che tirano verso l'alto. $$T_4 = T_2 + T_3$$ Poiché $T_2 = T_3 = T$, abbiamo: $$Mg = 2T \Rightarrow T = \frac{1}{2}Mg$$  Di conseguenza: **Modulo della forza F (domanda c):** $$|\vec{F}| = T = \frac{1}{2}Mg$$
@@ -73,10 +81,10 @@ Per spostare un'auto impantanata, si lega una fune tra l'auto e un albero. Si es
 **Domande:** 
 a) Ricavare un'espressione della forza che agisce sull'auto. 
 b) Calcolare il modulo della tensione della fune se $\theta = 7^\circ$ e $|\vec{F}| = 100 \ N$. 
-#### **Soluzione** 
-##### **a) Forza sull'auto** 
+#### Soluzione 
+##### a) Forza sull'auto 
 La forza applicata $\vec{F}$ è bilanciata dalle componenti verticali della tensione $T$ presente in entrambe le metà della fune. Per l'equilibrio nel punto di applicazione della forza: $$|\vec{F}| = T \sin\theta + T \sin\theta = 2T \sin\theta$$ La forza che agisce sull'auto è la tensione $T$ della fune. Possiamo esprimerla in funzione di $F$: $$T = \frac{|\vec{F}|}{2 \sin\theta}$$ Questa è l'espressione della forza che agisce sull'auto (e anche sull'albero). 
-##### **b) Calcolo della tensione** 
+##### b) Calcolo della tensione 
 Con $\theta = 7^\circ$ e $|\vec{F}| = 100 \ N$: $$T = \frac{100 \ N}{2 \sin(7^\circ)} \approx \frac{100 \ N}{2 \cdot 0,1218} \approx 410,3 \ N$$ La macchina "sente" una forza di oltre 400 N, un notevole vantaggio meccanico.
 ### Esercizio 3 (Serway n. 91) 
 Un cuscino di massa $m$ viene lasciato cadere da fermo dalla sommità di un palazzo alto $h$. Un vento costante esercita una forza orizzontale $\vec{F}$ sul cuscino. La resistenza dell'aria verticale è trascurabile. **Domande:** 
@@ -84,14 +92,14 @@ a) Mostrare che la traiettoria del cuscino è una linea retta.
 b) Il cuscino cadrà con velocità costante? Spiegare. 
 c) Se $m=1,2 \ kg$, $h=8 \ m$ e $F=2,4 \ N$, a che distanza dalla base del palazzo atterrerà il cuscino?  
 d) Se il cuscino viene lanciato con una velocità iniziale non nulla, che tipo di traiettoria seguirà? Spiegare. 
-#### **Soluzione**
-##### **a) Traiettoria del cuscino** 
+#### Soluzione
+##### a) Traiettoria del cuscino 
 Le forze agenti sono la gravità ($m\vec{g}$) e il vento ($\vec{F}$). Le equazioni del moto sono: $$\begin{cases} m a_x = F \\ m a_y = -mg \end{cases} \implies \begin{cases} a_x = F/m \\ a_y = -g \end{cases}$$  Integrando due volte rispetto al tempo, partendo da fermo ($v_0=0$) e da una posizione iniziale $(x_0=0, y_0=h)$: $$\begin{cases} x(t) = \frac{1}{2} \frac{F}{m} t^2 \\ y(t) = h - \frac{1}{2}gt^2 \end{cases}$$  Per trovare l'equazione della traiettoria, eliminiamo il tempo $t$. Dalla prima equazione ricaviamo $t^2 = \frac{2m}{F}x(t)$. Sostituendo nella seconda: $$y(x) = h - \frac{1}{2}g \left(\frac{2m}{F}x\right) = h - \frac{mg}{F}x$$  Questa è l'equazione di una **retta**, quindi la traiettoria è rettilinea.  
-##### **b) Velocità del cuscino**
+##### b) Velocità del cuscino
 Le componenti della velocità sono: $v_x(t) = a_x t = \frac{F}{m}t$ e $v_y(t) = a_y t = -gt$.  Il modulo della velocità (la celerità) è: $$|\vec{v}(t)| = \sqrt{v_x^2 + v_y^2} = \sqrt{\left(\frac{F}{m}t\right)^2 + (-gt)^2} = t \sqrt{\left(\frac{F}{m}\right)^2 + g^2}$$  Poiché il modulo della velocità dipende dal tempo $t$, **non è costante**. 
-##### **c) Distanza di atterraggio** 
+##### c) Distanza di atterraggio 
 Il cuscino atterra quando $y(x_1) = 0$. Usando l'equazione della traiettoria: $$0 = h - \frac{mg}{F}x_1 \Rightarrow x_1 = \frac{hF}{mg}$$  Sostituendo i valori: $$x_1 = \frac{8 \ m \cdot 2,4 \ N}{1,2 \ kg \cdot 9,81 \ m/s^2} \approx 1,63 \ m$$ 
-##### **d) Traiettoria con velocità iniziale non nulla** 
+##### d) Traiettoria con velocità iniziale non nulla 
 Se il cuscino ha una velocità iniziale $\vec{v}_0$, il moto è governato da un'accelerazione vettoriale **costante**: $$\vec{a} = \frac{F}{m}\hat{i} - g\hat{j}$$  Un corpo soggetto a un'accelerazione costante (sia in modulo che in direzione) segue una traiettoria **parabolica**, a meno che la velocità iniziale non sia parallela al vettore accelerazione (nel qual caso il moto rimane rettilineo).  L'asse di questa parabola sarà inclinato e parallelo alla direzione del vettore $\vec{a}$. 
 ### Esercizio 4 (Serway, n. 92) 
 Un blocco di massa $m_1$ giace su un piano orizzontale privo di attrito. È collegato tramite un sistema di pulegge e una fune ideale a un blocco di massa $m_2$ che pende verticalmente. 
@@ -102,21 +110,21 @@ c) Cosa succede se $m_1$ è molto minore di 1,3 kg?
 d) Cosa succede se $m_1$ tende all'infinito?  
 e) Quanto vale la tensione della corda nel caso d)?  
 f) È possibile rispondere a c), d), e) senza risolvere b)? Spiegare.
-#### **Soluzione** 
-##### **a) Relazione tra le accelerazioni** 
+#### Soluzione 
+##### a) Relazione tra le accelerazioni 
 Questa è una relazione di vincolo cinematico. Se il blocco $m_1$ si sposta orizzontalmente di una distanza $\Delta x_1$, la fune deve scorrere. Questa lunghezza di fune si distribuisce sui due segmenti verticali che sorreggono la puleggia mobile a cui è attaccato $m_2$. Se $m_2$ scende di $\Delta y_2$, ogni segmento verticale si allunga di $\Delta y_2$, richiedendo una lunghezza totale di fune pari a $2\Delta y_2$. Pertanto, il vincolo è: $$\Delta x_1 = 2 \Delta y_2$$ Derivando due volte rispetto al tempo, otteniamo la relazione tra i moduli delle accelerazioni $a_1$ e $a_2$: $$a_1 = 2a_2$$ L'accelerazione del blocco 1 è il doppio di quella del blocco 2. 
-##### **b) Accelerazione di $m_2$** 
+##### b) Accelerazione di $m_2$** 
 Scriviamo le equazioni della dinamica per i due blocchi. Sia $T$ la tensione nella fune. 
 **Blocco 1:** $T = m_1 a_1$ 
 **Blocco 2:** Il blocco è sorretto da una puleggia su cui agiscono due tratti di fune verso l'alto. 
 La forza netta verso l'alto è $2T$. $$m_2g - 2T = m_2 a_2$$ Sostituiamo $a_1 = 2a_2$ e $T=m_1 a_1$ nell'equazione per il blocco 2: $$m_2g - 2(m_1 a_1) = m_2 a_2$$ $$m_2g - 2(m_1 (2a_2)) = m_2 a_2$$ $$m_2g - 4m_1 a_2 = m_2 a_2$$ $$m_2g = (4m_1 + m_2) a_2$$ L'accelerazione del blocco 2 è quindi: $$a_2 = \frac{m_2 g}{4m_1 + m_2}$$ 
-#####  **c) Limite per $m_1 \ll m_2$**
+#####  c) Limite per $m_1 \ll m_2$**
 Se $m_1$ è trascurabile rispetto a $m_2$, il termine $4m_1$ al denominatore è molto piccolo. $$a_2 \approx \frac{m_2 g}{m_2} = g$$  Il blocco 2 cade essenzialmente in caduta libera, poiché il blocco 1 non oppone quasi nessuna inerzia.  
-##### **d) Limite per $m_1 \to \infty$**
+##### d) Limite per $m_1 \to \infty$**
 Se $m_1$ è molto grande, il termine $4m_1$ al denominatore domina.  $$a_2 = \frac{m_2 g}{4m_1 + m_2} \approx \frac{m_2 g}{4m_1} \to 0$$ L'accelerazione del blocco 2 tende a zero. Il sistema rimane fermo, poiché il blocco 1 è troppo "pesante" da muovere.  
-##### **e) Tensione per $m_1 \to \infty$** 
+##### e) Tensione per $m_1 \to \infty$** 
 Nel caso d), il sistema è in equilibrio statico ($a_2 \approx 0$). Dall'equazione per il blocco 2: $$m_2g - 2T = m_2 a_2 \approx 0 \implies T \approx \frac{m_2 g}{2}$$ La tensione nella corda è la metà del peso del blocco 2.  
-##### **f) Risposte qualitative** 
+##### f) Risposte qualitative 
 Sì, è possibile rispondere basandosi sull'intuizione fisica: 
 **c) $m_1 \ll m_2$:** 
 Se la massa $m_1$ è quasi zero, non oppone resistenza. Il blocco $m_2$ è libero di cadere e la sua accelerazione sarà $g$.
@@ -126,6 +134,9 @@ Se la massa $m_1$ è infinita, agisce come un'ancora. Il sistema non può muover
 
 
 # File d - Esercizi Applicazioni Leggi Del Moto
+
+^4a3424
+
 ## Serway, pr. 5.84
 Un blocco di alluminio ($m_{1}​=2 kg$) e un blocco di rame ($m_{2}=6 kg$) sono collegati da una corda su una puleggia. Il blocco di rame è su un piano inclinato di $\theta=30°$. 
 I blocchi poggiano su una superficie di acciaio. Coefficienti d'attrito: 
@@ -207,7 +218,7 @@ b) Si calcoli il suo peso apparente nel punto più alto della traiettoria.
 c) Si dica in quale modo il peso apparente del pilota potrebbe essere reso nullo cambiando il raggio o il modulo della velocità dell'aereo.
 ### Soluzione:
 #### a)
-Le forze nel punto più basso sono la forza normale ($N_{1}​$) verso l'alto e il peso ($mg$) verso il basso. $$N_{1}​-mg=m \frac{v_{basso}^{2}}{R}\implies​N_{1}​=m\left(\frac{v_{basso}^{2}}{R}​​+g \right)=0,378\times10^{4} N$$
+Le forze nel punto più basso sono la forza normale ($N_{1}​$) verso l'alto e il peso ($mg$) verso il basso. $$N_{1}​-mg=m \frac{v_{basso}^{2}}{R}\implies​N_{1}​=m\left(\frac{v_{basso}^{2}}{R}​​+g \right)=0,378\\times 10^{4} N$$
 #### b)
 Nel punto più alto, le forze sono $N_{2}$​ e $mg$ verso il basso. $$N_{2}+mg=m \frac{v_{alto}^{2}}{R}\implies N_{2}​=m\left( \frac{v_{alto}^{2}}{R}-g\right)=2,8553×10^{3} N$$
 #### c)
@@ -286,6 +297,9 @@ $\displaystyle r= \frac{a_{c}}{V^{2}}​= \frac{(23 m/s)^{2}}{2,629 m/s^{2}​
 #### c)
 Per la stessa curva, il raggio è costante. La nuova velocità si ottiene dalla nuova accelerazione centripeta: $\displaystyle V'=\sqrt{ a_{c}'​r​ }=\sqrt{ g\tan\theta'\cdot r​ }=\sqrt{ g\tan(9°)\cdot 201,249 m }​=17,683 m/s$.
 # File e - Esercizi Lavoro Ed Energia
+
+^de2908
+
 ## Serway, pr. 7.61
 Due forze costanti sono applicate a un corpo avente massa $m=5 kg$, libero di muoversi nel piano $xy$. Le due forze $F_{1}$​ e $F_{2}$​ hanno modulo rispettivamente $25 N$ e $42 N$ e formano un angolo con il semiasse x positivo rispettivamente di $35°$ e $150°$. Nell'istante $t=0$ il corpo si trova nell'origine con velocità $\overset{\rightarrow}{v_{0}}​=(4\hat{i}+2,5\hat{j}) m/s$.
 **Domande:** 
@@ -401,6 +415,9 @@ Si usa la conservazione dell'energia per trovare la velocità $v$ della zucca in
 
 
 # File f - Quantità di moto e Sistemi
+
+^68fa33
+
 ## Esercizio 1
 Un proiettile di massa $m=0,008 kg$ viene sparato contro un blocco di massa $M=0,25 kg$ inizialmente a riposo su un tavolo di altezza $h=1m$. Il proiettile si conficca nel blocco, che cade dal tavolo toccando il suolo in un punto a una distanza orizzontale $d=2m$ dal tavolo.
 domande:
@@ -476,19 +493,33 @@ MV_{b2,x}​+mV_{pf,x}​=mV_{pi,x}
 #### b) Calcolo della frazione di energia cinetica dissipata
 La frazione di energia cinetica iniziale del proiettile che è stata dissipata è data da: $$\frac{|\Delta K_{p}|​}{K_{p,i}}​=\frac{K_{p,i}-K_{p,f}​}{K_{p,i}​}=1-\frac{K_{p,f}​​}{K_{p,i}​}=1-\frac{\frac{1}{2}​mV_{pf,x}^{2}​​}{\frac{1}{2}mV_{pi,x}^{2}2}​​=1-\left( \frac{V_{pf,x}}{V_{pi,x}​​​} \right)^{2} $$
 Sostituendo i valori: 
-$$1−(400m/s100m/s​)2=1−(41​)2=1−161​=1615​=0,9375$$ 
-L'energia cinetica iniziale del proiettile è $$Kp,i​=21​mVpi,x2​=21​(0,005kg)(400m/s)2=400J$$L'energia cinetica dissipata è $$|ΔKp​|=0,9375\cdot 400J=375J$$
+$$1-\left( \frac{400m/s}{100m/s}​ \right)^{2}=1-\left( \frac{1}{4} \right)^{2}=1-\frac{1}{16}=\frac{15}{16}=0,9375$$ 
+L'energia cinetica iniziale del proiettile è $K_{p,i​}=\frac{1}{2}​mV_{pi,x}^{2}​=\frac{1}{2}​(0,005kg)(400m/s)^{2}=400J$
+L'energia cinetica dissipata è $$|\Delta K_{p}​|=0,9375\cdot 400J=375J$$
 ## Esercizio 4
-Un punto materiale avente massa m1​=0,002kg in moto con velocità V1,i​=8m/s urta centralmente in modo elastico un punto materiale avente massa m2​=0,001kg inizialmente in quiete. 
+Un punto materiale avente massa $m_1​=0,002kg$ in moto con velocità $V_{1,i}​=8m/s$ urta centralmente in modo elastico un punto materiale avente massa $m_{2}=0,001kg$ inizialmente in quiete. 
 domande
 a) si calcoli il modulo della velocità di ciascun punto materiale dopo l'urto.
-b) si calcoli il modulo della velocità di ciascun punto materiale dopo l'urto nel caso in cui il secondo punto materiale abbia massa m2​=0,01Kg.
-c) si calcoli l'energia cinetica del punto materiale di massa m1​ dopo l'urto nei due casi a) e b); in quale dei due casi il punto materiale perde più energia cinetica?
+b) si calcoli il modulo della velocità di ciascun punto materiale dopo l'urto nel caso in cui il secondo punto materiale abbia massa $m_{2}=0,01Kg$.
+c) si calcoli l'energia cinetica del punto materiale di massa $m_{1}$ dopo l'urto nei due casi a) e b); in quale dei due casi il punto materiale perde più energia cinetica?
 ### Soluzioni:
 #### a) Calcolo delle velocità dopo l'urto (caso a)
-Trattandosi di un urto elastico unidimensionale, si possono usare le formule specifiche per calcolare le velocità finali dei due corpi, dove V2,i​=0: V1,f​=(m1​+m2​m1​−m2​​)V1,i​+(m1​+m2​2m2​​)V2,i​=(0,002kg+0,001kg0,002kg−0,001kg​)\cdot (8m/s)=31​\cdot 8m/s\approx 2,6667m/s V2,f​=(m1​+m2​2m1​​)V1,i​+(m1​+m2​m2​−m1​​)V2,i​=(0,002kg+0,001kg2\cdot 0,002kg​)\cdot (8m/s)=34​\cdot 8m/s\approx 10,6667m/s  
+Trattandosi di un urto elastico unidimensionale, si possono usare le formule specifiche per calcolare le velocità finali dei due corpi, dove $V_{2,i}​=0$: $$\begin{array}{l}
+\displaystyle V_{1,f​}=\left(\frac{m_{1}​-m_{2}}{m_{1}​+m_{2}​}​​ \right)V_{1,i​}+\left( \frac{​2m_{2}}{m_{1}​+m_{2}}​​ \right)V_{2,i​}=\left( \frac{0,002kg-0,001kg}{0,002kg+0,001kg}​\right)\cdot (8m/s)=\frac{1}{3}​\cdot 8m/s\approx 2,6667m/s \\
+\displaystyle V_{2,f​}=\left(\frac{2m_{1}}{m_{1}+m_{2}}​​ \right)V_{1,i}​+\left( ​\frac{m_{2}​-m_{1}​​}{m_{1}+m_{2}} \right)V_{2,i​}=\left(\frac{2\cdot 0,002kg​}{0,002kg+0,001kg} \right)\cdot (8m/s)=\frac{4}{3}​\cdot 8m/s\approx 10,6667m/s
+\end{array}$$  
 #### b) Calcolo delle velocità dopo l'urto (caso b)
-Utilizzando le stesse formule, ma con la nuova massa m2​=0,01kg: V1,f​=(m1​+m2​m1​−m2​​)V1,i​=(0,002kg+0,01kg0,002kg−0,01kg​)\cdot (8m/s)=(0,012−0,008​)\cdot 8m/s\approx −5,3333m/s V2,f​=(m1​+m2​2m1​​)V1,i​=(0,002kg+0,01kg2\cdot 0,002kg​)\cdot (8m/s)=(0,0120,004​)\cdot 8m/s\approx 2,6667m/s  
-#### c) Calcolo e confronto dell'energia cinetica di m1​  
-**Caso a):** Energia cinetica finale di m1​: K1,f​=21​m1​V1,f2​=21​(0,002kg)(2,6667m/s)2\approx 0,0071J Energia cinetica iniziale di m1​: K1,i​=21​m1​V1,i2​=21​(0,002kg)(8m/s)2=0,064J Variazione di energia cinetica: |ΔK1​|=K1,i​−K1,f​\approx 0,064J−0,0071J=0,0569J  
-**Caso b):** Energia cinetica finale di m1​: K1,f​=21​m1​V1,f2​=21​(0,002kg)(−5,3333m/s)2\approx 0,0284J Variazione di energia cinetica: |ΔK1​|=K1,i​−K1,f​\approx 0,064J−0,0284J=0,0356J Confrontando i valori, il punto materiale di massa m1​ perde più energia cinetica nel caso a), dove la massa m2​ è minore.
+Utilizzando le stesse formule, ma con la nuova massa $m_2​=0,01kg$: $$\begin{array}{l}
+\displaystyle V_{1,f​}=\left( \frac{​m_1​-m_2​​}{m_1​+m_2} \right)V_{1,i​}=\left( \frac{0,002kg-0,01kg​}{0,002kg+0,01kg} \right)\cdot (8m/s)=\left( \frac{-0,008}{0,012}​ \right)\cdot 8m/s\approx -5,3333m/s \\
+\displaystyle V_{2,f​}=\left( ​\frac{2m_1}{m_1​+m_2}​​ \right)V_{1,i​}=\left( \frac{2\cdot 0,002kg}{0,002kg+0,01kg}​ \right)\cdot (8m/s)=\left( \frac{0,004}{0,012}​ \right)\cdot 8m/s\approx 2,6667m/s
+\end{array}$$  
+#### c) Calcolo e confronto dell'energia cinetica di m_1​  
+##### Caso a): 
+Energia cinetica finale di $m_1$​: $\displaystyle K_{1,f}​=\frac{1}{2}m_1​V_{1,f}^{2}​=\frac{1}{2}​(0,002kg)(2,6667m/s)^{2}\approx 0,0071J$ 
+Energia cinetica iniziale di $m_1$​: $\displaystyle K_{1,i}​=\frac{1}{2}​m_1​V_{1,i}^{2}​=\frac{1}{2}(0,002kg)(8m/s)^{2}=0,064J$ 
+Variazione di energia cinetica: $\displaystyle|\Delta K_{1}|=K_{1,i}​-K_{1,f}​\approx 0,064J-0,0071J=0,0569J$  
+##### Caso b):
+Energia cinetica finale di $m_1$​: $K_{1,f}​=\frac{1}{2}​m_1​V_{1,f}^{2}​=\frac{1}{2}​(0,002kg)(-5,3333m/s)^{2}\approx 0,0284J$ 
+Variazione di energia cinetica: $|\Delta K_{1}​|=K_{1,i}​-K_{1,f}​\approx 0,064J-0,0284J=0,0356J$ 
+
+Confrontando i valori, il punto materiale di massa $m_1$​ perde più energia cinetica nel caso a), dove la massa $m_2$​ è minore.

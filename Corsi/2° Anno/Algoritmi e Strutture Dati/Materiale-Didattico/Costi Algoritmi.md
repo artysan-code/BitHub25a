@@ -18,7 +18,6 @@
 | Quick Sort     | $O(\log n)$     | $\Theta(n\log n)$ | $\Theta (n\log n)$ | $O(n^{2})$      |
 | Quick sort rnd | $O(\log n)$     | $\Theta(n\log n)$ | $\Theta (n\log n)$ | $O(n^{2})$      |
 
-
 ## Ordinamento non Confronto
 
 | Nome Algoritmo | Costo (memoria) | Tempo             | Caso Migliore      | Caso Peggiore     |
@@ -30,12 +29,12 @@
 
 ## Heap
 
-| Nome Funzione    | Costo (memoria) | Tempo         | Caso Migliore | Caso Peggiore | Descrizione                                      |
-| ---------------- | --------------- | ------------- | ------------- | ------------- | ------------------------------------------------ |
-| fixHeap          | $O(1)$          | $O(\log(n))$  | X             | X             | Ripara l'Heap                                    |
-| extractMax       | $O(1)$          | $O(\log(n))$  | X             | X             | Salva il massimo (radice) e lo rimuove dall'heap |
-| heapify          | $O(1)$          | $O(n)$        | X             | X             | Costruisce un Heap usando ricorsivamente fixHeap |
-| heapSort         | $O(n)$          | $O(n\log(n))$ | X             | X             | Heapify + n volte extractMax                     |
+| Nome Funzione | Costo (memoria) | Tempo         | Caso Migliore | Caso Peggiore | Descrizione                                      |
+| ------------- | --------------- | ------------- | ------------- | ------------- | ------------------------------------------------ |
+| fixHeap       | $O(1)$          | $O(\log(n))$  | X             | X             | Ripara l'Heap                                    |
+| extractMax    | $O(1)$          | $O(\log(n))$  | X             | X             | Salva il massimo (radice) e lo rimuove dall'heap |
+| heapify       | $O(1)$          | $O(n)$        | X             | X             | Costruisce un Heap usando ricorsivamente fixHeap |
+| heapSort      | $O(n)$          | $O(n\log(n))$ | X             | X             | Heapify + n volte extractMax                     |
 
 |                  | FindMin     | Insert      | Delete          | DelMin          | IncKey          | DecKey      | merge       |
 | ---------------- | ----------- | ----------- | --------------- | --------------- | --------------- | ----------- | ----------- |
@@ -43,6 +42,7 @@
 | Heap Binomiali   | $O(\log n)$ | $O(\log n)$ | $O(\log n)$     | $O(\log n)$     | $O(\log n)$     | $O(\log n)$ | $O(\log n)$ |
 | Heap Fibonacci   | $O(1)$      | $O(1)$      | $O(\log n)^{*}$ | $O(\log n)^{*}$ | $O(\log n)^{*}$ | $O(1)^{*}$  | $O(1)$      |
 $^{*}=$ analisi ammortizzata 
+
 ## Strutture Dati
 
 | Struttura Dati              | $search$    | $insert$    | $delete$    | Spazio |

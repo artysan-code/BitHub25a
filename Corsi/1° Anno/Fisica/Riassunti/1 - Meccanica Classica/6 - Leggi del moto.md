@@ -1,22 +1,40 @@
 [[5 - Moto relativo|Lezione Precedente]]
-La **dinamica** studia le cause del moto. 
-Il concetto di **forza** è introdotto per descrivere l'interazione tra corpi, che può essere di **contatto** (es. spingere un oggetto, forza elastica di una molla) o a **distanza** (es. forza di gravità, forza elettromagnetica). 
-Le forze sono grandezze vettoriali. 
-Un dinamometro è lo strumento usato per misurarne l'intensità.
+# Le Forze
+La **dinamica** è la branca della fisica che studia le cause del moto dei corpi. 
+Una **forza** è un'interazione tra corpi che può modificare lo stato di moto di un oggetto. 
+Qualitativamente, è ciò che serve per dare un'accelerazione a un corpo. Le forze possono essere classificate in:
+- **Forze di contatto**: Derivano dal contatto fisico tra due oggetti (es. una spinta, la forza elastica di una molla).
+- **Forze a distanza (o di campo)**: Agiscono attraverso lo spazio senza contatto fisico (es. forza gravitazionale, forza elettromagnetica).
 
-La **prima legge della dinamica** (o principio di inerzia) afferma che un corpo mantiene il suo stato di quiete o di moto rettilineo uniforme se la forza risultante su di esso è nulla. 
-Un sistema di riferimento in cui vale questa legge è detto **sistema inerziale**. 
-Questo principio fu formulato da Galileo e poi formalizzato da Newton, e rappresenta una rottura con l'idea aristotelica che per il moto fosse sempre necessaria una forza. 
-Un corpo che si muove in assenza di forze continuerà a muoversi a velocità costante all'infinito.
+Una forza è una **grandezza vettoriale**, caratterizzata da modulo, direzione e verso. Quando più forze agiscono su un corpo contemporaneamente, l'effetto complessivo è dato dalla loro somma vettoriale, detta **forza risultante**.
+# Le Tre Leggi della Dinamica
+## 1. Prima Legge (Principio d'Inerzia)
+Un corpo isolato, ovvero non soggetto a forze esterne o con una forza risultante nulla, mantiene il suo stato di moto: 
+se è fermo, rimane fermo; 
+se è in moto, si muove di moto rettilineo uniforme. 
+Un sistema di riferimento in cui questa legge è valida è detto **sistema di riferimento inerziale**.
+## 2. Seconda Legge (Principio Fondamentale della Dinamica)
+L'accelerazione $(a)$ di un corpo è direttamente proporzionale alla forza risultante $(F_{ris}​)$ che agisce su di esso e inversamente proporzionale alla sua **massa inerziale** $(m)$.$$\vec{a}=\frac{\vec{F}_{ris}}{m}​​\text{ o, più comunemente, }\vec{F}_{ris​}=m\vec{a}$$
+La massa è una proprietà intrinseca di un corpo che ne misura l'inerzia, ovvero la resistenza a cambiare il proprio stato di moto. 
+L'unità di misura della forza nel Sistema Internazionale è il **Newton** $(N)$, dove $1N=1kg\cdot m/s^2$.
+## 3. Terza Legge (Azione e Reazione)
+Quando due corpi interagiscono, la forza che il corpo $A$ esercita sul corpo $B$ è uguale in modulo e ha direzione opposta rispetto alla forza che il corpo $B$ esercita sul corpo $A$.$$\vec{F}_{AB}​=-\vec{F}_{BA}​$$
+È cruciale notare che queste due forze agiscono su corpi diversi e quindi non si annullano a vicenda.
+### Forze e Applicazioni
+- **Forza di Gravità e Peso**: 
+  La forza di attrazione gravitazionale che la Terra esercita su un corpo è detta **forza peso** $(F_p​)$. 
+  In prossimità della superficie terrestre, il suo modulo è $F_p​=mg$, dove $g$ è l'accelerazione di gravità.
+- **Reazione Vincolare (Forza Normale)**: 
+  Quando un corpo è appoggiato su una superficie, questa esercita sul corpo una forza di contatto, perpendicolare alla superficie stessa, chiamata **forza normale** $(N)$. 
+  La sua funzione è bilanciare le componenti di forza che agirebbero perpendicolarmente alla superficie.
 
-La **seconda legge della dinamica** (o legge di Newton) quantifica la relazione tra forza, massa e accelerazione:$$F_{\text{ris}}​=m\cdot a$$dove $F_{\text{ris}}$​ è la forza risultante (somma vettoriale di tutte le forze), $m$ è la **massa inerziale** e $a$ è l'accelerazione. 
-L'unità di misura della forza è il **Newton (N)**, definito come la forza che, applicata a un corpo di massa $1 kg$, gli imprime un'accelerazione di $1m/s^{2}$. 
-La massa inerziale è una proprietà intrinseca di un corpo che misura la sua resistenza a cambiare stato di moto.
+**Esempio: Misurare il peso in un ascensore** 
+La lettura di un dinamometro in un ascensore non corrisponde sempre al peso effettivo del corpo $(mg)$. 
+Applicando la seconda legge di Newton a un blocco di massa $m_1$​ sospeso a un dinamometro, si ottiene:$$T-m_1​g=m_1​a_y​\implies T=m_1​(g+a_y​)$$
 
-La **terza legge della dinamica** (o principio di azione e reazione) afferma che se un corpo $A$ esercita una forza su un corpo $B$ ($\vec{F}_{AB}$​), allora $B$ esercita una forza uguale e contraria su $A$ ($F_{}{BA}​=-F_{AB}$​). 
-È importante notare che queste due forze agiscono su corpi diversi e quindi non si annullano a vicenda.
-Un esempio pratico è un razzo che, espellendo gas verso il basso, riceve una spinta uguale e contraria verso l'alto. 
-La forza di gravità e la reazione vincolare sono un altro esempio di questa legge.
-
+dove $T$ è la tensione misurata dal dinamometro e $a_y$​ è l'accelerazione dell'ascensore. 
+Se l'ascensore accelera verso l'alto $(a_y​>0)$, la tensione è maggiore del peso. 
+Se accelera verso il basso $(a_y​<0)$, la tensione è minore. 
+Se la velocità è costante $(a_y​=0)$, la tensione è uguale al peso.
 [[7 - Applicazioni leggi del moto|Lezione Successiva]]
 [[Eserciziario#^3b4ad7|Esercizi svolti sul capitolo]]

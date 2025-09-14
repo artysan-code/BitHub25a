@@ -1,16 +1,27 @@
 [[4 -Moto Bidimensionale|Lezione Precedente]]
-Il **moto relativo** studia come le misurazioni di posizione, velocità e accelerazione cambino a seconda del sistema di riferimento dell'osservatore. 
-L'osservatore si considera sempre in quiete rispetto all'origine del proprio sistema di riferimento.
+# Concetti Fondamentali sul Moto Relativo
+In fisica, un **sistema di riferimento** è un sistema di coordinate in cui un osservatore si considera in quiete rispetto all'origine. 
+Il **moto relativo** si occupa di come le misurazioni di un punto materiale, come posizione, velocità e accelerazione, cambiano quando vengono effettuate da diversi osservatori che sono in movimento l'uno rispetto all'altro.
 
-La relazione tra il vettore posizione di un corpo rispetto a un osservatore $O$ (fermo) e quello rispetto a un osservatore $O'$ (in moto relativo) è:$$\vec{r}(t)=\vec{r}_{OO^{'}}​(t)+\vec{r}^{'}(t)$$dove $\vec{r}_{OO^{'}}$​ è il vettore posizione di $O'$ rispetto a $O$. 
-Questa relazione, nota come **equazione delle posizioni relative**, è il punto di partenza per le trasformazioni cinematiche.
+Concentriamoci sul caso di due sistemi di riferimento, $O$ e $O'$, in moto relativo, con gli assi cartesiani che rimangono paralleli.
+# Trasformazioni Galileiane
+La relazione tra la posizione di un punto $P$ osservata dal sistema $O(\vec{r})$ e quella osservata dal sistema $O' (\vec{r}')$ è data dalla somma vettoriale della posizione di $O'$ rispetto a $O (\vec{r}_{oo'})$ e della posizione di $P$ rispetto a $O'$:$$\vec{r}(t)=r_{oo'}​(t)+\vec{r}'(t)$$
+Derivando questa relazione rispetto al tempo, si ottiene la **Trasformazione Galileiana delle Velocità**, che lega le velocità del punto $P$ misurate nei due sistemi:$$\vec{v}(t)=\vec{V}_{oo'​}(t)+\vec{v}'(t)$$
+- $v(t)$ è la velocità del punto P rispetto all'osservatore $O$.
+- $v'(t)$ è la velocità del punto P rispetto all'osservatore $O'$.
+- $V_{oo'}​(t)$ è la velocità dell'osservatore $O'$ rispetto a $O$ ed è chiamata **velocità di trascinamento**.
 
-Derivando questa equazione rispetto al tempo si ottiene la **trasformazione galileiana delle velocità**:$$\vec{v}(t)=\vec{v}_{OO^{'}​}(t)+\vec{v}^{'}(t)$$dove $\vec{v}_{OO^{'}​}$ è la **velocità di trascinamento**, ovvero la velocità dell'osservatore $O'$ rispetto a $O$. 
-Questo significa che la velocità misurata da $O$ è la somma vettoriale della velocità misurata da $O'$ e della velocità di $O'$ rispetto a $O$. 
-Ad esempio, se cammini su un treno, la tua velocità rispetto a terra è la somma della tua velocità rispetto al treno e della velocità del treno rispetto a terra.
+Questa equazione indica che la velocità di un corpo è la somma vettoriale della sua velocità relativa e della velocità di trascinamento del sistema di riferimento.
 
-Un'ulteriore derivazione fornisce la relazione tra le accelerazioni: $$\vec{a}(t)=\vec{a}_{OO^{'}}​(t)+\vec{a}^{'}(t)$$Questa formula è valida se i sistemi di riferimento hanno gli assi paralleli e non ruotano l'uno rispetto all'altro. 
-Questo principio è fondamentale per capire che le leggi della fisica devono valere in tutti i sistemi di riferimento inerziali, cioè quelli che non accelerano. 
-La non validità di questa equazione in un sistema rotante ha portato Einstein a formulare le sue teorie della relatività ristretta e generale.
+Derivando nuovamente la relazione delle velocità, si ottiene la relazione per le accelerazioni:$$\vec{a}(t)=\vec{a}_{oo'​}(t)+\vec{a}'(t)$$
+- $a(t)$ è l'accelerazione del punto P rispetto a $O$.
+- $a'(t)$ è l'accelerazione del punto P rispetto a $O'$.
+- $a_{oo'​}(t)$ è l'accelerazione dell'osservatore $O'$ rispetto a $O$.
+# Importanza nelle Leggi della Dinamica
+Le trasformazioni galileiane sono fondamentali per la fisica classica. 
+Se il sistema $O'$ si muove di moto rettilineo uniforme rispetto a $O$, l'accelerazione di trascinamento $a_{oo'}$​ è nulla. 
+In questo caso, le accelerazioni misurate nei due sistemi sono uguali $(a(t)=a'(t))$. 
+Ciò significa che se $O$ è un sistema di riferimento inerziale (dove le leggi di Newton valgono), anche $O'$ lo sarà. 
+Questo principio è alla base della relatività galileiana.
 
 [[6 - Leggi del moto|Lezione Successiva]]

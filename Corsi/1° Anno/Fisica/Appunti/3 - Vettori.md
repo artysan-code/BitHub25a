@@ -63,11 +63,11 @@ Tramite la rappresentazione geometrica, $\overrightarrow w=\overrightarrow v_{1}
 
 1) Regola del parallelogramma:
 	Nota bene: le lunghezze delle frecce sono proporzionali ai moduli dei vettori corrispondenti
-	![[l31.png|300]]
+	![[Corsi/1° Anno/Fisica/Appunti/Assets/l31.png|300]]
 	
 2) Regola del triangolo:
 	Rispetto al punto 1), il vettore $\overrightarrow v_{2}$ e' stato traslato parallelamente a se stesso in modo da far coincidere la "punta" di $\overrightarrow v{1}$ con la coda di $\overrightarrow v_{2}$
-	![[l32.png|300]]
+	![[Corsi/1° Anno/Fisica/Appunti/Assets/l32.png|300]]
 
 Valgono le proprietà seguenti:
 - *proprietà commutativa*: $\overrightarrow v_{1}+\overrightarrow v_{2}=\overrightarrow v_{2}+\overrightarrow v_{1}$
@@ -76,7 +76,7 @@ Valgono le proprietà seguenti:
 Somma di più vettori:
 $\overrightarrow w=\overrightarrow v_{1}+\overrightarrow v_{2}+\overrightarrow v_{3}+\overrightarrow v_{4}$
 Applicando la regola 2) in "cascata", si vede agevolmente che il vettore somma $\overrightarrow w$  e' rappresentato dalla freccia che congiunge la "coda" del primo vettore con la "punta" dell'ultimo vettore della catena
-![[l33.png|300]]
+![[Corsi/1° Anno/Fisica/Appunti/Assets/l33.png|300]]
 
 ### Opposto di un vettore
 Il vettore $-\overrightarrow u$ e' il vettore che, sommato a $\overrightarrow u$ , fornisce come risultato il vettore nulla $\overrightarrow 0$ .
@@ -86,7 +86,7 @@ $\overrightarrow u$ e $-\overrightarrow u$ hanno lo stesso modulo ($|\ \overrigh
 
 $\overrightarrow w=\overrightarrow v_{1}-\overrightarrow v_{2}=\overrightarrow v_{1}+(-\overrightarrow v_{2})$
 Si calcola sommando il primo vettore e l'opposto del secondo vettore 
-![[l34.png|600]]
+![[Corsi/1° Anno/Fisica/Appunti/Assets/l34.png|600]]
 ### Moltiplicazione di un vettore per uno scalare
 $\overrightarrow w=c\ \overrightarrow v$  e' un vettore, e risulta $|\overrightarrow w|=|c|\cdot|\ \overrightarrow v\ |$ 
 $\overrightarrow w$ ha lo stesso verso di $\overrightarrow v$ se $c>0$

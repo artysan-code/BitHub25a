@@ -15,7 +15,7 @@ Algoritmi semplici da capire ed implementare, ma poco efficienti.
 #### Selection Sort
 ^1b6cb2
 
-In questo algoritmo, in modo iterativo, cerco l'elemento minimo dell'array e lo sostituisco con la k-esima posizione (quindi estendiamo l'ordinamento a k+1). Ovviamente in questo algoritmo k risulta essere la posizione su cui abbiamo ordinato.![[l61.png]]
+In questo algoritmo, in modo iterativo, cerco l'elemento minimo dell'array e lo sostituisco con la k-esima posizione (quindi estendiamo l'ordinamento a k+1). Ovviamente in questo algoritmo k risulta essere la posizione su cui abbiamo ordinato.![[m14.png]]
 
 Possiamo implementarlo nello pseudo-codice in questa maniera:
  > $\text{SelectionSort}(array\ A)$
@@ -52,12 +52,12 @@ Ma l'analisi è **stretta**? Cioè, $T(n)=\Theta(n^2)$? Analizziamo la linea pi�
 ^fccf0b
 
 Estendiamo l'ordinamento da k a k+1 elementi, posizioniamo l'elemento (k+1)-esimo nella posizione corretta rispetto ai primi k elementi. 
-![[l62.png]]
+![[m15.png]]
 #### Bubble Sort
 ^85319c
 
 Eseguiamo n-1 scansioni, dove ad ogni scansione guardiamo le coppie di elementi adiacenti e li scambiamo nell'ordine corretto.
-![[l63.png]]
+![[m16.png]]
 ### Ordinare in tempo meno che quadratico
 #### Merge Sort
 ^ee0d19

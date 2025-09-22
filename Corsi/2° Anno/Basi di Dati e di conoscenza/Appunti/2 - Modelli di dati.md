@@ -7,7 +7,6 @@ Un DBMS a causa delle varie funzioni generalmente non sono più efficienti di un
 
 (Da rivedere questa parte)
 ## Modello di rappresentazione dei dati
-
 A differenza di quanto si potrebbe pensare, un DBMS è predisposto a contenere e gestire **dati eterogenei**, a cui è associato uno schema costruito sulla base del **modello di dati** (che fornisce schemi, relazioni e vincoli di esistenza e consistenza).
 
 Le descrizioni e rappresentazioni dei dati a livelli diversi consentono l'indipendenza dei dati dalla rappresentazione fisica:
@@ -27,7 +26,6 @@ Da queste considerazioni deriva quindi la seguente definizione completa:
 > - **Linguaggi** per manipolarli
 
 ### Tipologie di modelli
-
 Esistono tre tipologie principali di modelli:
 - **Modello concettuale**
 - **Modello logico**
@@ -51,6 +49,12 @@ Qui possiamo quindi dedurre tre tipologie di schemi fondamentali:
 - **Schema Esterno o Vista** è una *interfaccia* che permette di "vedere" una parte della base di dati in un modello logico.
 - **Schema Logico** che descrive la logica del DBMS.
 - **Schema Fisico o Interno** che invece è la sua effettiva rappresentazione per mezzo di strutture di memorizzazione.
+## Indipendenza dei dati
+L'indipendenza dei dati è una conseguenza dell'articolazione di questi ultimi, l'accesso avviene solo tramite il livello esterno (che spesso coincide con quello logico) e hanno due forme:
+- **Indipendenza fisica**, quando il livello logico e fisico sono indipendenti da quello esterno, quindi la realizzazione fisica può cambiare senza cambiare i programmi. Una relazione è utilizzabile nello stesso modo qualunque sia la sua realizzazione fisica.
+- **Indipendenza logica**, quando il livello logico è indipendente dal livello fisico quindi aggiunte alle viste non richiedono modifiche a livello logico. Inoltre, le modifiche al livello logico lasciano inalterato lo schema esterno, sono **trasparenti**.
+
+
 ## Linguaggi per basi di dati
 Esistono due tipologie di linguaggi utilizzati nelle basi di dati:
 - **DDL: data definition language**. Un'operazione DDL si presenta come:
@@ -70,9 +74,9 @@ where aula = 'N1';
 ```
 
 I DBMS dispongono di diversi linguaggi e interfacce diverse:
-- I **linguaggi testuali interattivi** come *SQL*.
+- I **linguaggi testuali interattivi** (Esempio *SQL*, quindi esegui *query scritte*).
 - Dei **comandi** come nei linguaggi interattivi, immersi in un *linguaggio ospite* o con un *linguaggio ad hoc*.
-- Con interfacce grafiche più *amichevoli*.
+- Con interfacce grafiche più *amichevoli* (Access di Microsoft).
 
 ## Attori del sistema
 A livello professionale le figure applicate alle Basi di Dati sono le seguenti:

@@ -35,7 +35,6 @@ a\cdot T\left( \frac{n}{b} \right)+ f(n) & \text{se}\ \ n>1 \\
 \Theta(1) & \text{se}\ \ n=1
 \end{cases}$$
 ### Metodo del Teorema Master
-^ea5acf
 Da ciò imparato precedentemente:
 $$T(n)=\begin{cases}
 a\cdot T\left( \frac{n}{b} \right)+ f(n) & \text{se}\ \ n>1 \\

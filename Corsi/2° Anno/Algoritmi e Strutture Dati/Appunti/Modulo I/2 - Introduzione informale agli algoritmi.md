@@ -152,7 +152,7 @@ Si può sperare di calcolare $F_n$ in un tempo minore a $O(n)$?
 #### Algoritmo
 Utilizzando il Lemma precedentemente dimostrato, possiamo migliorare ulteriormente il calcolo di $F_{n}$ in un tempo inferiore a $O(n)$:
 
-![[2° Anno/Algoritmi e Strutture Dati/Appunti Corso/Assets/l25.png]]
+![[2° Anno/Algoritmi e Strutture Dati/Appunti/Assets/l25.png]]
 ```python
 def fibonacci5(n: int) -> int:
 	N = np.array([[1, 1], [1, 0]])
@@ -172,7 +172,7 @@ Abbiamo eseguito 3 prodotti invece che 7!
 ### Algoritmo Sei
 Applicando quindi il calcolo delle potenze ottimizzato, otteniamo il seguente pseudo-codice:
 
-![[2° Anno/Algoritmi e Strutture Dati/Appunti Corso/Assets/l26.png]]
+![[2° Anno/Algoritmi e Strutture Dati/Appunti/Assets/l26.png]]
 ```python
 def fibonacci6(n: int) -> int:
 	A = np.array([[1, 1], [1, 0]])

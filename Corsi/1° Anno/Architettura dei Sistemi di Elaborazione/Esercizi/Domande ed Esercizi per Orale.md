@@ -77,12 +77,12 @@ Le domande pubblicate sul sito dal professore sono le seguenti:
 #### Esercizi ARM
 Esercizi forniti dal professore sul sito internet di informatica. Descrivere prototipo, pre-condizioni e post-condizioni prima dell'algoritmo (preferibilmente in DNS).
 
-79) Dati X e Y interi calcolare X/Y senza utilizzare l'istruzione DIV.
-80) Dati X e Y interi calcolare X*Y senza utilizzare l'istruzione MULTICS.
+79) Dati X e Y interi calcolare X / Y senza utilizzare l'istruzione DIV.
+80) Dati X e Y interi calcolare X * Y senza utilizzare l'istruzione MULTICS.
 81) Dato un array di interi calcolare la media dei suoi elementi.
 82) Dato un array di interi calcolare il massimo dei suoi elementi.
 83) Dato un array di interi calcolare il minimo dei suoi elementi.
 84) Dati due array di interi calcolare l'AND delle celle in medesima posizione e l'OR dei risultati.
 85) Dati due array di interi calcolare l'OR delle celle in medesima posizione e l'AND dei risultati.
 86) Dato un valore intero X calcolare il suo fattoriale.
-87) Dati X e Y interi calcolare X^Y.
+87) Dati X e Y interi calcolare X ^ Y.

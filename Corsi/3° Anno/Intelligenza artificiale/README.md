@@ -1,0 +1,53 @@
+## Obiettivi del corso
+- Introduzione all'AI
+	- Scopi, Fenomeni e Processi Computazionali
+	- Paradigmi e Funzionalità
+	- Applicazione
+- Fondamenti dell'AI
+	- **Agenti Razionali**, Informazione e **Ricerca** per il *problem solving*
+	- Il ruolo della **Conoscenza**: Modelli di Mondo, Modelli delle Task e Paradigmi
+	- **Lingue ed Ia**, dal NLP al prompting
+	- Problem Solving e Ragionamento: la **Logica per la Conoscenza** e la **Deduzione**
+	- **Conoscenza e Apprendimento**: dall'incertezza al **Machine Learning**.
+- Approfondimenti
+	- Algoritmi di *Ricerca Online*: local search e random search
+	- *Machine Learning*: **Example-driven Learning**, **Reti neurali** ed **LLM**
+	- **Encoding** dei dati per l'**IA generativa**
+	- **Natural Language Processing**: dati, modelli e task.
+- Esercitazioni
+	- Completamento e pratica della parte teorica
+		- Prompting & Discussione dei progetti
+		- Progettazione degli agenti
+			- Agenti semplici
+			- Algoritmi di ricerca euristica
+		- Agenti che integrano Machine Learning e Problem-Solving
+			- Apprendimento per la soluzione dei problemi di pianificazione
+			- Classificazione dei Testi e Inferenza Testuale
+			- On-going challenge: sentiment analysis da Twitter/X
+		- Introduzione alle tecnologie più diffuse
+			- Agent Design in Python
+			- Machine Learning in Python, PyTorch
+			- Prompt Engineering
+ 
+## Corsi correlati
+- Machine Learning (Gambosi)
+- Deep Learning (RB)
+- Information Retrial (D. Croce)
+- NLP (Zanzotto)
+- Knowledge Engineering (A. Stellato)
+- AI and security (MT, RB)
+## Esame
+- Esonero intorno a inizio/fine novembre.
+- Secondo esonero verso gennaio insieme allo **Scritto Finale**. 
+- Si fa un orale anche se per solo 10 minuti a testa.
+- Secondo scritto finale invece verso febbraio.
+
+- Progetto *facoltativo* da presentare allo scritto
+	- Progetto (es. Interfacce Robotiche)
+		- Sistemi di addestramento su Open Data
+		- Neural Nets o Reinforcement Learning
+	- Approfondimento Bibliografico
+		- Assegnamento di un tema e relativa bibliografia
+		- Ricevimento dedicato
+		- Produzione di una relazione finale, stile tesi
+		- Esame: presentazione finale della tesina-

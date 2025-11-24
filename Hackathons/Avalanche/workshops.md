@@ -122,3 +122,8 @@ Linguaggio orientato ad oggetti per gli smart contract
 
 Sulla blockchain il codice è immutabile dopo il deploy, ogni esecuzione ha un costo in gas, i dati sono memorizzati in modo trasparente e persistente.
 
+## Step by Step
+
+- RPC
+- Chain ID
+- Private Key su Core

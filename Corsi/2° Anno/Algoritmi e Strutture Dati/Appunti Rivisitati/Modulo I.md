@@ -1256,7 +1256,6 @@ $$\displaystyle O(n\log_{n}k)=O\left( n \frac{\log k}{\log n} \right)$$
 > Le **strutture dati** sono organizzazioni fondamentali per memorizzare e gestire dati in modo efficiente. Una buona scelta della struttura dati può migliorare drasticamente le prestazioni di un algoritmo.
 
 ### Tipi di dato e Strutture di Dati
-
 > [!info] Definizioni fondamentali
 > **Tipo di dato:** Una specifica collezione di oggetti e di operazioni eseguibili su di essi.
 > - Esempio: un dizionario mantiene un insieme di elementi con chiavi associate per operazioni di inserimento, cancellazione e ricerca
@@ -1271,7 +1270,6 @@ Per progettare una **struttura dati efficiente** bisogna poter eseguire efficien
 
 ---
 ### Heap e Heap Sort
-
 > [!tip] Idea generale
 > L'**Heap Sort** ha lo stesso approccio incrementale del Selection Sort: seleziona gli elementi dal più grande al più piccolo usando una **struttura di dati efficiente** (heap) che permette estrazione del massimo in tempo $O(\log(n))$.
 
@@ -1445,6 +1443,47 @@ $$T(n) \leq T(n^{'})=O(n^{'})=O(2n)=O(n)$$
 
 ---
 
+### Rappresentazione dei dati
+> [!info] Paradigmi di rappresentazione
+> La rappresentazione dei dati, quindi il modo in cui vengono salvati, rappresenta una grande svolta in molte situazioni.
+> 
+> Esistono due approcci fondamentali per rappresentare strutture dati in memoria, ciascuno con caratteristiche, vantaggi e svantaggi specifici.
+
+#### Rappresentazioni indicizzate
+**Caratteristiche:**
+- Usano **array e matrici** sfruttando l'indicizzazione diretta
+- Gli indici delle celle sono numeri consecutivi
+- Accesso in tempo costante $O(1)$ tramite indice
+
+**Vantaggi:**
+- Accesso molto rapido agli elementi
+- Semplicità di implementazione
+- Cache-friendly (località spaziale)
+
+**Svantaggi:**
+- **Dimensione fissa:** non è possibile aggiungere nuove celle ad un array
+- Spreco di memoria se la dimensione è sovrastimata
+- Inserimento/cancellazione costosi (richiedono spostamenti)
+
+---
+#### Rappresentazioni collegate
+
+**Caratteristiche:**
+- Usano **record collegati** tramite puntatori
+- I record possono essere creati e distrutti dinamicamente
+- Gli indirizzi in memoria non sono necessariamente consecutivi
+
+**Vantaggi:**
+- **Dimensione dinamica:** possiamo aggiungere e togliere record facilmente
+- Inserimento/cancellazione efficienti in posizioni note
+- Uso efficiente della memoria (alloca solo ciò che serve)
+
+**Svantaggi:**
+- Accesso sequenziale più lento
+- Overhead di memoria per i puntatori
+- Minore località spaziale (peggiore per la cache)
+
+---
 ### Struttura dati Dizionario
 
 ^4be009
@@ -1457,14 +1496,23 @@ $$T(n) \leq T(n^{'})=O(n^{'})=O(2n)=O(n)$$
 - **Delete(k):** Cancella da S l'elemento con chiave k
 - **Search(k):** Restituisce l'elemento nel dizionario con chiave k, oppure null se non esiste
 
-**Implementazioni possibili:**
-
-Vi sono diverse tipologie di implementazioni, a seconda di come viene strutturata la collezione:
-- Array non ordinato: $O(1)$ insert, $O(n)$ search/delete
-- Array ordinato: $O(n)$ insert, $O(\log n)$ search, $O(n)$ delete
-- Liste concatenate
-- Tabelle hash
-- Alberi di ricerca bilanciati (BST, AVL, Red-Black)
+Vi sono diverse tipologie di implementazioni, a seconda di come viene strutturata la collezione e ciascuna ha i suoi costi:
+- Il metodo più semplice è **l'array non ordinato** dove le operazioni sono organizzate nella seguente maniera:
+	- $\text{Insert}\implies O(1)$
+	- $\text{Search}\implies O(n)$
+	- $\text{Delete}\implies O(n)$
+- Abbiamo l'implementazione con **l'array ordinato** che però, a causa della struttura dell'array, ha praticamente gli stessi costi del primo (se non peggiori):
+	- $\text{Insert}\implies \text{Search + Spostamento}\implies O(\log(n))+O(n)\implies O(n)$
+	- $\text{Search}\implies \text{Ricerca Binaria}\implies O(\log (n))$
+	- $\text{Delete}\implies O(n)$
+- Con le liste la situazione si stabilizza, soprattutto con **la lista non ordinata**:
+	- $\text{Insert}\implies O(1)$
+	- $\text{Search}\implies O(n)$
+	- $\text{Delete}\implies O(n)$
+- Mentre per **la lista ordinata** abbiamo la problematica di doverla mantenere ordinata e non poter usare la **Ricerca Binaria**. Ricordare che la ricerca binaria sfrutta gli indici che non sono disponibili in una rappresentazione a liste concatenate:
+	- $\text{Insert}\implies O(n)$
+	- $\text{Search}\implies O(n)$
+	- $\text{Delete}\implies O(n)$
 
 > [!note] Implementazione
 > Le implementazioni complete delle varie strutture sono disponibili in `/Esercizi/`
@@ -1512,48 +1560,6 @@ Vi sono diverse tipologie di implementazioni, a seconda di come viene strutturat
 > L'implementazione completa è disponibile in `/Esercizi/`
 
 ---
-### Rappresentazione dei dati
-
-> [!info] Paradigmi di rappresentazione
-> Esistono due approcci fondamentali per rappresentare strutture dati in memoria, ciascuno con caratteristiche, vantaggi e svantaggi specifici.
-
-#### Rappresentazioni indicizzate
-
-**Caratteristiche:**
-- Usano **array e matrici** sfruttando l'indicizzazione diretta
-- Gli indici delle celle sono numeri consecutivi
-- Accesso in tempo costante $O(1)$ tramite indice
-
-**Vantaggi:**
-- Accesso molto rapido agli elementi
-- Semplicità di implementazione
-- Cache-friendly (località spaziale)
-
-**Svantaggi:**
-- **Dimensione fissa:** non è possibile aggiungere nuove celle ad un array
-- Spreco di memoria se la dimensione è sovrastimata
-- Inserimento/cancellazione costosi (richiedono spostamenti)
-
----
-#### Rappresentazioni collegate
-
-**Caratteristiche:**
-- Usano **record collegati** tramite puntatori
-- I record possono essere creati e distrutti dinamicamente
-- Gli indirizzi in memoria non sono necessariamente consecutivi
-
-**Vantaggi:**
-- **Dimensione dinamica:** possiamo aggiungere e togliere record facilmente
-- Inserimento/cancellazione efficienti in posizioni note
-- Uso efficiente della memoria (alloca solo ciò che serve)
-
-**Svantaggi:**
-- Accesso sequenziale più lento
-- Overhead di memoria per i puntatori
-- Minore località spaziale (peggiore per la cache)
-
----
-
 ### Organizzazione gerarchica dei dati
 
 > [!info] Alberi come strutture gerarchiche

@@ -1,37 +1,44 @@
-## BitHub25a Comunità Educativa
-Il nostro team di BitHub25a si propone di creare uno spazio web dove poter accedere a informazioni e risorse sul Corso di Informatica dell'Università Tor Vergata.
+# BitHub25a - Appunti Universitari
+Repository di condivisione appunti del Corso di Laurea in Informatica - Università degli Studi di Roma Tor Vergata.
 
-Per ora questo è solo un repository GitHub contenente tutte le risorse per ogni lezione di questo corso, con tutte le note e le informazioni che possiamo creare e ottenere. Inoltre, questo repository è pubblico, quindi qualsiasi utente può segnalare problemi e inviare richieste per migliorare ulteriormente il progetto. Verrà in futuro creata una pagina web dedicata a fornire risorse e informazioni riguardanti il Corso di Informatica presso l'Università di Tor Vergata.
+Mantenuta da [Artysan](https://github.com/artysan-code). Contiene appunti personali e contributi di altri studenti.
+## Disclaimer
+Gli appunti sono forniti "così come sono" senza garanzie di correttezza o completezza. Non mi assumo responsabilità per eventuali errori o imprecisioni. L'affidabilità del materiale è soggettiva e varia tra i diversi contributori.
 
-Attualmente, abbiamo creato una repository su GitHub che contiene una vasta gamma di risorse per ciascuna materia del corso, compresi appunti e informazioni provenienti da varie fonti. Questa repository è pubblica, consentendo a ogni utente di segnalare problemi e inviare richieste per migliorare costantemente il progetto.
+---
+## Indice Corsi
 
-Al momento, il progetto si trova nella sua fase iniziale, con GitHub come unico punto centrale. Tuttavia, prevediamo di espanderci ulteriormente creando un sito web dedicato. Questa piattaforma consentirà agli utenti di scambiare materiali, informazioni e opinioni in un ambiente simile a un forum attivo.
-### Sono gli appunti e le informazioni attendibili?
-Il materiale didattico è stato elaborato con cura da noi e altri studenti del corso, che partecipano attivamente alle lezioni e si impegnano nel mantenere aggiornate le informazioni. Tuttavia, è importante tenere presente che gli aggiornamenti richiedono tempo e sforzi, che vengono dedicati con sacrificio da parte di studenti universitari già impegnati. Di conseguenza, potrebbe accadere che le informazioni non siano sempre aggiornate all'ultimo minuto.
+### 1° Anno
+- [Analisi Matematica](Corsi/1°%20Anno/Analisi%20Matematica)
+- [Architettura dei Sistemi di Elaborazione](Corsi/1°%20Anno/Architettura%20dei%20Sistemi%20di%20Elaborazione)
+- [Fisica](Corsi/1°%20Anno/Fisica)
+- [Geometria ed Algebra](Corsi/1°%20Anno/Geometria%20ed%20Algebra)
+- [Logica e Reti Logiche](Corsi/1°%20Anno/Logica%20e%20Reti%20Logiche)
+- [Matematica Discreta](Corsi/1°%20Anno/Matematica%20Discreta)
+- [Programmazione dei Calcolatori](Corsi/1°%20Anno/Programmazione%20dei%20Calcolatori)
+### 2° Anno
+- [Algoritmi e Strutture Dati](Corsi/2°%20Anno/Algoritmi%20e%20Strutture%20Dati)
+- [Basi di Dati e di Conoscenza](Corsi/2°%20Anno/Basi%20di%20Dati%20e%20di%20conoscenza)
+- [Calcolo Probabilità e Statistica](Corsi/2°%20Anno/Calcolo%20Probabilità%20e%20Statistica)
+- [Fondamenti di Informatica](Corsi/2°%20Anno/Fondamenti%20di%20Informatica)
+- [Linguaggi e Metodologie di Programmazione](Corsi/2°%20Anno/Linguaggi%20e%20Metodologie%20di%20Programmazione)
+- [Ricerca Operativa](Corsi/2°%20Anno/Ricerca%20Operativa)
+- [Sistemi Operativi e Reti Logiche](Corsi/2°%20Anno/Sistemi%20Operativi%20e%20Reti%20Logiche)
+### 3° Anno
+- [Algoritmi per i Big Data](Corsi/3°%20Anno/Algoritmi%20per%20i%20Big%20Data)
+- [Calcolo Numerico](Corsi/3°%20Anno/Calcolo%20numerico)
+- [Ingegneria del Software](Corsi/3°%20Anno/Ingegneria%20del%20software)
+- [Intelligenza Artificiale](Corsi/3°%20Anno/Intelligenza%20artificiale)
+- [Programmazione Java per Dispositivi Mobili](Corsi/3°%20Anno/Programmazione%20Java%20per%20dispositivi%20mobili)
+- [Programmazione Web](Corsi/3°%20Anno/Programmazione%20Web)
 
-Inoltre, poiché gli appunti sono il risultato di contributi provenienti da diversi studenti, è importante considerare che ciò potrebbe influenzare la loro affidabilità. Pertanto, sebbene si faccia il possibile per garantire la qualità del materiale, non possiamo garantire un'attendibilità assoluta. Va notato che non è praticabile richiedere la revisione dei nostri appunti da parte dei professori.
+---
+## Visualizzazione con Obsidian
+Questa repository è ottimizzata per [Obsidian](https://obsidian.md/), un editor Markdown con supporto per collegamenti bidirezionali e grafo delle note.
 
-### Posso contribuire al progetto?
-Siamo aperti a qualsiasi forma di supporto riguardante gli appunti e le informazioni, che siano nuovi contributi o modifiche agli esistenti. Ci auguriamo che questa collaborazione diventi un pilastro del nostro progetto, creando una rete di supporto tra studenti e rendendo l'esperienza universitaria più agevole per tutti.
+### Plugin Consigliati
+- **LaTeX Suite** - Per formule matematiche avanzate
 
-Per contribuire al progetto tramite GitHub, è sufficiente creare una pull request che includa il nostro progetto di base insieme alle modifiche proposte. In caso di difficoltà nel processo di merge, ci occuperemo personalmente della risoluzione dei problemi. Ogni pull request sarà attentamente esaminata prima di essere accettata o respinta.
-
-Per quanto riguarda segnalazioni di errori o altre modifiche necessarie, è possibile utilizzare il pannello Issues per segnalare gli errori e noi forniremo un modello da seguire per la presentazione del report.
-
-## BitHub25a Educational Community
-Our goal at BitHub25a is to develop a web platform dedicated to providing resources and information regarding the Computer Science Course at the University of Tor Vergata.
-
-Currently, we have created a repository on GitHub that contains a wide range of resources for each course subject, including notes and information from various sources. This repository is public, allowing any user to report issues and submit requests to constantly improve the project.
-
-At the moment, the project is in its initial phase, with GitHub as the sole focus. However, we plan to expand further by creating a dedicated website. This platform will allow users to exchange materials, information and opinions in an active forum-like environment.
-### Are the notes and information reliable?
-The teaching material has been carefully developed by us and other students of the course, who actively participate in the lessons and are committed to keeping the information up to date. However, it is important to keep in mind that upgrades require time and effort, which is sacrificed by already busy college students. As a result, it may happen that information is not always updated at the last minute.
-
-Furthermore, since the notes are the result of contributions from different students, it is important to consider that this could influence their reliability. Therefore, although every effort is made to guarantee the quality of the material, we cannot guarantee absolute reliability. It should be noted that it is not practicable to require professors to review our notes.
-
-### Can I contribute to the project?
-We are open to any form of support regarding notes and information, whether new contributions or modifications to existing ones. We hope that this collaboration will become a pillar of our project, creating a support network between students and making the university experience easier for everyone.
-
-To contribute to the project via GitHub, simply create a pull request that includes our base project along with your proposed changes. If you encounter any difficulties in the merge process, we will personally take care of troubleshooting. Each pull request will be carefully reviewed before being accepted or rejected.
-
-Regarding bug reports or other necessary changes, you can use the Issues panel to report bugs and we will provide a template for you to follow for submitting your report.
+---
+## Contribuire
+Pull request e segnalazioni tramite Issues sono benvenute. Ogni contributo sarà revisionato prima dell'accettazione.

@@ -1,6 +1,25 @@
+# Obsidian
+.obsidian/
+.trash/
 
-/.obsidian
-/1° Anno/Geometria/Geometria e algebra.zip
+# File temporanei e backup
+*.tmp
+*.bak
+~$*
+.DS_Store
+Thumbs.db
 
-2° Anno/Algoritmi e Strutture Dati/Codici/.idea/
+# File personali
 Piano di studio.md
+**/TODO.md
+**/PRIVATE.md
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# File specifici del progetto
+/1° Anno/Geometria/Geometria e algebra.zip
+2° Anno/Algoritmi e Strutture Dati/Codici/.idea/

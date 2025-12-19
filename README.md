@@ -1,7 +1,7 @@
 # BitHub25a - Appunti Universitari
 Repository di condivisione appunti del Corso di Laurea in Informatica - Università degli Studi di Roma Tor Vergata.
 
-Mantenuta da [Artysan](https://github.com/artysan-code) (Samuel Tagliacozzo), [Cromocon](https://github.com/Cromocon). Contiene appunti personali e contributi di altri studenti.
+Mantenuta da [Artysan](https://github.com/artysan-code) (Samuel Tagliacozzo), [Cromocon](https://github.com/Cromocon) (Marius Craciun). Contiene appunti personali e contributi di altri studenti.
 ## Disclaimer
 Gli appunti sono forniti "così come sono" senza garanzie di correttezza o completezza. Non mi assumo responsabilità per eventuali errori o imprecisioni. L'affidabilità del materiale è soggettiva e varia tra i diversi contributori.
 

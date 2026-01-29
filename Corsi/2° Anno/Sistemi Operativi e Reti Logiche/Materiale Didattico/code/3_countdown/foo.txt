@@ -1,0 +1,13 @@
+boot	JANUARY	2023
+book	JUNE	2023
+booze	APRIL	2022
+machine	JULY	2022
+boots	JULY	2023
+bungie	JUNE	2022
+bark	JULY	2023
+aardvark	APRIL	2022
+broken$tuff	JUNE	2021
+robots	APRIL	2023
+cat	JUNE	2023
+dog	JANUARY	2023
+no_three_cols	

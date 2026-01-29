@@ -2,7 +2,7 @@ Oltre a fornire astrazioni come processi e thread, spazi degli indirizzi e file,
 
 Per prima cosa vedremo alcuni dei principi dell’hardware per l’I/O, poi analizzeremo il software per l’I/O in generale. Il software per l’I/O può essere strutturato in livelli (layer), dove ciascuno svolge un’attività ben precisa.
 ## 5.1 - Principi hardware dell'I/O
-L’hardware per l’I/O viene considerato da punti di vista diversi: gli ingegneri elettronici lo giudicano in termini di chip, cavi, alimentatori, motori e di qualsiasi altro componente fisico. I programmatori sono interessati all’interfaccia disponibile al software: comandi accettati dall’hardware, funzioni eseguibili e possibili errori. Il nostro interesse è focalizzato sulla programmazione dell’hardware e non sul suo funzionamento interno.
+L’hardware per l’I/O viene considerato da punti di vista diversi: gli ingegneri elettronici lo giudicano in termini di chip, cavi, alimentatori, motori e di qualsiasi altro componente fisico. I programmatori sono interessati all'interfaccia disponibile al software: comandi accettati dall'hardware, funzioni eseguibili e possibili errori. Il nostro interesse è focalizzato sulla programmazione dell’hardware e non sul suo funzionamento interno.
 
 (pagine riassunte: 0.75)
 ### 5.1.1 - Dispositivi di I/O

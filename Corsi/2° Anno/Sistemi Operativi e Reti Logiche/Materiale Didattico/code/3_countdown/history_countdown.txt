@@ -1,0 +1,24 @@
+ 3008  ls -lrth
+ 3009  less countdown.c
+ 3010  clang countdown.c -o countdown
+ 3011  ./countdown
+ 3014  ./countdown &
+ 3015  ls
+ 3016  ./countdown > log_countdown.txt &
+ 3017  ls -lrth log_countdown.txt
+ 3018  less log_countdown.txt
+ 3019  ./countdown
+ 3020  ./countdown  &
+ 3021  kill 88186
+ 3022  htop
+ 3023  less log_countdown.txt
+ 3024* nohup ./countdown > nohup.out &
+ 3025  less nohup.out
+ 3026  cat countdown.sh
+ 3027  bash countdown.sh
+ 3028  bash countdown.sh  10
+ 3029  ssh danilo_croce@150.146.100.245
+ 3030  ./countdown
+ 3031  fg
+ 3032  vim countdown.sh
+

@@ -12,11 +12,9 @@ Inoltre, in molti sistemi sistemi ci sono programmi che vengono eseguiti in moda
 I sistemi operativi differiscono dai programmi utente (le applicazioni) in molti altri modi, oltre che per la loro sede. In particolare, essi sono molto grandi, complessi e di lunga vita. 
 
 ## 1.1 Che cos'è un sistema operativo
-
 E' difficile definire cosa sia un sistema operativo al di là della semplice affermazione che si tratta di software che gira in modalità kernel. Infatti, svolge due funzioni non correlate: semplifica la vita ai programmatori, dando loro accesso astratto alle risorse hardware; mentre allo stesso tempo le gestisce.
 
 ### 1.1.1 Il sistema operativo come macchina estesa
-
 L'architettura della maggior parte dei computer, a livello di linguaggio macchina, è primitiva e complicata da programmare, specialmente per l'input e l'output. 
 Per la gestione dell'hardware si utilizza appunto un software chiamato #driver. 
 Un #driver non è altro che un'interfaccia per il sistema operativo/applicazioni per comunicare con il dispositivo per la quale il driver è stato ideato. 
@@ -26,7 +24,6 @@ Mediante questa astrazione, i programmi possono leggere, scrivere e creare file.
 Una buona astrazione suddivide un'attività quasi impossibili in due attività fattibili.
 
 ### 1.1.2 Il sistema operativo come gestore delle risorse
-
 Il concetto di sistema operativo che fornisce principalmente astrazioni ai programmi applicativi è una visione top-down. Una visione alternativa, bottom-up, sostiene che il sistema operativo esiste per gestire tutti i pezzi di un sistema complesso. Il sistema operativo può mettere ordine al caos potenziale immagazzinando tutto l'output destinato alla stampante sul disco. Quando un programma ha terminato, il sistema operativo può copiare il suo output dal file su disco dove è stato immagazzinato per la stampante, mentre allo stesso tempo l'altro programma può continuare a generare altro output, dimentico del fatto che l'output non stia (ancora) andando alla stampante. La gestione delle risorse include il multiplexing (condivisione) delle risorse in due modalità diverse: nel tempo e nello spazio. Quando una risorsa è condivisa temporalmente, programmi o utenti diversi fanno a turno a usarla.
 
 ## 1.2 Storia dei sistemi operativi

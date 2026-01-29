@@ -53,6 +53,9 @@ Il parallelismo può essere presente in due forme:
 
 In questo paragrafo analizziamo il primo tipo, nel prossimo, invece, quello a livello di processore.
 #### Pipelining
+
+^a35c22
+
 Per migliorare la velocità di esecuzione delle istruzioni, sin dagli anni '50 (come con IBM Stretch), i computer sono stati dotati di **buffer di prefetch**, registri in grado di anticipare il prelievo delle istruzioni dalla memoria. Ciò ha permesso di avere le istruzioni pronte per l'esecuzione senza dover attendere la loro lettura dalla memoria principale al momento del bisogno.
 
 In pratica la tecnica di *prefetching* divide l'esecuzione dell'istruzione in due parti:
@@ -289,6 +292,9 @@ Il DVD è stato appena introdotto e già il suo successore minaccia di renderlo 
 
 (pagine riassunte: 0.25)
 ## 2.4 - Input/Output
+
+^1d8f37
+
 Come sappiamo un calcolatore è composto da tre componenti principali: la CPU, le memorie e i dispositivi di I/O. Finora abbiamo analizzato la CPU e le memorie; adesso passiamo allo studio dei dispositivi di I/O e alla loro connessione con il resto del sistema.
 ### 2.4.1 - Bus
 La configurazione tipica di un computer consiste in una scatola metallica contenente una **scheda madre**. Questa scheda ospita il chip della CPU, slot per moduli DIMM e altri chip di supporto, oltre a un bus lungo la sua lunghezza con prese per i connettori delle schede di I/O.

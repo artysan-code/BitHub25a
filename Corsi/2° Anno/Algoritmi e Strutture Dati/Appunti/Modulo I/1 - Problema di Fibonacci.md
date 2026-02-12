@@ -1,4 +1,4 @@
-> [!abstract] Introduzione al Problema
+ > [!abstract] Introduzione al Problema
 > Come modello di calcolo per permetterci di analizzare in maniera più qualitativa la complessità temporale e spaziale, studiamo il **Problema di Fibonacci**. 
 > L'obiettivo è analizzare diverse strategie risolutive per comprendere il trade-off tra tempo, spazio e correttezza.
 

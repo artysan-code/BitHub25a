@@ -1,4 +1,4 @@
- > [!abstract] Introduzione al Problema
+> [!abstract] Introduzione al Problema
 > Come modello di calcolo per permetterci di analizzare in maniera più qualitativa la complessità temporale e spaziale, studiamo il **Problema di Fibonacci**. 
 > L'obiettivo è analizzare diverse strategie risolutive per comprendere il trade-off tra tempo, spazio e correttezza.
 
@@ -25,15 +25,10 @@ $F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi}^n) \quad \text{con } \phi \approx 1.
 > [!code] Algoritmo 1: Formula di Binet
 > **Pseudocodice**
 > ```text
-> alg fibonacci1(intero n) -> intero
-> 	phi = (1 + sqrt(5)) / 2
-> 	hat_phi = (1 - sqrt(5)) / 2
-> 	return (phi^n - hat_phi^n) / sqrt(5)
-> ```
-> **Implementazione (Python)**
-> ```python
-> def fibonacci1(n: int) -> int:
-> 	return int((pow((1+sqrt(5))/2, n) - pow((1-sqrt(5))/2, n)) / sqrt(5))
+> fibonacci1 (n)
+> 1. phi = (1 + sqrt(5)) / 2
+> 2. hat_phi = (1 - sqrt(5)) / 2
+> 3. return (phi^n - hat_phi^n) / sqrt(5)
 > ```
 
 #### Algoritmo 2: Ricorsione Diretta
@@ -42,17 +37,9 @@ $F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi}^n) \quad \text{con } \phi \approx 1.
 >
 > **Pseudocodice**
 > ```text
-> alg fibonacci2(intero n) -> intero
-> 	if n <= 2 then return 1
-> 	else return fibonacci2(n-1) + fibonacci2(n-2)
-> ```
-> **Implementazione (Python)**
-> ```python
-> def fibonacci2(n: int) -> int:
-> 	if n <= 2:
-> 		return 1
-> 	else:
-> 		return fibonacci2(n-1) + fibonacci2(n-2)
+> fibonacci2 (n)
+> 1. if (n <= 2) then return 1
+> 2. else return fibonacci2(n-1) + fibonacci2(n-2)
 > ```
 
 > [!warning] Analisi della Complessità
@@ -67,21 +54,13 @@ $F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi}^n) \quad \text{con } \phi \approx 1.
 > [!code] Algoritmo 3: Memoization
 > **Pseudocodice**
 > ```text
-> alg fibonacci3(intero n) -> intero
-> 	Sia Fib un array di dimensione n
-> 	Fib[1] <- 1
-> 	Fib[2] <- 1
-> 	for i = 3 to n do
-> 		Fib[i] <- Fib[i-1] + Fib[i-2]
-> 	return Fib[n]
-> ```
-> **Implementazione (Python)**
-> ```python
-> def fibonacci3(n: int) -> int:
-> 	Fib = [0, 1, 1]
-> 	for i in range(3, n + 1):
-> 		Fib.append(Fib[i-1] + Fib[i-2])
-> 	return Fib[n]
+> fibonacci3 (n)
+> 1. Sia Fib un array di dimensione n
+> 2. Fib[1] = 1
+> 3. Fib[2] = 1
+> 4. for i=3 to n do
+> 5.     Fib[i] = Fib[i-1] + Fib[i-2]
+> 6. return Fib[n]
 > ```
 
 > [!success] Valutazione
@@ -95,23 +74,14 @@ $F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi}^n) \quad \text{con } \phi \approx 1.
 > [!code] Algoritmo 4: Spazio Costante
 > **Pseudocodice**
 > ```text
-> alg fibonacci4(intero n) -> intero
-> 	a <- 1
-> 	b <- 1
-> 	for i = 3 to n do
-> 		c <- a + b
-> 		a <- b
-> 		b <- c
-> 	return c
-> ```
-> **Implementazione (Python)**
-> ```python
-> def fibonacci4(n: int) -> int:
-> 	a, b = 1, 1
-> 	for i in range(3, n + 1):
-> 		c = a + b
-> 		a, b = b, c
-> 	return c
+> fibonacci4 (n)
+> 1. a = 1
+> 2. b = 1
+> 3. for i=3 to n do
+> 4.     c = a + b
+> 5.     a = b
+> 6.     b = c
+> 7. return c
 > ```
 
 > [!success] Valutazione
@@ -130,31 +100,17 @@ $F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi}^n) \quad \text{con } \phi \approx 1.
 > [!code] Algoritmo 6: Matrice Logaritmica
 > **Pseudocodice**
 > ```text
-> alg fibonacci6(intero n) -> intero
-> 	A <- [[1, 1], [1, 0]]
-> 	M <- potenzaDiMatrice(A, n-1)
-> 	return M[0][0]
-> 
-> func potenzaDiMatrice(Matrice A, intero k) -> Matrice
-> 	if k = 0 return MatriceIdentità
-> 	M <- potenzaDiMatrice(A, floor(k/2))
-> 	M <- M * M  // Moltiplicazione riga per colonna
-> 	if k è dispari then M <- M * A
-> 	return M
-> ```
-> **Implementazione (Python)**
-> ```python
-> def fibonacci6(n: int) -> int:
-> 	A = np.array([[1, 1], [1, 0]])
-> 	M = potenzadiMatrice(A, n - 1)
-> 	return M[0][0]
-> 
-> def potenzadiMatrice(A, k: int):
-> 	if k == 0: return np.eye(2)
-> 	M = potenzadiMatrice(A, k // 2)
-> 	M = np.dot(M, M)
-> 	if k % 2 == 1: M = np.dot(M, A)
-> 	return M
+> fibonacci6 (n)
+> 1. A = [[1, 1], [1, 0]]
+> 2. M = potenzaDiMatrice(A, n-1)
+> 3. return M[0][0]
+>
+> potenzaDiMatrice (A, k)
+> 1. if (k = 0) then return MatriceIdentità
+> 2. M = potenzaDiMatrice(A, floor(k/2))
+> 3. M = M * M
+> 4. if (k è dispari) then M = M * A
+> 5. return M
 > ```
 
 > [!success] Risultato Finale
@@ -169,7 +125,7 @@ $F_{n}=\frac{1}{\sqrt{5}}(\phi^n-\hat{\phi}^n) \quad \text{con } \phi \approx 1.
 > In un albero dove ogni nodo interno ha due figli, il numero di nodi interni è pari al numero di foglie - 1.
 
 > [!info] Tecnica di Elevamento al Quadrato
-> Per calcolare $A^n$, se $n$ è pari calcoliamo $(A^{n/2})^2$. Se $n$ è dispari calcoliamo $A \cdot (A^{n/2})^2$. Questa tecnica riduce le moltiplicazioni da $n$ a $\log n$.
+> Per calcolare $A^n$, se $n$ è pari calcoliamo $(A^{n/2})^2$. Se $n$ è dispari calcoliamo $A \cdot (A^{n/2})^2$. Questa tecnica riduce le moltiplicazioni da $n$ a $\log n.
 
 ### Riepilogo Confronto
 | Algoritmo  | Complessità Temporale | Occupazione Spazio | Note                         |

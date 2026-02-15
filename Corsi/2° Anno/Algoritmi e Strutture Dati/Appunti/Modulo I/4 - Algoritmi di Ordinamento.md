@@ -3,12 +3,10 @@
 >
 > **Obiettivo:** Analizzare diverse strategie (confronto vs lineari) per comprendere i limiti teorici e le prestazioni pratiche in base alle caratteristiche dell'input.
 
-### Il Problema dell'Ordinamento
-> [!definition] Definizione Formale
+> [!definition] **Il Problema dell'ordinamento** - Definizione Formale
 > **Input:** Una sequenza di $n$ numeri $\langle a_1, a_2, \dots, a_n \rangle$.
 > **Output:** Una permutazione $\langle a'_1, a'_2, \dots, a'_n \rangle$ della sequenza di input tale che $a'_1 \le a'_2 \le \dots \le a'_n$.
 
-### Delimitazioni di Complessità
 > [!info] Upper e Lower Bound
 > - **Upper Bound:** Esistono algoritmi che risolvono il problema in $O(n^2)$ (semplici) e $O(n \log n)$ (ottimi per confronto).
 > - **Lower Bound:** È dimostrato che ogni algoritmo basato su confronti richiede almeno $\Omega(n \log n)$ operazioni nel caso peggiore.

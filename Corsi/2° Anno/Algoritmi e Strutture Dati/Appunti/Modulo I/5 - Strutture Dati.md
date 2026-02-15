@@ -4,7 +4,7 @@
 > 
 > **Obiettivo:** Progettare strutture dati che minimizzano le risorse di calcolo (tempo e spazio) necessarie per le operazioni richieste.
 
-## 1. Strutture Dati Elementari
+## Strutture Dati Elementari
 ### Pila (Stack)
 > [!definition] LIFO (Last In First Out)
 > L'ultimo elemento inserito è il primo ad essere estratto.
@@ -55,7 +55,7 @@
 > - **Array:** Accesso diretto O(1), ma inserimento/cancellazione richiedono shift O(n)
 > - **Lista:** Inserimento/cancellazione O(1) se si ha il puntatore, ma no accesso diretto
 
-## 2. Alberi e Rappresentazioni
+## Alberi e Rappresentazioni
 > [!info] Definizioni Base
 > - **Radice (Root):** Nodo senza padre.
 > - **Foglia (Leaf):** Nodo senza figli.
@@ -68,11 +68,11 @@
 ### Tecniche di Rappresentazione
 Come memorizzare la topologia di un albero in memoria.
 
-| Rappresentazione        | Struttura                                   | Padre(u) | Figlio $i$-esimo | Ideale per                        |
-| :---------------------- | :------------------------------------------ | :------: | :--------------: | :-------------------------------- |
-| **Vettore dei Padri**   | Array $P$ dove $P[i]$ è il padre di $i$     |  $O(1)$  |      $O(n)$      | Algoritmi bottom-up (Union-Find)  |
-| **Vettore Posizionale** | Nodi in array per livelli (radice in 1)     |  $O(1)$  |      $O(1)$      | Alberi quasi completi (Heap)      |
-| **Puntatori ai Figli**  | Ogni nodo ha array/lista di puntatori figli | $O(1)$*  |      $O(1)$      | Alberi generici o binari standard |
+| Rappresentazione        | Struttura                                    | Padre(u) | Figlio $i$-esimo | Ideale per                        |
+| :---------------------- | :------------------------------------------- | :------: | :--------------: | :-------------------------------- |
+| **Vettore dei Padri**   | Array $P$ dove $P[i]$ contiene info e parent |  $O(1)$  |      $O(n)$      | Algoritmi bottom-up (Union-Find)  |
+| **Vettore Posizionale** | Nodi in array per livelli (radice in 1)      |  $O(1)$  |      $O(1)$      | Alberi quasi completi (Heap)      |
+| **Puntatori ai Figli**  | Ogni nodo ha array/lista di puntatori figli  | $O(1)$*  |      $O(1)$      | Alberi generici o binari standard |
 
 *Richiede puntatore `parent` esplicito nel nodo per accesso al padre in $O(1)$.
 
@@ -89,23 +89,23 @@ Algoritmi per accedere sistematicamente a tutti i nodi. Costo: $O(n)$ per $n$ no
 > 
 > **Pseudocodice Ricorsivo (Pre-ordine):**
 > ```text
-> DFS-Preorder(nodo u)
-> 1. if u ≠ null then
-> 2.   visita(u)
-> 3.   DFS-Preorder(figlio_sinistro(u))
-> 4.   DFS-Preorder(figlio_destro(u))
+> DFS-Preorder(nodo curr)
+> 1. if curr ≠ null then
+> 2.   visita(curr)
+> 3.   DFS-Preorder(curr.sx)
+> 4.   DFS-Preorder(curr.dx)
 > ```
 > 
-> **Pseudocodice Iterativo (con Stack):**
+> **Pseudocodice Iterativo (con Pila):**
 > ```text
-> DFS-Iterativo(radice r)
-> 1. S = Stack vuoto
-> 2. push(S, r)
-> 3. while S non vuoto do
-> 4.   u = pop(S)
-> 5.   visita(u)
-> 6.   if figlio_destro(u) ≠ null then push(S, figlio_destro(u))
-> 7.   if figlio_sinistro(u) ≠ null then push(S, figlio_sinistro(u))
+> DFS-Iterativo(radice rad)
+> 1. Pila S
+> 2. S.push(rad)
+> 3. while S non vuota do
+> 4.   curr = S.pop()
+> 5.   visita(curr)
+> 6.   if curr.dx ≠ null then S.push(curr.dx)
+> 7.   if curr.sx ≠ null then S.push(curr.sx)
 > ```
 
 > [!code] BFS - Visita in Ampiezza
@@ -113,14 +113,14 @@ Algoritmi per accedere sistematicamente a tutti i nodi. Costo: $O(n)$ per $n$ no
 > 
 > **Pseudocodice:**
 > ```text
-> BFS(radice r)
-> 8. Q = Coda vuota
-> 9. enqueue(Q, r)
-> 10. while Q non vuota do
-> 11.   u = dequeue(Q)
-> 12.   visita(u)
-> 13.   for each figlio v di u do
-> 14.     enqueue(Q, v)
+> BFS(radice rad)
+> 1. Coda Q
+> 2. Q.enqueue(rad)
+> 3. while Q non vuota do
+> 4.   curr = Q.dequeue()
+> 5.   visita(curr)
+> 6.   for each figlio v di curr do
+> 7.     Q.enqueue(v)
 > ```
 
 > [!note] Quando Usare DFS vs BFS
@@ -128,397 +128,214 @@ Algoritmi per accedere sistematicamente a tutti i nodi. Costo: $O(n)$ per $n$ no
 > - **BFS:** Quando serve distanza minima, livelli, o elaborazione per livello
 > - **In-order (DFS simmetrica):** Per stampare BST in ordine crescente
 
-## 3. Code con Priorità - Introduzione
-> [!definition] Coda con Priorità (ADT)
-> Una struttura dati che mantiene un insieme $S$ di elementi, ciascuno con una **chiave** (priorità).
+### Esercizi sulle Visite di Alberi
+
+#### Calcolo dell'Altezza
+L'altezza di un albero è definita come la massima distanza tra la radice e una foglia. Viene calcolata tramite una **visita in post-ordine** (bottom-up), risolvendo ricorsivamente i problemi per i sottoalberi prima di combinare i risultati.
+
+- **Logica:** L'altezza di un nodo è pari a $1 +$ il massimo tra le altezze dei suoi figli.
+- **Caso Base:** Un nodo nullo restituisce $-1$. In questo modo, una foglia (nodo con figli nulli) avrà altezza $1 + \max(-1, -1) = 0$.
+- **Complessità:** $O(n)$, poiché ogni nodo viene visitato esattamente una volta.
+
+```text
+CalcolaAltezza(nodo rad)
+1. if rad == null then return -1
+2. h_sx = CalcolaAltezza(rad.sx)
+3. h_dx = CalcolaAltezza(rad.dx)
+4. return 1 + max(h_sx, h_dx)
+```
+
+#### Calcolo Numero Foglie
+Questo algoritmo conta i nodi terminali dell'albero. Sfrutta una **visita ricorsiva** aggregando i risultati parziali risalendo verso la radice.
+
+- **Logica:** Il numero di foglie è la somma delle foglie nei sottoalberi. Un nodo è contato come $1$ solo se soddisfa il predicato di foglia (nessun figlio).
+- **Caso Base:** Se il nodo è nullo restituisce $0$. Se il nodo è una foglia restituisce $1$.
+- **Complessità:** $O(n)$.
+
+```text
+CalcolaNumFoglie(nodo rad)
+1. if rad == null then return 0
+2. if rad è una foglia then return 1
+3. num_sx = CalcolaNumFoglie(rad.sx)
+4. num_dx = CalcolaNumFoglie(rad.dx)
+5. return num_sx + num_dx
+```
+
+#### Calcolo Grado Medio
+Determina il numero medio di figli per ogni **nodo interno** (non foglia). È un indicatore della densità di ramificazione.
+
+- **Logica:** Rapporto tra la somma dei gradi di tutti i nodi e il numero totale di nodi interni ($n - n_foglie$).
+- **SommaGradi:** Utilizza una visita post-ordine per accumulare il numero di figli dei soli nodi che hanno almeno un discendente.
+- **Complessità:** $O(n)$.
+
+```text
+CalcolaGradoMedio(nodo rad)
+1. n = numero nodi dell'albero
+2. n_foglie = CalcolaNumFoglie(rad)
+3. if rad ≠ null and (n - n_foglie) > 0 then 
+4.    return SommaGradi(rad) / (n - n_foglie)
+
+SommaGradi(nodo rad)
+1. if rad == null or rad è una foglia then return 0
+2. somma = numero figli di rad + SommaGradi(rad.sx) + SommaGradi(rad.dx) 
+3. return somma
+```
+
+#### Ricerca Elemento
+Cerca una specifica chiave all'interno di un albero generico (non necessariamente di ricerca). Implementa una **visita DFS in pre-ordine**.
+
+- **Logica:** Controlla la radice; se non corrisponde, cerca a sinistra. Se la ricerca a sinistra restituisce un valore non nullo, termina; altrimenti cerca a destra.
+- **Complessità:** $O(n)$ nel caso peggiore (elemento assente o nell'ultima posizione visitata).
+
+```text
+CercaElemento(nodo rad, chiave k)
+1. if rad == null then return null
+2. if rad.chiave == k then return rad
+3. trovato = CercaElemento(rad.sx, k)
+4. if trovato ≠ null then return trovato
+5. return CercaElemento(rad.dx, k)
+```
+
+#### Ri-Radicazione (RiRadica)
+Questo algoritmo permette di cambiare la radice di un albero mantenuto tramite **vettore dei padri**. Dato un nodo $j$ che deve diventare la nuova radice, l'algoritmo inverte la direzione dei puntatori lungo il cammino che congiungeva la vecchia radice al nodo $j$.
+
+- **Logica:** Si risale dal nodo $j$ verso la vecchia radice. Per ogni nodo nel cammino, il suo vecchio padre diventa il suo nuovo figlio.
+- **Complessità:** $O(h)$, dove $h$ è la profondità del nodo $j$ rispetto alla radice originale.
+
+```text
+RiRadica(VettorePadri T, indice j)
+1. curr = j
+2. padre = T[j].padre
+3. T[j].padre = null
+4. while padre ≠ null do
+5.   nonno = T[padre].padre
+6.   T[padre].padre = curr
+7.   curr = padre
+8.   padre = nonno
+```
+
+## Alberi Binari di Ricerca (BST)
+> [!abstract] Definizione e Proprietà
+> Un **Albero Binario di Ricerca (BST)** è un'implementazione efficiente del tipo di dato astratto **Dizionario**. Sfrutta la struttura gerarchica dell'albero per mantenere un insieme di elementi identificati da chiavi appartenenti a un dominio totalmente ordinato.
 > 
-> **Operazioni Base:**
-> - `insert(e, k)`: Inserisce un elemento con priorità $k$.
-> - `findMin()` / `findMax()`: Restituisce l'elemento con priorità minima/massima.
-> - `deleteMin()` / `deleteMax()`: Rimuove e restituisce il minimo/massimo.
-> - `delete(e)`: Rimuove un elemento specifico.
-> - `decreaseKey(x, k)` / `increaseKey(x, k)`: Aggiorna la priorità di un elemento.
-> - `merge(Q1, Q2)`: Fonde due code con priorità.
-
-> [!success] Applicazioni Pratiche
-> - Gestione code in risorse condivise (scheduler CPU)
-> - Gestione priorità in processi concorrenti
-> - Algoritmi su grafi: Dijkstra, Prim (MST)
-> - Ordinamento: HeapSort
-> - Simulazione eventi discreti
-
-## 4. Heap Binari
-### Definizione e Proprietà
-> [!info] Proprietà Fondamentali
-> Un **Heap Binario** è un albero binario che soddisfa due proprietà:
-> 1. **Proprietà Strutturale:** È un albero binario **quasi completo**
->     - Tutti i livelli sono pieni tranne l'ultimo
->     - L'ultimo livello è riempito da sinistra a destra
->     - _Conseguenza:_ Altezza $h = \lfloor \log_2 n \rfloor$
-> 2. **Proprietà di Ordinamento:**
->     - **Max-Heap:** Per ogni nodo $v \neq \text{radice}$: $\text{key}(\text{parent}(v)) \ge \text{key}(v)$ → Il **massimo** è nella radice
->     - **Min-Heap:** Per ogni nodo $v \neq \text{radice}$: $\text{key}(\text{parent}(v)) \le \text{key}(v)$ → Il **minimo** è nella radice
-
-### Rappresentazione (Vettore Posizionale)
-Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array `A`.
-
-> [!note] Formule per gli Indici
-> Gli indici dipendono dalla base scelta (0 o 1):
+> **Proprietà Fondamentale (Proprietà di Ricerca):**
+> Per ogni nodo `curr` dell'albero:
+> 1. Tutte le chiavi nel **sottoalbero sinistro** di `curr` sono $\le$ `curr.key`.
+> 2. Tutte le chiavi nel **sottoalbero destro** di `curr` sono $>$ `curr.key`.
 > 
-> |Relazione|Indici Base 1|Indici Base 0|
-> |:--|:-:|:-:|
-> |**Radice**|`1`|`0`|
-> |**Figlio Sinistro di i**|`2*i`|`2*i + 1`|
-> |**Figlio Destro di i**|`2*i + 1`|`2*i + 2`|
-> |**Padre di i**|`⌊i/2⌋`|`⌊(i-1)/2⌋`|
+> > [!important] Implicazione sulle Visite
+> > Una **visita in ordine simmetrico (in-order)** di un BST restituisce le chiavi in **ordine crescente**. Questo rende i BST ideali non solo per la ricerca, ma anche per mantenere i dati ordinati dinamicamente.
 
-**Convenzione del prof:** Usa base 1 (A[1..n])
+### Operazioni di Ricerca
+Tutte le operazioni di ricerca in un BST hanno una complessità proporzionale all'altezza dell'albero: **$O(h)$**.
 
-### Operazioni e Implementazione (Max-Heap)
-#### 1. FixHeap (Heapify-Down)
-> [!tip] Idea
-> Ripristina la proprietà heap se violata in un nodo `i`, **assumendo** che i sottoalberi sinistro e destro siano già heap validi.
-> 
-> Fa "scendere" l'elemento fuori posto scambiandolo con il figlio maggiore, finché la proprietà è ripristinata.
+#### Search (Ricerca di una chiave)
+Traccia un cammino dalla radice verso il basso. A ogni nodo, confronta la chiave cercata `k` con la chiave del nodo corrente:
+- Se `k < curr.key`: prosegue nel sottoalbero sinistro.
+- Se `k > curr.key`: prosegue nel sottoalbero destro.
+- Se `k == curr.key`: elemento trovato.
 
-> [!code] Pseudocodice FixHeap (A[1..n])
-> ```text
-> fixHeap(A, i, heapsize)
-> 1. s = 2*i
-> 2. d = 2*i + 1
-> 3. if s <= heapsize and A[s] > A[i] then massimo = s
-> 4. else massimo = i
-> 5. if d <= heapsize and A[d] > A[massimo] then massimo = d
-> 6. if massimo ≠ i then
-> 7.   scambia A[i] con A[massimo]
-> 8.   fixHeap(A, massimo, heapsize)
-> ```
-
-> [!success] Complessità
-> $T(n) = O(\log n)$ - scende al massimo fino alle foglie (altezza dell'albero)
-
-#### 2. Heapify (Costruzione Bottom-Up)
-> [!tip] Idea
-> Costruisce un heap partendo da un array disordinato.
-> 
-> Strategia: Chiama `fixHeap` su tutti i nodi interni, **dal basso verso l'alto** (dall'ultimo nodo interno verso la radice).
-
-> [!code] Pseudocodice Heapify (Iterativo)
-> ```text
-> heapify(A, n)
-> 1. heapsize[A] = n
-> 2. for i = ⌊n/2⌋ downto 1 do
-> 3.   fixHeap(A, i, n)
-> ```
-
-> [!success] Complessità
-> **$T(n) = O(n)$** - NON $O(n \log n)$!
-> 
-> **Dimostrazione intuitiva:**
-> - La maggior parte dei nodi sono vicini alle foglie (altezza bassa)
-> - Pochi nodi hanno altezza alta
-> - Somma pesata: $\sum_{h=0}^{\log n} \frac{n}{2^{h+1}} \cdot h = O(n)$
-
-#### 3. Insert
-> [!tip] Idea
-> Inserisce un nuovo elemento mantenendo la proprietà heap.
-> 
-> Strategia: Aggiungi in fondo (come foglia più a destra), poi fallo "salire" (MoveUp) finché la proprietà è soddisfatta.
-
-> [!code] Pseudocodice Insert
-> ```text
-> insert(A, x)
-> 1. heapsize[A] = heapsize[A] + 1
-> 2. A[heapsize[A]] = x
-> 3. MoveUp(A, heapsize[A])
-> 
-> MoveUp(A, i)
-> 4. while i > 1 and A[⌊i/2⌋] < A[i] do
-> 5.   scambia A[i] con A[⌊i/2⌋]
-> 6.   i = ⌊i/2⌋
-> ```
-
-> [!success] Complessità
-> $T(n) = O(\log n)$ - sale al massimo dalla foglia alla radice
-
-#### 4. ExtractMax (DeleteMax)
-> [!tip] Idea
-> Rimuove e restituisce la radice (elemento massimo).
-> 
-> Strategia:
-> 1. Copia l'ultima foglia (A[heapsize]) nella radice
-> 2. Decrementa heapsize
-> 3. Ripristina la proprietà con FixHeap sulla radice
-
-> [!code] Pseudocodice ExtractMax
-> ```text
-> extractMax(A)
-> 4. if heapsize[A] < 1 then error "heap vuoto"
-> 5. max = A[1]
-> 6. A[1] = A[heapsize[A]]
-> 7. heapsize[A] = heapsize[A] - 1
-> 8. fixHeap(A, 1, heapsize[A])
-> 9. return max
-> ```
-
-> [!success] Complessità
-> $T(n) = O(\log n)$ - dominato da FixHeap
-
-#### 5. IncreaseKey (per Max-Heap)
-> [!tip] Idea
-> Aumenta la chiave di un elemento in posizione `i`. Dopo l'aumento, l'elemento potrebbe violare la proprietà heap verso l'alto → fallo salire.
-
-> [!code] Pseudocodice IncreaseKey
-> ```text
-> increaseKey(A, i, newKey)
-> 1. if newKey < A[i] then error "nuova chiave minore della corrente"
-> 2. A[i] = newKey
-> 3. MoveUp(A, i)
-> ```
-
-> [!success] Complessità
-> $T(n) = O(\log n)$
-
-### Riepilogo Complessità Heap Binario
-|Operazione|Complessità|
-|:--|:-:|
-|Heapify (Costruzione)|$O(n)$|
-|FixHeap|$O(\log n)$|
-|Insert|$O(\log n)$|
-|ExtractMax/Min|$O(\log n)$|
-|FindMax/Min|$O(1)$|
-|IncreaseKey / DecreaseKey|$O(\log n)$|
-|Delete|$O(\log n)$|
-
-## 5. d-ary Heap
-> [!definition] Generalizzazione
-> Un **d-ary Heap** è un heap in cui ogni nodo ha **fino a $d$ figli** (invece di 2).
-> 
-> - Albero $d$-ario quasi completo
-> - Stessa proprietà di ordinamento (max-heap o min-heap)
-> - Altezza: $h = \Theta(\log_d n)$
-
-### Formule per gli Indici
-> [!note] Relazioni Padre-Figli
-> **Base 0:**
-> - Figlio $j$-esimo di $i$ (con $j \in \{1, 2, \ldots, d\}$): $d \cdot i + j$
-> - Padre di $i$: $\lfloor (i-1)/d \rfloor$
-> 
-> **Base 1:**
-> - Figlio $j$-esimo di $i$: $d(i-1) + j + 1$
-> - Padre di $i$: $\lfloor (i-2)/d \rfloor + 1$
-
-### Performance
-> [!success] Complessità Operazioni
-> 
-> |Operazione|Complessità|
-> |:--|:-:|
-> |Insert / IncreaseKey|$O(\log_d n)$ - salita più corta|
-> |ExtractMax / FixHeap|$O(d \log_d n)$ - scelta tra $d$ figli|
-> |Heapify|$O(n)$ - indipendente da $d$|
-
-> [!tip] Quando Usare d-ary Heap
-> Conviene aumentare $d$ quando:
-> - Le operazioni `insert` e `increaseKey` sono **molto più frequenti** di `extractMax`
-> - L'altezza diminuisce ($\log_d n$) → salite più veloci
-> - Ma attenzione: FixHeap costa $O(d)$ per ogni livello (cerca il massimo tra $d$ figli)
-
-> [!example] Esempio
-> Con $d = 4$ e operazioni 90% insert, 10% extractMax → d-ary heap conviene!
-
-## 6. Alberi Binari di Ricerca (BST)
-> [!definition] Binary Search Tree (BST)
-> Un albero binario dove **per ogni nodo $u$**:
-> - Tutte le chiavi nel **sottoalbero sinistro** $\le$ `key(u)`
-> - Tutte le chiavi nel **sottoalbero destro** $>$ `key(u)`
-> 
-> Questa proprietà vale ricorsivamente per ogni sottoalbero.
-
-> [!info] Proprietà Chiave
-> **Visita in ordine simmetrico (in-order) di un BST produce le chiavi in ordine crescente!**
-> ```text
-> In-Order(u):
->   if u ≠ null:
->     In-Order(figlio_sinistro(u))
->     stampa key(u)
->     In-Order(figlio_destro(u))
-> ```
-
-### Operazioni Base
-#### 1. Search (Ricerca)
-> [!tip] Idea
-> Scendi nell'albero confrontando la chiave cercata con quella del nodo corrente:
-> - Se $k <$ `key(u)`: vai a sinistra
-> - Se $k >$ `key(u)`: vai a destra
-> - Se $k =$ `key(u)`: trovato!
-
-> [!code] Pseudocodice Search
-> ```text
-> search(BST T, chiave k)
-> 1. u = T.root
-> 2. while u ≠ null and k ≠ key(u) do
-> 3.   if k < key(u) then u = figlio_sinistro(u)
-> 4.   else u = figlio_destro(u)
-> 5. return u
-> ```
+```text
+search(BST T, k)
+1. curr = T.radice
+2. while curr ≠ null and k ≠ curr.key do
+3.   if k < curr.key then curr = curr.sx
+4.   else curr = curr.dx
+5. return curr
+```
 
 > [!success] Complessità
 > - **Caso medio:** $O(\log n)$ - albero bilanciato
 > - **Caso peggiore:** $O(n)$ - albero degenere (lista)
 
-#### 2. Min e Max
-> [!tip] Idea
-> - **Minimo:** Scendi sempre a sinistra fino alla foglia
-> - **Massimo:** Scendi sempre a destra fino alla foglia
+#### Minimo e Massimo
+Grazie alla proprietà di ricerca:
+- Il **minimo** si trova seguendo sempre i puntatori sinistri fino a raggiungere l'ultimo nodo.
+- Il **massimo** si trova seguendo sempre i puntatori destri fino all'ultimo nodo.
 
-> [!code] Pseudocodice Min
-> ```text
-> min(BST T)
-> 1. u = T.root
-> 2. while figlio_sinistro(u) ≠ null do
-> 3.   u = figlio_sinistro(u)
-> 4. return u
-> ```
+```text
+min(BST T)
+1. curr = T.radice
+2. while curr.sx ≠ null do curr = curr.sx
+3. return curr
+```
 
 > [!success] Complessità
 > $O(h)$ dove $h$ è l'altezza dell'albero
 
-#### 3. Successor e Predecessor
-> [!definition] Definizioni
-> - **Successore di $u$:** Nodo $v$ con **minima chiave** $>$ `key(u)`
-> - **Predecessore di $u$:** Nodo $v$ con **massima chiave** $<$ `key(u)`
+#### Successore e Predecessore
+Il **successore** di un nodo `u` è il nodo `v` con la minima chiave strettamente maggiore di `u.key`.
+- **Caso 1 (u ha figlio destro):** Il successore è il minimo del sottoalbero destro di `u`.
+- **Caso 2 (u NON ha figlio destro):** Si risale l'albero verso la radice finché non si incontra un nodo che è figlio sinistro del proprio padre. Quel padre è il successore.
 
-> [!tip] Come Trovare il Successore
-> **Caso 1:** Se $u$ ha figlio destro
-> - Successor($u$) = `min(figlio_destro(u))`
-> 
-> **Caso 2:** Se $u$ NON ha figlio destro
-> - Risali finché sei figlio sinistro
-> - Il successore è il primo antenato di cui sei nel sottoalbero sinistro
+```text
+successor(nodo)
+1. if nodo.dx ≠ null then return min(nodo.dx)
+2. padre = nodo.p
+3. while padre ≠ null and nodo == padre.dx do
+4.   nodo = padre
+5.   padre = padre.p
+6. return padre
+```
+*(Il predecessore è simmetrico: massimo del sottoalbero sinistro o primo antenato di cui si è figlio destro).*
 
-> [!code] Pseudocodice Successor
-> ```text
-> successor(u)
-> 1. if figlio_destro(u) ≠ null then
-> 2.   return min(figlio_destro(u))
-> 3. y = parent(u)
-> 4. while y ≠ null and u == figlio_destro(y) do
-> 5.   u = y
-> 6.   y = parent(y)
-> 7. return y
-> ```
+### Operazioni di Modifica
+#### Inserimento (Insert)
+L'inserimento di un nuovo elemento avviene sempre come **foglia**, preservando la proprietà di ricerca.
+1. Si simula una ricerca della chiave `k` per individuare la posizione corretta (un puntatore `null`).
+2. Si mantiene un puntatore al `padre` dell'ultimo nodo visitato.
+3. Si crea il nuovo nodo e lo si aggancia come figlio sinistro o destro del padre a seconda del confronto tra le chiavi.
 
-> [!note] Predecessor
-> Simmetrico al successore: usa sottoalbero sinistro e `max` invece di `min`.
-
-#### 4. Insert (Inserimento)
-> [!tip] Idea
-> Simula una ricerca per trovare dove dovrebbe stare l'elemento, poi inseriscilo come foglia in quella posizione.
-
-> [!code] Pseudocodice Insert
-> ```text
-> insert(BST T, elem e, chiave k)
-> 1. z = crea nuovo nodo con elem=e, key=k
-> 2. y = null
-> 3. x = T.root
-> 4. while x ≠ null do
-> 5.   y = x
-> 6.   if k < key(x) then x = figlio_sinistro(x)
-> 7.   else x = figlio_destro(x)
-> 8. parent(z) = y
-> 9. if y == null then T.root = z
-> 10. else if k < key(y) then figlio_sinistro(y) = z
-> 11. else figlio_destro(y) = z
-> ```
+```text
+insert(BST T, e, k)
+1. nuovo = crea nuovo nodo(elem=e, key=k)
+2. padre = null, curr = T.radice
+3. while curr ≠ null do
+4.   padre = curr
+5.   if k < curr.key then curr = curr.sx
+6.   else curr = curr.dx
+7. nuovo.p = padre
+8. if padre == null then T.radice = nuovo
+9. else if k < padre.key then padre.sx = nuovo
+10. else padre.dx = nuovo
+```
 
 > [!success] Complessità
 > $O(h)$ - dominato dalla discesa nell'albero
 
-> [!info] Correttezza
-> Dopo l'inserimento, la proprietà BST è mantenuta: per costruzione, ogni antenato di $z$ si ritrova $z$ nel sottoalbero corretto.
+#### Cancellazione (Delete)
+L'operazione più complessa, divisa in tre scenari basati sul numero di figli del nodo da eliminare:
+1. **Caso 1 (Nodo foglia):** Si rimuove semplicemente il nodo aggiornando il puntatore del padre a `null`.
+2. **Caso 2 (Un solo figlio):** Il nodo viene "scavalcato": il padre del nodo da eliminare punta direttamente all'unico figlio di quest'ultimo.
+3. **Caso 3 (Due figli):** Non è possibile rimuovere il nodo direttamente. Si individua il suo **successore** (o predecessore), se ne copia il contenuto nel nodo da eliminare, e si procede alla rimozione fisica del successore (che ricadrà necessariamente nel Caso 1 o 2, avendo al massimo un figlio).
 
-#### 5. Delete (Cancellazione)
-> [!warning] Operazione Più Complessa
-> La cancellazione ha **3 casi** da gestire, a seconda del numero di figli del nodo da cancellare.
-
-> [!tip] I 3 Casi
-> **Caso 1: Nodo Foglia (0 figli)**
-> - Cancella direttamente il nodo
-> - Aggiorna il puntatore del padre a `null`
-> 
-> **Caso 2: Nodo con 1 Figlio**
-> - "Bypassa" il nodo
-> - Collega il padre direttamente all'unico figlio
-> 
-> **Caso 3: Nodo con 2 Figli**
-> - Trova il **successore** $s$ (minimo del sottoalbero destro)
-> - Copia `key(s)` ed `elem(s)` nel nodo da cancellare
-> - Cancella $s$ (che ha al più 1 figlio destro) → ricorsione sul Caso 1 o 2
-
-> [!code] Pseudocodice Delete (semplificato)
-> ```text
-> delete(BST T, nodo z)
-> 1. if z è foglia then
-> 2.   rimuovi z e aggiorna parent(z)
-> 3. else if z ha 1 solo figlio then
-> 4.   collega parent(z) con l'unico figlio di z
-> 5.   rimuovi z
-> 6. else  // z ha 2 figli
-> 7.   s = successor(z)  // min del sottoalbero destro
-> 8.   copia key(s) ed elem(s) in z
-> 9.   delete(T, s)  // s ha al più figlio destro
-> ```
+```text
+delete(BST T, nodo)
+1. if nodo.sx == null or nodo.dx == null then y = nodo
+2. else y = successor(nodo)
+3. // y è il nodo da rimuovere fisicamente (ha al più 1 figlio)
+4. if y.sx ≠ null then x = y.sx else x = y.dx
+5. if x ≠ null then x.p = y.p
+6. if y.p == null then T.radice = x
+7. else if y == y.p.sx then y.p.sx = x
+8. else y.p.dx = x
+9. if y ≠ nodo then (copia elem e key di y in nodo)
+```
 
 > [!success] Complessità
 > $O(h)$ - ricerca + eventuale ricerca successore
 
-> [!example] Esempio Caso 3
-> Cancellare 15 da questo BST:
-> ```
->        15
->       /  \
->      6    18
->     / \   / \
->    3   8 17  20
-> ```
-> 10. Trova successor(15) = 17 (minimo sottoalbero destro)
-> 11. Sostituisci 15 con 17
-> 12. Cancella il vecchio nodo 17 (che è foglia)
-> ```
->        17
->       /  \
->      6    18
->     / \     \
->    3   8    20
-> ```
-
-### Riepilogo Complessità BST
-|Operazione|Caso Medio|Caso Peggiore|
-|:--|:-:|:-:|
-|Search|$O(\log n)$|$O(n)$|
-|Insert|$O(\log n)$|$O(n)$|
-|Delete|$O(\log n)$|$O(n)$|
-|Min / Max|$O(\log n)$|$O(n)$|
-|Successor / Predecessor|$O(\log n)$|$O(n)$|
-
-> [!warning] Problema del BST
-> Se inseriamo elementi **già ordinati** (es. 1, 2, 3, 4, 5), l'albero degenera in una **lista**:
-> ```
-> 1
->  \
->   2
->    \
->     3
->      \
->       4
->        \
->         5
-> ```
-> Altezza $h = n$ → tutte le operazioni degradano a $O(n)$!
+### Analisi delle Prestazioni
+> [!warning] Il Problema del Bilanciamento
+> Tutte le operazioni sopra descritte hanno costo **$O(h)$**.
+> - **Caso Ottimo (Albero bilanciato):** $h = \Theta(\log n) \implies$ Prestazioni logaritmiche eccellenti.
+> - **Caso Peggiore (Albero degenere/linearizzato):** $h = \Theta(n) \implies$ Le prestazioni degradano a quelle di una lista collegata.
+> 
+> Questo accade tipicamente se gli elementi vengono inseriti già ordinati. La soluzione a questo problema è l'utilizzo di alberi che si auto-bilanciano, come gli **Alberi AVL**.
 > 
 > **Soluzione:** Alberi bilanciati (AVL, Red-Black Trees)
 
-## 7. Alberi AVL (Alberi Bilanciati)
+## Alberi AVL (Alberi Bilanciati)
 > [!definition] Alberi AVL
 > Un **BST** è **AVL** se per **ogni** nodo $v$, il **fattore di bilanciamento** soddisfa:
 > $$\beta(v) = h(\text{sottoalbero sinistro di } v) - h(\text{sottoalbero destro di } v) \in \{-1, 0, +1\}$$
@@ -572,22 +389,22 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 > |**SD** (Sinistra-Destra)|$+2$|Sbilanciamento nel sottoalbero destro del figlio sinistro|Rotazione **DOPPIA** (sx su figlio, dx su v)|
 > |**DS** (Destra-Sinistra)|$-2$|Sbilanciamento nel sottoalbero sinistro del figlio destro|Rotazione **DOPPIA** (dx su figlio, sx su v)|
 
-### Rotazione Semplice (Destra su v)
+### Rotazione Semplice (Destra su nodo)
 > [!code] Pseudocodice Rotazione Destra
 > ```text
-> rotazioneDestra(v)
-> 1. u = figlio_sinistro(v)
-> 2. figlio_sinistro(v) = figlio_destro(u)
-> 3. if figlio_destro(u) ≠ null then
-> 4.   parent(figlio_destro(u)) = v
-> 5. parent(u) = parent(v)
-> 6. if parent(v) == null then root = u
-> 7. else if v == figlio_sinistro(parent(v)) then
-> 8.   figlio_sinistro(parent(v)) = u
-> 9. else figlio_destro(parent(v)) = u
-> 10. figlio_destro(u) = v
-> 11. parent(v) = u
-> 12. aggiorna β(v) e β(u)
+> rotazioneDestra(nodo)
+> 1. sx = nodo.sx
+> 2. nodo.sx = sx.dx
+> 3. if sx.dx ≠ null then
+> 4.   sx.dx.p = nodo
+> 5. sx.p = nodo.p
+> 6. if nodo.p == null then T.radice = sx
+> 7. else if nodo == nodo.p.sx then
+> 8.   nodo.p.sx = sx
+> 9. else nodo.p.dx = sx
+> 10. sx.dx = nodo
+> 11. nodo.p = sx
+> 12. aggiorna β(nodo) e β(sx)
 > ```
 
 > [!success] Proprietà Rotazioni
@@ -668,18 +485,18 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 > 2. Risali verso la radice aggiornando i fattori di bilanciamento
 > 3. Trova il **primo** nodo critico $v$ (con $|\beta(v)| = 2$)
 > 4. Determina il caso (SS, DD, SD, DS) e applica la rotazione appropriata
-
-> [!code] Pseudocodice Insert AVL
-> ```text
-> insert(AVL T, elem e, chiave k)
-> 1. Crea nuovo nodo z con elem=e, key=k
-> 2. Inserisci z come in un BST
-> 3. Ricalcola β dei nodi nel cammino da z alla radice
-> 4. Sia v il più profondo nodo con β(v) = ±2 (nodo critico)
-> 5. if v esiste then
-> 6.   Determina il caso (SS/DD/SD/DS)
-> 7.   Esegui la rotazione opportuna su v
-> ```
+> 
+> > [!code] Pseudocodice Insert AVL
+> > ```text
+> > insert(AVL T, e, k)
+> > 1. nuovo = crea nuovo nodo con elem=e, key=k
+> > 2. Inserisci nuovo come in un BST
+> > 3. Ricalcola β dei nodi nel cammino da nuovo alla radice
+> > 4. Sia v il più profondo nodo con β(v) = ±2 (nodo critico)
+> > 5. if v esiste then
+> > 6.   Determina il caso (SS/DD/SD/DS)
+> > 7.   Esegui la rotazione opportuna su v
+> > ```
 
 > [!success] Complessità Insert
 > $O(\log n)$:
@@ -701,16 +518,16 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 
 > [!code] Pseudocodice Delete AVL
 > ```text
-> delete(AVL T, elem e)
+> delete(AVL T, e)
 > 6. Cancella il nodo come in un BST
-> 7. u = padre del nodo eliminato fisicamente
-> 8. while u ≠ null do
-> 9.   Ricalcola β(u)
-> 10.   if |β(u)| == 2 then
-> 11.     Determina il caso e applica rotazione su u
-> 12.     if l'altezza del sottoalbero di u è uguale a prima then
+> 7. curr = padre del nodo eliminato fisicamente
+> 8. while curr ≠ null do
+> 9.   Ricalcola β(curr)
+> 10.   if |β(curr)| == 2 then
+> 11.     Determina il caso e applica rotazione su curr
+> 12.     if l'altezza del sottoalbero di curr è uguale a prima then
 > 13.       break  // terminazione anticipata
-> 14.   u = parent(u)
+> 14.   curr = curr.p
 > ```
 
 > [!success] Complessità Delete
@@ -734,18 +551,18 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 > - **Opzione 2:** `β` (fattore di bilanciamento) direttamente
 > 
 > **Proprietà richieste:**
-> 1. Dato un nodo $v$, calcolare $\beta(v)$ in $O(1)$
+> 1. Dato un nodo, calcolare $\beta(nodo)$ in $O(1)$
 > 2. Dopo insert/delete, ricalcolare $\beta$ lungo il cammino in $O(\log n)$
 > 3. Durante le rotazioni, aggiornare $\beta$ dei nodi coinvolti in $O(\log n)$
-
-> [!code] Aggiornamento Altezza
-> ```text
-> aggiornaAltezza(v)
-> 4. h_sx = altezza(figlio_sinistro(v))  // -1 se null
-> 5. h_dx = altezza(figlio_destro(v))     // -1 se null
-> 6. altezza(v) = 1 + max(h_sx, h_dx)
-> 7. β(v) = h_sx - h_dx
-> ```
+> 
+> > [!code] Aggiornamento Altezza
+> > ```text
+> > aggiornaAltezza(nodo)
+> > 4. h_sx = altezza(nodo.sx)  // -1 se null
+> > 5. h_dx = altezza(nodo.dx)  // -1 se null
+> > 6. nodo.altezza = 1 + max(h_sx, h_dx)
+> > 7. β(nodo) = h_sx - h_dx
+> > ```
 
 ### Riepilogo AVL
 |Operazione|Complessità|Note|
@@ -764,7 +581,151 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 > - Overhead memoria per memorizzare β o altezza
 > - Ribilanciamenti più frequenti
 
-## 8. Heap Binomiali
+## Code con Priorità
+> [!definition] Coda con Priorità (ADT)
+> Una struttura dati che mantiene un insieme $S$ di elementi, ciascuno con una **chiave** (priorità). A differenza di una coda standard (FIFO), l'estrazione non segue l'ordine di arrivo ma la priorità.
+> 
+> **Operazioni Base:**
+> - `insert(e, k)`: Inserisce un elemento con priorità $k$.
+> - `findMin()`: Restituisce l'elemento con priorità minima.
+> - `deleteMin()`: Rimuove e restituisce il minimo.
+> - `decreaseKey(x, k)`: Diminuisce la chiave del nodo $x$ al nuovo valore $k$.
+> - `merge(Q1, Q2)`: Fonde due code con priorità.
+
+### Implementazioni Base
+Prima di analizzare strutture avanzate come gli Heap, vediamo come le strutture elementari si comportano nell'implementare una Coda con Priorità (assumendo di voler estrarre il minimo):
+
+| Implementazione | `insert` | `findMin` | `deleteMin` | `merge` |
+| :--- | :---: | :---: | :---: | :---: |
+| **Array Non Ordinato** | $O(1)$ | $O(n)$ | $O(n)$ | $O(n)$ |
+| **Array Ordinato** | $O(n)$ | $O(1)$ | $O(1)$ | $O(n)$ |
+| **Lista Non Ordinata** | $O(1)$ | $O(n)$ | $O(n)$ | $O(1)$ |
+| **Lista Ordinata** | $O(n)$ | $O(1)$ | $O(1)$ | $O(n)$ |
+
+> [!note] Trade-off
+> Come si nota, le implementazioni semplici costringono a scegliere tra un inserimento veloce e un'estrazione lenta, o viceversa. L'obiettivo delle strutture avanzate (Heap) è bilanciare questi costi portandoli entrambi a livello logaritmico.
+
+> [!success] Applicazioni Pratiche
+> - Gestione code in risorse condivise (scheduler CPU)
+> - Algoritmi su grafi: Dijkstra (cammini minimi), Prim (MST)
+> - Ordinamento: HeapSort
+> - Simulazione eventi discreti
+
+## Heap d-ari
+> [!definition] Definizione
+> Un **d-heap** (o heap d-ario) è un albero radicato d-ario che gode delle seguenti proprietà:
+> 1.  **Struttura:** È completo almeno fino al penultimo livello, e tutte le foglie sull'ultimo livello sono compattate verso sinistra.
+> 2.  **Contenuto Informativo:** Ogni nodo $v$ contiene un elemento `elem(v)` e una chiave `chiave(v)` presa da un dominio ordinato.
+> 3.  **Ordinamento Parziale (Min-Heap):** Per ogni nodo $v$ diverso dalla radice, vale `chiave(v) >= chiave(parent(v))`.
+>     *(Nota: Per i Max-Heap vale la relazione inversa).*
+>
+> **Nota:** Un **Heap Binario** è semplicemente un caso particolare di d-heap con **$d=2$**.
+
+### Rappresentazione (Vettore Posizionale)
+Un d-heap con $n$ nodi può essere rappresentato efficientemente in un array posizionale (senza puntatori espliciti).
+Gli indici partono da $0$:
+- **Radice:** indice $0$.
+- **Figlio $j$-esimo di $i$** (con $j \in \{1, \dots, d\}$): indice $d \cdot i + j$.
+- **Padre di $i$:** indice $\lfloor (i-1)/d \rfloor$.
+
+> [!success] Altezza
+> L'altezza di un d-heap con $n$ nodi è $\Theta(\log_d n)$.
+
+### Procedure Ausiliarie
+Queste procedure servono a ripristinare la proprietà di ordinamento (heap property) quando viene violata.
+
+#### muoviAlto ((MoveUp / DecreaseKey interna) )
+Ripristina l'ordinamento verso l'alto. Utile quando la chiave di un nodo diminuisce (diventa più piccola del padre).
+```text
+muoviAlto(i)
+1. while i ≠ 0 and chiave(A[i]) < chiave(A[parent(i)]) do
+2.   scambia A[i] con A[parent(i)]
+3.   i = parent(i)
+```
+**Complessità:** $O(\log_d n)$ (altezza dell'albero).
+
+#### muoviBasso (MoveDown / FixHeap)
+Ripristina l'ordinamento verso il basso. Utile quando la chiave di un nodo aumenta (diventa più grande dei figli) o quando si sposta una foglia nella radice.
+```text
+muoviBasso(i)
+1. while i non è una foglia do
+2.   m = indice del figlio di i con chiave minima
+3.   if chiave(A[i]) > chiave(A[m]) then
+4.     scambia A[i] con A[m]
+5.     i = m
+6.   else break
+```
+**Complessità:** $O(d \log_d n)$. Ad ogni livello bisogna confrontare $d$ figli per trovare il minimo.
+
+### Operazioni Principali
+#### findMin
+Restituisce l'elemento con chiave minima (la radice).
+**Complessità:** $O(1)$.
+
+#### insert
+Inserisce un nuovo elemento.
+1.  Aggiunge il nuovo nodo come ultima foglia (in fondo all'array).
+2.  Chiama `muoviAlto` per portarlo nella posizione corretta.
+```text
+insert(elem e, chiave k)
+1. A.heapsize = A.heapsize + 1
+2. A[A.heapsize - 1] = (e, k)
+3. muoviAlto(A.heapsize - 1)
+```
+**Complessità:** $O(\log_d n)$.
+
+#### deleteMin (extractMin)
+Rimuove e restituisce l'elemento minimo.
+1.  Salva la radice (minimo).
+2.  Sposta l'ultima foglia nella radice.
+3.  Decrementa la dimensione.
+4.  Chiama `muoviBasso` sulla nuova radice.
+```text
+deleteMin()
+1. min = A[0]
+2. A[0] = A[A.heapsize - 1]
+3. A.heapsize = A.heapsize - 1
+4. muoviBasso(0)
+5. return min
+```
+**Complessità:** $O(d \log_d n)$.
+
+#### decreaseKey
+Riduce il valore della chiave di un elemento e ripristina la proprietà verso l'alto.
+```text
+decreaseKey(i, delta)
+1. chiave(A[i]) = chiave(A[i]) - delta
+2. muoviAlto(i)
+```
+**Complessità:** $O(\log_d n)$.
+
+#### increaseKey
+Aumenta il valore della chiave e ripristina verso il basso.
+```text
+increaseKey(i, delta)
+1. chiave(A[i]) = chiave(A[i]) + delta
+2. muoviBasso(i)
+```
+**Complessità:** $O(d \log_d n)$.
+
+#### delete
+Rimuove un elemento generico all'indice $i$.
+1.  Chiama `decreaseKey(i, -\infty)` per portarlo in cima.
+2.  Chiama `deleteMin`.
+**Complessità:** $O(d \log_d n)$.
+
+#### heapify (Costruzione)
+Costruisce un heap a partire da un array disordinato.
+Si chiama `muoviBasso` su tutti i nodi interni, partendo dall'ultimo genitore fino alla radice.
+**Complessità:** $O(n)$ (lineare).
+
+### Quando conviene usare d > 2?
+Aumentare $d$ riduce l'altezza dell'albero ($\log_d n$), velocizzando le operazioni di salita (`insert`, `decreaseKey`). Tuttavia, rallenta le operazioni di discesa (`deleteMin`, `muoviBasso`) perché richiede più confronti per trovare il figlio minimo ($d$).
+-   **Conviene** se le operazioni di inserimento/decreaseKey sono molto più frequenti delle estrazioni.
+-   **Non conviene** se le estrazioni sono frequenti.
+
+
+## Heap Binomiali
 > [!abstract] Motivazione
 > Gli heap binari hanno un problema: **merge** di due heap costa $O(n)$.
 > 
@@ -850,14 +811,14 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 >     - `sibling`: puntatore al prossimo fratello
 
 ### Operazioni Heap Binomiali
-#### 1. FindMin
+#### FindMin
 > [!tip] Idea
 > Il minimo è in una delle radici. Scorri le radici e trova il minimo.
 
 > [!success] Complessità
 > $O(\log n)$ - al più $\log n$ radici da controllare
 
-#### 2. Merge (Fusione)
+#### Merge (Fusione)
 > [!tip] Idea Chiave
 > Fondere due heap binomiali è come **sommare due numeri binari**!
 > 
@@ -869,12 +830,12 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 > [!code] Algoritmo Merge (semplificato)
 > ```text
 > merge(H1, H2)
-> 4. Fondi le liste di radici di H1 e H2 in ordine di grado
-> 5. Scorri la lista risultante:
-> 6. while ci sono due alberi Bi consecutivi with stesso grado:
-> 7.   Fondi i due Bi in un Bi+1 (radice minore diventa padre)
-> 8.   Rimuovi uno dei due Bi dalla lista
-> 9. return la lista finale
+> 1. Fondi le liste di radici di H1 e H2 in ordine di grado
+> 2. Scorri la lista risultante:
+> 3. while ci sono due alberi Bi consecutivi with stesso grado:
+> 4.   Fondi i due Bi in un Bi+1 (radice minore diventa padre)
+> 5.   Rimuovi uno dei due Bi dalla lista
+> 6. return la lista finale
 > ```
 
 > [!success] Complessità Merge
@@ -886,7 +847,7 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 > [!note] Merge è la Killer Feature
 > Questa è la ragione principale per usare heap binomiali: **merge logaritmico** invece di lineare!
 
-#### 3. Insert
+#### Insert
 > [!tip] Idea
 > Inserire un elemento = creare un heap con solo quell'elemento ($B_0$) e fare merge con l'heap esistente.
 
@@ -900,7 +861,7 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 > [!success] Complessità
 > $O(\log n)$ - dominato da merge
 
-#### 4. DeleteMin (ExtractMin)
+#### DeleteMin (ExtractMin)
 > [!tip] Idea
 > 1. Trova il minimo (in una radice) in $O(\log n)$
 > 2. Rimuovi quella radice
@@ -921,14 +882,14 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 > - FindMin: $O(\log n)$
 > - Merge: $O(\log n)$
 
-#### 5. DecreaseKey / IncreaseKey
+#### DecreaseKey / IncreaseKey
 > [!tip] Idea
 > Simile a heap binario: dopo aver modificato la chiave, ripristina la proprietà heap facendo "salire" (DecreaseKey) o "scendere" (IncreaseKey) il nodo.
 
 > [!success] Complessità
 > $O(\log n)$ - al massimo risali/scendi dall'altezza $O(\log n)$
 
-#### 6. Delete
+#### Delete
 > [!tip] Idea
 > 1. DecreaseKey del nodo a $-\infty$ (diventa minimo)
 > 2. DeleteMin
@@ -946,7 +907,7 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 |Delete|$O(\log n)$|
 |**Merge**|**$O(\log n)$** ← Vantaggio chiave!|
 
-## 9. Heap di Fibonacci (Cenni)
+## Heap di Fibonacci (Cenni)
 > [!abstract] Idea
 > Gli **heap di Fibonacci** sono una versione "rilassata" degli heap binomiali che ottiene **complessità ammortizzate** migliori.
 > 
@@ -991,7 +952,7 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 > - Con heap binario/binomiale: $O((n+m) \log n) = O(m \log n)$
 > - Con heap di Fibonacci: $O(n \log n + m)$ ← **Meglio su grafi densi!**
 
-## 10. Tabella Riassuntiva - Code con Priorità
+## Tabella Riassuntiva - Code con Priorità
 > [!success] Confronto Completo Implementazioni
 > Tutte le complessità nel **caso peggiore**, tranne heap Fibonacci (ammortizzate*).
 
@@ -1006,7 +967,7 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 |**Heap Binomiale**|$O(\log n)$|$O(\log n)$|$O(\log n)$|$O(\log n)$|$O(\log n)$|$O(\log n)$|$O(\log n)$|
 |**Heap Fibonacci**|$O(1)$|$O(1)$|$O(\log n)$*|$O(\log n)$*|$O(1)$*|$O(\log n)$*|$O(1)$|
 
-## 11. Quando Usare Quale Struttura Dati
+## Quando Usare Quale Struttura Dati
 > [!tip] Guida alla Scelta
 
 ### Per Code con Priorità:
@@ -1054,7 +1015,7 @@ Grazie alla struttura quasi completa, **non servono puntatori**. Si usa un array
 - Compromesso tra AVL e BST semplice
 - Delete più frequente (meno rotazioni di AVL)
 
-## 12. Domande Tipiche d'Esame
+## Domande Tipiche d'Esame
 > [!example] Esercizio 1.C - "Quale algoritmo/struttura useresti?"
 
 **Domanda tipo:** "Costruire un heap binomiale contenente $n$ elementi"

@@ -9,11 +9,6 @@
 .DS_Store
 Thumbs.db
 
-# File personali
-Piano di studio.md
-**/TODO.md
-**/PRIVATE.md
-
 # IDE
 .idea/
 .vscode/
@@ -22,5 +17,4 @@ Piano di studio.md
 
 # File specifici del progetto
 /1° Anno/Geometria/Geometria e algebra.zip
-2° Anno/Algoritmi e Strutture Dati/Codici/.idea/
-/Hackathons
+Situazione Universitaria.md

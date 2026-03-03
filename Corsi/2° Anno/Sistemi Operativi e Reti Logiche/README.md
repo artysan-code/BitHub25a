@@ -19,14 +19,14 @@
 	- Reti wireless e principi di gestione della mobilità.
 
 ### Modalità d'esame
-- Invernale 2024 
-	- Esonero di sistemi operativi (2024-2025)
-	- Appello entrambi moduli (2023-2024)
-- Estiva 2024
+- Invernale
+	- Esonero di sistemi operativi
+	- Appello entrambi moduli
+- Estiva
 	- Appello entrambi moduli (tutti)
-- Autunnale 2024
+- Autunnale
 	- Appello entrambi moduli (tutti)
-- Invernale 2025
+- Invernale
 	- Appello entrambi moduli (tutti)
 
 Ogni sessione prevede due prove ad accesso esclusivo per ciascun modulo.

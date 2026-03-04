@@ -1,4 +1,4 @@
-## Obbiettivi:
+## Obiettivi:
 - introdurre la terminologia e i concetti base
 - approccio:
 	- usare internet come esempio

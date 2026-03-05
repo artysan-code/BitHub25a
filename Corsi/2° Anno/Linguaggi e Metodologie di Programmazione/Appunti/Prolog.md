@@ -92,4 +92,30 @@ cruciverba :-
 ```
 
 Non si scrive l'algoritmo di ricerca: Prolog prova combinazioni in automatico finché non trova quelle valide.
-# Temp
+## Lezione 2
+Seguiamo il capitolo 1 del libro di prolog sul teams
+
+Esercizio
+```Prolog
+persona(mario).
+persona(marius).
+persona(dario).
+persona(maria).
+
+persona('Daria').
+```
+
+Se facciamo la query:
+```Prolog
+?-   persona(mario). -> true
+?-   persona(X). -> X = mario \\ esiste un valore X per cui vale il predicato persona, true e dovremmo unificare X a mario.
+
+```
+
+Se vogliamo fare una query come quella di persona(X) e saperne tutte possiamo usare il ;
+
+Per l'esercizio lascia stare roba sopra, facciamo riferimento a Esercizi -> Lezione 2 o come lo avrò chiamato. Controlla.
+
+Scrivere predicati con lo stesso numero di cardinalità vicini.
+
+Obiettivo del corso (sfida con il prof) costruire photomath.

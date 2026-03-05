@@ -49,7 +49,7 @@ Ogni istruzione ha la forma:
 $$\text{se } \textit{certe condizioni} \text{ allora esegui } \textit{queste azioni}$$
 
 Due proprietà fondamentali del procedimento così costruito:
-- **Non ambiguo**: per ogni condizione possibile c'è esattamente un'istruzione applicabile — non può capitare che due istruzioni diverse siano entrambe applicabili nella stessa situazione.
+- **Non ambiguo**: per ogni condizione possibile c'è esattamente un'istruzione applicabile — non può capitare che due istruzioni diverse siano entrambe applicabili nella stessa situazione. ^2c2748
 - **Auto-ordinato**: l'ordine di esecuzione è implicito nel meccanismo stesso — ad ogni passo esegui l'unica istruzione applicabile, finché non incontri "termina".
 
 Nota interessante: per eseguire questo procedimento non serve nemmeno sapere cosa significa "sommare". Basta seguire le istruzioni meccanicamente e il risultato arriva — *come per magia*. Potrebbe eseguirlo anche un **automa**.
@@ -98,3 +98,102 @@ Tale linguaggio costituisce un **modello di calcolo**: il modello **Macchina di 
 
 Nella prossima lezione formalizzeremo tutto questo in modo rigoroso.
 ## Lezione 2
+Esempio pratico:
+data una parola costruita da caretteri in 0,1 il numero di 1 contenuti nella parola è pari o dispari?
+
+Viene quindi scritta una parola binaria sul nastro della macchina di Turing e dato il programma facciamo che alla fine della computazione scrive sul terzo nastro la parola p se è pari e la parola d se è dispari.
+
+Qualche osservazione:
+- Quando arriva un blank sappiamo che la parola scritta sul nastro è termianta. 
+- Supponiamo $q_{i}$ come stato iniziale e $q_{f}$ come stato finale.
+- Lavoriamo su una sola testina
+
+Programma:
+<$q_{i},1,\square,q_{d},d$>
+<$q_{i},0,\square,q_{p},d$>
+<$q_{i},\square,p,q_{f},f$>
+<$q_{p},0,\square,q_{p},d$>
+<$q_{p},1,\square,q_{d},d$>
+<$q_{d},0,\square,q_{d},d$>
+<$q_{d},1,\square,q_{p},d$>
+<$q_{p},\square,p,q_{f},f$>
+
+Chiamamo per esempio questa macchina di Turing $T_{parità}$ che corrisponde a:$$T_{parità}\implies<\{0,1,p,d\},\{q_{i},q_{p},q_{d},q_{f}\},q_{i},q_{f},P_{parità}>$$
+Se vogliamo generalizzzare una macchina generica:$$T_{generica}=<\Sigma,Q,q_{0},Q_{F},P>$$
+Dove:
+- $\Sigma$ sappiamo essere l'alfabeto
+- Q l'insieme totale degli stati
+- P l'insieme di quintuple del programma
+- $q_{0}$ lo stato iniziale
+- $Q_{f}$ l'insieme degli stati finali il cui numero dipende da (???)
+  
+Se:$$\begin{array}{}
+\text{1 nastro}\implies P\leq Q\ x\ (\Sigma \cup \{\square\})\ x\ (\Sigma \cup \{\square\})\ x\ Q\ x\ \{s,f,d\} \\
+\text{k nastri}\implies P\leq Q\ x\ (\Sigma \cup \{\square\})^k\ x\ (\Sigma \cup \{\square\})^k\ x\ Q\ x\ \{s,f,d\}
+\end{array}$$
+Piccola cosa:$$\begin{array}{}
+\{a,b\} \\
+\{a,b\}^2=\{(a,a),(a,b),(b,a),(b,b)\}
+\end{array}$$
+
+Per ogni coppia stato simbolo ne esiste solo una, per la [[Fondamenti di Informatica#^2c2748|non ambiguità]]:$$P:Q\ x\ ((\Sigma \cup \{\square\}))\implies(\Sigma \cup \{\square\})\ x\ Q\ \{s,f,d\}$$
+La macchina di Turing non sempre si ferma, in quanto a causa di un errore dell'input potrebbe andare all'infinito, possiamo quindi aggiungere ad esempio:$$<q_{i},p,\square,q_{e},f>$$
+Dove $q_{e}$ corrisponde ad uno stato d'errore. Questo però non risolverebbe **ogni input**.
+
+Altra intuizione, non scriviamo il simbolo $\square$ nell'alfabeto (durante la definizione), sennò l'utente può scrivere nella parola il simbolo $\square$.
+
+Generalmente però non completiamo mai l'insieme delle quintuple.
+
+Altro esercizio un po' più complesso.
+
+$T_{somma}\implies<\Sigma,Q,q_{0},Q_{F},P>$
+$\Sigma=\{0,1,2,\dots,9,+\}$
+
+In questo caso possiamo usare un secondo nastro al fine di output, perché è più semplice. Ancora più semplice, i due numeri da sommare hanno lo stesso numero di cifre.
+
+Programma:
+$$\begin{array}{l}
+<q_{0},(x,\square),(x,\square),q_{0},(d,f)>&\forall x\ \exists\{0,\dots,9\} \\
+<q_{0},(+,\square),(+,\square),q_{ind},(s,f)> \\
+<q_{ind},(x,\square),(+,\square),q^{x_{0}},(d,f)>&\forall x\ \exists\{0,\dots,9\} \\
+<q^{x_{0}},(y,\square),(y,\square),q^{x_{0}}_{ind},(d,f)>&\forall x\ \exists\{0,\dots,9\}\ \&\ \forall y\ \exists\{0,\dots,9\}\cup\{+\} \\
+<q^{x_{0}},(\square,\square),(\square,\square),q^{x_{0}}_{ind},(d,f)>&\forall x\ \exists\{0,\dots,9\} \\
+<q_{ind}^{1},(x,\square),(x,\square),q_{ind}^1,(s,f)> \\
+<q_{ind}^{1},(+,\square),(+,\square),q_{+}^1,(s,f)> \\
+<q_{+}^{1},(+,\square),(+,\square),q_{+}^1,(s,f)> \\
+<q_{+}^{1},(x,\square),(+,\square),q^{x_{1}},(d,f)> \\
+<q_{+}^{1},(\square,\square),(\square,1),q_{f},(f,f)> \\
+<q_{+}^{0},(\square,\square),(\square,\square),q_{f},(f,f)>
+\end{array}$$
+
+Esercizio da rivedere e capire.
+
+Se non sai dire che cos'è la macchina di turing bocciato (immagino definizione e esercizio).
+
+> [!Important] Stato Globale
+> Possiamo definirlo come una fotografia della macchina di turing ad un certo istante, che magari chiamiamo q. Salva come informazioni: lo stato interno della macchina, il contenuto del nastro, e posiziona q prima di dove è posizionato il nastro (o dopo non saprei ho capito male forse da vedere), non è fisico come salvataggio ma serve per molte definizioni.
+> 
+
+^^^ IMPARARE ASSOLUTAMENTE
+
+Esempio:
+
+$\text{Parola: abcd}\ \&\ \text{ stato q con testina su b}\implies a\ q\ b\ c\ d$
+$\text{Parola: aacd}\ \&\ \text{ stato q' con testina sulla prima a}\implies q\ a\ a\ c\ d$
+
+Eseguiamo un passaggio $SG_{1}\implies SG_{2}$ se $\exists<q,b,a,q,s>\ \in P$
+
+(Da fare definizione) Transizione: eseguendo una quintupla passiamo da uno stato globale ad un altro. IMPORTANTE
+
+Stato globale iniziale: quando abbiamo la testina sulla cella più a sinistra e ci troviamo nello stato interno iniziale.
+
+(Da fare definizione) Computazione:  una sequenza di transizioni tra stati globale 
+
+$SG_{0}\implies SG_{1}\implies\ \dots\ \implies SG_{h}\implies\ \dots$
+
+- $SG_{0}$ iniziale
+- $SG_{h}$ può essere che:
+	- Non c'è più alcuna quintupla che può essere eseguita, e quindi la macchina si ferma. **La computazione termina**
+	- Se non vi è, allora potrebbe essere una **computazione che non termina**
+
+Esempio:$$<q_{0},a,a,q_{0},f>$$

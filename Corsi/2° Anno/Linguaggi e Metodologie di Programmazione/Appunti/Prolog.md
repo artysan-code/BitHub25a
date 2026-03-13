@@ -119,3 +119,69 @@ Per l'esercizio lascia stare roba sopra, facciamo riferimento a Esercizi -> Lezi
 Scrivere predicati con lo stesso numero di cardinalità vicini.
 
 Obiettivo del corso (sfida con il prof) costruire photomath.
+
+## Temp
+
+Capitolo 4 di Learn Prolog Now.
+
+#### Le liste
+Si dichiarano come:
+```
+[a,b,...,z] 
+
+[] # Lista vuota
+
+[H|T]
+
+```
+
+Dove H è l'header o capo della lista e T invece è la coda oppure diciamo tutti gli altri elementi della lista.]
+
+Importante è che in questo mondo si usa il vero e il falso di base, non l'errore, non l'assegnazione, ma l'unificazione e il risultato vero o falso.
+
+Proviamo a lavorarci un po':
+```
+[a,b] = [A] # False perché non si può unificare
+
+[a,b] = [A|B] # A unificato a e B unificato b
+
+[a,b,c] = [A|B] # A unificato a e B unificato [b,c]
+
+[a,b] = [a|[b]] # true, in quanto non è detto che le parti devono essere libere (viene chiesto esiste un valore delle variabili che rende il predicato vero)
+
+[a] = a # false
+
+[a] = [H|T] # H unificato a e T unificato []
+
+[] = [H|T] # H unificato a [] e T unificato a []
+
+```
+
+
+Ora vediamo come implementare un qualcosa del tipo "appartiene(E,L)".
+
+Sapendo che la lista è formata appunto da testa "Head" e coda "Tail", possiamo capire che:
+- O è il primo elemento della lista
+- O appartiene alla coda
+
+Nel definire appartiene appunto, possiamo iniziare cercando di vedere se un elemento E appartiene prima alla testa H:
+```
+appartiene(E,L):
+	[E,_]=L.
+```
+
+Ma si può migliorare? Si lo chiediamo subito.
+
+```
+appartiene(E,[E|_]).
+appartiene(E,[H|T]):
+	appartiene(E,T).
+```
+
+Questo perché definiamo quasi come un "fatto" che E appartiene alla Head della testa, poi continuamo a definirlo chiedendo appunto se appartiene invece alla coda, quindi definendo che "E appartiene ad una lista con testa H e coda T se E appartiene a T".
+
+Cose che abbiamo provato:
+
+appartiene(a,[b,c,d,a])
+appartiene(X,[b,c,d,a])
+appartiene(a,L)

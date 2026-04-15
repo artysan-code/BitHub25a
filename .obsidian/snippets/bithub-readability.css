@@ -1,0 +1,35 @@
+/*
+ * BitHub25a — snippet di leggibilità condiviso
+ *
+ * Stile minimale, pensato per essere compatibile con qualsiasi tema.
+ * Abilitalo in: Settings → Appearance → CSS snippets → bithub-readability.
+ *
+ * Obiettivo: uniformare la resa di formule LaTeX e callout senza
+ * sovrascrivere i colori del tema scelto dall'utente.
+ */
+
+/* Formule LaTeX leggermente più grandi in reading view */
+.markdown-preview-view .math,
+.markdown-reading-view .math {
+  font-size: 1.05em;
+}
+
+/* Callout: margini più ariosi per note dense */
+.callout {
+  margin: 1em 0;
+}
+
+.callout-title {
+  padding-block: 0.5em;
+}
+
+/* Blocchi di codice: wrap morbido per snippet lunghi nelle note teoriche */
+.markdown-rendered pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Immagini nelle note: bordo tenue per distinguere screenshot di slide */
+.markdown-rendered img {
+  border-radius: 4px;
+}

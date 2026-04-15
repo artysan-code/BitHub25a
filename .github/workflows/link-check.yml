@@ -26,6 +26,8 @@ jobs:
             --accept 200,204,206,301,302,307,308,429
             --exclude-path .obsidian
             --exclude-path .github
+            --exclude '^file://'
+            --exclude '^[^:]+\.(png|jpg|jpeg|gif|svg|pdf)(\|.*)?$'
             './**/*.md'
           fail: true
         env:

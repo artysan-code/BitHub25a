@@ -1,5 +1,14 @@
-# Obsidian
-.obsidian/
+# Obsidian — versiona solo la config condivisibile, ignora stato personale
+.obsidian/*
+!.obsidian/app.json
+!.obsidian/appearance.json
+!.obsidian/core-plugins.json
+!.obsidian/community-plugins.json
+!.obsidian/hotkeys.json
+!.obsidian/snippets/
+.obsidian/plugins/
+.obsidian/workspace*.json
+.obsidian/*.sync-conflict-*
 .trash/
 
 # File temporanei e backup
@@ -16,5 +25,30 @@ Thumbs.db
 *.swo
 
 # File specifici del progetto
-/1° Anno/Geometria/Geometria e algebra.zip
+/Corsi/Primo Anno/Geometria ed Algebra/Geometria e algebra.zip
 Situazione Universitaria.md
+
+# Claude Code — permesso solo alla root
+CLAUDE.md
+Corsi/**/.claude/
+Hackathons/**/.claude/
+
+# Altri assistenti AI / tool temporanei
+.gemini/
+.cursor/
+.aider*
+.continue/
+
+# File sorgente Xournal++ — committare solo l'export PDF
+*.xopp
+
+# Secrets — mai committare credenziali, chiavi, wallet, token
+*credentials*
+*.pem
+*.key
+*.keystore
+.env
+.env.*
+*.wallet
+*secret*
+*.token

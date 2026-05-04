@@ -11,4 +11,4 @@
 
 [[Simplesso esercizi|Esempi simplesso]]
 
-[[|Prossimo argomento]]
+[[VI - Teoria Primale-Duale| Prossimo Argomento]]

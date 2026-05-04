@@ -1,0 +1,183 @@
+\section*{Introduzione}
+\LaTeX\ è un sistema di composizione tipografica progettato per creare documenti di alta qualità, particolarmente adatto per testi tecnici e scientifici.
+A differenza degli strumenti che ti costringono a preoccuparti di ogni singolo dettaglio di formattazione, \LaTeX\ ti lascia libero di concentrarti sul contenuto, occupandosi automaticamente di impaginazione, numerazione, e referenze.
+
+\paragraph{Perché usare \LaTeX?}
+\begin{description}
+    \item[Tipografia impeccabile:] \LaTeX\ produce testi e formule matematiche che fanno impallidire qualsiasi altro strumento. E non c'è bisogno di perdere tempo a cercare ``il giusto font" o a sistemare i margini che non si allineano mai come vorresti.
+    
+    \item[Automazione:] Indici, bibliografie, numerazioni automatiche: nessun bisogno di aggiornare manualmente numeri di pagina o titoli. \LaTeX\ lo fa per te, sempre!
+    
+    \item[Coerenza:] Un documento \LaTeX\ non cambierà improvvisamente formato a causa di un'interferenza accidentale tra immagini e testo. Una volta che il layout è impostato, resterà sempre lo stesso. Garantito!
+    
+\end{description}
+ 
+\paragraph{E le alternative?}
+C'è chi, ancora oggi, si affida a strumenti che costringono a cliccare senza sosta su menu e pulsanti, a spostare immagini a mano, a premere 15 volte il tasto ``spazio" per allineare i paragrafi e pregando che il layout non si sfasci all'ultimo momento, e a piangere ogni volta che qualcosa non si allinea come dovrebbe.
+Ma il vero divertimento arriva quando il layout cambia misteriosamente dopo aver aggiunto un singolo paragrafo.\footnote{Ne sapete qualcosa?}
+Chi usa \LaTeX\ risponde: ``Noi non abbiamo tempo per questo."
+
+\paragraph{Obiettivo di questa guida}
+Questa breve guida ti fornirà gli strumenti di base per iniziare a usare \LaTeX. Imparerai come creare liste, tabelle, scrivere formule matematiche, inserire immagini e gestire referenze senza dover mai più mettere mano a ``quel" programma.
+Non è difficile come sembra, e una volta provato, non tornerai più indietro.
+
+\bigskip
+\begin{tcolorbox}[
+    colback=orange!10,
+    colframe=orange!70!black,
+    title=\textbf{Importante!},
+    ]
+    Una volta finita questa guida, commenta la riga 66 del file \texttt{main.tex}.
+    I commenti in \LaTeX\ si fanno antecedendo il simbolo \texttt{\%} alla riga che vuoi commentare.
+    Questo serve per far sparire questa guida una volta che dovrete consegnare il pdf al docente.
+\end{tcolorbox}
+
+\subsection*{Liste}
+
+\subsubsection*{Lista non numerate (\texttt{itemize})}
+\begin{itemize}
+    \item Primo elemento
+    \item Secondo elemento
+    \item Terzo elemento
+\end{itemize}
+
+\subsubsection*{Lista numerate (\texttt{enumerate})}
+\begin{enumerate}
+    \item Primo elemento
+    \item Secondo elemento
+    \item Terzo elemento
+\end{enumerate}
+
+\subsubsection*{Lista descrittive (\texttt{description})}
+\begin{description}
+    \item[Primo] Descrizione del primo elemento.
+    \item[Secondo] Descrizione del secondo elemento.
+    \item[Terzo] Descrizione del terzo elemento.
+\end{description}
+
+\subsection*{Font particolari}
+\begin{description}
+    \item[Grassetto:] \textbf{testo in grassetto}
+    \item[Corsivo:] \emph{testo in corsivo} o \textit{testo in corsivo}
+    \item[Monospaziato:] \texttt{testo monospaziato}
+\end{description}
+
+\subsection*{Formule matematiche}
+
+\subsubsection*{Formule in linea}
+Il teorema di \emph{Pitagora} è espresso come $a^2 + b^2 = c^2$.
+
+\subsubsection*{Formule in blocco}
+La seguente formula è in blocco
+\[
+a^2 + b^2 = c^2
+\]
+
+\subsubsection*{Formule numerate}
+\begin{equation}\label{eq:energy}
+E = mc^2
+\end{equation}
+
+\subsubsection*{Formule su più righe}
+\begin{align*}
+    Var(aX) &= \mathbb{E}[(aX - \mathbb{E}[aX])^2]\\
+    &= \mathbb{E}[\big(a(X - \mathbb{E}[X])\big)^2]\\
+    &= \mathbb{E}[a^2 \cdot (X - \mathbb{E}[X])^2]\\
+    &= a^2\mathbb{E}[(X - \mathbb{E}[X])^2] = a^2 \cdot Var(X)
+\end{align*}
+
+\subsection*{Tabelle}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c||c|c|}
+\hline
+Colonna 1 & Colonna 2 & Colonna 3 \\ \hline\hline
+A         & B         & C         \\ \hline
+D         & E         & F         \\ \hline
+\end{tabular}
+\caption{An example table.}
+\label{tab:table_example}
+\end{table}
+
+\subsection*{Immagini}
+
+\subsubsection*{Singola immagine}
+\begin{figure}[H] % "H" forza l'immagine ad apparire dove la metti. è meglio mettere "h" oppure "ht" , perchè sarà latex a posizionarla dove è meglio.
+    \centering
+    \includegraphics[width=0.25\linewidth]{images/frog.jpg}
+    \caption{Descrizione immagine}
+    \label{fig:label-immagine.}
+\end{figure}
+
+\subsubsection*{Due immagini affiancate}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.4\textwidth]{images/frog.jpg}
+        \caption{Prima immagine}
+        \label{fig:prima}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.4\textwidth]{images/frog.jpg}
+        \caption{Seconda immagine}
+        \label{fig:seconda}
+    \end{subfigure}
+    \caption{Due immagini affiancate}
+    \label{fig:due_immagini}
+\end{figure}
+
+\subsection*{Pseudocodice}
+
+\begin{algorithm}[H]
+\SetAlgoLined 
+\KwIn{Lista di numeri $A$, un valore $x$}
+\KwOut{Indice dell'elemento trovato oppure $-1$ se non esiste}
+
+\tcp{Esempio di un commento}
+$n \gets \text{lunghezza di } A$\;
+$found \gets \textbf{false}$\;
+$result \gets -1$\;
+
+\tcp{Esempio di ciclo for}
+\For{$i \gets 1$ \textbf{to} $n$}{
+    \tcp{Esempio if}
+    \If{$A[i] == x$}{
+        $found \gets \textbf{true}$\;
+        $result \gets i$\;
+        \textbf{break}\;
+    }
+}
+
+\tcp{Esempio if-else}
+\uIf{\textbf{not} $found$}{
+    \Repeat{una condizione speciale è soddisfatta}{
+        $result \gets result - 1$\;
+    }
+} \Else {
+    \Return{$result$}\;
+}
+
+\tcp{Esempio di ciclo Foreach}
+\ForEach{elemento $y$ \textbf{in} $A$}{
+    \If{$y > x$}{
+        \textbf{continue}\; % Salta al prossimo elemento
+    }
+    $result \gets y$\;
+}
+
+\tcp{Esempio di ciclo While}
+\While{$found == \textbf{false}$ \textbf{and} $result < n$}{
+    $result \gets result + 1$\;
+}
+
+\Return{$result$}\;
+
+\caption{Esempio di Algoritmo con tutte le keyword principali}
+\end{algorithm}
+
+
+
+\newpage

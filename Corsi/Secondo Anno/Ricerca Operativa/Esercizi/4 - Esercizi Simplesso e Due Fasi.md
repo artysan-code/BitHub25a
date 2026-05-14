@@ -15,8 +15,8 @@ max & 130x_{1}+100x_{2} \\
  & 0.3x_{1}+0.5x_{2}\leq 9 \\
  & x_{1}\geq 0,x_{2}\geq 0
 \end{array}$$
-1) porto il problema in forma standard $$\begin{array}{}
-min & -130x_{1}+100x_{2} \\
+1) porto il problema in forma standard (cambio $\max \to \min$ negando la F.O.): $$\begin{array}{}
+min & -130x_{1}-100x_{2} \\
  & 1.5x_{1}+x_{2}\leq 27 \\
  & x_{1}+x_{2}\leq 21 \\
  & 0.3x_{1}+0.5x_{2}\leq 9 \\
@@ -29,7 +29,7 @@ x_{1}+x_{2}+s_{2}=21 \\ \\
 3° vincolo:  \\
 0.3x_{1}+0.5x_{2}+s_{3}=9 \\
 \end{array}$$$$\begin{matrix}{} 
-min & - & 130x_{1} & + & 100x_{2} \\
+min & - & 130x_{1} & - & 100x_{2} \\
  & 1.5x_{1} & + & x_{2} &  + & s_{1}  &  &  &  & & = & 27 \\
  & x_{1} & + & x_{2} &  &  & + & s_{2} & &  &  = & 21 \\
  & 0.3x_{1} & + & 0.5x_{2} &  &  &  &  & +  & s_{3} & = & 9 \\
@@ -94,8 +94,80 @@ s_{1},s_{2}=0 \\
 s_{3}=0.9 \\
 z=2460 (\text{ valore ottimo del problema iniziale})
 \end{array}$$
+# Esempio 2 — Metodo delle Due Fasi
+$$\begin{array}{}
+\min \quad x_1 + 2x_2 \\
+x_1 + x_2 \geq 4 \\
+x_1 - x_2 \leq 2 \\
+x_1, x_2 \geq 0
+\end{array}$$
 
-# Esempio 2
+Il primo vincolo ($\geq$) non fornisce una variabile slack positiva utilizzabile come base iniziale. Si usa il Metodo delle Due Fasi.
 
+**Forma standard** (surplus $s_1$, slack $s_2$):
+$$x_1 + x_2 - s_1 = 4, \quad x_1 - x_2 + s_2 = 2$$
 
-[[|Prossimo Argomento]]
+**Fase I — Minimizzare** $w = y_1$ (aggiunta variabile artificiale al 1° vincolo):
+
+Tableau iniziale (riga $w$ aggiornata sottraendo $R_{y_1}$ per azzerare il costo ridotto di $y_1$):
+$$\begin{array}{c|c}
+ & b & x_1 & x_2 & s_1 & s_2 & y_1 \\
+\hline
+w & -4 & -1 & -1 & 1 & 0 & 0 \\
+\hline
+y_1 & 4 & 1 & 1 & -1 & 0 & 1 \\
+\hline
+s_2 & 2 & 1 & -1 & 0 & 1 & 0
+\end{array}$$
+
+Variabile entrante: $x_1$ ($\bar{c}=-1$). Test quoziente: $\min(4/1,\, 2/1)=2$ → esce $s_2$. Pivot su $a_{21}=1$.
+
+$$\Downarrow$$
+
+$$\begin{array}{c|c}
+ & b & x_1 & x_2 & s_1 & s_2 & y_1 \\
+\hline
+w & -2 & 0 & -2 & 1 & 1 & 0 \\
+\hline
+y_1 & 2 & 0 & 2 & -1 & -1 & 1 \\
+\hline
+x_1 & 2 & 1 & -1 & 0 & 1 & 0
+\end{array}$$
+
+Variabile entrante: $x_2$ ($\bar{c}=-2$). Test quoziente: $2/2=1$ → esce $y_1$. Pivot su $a_{12}=2$.
+
+$$\Downarrow$$
+
+$$\begin{array}{c|c}
+ & b & x_1 & x_2 & s_1 & s_2 & y_1 \\
+\hline
+w & 0 & 0 & 0 & 0 & 0 & 1 \\
+\hline
+x_2 & 1 & 0 & 1 & -\tfrac{1}{2} & -\tfrac{1}{2} & \tfrac{1}{2} \\
+\hline
+x_1 & 3 & 1 & 0 & -\tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{2}
+\end{array}$$
+
+$w^* = 0$ ✓ — base ammissibile trovata: $\{x_2,\, x_1\}$.
+
+**Fase II — Funzione obiettivo originale** $z = x_1 + 2x_2$, colonna $y_1$ eliminata.
+
+Aggiorno riga $z$ azzerando i costi ridotti delle variabili in base ($z - 1{\cdot}R_{x_1} - 2{\cdot}R_{x_2}$):
+
+$$\begin{array}{c|c}
+ & b & x_1 & x_2 & s_1 & s_2 \\
+\hline
+z & -5 & 0 & 0 & \tfrac{3}{2} & \tfrac{1}{2} \\
+\hline
+x_2 & 1 & 0 & 1 & -\tfrac{1}{2} & -\tfrac{1}{2} \\
+\hline
+x_1 & 3 & 1 & 0 & -\tfrac{1}{2} & \tfrac{1}{2}
+\end{array}$$
+
+Tutti i costi ridotti $\geq 0$: **OTTIMO**.
+
+$$x_1^* = 3,\quad x_2^* = 1,\quad z^* = 5$$
+
+Verifica vincoli: $3+1=4\geq 4$ ✓ (saturo, $s_1=0$), $\;3-1=2\leq 2$ ✓ (saturo, $s_2=0$).
+
+[[5 - Esercizi Dualità e Scarti Complementari|Prossimo Argomento]]

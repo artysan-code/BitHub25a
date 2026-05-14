@@ -1,0 +1,1 @@
+Alcuni esercizi chiedono di applicare l'algoritmo "simplesso duale". Questo argomento non è trattato nel corso di RO 2025. Per tali esercizi applicare il metodo due fasi.

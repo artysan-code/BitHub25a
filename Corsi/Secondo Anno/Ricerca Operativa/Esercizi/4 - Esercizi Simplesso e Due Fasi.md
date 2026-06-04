@@ -1,12 +1,24 @@
-# Esempio 1
-Una ditta di profumi realizza due nuove fragranze a partire da 3 essenze: rosa, mughetto e viola. 
+# Esercizi — Simplesso e Due Fasi
 
-Per realizzare un decalitro di fragranza 1 sono richiesti 1,5 litri di rosa, 1 litro di mughetto e 0,3 litri di viola. 
-Per realizzare un decalitro di fragranza 2 sono richiesti 1 litro di rosa, 1 litro di mughetto e 0,5 litri di viola. 
+> [!info] Come usare questo file
+> Ogni esercizio ha **Traccia** seguita immediatamente da **Svolgimento**. Per esercitarti a libro chiuso, copri lo Svolgimento con la mano mentre leggi la Traccia.
 
-La disponibilità in magazzino per le tre essenze è di 27, 21 e 9 litri per rosa, mughetto e viola rispettivamente. 
+---
+
+# Esercizio 1 — Simplesso primale (problema dei profumi)
+
+## Traccia
+Una ditta di profumi realizza due nuove fragranze a partire da 3 essenze: rosa, mughetto e viola.
+
+Per realizzare un decalitro di fragranza 1 sono richiesti 1,5 litri di rosa, 1 litro di mughetto e 0,3 litri di viola.
+Per realizzare un decalitro di fragranza 2 sono richiesti 1 litro di rosa, 1 litro di mughetto e 0,5 litri di viola.
+
+La disponibilità in magazzino per le tre essenze è di 27, 21 e 9 litri per rosa, mughetto e viola rispettivamente.
 Sapendo che l'azienda realizza un profitto di 130 e 100 euro per ogni decalitro venduto di fragranza 1 e 2 rispettivamente, determinare le quantità ottimali delle due fragranze da produrre.
 
+Risolvere con il **metodo del simplesso** completo (forma standard + tableau + iterazioni fino all'ottimo).
+
+## Svolgimento
 Il problema sarà quindi:
 $$\begin{array}{}
 max & 130x_{1}+100x_{2} \\
@@ -94,7 +106,12 @@ s_{1},s_{2}=0 \\
 s_{3}=0.9 \\
 z=2460 (\text{ valore ottimo del problema iniziale})
 \end{array}$$
-# Esempio 2 — Metodo delle Due Fasi
+
+---
+
+# Esercizio 2 — Metodo delle Due Fasi
+
+## Traccia
 $$\begin{array}{}
 \min \quad x_1 + 2x_2 \\
 x_1 + x_2 \geq 4 \\
@@ -102,8 +119,9 @@ x_1 - x_2 \leq 2 \\
 x_1, x_2 \geq 0
 \end{array}$$
 
-Il primo vincolo ($\geq$) non fornisce una variabile slack positiva utilizzabile come base iniziale. Si usa il Metodo delle Due Fasi.
+Il primo vincolo ($\geq$) non fornisce una variabile slack positiva utilizzabile come base iniziale. Risolvere con il **Metodo delle Due Fasi**.
 
+## Svolgimento
 **Forma standard** (surplus $s_1$, slack $s_2$):
 $$x_1 + x_2 - s_1 = 4, \quad x_1 - x_2 + s_2 = 2$$
 
@@ -169,5 +187,150 @@ Tutti i costi ridotti $\geq 0$: **OTTIMO**.
 $$x_1^* = 3,\quad x_2^* = 1,\quad z^* = 5$$
 
 Verifica vincoli: $3+1=4\geq 4$ ✓ (saturo, $s_1=0$), $\;3-1=2\leq 2$ ✓ (saturo, $s_2=0$).
+
+---
+
+# Esercizio 3 — Simplesso "stile 2026" (riga $z$ in alto)
+
+## Traccia
+$$\begin{array}{rl}
+\min & z = -2x_1 - 3x_2 \\
+\text{s.t.} & x_1 + 2x_2 \le 4 \\
+& 2x_1 + x_2 \le 5 \\
+& x_1, x_2 \ge 0
+\end{array}$$
+
+Risolvere col simplesso secondo la convenzione 2026 (riga $z$ in **prima posizione** nel tableau), prestando attenzione alla lettura del valore ottimo (il valore in alto a destra è $-z$, non $z$).
+
+## Svolgimento
+
+> [!info] Convenzione tableau (Caramia 2026)
+> - La riga $z$ sta in **prima posizione** (in alto).
+> - In quella riga, sotto la colonna $b$, c'è il valore **$-z$** (cioè per leggere il vero $z^*$ alla fine bisogna cambiarlo di segno).
+> - Sotto le variabili, in riga $z$, ci sono i **costi ridotti** $\bar c_j$.
+> - **Ottimo** quando tutti $\bar c_j \ge 0$ (per problema di min).
+
+**Forma standard** (aggiungo slack $x_3, x_4 \ge 0$):
+$$x_1 + 2x_2 + x_3 = 4, \qquad 2x_1 + x_2 + x_4 = 5$$
+
+Base iniziale = $\{x_3, x_4\}$. **Tableau iniziale:**
+
+$$\begin{array}{c|c|cccc}
+ & b & x_1 & x_2 & x_3 & x_4 \\
+\hline
+z & 0 & -2 & -3 & 0 & 0 \\
+\hline
+x_3 & 4 & 1 & 2 & 1 & 0 \\
+x_4 & 5 & 2 & 1 & 0 & 1 \\
+\end{array}$$
+
+### Iterazione 1
+**Entrante:** $\bar c_2 = -3$ è il più negativo $\implies$ $x_2$ entra.
+**Test del minimo rapporto** (solo righe con $\bar a_{i2} > 0$): $\min\{4/2,\, 5/1\} = 2$ sulla riga $x_3$ $\implies$ $x_3$ esce. **Pivot** $a_{12} = 2$.
+
+Divido la riga $x_3$ per $2$; aggiorno le altre per azzerare la colonna $x_2$:
+- $R_z \leftarrow R_z + 3\,R_{x_3}^{\text{new}}$
+- $R_{x_4} \leftarrow R_{x_4} - 1\,R_{x_3}^{\text{new}}$
+
+$$\Downarrow$$
+
+$$\begin{array}{c|c|cccc}
+ & b & x_1 & x_2 & x_3 & x_4 \\
+\hline
+z & 6 & -\tfrac{1}{2} & 0 & \tfrac{3}{2} & 0 \\
+\hline
+x_2 & 2 & \tfrac{1}{2} & 1 & \tfrac{1}{2} & 0 \\
+x_4 & 3 & \tfrac{3}{2} & 0 & -\tfrac{1}{2} & 1 \\
+\end{array}$$
+
+### Iterazione 2
+**Entrante:** $\bar c_1 = -\tfrac{1}{2} < 0$ $\implies$ $x_1$ entra.
+**Rapporti** (righe con $\bar a_{i1} > 0$): $\min\{2/(1/2),\, 3/(3/2)\} = \min\{4,\,2\} = 2$ sulla riga $x_4$ $\implies$ $x_4$ esce. **Pivot** $a_{21} = \tfrac{3}{2}$.
+
+Divido la riga $x_4$ per $3/2$; aggiorno le altre.
+
+$$\Downarrow$$
+
+$$\begin{array}{c|c|cccc}
+ & b & x_1 & x_2 & x_3 & x_4 \\
+\hline
+z & 7 & 0 & 0 & \tfrac{4}{3} & \tfrac{1}{3} \\
+\hline
+x_2 & 1 & 0 & 1 & \tfrac{2}{3} & -\tfrac{1}{3} \\
+x_1 & 2 & 1 & 0 & -\tfrac{1}{3} & \tfrac{2}{3} \\
+\end{array}$$
+
+**Ottimo** (tutti $\bar c_j \ge 0$). Soluzione: $x_1^* = 2,\ x_2^* = 1,\ x_3^* = x_4^* = 0$.
+
+> [!warning] Lettura del valore ottimo (errore classico 2026)
+> Nel tableau, in alto a destra leggo $7$. Ma quel valore è **$-z$**, non $z$! Il vero ottimo è
+> $$z^* = -7$$
+> Verifica diretta: $z^* = -2(2) - 3(1) = -7$ ✓
+
+---
+
+# Esercizio 4 — Caso illimitato
+
+## Traccia
+$$\begin{array}{rl}
+\min & z = -x_1 - 2x_2 \\
+\text{s.t.} & x_1 - x_2 \le 2 \\
+& -x_1 + x_2 \le 1 \\
+& x_1, x_2 \ge 0
+\end{array}$$
+
+Applicare il simplesso e riconoscere il caso speciale di **illimitatezza**.
+
+## Svolgimento
+La regione è **illimitata** ($x_1 + x_2$ può crescere indefinitamente lungo la direzione $(1,1)$); vediamo come il simplesso lo rivela.
+
+**Forma standard** (slack $x_3, x_4$): $x_1 - x_2 + x_3 = 2$, $-x_1 + x_2 + x_4 = 1$. Base iniziale $\{x_3, x_4\}$:
+
+$$\begin{array}{c|c|cccc}
+ & b & x_1 & x_2 & x_3 & x_4 \\
+\hline
+z & 0 & -1 & -2 & 0 & 0 \\
+\hline
+x_3 & 2 & 1 & -1 & 1 & 0 \\
+x_4 & 1 & -1 & 1 & 0 & 1 \\
+\end{array}$$
+
+### Iterazione 1
+**Entrante:** $\bar c_2 = -2$ è il più negativo $\implies$ $x_2$ entra.
+**Rapporti** ($\bar a_{i2} > 0$): solo la riga $x_4$ ha $\bar a_{22} = 1 > 0$. $\min\{1/1\} = 1$ $\implies$ $x_4$ esce. **Pivot** $a_{22} = 1$.
+
+$$\Downarrow$$
+
+$$\begin{array}{c|c|cccc}
+ & b & x_1 & x_2 & x_3 & x_4 \\
+\hline
+z & 2 & -3 & 0 & 0 & 2 \\
+\hline
+x_3 & 3 & 0 & 0 & 1 & 1 \\
+x_2 & 1 & -1 & 1 & 0 & 1 \\
+\end{array}$$
+
+### Iterazione 2 — STOP per illimitatezza
+**Entrante:** $\bar c_1 = -3 < 0$ $\implies$ $x_1$ entrerebbe.
+**Esamino la colonna $x_1$:**
+
+| riga | $\bar a_{i1}$ |
+|---|---|
+| $x_3$ | $0$ |
+| $x_2$ | $-1$ |
+
+**Tutti gli $\bar a_{i1} \le 0$** $\implies$ non ho nessuna riga con $\bar a_{i1} > 0$ per il test del minimo rapporto.
+
+> [!example] STOP — Problema ILLIMITATO inferiormente
+> Quando la variabile entrante ha colonna intera $\le 0$, posso aumentare $x_1$ a piacere e $z$ decresce:
+> $$z = 2 + (-3)\,x_1 \to -\infty \quad \text{per } x_1 \to +\infty$$
+
+> [!warning] Criterio di illimitatezza (DA RICORDARE)
+> 1. Esiste $\bar c_h < 0$ (problema migliorabile).
+> 2. **Tutti** gli $\bar a_{ih} \le 0$ nella colonna $h$.
+> 
+> Se entrambe le condizioni valgono in una stessa colonna $\implies$ **problema illimitato**.
+
+---
 
 [[5 - Esercizi Dualità e Scarti Complementari|Prossimo Argomento]]

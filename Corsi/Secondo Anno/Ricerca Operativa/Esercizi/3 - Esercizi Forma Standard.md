@@ -1,5 +1,16 @@
+# Esercizi — Forma Standard
+
+> [!info] Come usare questo file
+> Ogni esercizio ha **Traccia** seguita immediatamente da **Svolgimento**. Per esercitarti a libro chiuso, copri lo Svolgimento con la mano mentre leggi la Traccia.
+
+> [!info] Cosa significa "forma standard"
+> $\min\ c^T x$ s.t. $Ax = b$, $b \ge 0$, $x \ge 0$. Tutti i vincoli sono uguaglianze, tutti i termini noti non-negativi, tutte le variabili non-negative, F.O. di minimizzazione.
+
+---
+
 # Esercizio 1
 
+## Traccia
 Portare in **forma standard** il seguente problema di Programmazione Lineare:
 
 $$\begin{array}{rl}
@@ -11,10 +22,7 @@ $$\begin{array}{rl}
  & x_2 \geq 0
 \end{array}$$
 
-> [!info] Cosa significa "forma standard"
-> $\min\ c^T x$ s.t. $Ax = b$, $b \ge 0$, $x \ge 0$. Tutti i vincoli sono uguaglianze, tutti i termini noti non-negativi, tutte le variabili non-negative, F.O. di minimizzazione.
-
----
+## Svolgimento
 
 **Sostituzioni di variabile:**
 - $x_3$ è libera di segno (non dichiarata) $\implies$ pongo $x_3 = x_3^+ - x_3^-$ con $x_3^+, x_3^- \ge 0$.
@@ -30,9 +38,7 @@ $$= 15\hat{x}_1 + 25x_2 - 35x_3^+ + 35x_3^- + 34$$
 $$\max f \to \min -f \implies \min\ -15\hat{x}_1 - 25x_2 + 35x_3^+ - 35x_3^- - 34$$
 
 > [!info] La costante additiva
-> Il termine $-34$ è una costante: non influisce sulla scelta della soluzione ottima, solo sul valore di $z$. Si può trascinare lungo il calcolo (e sommarla a $z$ alla fine) oppure ignorarla durante il simplesso. Qui la conservo per completezza.
-
----
+> Il termine $-34$ è una costante: non influisce sulla scelta della soluzione ottima, solo sul valore di $z$.
 
 **1° vincolo** — semplifico ($-2x_1 - 2x_1 = -4x_1$), aggiungo slack:
 $$-4x_1 + 7x_2 + 6x_3 \leq 5$$
@@ -44,8 +50,6 @@ $$-3x_1 + x_3 \geq 1 \implies 3\hat{x}_1 + x_3^+ - x_3^- - s_2 = 1,\quad s_2 \ge
 
 **3° vincolo** — il RHS è $-2 < 0$: moltiplico per $-1$ invertendo il verso, poi sottraggo surplus:
 $$x_1 + x_2 \leq -2 \implies -x_1 - x_2 \geq 2 \implies \hat{x}_1 - x_2 - s_3 = 2,\quad s_3 \geq 0$$
-
----
 
 **Risultato — forma standard:**
 
@@ -63,7 +67,11 @@ $$\begin{array}{rl}
 > - Confondere slack ($\le$, si **aggiunge** $+s$) e surplus ($\ge$, si **sottrae** $-s$).
 
 ---
+
 # Esercizio 2
+
+## Traccia
+Portare in **forma standard** il seguente problema:
 
 $$\begin{array}{rl}
 \min & -13x_1 - 20x_2 + 5x_3 + x_4 \\
@@ -73,6 +81,8 @@ $$\begin{array}{rl}
  & x_2 + x_3 + 50x_4 \leq 3 \\
  & x_1, x_2, x_3 \geq 0
 \end{array}$$
+
+## Svolgimento
 
 $x_4$ libera di segno: pongo $x_4 = x_4^+ - x_4^-$ con $x_4^+, x_4^- \ge 0$.
 
@@ -98,5 +108,7 @@ $$\begin{array}{rl}
  & x_2 + x_3 + 50x_4^+ - 50x_4^- + s_3 = 3 \\
  & x_1, x_2, x_3, x_4^+, x_4^-, s_1, s_2, s_3 \geq 0
 \end{array}$$
+
+---
 
 [[4 - Esercizi Simplesso e Due Fasi|Prossimo Argomento]]

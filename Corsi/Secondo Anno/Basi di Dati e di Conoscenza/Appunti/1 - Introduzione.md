@@ -4,7 +4,6 @@ tags:
   - lezione
 slide: "02-Introduzione.pdf"
 ---
-# 1 - Introduzione
 ## Dati, informazioni e sistemi informativi
 
 > [!quote] Definizione — Dato

@@ -1,4 +1,13 @@
+# Esercizi — Branch & Bound
+
+> [!info] Come usare questo file
+> Ogni esercizio ha **Traccia** seguita immediatamente da **Svolgimento**. Per esercitarti a libro chiuso, copri lo Svolgimento con la mano mentre leggi la Traccia.
+
+---
+
 # Esercizio 1 — Branch & Bound (Massimizzazione)
+
+## Traccia
 $$\begin{array}{}
 \max \quad x_1 + x_2 \\
 2x_1 + 5x_2 \leq 16 \\
@@ -6,8 +15,11 @@ $$\begin{array}{}
 x_1, x_2 \geq 0,\ \text{interi}
 \end{array}$$
 
----
-## Nodo 0 — Rilassamento Lineare (radice)
+Risolvere con il metodo **Branch & Bound**: costruire l'albero completo, decidere il pruning di ogni nodo e indicare la soluzione ottima intera.
+
+## Svolgimento
+
+### Nodo 0 — Rilassamento Lineare (radice)
 Si risolve il problema ignorando il vincolo di interezza. L'intersezione dei due vincoli attivi dà:
 
 $$2x_1 + 5x_2 = 16 \quad \text{e} \quad 6x_1 + 5x_2 = 30 \implies 4x_1 = 14 \implies x_1 = 3.5,\ x_2 = 1.8$$
@@ -16,13 +28,15 @@ $$2x_1 + 5x_2 = 16 \quad \text{e} \quad 6x_1 + 5x_2 = 30 \implies 4x_1 = 14 \imp
 Inizializzo l'Incumbent (miglior intero trovato): $UB = -\infty$.
 
 ---
-## Branch su $x_1$ (variabile più frazionaria: $x_1 = 3.5$)
+
+### Branch su $x_1$ (variabile più frazionaria: $x_1 = 3.5$)
 Si creano due sottoproblemi:
 - **Nodo 1 (Sinistra):** aggiungo $x_1 \leq 3$
 - **Nodo 2 (Destra):** aggiungo $x_1 \geq 4$
 
 ---
-### Nodo 1 — $x_1 \leq 3$
+
+#### Nodo 1 — $x_1 \leq 3$
 Con $x_1 \leq 3$, il massimo ammissibile è $x_1 = 3$. Rimpiazzo nel primo vincolo:
 
 $$2(3) + 5x_2 \leq 16 \implies x_2 \leq 2 \quad \text{e} \quad 6(3)+5x_2 \leq 30 \implies x_2 \leq 2.4$$
@@ -31,14 +45,16 @@ L'ottimo è $x_1 = 3,\ x_2 = 2$: valore intero! $z = 5$.
 **Aggiorno Incumbent:** $UB = 5$. Nodo chiuso per ottimalità locale.
 
 ---
-### Nodo 2 — $x_1 \geq 4$
+
+#### Nodo 2 — $x_1 \geq 4$
 Con $x_1 \geq 4$, dal secondo vincolo:
 
 $$6(4) + 5x_2 \leq 30 \implies x_2 \leq 1.2$$
 
 Ottimo del rilassamento: $x_1 = 4,\ x_2 = 1.2,\ z_{RL} = 5.2 > UB = 5$.
 Il bound supera l'Incumbent, quindi il nodo va esplorato.
-#### Branch su $x_2$ ($x_2 = 1.2$)
+
+##### Branch su $x_2$ ($x_2 = 1.2$)
 - **Nodo 3 (Sinistra):** $x_1 \geq 4,\ x_2 \leq 1$
   $x_1 = 4,\ x_2 = 1$: valore intero, $z = 5$.
   $z = 5 \leq UB = 5$: nessun miglioramento. Nodo chiuso.
@@ -48,7 +64,8 @@ Il bound supera l'Incumbent, quindi il nodo va esplorato.
   Nodo chiuso per infattibilità.
 
 ---
-## Albero B&B
+
+### Albero B&B
 ```
 Nodo 0: z_RL = 5.3 (x1=3.5, x2=1.8)
 ├── Nodo 1 [x1≤3]: z=5 intero ✓ → UB=5 (chiuso per ottimalità)
@@ -58,7 +75,8 @@ Nodo 0: z_RL = 5.3 (x1=3.5, x2=1.8)
 ```
 
 ---
-## Soluzione ottima
+
+### Soluzione ottima
 $$x_1^* = 3,\ x_2^* = 2,\quad z^* = 5$$
 
 *(Anche $(4,1)$ e $(5,0)$ sono ottime con $z=5$; la prima trovata diventa l'incumbent.)*

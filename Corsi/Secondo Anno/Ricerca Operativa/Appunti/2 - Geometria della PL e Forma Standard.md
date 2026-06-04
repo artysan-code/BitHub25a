@@ -11,9 +11,7 @@ slide: "Teoria_Simplesso.pdf"
 
 > [!info] Cosa impariamo qui
 > Per risolvere un PL non vogliamo "provare tutti i punti" della regione ammissibile (sono infiniti). Vogliamo individuare i **vertici**: l'ottimo, se esiste, sta sempre su uno di essi. Tradurremo poi i vertici in linguaggio algebrico, le **Soluzioni di Base Ammissibili** (SBA), perché il calcolatore lavora sulle equazioni.
-
 ## 2.1 La regione ammissibile: poliedri
-
 Quando si scrive un PL, l'insieme di tutti i punti $x \in \mathbb{R}^n$ che soddisfano i vincoli si chiama **regione ammissibile** $P$.
 
 > [!quote] Definizione — Poliedro
@@ -23,9 +21,7 @@ In $\mathbb{R}^2$ è un poligono; in $\mathbb{R}^3$ è un solido a facce piane; 
 
 Un PL si scrive in forma compatta:
 $$\min\ c^T x \quad \text{s.t.} \quad x \in P$$
-
 ## 2.2 I tre casi possibili per un problema di PL
-
 Ogni problema di PL ricade in **uno e uno solo** dei seguenti tre casi:
 
 | Caso | Significato | Convenzione |
@@ -36,9 +32,7 @@ Ogni problema di PL ricade in **uno e uno solo** dei seguenti tre casi:
 
 > [!warning] Illimitato $\neq$ poliedro illimitato
 > Un poliedro $P$ **illimitato** è condizione *necessaria* ma *non sufficiente* per avere problema illimitato. Esempio: nello stesso poliedro illimitato $\{x_1, x_2 \ge 0\}$, $\min\ x_1 - 2x_2$ è illimitato, ma $\min\ 2x_1 + 3x_2$ ha ottimo finito $z^* = 0$ in $x = (0,0)$. Dipende dalla direzione del gradiente $c$.
-
 ## 2.3 Vertici di un poliedro
-
 Intuitivamente: in $\mathbb{R}^2$ un vertice è uno "spigolo" del poligono. Definirlo in modo rigoroso richiede il concetto di **combinazione convessa**.
 
 > [!quote] Definizione — Combinazione convessa
@@ -79,9 +73,7 @@ $$\boxed{\quad \min\ c^T x \quad \text{s.t.} \quad Ax = b,\ \ b \ge 0,\ \ x \ge 
 con $A \in \mathbb{R}^{m \times n}$, $n > m$ e $\rho(A) = m$ (rango massimo).
 
 **Regole di conversione** — un qualsiasi PL si riconduce alla forma standard tramite:
-
 1. **F.O. di massimizzazione** $\to$ minimizzazione: $\max\ c^T x \equiv \min\ -c^T x$. Le costanti additive si trascurano (non cambiano la posizione dell'ottimo); le moltiplicative positive si possono trascurare (scala $z$, ma non $x^*$).
-
 2. **Vincolo $\le$** $\to$ uguaglianza tramite variabile di **slack** (scarto) non negativa:
    $$a^T x \le b \quad \Longleftrightarrow \quad a^T x + s = b,\ s \ge 0$$
 

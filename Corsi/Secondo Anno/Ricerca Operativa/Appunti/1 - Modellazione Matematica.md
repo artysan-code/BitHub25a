@@ -1,21 +1,11 @@
----
-tags:
-  - ricerca-operativa
-  - lezione
-  - modellazione
-slide: "m01.modPL.01.modelli.pdf"
----
 ## 1.1 Cos'è la Ricerca Operativa
-
 La **Ricerca Operativa** (RO) è la disciplina che applica metodi matematici alla presa di decisioni *quantitative*: assegnare risorse limitate, organizzare turni, scegliere investimenti, dimensionare impianti, instradare trasporti. Il ponte tra il problema reale (in lingua italiana) e il calcolatore (in linguaggio matematico) si chiama **modello**.
 
 > [!quote] Definizione — Modello di programmazione matematica
 > Un modello di programmazione matematica descrive le caratteristiche della soluzione ottima di un problema di ottimizzazione tramite **relazioni matematiche**. Non specifica *come* calcolare la soluzione, ma *che cosa* deve soddisfare.
 
 L'analogia con i linguaggi di programmazione: un modello è *dichiarativo* (come SQL — "cosa voglio"), non *procedurale* (come C — "come lo calcolo"). La parte procedurale (il *come*) è demandata a un **motore di ottimizzazione** generico, come il **Simplesso** o **AMPL**.
-
 ## 1.2 Elementi di un modello
-
 Ogni modello matematico è composto da cinque ingredienti:
 
 | Elemento | Significato | Esempio (problema del coltivatore) |
@@ -28,9 +18,7 @@ Ogni modello matematico è composto da cinque ingredienti:
 
 > [!info] Nota terminologica
 > I **parametri** sono *fissati* prima dell'ottimizzazione (input del problema). Le **variabili** sono *libere* e il modello ne sceglie il valore. Confondere le due cose è l'errore numero uno dei principianti.
-
 ## 1.3 Forma generale e classi di modelli
-
 La forma generale di un problema di Programmazione Lineare è:
 
 $$\begin{array}{rl}
@@ -52,9 +40,7 @@ A seconda del dominio delle variabili distinguiamo:
 
 > [!warning] Attenzione: un modello PL deve essere LINEARE
 > Le variabili possono essere solo **moltiplicate per costanti** e **sommate tra loro**. Sono vietati: prodotti tra variabili ($x_1 \cdot x_2$), divisioni per variabili ($1/x$), potenze ($x^2$), funzioni non lineari ($\sin x, \log x, |x|$ — quest'ultima si può linearizzare, [[1 - Modellazione Matematica#^44d55a|vedi 1.6]]).
-
 ## 1.4 Costruzione di un modello — esempio guida
-
 Vediamo un esempio classico, passo dopo passo.
 
 > [!example] Problema del coltivatore
@@ -87,11 +73,8 @@ $$\begin{array}{rl}
 & 10 x_L + 20 x_P \le 160 \\
 & x_L, x_P \ge 0
 \end{array}$$
-
 ## 1.5 Schemi di modellazione ricorrenti
-
 Molti problemi reali ricadono in **schemi tipici**. Riconoscerli accelera la modellazione.
-
 ### Schema 1 — Mix ottimo di produzione (massimizzazione del profitto)
 Decidere quanto produrre di ogni bene rispettando le risorse:
 
@@ -115,10 +98,8 @@ $$\begin{array}{rl}
 \end{array}$$
 
 Esempi: dieta economica, turni in ospedale, indagine di mercato, localizzazione di servizi.
-
 ### Schema 3 — Trasporto / flusso
 Decidere quanto trasportare tra origini $i \in I$ e destinazioni $j \in J$ a costo minimo:
-
 $$\begin{array}{rl}
 \min & \sum_{i \in I} \sum_{j \in J} C_{ij} x_{ij} \\
 \text{s.t.} & \sum_{j \in J} x_{ij} \le O_i \quad \forall i \in I \quad \text{(offerta)} \\
@@ -128,38 +109,24 @@ $$\begin{array}{rl}
 
 > [!info] Suggerimento d'esame
 > Davanti a un testo nuovo, chiediti: *"sto producendo per max profitto?" → schema 1. "Sto comprando per coprire domanda al min costo?" → schema 2. "Sto spostando cose tra sorgenti e destinazioni?" → schema 3.* Poi aggiungi i vincoli specifici del problema.
-
-## 1.6 F.O. particolari: min-max, max-min, min-abs
-
+## 1.6 Funzioni Obiettivo particolari: min-max, max-min, min-abs
 ^44d55a
-
 Alcune funzioni obiettivo *sembrano* non lineari, ma si possono **linearizzare** introducendo una variabile ausiliaria. Sono casi tipici d'esame.
-
 ### Caso A — $\min\, \max\{e_1, e_2, \dots, e_n\}$
-
 Si vuole minimizzare il *peggiore* (massimo) tra più valori. Introducendo $y$ "maggiore o uguale a tutti gli $e_i$" e minimizzando $y$, il minimo possibile di $y$ è proprio il massimo degli $e_i$:
 
 $$\min \max\{e_1, \dots, e_n\} \quad\equiv\quad \begin{array}{rl}\min & y \\ \text{s.t.} & y \ge e_i \quad \forall i = 1, \dots, n \end{array}$$
-
 ### Caso B — $\max\, \min\{e_1, e_2, \dots, e_n\}$ (simmetrico)
-
 $$\max \min\{e_1, \dots, e_n\} \quad\equiv\quad \begin{array}{rl}\max & y \\ \text{s.t.} & y \le e_i \quad \forall i \end{array}$$
-
 ### Caso C — $\min |e|$ (valore assoluto)
-
 Si osserva che $|e| = \max\{e, -e\}$ — è un sotto-caso del min-max:
-
 $$\min |e| \quad\equiv\quad \begin{array}{rl}\min & y \\ \text{s.t.} & y \ge e \\ & y \ge -e \end{array}$$
 
 > [!example] Mini-esempio — penalità di anticipo/ritardo
 > Un batch di lavoro deve essere consegnato al minuto $d$. La penalità è $|i + p - d|$ (anticipo o ritardo). Per linearizzare introduco $y \ge 0$ con $y \ge (i+p-d)$ e $y \ge -(i+p-d)$, poi $\min y$.
-
 ## 1.7 Vincoli logici e Big-M
-
 Spesso i problemi PLI contengono **condizioni logiche**: "se attivo l'impianto A, devo coprire un costo fisso"; "i punti vendita di Roma e Milano sono incompatibili"; "almeno uno tra B e C va aperto". Per modellarle si introducono **variabili binarie** $y \in \{0, 1\}$ e si esprime la logica in modo lineare.
-
 ### 1.7.1 Costo fisso di attivazione
-
 Un impianto $i$ ha:
 - $x_i \ge 0$: quantità prodotta (variabile continua o intera);
 - $y_i \in \{0,1\}$: $1$ se l'impianto è attivo, $0$ altrimenti;
@@ -167,16 +134,14 @@ Un impianto $i$ ha:
 - $F_i$: costo fisso di attivazione;
 - $U_i$: capacità massima.
 
-**F.O.:** $\quad \min\ C_i x_i + F_i y_i$
+**Funzione Obiettivo:** $\quad \min\ C_i x_i + F_i y_i$
 
 **Vincolo di attivazione (Big-M):** $\quad x_i \le M \cdot y_i$, con $M$ "sufficientemente grande" (tipicamente $M = U_i$).
 
 > [!quote] Logica del vincolo Big-M
 > - Se $y_i = 0$: $x_i \le 0 \implies x_i = 0$ (non si produce se non si attiva).
 > - Se $y_i = 1$: $x_i \le M$ (limite ininfluente, vincolano gli altri vincoli).
-
 ### 1.7.2 Tabella delle implicazioni logiche
-
 Sia $y_1, y_2 \in \{0, 1\}$. Le relazioni logiche più comuni si esprimono così:
 
 | Significato logico | Formula lineare |
@@ -186,7 +151,7 @@ Sia $y_1, y_2 \in \{0, 1\}$. Le relazioni logiche più comuni si esprimono così
 | Almeno uno tra $y_1, y_2$ (OR) | $y_1 + y_2 \ge 1$ |
 | Esattamente uno tra $y_1, y_2$ (XOR) | $y_1 + y_2 = 1$ |
 | Entrambi (AND) | $y_1 + y_2 = 2$ (oppure $y_1 = 1$, $y_2 = 1$) |
-| $y_1 = 1$ se e solo se $x_1 > 0$ | $x_1 \le M y_1$ (attivazione standard) |
+| $x_1 > 0 \implies y_1 = 1$ (attivazione necessaria) | $x_1 \le M y_1$ (attivazione standard) |
 | $y_1 = 1$ implica $x_1 \ge L$ (soglia minima) | $x_1 \ge L \cdot y_1$ |
 
 ### 1.7.3 Errori frequenti con le variabili logiche

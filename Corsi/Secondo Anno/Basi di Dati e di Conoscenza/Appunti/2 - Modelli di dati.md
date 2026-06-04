@@ -1,9 +1,3 @@
----
-tags:
-  - basi-di-dati
-  - lezione
-slide: "03-ModelliDati.pdf"
----
 ## DBMS vs File system
 L'efficienza di un sistema si misura (come in tutti i sistemi informatici) in termini di:
 - **tempo** di esecuzione (tempo di risposta) e spazio.

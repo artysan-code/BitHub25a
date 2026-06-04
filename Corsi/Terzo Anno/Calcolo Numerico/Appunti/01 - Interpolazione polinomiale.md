@@ -1,8 +1,3 @@
----
-tags:
-  - calcolo-numerico
-  - lezione
----
 # Interpolazione polinomiale (approssimazione)
 
 E' data da una funzione $f:[a,b]\to \mathbb{R}$ di cui sono noti i valori $f(x_{0}),f(x_{1}),\dots,f(x_{n})$ in $u + 1$ punti distinti $x_{0},x_{1},\dots,x_{n}\in[a,b]$

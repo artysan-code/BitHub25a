@@ -1,9 +1,3 @@
----
-tags:
-  - basi-di-dati
-  - lezione
-slide: "02-Introduzione.pdf"
----
 ## Dati, informazioni e sistemi informativi
 
 > [!quote] Definizione — Dato

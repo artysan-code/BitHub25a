@@ -1,9 +1,3 @@
----
-tags:
-  - basi-di-dati
-  - lezione
-slide: "06 -EntityRelationship.pdf"
----
 ## Progettazione Concettuale
 Progettare una base di dati significa definirne **struttura**, **caratteristiche** e **contenuto**. Prevede l'uso di opportune metodologie basate sul grado di astrazione:
 1. **Modello concettuale**: rappresenta la realtà dei dati e le relazioni tra essi in modo astratto e indipendente dalle applicazioni.

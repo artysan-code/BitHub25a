@@ -1,11 +1,3 @@
----
-tags:
-  - ricerca-operativa
-  - lezione
-  - simplesso
-slide: "Teoria_Simplesso.pdf"
----
-
 # 3. Metodo del Simplesso e Due Fasi
 
 > [!info] Cosa impariamo qui

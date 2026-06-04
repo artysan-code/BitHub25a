@@ -1,12 +1,3 @@
----
-tags:
-  - ricerca-operativa
-  - lezione
-  - geometria
-  - forma-standard
-slide: "Teoria_Simplesso.pdf"
----
-
 # 2. Geometria della PL e Forma Standard
 
 > [!info] Cosa impariamo qui

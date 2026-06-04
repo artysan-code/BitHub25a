@@ -1,9 +1,3 @@
----
-tags:
-  - basi-di-dati
-  - lezione
-slide: "04 -Modello Relazionale.pdf"
----
 ## Modello Relazionale
 Il modello relazionale è stato proposto da **E. F. Codd nel 1970** con l'obiettivo di favorire **l'indipendenza dei dati**. È diventato disponibile nei **DBMS reali nel 1981** (non è semplice implementare l'indipendenza con efficienza e affidabilità). Si basa sul concetto matematico di **relazione** (con una variante) e le relazioni hanno naturale rappresentazione per mezzo di **tabelle**.
 ## Relazione matematica

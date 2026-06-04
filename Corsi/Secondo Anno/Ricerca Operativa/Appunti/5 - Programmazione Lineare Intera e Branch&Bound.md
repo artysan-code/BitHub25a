@@ -1,12 +1,3 @@
----
-tags:
-  - ricerca-operativa
-  - lezione
-  - PLI
-  - branch-and-bound
-slide: "PLI_Part02.pdf"
----
-
 # 5. Programmazione Lineare Intera e Branch & Bound
 
 > [!info] Cosa impariamo qui

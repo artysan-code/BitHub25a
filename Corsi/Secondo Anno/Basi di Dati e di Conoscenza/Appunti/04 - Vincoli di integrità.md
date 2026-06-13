@@ -1,9 +1,3 @@
----
-tags:
-  - basi-di-dati
-  - lezione
-slide: "05 -VincoliIntegrita.pdf"
----
 ## Vincoli di integrità
 I vincoli di integrità sono proprietà che devono essere soddisfatte dalle istanze affinché esse rappresentino informazioni corrette per l'applicazione.
 Esistono, infatti, istanze di basi di dati che pur essendo sintatticamente corrette, non rappresentano informazioni possibili per il dominio di interesse.

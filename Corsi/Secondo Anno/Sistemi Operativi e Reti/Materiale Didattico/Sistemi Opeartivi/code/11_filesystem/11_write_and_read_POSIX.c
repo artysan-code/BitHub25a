@@ -1,6 +1,6 @@
 /*
  * Questo programma dimostra come scrivere e leggere dati in un file utilizzando funzioni POSIX.
- * Utilizza sia formati binari che leggibili (testuali) per illustrare le differenze tra i due metodi.
+ * Utilizza sia formati binari che ASCII (testuali) per illustrare le differenze tra i due metodi.
  * 
  * **Sezioni principali:**
  * 
@@ -171,6 +171,73 @@ int main() {
 
     // 15. Chiude il file.
     close(file_fd);
+
+    /*
+     * ---------------------------------------------------------------------
+     * 16. Esempio NON POSIX puro: usare fdopen() per scrivere e leggere
+     *     in modo semplice tramite stdio (fprintf, fgets, ecc.)
+     * ---------------------------------------------------------------------
+     *
+     * Questo esempio mostra come il C possa essere molto più comodo quando
+     * si rinuncia al POSIX "low-level" e si passa all'I/O bufferizzato
+     * della libreria standard: FILE*, fprintf(), fgets().
+     *
+     * Si noti che fdopen() È POSIX, ma fprintf/fgets sono funzioni stdio.
+     * Questo approccio NON è più POSIX puro, ma spesso è più pratico.
+     */
+
+    printf("\n--- Esempio alternativo: scrittura e lettura comoda (stdio) ---\n");
+
+    // Usiamo un file diverso per non sovrascrivere l'altro
+    const char *FILENAME_ALT = "foo_alt.txt";
+
+    // Apertura comoda in scrittura usando fopen() (stdio, NON POSIX puro)
+    FILE *fw = fopen(FILENAME_ALT, "w");
+    if (!fw) {
+        perror("Errore nell'aprire foo_alt.txt per scrittura");
+        return 1;
+    }
+
+    // Scrittura molto più semplice grazie a fprintf()
+    fprintf(fw, "Ciao, questa è una riga scritta in modo semplice!\n");
+    fprintf(fw, "Scrivo un numero: %d\n", 123);
+    fprintf(fw, "Scrivo un float: %.2f\n", 3.14);
+    fprintf(fw, "Scrivo anche più righe.\n");
+    fprintf(fw, "Tutto senza preoccuparmi di quanti byte scrivo.\n");
+
+    fclose(fw); // Chiude il FILE* (stdio)
+
+
+    // Ora leggiamo lo stesso file usando fdopen() + fgets()
+    int fd_alt = open(FILENAME_ALT, O_RDONLY);
+    if (fd_alt < 0) {
+        perror("Errore nell'aprire foo_alt.txt per lettura");
+        return 1;
+    }
+
+    // Convertiamo il file descriptor in FILE*
+    FILE *fr = fdopen(fd_alt, "r");
+    if (!fr) {
+        perror("Errore in fdopen() su foo_alt.txt");
+        close(fd_alt); // In caso di errore va chiuso a mano
+        return 1;
+    }
+
+    printf("\n--- Lettura da foo_alt.txt tramite fgets() ---\n");
+
+    // Lettura semplice con fgets()
+    while (fgets(buffer, BUFFER_SIZE, fr)) {
+        printf("fgets ha letto: %s", buffer);
+    }
+
+    // Chiude FILE* (che chiude automaticamente anche il file descriptor)
+    fclose(fr);
+
+    /*
+     * Nota: esiste anche getline(), che può leggere righe di qualunque
+     * lunghezza e gestisce da sola la memoria del buffer.
+     * Tuttavia getline() NON è POSIX, è GNU/BSD, quindi non lo includiamo.
+     */
 
     return 0;
 }

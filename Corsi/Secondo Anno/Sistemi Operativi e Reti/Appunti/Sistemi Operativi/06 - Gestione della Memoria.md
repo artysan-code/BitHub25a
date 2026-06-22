@@ -50,6 +50,12 @@ I segmenti di **dati** e di **stack** possono crescere durante l'esecuzione. Si 
 Per tenere traccia della memoria (es. in blocchi da 4 byte) ci sono due metodi; il problema riguarda non solo la memoria, ma anche risorse come il [[07 - File System|file system]].
 - **Bitmap**: un bit per blocco indica se è allocato. Trovare un buco di *k* blocchi richiede una **scansione** (lenta).
 - **Lista collegata** di segmenti processo/buco (P/H, con indirizzo di partenza e lunghezza): trade-off tra allocazione lenta e deallocazione lenta. Tenere i buchi **ordinati per indirizzo** permette una rapida **coalescenza** (fusione di buchi adiacenti). In pratica si usa spesso una **doppia** linked list, che facilita il controllo del segmento precedente e l'aggiornamento dei puntatori alla terminazione di un processo.
+> [!example] I quattro casi di coalescenza (doppia lista)
+> Quando un processo X termina e libera la propria zona di memoria, si possono presentare quattro configurazioni con i segmenti adiacenti nella lista (A = processo a sinistra, B = processo a destra, H = buco):
+> - **(a)** A — X — B: nessun buco adiacente → si sostituisce X con un **singolo buco**.
+> - **(b)** A — X — H: buco a destra di X → X e H vengono **uniti in un buco più grande**.
+> - **(c)** H — X — B: buco a sinistra di X → H e X vengono **uniti in un buco più grande**.
+> - **(d)** H — X — H: buchi su entrambi i lati → tutti e tre i segmenti **confluiscono in un unico buco**.
 ### Algoritmi di allocazione
 Scelto un buco abbastanza grande per una richiesta:
 - **First Fit**: il **primo** buco disponibile. Il più semplice (usato in MINIX3).
@@ -68,7 +74,21 @@ Il buddy può causare **frammentazione interna** (una richiesta di 65 pagine ne 
 > Il kernel crea e distrugge di continuo piccoli oggetti di tipo e dimensione specifici. Nello slab allocation la memoria è divisa in blocchi detti **slab**, ulteriormente suddivisi in **chunk** di dimensione uniforme adatti a ospitare un oggetto di un certo tipo. Uno slab può essere **pieno**, **parzialmente pieno** o **vuoto**.
 
 Quando un oggetto viene deallocato non torna subito al sistema: resta nella **cache**, così una nuova istanza dello stesso tipo è riallocata rapidamente **senza overhead di inizializzazione**. Lo slab tiene un puntatore all'inizio della memoria, l'indice del prossimo slot libero e un array `bufctl` di indici dei prossimi oggetti liberi.
+> [!example] Struttura interna di uno slab
+> Un singolo slab in memoria è disposto così:
+> ```
+> [ Slab descriptor | bufctl array | Object_0 | Free slot | Object_2 | Object_3 | Object_4 | Free slot ]
+> ```
+> Il **slab descriptor** contiene il puntatore all'inizio e l'indice del prossimo slot libero. Il **bufctl array** è un array di indici che, per ogni slot, indica il successivo slot libero (forma una lista linkata implicita nei liberi). Gli slot "Free slot" corrispondono a oggetti deallocati ma non ancora restituiti al sistema.
+
+> [!info] Livelli di allocazione della memoria in Linux
+> Linux organizza l'allocazione della memoria del kernel in tre livelli sovrapposti:
+> 1. **Buddy allocator** (base): gestisce blocchi di pagine fisiche contigue. Causa **frammentazione interna**: una richiesta di 65 pagine porta ad allocarne 128 (potenza di 2 successiva).
+> 2. **vmalloc** e **Slab allocator** (sopra il Buddy): entrambi usano il Buddy per ottenere blocchi grandi e li ritagliano in unità più piccole. `vmalloc` gestisce regioni virtualmente contigue ma non necessariamente fisicamente contigue; lo **Slab** gestisce oggetti di tipo uniforme con riuso della cache.
+> 3. **`kmalloc()`** (sopra lo Slab): interfaccia generale del kernel per allocazioni di piccole dimensioni; internamente usa lo Slab allocator.
 ## Memoria virtuale
+Il problema dei programmi **più grandi della memoria** disponibile esiste fin dalle origini dell'informatica (anni '60), specie in ambito scientifico e ingegneristico. La prima soluzione furono gli **overlay**: piccoli segmenti del programma di cui viene caricato in memoria solo quello **necessario**, mentre gli overlay successivi lo **sovrascrivono** (o coesistono), scambiandosi tra memoria e disco. Il limite era che il **programmatore** doveva suddividere *manualmente* il programma in overlay — un lavoro tedioso e soggetto a errori: da qui la motivazione storica della **memoria virtuale**, che automatizza questo meccanismo.
+
 La **memoria virtuale** estende l'idea dei registri base e limite. Ogni programma ha il proprio spazio degli indirizzi suddiviso in **pagine** (intervalli contigui di indirizzi); **non tutte** devono stare contemporaneamente in memoria fisica. L'hardware mappa le pagine effettivamente presenti; se una pagina manca, interviene il sistema operativo.
 > [!quote] Definizione — Memoria virtuale
 > Crea per il processo l'**illusione** di uno spazio di indirizzi ampio (es. indicizzabile con 48 bit) detto **spazio di indirizzi virtuale**, mentre la RAM, molto più limitata, è la **memoria fisica**. La **MMU** (*Memory Management Unit*) traduce gli indirizzi virtuali (usati dal processo) in indirizzi fisici (inviati alla memoria).
@@ -102,6 +122,10 @@ Ogni voce contiene il numero del frame (es. 12 bit per pagine da 4 KB) più dive
 - **Caching disabled**: disabilita la cache per quella pagina.
 
 L'indirizzo in memoria della tabella delle pagine «del processo» è scritto nel registro **PTBR** (*Page Table Base Register*). I bit **M** e **R** sono fondamentali per gli [algoritmi di sostituzione](#Algoritmi%20di%20sostituzione%20delle%20pagine).
+> [!info] Dove memorizzare la tabella delle pagine?
+> Due opzioni principali, con un netto trade-off:
+> - **Registri hardware** (un registro per ogni pagina): la tabella è caricata in un insieme di registri dedicati all'avvio del processo. Semplice e senza accessi aggiuntivi alla RAM; ma l'insieme di registri è costoso, e con tabelle grandi il **cambio di contesto** richiede di ricaricare tutti i registri → molto lento.
+> - **Memoria principale (RAM) + PTBR**: la tabella risiede in RAM e il registro **PTBR** punta all'inizio della tabella del processo corrente. Il cambio di contesto è rapido (si aggiorna solo PTBR); svantaggio: ogni accesso alla memoria virtuale richiede **due accessi RAM** (uno per leggere la voce della tabella, uno per il dato vero e proprio) → mappatura più lenta senza TLB.
 ### TLB (Translation Lookaside Buffer)
 La paginazione ha un problema di prestazioni: ogni istruzione richiede un accesso alla memoria per prelevarla **più** un accesso alla page table → **raddoppio** degli accessi, prestazioni dimezzate. Se un'istruzione impiega 1 ns, la ricerca nella tabella dovrebbe stare sotto 0,2 ns per non creare colli di bottiglia.
 La soluzione sfrutta la **località di riferimento**: i programmi fanno molti riferimenti a un **piccolo** numero di pagine.
@@ -326,7 +350,19 @@ A differenza delle pagine (dimensione fissa), i **segmenti** hanno dimensione va
 > [!info] MULTICS — pioniere di segmentazione + paginazione
 > Progetto di ricerca del **M.I.T.**, operativo nel **1969** e influente fino al 2000 (impatto su UNIX, architettura x86, TLB). Forniva fino a $2^{18}$ segmenti per programma, ciascuno lungo fino a $2^{16} = 65\,536$ parole. I **segmenti** erano trattati come spazi di memoria virtuale **indipendenti e paginati**.
 
-Ogni segmento ha un **descrittore** (puntatore alla tabella delle pagine del segmento, lunghezza, bit di protezione, dimensione pagina, flag *paged/not paged*); il *descriptor segment* raccoglie i descrittori. L'indirizzo virtuale a **34 bit** è diviso in: numero di segmento (18 bit) + indirizzo nel segmento, a sua volta numero di pagina (6 bit) + offset nella pagina (10 bit).
+Ogni segmento ha un **descrittore** a **36 bit** con la seguente struttura (i numeri indicano la larghezza in bit di ogni campo):
+
+| Campo | Bit | Significato |
+|---|---|---|
+| Indirizzo memoria fisica tabella pagine | 18 | Dove si trova la page table del segmento in RAM |
+| Lunghezza segmento (in pagine) | 9 | Numero di pagine del segmento |
+| Dimensione pagina | 1 | 0 = 1024 parole; 1 = 64 parole |
+| Paginato/non paginato | 1 | 0 = segmento paginato; 1 = non paginato |
+| Bit miscellanei | 3 | Vari flag di sistema |
+| Bit di protezione | 3 | Permessi di accesso |
+
+Il *descriptor segment* raccoglie tutti i descrittori. L'indirizzo virtuale a **34 bit** è diviso in: numero di segmento (18 bit) + indirizzo nel segmento, a sua volta numero di pagina (6 bit) + offset nella pagina (10 bit).
+
 > [!example] Conversione di un indirizzo MULTICS
 > 1. Il numero di segmento individua il **descrittore** del segmento.
 > 2. Si verifica che la tabella delle pagine del segmento sia in memoria.
@@ -334,7 +370,7 @@ Ogni segmento ha un **descrittore** (puntatore alla tabella delle pagine del seg
 > 4. Si ottiene l'indirizzo in memoria principale sommando l'**offset** all'origine della pagina.
 > 5. Avviene la lettura o il salvataggio.
 
-MULTICS fu il **primo** sistema a usare un **TLB** (16 parole) per accelerare la ricerca degli indirizzi: programmi con working set minore del TLB raggiungono maggiore efficienza.
+MULTICS fu il **primo** sistema a usare un **TLB** (16 parole) per accelerare la ricerca degli indirizzi: programmi con working set minore del TLB raggiungono maggiore efficienza. Ogni voce del TLB conteneva sei campi: **Segment number** e **Virtual page** (campo di confronto usato per la ricerca), **Page frame** (risultato della traduzione), **Protection** (permessi), **Age** e un bit **"Is this entry used?"** (voce presente/valida). L'esistenza di **due dimensioni di pagina** (1024 e 64 parole) rendeva il TLB reale più complesso di questa versione semplificata.
 ### Segmentazione in x86
 Fino all'x86-64, Intel x86 rifletteva il modello MULTICS combinando segmentazione e paginazione (16 000 segmenti indipendenti, ognuno fino a 1 miliardo di parole a 32 bit). Nell'**x86-64** la segmentazione diventa **obsoleta**, mantenuta via software solo per compatibilità, perché i SO chiave (UNIX, Windows) non la adottano per portabilità e Intel ha preferito ottimizzare lo spazio del chip. L'architettura x86 è apprezzata per l'equilibrio tra paginazione, segmentazione e retrocompatibilità.
 ## Il comando `free` (Linux)

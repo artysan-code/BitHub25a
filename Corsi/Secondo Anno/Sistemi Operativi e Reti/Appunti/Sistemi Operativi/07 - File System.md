@@ -116,7 +116,7 @@ L'apertura di un file restituisce un **handle** (descrittore di file, *file desc
 > ```
 > I **flag** controllano il comportamento dell'apertura: `O_WRONLY` (sola scrittura), `O_CREAT` (crea se non esiste), `O_TRUNC` (se esiste, tronca a dimensione 0). Risultato: sovrascrive `foo.txt` con `"Hi there"` o lo crea.
 
-Altre operazioni UNIX: `unlink("foo.txt")` (rimuove), `rename("foo.txt","bar.txt")` (rinomina), `chmod("foo.txt", 0755)` (cambia i permessi), `chown("foo.txt", uid, gid)` (cambia il proprietario). Un programma `11_copyfile.c` copia un file tramite un **buffer da 4096 byte**, con controllo dei parametri e gestione degli errori in apertura/lettura/scrittura/chiusura.
+Altre operazioni UNIX: `unlink("foo.txt")` (rimuove), `rename("foo.txt","bar.txt")` (rinomina), `chmod("foo.txt", 0755)` (cambia i permessi), `chown("foo.txt", uid, gid)` (cambia il proprietario). Un programma `11_copyfile.c` copia un file tramite un **buffer da 4096 byte**, con controllo dei parametri e gestione degli errori in apertura/lettura/scrittura/chiusura. Il programma `11_write_and_read_POSIX.c` illustra e confronta due metodi di scrittura/lettura: **binario** (più efficiente, ma non leggibile direttamente dall'utente) e **testuale** (più leggibile, meno efficiente); introduce inoltre una funzione custom `read_line` che legge un file riga per riga fino al carattere `\n`.
 # Le directory
 Per tenere traccia dei file, il file system usa le **directory**.
 > [!quote] Definizione — Directory

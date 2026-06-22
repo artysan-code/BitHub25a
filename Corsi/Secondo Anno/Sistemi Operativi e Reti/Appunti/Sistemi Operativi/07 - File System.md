@@ -28,7 +28,7 @@ Il file è il mattone dell'astrazione: serve a salvare e leggere informazioni su
 ## Nomi dei file
 I file sono identificati da **nomi**, le cui regole dipendono dal sistema operativo.
 - **Lunghezza e «sensibilità»**: alcuni sistemi limitano la lunghezza (es. 8 lettere in MS-DOS), altri ammettono nomi lunghi. ^naming
-- **Caratteri speciali vietati**: variano per file system — FAT12 vieta `* | < > ? \` e altri; Ext4 vieta `/` e i nomi speciali `.` e `..`.
+- **Caratteri speciali vietati**: variano per file system — FAT12 vieta `* | < > ? \` e altri (inclusi caratteri di controllo); Ext4 vieta il carattere **NUL** (`\0`, 0x00) e i nomi speciali `.` e `..`. Il carattere `/` non è un vincolo specifico di Ext4: è il **separatore di percorso** del kernel UNIX, quindi è impossibile in qualsiasi nome di file su qualunque file system UNIX.
 - **Case sensitivity**: cosa significa? È la distinzione tra maiuscole e minuscole. I sistemi **UNIX** distinguono (`File.txt` ≠ `file.txt`), **MS-DOS** no. ^case
 - **Evoluzione**: vari file system (FAT-16, FAT-32, NTFS) differiscono per costruzione dei nomi e supporto **Unicode**.
 ### Estensioni

@@ -9,7 +9,6 @@ L'utente non interagisce mai direttamente col SO, ma tramite un programma di int
 > Strato di software che astrae e gestisce le risorse hardware, fornendo ai programmi un'interfaccia semplice e ordinata e arbitrando l'accesso condiviso alle risorse.
 ### Macchina estesa (visione top-down)
 A livello di linguaggio macchina l'hardware è **primitivo e scomodo** da programmare, soprattutto per l'I/O. Il SO nasconde questa complessità dietro **astrazioni**:
-
 - I **driver** astraggono i singoli dispositivi: un driver è l'interfaccia che permette al SO di parlare con un dispositivo specifico.
 - Sopra i driver, l'astrazione del **file** (vedi [[07 - File System]]) permette di leggere/scrivere/creare dati senza conoscere settori, tracce e cilindri del disco.
 
@@ -17,14 +16,12 @@ A livello di linguaggio macchina l'hardware è **primitivo e scomodo** da progra
 > Una buona astrazione trasforma un'attività quasi impossibile (gestire l'hardware nudo) in due attività fattibili (definire l'astrazione, e usarla).
 ### Gestore delle risorse (visione bottom-up)
 Il SO esiste per **gestire in modo ordinato e controllato** le risorse di un sistema complesso, condivise tra più programmi e utenti. La condivisione (**multiplexing**) avviene in due modi:
-
 - **Nel tempo**: programmi/utenti si alternano nell'uso della stessa risorsa (es. la CPU, la stampante).
 - **Nello spazio**: la risorsa è divisa tra più utenti (es. la memoria, il disco).
 
 Il SO deve inoltre garantire **isolamento** tra i processi, **equità** nell'accesso e tracciamento dell'uso delle risorse (*accounting*).
 ### Modalità kernel e modalità utente
 L'hardware supporta (almeno) due modalità operative:
-
 - **Modalità kernel** (o **supervisor**): accesso completo all'hardware, può eseguire qualsiasi istruzione. Vi gira il sistema operativo.
 - **Modalità utente**: disponibile solo un sottoinsieme di istruzioni, accesso all'hardware controllato. Vi girano le applicazioni.
 
@@ -43,13 +40,29 @@ Per ridurre i tempi morti nasce il **sistema batch**: i job vengono raccolti e r
 > `$JOB` (tempo max, utente, programmatore) → `$FORTRAN` (carica il compilatore) → *programma sorgente* → `$LOAD` (carica l'eseguibile) → `$RUN` (esegui) → `$END`.
 ### Terza generazione (1965-80) — circuiti integrati e multiprogrammazione
 I **circuiti integrati (IC)** migliorano il rapporto prezzo/prestazioni. IBM unifica le linee scientifica (*word-oriented*, 7094) e commerciale (*character-oriented*, 1401) con il **System/360**, prima **famiglia di computer compatibili** con lo stesso set di istruzioni (discendenti fino alla serie Z). Idee chiave introdotte:
-
 - **Multiprogrammazione**: la memoria è partizionata tra più job; mentre uno attende l'I/O, la CPU lavora su un altro, evitando di restare inattiva (critico per i carichi commerciali, dove l'attesa I/O è l'80-90% del tempo).
 - **Spooling** (*Simultaneous Peripheral Operation On Line*): i job vengono caricati su disco appena arrivano, senza fermare la macchina.
 - **Time-sharing**: variante della multiprogrammazione in cui più utenti interattivi condividono la CPU a turni rapidi (primo sistema: CTSS del M.I.T. su 7094). Da qui **MULTICS**, antesignano del concetto di *computer utility* e quindi del **cloud** moderno.
 
 > [!info] Nascita di UNIX
-> Da MULTICS, **Ken Thompson** (Bell Labs) scrive una versione ridotta — inizialmente **monoutente** su PDP-7 — poi evoluta su PDP-11 e **riscritta in C** da Dennis Ritchie: nasce **UNIX** (multiutente). Il proliferare di varianti incompatibili porta allo standard **POSIX** (IEEE). Da UNIX derivano **MINIX** (didattico, micro-kernel, → MINIX 3) e, ispirato a MINIX, **Linux** di Linus Torvalds.
+> Da MULTICS, **Ken Thompson** (Bell Labs, 1969) scrive una versione ridotta — chiamata inizialmente **UNICS** (*UNIplexed Information and Computing Service*), poi rinominata UNIX — su PDP-7 in assembler, poi evoluta su PDP-11 (1970-1974) e **riscritta in C** da Dennis Ritchie (partendo dal linguaggio B). La terza versione di UNIX è già scritta in C. Nel **1974** viene pubblicato un articolo su UNIX su *Communications of the ACM*; Thompson e Ritchie ricevono il **ACM Turing Award nel 1984**. UNIX diventa popolare in ambito accademico e aziendale, ma il proliferare di varianti incompatibili (ramo **System V** e ramo **BSD**) genera frammentazione. Per porvi rimedio nasce lo standard **POSIX** (IEEE, 1984, fusione di System V e BSD), cui si aggiungono nel tempo i progetti [[#^stdunix|di standardizzazione]] OSF, X/Open e Open Group. Da UNIX derivano **MINIX** (didattico, micro-kernel, → MINIX 3) e, ispirato a MINIX, **Linux** di Linus Torvalds (1991).
+
+Le varianti commerciali più importanti erano basate su **UNIX System V Release 4 (SVR4)**; **Solaris 2.x** (Sun Microsystems) ne è l'implementazione di maggior successo commerciale. Questi sistemi erano però diventati molto grossi e complicati — al contrario dell'idea originaria di Thompson. Nel **1987** **Andrew Tanenbaum** sviluppa **MINIX**, un piccolo sistema UNIX compatibile con POSIX scritto a scopo didattico e basato sul modello a **micro-kernel**: circa **11.800 righe di C** e **800 righe di Assembler**. MINIX è poi la principale ispirazione per Linux (vedi messaggio storico di Torvalds del 1991 su comp.os.minix).
+
+> [!info] Progetti di standardizzazione UNIX ^stdunix
+> Alla frammentazione System V / BSD rispondono diversi enti:
+> - **POSIX** (IEEE, 1984): standard di interfaccia unificata.
+> - **OSF** (*Open Software Foundation*, 1988): consorzio IBM, DEC, Hewlett-Packard; produce **OSF/1**.
+> - **X/Open** (1993): definisce la **Single UNIX Specification**; i sistemi conformi ottengono il marchio **UNIX 95**.
+> - **Open Group** (1996, fusione OSF + X/Open): emana la seconda versione della Single UNIX Specification (1997) con marchio **UNIX 98**.
+> [!info] MINIX 3 e Intel Management Engine
+> **MINIX 3** (Vrije Universiteit Amsterdam) è stato adottato da **Intel** per il suo **Management Engine (ME)**, il sottosistema di gestione integrato nei processori moderni. È quindi presente in quasi tutti i desktop, server e laptop x86, rendendolo di fatto uno dei SO più diffusi al mondo pur restando invisibile all'utente finale. La licenza è della Vrije Universiteit Amsterdam (copyright 1987, 1997, 2006).
+> [!info] Albero genealogico delle varianti UNIX
+> Il diagramma delle slide (*A Success Story*) mostra tre rami principali:
+> - **BSD** (Berkeley Software Distribution): da Unix V5/V6 → BSD 1.x-4.3 → FreeBSD, NetBSD, OpenBSD, DragonFly BSD → **macOS** (via NeXTSTEP/OPENSTEP e il kernel Darwin, basato su Mach + BSD).
+> - **System V**: Unix/32V → System III → System V R1–R4 → **Solaris** (Sun/Oracle), HP-UX, AIX, UnixWare, SCO.
+> - **Linux** (1991): nasce ispirato a MINIX, ma indipendente; evolve in parallelo, con Android come suo principale discendente mobile.
+> Le varianti a sorgente aperto (verdi nel diagramma) convivono con quelle proprietarie (rosse: HP-UX, AIX, Solaris). macOS è derivato da BSD/NeXTSTEP ed è quindi UNIX-based.
 ### Quarta generazione (1980-oggi) — personal computer
 I circuiti **LSI** (migliaia di transistor per cm²) rendono possibile il PC. Intel rilascia l'**8080** (1974). Quando IBM cerca un SO, **Microsoft** acquista il DOS da Seattle Computer Products e lo adatta a **MS-DOS**, dominando il mercato dei PC IBM.
 
@@ -62,16 +75,14 @@ Il SO è intimamente legato all'hardware su cui gira e deve conoscerlo a fondo.
 La CPU esegue il **ciclo fetch-decode-execute**: preleva l'istruzione, la decodifica, la esegue, ripete. Ogni CPU ha un proprio **instruction set (ISA)**: un binario x86 non gira su ARM e viceversa.
 
 Contiene **registri** interni per dati e risultati temporanei, tra cui:
-
 - **Program Counter (PC)**: indirizzo della prossima istruzione.
 - **Stack Pointer (SP)**: cima dello stack (frame di procedura, parametri, variabili locali).
 - **PSW (Program Status Word)**: bit di condizione, bit di modalità (kernel/user), priorità.
 
 Il **cambio di contesto** ([[03 - Processi e Thread|context switch]]) salva i registri del processo corrente e carica quelli del prossimo, permettendo il multitasking. Tecniche hardware per le prestazioni:
-
 - **Pipeline**: gli stadi (fetch/decode/execute) di istruzioni successive si sovrappongono, aumentando il throughput.
 - **Multithreading / hyperthreading**: la CPU mantiene lo stato di più thread e commuta rapidamente quando uno si blocca — **non** è vero parallelismo, ma il SO vede i thread hardware come CPU separate.
-- **Multicore**: più core reali sullo stesso chip; possono condividere o meno le cache.
+- **Multicore**: più core reali sullo stesso chip. Due topologie possibili per la cache L2: **(a) L2 condivisa tra tutti i core** (un unico blocco di L2 sul chip, accesso uniforme) oppure **(b) L2 privata per ogni core** (ogni core ha la propria L2 locale, visibile nelle slide come "L2" dentro ciascun riquadro core). Entrambe le topologie mantengono una cache L1 privata per core.
 - **GPU**: migliaia di core semplici per calcolo massicciamente parallelo (SIMD), usata anche per calcolo generico (GPGPU).
 
 > [!info] Approfondimento — Architettura dei Sistemi di Elaborazione
@@ -92,7 +103,6 @@ Le **cache** nascondono la latenza della RAM sfruttando la **località spaziale*
 - **SSD (Solid State Drive)**: memoria flash NAND, nessuna parte mobile, molto più veloce negli accessi casuali; richiede **wear leveling**.
 ### Dispositivi di I/O
 Ogni dispositivo ha due parti: un **controller** (interfaccia con registri di controllo/stato, semplice da pilotare per il SO) e il **dispositivo fisico**. Il **driver** (in kernel mode) traduce le richieste del SO in comandi per il controller. Tre modi di gestire un trasferimento:
-
 - **Polling** (*busy waiting*): la CPU interroga di continuo il dispositivo — spreca cicli.
 - **Interrupt-driven**: il dispositivo genera un **interrupt** quando è pronto — efficiente (ripreso in [[08 - Input Output]]).
 - **DMA (Direct Memory Access)**: un controller trasferisce i dati direttamente da/verso la memoria senza impegnare la CPU — ottimale per grandi quantità.
@@ -100,13 +110,12 @@ Ogni dispositivo ha due parti: un **controller** (interfaccia con registri di co
 I componenti comunicano tramite **bus** (CPU-RAM, PCIe per le periferiche, SATA per i dischi, USB hot-pluggable). All'accensione, il firmware (**BIOS/UEFI**) esegue il **boot**: test dell'hardware, individuazione del dispositivo di avvio, caricamento del SO in memoria.
 ## Panoramica dei sistemi operativi (lo "zoo")
 Esistono SO molto diversi a seconda del contesto d'uso:
-
 - **Mainframe**: orientati a throughput elevato — *batch processing*, elaborazione di transazioni, time-sharing per molti utenti (es. z/OS, applicazioni mission-critical bancarie).
 - **Server**: servono più utenti in rete (file sharing, database, stampa, hosting web). Es. Linux, FreeBSD, Windows Server, Solaris.
 - **Multiprocessore**: gestiscono più CPU/core per maggiore potenza.
 - **Personal computer**: singolo utente, multiprogrammazione, GUI, applicazioni di produttività. Es. Windows, macOS, Linux.
 - **Palmari / smartphone**: multicore, GPS, fotocamere, app di terze parti. Es. Android, iOS.
-- **Embedded / IoT**: footprint ridotto, funzioni specifiche, dispositivi connessi (TV, elettrodomestici, telecamere). Es. Embedded Linux, QNX, RIOT. ^embedded
+- **Embedded / IoT**: footprint ridotto, funzioni specifiche, dispositivi connessi (TV, elettrodomestici, telecamere). Es. Embedded Linux, QNX, RIOT. (Esempio più comprensibile, Arduino, ESP32, etc...) ^embedded
 - **Real-time**: rispettano scadenze temporali rigide. **Hard real-time** (scadenze inviolabili, es. controllo industriale/militare) vs **soft real-time** (ritardi occasionali tollerabili). Es. VxWorks, eCos.
 - **Smart card**: risorse minime, spesso orientati a Java (JavaCard).
 

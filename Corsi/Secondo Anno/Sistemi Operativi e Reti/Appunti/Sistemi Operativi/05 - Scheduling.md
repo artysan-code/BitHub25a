@@ -36,6 +36,8 @@ Algoritmo batch **senza prelazione** che esegue per primo il **job più breve**;
 > Quattro job con tempi 8, 4, 4, 4 minuti. In ordine d'arrivo (8,4,4,4) i turnaround sono 8, 12, 16, 20 → media **14**. Con SJF (4,4,4,8) sono 4, 8, 12, 20 → media **11**.
 
 **Ottimalità**: SJF minimizza il tempo di turnaround medio **solo quando tutti i job sono disponibili contemporaneamente**. Se i job arrivano in momenti diversi, può **non** essere ottimale.
+> [!example] SJF non ottimale con arrivi sfasati
+> Cinque job A–E con tempi di esecuzione 2, 4, 1, 1, 1 minuti e arrivi a $t = 0, 0, 3, 3, 3$. Due sequenze di esecuzione producono tempi medi di attesa diversi: una sequenza dà media $4{,}6$, un'altra dà media $4{,}4$. Il fatto che esistano due ordini con medie diverse dimostra che SJF **non è ottimale** quando i job non arrivano tutti allo stesso istante.
 ### Shortest Remaining Time Next (SRTN)
 Versione **con prelazione** di SJF: sceglie sempre il processo con il **tempo rimanente più breve**. All'arrivo di un nuovo job, se il suo tempo totale è inferiore al tempo rimanente del processo corrente, quest'ultimo viene sospeso. Garantisce servizio rapido ai job brevi (richiede comunque tempi noti in anticipo).
 ## Scheduling nei sistemi interattivi
@@ -51,6 +53,7 @@ Round-robin tratta tutti i processi come ugualmente importanti, ma spesso serve 
 - **Priorità dinamica**: es. basata sull'uso della CPU (favorisce i processi I/O-bound).
 
 **Classi di priorità**: i processi si raggruppano in classi; si fa scheduling **a priorità tra le classi** e **round-robin all'interno** di ciascuna classe. Le priorità vanno riviste periodicamente per evitare la **starvation** dei processi a bassa priorità.
+**Quanto per classe**: a ogni classe è assegnato un quanto; quando un processo lo esaurisce viene spostato alla classe di priorità immediatamente inferiore. Senza revisione periodica un processo può degradare fino alla priorità 0, dove rimane inibito indefinitamente (**starvation verso il basso**).
 
 > [!info] Collegamento
 > Un uso scorretto delle priorità può causare l'[[04 - Sincronizzazione#Inversione delle priorità|inversione delle priorità]].
@@ -62,6 +65,8 @@ Il parametro $a$ pesa le esecuzioni passate. Con $a = 1/2$, dopo 3 esecuzioni il
 Fa **promesse concrete** sulle prestazioni: con $n$ processi/utenti, ciascuno ottiene circa $1/n$ della CPU. Il sistema traccia quanta CPU ha **realmente ricevuto** ogni processo e quanta **avrebbe dovuto** (tempo da creazione $\div n$), calcola il **rapporto** consumato/dovuto ed esegue il processo con il **rapporto più basso** (chi è più indietro rispetto alla sua quota).
 ### Lottery scheduling
 A ogni processo si assegnano **biglietti della lotteria** per le risorse; a ogni decisione si **estrae** un biglietto a caso e vince il processo corrispondente. Un processo con il 20% dei biglietti otterrà a lungo termine il **20%** della CPU. È flessibile (più biglietti = più probabilità) e i processi cooperanti possono **scambiarsi biglietti** (es. un client li dona al server per farsi servire prima). Limite: è **non deterministico**.
+> [!example] Lottery scheduling — parametri quantitativi
+> L'estrazione avviene $\approx 50$ volte al secondo; ogni vincita assegna $20\,\text{ms}$ di CPU. Caso d'uso tipico: un **server video** con flussi a frequenze di fotogrammi diverse (es. 25 fps e 10 fps). Assegnando biglietti proporzionali alla frequenza richiesta, la CPU viene ripartita automaticamente nelle proporzioni corrette — più biglietti = più frame/s.
 ### Fair-share scheduling
 Gli algoritmi precedenti schedulano i singoli processi; ma se l'utente 1 ha 9 processi e l'utente 2 ne ha 1, con round-robin l'utente 1 otterrebbe il **90%** della CPU. Il **fair-share** considera il **proprietario**: ogni utente riceve una frazione predefinita di CPU, indipendentemente dal numero di processi.
 
@@ -101,6 +106,7 @@ Lo scheduling differisce a seconda che i [[03 - Processi e Thread#Implementazion
 | Velocità di switch | veloce | lento |
 | Blocco I/O | blocca l'intero processo | blocca solo il thread |
 | Chi decide l'ordine | run-time utente | kernel |
+| Flessibilità | alta | media |
 | Controllo del sistema | basso | alto |
 
 ---

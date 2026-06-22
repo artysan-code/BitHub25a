@@ -7,7 +7,6 @@
 Corso annuale diviso in due moduli indipendenti: **Sistemi Operativi** (1° semestre) e **Reti di Calcolatori** (2° semestre).
 ## Modalità d'esame
 Ogni modulo si conclude con **due prove ad accesso esclusivo** (lo scritto dà accesso all'orale).
-
 - **Sessione invernale**: è prevista la prova di **esonero del Modulo 1** (Sistemi Operativi). Superare l'esonero + il relativo orale **conclude il Modulo 1**.
 - **Tutte le sessioni** (invernale, estiva, autunnale): è disponibile l'**appello completo su entrambi i moduli**.
 ## Programma
@@ -46,7 +45,6 @@ Mappa argomento ↔ slide del corso ↔ capitolo del libro. **In programma tutto
 | Unix/Linux e BASH (pratico) | 3.1 | — (slide + risorse online, **non** dal Cap. 10) |
 
 **Fuori programma** (nessuna slide dedicata, confermato):
-
 - Deadlock (Cap. 6)
 - Virtualizzazione e cloud come capitolo a sé (Cap. e7) — resta solo l'introduzione a VM/container già vista nelle strutture
 - Sistemi a più processori (Cap. e8)

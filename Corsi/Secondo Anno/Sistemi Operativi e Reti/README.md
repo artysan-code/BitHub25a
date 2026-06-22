@@ -1,5 +1,5 @@
 # Sistemi Operativi e Reti
-**Codice**: sor · **CFU**: 12 · **Semestre**: 1-2 · **Anno**: 2°
+**Codice**: SOR · **CFU**: 12 · **Semestre**: 1-2 · **Anno**: 2°
 **SSD**: INF/01
 **Docente/Docenti**: Danilo Croce (Modulo 1 — Sistemi Operativi) · Manuel Fiorelli (Modulo 2 — Reti)
 **Propedeuticità**: Architettura dei Sistemi di Elaborazione · Programmazione dei Calcolatori con Laboratorio

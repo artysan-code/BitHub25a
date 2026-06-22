@@ -48,7 +48,7 @@ Anche un disco è "dispositivo + controller". Sul suo **PCB** (*Printed Circuit 
 - l'**MCU** (*Micro Controller Unit*), il chip più grande, che include una **CPU** e un canale di lettura/scrittura per convertire i segnali analogici in digitali;
 - la **cache** (chip DDR SDRAM: un chip da 32 MB indica una cache teorica di 32 MB);
 - il controller **VCM** (*Voice Coil Motor*), che comanda rotazione del disco e movimento delle testine, consumando la **maggior parte dell'energia** del PCB;
-- un chip **flash** col firmware d'avvio, **sensori di shock** e **diodi TVS** (*Transient Voltage Suppression*) che proteggono da urti e sovratensioni.
+- un chip **flash** col firmware d'avvio, **sensori di shock** e **diodi TVS** (*Transient Voltage Suppression*) che proteggono da urti e sovratensioni. Il sensore di shock rileva urti eccessivi e invia segnali direttamente al **controller VCM** per proteggere le testine; i diodi TVS si **sacrificano** assorbendo i picchi di tensione per proteggere il resto del circuito.
 ## Come comunicano CPU e dispositivo
 Ogni controller ha dei **registri** con cui la CPU dialoga (scrivendovi invia comandi, leggendoli ne conosce lo stato) e spesso un **buffer di dati** (es. la RAM video usata per disegnare sullo schermo). Esistono **tre approcci** per accedere a registri e buffer: porte di I/O, memoria mappata e ibrido.
 ### I/O mappato sulle porte (PMIO)
@@ -73,7 +73,7 @@ Combina i due metodi: la **configurazione** iniziale del dispositivo avviene via
 ### Dal modello astratto al chipset reale
 Il MMIO definisce un **modello di indirizzamento** (un solo spazio di indirizzi), ma l'hardware reale deve mantenere **alte prestazioni** sulla memoria *e* supportare **molti dispositivi eterogenei**: un bus unico non scala né in banda né in latenza. La soluzione storica è il **chipset a due livelli**.
 - **Northbridge** (*Memory Controller Hub*): interposto tra **CPU e memoria**, gestisce gli accessi alla **RAM**, il collegamento agli acceleratori grafici (AGP/PCIe) e la **decodifica primaria degli indirizzi** (decide se un indirizzo è memoria reale o **I/O mappato in memoria** da inoltrare). Caratteristiche: **latenza minima**, **banda elevata**, impatto diretto sulle prestazioni.
-- **Southbridge** (*I/O Controller Hub*): gestisce l'I/O — IDE, SATA, USB, Ethernet, audio, CMOS.
+- **Southbridge** (*I/O Controller Hub*): gestisce l'I/O — IDE, SATA, USB, Ethernet, audio, CMOS. Dal Southbridge parte un **LPC Bus** (*Low Pin Count*) a cui sono connessi il chip **Super I/O** (che gestisce porta seriale, porta parallela, controller floppy, tastiera e mouse) e la **Flash ROM** contenente il **BIOS**.
 
 Nei **sistemi moderni** il Northbridge è **integrato nella CPU** e il Southbridge diventa il **PCH** (*Platform Controller Hub*): cambia il silicio, **non il modello concettuale**. Il MMIO resta *un solo spazio di indirizzi*; i bridge sono solo l'*instradamento fisico*.
 ## In attesa dell'I/O: il polling

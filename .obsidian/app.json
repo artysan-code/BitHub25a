@@ -1,4 +1,5 @@
 {
+  "showInlineTitle": false,
   "promptDelete": false,
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true

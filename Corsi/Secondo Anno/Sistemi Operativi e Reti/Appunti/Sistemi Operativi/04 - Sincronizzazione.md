@@ -154,6 +154,31 @@ Un thread chiama `pthread_cond_wait(&cond, &mutex)`: **rilascia atomicamente il 
 | `pthread_cond_wait` | Blocca il thread; rilascia il mutex durante l'attesa e lo riacquisisce al risveglio |
 | `pthread_cond_signal` | Risveglia **un** thread in attesa (se nessuno attende, il segnale è perso) |
 | `pthread_cond_broadcast` | Risveglia **tutti** i thread in attesa |
+### Confronto: busy waiting vs pthread_cond_wait (produttore/consumatore)
+Senza variabili condizionali il consumatore è costretto a usare **busy waiting**: rilascia il mutex, dorme un po' con `usleep`, riprende il mutex e ricontrolla la condizione — sprecando CPU e tenendo il mutex occupato inutilmente tra un ciclo e l'altro.
+```c
+/* versione con busy waiting — inefficiente */
+pthread_mutex_lock(&mutex);
+while (buffer == 0) {              /* controlla continuamente la condizione */
+    pthread_mutex_unlock(&mutex);
+    usleep(1000);                  /* ritardo per ridurre il busy waiting, non ottimale */
+    pthread_mutex_lock(&mutex);
+}
+consume(buffer);
+pthread_mutex_unlock(&mutex);
+```
+Con `pthread_cond_wait` il thread si sospende **senza consumare CPU**: rilascia il mutex e si mette in attesa in un'unica operazione **atomica**, e lo riacquisisce solo quando viene risvegliato dal produttore tramite `pthread_cond_signal`.
+```c
+/* versione con variabile condizionale — efficiente */
+pthread_mutex_lock(&mutex);
+while (buffer == 0) {              /* attesa passiva finché il buffer non è pieno */
+    pthread_cond_wait(&cond, &mutex);
+}
+consume(buffer);
+pthread_mutex_unlock(&mutex);
+```
+> [!warning] while, non if — risvegli spuri
+> La condizione va sempre verificata in un ciclo `while`, **mai con un semplice `if`**. Il motivo: i **risvegli spuri** (*spurious wakeup*). Su alcune implementazioni POSIX `pthread_cond_wait` può tornare anche senza che nessuno abbia chiamato `signal`. Se si usa `if`, il thread procede erroneamente anche quando la condizione non è ancora vera. Il ciclo `while` ricontrolla la condizione a ogni risveglio, proteggendo da questo scenario.
 
 Esempio completo nel codice del corso: `code/6_thread_e_sincronizzazione/6.4_producer_consumer_pthread.c`.
 ## Monitor
@@ -201,7 +226,6 @@ Le **barriere** sincronizzano processi divisi in **fasi**: quando un processo ra
 > Il rover **Sojourner** (SO real-time) ebbe questo problema: un thread di bassa priorità deteneva un mutex su una risorsa condivisa; un thread di alta priorità attendeva; un thread di priorità media monopolizzava la CPU impedendo il rilascio. Il blocco del thread ad alta priorità causava continui **riavvii** del sistema. La NASA risolse con il **Priority Inheritance Protocol**: il thread a bassa priorità **eredita temporaneamente** la priorità di quello in attesa, completa, rilascia il mutex e torna alla priorità originale (vedi anche [[05 - Scheduling]]).
 ### Read-Copy-Update (RCU)
 *"I migliori lock sono quelli che non si usano."* L'obiettivo è permettere **accessi concorrenti senza lock**, evitando l'inconsistenza dei dati. Principio: si **aggiorna** una struttura dati consentendo letture simultanee; i lettori vedono **o** la versione vecchia **o** la nuova, **mai un misto**.
-
 - **Inserimento**: il nuovo nodo è preparato e reso visibile in modo **atomico** (collegato solo quando completamente inizializzato).
 - **Rimozione**: il nodo è prima **scollegato**, poi liberato solo dopo il **grace period** — il tempo entro cui ogni thread esce almeno una volta dalla sezione critica (così nessuno detiene più un riferimento al nodo).
 

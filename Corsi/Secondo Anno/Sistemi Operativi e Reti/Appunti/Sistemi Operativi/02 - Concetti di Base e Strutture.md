@@ -65,13 +65,20 @@ Windows offre API equivalenti (non identiche) alle system call UNIX:
 |------|-------|------|
 | `fork` | `CreateProcess` | `CreateProcess` = `fork` + `execve` |
 | `waitpid` | `WaitForSingleObject` | Attende un processo |
+| `execve` | (nessuna) | `CreateProcess` assorbe già `execve` |
+| `exit` | `ExitProcess` | Termina il processo |
 | `open`/`close` | `CreateFile`/`CloseHandle` | |
 | `read`/`write` | `ReadFile`/`WriteFile` | |
 | `lseek` | `SetFilePointer` | |
+| `stat` | `GetFileAttributesEx` | Ottiene attributi del file |
 | `mkdir`/`rmdir` | `CreateDirectory`/`RemoveDirectory` | |
+| `unlink` | `DeleteFile` | |
 | `link` | (nessuna) | Win32 non supporta i link |
-| `mount` | (nessuna) | Win32 non supporta `mount` |
+| `mount`/`umount` | (nessuna) | Win32 non supporta `mount` |
+| `chdir` | `SetCurrentDirectory` | |
+| `chmod` | (nessuna) | Win32 non supporta i permessi POSIX (NT ha ACL proprie) |
 | `kill` | (nessuna) | Win32 non supporta i segnali |
+| `time` | `GetLocalTime` | Ora locale di sistema |
 ### Costo delle system call
 Una system call è **costosa**: richiede un cambio di contesto user↔kernel, salvataggio/ripristino dei registri, validazione dei parametri ed eventuale blocco del chiamante. Per questo si tende a minimizzarne il numero (es. I/O bufferizzato).
 ## L'astrazione di processo
@@ -92,6 +99,9 @@ Trattazione completa in [[07 - File System]]; qui le basi necessarie a capire l'
 I file sono raccolti in **directory** (a loro volta file). Filosofia UNIX: **"everything is a file"**.
 
 **Gerarchia e percorsi**: la gerarchia parte dalla **directory radice** `/`. Si accede ai file con **percorsi assoluti** (`/home/ast/todo`) o **relativi** alla directory di lavoro (`../slides.pdf`). Altri file system possono essere **montati** (`mount`) nella gerarchia (es. `/mnt/usb`).
+
+> [!example] File system di un dipartimento universitario
+> La radice contiene due directory di primo livello: `Students/` (con sottodirectory per studente: `Robbert/`, `Matty/`, `Leo/`) e `Faculty/` (con sottodirectory per docente: `Prof.Brown/`, `Prof.Green/`, `Prof.White/`). A sua volta `Prof.Brown/` contiene `Papers/`, `Grants/`, `Committees/`; `Prof.Green/` contiene `Courses/` (con `CS101/`, `CS105/`). Ogni sottoalbero è indipendente: aggiungere un professore significa creare una nuova directory sotto `Faculty/` senza toccare il resto.
 ### Diritti di accesso
 I file sono protetti da **tuple di 3 bit** per **owner**, **group** e **others**: **r**ead, **w**rite, e**x**ecute.
 
@@ -99,6 +109,10 @@ I file sono protetti da **tuple di 3 bit** per **owner**, **group** e **others**
 -rwxr-x--x  myuser mygroup ...  myfile
 ```
 Owner `rwx` (legge, scrive, esegue), group `r-x` (legge, esegue), others `--x` (solo esegue).
+
+> [!example] Permessi in pratica — `chmod 744` e `chmod 644`
+> `chmod 744 os/hello.sh` → `rwxr--r--`: owner può eseguire, group e others solo leggere.
+> `chmod 644 os/` → `rw-r--r--` sulla **directory**: rimuove il bit execute (`x`) dalla directory, rendendo impossibile attraversarla (*traversal*) o accedere ai file al suo interno — anche se i file stessi avessero i permessi giusti. Creare file, listare con `ls` e aprire file nella directory richiedono tutti che `x` sia impostato sulla directory.
 ### File speciali e pipe
 In UNIX i dispositivi sono astratti come file:
 - **Block special files**: dispositivi a blocchi (dischi), es. `/dev/sda2`.
@@ -128,7 +142,6 @@ La **protezione** è il meccanismo con cui il SO controlla l'accesso a risorse e
 Come è organizzato *internamente* il SO. Ogni struttura ha un compromesso fra prestazioni, robustezza e manutenibilità.
 ### Sistemi monolitici
 L'intero SO è **un unico programma** in modalità kernel: un *main* che invoca le procedure di servizio (che eseguono le system call) appoggiate a procedure di utilità.
-
 - **Pro**: molto **efficiente** (chiamate di funzione dirette, nessun overhead interno).
 - **Contro**: difficile da mantenere e debuggare; un errore in una parte può **compromettere l'intero sistema**; nessun vero isolamento interno.
 - **Modularità parziale**: estensioni caricabili a runtime (driver, file system come moduli) e **librerie condivise** (`.so` in UNIX, **DLL** in Windows).
@@ -136,14 +149,12 @@ L'intero SO è **un unico programma** in modalità kernel: un *main* che invoca 
 Esempi: UNIX tradizionale, **Linux**, gran parte di Windows.
 ### Sistemi a livelli (layered)
 Generalizzazione del monolitico: il SO è diviso in **livelli gerarchici**, ognuno costruito su quello sotto. Il sistema **THE** (Dijkstra) ne usava 6 (dall'allocazione del processore in basso ai programmi utente in alto); **MULTICS** usava **anelli concentrici** di privilegio (i livelli interni più privilegiati).
-
 - **Pro**: separazione delle responsabilità, **protezione**, debug livello per livello.
 - **Contro**: difficile definire i livelli; overhead negli attraversamenti.
 ### Microkernel (client-server)
 Solo le funzioni **essenziali** restano nel kernel (**microkernel**); i servizi (file system, gestione processi, driver) girano come **processi in user mode** che comunicano tramite **scambio di messaggi**. È il modello **client-server**: un client invia un messaggio al server competente, che risponde.
 
 Nel kernel restano: gestione memoria di basso livello, [[05 - Scheduling|scheduling]], **IPC** e gestione base degli interrupt.
-
 - **Pro**: aderisce al **Principle of Least Authority** (TCB piccolo); **affidabilità** e **sicurezza** (un server che cade non blocca il sistema); portabilità ed estensibilità.
 - **Contro**: lo **scambio di messaggi** è più lento di una chiamata di funzione → overhead e prestazioni inferiori al monolitico.
 
@@ -152,16 +163,29 @@ Esempi: **MINIX 3**, Mach, QNX, Symbian.
 Una **macchina virtuale (VM)** è la copia virtuale dell'hardware, su cui può girare un intero SO. Idea nata con **VM/370** di IBM (anni '70) per separare la multiprogrammazione dalla macchina estesa; oggi alla base del **cloud**. Il **Virtual Machine Monitor (VMM)** o **hypervisor** emula l'hardware:
 - **Type 1 (bare metal)**: l'hypervisor gira **direttamente sull'hardware** (es. VMware ESXi, Xen, Hyper-V).
 - **Type 2 (hosted)**: l'hypervisor gira **sopra un SO host** (es. VirtualBox, QEMU); nella pratica usa moduli del kernel per accelerare.
+#### Struttura interna di VM/370 con CMS
+In VM/370 ogni utente riceve una **Virtual 370** identica all'hardware fisico, su cui gira un SO monoutente chiamato **CMS** (*Conversational Monitor System*). La pila di virtualizzazione è:
+```
+Virtual 370s  (una per utente)
+    CMS       (SO monoutente per ciascuna VM)
+    VM/370    (hypervisor)
+370 bare hardware
+```
+Il meccanismo di trap a due livelli funziona così:
+- Le **istruzioni di I/O** e le trap generate dal **CMS** vengono intercettate dall'**hypervisor VM/370**, che le gestisce emulando l'hardware e rimandando il controllo al CMS.
+- Le **system call** di un'applicazione che gira dentro una VM vengono intercettate dal **CMS** della rispettiva macchina virtuale, che le gestisce come un normale SO monoutente — l'hypervisor non è coinvolto.
+Il risultato è che si ottengono **N interfacce di system call indipendenti dal SO**, una per ogni VM: ogni macchina virtuale può potenzialmente eseguire un SO diverso con la propria interfaccia.
 
 > [!info] Container — diversi dalle VM
 > I **container** (Docker, LXC, Podman, Kubernetes) condividono il **kernel dell'host** e isolano a livello di **processo**: niente SO completo dentro, quindi leggeri e ad avvio rapido. Limite: non possono eseguire un kernel diverso da quello dell'host e non c'è partizionamento rigido delle risorse come nelle VM.
 ### Exokernel
-Separa il **controllo** delle risorse dalla **macchina estesa**: come un VMM, ma **non emula l'hardware** — fornisce solo una condivisione sicura delle risorse a basso livello, assegnando a ciascuna VM utente solo le risorse che le competono. Elimina l'overhead delle mappature complesse. Uso prevalentemente di ricerca / alte prestazioni.
+Separa il **controllo** delle risorse dalla **macchina estesa**: come un VMM, ma **non emula l'hardware** — fornisce solo una condivisione sicura delle risorse a basso livello, assegnando a ciascuna VM utente solo le risorse che le competono. Elimina l'overhead delle mappature complesse. Uso prevalentemente di ricerca / alte prestazioni. Esempio: **Exokernel (MIT)**.
 ### Unikernel
 Sistemi minimi basati su **LibOS** (Library Operating System): l'applicazione **e** il SO minimo necessario sono compilati in **un singolo binario** che gira su una VM, una sola applicazione per macchina.
-
 - **Pro**: footprint minimo, avvio in millisecondi, superficie d'attacco ridotta, nessun overhead di protezione SO↔app.
+- **Contro**: ogni immagine esegue una sola applicazione — **manutenzione difficile** (aggiornare una libreria richiede ricompilare e ridistribuire il binario completo).
 - **Uso**: applicazioni cloud specializzate, microservizi, embedded.
+- **Esempi**: **MirageOS** (OCaml, web/rete), **IncludeOS** (C++, server web).
 
 ---
 **Argomento precedente:** [[01 - Introduzione ai Sistemi Operativi]] · **Prossimo:** [[03 - Processi e Thread]] — modello di processo, thread, e implementazione della multiprogrammazione.

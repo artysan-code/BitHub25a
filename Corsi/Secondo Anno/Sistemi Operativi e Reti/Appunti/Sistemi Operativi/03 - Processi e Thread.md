@@ -114,6 +114,24 @@ Finora abbiamo assunto **1 processo ⇒ 1 thread**. Con l'esecuzione **multithre
 
 > [!example] Usi tipici
 > Un **word processor** con tre thread (interazione tastiera, riformattazione, salvataggio su disco) resta reattivo mentre lavora in background. Un **web server multithread** ha un **dispatcher thread** che riceve le richieste e le passa ai **worker thread**, sfruttando una **web page cache** condivisa.
+>
+> Schema di massima del codice (slide "Utilizzo dei thread (2)"):
+> ```c
+> // (a) dispatcher thread
+> while (TRUE) {
+>     get_next_request(&buf);
+>     handoff_work(&buf);
+> }
+>
+> // (b) worker thread
+> while (TRUE) {
+>     wait_for_work(&buf);
+>     look_for_page_in_cache(&buf, &page);
+>     if (page_not_in_cache(&page))
+>         read_page_from_disk(&buf, &page);
+>     return_page(&page);
+> }
+> ```
 ### Thread e processi
 I thread **risiedono nello stesso spazio di indirizzi di un singolo processo**: tutti gli scambi avvengono **tramite dati condivisi** (e i thread si sincronizzano con [[04 - Sincronizzazione|semplici primitive]]). Ogni thread ha però **stack**, **registri hardware** e **stato** propri. La tabella dei thread è più leggera di quella dei processi, e ciascun thread può effettuare qualsiasi system call per conto del processo a cui appartiene.
 
@@ -155,14 +173,14 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 ```
-
+> [!warning] Output non deterministico — domanda del docente
+> Il `main` **non chiama `pthread_join`**: termina (con `return 0`) senza attendere il completamento dei thread figli. L'ordine in cui i 10 thread eseguono `printf` dipende dallo **scheduler**, che non offre garanzie di tempistica né di ordine (cfr. [[#Processi concorrenti]]). L'output osservabile può essere qualsiasi permutazione dei messaggi, o addirittura incompleto se il processo termina prima che tutti i thread abbiano stampato. *"What will the output be?"* — la risposta corretta è: **non si può sapere a priori**.
 > [!info] Codice di laboratorio
 > Esempi su thread, producer-consumer e reader-writer in `Materiale Didattico/.../code/6_thread_e_sincronizzazione/`.
 ### Implementazione dei thread
 Esistono **tre luoghi** di implementazione: nello **spazio utente**, nel **kernel**, o **ibrida**.
 #### Nello spazio utente
 I thread sono gestiti da una **libreria** in user space; il kernel li vede come normali processi a singolo thread (funzionano anche su SO che **non supportano** i thread). Ogni processo ha la **propria tabella dei thread**.
-
 - **Pro**: il cambio tra thread **non richiede un context switch completo** (niente `trap` → **molto più veloce**); si può **personalizzare l'algoritmo di scheduling** per processo; maggiore scalabilità.
 - **Contro**: una **system call bloccante** di un thread **ferma tutti** i thread del processo; un **page fault** blocca l'intero processo; **niente interrupt del clock** → impossibile uno scheduling round-robin. Quindi poco adatti ad applicazioni in cui i thread si bloccano spesso (es. web server).
 #### Nello spazio kernel

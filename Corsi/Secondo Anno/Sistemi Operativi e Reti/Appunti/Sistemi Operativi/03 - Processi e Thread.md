@@ -18,6 +18,9 @@ Il SO crea in genere un solo processo iniziale, **`init`** (nei sistemi moderni 
 > Ogni comando lanciato dalla shell diventa un processo figlio; `init → login → sh → (ls, find, more)` è un tipico albero.
 
 L'uso pratico della shell e del **job control** (`ps`, `kill`, `bg`/`fg`, `&`) è in [[09 - Linux e BASH#Processi e job control]].
+
+> [!example] Domanda tipica d'esame
+> **D:** Cos'è un processo e in cosa differisce da un programma? **R:** Un processo è un *programma in esecuzione*: è l'istanza dinamica di un programma statico, dotata di proprio spazio di indirizzi, stato della CPU (registri, PC, stack) e risorse (file aperti, segnali). Il programma è il codice statico su disco; il processo è l'entità a cui il SO alloca la CPU e le risorse.
 ## Gestione dei processi
 ### Creazione di un processo
 Quattro eventi principali causano la creazione di un processo:
@@ -32,15 +35,18 @@ Quattro condizioni tipiche:
 3. **Errore fatale** (involontario — es. istruzione illegale).
 4. **Ucciso da un altro processo** (involontario, via segnale).
 ### System call di gestione
-| Call | Cosa fa |
-|------|---------|
-| `fork` | Crea un nuovo processo: il figlio è un **clone "privato"** del genitore. Condivide *alcune* risorse (file aperti con offset condiviso, segmento di codice, variabili d'ambiente e directory corrente ereditate). |
-| `exec` (`execve`) | **Sostituisce** l'immagine del processo con un nuovo programma. Usata in combinazione con `fork`. |
-| `exit` | Terminazione **volontaria**; lo *stato di uscita* è restituito al processo **genitore**. |
-| `kill` | Invia un **segnale** a un processo (o a un gruppo). Può causare la terminazione **involontaria**. |
+| Call              | Cosa fa                                                                                                                                                                                                          |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fork`            | Crea un nuovo processo: il figlio è un **clone "privato"** del genitore. Condivide *alcune* risorse (file aperti con offset condiviso, segmento di codice, variabili d'ambiente e directory corrente ereditate). |
+| `exec` (`execve`) | **Sostituisce** l'immagine del processo con un nuovo programma. Usata in combinazione con `fork`.                                                                                                                |
+| `exit`            | Terminazione **volontaria**; lo *stato di uscita* è restituito al processo **genitore**.                                                                                                                         |
+| `kill`            | Invia un **segnale** a un processo (o a un gruppo). Può causare la terminazione **involontaria**.                                                                                                                |
 
 > [!info] Codice di laboratorio
 > Esempi C su `fork`, `exec`, segnali e pipe in `Materiale Didattico/.../code/5_elementi_di_programmazione_concorrente_code/`. Il pattern `fork` + `exec` + `waitpid` è quello della shell visto in [[02 - Concetti di Base e Strutture]]. La trattazione in C di `fork`/`exec`/`wait`, dei segnali (`signal`/`alarm`/`kill`) e delle pipe (`pipe`/`dup2`) è in [[10 - Programmazione C e Concorrente]].
+
+> [!example] Domanda tipica d'esame
+> **D:** Cosa fa `fork()` e in che modo è usata con `exec`? **R:** `fork()` crea un nuovo processo figlio come clone "privato" del genitore: condividono il segmento di codice e le variabili d'ambiente ereditate, ma hanno spazi di indirizzi separati. Il valore di ritorno distingue padre (PID del figlio) da figlio (0). `exec` (nella forma `execve`) sostituisce poi l'immagine del processo figlio con un nuovo programma: il pattern `fork` + `exec` + `wait` è quello usato dalla shell per lanciare comandi.
 ## Stati di un processo
 Un processo può trovarsi in **tre stati**:
 - **Running** (in esecuzione): sta effettivamente usando la CPU.
@@ -56,7 +62,12 @@ Ready   ──(3) lo scheduler sceglie questo────►  Running
 Blocked ──(4) l'input diventa disponibile────►  Ready
 ```
 > [!example] Domande d'esame tipiche
-> - Definizione di processo e differenza rispetto al programma; i tre stati di un processo (Running, Ready, Blocked) e le quattro transizioni tra essi; il ruolo di `fork()` nella creazione dei processi.
+> - **D:** Cos'è un processo e in cosa differisce da un programma? **R:** Un processo è un *programma in esecuzione*: è l'istanza dinamica di un programma statico, dotata di proprio spazio di indirizzi, stato della CPU (registri, PC, stack) e risorse (file aperti, segnali). Il programma è il codice statico su disco; il processo è l'entità a cui il SO alloca la CPU e le risorse.
+> - **D:** Quali sono i tre stati di un processo e le quattro transizioni tra essi? **R:** Gli stati sono **Running** (la CPU è assegnata al processo), **Ready** (eseguibile ma in attesa della CPU) e **Blocked** (non eseguibile, in attesa di un evento esterno). Le transizioni sono: (1) Running→Blocked, quando il processo si blocca in attesa di input; (2) Running→Ready, quando lo scheduler sceglie un altro processo; (3) Ready→Running, quando lo scheduler sceglie questo processo; (4) Blocked→Ready, quando l'input atteso diventa disponibile.
+> - **D:** Qual è il ruolo di `fork()` nella creazione dei processi? **R:** `fork()` è la system call con cui un processo padre crea un processo figlio: il figlio è un clone "privato" del genitore (stesso codice, variabili d'ambiente, file aperti ereditati), ma con uno spazio di indirizzi separato. Il valore di ritorno distingue padre (PID del figlio) da figlio (0). È il meccanismo base con cui la shell — e il SO in generale — genera nuovi processi.
+
+> [!example] Domanda tipica d'esame
+> **D:** Quali sono i tre stati di un processo e le quattro transizioni tra essi? **R:** Gli stati sono **Running** (la CPU è assegnata al processo), **Ready** (eseguibile ma in attesa della CPU) e **Blocked** (non eseguibile, in attesa di un evento esterno). Le transizioni sono: (1) Running→Blocked, quando il processo si blocca in attesa di input; (2) Running→Ready, quando lo [[05 - Scheduling|scheduler]] sceglie un altro processo; (3) Ready→Running, quando lo scheduler sceglie questo processo; (4) Blocked→Ready, quando l'input atteso diventa disponibile.
 ### Informazioni associate a un processo
 Nella **tabella dei processi** il SO conserva, per ciascun processo: **PID**, **UID**, **GID**; lo **spazio di indirizzi** di memoria (vedi [[06 - Gestione della Memoria]]); i **registri hardware** (incluso il Program Counter); i **file aperti**; i **segnali** e gli **interrupt** pendenti.
 ## Segnali e interrupt
@@ -113,6 +124,9 @@ int main() {
     return 0;
 }
 ```
+
+> [!example] Domanda tipica d'esame
+> **D:** Qual è la differenza tra interrupt e segnale? **R:** Un **interrupt** è generato da un dispositivo *hardware* (tastiera, disco) e gestito da una ISR (Interrupt Service Routine) del SO tramite il vettore di interrupt (IDT); interrompe il processo corrente e cede il controllo allo [[05 - Scheduling|scheduler]]. Un **segnale** è un meccanismo *software* che notifica a un processo un evento (es. `SIGINT` da Ctrl+C, `SIGKILL` per forzare la terminazione): il processo può registrare un handler, ignorarlo (se il segnale lo permette) o accettare l'azione di default. La consegna avviene tramite il kernel, che salva il contesto corrente, esegue l'handler in user space e lo ripristina via `rt_sigreturn`.
 ## Thread
 Finora abbiamo assunto **1 processo ⇒ 1 thread**. Con l'esecuzione **multithreaded** un processo ha **N thread**. Perché più thread per processo? Sono **lightweight process** (processi leggeri): consentono **parallelismo efficiente** in spazio e tempo e una **comunicazione/sincronizzazione semplici** (condividono lo **spazio di indirizzi**).
 
@@ -196,6 +210,9 @@ Si effettua il **multiplexing** dei thread utente su un numero scelto di **threa
 La programmazione con thread richiede cautela:
 - Molte **procedure di libreria** possono causare **conflitti** se un thread sovrascrive dati cruciali per un altro (es. un buffer condiviso per assemblare un messaggio di rete, sovrascritto da un secondo thread dopo un interrupt del clock). I **wrapper** (un bit "libreria in uso") evitano i conflitti ma limitano il parallelismo → tema della [[04 - Sincronizzazione]].
 - La **gestione dei segnali** è complicata: alcuni sono specifici di un thread, altri no, e decidere chi li gestisce è non banale.
+
+> [!example] Domanda tipica d'esame
+> **D:** Quali sono i vantaggi dei thread rispetto ai processi e come differiscono le tre implementazioni (user space, kernel, ibrida)? **R:** I thread (processi leggeri) condividono lo spazio di indirizzi del processo, quindi la comunicazione è più rapida e il context switch tra thread è meno costoso di quello tra processi. Nell'implementazione **user space** il cambio di thread non richiede trap al kernel (più veloce, personalizzabile), ma una system call bloccante ferma tutti i thread del processo. Nell'implementazione **kernel** il cambio è una system call (costo maggiore), ma se un thread si blocca il kernel può eseguirne un altro dello stesso processo. L'approccio **ibrido** effettua il multiplexing di N thread utente su M thread kernel, combinando i vantaggi di entrambi.
 
 ---
 **Argomento precedente:** [[02 - Concetti di Base e Strutture]] · **Prossimo:** [[04 - Sincronizzazione]] — race condition, mutua esclusione, semafori, mutex, monitor e problemi classici di IPC.

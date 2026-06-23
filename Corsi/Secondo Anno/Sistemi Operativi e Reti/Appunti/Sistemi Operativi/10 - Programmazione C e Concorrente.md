@@ -87,6 +87,17 @@ Le tre system call cardine (concetti in [[03 - Processi e Thread#System call di 
 > }
 > ```
 
+> [!info] Varianti di `exec` e `wait` vs `waitpid`
+> Le varianti di `exec` differiscono per **come** si passano gli argomenti e se si cerca nel `PATH`:
+> - **`execv`/`execvp`**: argomenti come **vettore** `argv[]` (terminato da `NULL`); la `p` (`execvp`, `execlp`) cerca l'eseguibile nel **`PATH`**, così si scrive `"ls"` invece di `"/bin/ls"`.
+> - **`execl`/`execlp`**: argomenti come **lista** esplicita: `execl(path, arg0, arg1, …, NULL)`.
+>
+> Per attendere i figli: **`wait(&status)`** sospende finché **un qualsiasi** figlio termina; **`waitpid(pid, &status, 0)`** attende **uno specifico** figlio — indispensabile con più figli (come nelle tracce a due figli).
+
+> [!example] Domanda tipica d'esame
+> - **D:** Cosa restituisce `fork()` e come fanno padre e figlio a distinguersi? **R:** `fork()` duplica il processo; restituisce il **PID del figlio** al genitore e **0** al figlio (`-1` in caso di errore). I due rami eseguono lo stesso codice ma si distinguono testando il valore di ritorno: `if (fork() == 0) { /* figlio */ } else { /* padre */ }`.
+> - **D:** Differenza tra `wait` e `waitpid`. **R:** `wait(&status)` attende la terminazione di **un qualsiasi** figlio; `waitpid(pid, &status, 0)` attende il figlio **con quel PID** specifico — utile quando un processo ne ha generati più di uno.
+
 > [!example] Una shell minimale (in C)
 > È la versione concreta del [[02 - Concetti di Base e Strutture#Protezione e shell|ciclo della shell]]:
 > ```c
@@ -103,6 +114,9 @@ Le tre system call cardine (concetti in [[03 - Processi e Thread#System call di 
 >     }
 > }
 > ```
+
+> [!info] Com'è fatta `read_command`? (`getline` + `strtok`)
+> La shell minima usa `read_command`, che concretamente: legge una riga con **`getline(&line, &len, stdin)`** (restituisce **−1** all'EOF, cioè `Ctrl+D` → si esce dal ciclo); poi la **tokenizza** con **`strtok(line, " \n")`**, riempiendo `args[]` (terminato da `NULL`, come richiesto da `execvp`). Se `execvp` fallisce, si chiama `perror(...)` ed `exit(1)`.
 ## Segnali in C
 I [[03 - Processi e Thread#I segnali|segnali]] gestiscono eventi asincroni. API principali:
 - `signal(signum, handler)` registra un **gestore** (signal handler) per `signum`.
@@ -125,8 +139,31 @@ I [[03 - Processi e Thread#I segnali|segnali]] gestiscono eventi asincroni. API 
 >     return 0;
 > }
 > ```
+
+> [!example] Intercettare `Ctrl+C` (`SIGINT`)
+> ```c
+> #include <stdio.h>
+> #include <signal.h>
+> #include <string.h>
+> void handler(int sig) {
+>     printf("Ricevuto: %s\n", strsignal(sig));  // nome leggibile del segnale
+> }
+> int main(void) {
+>     signal(SIGINT, handler);   // Ctrl+C non termina piu' il processo
+>     while (1) pause();         // attende un segnale
+> }
+> ```
+> `strsignal(sig)` restituisce la descrizione testuale del segnale (es. "Interrupt"). Catturando `SIGINT` con un handler, `Ctrl+C` viene gestito invece di terminare il programma.
 ## Comunicazione tra processi: le pipe
 Le [[02 - Concetti di Base e Strutture#File speciali e pipe|pipe]] collegano processi su un canale FIFO. In shell: `cat names.txt | sort` (pipe anonima) oppure `mkfifo named.pipe` (pipe **con nome**). In C servono quattro system call: `open`, `close`, `pipe(pipefd[2])` (crea la pipe e i due fd delle estremità), `dup`/`dup2`.
+
+> [!example] Pipe con nome (`mkfifo`)
+> A differenza della pipe anonima (che vive solo tra processi imparentati), una **named pipe** è un file persistente nel file system creato con `mkfifo`, usabile anche tra processi **non** imparentati:
+> ```bash
+> mkfifo named.pipe
+> echo "Hello World!" > named.pipe &   # un processo scrive (si blocca finché qualcuno legge)
+> cat named.pipe                       # un altro processo legge
+> ```
 ### dup / dup2 e la redirezione
 > [!quote] Definizione — dup / dup2
 > `dup(oldfd)` duplica un file descriptor sul **più basso fd libero**; `dup2(oldfd, newfd)` lo duplica su un fd **specifico**. Servono ad **"agganciare"** `STDOUT_FILENO` (1) o `STDIN_FILENO` (0) a un file o a una pipe.
@@ -154,6 +191,12 @@ Questo è il **meccanismo concreto** dietro la [[09 - Linux e BASH#Redirezione e
 >     execlp("grep", "grep", "httpd", NULL);
 > }
 > ```
+
+> [!info] Variante del laboratorio: `close` + `dup`
+> Gli esempi del corso (`5.4_fork_pipe.c`) spesso usano, invece di `dup2`, la coppia equivalente **`close` + `dup`**. Poiché `dup(oldfd)` occupa il **fd libero più basso**, chiudendo prima `STDOUT_FILENO` (1) e poi facendo `dup(fd[1])`, il duplicato finisce proprio sull'fd 1: quindi `close(STDOUT_FILENO); dup(fd[1]);` equivale a `dup2(fd[1], STDOUT_FILENO);`.
+
+> [!example] Domanda tipica d'esame
+> - **D:** Come si realizza in C la redirezione dell'output di un programma su una pipe (o un file)? **R:** Si **aggancia** lo stdout alla pipe/file con `dup2(fd, STDOUT_FILENO)` (o `close(STDOUT_FILENO); dup(fd);`) **prima** della `execv`: il programma eseguito scriverà su `STDOUT_FILENO` (1) senza saperlo, ma l'fd 1 ora punta alla pipe/file. È il meccanismo dietro la redirezione della shell.
 ### Perché chiudere le estremità della pipe?
 Le `close` sulle estremità non usate **non** sono opzionali:
 1. **Evitare blocchi**: chi scrive può restare bloccato se un'estremità di lettura resta aperta.
@@ -170,6 +213,10 @@ Gli esempi del corso (in `Materiale Didattico/.../code/`):
 - `5.5_my_first_bash.c` — una BASH minimale in C.
 
 Lo **script di compilazione** (`compile.sh`) fa parte del materiale: vale la pena studiarlo.
+
+> [!info] `compile.sh` e i livelli di ottimizzazione
+> Lo script compila gli esempi con `gcc` (o `clang`, intercambiabili) ed espone i flag di **ottimizzazione**: `-O0` (nessuna ottimizzazione → compilazione rapida e debug facile), `-O1`/`-O2`/`-O3` (ottimizzazioni crescenti → eseguibile più veloce ma compilazione più lenta e codice più difficile da debuggare). In laboratorio si usa tipicamente `-O0` o `-O2`.
+
 > [!example] Esercizio d'esame — somma di pari e dispari
 > Un processo genera due figli **P1** e **P2**. P1 cicla generando interi casuali in $[0,100]$ e comunica al padre **solo i dispari**; P2 fa lo stesso ma **solo i pari**. Il padre, per ogni coppia ricevuta, ne calcola e stampa la somma. Il programma termina quando la somma supera **190**: il padre invia allora un segnale di terminazione a ciascun figlio. Richiede `fork`, `pipe`, `signal`/`kill`. Altre tracce in [[Tracce d'Esame Pratiche]].
 ## Collegamenti con altri argomenti

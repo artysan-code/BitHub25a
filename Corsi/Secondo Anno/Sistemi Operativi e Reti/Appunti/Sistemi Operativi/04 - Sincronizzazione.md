@@ -8,12 +8,20 @@ Poiché i processi sono [[03 - Processi e Thread#Processi concorrenti|concorrent
 
 > [!example] Lo spooler di stampa
 > Lo spooler ha una variabile `in` che indica la prossima posizione libera. Il processo A legge `in = 7`, ma viene **sospeso** prima di scrivere. B legge anch'esso `in = 7`, scrive il suo file in posizione 7 e imposta `in = 8`. Quando A riprende, scrive in posizione 7, **sovrascrivendo** il file di B. Un file di stampa va perso.
+
+> [!example] Domanda tipica d'esame
+> **D:** Cos'è una race condition e perché è problematica? **R:** Una race condition è una situazione in cui due o più processi accedono a dati condivisi e il risultato finale dipende dall'ordine preciso di esecuzione. È problematica perché produce risultati errati e non deterministici: nell'esempio dello spooler di stampa, due processi leggono la stessa posizione libera e uno sovrascrive l'altro, causando la perdita di un lavoro di stampa.
+
 ### Regioni critiche e requisiti
 La parte di codice che accede alla risorsa condivisa è la **regione critica**. Una buona soluzione di mutua esclusione deve soddisfare **quattro requisiti**:
 1. Due processi non possono trovarsi **contemporaneamente** nelle rispettive regioni critiche.
 2. Non si possono fare **ipotesi** sulla velocità o sul numero di CPU.
 3. Nessun processo **fuori** dalla propria regione critica può bloccarne altri.
 4. Nessun processo deve **aspettare all'infinito** per entrare nella propria regione critica.
+
+> [!example] Domanda tipica d'esame
+> **D:** Elenca i quattro requisiti di una buona soluzione alla mutua esclusione. **R:** (1) Due processi non possono trovarsi contemporaneamente nelle rispettive regioni critiche; (2) non si possono fare ipotesi sulla velocità o sul numero di CPU; (3) nessun processo fuori dalla propria regione critica può bloccarne altri; (4) nessun processo deve aspettare all'infinito per entrare nella propria regione critica.
+
 ## Mutua esclusione con busy waiting
 Le prime soluzioni tengono la CPU occupata mentre si attende: **busy waiting**.
 ### (Non) soluzioni elementari
@@ -38,6 +46,10 @@ void leave_region(int process) {
     interested[process] = FALSE;        /* esce dalla regione critica */
 }
 ```
+
+> [!example] Domanda tipica d'esame
+> **D:** Perché l'alternanza rigorosa non è una soluzione accettabile alla mutua esclusione? Come la risolve l'algoritmo di Peterson? **R:** L'alternanza rigorosa viola il requisito 3: un processo fermo fuori dalla propria regione critica può bloccare l'altro impedendogli di entrarvi due volte di fila (non si può entrare due volte consecutive). L'algoritmo di Peterson combina la variabile `turn` con l'array `interested[]`: prima di entrare ogni processo segnala il proprio interesse e scrive il proprio indice in `turn`; se entrambi tentano insieme, l'ultimo a scrivere `turn` attende mentre l'altro entra, eliminando l'attesa reciproca senza violare nessuno dei quattro requisiti.
+
 ### TSL e XCHG
 Molte CPU offrono un'istruzione hardware per la mutua esclusione: **TSL** (*Test and Set Lock*). TSL legge il contenuto di una locazione di memoria (`LOCK`) in un registro e vi scrive un valore non zero, il tutto in modo **atomico** — il bus viene bloccato verso le altre CPU per tutta la durata dell'operazione, impedendo qualsiasi accesso concorrente alla stessa locazione.
 ```asm
@@ -157,6 +169,10 @@ Quando un thread vuole entrare nella regione critica chiama `mutex_lock`: se il 
 - **Finalità**: il **mutex** garantisce la mutua esclusione (una risorsa, un thread alla volta); il **semaforo** controlla l'accesso a una risorsa ma serve anche per la **sincronizzazione** tra thread (es. produttore/consumatore).
 - **Semantica**: il mutex ha una semantica di **proprietà** (solo chi l'ha acquisito può rilasciarlo); il semaforo **no** (qualsiasi thread può fare `up`/`down`).
 - **Regola pratica**: per la sola esclusione mutua → **mutex** (più semplice e prevedibile); per coordinare più thread o risorse con N istanze → **semaforo**.
+
+> [!example] Domanda tipica d'esame
+> **D:** Qual è la differenza tra mutex e semaforo? Quando si preferisce l'uno all'altro? **R:** Il mutex è una primitiva binaria (locked/unlocked) con semantica di **proprietà**: solo il thread che ha acquisito il lock può rilasciarlo. Il semaforo è un contatore intero ≥ 0 incrementabile/decrementabile da qualsiasi thread, e serve sia per la mutua esclusione sia per la sincronizzazione tra thread (es. produttore/consumatore con semafori `empty` e `full`). Si usa il mutex per la sola esclusione mutua (più semplice e prevedibile); il semaforo quando occorre coordinare più thread o gestire risorse con N istanze.
+
 ## Variabili condizionali (pthread_cond)
 Il mutex da solo **non** consente di attendere efficientemente una **condizione specifica** (es. "il buffer non è vuoto"): senza altri strumenti il thread dovrebbe fare busy waiting su un `while`. Le **variabili condizionali** (`pthread_cond`) aggiungono la possibilità di sospendersi finché un evento non si verifica, **senza consumare CPU**.
 
@@ -250,6 +266,10 @@ Le **barriere** sincronizzano processi divisi in **fasi**: quando un processo ra
 > 1. **Priority Ceiling** — si assegna una *priorità-tetto* al mutex stesso: il thread che acquisisce il mutex riceve automaticamente quella priorità. Finché nessun thread con priorità superiore al tetto deve acquisire quel mutex, l'inversione è impossibile per costruzione.
 > 2. **Priority Inheritance** — il thread a bassa priorità che detiene il mutex **eredita temporaneamente** la priorità del thread ad alta priorità in attesa; completa la sezione critica, rilascia il mutex e torna alla propria priorità originale. È la soluzione adottata dalla NASA per il Mars Pathfinder.
 > 3. **Random Boosting** — aumenta in modo casuale la priorità di thread che detengono un mutex, con l'obiettivo probabilistico di sbloccare prima la risorsa contesa. Approccio meno deterministico degli altri due, usato in alcuni ambienti Windows.
+
+> [!example] Domanda tipica d'esame
+> **D:** Cos'è l'inversione delle priorità? Descrivi il caso del Mars Pathfinder e la soluzione adottata. **R:** L'inversione delle priorità si verifica quando un thread ad alta priorità attende una risorsa bloccata da un thread a bassa priorità, mentre un thread a priorità media — estraneo alla risorsa — monopolizza la CPU impedendo al thread a bassa priorità di completare e rilasciare il lock. Nel caso del rover Sojourner (Mars Pathfinder), questo causava continui riavvii del sistema real-time. La NASA risolse con il **Priority Inheritance Protocol**: il thread a bassa priorità eredita temporaneamente la priorità del thread in attesa, completa la sezione critica, rilascia il mutex e torna alla priorità originale.
+
 ### Read-Copy-Update (RCU)
 *"I migliori lock sono quelli che non si usano."* L'obiettivo è permettere **accessi concorrenti senza lock**, evitando l'inconsistenza dei dati. Principio: si **aggiorna** una struttura dati consentendo letture simultanee; i lettori vedono **o** la versione vecchia **o** la nuova, **mai un misto**.
 - **Inserimento**: il nuovo nodo è preparato e reso visibile in modo **atomico** (collegato solo quando completamente inizializzato).

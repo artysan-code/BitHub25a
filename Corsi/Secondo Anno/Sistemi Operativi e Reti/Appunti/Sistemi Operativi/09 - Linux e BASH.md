@@ -86,8 +86,23 @@ Il comando `find` localizza file in alberi profondi (sintassi un po' ostica):
 - `find . -name my-file.txt` cerca per nome a partire da `.`
 - `find ~ -name bu -type d` cerca **directory** chiamate "bu" nella home
 - `find ~ -name '*.txt'` cerca tutti i `.txt` (gli apici evitano che la shell espanda `*` prima di passarlo a `find`)
+- `find . -type f -empty` trova i **file vuoti** (dimensione zero)
+**`-exec`: eseguire un comando sui file trovati.** Variante `\;` (un'invocazione per file) e `+` (tutti i file in un'unica chiamata, più efficiente):
+```bash
+find . -name '*.log' -exec wc -l {} \;    # conta righe in ogni .log (un wc per file)
+find . -name '*.log' -exec wc -l {} +    # stesso risultato, un solo wc per tutti
+find . -type f -empty -exec rm {} +       # rimuove tutti i file vuoti
+```
+`{}` è il segnaposto che viene sostituito dal nome del file trovato. Vedi applicazioni pratiche in [[04 - Linux e BASH]].
 ## Redirezione e pipe
 È il cuore della filosofia Unix — comporre piccoli programmi. Per capirla serve il concetto di **file descriptor standard**.
+### Il comando `w`
+`w` mostra gli **utenti attualmente connessi** al sistema e cosa stanno eseguendo (TTY, da quanto sono connessi, programma in esecuzione). È il comando usato come sorgente nelle pipeline di esempio delle slide perché produce sempre qualche riga di output interessante:
+```bash
+w                        # elenco utenti + processo in primo piano
+w | wc -l               # quante righe (= quanti utenti + 2 righe header)
+w | grep 'danilo'       # c'è danilo connesso?
+```
 ### I tre stream standard
 Quando la shell lancia un processo, gli consegna **già tre file descriptor aperti** (interi, gli stessi di `open`/`read`/`write` POSIX visti in [[02 - Concetti di Base e Strutture#Categorie principali di system call POSIX]]):
 
@@ -124,6 +139,12 @@ Esempi: `ls /etc /pippo > out.txt 2> err.txt` separa output ed errori; `comando 
 > w | awk -F" " '{print $1}' | sort | uniq        # utenti unici
 > w | awk -F" " '{print $1}' | sort | uniq > users  # ...salvati su file
 > ```
+
+> [!example] Domanda tipica d'esame
+> - **D:** Cosa fa il comando `ls /etc /xyz > out.txt 2>&1`? Cosa finisce in `out.txt`?
+> **R:** `> out.txt` redirige **stdout** (fd 1) su `out.txt`. `2>&1` redirige **stderr** (fd 2) sullo stesso file descriptor di stdout, cioè anch'esso su `out.txt`. Quindi in `out.txt` finiscono sia l'elenco dei file in `/etc` sia il messaggio di errore «No such file or directory» per `/xyz`. Senza `2>&1`, l'errore apparirebbe solo a terminale.
+> - **D:** Qual è la differenza tra `>` e `>>` nella redirezione? E tra `|` e `>`?
+> **R:** `> file` **sovrascrive** il file (lo crea se non esiste); `>> file` **accoda** in fondo senza cancellare il contenuto precedente. La pipe `|` connette lo stdout di un processo allo stdin di un altro processo in parallelo (senza file intermedio); `>` scrive su un file disco.
 ## Permessi dei file
 Il concetto è introdotto in [[02 - Concetti di Base e Strutture#Diritti di accesso]]; qui la pratica con **`chmod`**. Ogni file ha permessi **read/write/execute** per **owner**, **group** e **other**, visibili con `ls -l`:
 ```
@@ -151,6 +172,12 @@ read = **4**, write = **2**, execute = **1**, sommati per ogni tripletta:
 Esempi: `chmod 660 foo` → `rw-rw----` (owner e group `6`=rw, other `0`); `chmod 744 foo` → `rwxr--r--`.
 > [!warning] x sulle directory
 > Sulla directory il bit `x` non significa "eseguire" ma **attraversare**: senza `x` non si può entrare nella directory né accedere ai file al suo interno, anche se i file hanno i permessi giusti (vedi [[02 - Concetti di Base e Strutture#Diritti di accesso]]).
+
+> [!example] Domanda tipica d'esame
+> - **D:** Cosa rappresenta il permesso `chmod 644 file`? Esprimi sia in ottale sia in simbolico.
+> **R:** `6` = `110` = `rw-` (owner: lettura e scrittura); `4` = `100` = `r--` (group: solo lettura); `4` = `100` = `r--` (other: solo lettura). In simbolico equivale a `chmod u=rw,go=r file`. È il permesso tipico di un file di testo: il proprietario lo modifica, gli altri lo leggono.
+> - **D:** Quale differenza c'è tra `chmod +x dir` e `chmod +r dir` su una directory?
+> **R:** `+x` aggiunge il permesso di **attraversamento** (entrare nella directory con `cd`, accedere ai file dentro); `+r` aggiunge il permesso di **lettura dell'elenco** (fare `ls`). Senza `x` si può avere `r` ma non si riesce ad accedere ai file al suo interno; è una combinazione rara ma significativa.
 ## Eseguire comandi e script
 - **Comando nel PATH**: basta il nome, `command_name` (se l'eseguibile sta in una directory del [[#Variabili e ambiente|PATH]]).
 - **Eseguibile nella directory corrente**: `./executable_name` (il prefisso `./` dice "è qui"), previo `chmod +x`.
@@ -205,6 +232,12 @@ Per processi lunghi che devono **sopravvivere alla disconnessione** del terminal
 | Persistenza | sì, ri-agganciabile | sì, ma staccato in modo permanente |
 | Più finestre | sì | no |
 | Uso tipico | task lunghi **interattivi** | task **non interattivi** in background |
+
+> [!example] Domanda tipica d'esame
+> - **D:** Cosa succede se si usa Ctrl+Z su un processo in foreground? Come si fa poi a riportarlo in esecuzione?
+> **R:** Ctrl+Z invia il segnale di **sospensione** al processo in foreground: il processo viene messo in pausa e il controllo torna alla shell. Da lì: `fg` lo riporta in **foreground** (torna a girare nel terminale); `bg` lo manda in **background** (continua a girare senza occupare il terminale); `jobs` elenca tutti i job sospesi o in background con il loro numero; `kill %n` lo termina.
+> - **D:** Qual è la differenza tra `screen` e `nohup` per far sopravvivere un processo alla chiusura del terminale?
+> **R:** Entrambi sopravvivono alla disconnessione. `nohup comando &` stacca il processo in modo **permanente**: non è ri-agganciabile, l'output va in `nohup.out`. `screen` crea una sessione **ri-agganciabile** (`screen -r`): si può rientrare, interagire, usare più finestre nella stessa sessione. Per task non interattivi va bene `nohup`; per task interattivi o lunghi con output da monitorare si preferisce `screen`.
 ## File di configurazione
 I file di configurazione iniziano con `.` (sono **dotfiles**, *hidden files*) e non compaiono con `ls`: servono `ls -a` o `ls -al`.
 - **`.bash_profile`**: eseguito al **login**; qui di solito è impostato PATH.
@@ -236,6 +269,49 @@ Strumenti combinabili in [[#Redirezione e pipe|pipeline]]:
 > awk -F'\t' '$4>=28' studenti.tsv           # righe con voto >= 28
 > tr 'A-Z' 'a-z' < frasi.txt                 # tutto minuscolo
 > ```
+
+**`awk`** — linguaggio di elaborazione per campi (colonne):
+- Sintassi base: `awk 'pattern { azione }' file`; se omessa l'azione è `{print}`.
+- `-F'\t'` imposta il **separatore di campo** (tab nell'esempio; `-F':'` per i due punti, `-F','` per CSV). Le variabili `$1`, `$2`, … sono le colonne; `$0` è la riga intera; `NR` è il numero di riga; `NF` il numero di campi.
+- Condizione numerica: `awk -F'\t' '$4>=28' studenti.tsv` → stampa le righe in cui la 4ª colonna è ≥ 28.
+- Calcoli: `awk -F'\t' '{sum+=$4} END {print sum/NR}' studenti.tsv` → media del voto.
+- Output selettivo: `awk -F'\t' '{print $1, $3}' studenti.tsv` → solo colonne 1 e 3, separate da spazio.
+
+Vedi esempi con output reale in [[04 - Linux e BASH]].
+**`sed`** — *stream editor*, opera riga per riga:
+- Sostituzione: `sed 's/vecchio/nuovo/' file` sostituisce la **prima occorrenza** per riga; con il flag `g` le **tutte**: `sed 's/danilo/scholar/g'`.
+- `-i` modifica il file **in place** (sovrascrive il file originale): `sed -i 's/foo/bar/g' file.txt`. Attenzione: non c'è undo senza backup.
+- Eliminare righe che corrispondono a un pattern: `sed '/^#/d' file` (cancella le righe di commento).
+
+**`cut`** — estrae campi o colonne:
+- `cut -f2,4 file` estrae i campi **2 e 4** (separatore tab di default).
+- `-d','` cambia il delimitatore: `cut -d',' -f1,3 file.csv` estrae le colonne 1 e 3 da un CSV.
+- `-c5-10` estrae i **caratteri** dalla posizione 5 alla 10 (utile per file a larghezza fissa).
+
+**`tr`** — traduce o elimina caratteri (legge da stdin):
+- `tr 'A-Z' 'a-z' < file` converte tutto in **minuscolo**; `tr 'a-z' 'A-Z'` in maiuscolo.
+- `-d` **cancella** i caratteri dell'insieme: `tr -d '0-9' < file` rimuove tutte le cifre.
+- `-s` **comprime** le ripetizioni consecutive: `tr -s ' ' < file` riduce più spazi a uno solo.
+- `-c` usa il **complemento** dell'insieme: `tr -cd 'a-z\n'` mantiene solo lettere minuscole e newline, cancella tutto il resto.
+
+**`od`** — dump del contenuto (anche binario):
+- `od -t x1 file` mostra i byte in **esadecimale** (utile per ispezionare file binari o caratteri non stampabili).
+- `od -c file` mostra i byte come **caratteri** con le sequenze di escape C (es. `\n`, `\t`, `\0`).
+- `od -An -t x1 file` come sopra ma senza l'offset iniziale (flag `-An`).
+
+**`split` / `seq`** — dividere e generare sequenze:
+- `seq 1 1000 > f` genera i numeri **1..1000** su righe separate (un numero per riga) e li salva in `f`.
+- `seq 1 2 99` genera i dispari 1, 3, 5, … 99 (primo, passo, ultimo).
+- `split -l 100 f parte_` spezza `f` in blocchi da **100 righe** ciascuno, con nomi `parte_aa`, `parte_ab`, `parte_ac`, … (suffisso alfabetico automatico).
+- `split -b 1M file.bin blocco_` spezza per dimensione (1 MiB per blocco).
+
+Vedi applicazioni pratiche in [[04 - Linux e BASH]].
+
+> [!example] Domanda tipica d'esame
+> - **D:** Come si estrae la lista degli utenti unici da `w` usando una pipeline?
+> **R:** `w | awk -F" " '{print $1}' | sort | uniq`. `awk` estrae la prima colonna (il nome utente), `sort` ordina (necessario perché `uniq` rimuove solo i **duplicati adiacenti**), `uniq` rimuove i duplicati. Per salvare il risultato su file si aggiunge `> users` in fondo.
+> - **D:** Qual è la differenza tra `sed 's/a/b/' file` e `sed 's/a/b/g' file`?
+> **R:** Senza `g`, `sed` sostituisce solo la **prima occorrenza** di `a` per ogni riga; con il flag `g` (*global*) sostituisce **tutte le occorrenze** nella riga. Es. sulla riga `aaa`: senza `g` → `baa`; con `g` → `bbb`.
 ## Espressioni regolari
 Molti strumenti (**grep**, **sed**) usano stringhe che descrivono sequenze di caratteri: le **regular expression** (*grep* = *general regular expression parser*).
 

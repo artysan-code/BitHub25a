@@ -55,3 +55,5 @@ Mappa argomento ↔ slide del corso ↔ capitolo del libro. **In programma tutto
 - **Modulo 1**: A. S. Tanenbaum, H. Bos — *I moderni sistemi operativi*, 4ª ed. italiana, Pearson.
 - **Modulo 2**: J. F. Kurose, K. W. Ross — *Reti di calcolatori e Internet: un approccio top-down*, Pearson.
 - Slide ufficiali del corso (`SOR2025-2026`) in `Materiale Didattico/`.
+## Crediti e fonti integrate
+La cartella `Esercizi/` raccoglie esercizi C di laboratorio su **processi**, **thread**, **sincronizzazione** e **file I/O**, integrati — con adattamenti — dal repository di Ionut Zbir ([github.com/IonutZbir/University](https://github.com/IonutZbir/University)), che include inoltre le tracce delle prove pratiche d'esame. Alcuni dettagli teorici puntuali confluiti nelle note del [[01 - Introduzione ai Sistemi Operativi|Modulo 1]] traggono origine dallo stesso materiale.

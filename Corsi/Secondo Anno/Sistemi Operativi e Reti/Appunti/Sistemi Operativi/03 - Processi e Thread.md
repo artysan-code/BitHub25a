@@ -40,7 +40,7 @@ Quattro condizioni tipiche:
 | `kill` | Invia un **segnale** a un processo (o a un gruppo). Può causare la terminazione **involontaria**. |
 
 > [!info] Codice di laboratorio
-> Esempi C su `fork`, `exec`, segnali e pipe in `Materiale Didattico/.../code/5_elementi_di_programmazione_concorrente_code/`. Il pattern `fork` + `exec` + `waitpid` è quello della shell visto in [[02 - Concetti di Base e Strutture]].
+> Esempi C su `fork`, `exec`, segnali e pipe in `Materiale Didattico/.../code/5_elementi_di_programmazione_concorrente_code/`. Il pattern `fork` + `exec` + `waitpid` è quello della shell visto in [[02 - Concetti di Base e Strutture]]. La trattazione in C di `fork`/`exec`/`wait`, dei segnali (`signal`/`alarm`/`kill`) e delle pipe (`pipe`/`dup2`) è in [[10 - Programmazione C e Concorrente]].
 ## Stati di un processo
 Un processo può trovarsi in **tre stati**:
 - **Running** (in esecuzione): sta effettivamente usando la CPU.

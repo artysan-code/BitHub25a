@@ -266,4 +266,4 @@ Molti strumenti (**grep**, **sed**) usano stringhe che descrivono sequenze di ca
 > - **Storia di Unix e Linux** → [[01 - Introduzione ai Sistemi Operativi]]
 
 ---
-**Argomento precedente:** [[08 - Input Output]]
+**Argomento precedente:** [[08 - Input Output]] · **Prossimo:** [[10 - Programmazione C e Concorrente]]

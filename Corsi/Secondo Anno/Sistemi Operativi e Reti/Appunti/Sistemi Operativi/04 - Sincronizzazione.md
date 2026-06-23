@@ -121,6 +121,19 @@ Introdotti da **E. W. Dijkstra (1965)** per contare e gestire i wakeup. Un semaf
 >         consume_item(item); } }
 > ```
 > `mutex` **serializza** l'accesso al buffer; `empty` blocca il produttore quando il buffer è pieno, `full` blocca il consumatore quando è vuoto. Codice in `code/6_thread_e_sincronizzazione/6.2_producer_consumer_semaphore.c`.
+
+> [!example] Deadlock da inversione dei down — errore classico da esame
+> Nel produttore-consumatore con semafori l'ordine corretto nel produttore è:
+> ```c
+> down(&empty);   /* 1. verifica che ci sia spazio */
+> down(&mutex);   /* 2. entra nella regione critica */
+> ```
+> Se i due `down` vengono **invertiti**:
+> ```c
+> down(&mutex);   /* 1. acquisisce la regione critica */
+> down(&empty);   /* 2. verifica lo spazio — TROPPO TARDI */
+> ```
+> Supponiamo che il buffer sia **pieno** ($\text{empty} = 0$): il produttore acquisisce `mutex` (ora $= 0$), poi si blocca su `down(&empty)` perché il buffer è pieno. Il consumatore tenta `down(&mutex)` per prelevare un elemento, ma `mutex = 0` — va in sleep. Nessuno può proseguire: il produttore attende spazio, il consumatore attende il mutex, ma solo il consumatore potrebbe liberare spazio e solo il produttore potrebbe rilasciare il mutex. **Deadlock**. Lo stesso ragionamento vale per l'inversione nel consumatore (`down(&mutex)` prima di `down(&full)`).
 ### Lettori e scrittori
 Regola base: in ogni istante sono ammessi **R lettori oppure 1 scrittore** (es. un database: molte letture simultanee, una sola scrittura). Il **primo** lettore blocca l'accesso agli scrittori (`down(&db)`), i successivi incrementano un contatore `rc`, l'**ultimo** lo rilascia (`up(&db)`).
 ```c
@@ -247,10 +260,21 @@ Per le attese, i monitor usano **variabili condizionali** con `wait` e `signal`.
 > Differenza cruciale: `wait` e `signal` sono **protetti dalla mutua esclusione del monitor**. Un processo che entra in una procedura del monitor ne ha l'esclusività finché non chiama `wait`: non può quindi essere interrotto a metà e **non può perdere un segnale**, eliminando il problema del wakeup perso visto con `sleep/wakeup`.
 
 **Monitor vs semafori**: i monitor sono **costrutti di linguaggio** (richiedono il supporto del compilatore, limitati ai linguaggi che li offrono); i semafori sono di **basso livello** ma utilizzabili ovunque (anche via routine assembly). Entrambi funzionano con memoria condivisa, **non** in sistemi distribuiti (dove serve lo scambio di messaggi).
+
+> [!info] Perché Java supporta i monitor e C no
+> I monitor delegano la **mutua esclusione al compilatore** (o al runtime), sottraendo il controllo diretto al programmatore — e quindi anche al sistema operativo. Questo crea una tensione: il SO vuole il pieno controllo della macchina, e un linguaggio che si rivolge **direttamente** al SO (come il **C**) non può imporre per conto suo politiche di accesso esclusivo. In **Java**, invece, tra il programma e il SO si interpone la **JVM** (Java Virtual Machine): è la JVM a fare da arbitro, garantendo che i metodi `synchronized` siano eseguiti in mutua esclusione prima di passare al SO. Lo strato intermedio è la ragione per cui i monitor sono implementabili in Java ma non direttamente in C.
 ## Scambio di messaggi
 Per i sistemi **senza memoria condivisa** (es. distribuiti) la sincronizzazione usa lo **scambio di messaggi** con due primitive: `send(destinazione, messaggio)` e `receive(sorgente, messaggio)`. È il meccanismo alla base del modello [[02 - Concetti di Base e Strutture#Microkernel (client-server)|client-server]] e della comunicazione di rete.
 > [!example] Produttore-consumatore con scambio di messaggi
 > Si usano in totale **N messaggi**, analoghi agli N posti del buffer in memoria condivisa. All'avvio il **consumatore** invia al produttore N messaggi vuoti (i "gettoni" che segnalano posti disponibili). Il **produttore** esegue `receive` per prendere un messaggio vuoto, lo riempie con l'elemento prodotto e lo invia al consumatore con `send`. Il consumatore esegue `receive` per prelevare un messaggio pieno, lo elabora e rimanda un messaggio vuoto al produttore. Se il produttore è più veloce, esaurisce i messaggi vuoti e si blocca su `receive`; se il consumatore è più veloce, esaurisce i messaggi pieni e si blocca. La corrispondenza con il buffer condiviso è diretta: i messaggi vuoti contano i posti liberi, quelli pieni i posti occupati — gli stessi ruoli dei semafori `empty` e `full` (vedi [[#Semafori]]).
+
+> [!info] Problemi progettuali specifici del modello a messaggi
+> A differenza di semafori e monitor — che operano su **memoria condivisa** e non devono preoccuparsi di perdite o imposture — lo scambio di messaggi introduce problemi assenti negli altri modelli:
+> - **Perdita di messaggi**: il canale di comunicazione (rete, IPC) può scartare messaggi; occorre un meccanismo di ritrasmissione.
+> - **Acknowledgment (ACK)**: il mittente deve poter confermare che il destinatario ha ricevuto il messaggio; senza ACK non può distinguere tra «messaggio perso» e «risposta persa».
+> - **Messaggi duplicati**: se l'ACK si perde, il mittente ritrasmette e il destinatario riceve lo stesso messaggio due volte; serve un numero di sequenza per scartare i duplicati.
+> - **Autenticazione**: in un sistema distribuito occorre verificare di comunicare con il processo corretto e non con un impostore.
+> Questi problemi non si pongono con semafori o monitor perché lì la comunicazione avviene **direttamente in memoria** — non c'è un canale fisico che possa perdere o alterare i dati.
 ## Barriere
 Le **barriere** sincronizzano processi divisi in **fasi**: quando un processo raggiunge la barriera attende che **tutti** gli altri la raggiungano prima di proseguire. Utili nei calcoli paralleli (es. su matrici), dove non si può passare all'iterazione successiva finché tutti non hanno finito quella corrente.
 ## Problemi avanzati

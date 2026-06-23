@@ -16,6 +16,8 @@ Il SO crea in genere un solo processo iniziale, **`init`** (nei sistemi moderni 
 > $ ls | more
 > ```
 > Ogni comando lanciato dalla shell diventa un processo figlio; `init → login → sh → (ls, find, more)` è un tipico albero.
+
+L'uso pratico della shell e del **job control** (`ps`, `kill`, `bg`/`fg`, `&`) è in [[09 - Linux e BASH#Processi e job control]].
 ## Gestione dei processi
 ### Creazione di un processo
 Quattro eventi principali causano la creazione di un processo:

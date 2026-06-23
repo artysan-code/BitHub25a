@@ -1,4 +1,4 @@
-# 01 - Introduzione ai Sistemi Operativi
+# Introduzione ai Sistemi Operativi
 Un calcolatore moderno è un sistema complesso: uno o più **processori**, **memoria centrale**, **dischi**, **periferiche di I/O** (tastiera, mouse, monitor, interfacce di rete) collegati da un sistema di **bus**. Gestire direttamente questo hardware è troppo difficile, quindi i computer dispongono di uno strato di software — il **sistema operativo (SO)** — che si frappone tra hardware e applicazioni.
 
 L'utente non interagisce mai direttamente col SO, ma tramite un programma di interfaccia: la **shell** (modalità testo) o la **GUI** (icone, finestre, mouse). Attenzione: shell e GUI **non sono** il sistema operativo, ma solo il livello più basso del software in modalità utente.

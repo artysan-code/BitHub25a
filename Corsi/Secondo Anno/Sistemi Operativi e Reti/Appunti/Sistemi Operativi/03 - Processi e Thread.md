@@ -1,4 +1,4 @@
-# 03 - Processi e Thread
+# Processi e Thread
 Il **processo** è l'astrazione con cui il SO esegue programmi per conto degli utenti; il **thread** è il flusso di esecuzione *dentro* un processo. Questa nota copre modello, gestione, stati, segnali/interrupt e thread. Prerequisito: l'astrazione di processo introdotta in [[02 - Concetti di Base e Strutture]].
 ## Il modello di processo
 > [!quote] Definizione — Processo

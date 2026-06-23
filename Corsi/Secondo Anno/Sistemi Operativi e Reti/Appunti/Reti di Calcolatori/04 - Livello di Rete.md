@@ -1,4 +1,4 @@
-# 04 - Livello di Rete
+# Livello di Rete
 Il livello di rete è responsabile del trasferimento dei **datagrammi** dall'host mittente all'host destinatario attraverso l'intera rete di router. Questa nota copre il **piano dei dati** — architettura dei router, IP, NAT, IPv6 — e il **piano di controllo** — algoritmi di instradamento, OSPF, BGP, SDN, ICMP e gestione della rete. Per il contesto della pila protocollare vedi [[01 - Introduzione]]; per i protocolli di trasporto che consegnano i segmenti al livello di rete vedi [[03 - Livello di Trasporto]].
 ## Piano dei dati e piano di controllo
 Le due funzioni fondamentali del livello di rete sono:

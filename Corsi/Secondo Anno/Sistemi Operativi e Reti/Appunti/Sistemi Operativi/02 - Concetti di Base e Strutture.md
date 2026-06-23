@@ -1,4 +1,4 @@
-# 02 - Concetti di Base e Strutture
+# Concetti di Base e Strutture
 Il sistema operativo offre le proprie funzionalità — i **servizi** (es. *File System Service*, *Process Management Service*) — alle applicazioni attraverso le **chiamate di sistema**. Questa nota copre l'interfaccia (system call), le astrazioni fondamentali che il SO espone (processo, file) e le architetture interne con cui può essere costruito. Prerequisito: [[01 - Introduzione ai Sistemi Operativi]].
 ## System call (chiamate di sistema)
 Le **system call** sono l'interfaccia con cui un processo in [[01 - Introduzione ai Sistemi Operativi#Modalità kernel e modalità utente|modalità utente]] richiede un servizio al kernel. Il meccanismo è **specifico** del SO e dell'hardware, perciò viene **incapsulato** in una libreria: in UNIX la **libreria C** (`libc`, basata su POSIX) esporta una procedura per ogni chiamata di sistema.

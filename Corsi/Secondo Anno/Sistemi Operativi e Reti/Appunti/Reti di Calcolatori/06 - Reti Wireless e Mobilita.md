@@ -1,4 +1,4 @@
-# 06 - Reti Wireless e Mobilita
+# Reti Wireless e Mobilita
 Le reti wireless e la gestione della mobilità costituiscono il capitolo conclusivo del modello a strati analizzato in questo modulo. Dopo aver studiato i protocolli dal livello di applicazione ([[02 - Livello di Applicazione]]) fino al livello di collegamento ([[05 - Livello di Collegamento]]), questa nota affronta le peculiarità dei canali radio e la sfida di mantenere la connettività quando un host si sposta tra punti di aggancio diversi — problema che le reti cablate non devono affrontare.
 ## Contesto e componenti di una rete wireless
 Nel 2019 si contavano già 10 abbonati wireless ogni abbonato fisso, e 5 dispositivi a banda larga mobile ogni dispositivo fisso. Le reti 4G/5G abbracciano oggi lo stack Internet completo, compreso l'uso di [[04 - Livello di Rete#SDN|SDN]].

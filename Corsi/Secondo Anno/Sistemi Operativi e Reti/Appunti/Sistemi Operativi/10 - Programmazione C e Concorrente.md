@@ -94,6 +94,19 @@ Le tre system call cardine (concetti in [[03 - Processi e Thread#System call di 
 >
 > Per attendere i figli: **`wait(&status)`** sospende finché **un qualsiasi** figlio termina; **`waitpid(pid, &status, 0)`** attende **uno specifico** figlio — indispensabile con più figli (come nelle tracce a due figli).
 
+> [!info] Come il figlio comunica il codice d'uscita al padre
+> Il padre legge lo **stato** del figlio tramite `wait(&status)`, ma è il figlio a *impostarlo* chiamando **`exit(N)`** prima di terminare. Il valore `N` è recuperabile con la macro `WEXITSTATUS(status)` (dopo aver verificato `WIFEXITED(status)`). Se il figlio non chiama `exit` esplicitamente (es. `execv` va a buon fine e il processo figlio termina naturalmente), il valore di ritorno del `main` del programma eseguito fa le veci di `N`.
+> ```c
+> if (fork() == 0) {
+>     /* ... lavoro del figlio ... */
+>     exit(42);          // figlio: segnala codice 42 al padre
+> } else {
+>     wait(&status);
+>     if (WIFEXITED(status))
+>         printf("Figlio uscito con codice %d\n", WEXITSTATUS(status)); // stampa 42
+> }
+> ```
+
 > [!example] Domanda tipica d'esame
 > - **D:** Cosa restituisce `fork()` e come fanno padre e figlio a distinguersi? **R:** `fork()` duplica il processo; restituisce il **PID del figlio** al genitore e **0** al figlio (`-1` in caso di errore). I due rami eseguono lo stesso codice ma si distinguono testando il valore di ritorno: `if (fork() == 0) { /* figlio */ } else { /* padre */ }`.
 > - **D:** Differenza tra `wait` e `waitpid`. **R:** `wait(&status)` attende la terminazione di **un qualsiasi** figlio; `waitpid(pid, &status, 0)` attende il figlio **con quel PID** specifico — utile quando un processo ne ha generati più di uno.
@@ -117,6 +130,24 @@ Le tre system call cardine (concetti in [[03 - Processi e Thread#System call di 
 
 > [!info] Com'è fatta `read_command`? (`getline` + `strtok`)
 > La shell minima usa `read_command`, che concretamente: legge una riga con **`getline(&line, &len, stdin)`** (restituisce **−1** all'EOF, cioè `Ctrl+D` → si esce dal ciclo); poi la **tokenizza** con **`strtok(line, " \n")`**, riempiendo `args[]` (terminato da `NULL`, come richiesto da `execvp`). Se `execvp` fallisce, si chiama `perror(...)` ed `exit(1)`.
+
+> [!info] Comandi builtin: gestiti dal padre senza `fork`
+> La shell minimale manca di un dettaglio presente in `5.5_my_first_bash.c`: i **comandi builtin** (come `exit`) devono essere intercettati *prima* della `fork`, perché appartengono al processo shell stesso — non ha senso delegarli a un figlio. La distinzione è strutturale:
+> ```c
+> read_command(cmd, args);
+>
+> if (strcmp(cmd, "exit") == 0)   // builtin: gestito dal padre, senza fork
+>     exit(0);
+>
+> pid = fork();                   // solo per i comandi esterni
+> if (pid == 0) {
+>     execvp(cmd, args);
+>     exit(1);
+> } else {
+>     wait(&status);
+> }
+> ```
+> Questa è la ragione per cui una shell reale mantiene una lista di builtin (`cd`, `exit`, `export`, …) che non genera processi figli.
 ## Segnali in C
 I [[03 - Processi e Thread#I segnali|segnali]] gestiscono eventi asincroni. API principali:
 - `signal(signum, handler)` registra un **gestore** (signal handler) per `signum`.
@@ -194,6 +225,33 @@ Questo è il **meccanismo concreto** dietro la [[09 - Linux e BASH#Redirezione e
 
 > [!info] Variante del laboratorio: `close` + `dup`
 > Gli esempi del corso (`5.4_fork_pipe.c`) spesso usano, invece di `dup2`, la coppia equivalente **`close` + `dup`**. Poiché `dup(oldfd)` occupa il **fd libero più basso**, chiudendo prima `STDOUT_FILENO` (1) e poi facendo `dup(fd[1])`, il duplicato finisce proprio sull'fd 1: quindi `close(STDOUT_FILENO); dup(fd[1]);` equivale a `dup2(fd[1], STDOUT_FILENO);`.
+
+> [!example] Due figli con due `waitpid` distinti (`cat | sort`)
+> A differenza del caso `ps | grep` (dove il **padre** diventa `grep` con `execlp`), qui il padre **resta in vita**: esegue **due `fork` sequenziali** e poi raccoglie ciascun figlio con il proprio `waitpid`. È il pattern del laboratorio (`5.4_fork_pipe.c`) e delle tracce d'esame a due figli (P2/P3/P4):
+> ```c
+> pid_t cat_pid, sort_pid;
+> int fd[2];
+> pipe(fd);
+>
+> cat_pid = fork();
+> if (cat_pid == 0) {                  // figlio 1: cat
+>     dup2(fd[1], STDOUT_FILENO);      // stdout → pipe
+>     close(fd[0]); close(fd[1]);
+>     execlp("cat", "cat", "names.txt", NULL);
+> }
+>
+> sort_pid = fork();                   // la seconda fork avviene nel PADRE
+> if (sort_pid == 0) {                 // figlio 2: sort
+>     dup2(fd[0], STDIN_FILENO);       // stdin ← pipe
+>     close(fd[0]); close(fd[1]);
+>     execlp("sort", "sort", NULL);
+> }
+>
+> close(fd[0]); close(fd[1]);          // il padre chiude entrambe le estremità
+> waitpid(cat_pid,  NULL, 0);          // attende il figlio 1
+> waitpid(sort_pid, NULL, 0);          // attende il figlio 2
+> ```
+> La **seconda `fork` è eseguita dal padre** (il figlio 1 ha già fatto `execlp` e non la raggiunge). Ogni `waitpid` identifica uno specifico figlio tramite il suo PID: un `wait` generico non consentirebbe di attenderli in un ordine preciso.
 
 > [!example] Domanda tipica d'esame
 > - **D:** Come si realizza in C la redirezione dell'output di un programma su una pipe (o un file)? **R:** Si **aggancia** lo stdout alla pipe/file con `dup2(fd, STDOUT_FILENO)` (o `close(STDOUT_FILENO); dup(fd);`) **prima** della `execv`: il programma eseguito scriverà su `STDOUT_FILENO` (1) senza saperlo, ma l'fd 1 ora punta alla pipe/file. È il meccanismo dietro la redirezione della shell.

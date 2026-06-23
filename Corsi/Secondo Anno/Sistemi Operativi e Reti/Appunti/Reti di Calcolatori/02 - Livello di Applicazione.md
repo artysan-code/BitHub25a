@@ -1,4 +1,4 @@
-# 02 - Livello di Applicazione
+# Livello di Applicazione
 Il livello di applicazione è il livello più alto della [[01 - Introduzione#La pila di protocolli Internet — 5 livelli|pila di protocolli Internet]] ed è quello con cui interagisce direttamente lo sviluppatore. Qui vivono HTTP, DNS, SMTP e i protocolli P2P: il progettista scrive il codice dell'applicazione, sceglie l'architettura e l'eventuale protocollo di trasporto, ma non tocca il software dei router intermedi. Questa nota copre i principi delle applicazioni di rete, il protocollo Web HTTP (versioni 1.1, 2 e 3), la posta elettronica con SMTP, il DNS e infine BitTorrent, DASH e le CDN.
 ## Principi delle applicazioni di rete
 ### Architettura delle applicazioni

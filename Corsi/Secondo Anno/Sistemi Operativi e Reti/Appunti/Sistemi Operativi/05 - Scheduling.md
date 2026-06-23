@@ -1,4 +1,4 @@
-# 05 - Scheduling
+# Scheduling
 Quando più processi/thread competono per la CPU, lo **scheduler** decide quale eseguire successivamente seguendo un **algoritmo di scheduling**. Questa nota tratta gli algoritmi per i diversi ambienti (batch, interattivo, real-time) e lo scheduling dei thread. Prerequisito: gli [[03 - Processi e Thread#Stati di un processo|stati di un processo]] e la [[04 - Sincronizzazione|sincronizzazione]].
 ## Il problema dello scheduling
 Storicamente nei sistemi **batch** lo scheduling era **lineare** (il job successivo sul nastro); con la **multiprogrammazione** è diventato complesso per la concorrenza tra utenti. Sui personal computer spesso un solo processo è attivo e la CPU **raramente** è la risorsa scarsa; ma nei **server** e nei dispositivi a **batteria** (IoT, smartphone) lo scheduling torna vitale (anche per ottimizzare i consumi).

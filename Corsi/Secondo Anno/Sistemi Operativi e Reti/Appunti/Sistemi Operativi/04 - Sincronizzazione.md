@@ -1,4 +1,4 @@
-# 04 - Sincronizzazione
+# Sincronizzazione
 I processi (e i [[03 - Processi e Thread|thread]]) hanno bisogno di **comunicare** (condividere dati durante l'esecuzione) e di **sincronizzarsi** (tenere conto delle dipendenze ed evitare di intralciarsi). Questa nota tratta la **comunicazione tra processi (IPC)** e in particolare il problema della **mutua esclusione**, con le sue soluzioni: semafori, mutex, variabili condizionali e monitor.
 ## Il problema della concorrenza
 Poiché i processi sono [[03 - Processi e Thread#Processi concorrenti|concorrenti]] e il SO non garantisce ordine né tempistica, l'accesso non coordinato a dati condivisi produce errori.

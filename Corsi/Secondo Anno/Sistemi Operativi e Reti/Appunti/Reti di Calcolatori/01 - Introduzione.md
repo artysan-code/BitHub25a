@@ -1,4 +1,4 @@
-# 01 - Introduzione
+# Introduzione
 Internet è la rete più grande e complessa mai costruita: miliardi di dispositivi eterogenei — PC, smartphone, sensori IoT, data center — comunicano attraverso una gerarchia di reti fisicamente distinte ma logicamente unite da protocolli condivisi. Questa nota introduce la struttura di Internet, i suoi meccanismi di trasporto dei dati, le metriche di prestazione e il modello a livelli su cui si fonda l'intera disciplina delle reti di calcolatori.
 ## Cos'è Internet
 Internet è descritta su due piani complementari: quello degli *ingranaggi* (cosa la compone fisicamente) e quello dei *servizi* (cosa offre alle applicazioni).

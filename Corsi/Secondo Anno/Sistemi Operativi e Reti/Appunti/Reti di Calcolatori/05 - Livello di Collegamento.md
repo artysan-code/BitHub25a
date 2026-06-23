@@ -1,4 +1,4 @@
-# 05 - Livello di Collegamento
+# Livello di Collegamento
 Il livello di collegamento è il quarto livello della pila di protocolli Internet (secondo salendo dal basso) e si occupa del trasferimento dei dati tra nodi **adiacenti** lungo un singolo collegamento fisico. A differenza del livello di rete, che gestisce il percorso end-to-end tra host (vedi [[04 - Livello di Rete]]), il livello di collegamento risolve soltanto il problema locale: "come si muove questo datagramma da questo nodo al nodo successivo sul percorso?". Questa nota copre i meccanismi di rilevazione degli errori, i protocolli di accesso multiplo e le tecnologie LAN (Ethernet, switch, VLAN, ARP).
 ## Introduzione
 ### Terminologia di base

@@ -19,12 +19,12 @@ Esempio: `read(fd, buffer, nbytes)`.
 ### Categorie principali di system call POSIX
 **Gestione dei processi** (vedi [[03 - Processi e Thread]]):
 
-| Call | Descrizione |
-|------|-------------|
-| `pid = fork()` | Crea un processo figlio identico al genitore |
-| `pid = waitpid(pid, &statloc, options)` | Attende la terminazione di un figlio |
-| `s = execve(name, argv, environp)` | Sostituisce l'immagine del processo |
-| `exit(status)` | Termina il processo e restituisce lo stato |
+| Call                                    | Descrizione                                  |
+| --------------------------------------- | -------------------------------------------- |
+| `pid = fork()`                          | Crea un processo figlio identico al genitore |
+| `pid = waitpid(pid, &statloc, options)` | Attende la terminazione di un figlio         |
+| `s = execve(name, argv, environp)`      | Sostituisce l'immagine del processo          |
+| `exit(status)`                          | Termina il processo e restituisce lo stato   |
 
 **Gestione dei file** (vedi [[07 - File System]]):
 

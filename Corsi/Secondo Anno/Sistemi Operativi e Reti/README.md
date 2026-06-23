@@ -57,3 +57,4 @@ Mappa argomento ↔ slide del corso ↔ capitolo del libro. **In programma tutto
 - Slide ufficiali del corso (`SOR2025-2026`) in `Materiale Didattico/`.
 ## Crediti e fonti integrate
 La cartella `Esercizi/` raccoglie esercizi C di laboratorio su **processi**, **thread**, **sincronizzazione** e **file I/O**, integrati — con adattamenti — dal repository di Ionut Zbir ([github.com/IonutZbir/University](https://github.com/IonutZbir/University)), che include inoltre le tracce delle prove pratiche d'esame. Alcuni dettagli teorici puntuali confluiti nelle note del [[01 - Introduzione ai Sistemi Operativi|Modulo 1]] traggono origine dallo stesso materiale.
+Le note del **Modulo 2 (Reti)** in `Appunti/Reti di Calcolatori/` sono redatte dando priorità alle slide ufficiali del prof; gli appunti di Reti dello stesso repository del collega sono serviti solo come traccia di prosa, sempre verificata contro le slide.

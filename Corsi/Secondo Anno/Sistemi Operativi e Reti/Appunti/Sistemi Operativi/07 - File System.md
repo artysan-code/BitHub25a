@@ -511,3 +511,4 @@ In Linux **anche i dispositivi sono visti come file**. La gerarchia parte dalla 
 > - **I/O e storage fisico**: il comportamento di dischi e SSD (tempo di `seek`, ritardo di rotazione, **DMA**, buffer cache lato hardware) è nelle lezioni su [[08 - Input Output]].
 > - **Processi**: i descrittori di file e le syscall sono legati alla gestione dei [[03 - Processi e Thread|processi]].
 > - **Concetti di base**: il ruolo del file system come gestore di risorse è introdotto in [[02 - Concetti di Base e Strutture]].
+> - **Uso pratico di Linux** (struttura delle cartelle, `mount`, `tar`, comandi e permessi `chmod`) → [[09 - Linux e BASH]].

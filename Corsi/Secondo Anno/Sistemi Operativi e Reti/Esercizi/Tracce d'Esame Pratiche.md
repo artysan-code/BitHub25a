@@ -8,13 +8,13 @@ Tutte le tracce usano [[03 - Processi e Thread#^fork|fork]] e **pipe anonime** P
 **Soluzione svolta:** `Processi/fork_seek_occurrences.c`
 ### P2 — Numeri pari/dispari [0–100], soglia 190
 **Consegna.** Figlio 1 invia al padre numeri pari casuali in $[0, 100]$; figlio 2 invia numeri dispari casuali in $[0, 100]$. Il padre somma i valori ricevuti e, quando la somma supera $190$, invia [[03 - Processi e Thread#I segnali|SIGTERM]] ai figli con `kill()`.
-**Traccia proposta** (nessuna soluzione svolta disponibile).
+**Soluzione svolta:** `Processi/fork_pari_dispari_soglia.c`
 ### P3 — Catena padre–figlio1–figlio2 (pipe bidirezionale)
 **Consegna.** Figlio 1 genera un numero casuale e lo invia al padre tramite pipe. Il padre sceglie un fattore $k$ casuale, moltiplica e invia il risultato a figlio 2 tramite una seconda pipe. Figlio 2 stampa il valore ricevuto.
-**Traccia proposta** (nessuna soluzione svolta disponibile).
+**Soluzione svolta:** `Processi/fork_catena_moltiplica.c`
 ### P4 — Lettura directory (dirent + readdir + permessi)
 **Consegna.** Due figli leggono ciascuno metà dei file di una directory (usando `opendir`/`readdir` da `<dirent.h>`); prima di leggere ogni file controllano i permessi con `stat` ed eventualmente li modificano con `chmod`. Inviano il contenuto al padre nel formato `[PID_FIGLIO] -> TESTO`. Il padre stampa.
-**Traccia proposta** (nessuna soluzione svolta disponibile).
+**Soluzione svolta:** `Processi/fork_readdir_permessi.c`
 ### P5 — Moltiplicazione matrici 3×3 in parallelo
 **Consegna.** Dati due array $M_1, M_2 \in \mathbb{R}^{3 \times 3}$, figlio 1 calcola la prima colonna di $M_1 \cdot M_2$, figlio 2 la seconda colonna; il padre calcola la terza colonna, riceve le colonne dai figli tramite pipe e compone e stampa la matrice risultante.
 **Soluzione svolta:** `Processi/matrix_fork.c`
@@ -23,10 +23,10 @@ Tutte le tracce usano [[03 - Processi e Thread#^fork|fork]] e **pipe anonime** P
 **Soluzione svolta:** `Processi/fork_sum.c`
 ### P7 — Pipe bidirezionale padre–figlio (quadrato se pari)
 **Consegna.** Il padre invia un numero al figlio tramite una pipe. Il figlio ne calcola il quadrato; se il quadrato è **pari** lo reinvia al padre tramite una seconda pipe (bidirezionale). Il padre stampa il risultato; se non riceve nulla (quadrato dispari) lo segnala.
-**Traccia proposta** (nessuna soluzione svolta disponibile).
+**Soluzione svolta:** `Processi/fork_pipe_bidirezionale_quadrato.c`
 ### P8 — Fusione array pari/dispari (max e min)
 **Consegna.** Figlio 1 invia al padre gli elementi del proprio array nelle **posizioni pari**; figlio 2 invia quelli nelle **posizioni dispari**. Il padre riceve i valori, costruisce l'array fuso e calcola il **massimo** e il **minimo**.
-**Traccia proposta** (nessuna soluzione svolta disponibile).
+**Soluzione svolta:** `Processi/fork_fusione_pari_dispari.c`
 ### P9 — Fork + file condiviso + lseek (pari e dispari)
 **Consegna.** Figlio 1 scrive $N$ numeri pari in un file condiviso (usando `creat`). Figlio 2 aspetta la terminazione di figlio 1 (coordinazione via pipe), usa `lseek` per posizionarsi subito dopo la sequenza pari e scrive $N$ numeri dispari. Il padre attende figlio 2, apre il file in sola lettura e stampa l'intera sequenza.
 **Soluzione svolta:** `Processi/fork_file_pari_dispari.c`

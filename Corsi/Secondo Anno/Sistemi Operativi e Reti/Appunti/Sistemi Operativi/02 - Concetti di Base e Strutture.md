@@ -129,6 +129,8 @@ I **link** sono un caso particolare: esistono in due varianti distinte.
 Le **pipe** sono pseudo-file per la comunicazione tra processi su un canale **FIFO**: vanno predisposte in anticipo, appaiono come file normali a chi legge/scrive e permettono comunicazione (tipicamente unidirezionale) tra processi.
 ## Protezione e shell
 La **protezione** è il meccanismo con cui il SO controlla l'accesso a risorse e dati (i bit `rwx`, gli UID/GID, la separazione kernel/user). La **shell** non è il SO ma il suo principale programma di interfaccia: legge comandi e li esegue creando processi.
+> [!info] Anticipazione — qui è la prospettiva concettuale (cap. 1)
+> Shell, redirezione e permessi sono introdotti qui solo per capire *l'interfaccia* del SO. La trattazione **pratica** di Linux e BASH — comandi, permessi con `chmod`, redirezione e pipe in dettaglio, file descriptor, processi e job control, scripting — è nella nota [[09 - Linux e BASH]].
 
 > [!example] La shell in poche righe
 > ```c
@@ -143,31 +145,7 @@ La **protezione** è il meccanismo con cui il SO controlla l'accesso a risorse e
 > }
 > ```
 
-**File descriptor standard.** Ogni processo eredita dalla shell tre **stream standard**, ciascuno identificato da un **file descriptor** intero — lo stesso tipo restituito da `open()` e usato da `read()`/`write()` (vedi [[#Categorie principali di system call POSIX|system call POSIX]]):
-
-| fd | Nome | Default |
-|----|------|---------|
-| 0 | **stdin** | tastiera |
-| 1 | **stdout** | terminale |
-| 2 | **stderr** | terminale |
-
-La **shell** permette di redirigere questi stream prima di eseguire il comando figlio:
-
-| Sintassi | Effetto |
-|----------|---------|
-| `> file` o `1> file` | redirige stdout su `file` |
-| `2> file` | redirige stderr su `file` |
-| `2>&1` | redirige stderr sullo stesso fd di stdout |
-| `2> err.txt 1> out.txt` | stderr su `err.txt`, stdout su `out.txt` |
-
-> [!example] Redirezione separata stdout/stderr
-> ```bash
-> cat foo.tsv | sort | uniq -c 2> log_stderr.txt 1> log_stdout.txt
-> ```
-> stderr va in `log_stderr.txt`; stdout in `log_stdout.txt`. Senza redirezione, entrambi confluiscono sul terminale.
-
-> [!info] Approfondimento — Linux e BASH
-> L'uso pratico della shell, i comandi e lo scripting BASH sono nelle slide 3.1 del corso e nel codice di `Materiale Didattico/.../code/`.
+Ogni processo eredita dalla shell tre **stream standard**, identificati da un **file descriptor** intero — lo stesso tipo restituito da `open()` e usato da `read()`/`write()` (vedi [[#Categorie principali di system call POSIX|system call POSIX]]): **stdin** (fd 0), **stdout** (fd 1), **stderr** (fd 2). Su questi tre fd la shell costruisce la **redirezione** (`>`, `2>`, `|`): tra `fork` ed `execve` cambia *dove puntano* prima di avviare il programma, in modo trasparente al programma stesso. Il meccanismo completo, con tabelle ed esempi, è in [[09 - Linux e BASH#Redirezione e pipe]].
 ## Strutture del sistema operativo
 Come è organizzato *internamente* il SO. Ogni struttura ha un compromesso fra prestazioni, robustezza e manutenibilità.
 ### Sistemi monolitici

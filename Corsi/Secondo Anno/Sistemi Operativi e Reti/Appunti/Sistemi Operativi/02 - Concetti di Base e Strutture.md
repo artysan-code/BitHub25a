@@ -16,6 +16,9 @@ Esempio: `read(fd, buffer, nbytes)`.
 
 > [!info] Approfondimento — Architettura dei Sistemi di Elaborazione
 > L'istruzione TRAP, il cambio di modalità e la gestione di interrupt sono il punto di contatto con l'hardware: vedi il livello ISA in [[5 - Livello di architettura dell'insieme d'istruzioni]].
+
+> [!info] Approfondimento — dalla libc al kernel
+> La catena completa da `read()` (user space) fino a `ksys_read()` (kernel) — `glibc` → istruzione `syscall` → `entry_SYSCALL_64` → `do_syscall_64` → `__x64_sys_read` — è ricostruita passo-passo in [[10 - Programmazione C e Concorrente#Dalla libreria alla system call]].
 ### Categorie principali di system call POSIX
 **Gestione dei processi** (vedi [[03 - Processi e Thread]]):
 
@@ -145,7 +148,7 @@ La **protezione** è il meccanismo con cui il SO controlla l'accesso a risorse e
 > }
 > ```
 
-Ogni processo eredita dalla shell tre **stream standard**, identificati da un **file descriptor** intero — lo stesso tipo restituito da `open()` e usato da `read()`/`write()` (vedi [[#Categorie principali di system call POSIX|system call POSIX]]): **stdin** (fd 0), **stdout** (fd 1), **stderr** (fd 2). Su questi tre fd la shell costruisce la **redirezione** (`>`, `2>`, `|`): tra `fork` ed `execve` cambia *dove puntano* prima di avviare il programma, in modo trasparente al programma stesso. Il meccanismo completo, con tabelle ed esempi, è in [[09 - Linux e BASH#Redirezione e pipe]].
+Ogni processo eredita dalla shell tre **stream standard**, identificati da un **file descriptor** intero — lo stesso tipo restituito da `open()` e usato da `read()`/`write()` (vedi [[#Categorie principali di system call POSIX|system call POSIX]]): **stdin** (fd 0), **stdout** (fd 1), **stderr** (fd 2). Su questi tre fd la shell costruisce la **redirezione** (`>`, `2>`, `|`): tra `fork` ed `execve` cambia *dove puntano* prima di avviare il programma, in modo trasparente al programma stesso. Il meccanismo completo, con tabelle ed esempi, è in [[09 - Linux e BASH|Redirezione e pipe]].
 ## Strutture del sistema operativo
 Come è organizzato *internamente* il SO. Ogni struttura ha un compromesso fra prestazioni, robustezza e manutenibilità.
 ### Sistemi monolitici

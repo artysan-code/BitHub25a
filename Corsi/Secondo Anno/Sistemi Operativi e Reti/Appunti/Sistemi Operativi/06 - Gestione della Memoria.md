@@ -27,6 +27,8 @@ La soluzione è separare e proteggere i programmi tramite l'astrazione dello **s
 > [!quote] Definizione — Spazio degli indirizzi (*address space*)
 > Insieme **unico** di indirizzi che un programma può usare per indirizzare la memoria. È indipendente da quello degli altri processi e rappresenta una forma astratta di memoria: ogni processo "crede" di avere la propria memoria privata.
 ### Registri base e limite
+> [!info] Precursore storico — IBM 360
+> Una soluzione primitiva alla protezione della memoria fu adottata sull'**IBM 360**: associare una **chiave di protezione** a ogni blocco di memoria fisica e confrontarla con la chiave del processo in esecuzione a ogni accesso. Non era una vera astrazione degli indirizzi, ma già separava i domini di protezione; i registri base e limite ne sono l'evoluzione logica.
 Un'implementazione hardware semplice usa due registri speciali presenti in molte CPU:
 - **Registro base**: indirizzo fisico di **inizio** del programma in memoria → realizza la **rilocazione dinamica** (ogni indirizzo generato viene sommato alla base).
 - **Registro limite**: **lunghezza** del programma → applica la **protezione**.
@@ -99,6 +101,11 @@ La maggior parte dei sistemi moderni usa il **paging** (paginazione); un'alterna
 > Si dividono memoria fisica e virtuale in **pagine** di dimensione fissa (es. 4096 byte = 4 KB) e si traducono le **pagine virtuali** in **pagine fisiche** (dette **frame**).
 
 Se 16 pagine virtuali sono mappate su 8 frame, alcune pagine restano **non mappate** (contrassegnate con `X`). Se un programma riferisce una pagina non mappata si verifica un **page fault**: il SO assegna un frame (eventualmente spostando su disco un frame poco usato — *quale?* vedi [Algoritmi di sostituzione](#Algoritmi%20di%20sostituzione%20delle%20pagine)), carica la pagina richiesta e aggiorna la mappa della MMU.
+> [!example] Esempi — traduzione riuscita (page present)
+> I due esempi seguenti usano 64 KB di spazio virtuale diviso in 16 pagine da 4 KB, mappate su 8 frame fisici. Si assume la mappatura dell'esempio del testo, in cui la **pagina virtuale 2** è ospitata nel **frame 6** e la **pagina virtuale 5** nel **frame 3**:
+> 1. **`MOV REG,8192`** → l'indirizzo virtuale $8192 = 2 \times 4096$ cade nella **pagina virtuale 2** (offset 0). Questa pagina è mappata sul **frame 6**, che inizia a $6 \times 4096 = 24576$. La MMU traduce quindi in `MOV REG,24576`.
+> 2. Indirizzo virtuale **20500** $= 5 \times 4096 + 20$: cade nella **pagina virtuale 5**, offset $20$. La pagina virtuale 5 è mappata sul **frame 3**, che inizia a $3 \times 4096 = 12288$; l'indirizzo fisico risultante è $12288 + 20 = \mathbf{12308}$.
+
 > [!example] Esempio — `MOV REG,32780`
 > L'indirizzo `32780` riferisce la **pagina virtuale 8** all'offset 12: infatti $32780 - 2^{15}\,(32768) = 12$. Se la pagina non è mappata, il SO può sostituire un frame, spostando il precedente su disco e facendo puntare al nuovo, accedendo all'indirizzo $4108 = 4096 + 12$. Il page fault avviene nello spazio kernel durante il **trap** eseguito dal SO.
 ### La MMU e la page table
@@ -143,6 +150,11 @@ Uno spazio di indirizzi virtuali molto grande porterebbe a una tabella enorme e 
 - **Soft miss**: la pagina è in memoria ma non nel TLB → serve solo aggiornare il TLB.
 - **Hard miss**: la pagina **non è in memoria** → serve un accesso alla memoria non volatile (disco/SSD), molto più lento.
 - La ricerca nella gerarchia delle tabelle si chiama **page table walk**. Un accesso a un **indirizzo non valido** può portare a un **segmentation fault** e alla terminazione del programma.
+> [!info] Terminologia Linux: minor e major page fault
+> I miss non sono tutti uguali; esaminando la page table walk si distinguono tre casi:
+> - **Minor page fault** (variante più costosa del soft miss): la pagina è in RAM ma **non ancora mappata nella page table di *questo* processo** (es. caricata da un altro processo tramite COW, o non ancora inserita). Richiede un page table walk + aggiornamento della PT, senza alcun I/O su disco/SSD. Costo: 10–20 istruzioni, nell'ordine dei nanosecondi. — Il **soft miss** classico (già definito in «Tipi di miss» sopra) è il caso ancora più leggero in cui la pagina è già nella page table ma manca solo dal TLB; non va confuso con il minor page fault.
+> - **Hard miss ↔ major page fault**: la pagina **non è in memoria** e deve essere caricata dalla memoria non volatile. Costo: nell'ordine dei millisecondi — milioni di volte più lento del miss soft.
+> - **Indirizzo non valido**: la page walk non trova la pagina né in RAM né altrove; il SO invia un segnale al processo (tipicamente **SIGSEGV** → *segmentation fault*) e lo termina.
 ## Algoritmi di sostituzione delle pagine
 Quando si verifica un **page fault** e la memoria fisica è piena, il SO deve scegliere **quale pagina** rimuovere (scrivendola su disco se modificata). La paginazione crea l'illusione di una memoria praticamente illimitata. Promemoria sui bit della voce: **M** (modificato/*dirty*) e **R** (riferito/*accessed*).
 ### Algoritmo ottimale
@@ -268,7 +280,7 @@ La scelta della dimensione delle pagine (es. unire due pagine da 4 KB in una da 
 >
 > **Overhead totale**: $\dfrac{se}{p} + \dfrac{p}{2}$. Derivando rispetto a $p$ e ponendo a zero: $-\dfrac{se}{p^2} + \dfrac{1}{2} = 0 \Rightarrow p = \sqrt{2se}$. Per $s = 1$ MB ed $e = 8$ byte, $p$ ottimale ≈ **4 KB**.
 
-La gamma tipica va da 512 byte a 64 KB; la dimensione comune attuale è **4 KB**. Alcuni SO usano pagine di **diverse dimensioni** (es. pagine grandi per il kernel); le **Transparent Huge Pages (THP)** usano pagine grandi spostando la memoria del processo per creare intervalli contigui.
+La gamma tipica va da 512 byte a 64 KB; la dimensione comune attuale è **4 KB**. Alcuni SO usano pagine di **diverse dimensioni** (es. pagine grandi per il kernel); le **Transparent Huge Pages (THP)** usano pagine grandi spostando la memoria del processo per creare intervalli contigui. L'architettura **x86-64** supporta nativamente tre dimensioni: **4 KB**, **2 MB** e **1 GB**, mescolabili a discrezione del SO; nella pratica si usano tipicamente 4 KB per le applicazioni utente e 1 GB per il kernel.
 ### Spazi separati istruzioni/dati
 La maggior parte dei computer ha un **unico** spazio di indirizzi condiviso da programma e dati. Alcuni sistemi storici avevano spazi separati **I-space** (istruzioni) e **D-space** (dati), raddoppiando lo spazio disponibile. Oggi si vedono ancora spazi separati nelle **cache**, nei **TLB** e nella **cache L1**: dove lo spazio è poco, si tende a separare le istruzioni (più importanti) dai dati.
 ### Pagine e librerie condivise (copy on write)
@@ -282,7 +294,7 @@ La maggior parte dei computer ha un **unico** spazio di indirizzi condiviso da p
 > [!quote] Definizione — Copy on Write (COW)
 > Dopo una [[03 - Processi e Thread#^fork|fork]] in UNIX, genitore e figlio condividono testo e dati inizialmente in **sola lettura**. Se un processo **modifica** i dati si genera una trap e viene creata una **copia** della sola pagina modificata (entrambe diventano poi scrivibili). Evita di copiare pagine che non vengono mai modificate: estremamente efficiente.
 
-Le **librerie condivise** (*Dynamic Link Libraries*, DLL) riducono l'ingombro di grandi librerie comuni; per i dati si applica il copy on write. Poiché possono essere caricate a indirizzi diversi nei vari processi, devono essere **compilate con indirizzi relativi** (offset) anziché assoluti.
+Le **librerie condivise** (*Dynamic Link Libraries*, DLL; in UNIX: file `.so`, *Shared Objects*) riducono l'ingombro di grandi librerie comuni; per i dati si applica il copy on write. Poiché possono essere caricate a indirizzi diversi nei vari processi, devono essere **compilate con indirizzi relativi** (offset) anziché assoluti.
 ### File mappati in memoria
 > [!quote] Definizione — File mappati in memoria
 > Un processo può **mappare** un file nel proprio spazio di indirizzi virtuali. Alla mappatura **nessuna pagina** viene caricata subito: sono paginate su richiesta man mano che vengono "toccate". Quando il processo termina (o la mappatura è eliminata), tutte le pagine modificate vengono **riscritte sul file**.
@@ -373,6 +385,9 @@ Il *descriptor segment* raccoglie tutti i descrittori. L'indirizzo virtuale a **
 MULTICS fu il **primo** sistema a usare un **TLB** (16 parole) per accelerare la ricerca degli indirizzi: programmi con working set minore del TLB raggiungono maggiore efficienza. Ogni voce del TLB conteneva sei campi: **Segment number** e **Virtual page** (campo di confronto usato per la ricerca), **Page frame** (risultato della traduzione), **Protection** (permessi), **Age** e un bit **"Is this entry used?"** (voce presente/valida). L'esistenza di **due dimensioni di pagina** (1024 e 64 parole) rendeva il TLB reale più complesso di questa versione semplificata.
 ### Segmentazione in x86
 Fino all'x86-64, Intel x86 rifletteva il modello MULTICS combinando segmentazione e paginazione (16 000 segmenti indipendenti, ognuno fino a 1 miliardo di parole a 32 bit). Nell'**x86-64** la segmentazione diventa **obsoleta**, mantenuta via software solo per compatibilità, perché i SO chiave (UNIX, Windows) non la adottano per portabilità e Intel ha preferito ottimizzare lo spazio del chip. L'architettura x86 è apprezzata per l'equilibrio tra paginazione, segmentazione e retrocompatibilità.
+> [!example] Domande d'esame tipiche
+> - Paginazione e segmentazione a confronto: differenze strutturali, vantaggi e limiti di ciascun approccio, con un esempio concreto di traduzione degli indirizzi (da virtuale a fisico) per entrambi i modelli.
+> - Algoritmi di sostituzione delle pagine: descrivere NRU, Seconda Chance e Clock, spiegare i criteri di scelta (bit R e M) e confrontarne le prestazioni e la complessità implementativa.
 ## Il comando `free` (Linux)
 > [!info] `free` — monitorare la memoria
 > Fornisce dettagli sull'utilizzo della memoria fisica e dello **swap**. Colonne principali:

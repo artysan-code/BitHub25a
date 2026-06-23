@@ -17,7 +17,7 @@ La parte di codice che accede alla risorsa condivisa è la **regione critica**. 
 ## Mutua esclusione con busy waiting
 Le prime soluzioni tengono la CPU occupata mentre si attende: **busy waiting**.
 ### (Non) soluzioni elementari
-- **Disabilitare gli interrupt**: impedisce la riallocazione della CPU, ma funziona **solo su CPU singola** ed è pericoloso lasciarlo fare ai processi utente.
+- **Disabilitare gli interrupt**: impedisce la riallocazione della CPU, ma funziona **solo su CPU singola** ed è pericoloso lasciarlo fare ai processi utente. Su sistemi **multicore**, disabilitare gli interrupt di un core non offre garanzie: gli altri core possono comunque accedere alla memoria condivisa e interferire.
 - **Variabili di blocco** (lock 0/1): proteggono la regione critica, ma la "corsa" si sposta semplicemente **sulla variabile di blocco** (leggere-e-impostare non è atomico).
 ### Alternanza rigorosa
 Una variabile `turn` stabilisce di chi è il turno; ciascuno aspetta in `while(turn != me)`. **Non** è una buona soluzione: viola il requisito 3 — un processo fuori dalla regione critica può **bloccarne** un altro (non si può entrare due volte di fila).
@@ -38,6 +38,22 @@ void leave_region(int process) {
     interested[process] = FALSE;        /* esce dalla regione critica */
 }
 ```
+### TSL e XCHG
+Molte CPU offrono un'istruzione hardware per la mutua esclusione: **TSL** (*Test and Set Lock*). TSL legge il contenuto di una locazione di memoria (`LOCK`) in un registro e vi scrive un valore non zero, il tutto in modo **atomico** — il bus viene bloccato verso le altre CPU per tutta la durata dell'operazione, impedendo qualsiasi accesso concorrente alla stessa locazione.
+```asm
+enter_region:
+    TSL REGISTER, LOCK   ; copia lock nel registro e imposta lock a 1
+    CMP REGISTER, #0     ; il lock era 0?
+    JNE enter_region     ; se era già 1, riprova (busy waiting)
+    RET                  ; lock acquisito, entra nella regione critica
+leave_region:
+    MOVE LOCK, #0        ; imposta lock a 0
+    RET                  ; torna al chiamante
+```
+L'alternativa è l'istruzione **XCHG**, che scambia atomicamente il contenuto di due locazioni. È disponibile su **tutte le CPU x86 Intel** ed è usata per la sincronizzazione di basso livello al posto di TSL. La differenza pratica è minima: entrambe garantiscono l'atomicità, ma XCHG è lo standard su architettura x86 mentre TSL è comune su altre famiglie.
+
+> [!info] TSL, XCHG e i mutex
+> Le istruzioni TSL e XCHG sono la base su cui si costruiscono i **mutex in user space**: `mutex_lock` e `mutex_unlock` (vedi [[#Mutex]]) possono essere implementati con queste istruzioni senza passare dal kernel quando la risorsa è libera; in caso di contesa reale il lock ricorre comunque al kernel per bloccare il thread (come descritto per il Futex).
 ### Il problema del busy waiting
 Tutte queste soluzioni tengono la CPU **occupata ad attendere** (**spin lock**): è uno **spreco di risorse**. La soluzione è far sì che un processo in attesa **restituisca volontariamente la CPU** allo scheduler invece di "girare a vuoto".
 ## sleep e wakeup
@@ -135,6 +151,8 @@ Quando un thread vuole entrare nella regione critica chiama `mutex_lock`: se il 
 | `pthread_mutex_unlock` | Sblocca (solo il thread che detiene il lock) |
 
 **`lock` vs `trylock`**: `lock` quando l'accesso esclusivo è necessario e si **può attendere** in coda; `trylock` quando si vuole **solo tentare** e proseguire con altro se il lock è occupato (utile per evitare deadlock).
+> [!info] Futex (Fast User Space Mutex)
+> Gli **spin-lock** e i mutex con busy waiting sprecano CPU per attese lunghe; passare al kernel per bloccare un processo è oneroso se le contese sono poche. Il **Futex** combina i due approcci: tenta prima di acquisire il lock in **user space** (senza syscall, come TSL/XCHG) e ricorre al kernel per bloccarsi solo se la contesa è reale. Così le acquisizioni non contese restano veloci, e si paga il costo del kernel solo quando davvero necessario.
 ### Semaforo o mutex?
 - **Finalità**: il **mutex** garantisce la mutua esclusione (una risorsa, un thread alla volta); il **semaforo** controlla l'accesso a una risorsa ma serve anche per la **sincronizzazione** tra thread (es. produttore/consumatore).
 - **Semantica**: il mutex ha una semantica di **proprietà** (solo chi l'ha acquisito può rilasciarlo); il semaforo **no** (qualsiasi thread può fare `up`/`down`).
@@ -215,6 +233,8 @@ Per le attese, i monitor usano **variabili condizionali** con `wait` e `signal`.
 **Monitor vs semafori**: i monitor sono **costrutti di linguaggio** (richiedono il supporto del compilatore, limitati ai linguaggi che li offrono); i semafori sono di **basso livello** ma utilizzabili ovunque (anche via routine assembly). Entrambi funzionano con memoria condivisa, **non** in sistemi distribuiti (dove serve lo scambio di messaggi).
 ## Scambio di messaggi
 Per i sistemi **senza memoria condivisa** (es. distribuiti) la sincronizzazione usa lo **scambio di messaggi** con due primitive: `send(destinazione, messaggio)` e `receive(sorgente, messaggio)`. È il meccanismo alla base del modello [[02 - Concetti di Base e Strutture#Microkernel (client-server)|client-server]] e della comunicazione di rete.
+> [!example] Produttore-consumatore con scambio di messaggi
+> Si usano in totale **N messaggi**, analoghi agli N posti del buffer in memoria condivisa. All'avvio il **consumatore** invia al produttore N messaggi vuoti (i "gettoni" che segnalano posti disponibili). Il **produttore** esegue `receive` per prendere un messaggio vuoto, lo riempie con l'elemento prodotto e lo invia al consumatore con `send`. Il consumatore esegue `receive` per prelevare un messaggio pieno, lo elabora e rimanda un messaggio vuoto al produttore. Se il produttore è più veloce, esaurisce i messaggi vuoti e si blocca su `receive`; se il consumatore è più veloce, esaurisce i messaggi pieni e si blocca. La corrispondenza con il buffer condiviso è diretta: i messaggi vuoti contano i posti liberi, quelli pieni i posti occupati — gli stessi ruoli dei semafori `empty` e `full` (vedi [[#Semafori]]).
 ## Barriere
 Le **barriere** sincronizzano processi divisi in **fasi**: quando un processo raggiunge la barriera attende che **tutti** gli altri la raggiungano prima di proseguire. Utili nei calcoli paralleli (es. su matrici), dove non si può passare all'iterazione successiva finché tutti non hanno finito quella corrente.
 ## Problemi avanzati
@@ -224,6 +244,12 @@ Le **barriere** sincronizzano processi divisi in **fasi**: quando un processo ra
 
 > [!example] Il Mars Pathfinder
 > Il rover **Sojourner** (SO real-time) ebbe questo problema: un thread di bassa priorità deteneva un mutex su una risorsa condivisa; un thread di alta priorità attendeva; un thread di priorità media monopolizzava la CPU impedendo il rilascio. Il blocco del thread ad alta priorità causava continui **riavvii** del sistema. La NASA risolse con il **Priority Inheritance Protocol**: il thread a bassa priorità **eredita temporaneamente** la priorità di quello in attesa, completa, rilascia il mutex e torna alla priorità originale (vedi anche [[05 - Scheduling]]).
+
+> [!info] Soluzioni all'inversione di priorità
+> Le tre strategie principali per prevenire o limitare l'inversione sono:
+> 1. **Priority Ceiling** — si assegna una *priorità-tetto* al mutex stesso: il thread che acquisisce il mutex riceve automaticamente quella priorità. Finché nessun thread con priorità superiore al tetto deve acquisire quel mutex, l'inversione è impossibile per costruzione.
+> 2. **Priority Inheritance** — il thread a bassa priorità che detiene il mutex **eredita temporaneamente** la priorità del thread ad alta priorità in attesa; completa la sezione critica, rilascia il mutex e torna alla propria priorità originale. È la soluzione adottata dalla NASA per il Mars Pathfinder.
+> 3. **Random Boosting** — aumenta in modo casuale la priorità di thread che detengono un mutex, con l'obiettivo probabilistico di sbloccare prima la risorsa contesa. Approccio meno deterministico degli altri due, usato in alcuni ambienti Windows.
 ### Read-Copy-Update (RCU)
 *"I migliori lock sono quelli che non si usano."* L'obiettivo è permettere **accessi concorrenti senza lock**, evitando l'inconsistenza dei dati. Principio: si **aggiorna** una struttura dati consentendo letture simultanee; i lettori vedono **o** la versione vecchia **o** la nuova, **mai un misto**.
 - **Inserimento**: il nuovo nodo è preparato e reso visibile in modo **atomico** (collegato solo quando completamente inizializzato).

@@ -119,6 +119,13 @@ In UNIX i dispositivi sono astratti come file:
 - **Character special files**: dispositivi a caratteri (porte seriali), es. `/dev/ttyS0`.
 - Altri: **link simbolici**, **FIFO/pipe**, socket.
 
+I **link** sono un caso particolare: esistono in due varianti distinte.
+- **Hard link**: crea una seconda **voce di directory** che punta allo **stesso inode** del file originale — non è una copia, ma un secondo nome per lo stesso dato. Comando: `ln nome1 nome2` (default di `ln`). Limite: non può attraversare file system diversi (l'inode è locale al file system).
+- **Symbolic link** (o *soft link*): file speciale che contiene un **percorso** verso il file di destinazione; può attraversare file system e può puntare a directory. Comando: `ln -s nome1 nome2` (`--symbolic` è la forma lunga GNU equivalente). Se il file di destinazione viene eliminato, il symbolic link diventa *dangling* (punta al nulla).
+
+> [!info] `ln` di default crea hard link
+> `ln foo.txt bar.txt` crea un hard link: `foo.txt` e `bar.txt` condividono lo stesso inode — `unlink` dell'uno non cancella i dati finché esiste almeno un'altra voce. `ls -F` marca i *symbolic link* (non gli hard link) con `@`; gli hard link non hanno marcatori visibili.
+
 Le **pipe** sono pseudo-file per la comunicazione tra processi su un canale **FIFO**: vanno predisposte in anticipo, appaiono come file normali a chi legge/scrive e permettono comunicazione (tipicamente unidirezionale) tra processi.
 ## Protezione e shell
 La **protezione** è il meccanismo con cui il SO controlla l'accesso a risorse e dati (i bit `rwx`, gli UID/GID, la separazione kernel/user). La **shell** non è il SO ma il suo principale programma di interfaccia: legge comandi e li esegue creando processi.
@@ -135,6 +142,29 @@ La **protezione** è il meccanismo con cui il SO controlla l'accesso a risorse e
 >     }
 > }
 > ```
+
+**File descriptor standard.** Ogni processo eredita dalla shell tre **stream standard**, ciascuno identificato da un **file descriptor** intero — lo stesso tipo restituito da `open()` e usato da `read()`/`write()` (vedi [[#Categorie principali di system call POSIX|system call POSIX]]):
+
+| fd | Nome | Default |
+|----|------|---------|
+| 0 | **stdin** | tastiera |
+| 1 | **stdout** | terminale |
+| 2 | **stderr** | terminale |
+
+La **shell** permette di redirigere questi stream prima di eseguire il comando figlio:
+
+| Sintassi | Effetto |
+|----------|---------|
+| `> file` o `1> file` | redirige stdout su `file` |
+| `2> file` | redirige stderr su `file` |
+| `2>&1` | redirige stderr sullo stesso fd di stdout |
+| `2> err.txt 1> out.txt` | stderr su `err.txt`, stdout su `out.txt` |
+
+> [!example] Redirezione separata stdout/stderr
+> ```bash
+> cat foo.tsv | sort | uniq -c 2> log_stderr.txt 1> log_stdout.txt
+> ```
+> stderr va in `log_stderr.txt`; stdout in `log_stdout.txt`. Senza redirezione, entrambi confluiscono sul terminale.
 
 > [!info] Approfondimento — Linux e BASH
 > L'uso pratico della shell, i comandi e lo scripting BASH sono nelle slide 3.1 del corso e nel codice di `Materiale Didattico/.../code/`.

@@ -177,7 +177,7 @@ Il file system è il metodo per organizzare i dati su memoria **non volatile** (
 > - Ogni partizione inizia con un boot block, seguito da **superblocco**, gestione dello **spazio libero**, **i-node**, **directory radice**, file e directory.
 
 > [!info] Nuova scuola — UEFI (Unified Extensible Firmware Interface)
-> Sostituisce il BIOS tradizionale. Vantaggi: **avvio più veloce**, compatibilità 32/64 bit, interfaccia grafica con mouse, **Secure Boot**. Funziona con **GPT**, superando il limite di **2,2 TB** dell'MBR.
+> Sostituisce il BIOS tradizionale. Vantaggi: **avvio più veloce**, compatibilità 32/64 bit, interfaccia grafica con mouse, **Secure Boot**. Funziona con **GPT**, superando il limite di **2,2 TB** dell'MBR. UEFI non si basa sull'MBR: cerca la tabella delle partizioni nel **secondo blocco**, riservando il **primo blocco** per compatibilità con il software che si aspetta di trovare un MBR legacy.
 > - **GPT (GUID Partition Table)**: gestione avanzata delle partizioni — fino a **8 ZiB**, numero (quasi) illimitato di partizioni, **backup** della tabella, controllo di integrità **CRC**.
 > - **EFI System Partition (ESP)**: partizione speciale sui dischi GPT che archivia bootloader, driver e utility di diagnostica; usa **FAT32** per compatibilità col firmware UEFI.
 > - **Secure Boot**: funzionalità UEFI che controlla le **firme digitali** di bootloader/driver/SO e avvia solo software firmato, bloccando malware e rootkit all'avvio (alcune distro Linux richiedono di disattivarlo).
@@ -207,6 +207,12 @@ Ottimizza le liste concatenate **spostando i puntatori** dai blocchi a una tabel
 
 > [!warning] Limite della FAT — consumo di memoria
 > La FAT deve stare **interamente in memoria principale**. Con voci da 3–4 byte, un disco da **1 TB** con blocchi da 1 KB richiederebbe fino a **3 GB di RAM** solo per la FAT → non adatta a dischi grandi. Originariamente in **MS-DOS**, ancora usata da Windows/UEFI e comunissima su **schede SD** (fotocamere, lettori musicali).
+
+> [!example] Limiti per versione FAT — ragionamento numerico
+> Ogni versione FAT prende il nome dal numero di **bit per entry** nella tabella; i bit determinano quanti cluster si possono indirizzare e quindi la dimensione massima del volume:
+> - **FAT12**: 12 bit per entry → $2^{12}$ cluster → file massimo di circa **32 MB**.
+> - **FAT16**: 16 bit per entry → $2^{16}$ cluster → file massimo di circa **2 GB**.
+> - **FAT32**: 32 bit per entry, ma i 4 bit alti sono riservati → ~$2^{28}$ cluster indirizzabili → il limite di **4 GB per file** deriva dal campo dimensione a 32 bit nell'entry di **directory**, non dal numero di cluster.
 ### I-node
 > [!quote] Definizione — I-node (index node)
 > Un **i-node** è la struttura dati fondamentale dei file system UNIX-like (ext2/ext3/ext4). Contiene **tutte le informazioni su un file tranne il nome e il contenuto**: metadati (permessi, proprietario, timestamp, dimensione) e gli **indirizzi dei blocchi di dati**. Ogni file e directory è rappresentato da un i-node univoco.
@@ -313,10 +319,15 @@ Funzionamento: a ogni richiesta di lettura si verifica **se il blocco è già in
 >
 > **Limite di LRU**: in caso di **crash** può lasciare il file system **incoerente**, specialmente per blocchi critici come i blocchi degli i-node → si usa uno schema LRU modificato basato su importanza e necessità immediata. I **blocchi critici** modificati si scrivono **subito** su disco per mantenere la coerenza.
 
+> [!info] Posizionamento degli i-node sul disco
+> Leggere anche un file piccolo basato su i-node richiede **due accessi al disco**: uno per l'i-node e uno per il blocco dati. Per ridurre lo spostamento della testina si adottano due strategie:
+> - **I-node a metà disco**: posizionare gli i-node al centro del disco **dimezza in media** il tempo di ricerca rispetto al posizionamento tradizionale (i-node all'inizio del disco).
+> - **Gruppi di cilindri**: dividere il disco in **gruppi di cilindri**, ciascuno con i propri i-node, blocchi dati e lista dei blocchi liberi; così i-node e dati di un file restano vicini fisicamente.
+
 > [!info] Read ahead e deframmentazione
 > - **Allocazione intelligente**: blocchi vicini nello stesso cilindro per minimizzare il movimento del braccio del disco; bitmap in memoria per allocare blocchi adiacenti (scrittura sequenziale efficiente).
 > - **Read ahead**: si leggono in anticipo i blocchi successivi attesi.
-> - **Deframmentazione**: col tempo i dischi si frammentano; riorganizza i file per renderli contigui e raggruppa lo spazio libero. Windows fornisce `defrag` — **consigliato per HDD, sconsigliato per SSD** (usura inutile).
+> - **Deframmentazione**: col tempo i dischi si frammentano; riorganizza i file per renderli contigui e raggruppa lo spazio libero. Windows fornisce `defrag` — **consigliato per HDD, sconsigliato per SSD** (usura inutile). I file system Linux (in particolare **ext4** e **btrfs**) riducono la necessità di deframmentazione grazie alla **preallocazione di blocchi contigui** in fase di scrittura: quando si scrive un file, ext4 prealloca un gruppo di blocchi adiacenti anziché uno alla volta, limitando la frammentazione per i file in espansione.
 ## Buffer cache vs page cache
 > [!info] Due cache, spesso gli stessi dati
 > - **Buffer cache**: memorizza i **blocchi del disco** in RAM per ridurre gli accessi.
@@ -351,11 +362,27 @@ Diverse minacce possono compromettere i dati.
 > [!quote] Perché si fa il backup
 > «I backup su disco sono generalmente effettuati per affrontare uno dei due potenziali problemi: **recupero da un disastro** e **recupero dalla stupidità**.»
 
+> [!info] Cinque considerazioni pratiche sul backup
+> 1. **Quali file salvare**: un backup impiega molto tempo e occupa molto spazio; occorre decidere se salvare l'intero file system o solo alcune directory.
+> 2. **Ripristino incrementale**: il **backup incrementale** salva solo i file modificati dall'ultimo backup completo. Il ripristino è più complesso: va prima ripristinato il backup completo più recente, poi applicati tutti i backup incrementali **in ordine cronologico crescente** (dal più vecchio al più recente).
+> 3. **Compressione rischiosa**: con molti algoritmi di compressione basta un **singolo punto difettoso** sul supporto per rendere illeggibile l'intero flusso compresso; la scelta di comprimere va valutata con attenzione.
+> 4. **Backup su file system attivo**: se durante il backup vengono aggiunti, cancellati o modificati file, il risultato potrebbe essere incoerente; per questo si usano **snapshot** (istantanee) dello stato del file system.
+> 5. **Backup fuori sede**: i backup devono essere conservati lontano dai computer principali, ma questo introduce ulteriori **rischi per la sicurezza** (più luoghi da sorvegliare).
 Modalità: **backup completo** (copia totale, settimanale/mensile) e **backup incrementale** (solo i file modificati dall'ultimo completo → meno tempo e spazio). Tipologie:
 - **Backup fisico**: copia **sequenziale di tutti i blocchi** del disco (dal blocco 0 all'ultimo). Semplice e veloce (alla velocità del disco), ma deve evitare blocchi danneggiati e file inutili (paginazione, ibernazione); **manca di flessibilità** (no incrementali, no ripristino di singoli file).
 - **Backup logico**: seleziona e copia **solo file e directory specifici** modificati a partire da una data, ignorando file di sistema e blocchi danneggiati. Ideale per incrementali e per ripristinare file singoli.
 > [!example] Algoritmo di backup logico (UNIX)
-> Si include ogni file/directory modificato dopo il backup precedente **e tutte le directory lungo il percorso** verso i file modificati (così la struttura è ricostruibile). Nella figura del libro, gli oggetti in grigio (i-node modificati) e i nodi sul percorso verso di essi vengono salvati.
+> Si include ogni file/directory modificato dopo il backup precedente **e tutte le directory lungo il percorso** verso i file modificati (così la struttura è ricostruibile). Nella figura del libro, gli oggetti in grigio (i-node modificati) e i nodi sul percorso verso di essi vengono salvati. L'algoritmo si articola in **quattro fasi**:
+> 1. **Rilevamento delle modifiche**: si parte dalla directory radice, si esaminano tutte le voci e si contrassegna nella **bitmap** gli i-node dei file e delle directory modificati; vengono incluse tutte le directory lungo il percorso verso i file modificati, indipendentemente dal proprio stato.
+> 2. **Pulizia della bitmap**: si deselezionano le directory che non contengono né file modificati né sottodirectory modificate, lasciando nella bitmap solo gli elementi che richiedono effettivamente il backup.
+> 3. **Backup delle directory contrassegnate**: si salvano le directory marcate con i loro attributi.
+> 4. **Backup dei file contrassegnati**: si salvano i file marcati con i relativi attributi.
+
+> [!info] Casi speciali nel ripristino del backup logico
+> 1. **Free list non è un file**: la lista dei blocchi liberi non è oggetto di backup e va **ricostruita da zero** alla fine del ripristino; è sempre possibile farlo, poiché i blocchi liberi sono il complemento dei blocchi occupati da tutti i file.
+> 2. **Hard link**: un file collegato a più directory tramite hard link deve essere ripristinato **una sola volta**; tutte le directory che dovrebbero puntarvi devono poi puntarci correttamente.
+> 3. **Sparse file**: i file UNIX possono contenere **buchi** (si scrive a un offset distante senza riempire il mezzo); i buchi non si salvano e non si ripristinano; al momento del ripristino l'area corrispondente viene riempita di **zero**, preservando la dimensione virtuale del file.
+> 4. **File speciali**: file speciali come le **pipe** e altri pseudo-file non andrebbero mai salvati nel backup, indipendentemente dalla directory in cui si trovano.
 
 > [!info] Bonus — `rsync`
 > **`rsync`** sincronizza file e cartelle tra due location (stessa macchina o macchine diverse), trasmettendo **solo le parti di file modificate**. Ideale per backup, ripristino e sincronizzazione in rete; supporta link, dispositivi, attributi, permessi; può usare **SSH** per trasferimenti cifrati.
@@ -365,6 +392,11 @@ Modalità: **backup completo** (copia totale, settimanale/mensile) e **backup in
 La coerenza è cruciale per l'integrità dei dati; problemi sorgono dopo un **crash** durante la scrittura dei blocchi.
 - **Utility di verifica**: UNIX (`fsck`) e Windows (`sfc`) controllano la coerenza, eseguite all'avvio dopo un crash.
 - **File system con journaling**: progettati per gestire autonomamente la maggior parte delle incoerenze, **senza** controlli esterni dopo un crash.
+> [!info] Come funziona fsck — controllo dei blocchi
+> `fsck` costruisce **due tabelle di contatori**, una per i blocchi presenti nei file e una per i blocchi nella lista dei liberi, scorrendo tutti gli i-node. Al termine confronta le due tabelle e individua tre possibili anomalie:
+> - **(a) Blocco mancante**: un blocco non appare in nessuna delle due tabelle → viene **aggiunto alla lista dei blocchi liberi**.
+> - **(b) Blocco duplicato nella lista dei liberi**: un blocco compare più volte tra i liberi → la lista viene **deduplicata**.
+> - **(c) Blocco di dati presente in più file**: un blocco risulta assegnato a due file distinti → il blocco viene **copiato** e ciascun file riceve la propria copia, segnalando all'utente che uno dei due è probabilmente corrotto.
 ### Journaling
 > [!quote] Definizione — Journaling
 > Un file system con **journaling** registra **anticipatamente** in un **log (journal)** le operazioni da eseguire, per garantire la coerenza in caso di crash. Il journal è come un **registro che tiene traccia delle modifiche prima che avvengano effettivamente**. Usato in **NTFS**, **ext4**, **ReiserFS**; default in macOS.
@@ -383,6 +415,14 @@ La coerenza è cruciale per l'integrità dei dati; problemi sorgono dopo un **cr
 > - Su dischi magnetici, sovrascrivere con zeri non basta (residui magnetici recuperabili); è consigliato inserire **sequenze di 0 e numeri casuali**, ripetendo l'operazione **almeno 3–7 volte** (attenzione: molte scritture stressano gli **SSD**).
 > - Sugli **SSD** la mappatura dei blocchi flash è gestita dalla **FTL** (Flash Translation Layer), non dal file system → sovrascrittura meno prevedibile.
 > - **Cifratura del disco**: la soluzione più efficace è cifrare l'intero disco con algoritmi robusti come **AES**. **SED (Self-Encrypting Drives)** = cifratura integrata nel dispositivo (ma con possibili vulnerabilità). Windows usa AES con la **chiave master del volume** decifrata tramite password utente, chiave di ripristino o **TPM**.
+
+> [!example] Domande d'esame tipiche
+> - Importanza dei file: perché esistono e quali limiti della RAM risolvono.
+> - Tipologie di file (normali, speciali a caratteri, speciali a blocchi, ASCII, binari) e strutture interne (sequenza di byte, record fissi, albero di record).
+> - Metodi di implementazione dei file: **allocazione contigua**, **liste concatenate**, **FAT**, **i-node** — pregi e difetti di ciascuno.
+> - Struttura e implementazione delle directory: voce con attributi vs riferimento a i-node; nomi a lunghezza variabile; ricerca lineare, hash, cache.
+> - Accesso ai file: differenza tra **accesso sequenziale** e **accesso casuale** (random); ruolo di `seek`.
+> - Differenza tra **percorso assoluto** e **percorso relativo**; directory di lavoro; voci speciali `.` e `..`.
 # File system virtuali (VFS)
 I SO moderni gestiscono **più file system simultaneamente** (NTFS, FAT-32, FAT-16, …). Windows li distingue con lettere di unità (`C:`, `D:`, …); i sistemi **UNIX** li integrano in un'**unica struttura gerarchica**.
 > [!quote] Definizione — VFS (Virtual File System)

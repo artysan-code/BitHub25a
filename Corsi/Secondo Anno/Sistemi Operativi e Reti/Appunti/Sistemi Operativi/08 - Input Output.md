@@ -112,6 +112,8 @@ Le CPU moderne usano **pipeline** e architetture **superscalari**, avviando più
 > Un interrupt è **preciso** se lascia la macchina in uno stato ben definito: il **PC è salvato** in un luogo noto, **tutte** le istruzioni prima del PC sono completate, **nessuna** dopo è stata eseguita, e lo **stato dell'istruzione puntata** dal PC è noto. È **impreciso** quando più istruzioni vicine al PC sono in stati diversi: la CPU deve "vomitare" molto stato interno sullo stack.
 
 L'architettura **x86** garantisce interrupt **precisi** (per compatibilità e prevedibilità), al costo di una logica interna complessa: la CPU **annulla** gli effetti delle istruzioni transitorie eseguite dopo il PC. Gli interrupt imprecisi rendono il SO più lento e complesso e hanno **implicazioni di sicurezza**, perché le istruzioni transitorie annullate lasciano tracce nella **microarchitettura** sfruttabili da un attaccante.
+> [!example] Domande d'esame tipiche
+> - Descrivi il flusso completo di gestione di un **interrupt hardware**: dalla ricezione del numero di interrupt, al lookup nel [[#Processo di gestione degli interrupt|vettore degli interrupt]], al salvataggio dello stato, all'esecuzione della [[#Processo di gestione degli interrupt|ISR]], all'intervento dello [[05 - Scheduling|scheduler]], fino al ripristino di [[06 - Gestione della Memoria|MMU/TLB]] e all'esecuzione del processo successivo scelto dallo scheduler (che può essere il processo interrotto oppure, se un processo a priorità più alta è stato sbloccato dall'interrupt, quel processo).
 ## Principi del software di I/O
 Prima gli **obiettivi** del software di I/O, poi i **modi** in cui il SO può gestirlo, infine la sua **organizzazione a livelli**.
 ### Obiettivi del software di I/O

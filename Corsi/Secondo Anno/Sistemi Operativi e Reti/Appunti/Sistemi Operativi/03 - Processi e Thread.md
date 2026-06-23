@@ -53,6 +53,8 @@ Running ──(2) lo scheduler sceglie un altro──►  Ready
 Ready   ──(3) lo scheduler sceglie questo────►  Running
 Blocked ──(4) l'input diventa disponibile────►  Ready
 ```
+> [!example] Domande d'esame tipiche
+> - Definizione di processo e differenza rispetto al programma; i tre stati di un processo (Running, Ready, Blocked) e le quattro transizioni tra essi; il ruolo di `fork()` nella creazione dei processi.
 ### Informazioni associate a un processo
 Nella **tabella dei processi** il SO conserva, per ciascun processo: **PID**, **UID**, **GID**; lo **spazio di indirizzi** di memoria (vedi [[06 - Gestione della Memoria]]); i **registri hardware** (incluso il Program Counter); i **file aperti**; i **segnali** e gli **interrupt** pendenti.
 ## Segnali e interrupt

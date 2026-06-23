@@ -20,6 +20,9 @@ Il SO esiste per **gestire in modo ordinato e controllato** le risorse di un sis
 - **Nello spazio**: la risorsa è divisa tra più utenti (es. la memoria, il disco).
 
 Il SO deve inoltre garantire **isolamento** tra i processi, **equità** nell'accesso e tracciamento dell'uso delle risorse (*accounting*).
+
+> [!example] Domanda tipica d'esame
+> - **D:** Quali sono le due visioni (funzioni) di un sistema operativo? **R:** **Macchina estesa** (top-down): nasconde la complessità dell'hardware dietro astrazioni (driver, file), offrendo ai programmi un'interfaccia pulita. **Gestore delle risorse** (bottom-up): alloca in modo ordinato e controllato le risorse condivise tramite **multiplexing nel tempo** (CPU, stampante) e **nello spazio** (RAM, disco), garantendo isolamento, equità e accounting.
 ### Modalità kernel e modalità utente
 L'hardware supporta (almeno) due modalità operative:
 - **Modalità kernel** (o **supervisor**): accesso completo all'hardware, può eseguire qualsiasi istruzione. Vi gira il sistema operativo.
@@ -27,6 +30,9 @@ L'hardware supporta (almeno) due modalità operative:
 
 > [!example] Perché la distinzione conta
 > Un utente è libero di sostituire il proprio client di posta o di scriverne uno; **non** è libero di scrivere il gestore degli interrupt del clock, che è parte del SO ed è protetto dall'hardware contro le modifiche. Questa barriera è meno netta nei sistemi [[#^embedded|embedded]].
+
+> [!example] Domanda tipica d'esame
+> - **D:** Differenza tra modalità kernel e modalità utente, e perché è necessaria? **R:** In **modalità kernel** (supervisor) si ha accesso completo all'hardware e a tutte le istruzioni: vi gira il SO. In **modalità utente** è disponibile solo un sottoinsieme di istruzioni con accesso controllato all'hardware: vi girano le applicazioni. La distinzione **protegge** il SO — un'applicazione non può, ad esempio, riscrivere il gestore degli interrupt del clock o accedere direttamente all'hardware.
 ## Storia dei sistemi operativi
 L'idea risale a **Charles Babbage** (1792-1871) e al suo *motore analitico*, mai completato; **Ada Lovelace** ne scrisse il software (da cui il linguaggio Ada). I SO veri arrivano però con i computer elettronici.
 ### Prima generazione (1945-55) — valvole termoioniche
@@ -44,6 +50,10 @@ I **circuiti integrati (IC)** migliorano il rapporto prezzo/prestazioni. IBM uni
 - **Spooling** (*Simultaneous Peripheral Operation On Line*): i job vengono caricati su disco appena arrivano, senza fermare la macchina.
 - **Time-sharing**: variante della multiprogrammazione in cui più utenti interattivi condividono la CPU a turni rapidi (primo sistema: CTSS del M.I.T. su 7094). Da qui **MULTICS**, antesignano del concetto di *computer utility* e quindi del **cloud** moderno.
 
+> [!example] Domande tipiche d'esame
+> - **D:** Cos'è la multiprogrammazione e quale problema risolve? **R:** Partiziona la memoria tra più job: mentre uno attende l'**I/O**, la CPU esegue un altro job, evitando di restare inattiva. Risolve lo spreco dovuto all'attesa dell'I/O, che nei carichi commerciali arriva all'**80–90%** del tempo.
+> - **D:** Cosa introduce il System/360 di IBM? **R:** La prima **famiglia di computer compatibili** (stesso set di istruzioni, modelli scalabili che eseguono lo stesso software) e la diffusione su larga scala di **multiprogrammazione** e **spooling**.
+
 > [!info] Nascita di UNIX
 > Da MULTICS, **Ken Thompson** (Bell Labs, 1969) scrive una versione ridotta — chiamata inizialmente **UNICS** (*UNIplexed Information and Computing Service*), poi rinominata UNIX — su PDP-7 in assembler, poi evoluta su PDP-11 (1970-1974) e **riscritta in C** da Dennis Ritchie (partendo dal linguaggio B). La terza versione di UNIX è già scritta in C. Nel **1974** viene pubblicato un articolo su UNIX su *Communications of the ACM*; Thompson e Ritchie ricevono il **ACM Turing Award nel 1984**. UNIX diventa popolare in ambito accademico e aziendale, ma il proliferare di varianti incompatibili (ramo **System V** e ramo **BSD**) genera frammentazione. Per porvi rimedio nasce lo standard **POSIX** (IEEE, 1984, fusione di System V e BSD), cui si aggiungono nel tempo i progetti [[#^stdunix|di standardizzazione]] OSF, X/Open e Open Group. Da UNIX derivano **MINIX** (didattico, micro-kernel, → MINIX 3) e, ispirato a MINIX, **Linux** di Linus Torvalds (1991).
 
@@ -55,8 +65,10 @@ Le varianti commerciali più importanti erano basate su **UNIX System V Release 
 > - **OSF** (*Open Software Foundation*, 1988): consorzio IBM, DEC, Hewlett-Packard; produce **OSF/1**.
 > - **X/Open** (1993): definisce la **Single UNIX Specification**; i sistemi conformi ottengono il marchio **UNIX 95**.
 > - **Open Group** (1996, fusione OSF + X/Open): emana la seconda versione della Single UNIX Specification (1997) con marchio **UNIX 98**.
+
 > [!info] MINIX 3 e Intel Management Engine
 > **MINIX 3** (Vrije Universiteit Amsterdam) è stato adottato da **Intel** per il suo **Management Engine (ME)**, il sottosistema di gestione integrato nei processori moderni. È quindi presente in quasi tutti i desktop, server e laptop x86, rendendolo di fatto uno dei SO più diffusi al mondo pur restando invisibile all'utente finale. La licenza è della Vrije Universiteit Amsterdam (copyright 1987, 1997, 2006).
+
 > [!info] Albero genealogico delle varianti UNIX
 > Il diagramma delle slide (*A Success Story*) mostra tre rami principali:
 > - **BSD** (Berkeley Software Distribution): da Unix V5/V6 → BSD 1.x-4.3 → FreeBSD, NetBSD, OpenBSD, DragonFly BSD → **macOS** (via NeXTSTEP/OPENSTEP e il kernel Darwin, basato su Mach + BSD).
@@ -64,7 +76,7 @@ Le varianti commerciali più importanti erano basate su **UNIX System V Release 
 > - **Linux** (1991): nasce ispirato a MINIX, ma indipendente; evolve in parallelo, con Android come suo principale discendente mobile.
 > Le varianti a sorgente aperto (verdi nel diagramma) convivono con quelle proprietarie (rosse: HP-UX, AIX, Solaris). macOS è derivato da BSD/NeXTSTEP ed è quindi UNIX-based.
 ### Quarta generazione (1980-oggi) — personal computer
-I circuiti **LSI** (migliaia di transistor per cm²) rendono possibile il PC. Intel rilascia l'**8080** (1974). Quando IBM cerca un SO, **Microsoft** acquista il DOS da Seattle Computer Products e lo adatta a **MS-DOS**, dominando il mercato dei PC IBM.
+I circuiti **LSI** (migliaia di transistor per cm²) rendono possibile il PC. Intel rilascia l'**8080** (1974): **Gary Kildall** scrive per esso il sistema operativo **CP/M** e fonda **Digital Research**, che lo adatta ai microcomputer. Quando negli anni '80 IBM cerca un SO per il suo PC, **Kildall rifiuta l'incontro** con IBM — un'occasione mancata storica; così **Microsoft** acquista il DOS da Seattle Computer Products e lo adatta a **MS-DOS**, dominando il mercato dei PC IBM.
 
 La **GUI** — inventata da **Engelbart** e sviluppata allo **Xerox PARC** — viene colta da **Steve Jobs**: nasce l'**Apple Macintosh**, user-friendly e di successo. Microsoft risponde con **Windows**, inizialmente ambiente grafico sopra MS-DOS, poi sistema autonomo (Windows 95 → XP → 7 → 8…). Apple adotta poi un kernel derivato dal microkernel **Mach** su base **BSD UNIX**: **macOS** è quindi un sistema UNIX-based.
 ### Quinta generazione (1990-oggi) — computer mobili
@@ -84,6 +96,7 @@ Il **cambio di contesto** ([[03 - Processi e Thread|context switch]]) salva i re
 - **Multithreading / hyperthreading**: la CPU mantiene lo stato di più thread e commuta rapidamente quando uno si blocca — **non** è vero parallelismo, ma il SO vede i thread hardware come CPU separate.
 - **Multicore**: più core reali sullo stesso chip. Due topologie possibili per la cache L2: **(a) L2 condivisa tra tutti i core** (un unico blocco di L2 sul chip, accesso uniforme) oppure **(b) L2 privata per ogni core** (ogni core ha la propria L2 locale, visibile nelle slide come "L2" dentro ciascun riquadro core). Entrambe le topologie mantengono una cache L1 privata per core.
 - **GPU**: migliaia di core semplici per calcolo massicciamente parallelo (SIMD), usata anche per calcolo generico (GPGPU).
+- **Multiprocessori**: più CPU fisiche nello stesso sistema. Tre vantaggi principali: **throughput** (più lavoro svolto in parallelo), **economia di scala** (le CPU condividono alimentazione, contenitore e periferiche, costando meno di tante macchine separate) e **affidabilità** (il guasto di una CPU degrada le prestazioni ma non ferma il sistema).
 
 > [!info] Approfondimento — Architettura dei Sistemi di Elaborazione
 > Il funzionamento dettagliato della CPU (ciclo fetch-decode-execute, registri, microarchitettura, pipeline) è trattato nel corso del primo anno: [[2 - Organizzazione dei sistemi di calcolo]] e [[4 - Livello di microarchitettura]].
@@ -97,7 +110,16 @@ La memoria è organizzata in una **gerarchia**, con trade-off tra velocità, cap
 | Memoria centrale (RAM) | decine di ns | GB | sì |
 | Disco / SSD | µs–ms | TB | no |
 
-Le **cache** nascondono la latenza della RAM sfruttando la **località spaziale** (dati vicini) e **temporale** (dati usati di recente). La **MMU (Memory Management Unit)** traduce gli indirizzi **virtuali** in **fisici**, abilita la [[06 - Gestione della Memoria|memoria virtuale]] e protegge lo spazio di indirizzi di ogni processo; usa il **TLB** come cache delle traduzioni.
+Le **cache** nascondono la latenza della RAM sfruttando la **località spaziale** (dati vicini) e **temporale** (dati usati di recente).
+
+> [!info] I quattro problemi di gestione di una cache
+> Qualsiasi sistema di cache (non solo quella della CPU) deve risolvere quattro domande, che ritroveremo identiche negli [[06 - Gestione della Memoria#Algoritmi di sostituzione delle pagine|algoritmi di sostituzione delle pagine]] e nella [[07 - File System#Block cache buffer cache|block cache]]:
+> 1. **Quando** inserire un nuovo elemento nella cache?
+> 2. **In quale riga** della cache inserirlo?
+> 3. **Quale elemento rimuovere** quando serve liberare uno slot?
+> 4. **Dove** mettere nella memoria più grande l'elemento appena rimosso?
+
+La **MMU (Memory Management Unit)** traduce gli indirizzi **virtuali** in **fisici**, abilita la [[06 - Gestione della Memoria|memoria virtuale]] e protegge lo spazio di indirizzi di ogni processo; usa il **TLB** come cache delle traduzioni.
 ### Dischi e memoria di massa
 - **HDD (Hard Disk Drive)**: piatti magnetici rotanti, testine su braccio mobile. Tempo di accesso = *seek time* + *rotational delay* + *transfer time*. Organizzazione in tracce, settori, cilindri.
 - **SSD (Solid State Drive)**: memoria flash NAND, nessuna parte mobile, molto più veloce negli accessi casuali; richiede **wear leveling**.
@@ -106,8 +128,25 @@ Ogni dispositivo ha due parti: un **controller** (interfaccia con registri di co
 - **Polling** (*busy waiting*): la CPU interroga di continuo il dispositivo — spreca cicli.
 - **Interrupt-driven**: il dispositivo genera un **interrupt** quando è pronto — efficiente (ripreso in [[08 - Input Output]]).
 - **DMA (Direct Memory Access)**: un controller trasferisce i dati direttamente da/verso la memoria senza impegnare la CPU — ottimale per grandi quantità.
+
+> [!example] Domanda tipica d'esame
+> - **D:** Quali sono i tre modi in cui il SO può gestire un trasferimento di I/O? **R:** **Polling** (*busy waiting*): la CPU interroga di continuo il dispositivo, sprecando cicli. **Interrupt-driven**: il dispositivo genera un interrupt quando è pronto, liberando la CPU nel frattempo. **DMA**: un controller trasferisce i dati direttamente da/verso la memoria senza impegnare la CPU, ideale per grandi quantità. Approfonditi in [[08 - Input Output]].
 ### Bus e avvio
-I componenti comunicano tramite **bus** (CPU-RAM, PCIe per le periferiche, SATA per i dischi, USB hot-pluggable). All'accensione, il firmware (**BIOS/UEFI**) esegue il **boot**: test dell'hardware, individuazione del dispositivo di avvio, caricamento del SO in memoria.
+Un sistema x86 moderno ha **più bus** con funzioni e velocità diverse:
+- **DDR4**: bus veloce tra CPU e **memoria** centrale.
+- **PCIe** (*Peripheral Component Interconnect Express*): il bus principale e più veloce, usa connessioni **punto-punto dedicate** (più efficienti dei bus condivisi), tipicamente per la **GPU**.
+- **DMI** (*Direct Media Interface*): collega la CPU a un **hub** che raccoglie tutti gli altri dispositivi (compresi quelli **legacy**, su un hub separato).
+- **USB** (*Universal Serial Bus*): nato per i dispositivi **lenti**, oggi raggiunge fino a **40 Gbps**; connettore a **4–11 conduttori** (alimentazione + dati); è **hot-pluggable** (collegamento immediato senza riavvio).
+
+All'accensione il firmware (**BIOS/UEFI**) esegue il **boot**.
+> [!example] Sequenza di avvio del BIOS
+> 1. La **memoria flash** della scheda madre contiene il firmware (BIOS); premuto il pulsante di accensione, la CPU **esegue il BIOS**.
+> 2. Il BIOS **inizializza la RAM** e le altre risorse, esegue la **scansione dei bus PCI/PCIe** e inizializza i dispositivi, imposta il **firmware runtime** per i servizi critici (es. I/O a basso livello).
+> 3. Cerca la **tabella delle partizioni** sul **secondo settore** del dispositivo di avvio (contiene le posizioni delle altre partizioni).
+> 4. Sa leggere **file system semplici** (es. **FAT-32**) e carica il **primo bootloader** dalla partizione indicata dal boot manager; il bootloader può caricarne altri a catena.
+> 5. Alla fine viene caricato il **sistema operativo**.
+>
+> L'alternativa moderna al BIOS è **UEFI** (con tabella partizioni **GPT**, Secure Boot, superamento del limite di 2,2 TB), trattata in [[07 - File System#Layout del file system|File System]].
 ## Panoramica dei sistemi operativi (lo "zoo")
 Esistono SO molto diversi a seconda del contesto d'uso:
 - **Mainframe**: orientati a throughput elevato — *batch processing*, elaborazione di transazioni, time-sharing per molti utenti (es. z/OS, applicazioni mission-critical bancarie).

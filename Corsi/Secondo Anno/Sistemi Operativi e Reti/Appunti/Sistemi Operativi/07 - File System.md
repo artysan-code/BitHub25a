@@ -12,6 +12,10 @@ Da qui i tre **requisiti per la memorizzazione a lungo termine**: salvare grandi
 > Un **file system** è il modo in cui il sistema operativo **organizza e memorizza in modo persistente** le informazioni su un dispositivo, fornendo un'**astrazione** sui dispositivi di memorizzazione (disco, SSD, rete, RAM, …). I dati sono organizzati in **file** e (tipicamente) **directory**. Il file system gestisce **struttura, denominazione, accesso, protezione e implementazione** dei file.
 
 Esempi di file system reali: **FAT12/FAT16** (MS-DOS), **NTFS** (Windows), **Ext4** (Linux), **APFS** (macOS/iOS). Distinguiamo sempre due punti di vista: l'**interfaccia utente** (nomi dei file, operazioni consentite) e l'**implementazione tecnica** (gestione della memoria, struttura interna), rilevante per i progettisti del sistema.
+
+> [!example] Domanda tipica d'esame
+> **D:** Perché i file esistono? Quali limiti della sola RAM risolvono?
+> **R:** La RAM è limitata in capacità, volatile (i dati si perdono a fine processo o in caso di crash) e non consente l'accesso concorrente da più processi. I file risolvono questi tre limiti offrendo memorizzazione persistente di grandi quantità di dati, accessibile contemporaneamente da processi diversi.
 ## Come si vede un disco e dove sta il file system
 A basso livello un disco è una **sequenza lineare di blocchi di dimensione fissa** che supporta due sole operazioni: *leggere il blocco k* e *scrivere il blocco k*. Da questa visione povera nascono subito le domande che il file system deve risolvere: «come si trovano le informazioni?», «come si impedisce a un utente di leggere i dati di un altro?», «come si sa quali blocchi sono liberi?».
 > [!info] Roadmap — dove operano queste lezioni
@@ -56,6 +60,10 @@ Tra i file normali si distinguono **file ASCII** (righe di testo stampabili; var
 > - **File di archivio**: raccolta di procedure di libreria (moduli) compilate ma non collegate; ogni modulo ha un'intestazione con nome, data, proprietario, codice di protezione e dimensione.
 
 Come si riconosce il tipo di un file? Alcuni sistemi (il vecchio **TOPS-20**) avevano meccanismi complessi di file *tipizzati*, che però limitavano l'uso dei file. In UNIX l'utility `file` usa **euristiche** sul contenuto per determinare il tipo (testo, directory, eseguibile, …).
+
+> [!example] Domanda tipica d'esame
+> **D:** Quali sono le tipologie di file e le strutture interne?
+> **R:** Tipologie: file normali (dati utente), directory, file speciali a caratteri (I/O seriale) e file speciali a blocchi (dischi). I file normali si dividono in ASCII (testo leggibile) e binari. Strutture interne: (a) sequenza non strutturata di byte — approccio di UNIX/Windows, massima flessibilità; (b) sequenza di record a lunghezza fissa — modello mainframe storico; (c) albero di record a lunghezza variabile con campo chiave — per ricerche rapide nei mainframe commerciali.
 ## Accesso ai file
 Come si specifica *quale* parte del file leggere?
 > [!quote] Definizione — Accesso sequenziale vs casuale
@@ -63,6 +71,10 @@ Come si specifica *quale* parte del file leggere?
 > - **Accesso casuale (random)**: introdotto con i dischi, permette di leggere byte/record in qualsiasi ordine. Cruciale per applicazioni come i **database**, che devono raggiungere un record specifico senza attraversare l'intero file.
 
 La posizione di lettura si fissa con l'operazione **`seek`**, dopo la quale si può leggere sequenzialmente dalla nuova posizione. Adottato sia in UNIX sia in Windows.
+
+> [!example] Domanda tipica d'esame
+> **D:** Qual è la differenza tra accesso sequenziale e accesso casuale? Qual è il ruolo di `seek`?
+> **R:** L'**accesso sequenziale** legge i dati dall'inizio alla fine nell'ordine, come sui nastri magnetici. L'**accesso casuale** (introdotto con i dischi) permette di leggere byte o record in qualsiasi ordine senza attraversare l'intero file — fondamentale per i database. `seek` sposta il puntatore di lettura/scrittura alla posizione desiderata; da lì si può leggere sequenzialmente.
 ## Attributi dei file
 Oltre a nome e dati, ogni file ha **attributi** (o *metadati*), variabili per SO.
 > [!info] Categorie di attributi comuni
@@ -71,6 +83,16 @@ Oltre a nome e dati, ogni file ha **attributi** (o *metadati*), variabili per SO
 > - **Attributi temporali**: data/ora di creazione, ultimo accesso, ultima modifica.
 > - **Dimensione**: attuale e massima.
 > - **Gestione dei record** (per file basati su record): lunghezza del record, posizione e lunghezza della chiave.
+
+> [!info] Tabella degli attributi (elenco completo)
+> | Attributo | Significato |
+> |---|---|
+> | Protezione, Password, Creatore, Proprietario | chi può accedere e come |
+> | Flag sola lettura / nascosto / di sistema / archivio | comportamento e visibilità del file |
+> | Flag ASCII-binario / accesso casuale / temporaneo / bloccato | tipo di contenuto e modalità d'uso |
+> | Lunghezza del record, Posizione della chiave, Lunghezza della chiave | per file organizzati a record |
+> | Data creazione, ultimo accesso, ultima modifica | attributi temporali |
+> | Dimensione attuale, Dimensione massima | spazio occupato e limite |
 
 Gli attributi sono cruciali per la **protezione**, il controllo dell'accesso e la gestione efficace dei file.
 ## Operazioni sui file
@@ -137,6 +159,10 @@ Come si specifica un file in un albero di directory?
 > - La **working directory** cambia dinamicamente per ciascun processo e non influisce sugli altri né sul file system dopo l'uscita del processo.
 > - Le **procedure di libreria** evitano di cambiarla, o la ripristinano dopo l'uso.
 > - Voci speciali presenti in ogni directory: `.` (punto) = directory corrente; `..` (punto punto) = directory **genitore**. Servono a navigare l'albero (es. `cp ../lib/dictionary .`).
+
+> [!example] Domanda tipica d'esame
+> **D:** Qual è la differenza tra percorso assoluto e relativo? Cos'è la directory di lavoro? A cosa servono `.` e `..`?
+> **R:** Il **percorso assoluto** parte dalla directory radice (`/` in UNIX, `\` in Windows) ed è univoco per ogni file (es. `/usr/ast/mailbox`). Il **percorso relativo** parte dalla **directory di lavoro** corrente del processo e non inizia col separatore (es. `mailbox`). La working directory è la directory "attiva" del processo, cambia dinamicamente e non influisce sugli altri processi. `.` indica la directory corrente; `..` indica la directory genitore: entrambe servono a navigare l'albero senza specificare percorsi assoluti.
 ## Operazioni sulle directory
 - `create` — crea una directory vuota con le voci `.` e `..`.
 - `delete` — elimina una directory, **possibile solo se vuota**.
@@ -224,6 +250,10 @@ Ottimizza le liste concatenate **spostando i puntatori** dai blocchi a una tabel
 
 > [!example] Gestione dei file grandi (indirizzamento indiretto)
 > Un i-node ha spazio limitato per gli indirizzi (es. blocchi diretti 0–7). Per i file che superano il limite, uno degli indirizzi punta a un **blocco di puntatori** che contiene ulteriori indirizzi di blocchi dati. Così si gestiscono file molto grandi. In **NTFS** (Windows) si usa una struttura simile con i-node più grandi che possono contenere **file piccoli all'interno dell'i-node stesso**.
+
+> [!example] Domanda tipica d'esame
+> **D:** Quali sono i metodi di implementazione dei file? Pregi e difetti di ciascuno.
+> **R:** (1) **Allocazione contigua**: blocchi consecutivi — semplice e lettura veloce, ma causa frammentazione e richiede di conoscere la dimensione finale. (2) **Liste concatenate**: ogni blocco punta al successivo — zero frammentazione esterna, ma accesso casuale lentissimo e spazio ridotto per i dati (puntatori nel blocco). (3) **FAT**: i puntatori sono in una tabella in RAM anziché nei blocchi — accesso casuale più rapido, ma la tabella deve stare intera in memoria e non scala su dischi grandi. (4) **I-node**: struttura con metadati e indirizzi dei blocchi, solo gli i-node dei file aperti stanno in memoria — efficiente, scala bene, gestisce file grandi con indirizzamento indiretto; è il modello dei file system UNIX-like.
 ## Implementazione delle directory
 > [!quote] Definizione — Funzione delle directory
 > Le directory mappano i **nomi ASCII** dei file sulle informazioni necessarie a localizzare i dati su disco. Il metodo di allocazione varia: indirizzi di blocchi contigui, primo blocco delle liste concatenate, oppure **numero di i-node**.
@@ -254,6 +284,10 @@ In ambienti collaborativi più utenti devono lavorare sugli **stessi file**: un 
 > - **Meno efficienti**: richiedono un i-node per ogni link e hanno **overhead** nella risoluzione del percorso.
 > - **Diventano invalidi** alla rimozione del file originale (*dangling link*).
 > - **Problema comune**: file con più percorsi possono essere **elaborati più volte** da programmi di backup/ricerca → rischio di **duplicazione**.
+
+> [!example] Domanda tipica d'esame
+> **D:** Come sono strutturate e implementate le directory? Differenza tra voce con attributi e riferimento a i-node; nomi a lunghezza variabile; ricerca lineare, hash e cache.
+> **R:** Una directory mappa nomi ASCII alle informazioni per localizzare i dati su disco. Due strutture base: (a) **voce con attributi** — indirizzi su disco e metadati direttamente nella voce; (b) **riferimento a i-node** — la voce contiene solo il numero dell'i-node, che a sua volta tiene gli attributi (modello UNIX). Per nomi a lunghezza variabile si usano voci di dimensione variabile con header fisso, o voci fisse con puntatore a uno heap separato. La ricerca avviene per: (1) **lista lineare** — semplice ma lenta su directory grandi; (2) **tabella di hash** — hashing del nome per trovare rapidamente la voce, collisioni gestite a catena; (3) **cache delle ricerche** — si memorizzano i risultati frequenti, efficace se le ricerche si concentrano su pochi file.
 # Gestione dello spazio su disco
 I file si memorizzano su disco in due modi: **allocazione contigua** o **suddivisione in blocchi non contigui**. La contigua richiede di spostare il file se cresce (come la segmentazione in memoria); i **blocchi non contigui** di dimensione fissa danno più flessibilità e migliore utilizzo.
 ## Dimensione dei blocchi — il compromesso
@@ -368,6 +402,7 @@ Diverse minacce possono compromettere i dati.
 > 3. **Compressione rischiosa**: con molti algoritmi di compressione basta un **singolo punto difettoso** sul supporto per rendere illeggibile l'intero flusso compresso; la scelta di comprimere va valutata con attenzione.
 > 4. **Backup su file system attivo**: se durante il backup vengono aggiunti, cancellati o modificati file, il risultato potrebbe essere incoerente; per questo si usano **snapshot** (istantanee) dello stato del file system.
 > 5. **Backup fuori sede**: i backup devono essere conservati lontano dai computer principali, ma questo introduce ulteriori **rischi per la sicurezza** (più luoghi da sorvegliare).
+
 Modalità: **backup completo** (copia totale, settimanale/mensile) e **backup incrementale** (solo i file modificati dall'ultimo completo → meno tempo e spazio). Tipologie:
 - **Backup fisico**: copia **sequenziale di tutti i blocchi** del disco (dal blocco 0 all'ultimo). Semplice e veloce (alla velocità del disco), ma deve evitare blocchi danneggiati e file inutili (paginazione, ibernazione); **manca di flessibilità** (no incrementali, no ripristino di singoli file).
 - **Backup logico**: seleziona e copia **solo file e directory specifici** modificati a partire da una data, ignorando file di sistema e blocchi danneggiati. Ideale per incrementali e per ripristinare file singoli.
@@ -416,13 +451,6 @@ La coerenza è cruciale per l'integrità dei dati; problemi sorgono dopo un **cr
 > - Sugli **SSD** la mappatura dei blocchi flash è gestita dalla **FTL** (Flash Translation Layer), non dal file system → sovrascrittura meno prevedibile.
 > - **Cifratura del disco**: la soluzione più efficace è cifrare l'intero disco con algoritmi robusti come **AES**. **SED (Self-Encrypting Drives)** = cifratura integrata nel dispositivo (ma con possibili vulnerabilità). Windows usa AES con la **chiave master del volume** decifrata tramite password utente, chiave di ripristino o **TPM**.
 
-> [!example] Domande d'esame tipiche
-> - Importanza dei file: perché esistono e quali limiti della RAM risolvono.
-> - Tipologie di file (normali, speciali a caratteri, speciali a blocchi, ASCII, binari) e strutture interne (sequenza di byte, record fissi, albero di record).
-> - Metodi di implementazione dei file: **allocazione contigua**, **liste concatenate**, **FAT**, **i-node** — pregi e difetti di ciascuno.
-> - Struttura e implementazione delle directory: voce con attributi vs riferimento a i-node; nomi a lunghezza variabile; ricerca lineare, hash, cache.
-> - Accesso ai file: differenza tra **accesso sequenziale** e **accesso casuale** (random); ruolo di `seek`.
-> - Differenza tra **percorso assoluto** e **percorso relativo**; directory di lavoro; voci speciali `.` e `..`.
 # File system virtuali (VFS)
 I SO moderni gestiscono **più file system simultaneamente** (NTFS, FAT-32, FAT-16, …). Windows li distingue con lettere di unità (`C:`, `D:`, …); i sistemi **UNIX** li integrano in un'**unica struttura gerarchica**.
 > [!quote] Definizione — VFS (Virtual File System)

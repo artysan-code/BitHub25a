@@ -84,6 +84,10 @@ Windows offre API equivalenti (non identiche) alle system call UNIX:
 | `time` | `GetLocalTime` | Ora locale di sistema |
 ### Costo delle system call
 Una system call è **costosa**: richiede un cambio di contesto user↔kernel, salvataggio/ripristino dei registri, validazione dei parametri ed eventuale blocco del chiamante. Per questo si tende a minimizzarne il numero (es. I/O bufferizzato).
+
+> [!example] Domande tipiche d'esame
+> - **D:** Cosa sono le system call e perché vengono incapsulate in una libreria? **R:** Sono il meccanismo con cui un processo in **modalità utente** richiede un servizio al kernel. Il meccanismo è specifico del SO e dell'hardware, quindi viene **incapsulato** nella libreria C (`libc`, basata su POSIX), che esporta una funzione per ogni system call → **portabilità** del codice.
+> - **D:** Descrivi i passi di una system call (es. `read`). **R:** (1) i parametri vanno nei **registri** (`RDI`, `RSI`, `RDX`); (2) si chiama la funzione di libreria `read()`; (3) il **numero** della syscall va in `RAX`; (4) l'istruzione **TRAP** (`SYSCALL`) commuta in **modalità kernel**; (5) il kernel identifica la chiamata da `RAX`, valida i parametri ed esegue il gestore; (6) ritorno alla libreria e al programma. La chiamata può **bloccare** il processo (gestione affidata allo scheduler).
 ## L'astrazione di processo
 Un **processo** è l'astrazione di un programma in esecuzione per conto di un utente. È un *contenitore* con tutto il necessario all'esecuzione. Trattazione completa in [[03 - Processi e Thread]]; qui i concetti base.
 
@@ -130,6 +134,9 @@ I **link** sono un caso particolare: esistono in due varianti distinte.
 > `ln foo.txt bar.txt` crea un hard link: `foo.txt` e `bar.txt` condividono lo stesso inode — `unlink` dell'uno non cancella i dati finché esiste almeno un'altra voce. `ls -F` marca i *symbolic link* (non gli hard link) con `@`; gli hard link non hanno marcatori visibili.
 
 Le **pipe** sono pseudo-file per la comunicazione tra processi su un canale **FIFO**: vanno predisposte in anticipo, appaiono come file normali a chi legge/scrive e permettono comunicazione (tipicamente unidirezionale) tra processi.
+
+> [!example] Domanda tipica d'esame
+> - **D:** Differenza tra **hard link** e **symbolic link**. **R:** L'**hard link** è una seconda voce di directory che punta allo **stesso inode** del file (non è una copia): vale solo all'interno dello stesso file system e il dato esiste finché c'è almeno un link (`ln nome1 nome2`). Il **symbolic link** è un file speciale che contiene un **percorso** verso la destinazione: può attraversare file system diversi e puntare a directory, ma diventa *dangling* se la destinazione viene eliminata (`ln -s nome1 nome2`).
 ## Protezione e shell
 La **protezione** è il meccanismo con cui il SO controlla l'accesso a risorse e dati (i bit `rwx`, gli UID/GID, la separazione kernel/user). La **shell** non è il SO ma il suo principale programma di interfaccia: legge comandi e li esegue creando processi.
 > [!info] Anticipazione — qui è la prospettiva concettuale (cap. 1)
@@ -170,6 +177,9 @@ Nel kernel restano: gestione memoria di basso livello, [[05 - Scheduling|schedul
 - **Contro**: lo **scambio di messaggi** è più lento di una chiamata di funzione → overhead e prestazioni inferiori al monolitico.
 
 Esempi: **MINIX 3**, Mach, QNX, Symbian.
+
+> [!example] Domanda tipica d'esame
+> - **D:** Differenza tra kernel **monolitico** e **microkernel**. **R:** Nel **monolitico** l'intero SO è un unico programma in modalità kernel: le procedure si chiamano direttamente (molto **efficiente**), ma un bug in una parte può compromettere tutto e non c'è isolamento interno. Nel **microkernel** restano nel kernel solo le funzioni essenziali (scheduling, IPC, memoria di basso livello); i servizi (file system, driver) girano come **processi in user mode** che comunicano via **scambio di messaggi** → maggiore **affidabilità** e **sicurezza** (TCB piccolo, *Principle of Least Authority*), ma più lento per l'overhead dei messaggi.
 ### Macchine virtuali
 Una **macchina virtuale (VM)** è la copia virtuale dell'hardware, su cui può girare un intero SO. Idea nata con **VM/370** di IBM (anni '70) per separare la multiprogrammazione dalla macchina estesa; oggi alla base del **cloud**. Il **Virtual Machine Monitor (VMM)** o **hypervisor** emula l'hardware:
 - **Type 1 (bare metal)**: l'hypervisor gira **direttamente sull'hardware** (es. VMware ESXi, Xen, Hyper-V).
@@ -189,6 +199,19 @@ Il risultato è che si ottengono **N interfacce di system call indipendenti dal 
 
 > [!info] Container — diversi dalle VM
 > I **container** (Docker, LXC, Podman, Kubernetes) condividono il **kernel dell'host** e isolano a livello di **processo**: niente SO completo dentro, quindi leggeri e ad avvio rapido. Limite: non possono eseguire un kernel diverso da quello dell'host e non c'è partizionamento rigido delle risorse come nelle VM.
+
+| Caratteristica | Virtual Machine (VM) | Container |
+|---|---|---|
+| **Kernel** | ogni VM ha il proprio kernel | condividono il kernel dell'host |
+| **Peso** | pesanti (OS completo) | leggeri (solo app + dipendenze) |
+| **Avvio** | lento (minuti) | rapido (secondi) |
+| **Isolamento** | molto forte | più debole (a livello di processo) |
+| **Compatibilità OS** | può eseguire OS diversi | deve usare lo stesso kernel dell'host |
+| **Uso tipico** | sistemi legacy, ambienti multipli | microservizi, app cloud-native |
+
+> [!example] Domande tipiche d'esame
+> - **D:** Cos'è una macchina virtuale e che differenza c'è tra hypervisor **Type 1** e **Type 2**? **R:** Una VM è la copia virtuale dell'hardware su cui può girare un intero SO isolato; l'hypervisor (VMM) emula l'hardware. **Type 1 (bare metal)**: l'hypervisor gira direttamente sull'hardware (VMware ESXi, Xen, Hyper-V). **Type 2 (hosted)**: gira sopra un SO host (VirtualBox, QEMU).
+> - **D:** Differenza tra **VM** e **container**. **R:** La VM include un kernel/OS **completo** (pesante, avvio in minuti, isolamento forte, può eseguire OS diversi dall'host). Il container **condivide il kernel dell'host** e isola a livello di **processo** (leggero, avvio in secondi, ma deve usare lo stesso kernel e ha isolamento più debole).
 ### Exokernel
 Separa il **controllo** delle risorse dalla **macchina estesa**: come un VMM, ma **non emula l'hardware** — fornisce solo una condivisione sicura delle risorse a basso livello, assegnando a ciascuna VM utente solo le risorse che le competono. Elimina l'overhead delle mappature complesse. Uso prevalentemente di ricerca / alte prestazioni. Esempio: **Exokernel (MIT)**.
 ### Unikernel

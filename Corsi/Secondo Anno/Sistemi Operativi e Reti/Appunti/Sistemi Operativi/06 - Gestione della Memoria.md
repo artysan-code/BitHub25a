@@ -29,6 +29,7 @@ La soluzione è separare e proteggere i programmi tramite l'astrazione dello **s
 ### Registri base e limite
 > [!info] Precursore storico — IBM 360
 > Una soluzione primitiva alla protezione della memoria fu adottata sull'**IBM 360**: associare una **chiave di protezione** a ogni blocco di memoria fisica e confrontarla con la chiave del processo in esecuzione a ogni accesso. Non era una vera astrazione degli indirizzi, ma già separava i domini di protezione; i registri base e limite ne sono l'evoluzione logica.
+
 Un'implementazione hardware semplice usa due registri speciali presenti in molte CPU:
 - **Registro base**: indirizzo fisico di **inizio** del programma in memoria → realizza la **rilocazione dinamica** (ogni indirizzo generato viene sommato alla base).
 - **Registro limite**: **lunghezza** del programma → applica la **protezione**.
@@ -89,6 +90,19 @@ Quando un oggetto viene deallocato non torna subito al sistema: resta nella **ca
 > 2. **vmalloc** e **Slab allocator** (sopra il Buddy): entrambi usano il Buddy per ottenere blocchi grandi e li ritagliano in unità più piccole. `vmalloc` gestisce regioni virtualmente contigue ma non necessariamente fisicamente contigue; lo **Slab** gestisce oggetti di tipo uniforme con riuso della cache.
 > 3. **`kmalloc()`** (sopra lo Slab): interfaccia generale del kernel per allocazioni di piccole dimensioni; internamente usa lo Slab allocator.
 ## Memoria virtuale
+> [!info] Equivalenze di memoria (base 2)
+> | Nome | Simbolo | Decimale | Binario |
+> |---|---|---|---|
+> | kilobyte | KB | $10^3$ | $2^{10} = 1024$ |
+> | megabyte | MB | $10^6$ | $2^{20} = 1\,048\,576$ |
+> | gigabyte | GB | $10^9$ | $2^{30} \approx 1$ miliardo |
+> | terabyte | TB | $10^{12}$ | $2^{40} \approx 1$ trilione |
+> | petabyte | PB | $10^{15}$ | $2^{50}$ |
+> | exabyte | EB | $10^{18}$ | $2^{60}$ |
+> | zettabyte | ZB | $10^{21}$ | $2^{70}$ |
+>
+> Padroneggiare queste equivalenze evita errori nei calcoli su indirizzi, offset, page table e TLB.
+
 Il problema dei programmi **più grandi della memoria** disponibile esiste fin dalle origini dell'informatica (anni '60), specie in ambito scientifico e ingegneristico. La prima soluzione furono gli **overlay**: piccoli segmenti del programma di cui viene caricato in memoria solo quello **necessario**, mentre gli overlay successivi lo **sovrascrivono** (o coesistono), scambiandosi tra memoria e disco. Il limite era che il **programmatore** doveva suddividere *manualmente* il programma in overlay — un lavoro tedioso e soggetto a errori: da qui la motivazione storica della **memoria virtuale**, che automatizza questo meccanismo.
 
 La **memoria virtuale** estende l'idea dei registri base e limite. Ogni programma ha il proprio spazio degli indirizzi suddiviso in **pagine** (intervalli contigui di indirizzi); **non tutte** devono stare contemporaneamente in memoria fisica. L'hardware mappa le pagine effettivamente presenti; se una pagina manca, interviene il sistema operativo.
@@ -237,6 +251,11 @@ Per limitare il traffico su disco si fissa un **numero massimo** di scritture (*
 | **WSClock** | Efficiente e buono |
 
 **Aging** e **WSClock** sono i «migliori» (basati rispettivamente su LRU e sull'idea di working set): buone prestazioni e implementazione efficiente. Windows e Linux adottano **varianti** di questi algoritmi, combinando elementi diversi in base a esigenze e hardware.
+
+> [!example] Domanda tipica d'esame
+> **D:** Algoritmi di sostituzione delle pagine: descrivere NRU, Seconda Chance e Clock, spiegare i criteri di scelta (bit R e M) e confrontarne le prestazioni e la complessità implementativa.
+>
+> **R:** **NRU** classifica le pagine in 4 classi in base ai bit R (riferimento) e M (modificato/dirty); il bit R è azzerato periodicamente a ogni interrupt del clock. Al page fault viene rimossa una pagina a caso dalla classe più bassa non vuota (classe 0 = non referenziata, non modificata; classe 3 = referenziata e modificata). Semplice e veloce, ma approssimazione rozza dell'LRU. **Seconda Chance** migliora FIFO controllando il bit R della pagina più vecchia: se R = 0 la rimuove, se R = 1 azzera R, reinserisce la pagina in fondo alla lista e controlla la successiva; degenera in FIFO puro se tutte le pagine sono referenziate. **Clock** realizza la stessa logica con una lista circolare e una lancetta: se R = 0 sulla pagina puntata la rimuove, se R = 1 azzera R e avanza; più efficiente di Seconda Chance perché evita spostamenti nella lista. Confronto: NRU e Clock hanno complessità O(1) per sostituzione; Seconda Chance può richiedere scansione intera. Clock è considerato il migliore tra i tre per il rapporto prestazioni/semplicità implementativa.
 ## Problemi di progettazione
 La paginazione richiede di bilanciare molti aspetti. I problemi più comuni: allocazione **globale vs locale**, **equa vs proporzionale**, dinamica di allocazione, policy di pulizia, dimensione delle pagine, spazi separati istruzioni/dati, pagine e librerie condivise, file mappati in memoria.
 ### Allocazione globale vs locale
@@ -356,6 +375,11 @@ La memoria vista finora è **monodimensionale**: gli indirizzi virtuali vanno da
 | Perché fu inventata? | Spazio di indirizzi grande senza più memoria fisica | Spezzare programmi/dati in spazi logicamente indipendenti, facilitando condivisione e protezione |
 
 La segmentazione offre più flessibilità e gestione delle strutture dati, ma è **più complessa da implementare**.
+
+> [!example] Domanda tipica d'esame
+> **D:** Paginazione e segmentazione a confronto: differenze strutturali, vantaggi e limiti di ciascun approccio, con un esempio concreto di traduzione degli indirizzi (da virtuale a fisico) per entrambi i modelli.
+>
+> **R:** La **segmentazione** introduce spazi di indirizzi multipli e indipendenti a dimensione variabile, visibili al programmatore (l'indirizzo ha due componenti: numero di segmento e offset); favorisce condivisione e protezione per unità logiche (procedure, dati, stack). La **paginazione** suddivide lo spazio di indirizzi lineare in pagine fisse trasparenti al programmatore; risolve il problema di avere uno spazio virtuale grande senza più memoria fisica. Traduzione indirizzi: in **paginazione** il numero di pagina virtuale viene usato come indice nella page table per ottenere il frame fisico, l'offset è copiato direttamente (es. indirizzo virtuale 8192 = pagina 2 × 4 KB, frame 6 → indirizzo fisico 24576 + offset); in **segmentazione** la coppia (numero di segmento, offset) viene risolta tramite la tabella dei segmenti che fornisce base e limite del segmento in memoria fisica.
 ### Segmentazione pura e frammentazione esterna
 A differenza delle pagine (dimensione fissa), i **segmenti** hanno dimensione variabile. Sostituendo segmenti di taglie diverse la memoria si suddivide in parti, alcune con segmenti e altre vuote: è la **frammentazione esterna** (*checkerboarding*), risolvibile con la **compattazione**.
 ### MULTICS
@@ -385,9 +409,6 @@ Il *descriptor segment* raccoglie tutti i descrittori. L'indirizzo virtuale a **
 MULTICS fu il **primo** sistema a usare un **TLB** (16 parole) per accelerare la ricerca degli indirizzi: programmi con working set minore del TLB raggiungono maggiore efficienza. Ogni voce del TLB conteneva sei campi: **Segment number** e **Virtual page** (campo di confronto usato per la ricerca), **Page frame** (risultato della traduzione), **Protection** (permessi), **Age** e un bit **"Is this entry used?"** (voce presente/valida). L'esistenza di **due dimensioni di pagina** (1024 e 64 parole) rendeva il TLB reale più complesso di questa versione semplificata.
 ### Segmentazione in x86
 Fino all'x86-64, Intel x86 rifletteva il modello MULTICS combinando segmentazione e paginazione (16 000 segmenti indipendenti, ognuno fino a 1 miliardo di parole a 32 bit). Nell'**x86-64** la segmentazione diventa **obsoleta**, mantenuta via software solo per compatibilità, perché i SO chiave (UNIX, Windows) non la adottano per portabilità e Intel ha preferito ottimizzare lo spazio del chip. L'architettura x86 è apprezzata per l'equilibrio tra paginazione, segmentazione e retrocompatibilità.
-> [!example] Domande d'esame tipiche
-> - Paginazione e segmentazione a confronto: differenze strutturali, vantaggi e limiti di ciascun approccio, con un esempio concreto di traduzione degli indirizzi (da virtuale a fisico) per entrambi i modelli.
-> - Algoritmi di sostituzione delle pagine: descrivere NRU, Seconda Chance e Clock, spiegare i criteri di scelta (bit R e M) e confrontarne le prestazioni e la complessità implementativa.
 ## Il comando `free` (Linux)
 > [!info] `free` — monitorare la memoria
 > Fornisce dettagli sull'utilizzo della memoria fisica e dello **swap**. Colonne principali:

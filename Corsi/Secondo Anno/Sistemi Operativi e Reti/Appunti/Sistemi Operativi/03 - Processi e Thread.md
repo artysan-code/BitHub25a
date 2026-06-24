@@ -1,4 +1,4 @@
-# Processi e Thread
+ # Processi e Thread
 Il **processo** è l'astrazione con cui il SO esegue programmi per conto degli utenti; il **thread** è il flusso di esecuzione *dentro* un processo. Questa nota copre modello, gestione, stati, segnali/interrupt e thread. Prerequisito: l'astrazione di processo introdotta in [[02 - Concetti di Base e Strutture]].
 ## Il modello di processo
 > [!quote] Definizione — Processo
@@ -61,15 +61,35 @@ Running ──(2) lo scheduler sceglie un altro──►  Ready
 Ready   ──(3) lo scheduler sceglie questo────►  Running
 Blocked ──(4) l'input diventa disponibile────►  Ready
 ```
-> [!example] Domande d'esame tipiche
-> - **D:** Cos'è un processo e in cosa differisce da un programma? **R:** Un processo è un *programma in esecuzione*: è l'istanza dinamica di un programma statico, dotata di proprio spazio di indirizzi, stato della CPU (registri, PC, stack) e risorse (file aperti, segnali). Il programma è il codice statico su disco; il processo è l'entità a cui il SO alloca la CPU e le risorse.
-> - **D:** Quali sono i tre stati di un processo e le quattro transizioni tra essi? **R:** Gli stati sono **Running** (la CPU è assegnata al processo), **Ready** (eseguibile ma in attesa della CPU) e **Blocked** (non eseguibile, in attesa di un evento esterno). Le transizioni sono: (1) Running→Blocked, quando il processo si blocca in attesa di input; (2) Running→Ready, quando lo scheduler sceglie un altro processo; (3) Ready→Running, quando lo scheduler sceglie questo processo; (4) Blocked→Ready, quando l'input atteso diventa disponibile.
-> - **D:** Qual è il ruolo di `fork()` nella creazione dei processi? **R:** `fork()` è la system call con cui un processo padre crea un processo figlio: il figlio è un clone "privato" del genitore (stesso codice, variabili d'ambiente, file aperti ereditati), ma con uno spazio di indirizzi separato. Il valore di ritorno distingue padre (PID del figlio) da figlio (0). È il meccanismo base con cui la shell — e il SO in generale — genera nuovi processi.
-
 > [!example] Domanda tipica d'esame
 > **D:** Quali sono i tre stati di un processo e le quattro transizioni tra essi? **R:** Gli stati sono **Running** (la CPU è assegnata al processo), **Ready** (eseguibile ma in attesa della CPU) e **Blocked** (non eseguibile, in attesa di un evento esterno). Le transizioni sono: (1) Running→Blocked, quando il processo si blocca in attesa di input; (2) Running→Ready, quando lo [[05 - Scheduling|scheduler]] sceglie un altro processo; (3) Ready→Running, quando lo scheduler sceglie questo processo; (4) Blocked→Ready, quando l'input atteso diventa disponibile.
 ### Informazioni associate a un processo
-Nella **tabella dei processi** il SO conserva, per ciascun processo: **PID**, **UID**, **GID**; lo **spazio di indirizzi** di memoria (vedi [[06 - Gestione della Memoria]]); i **registri hardware** (incluso il Program Counter); i **file aperti**; i **segnali** e gli **interrupt** pendenti.
+La **tabella dei processi** è un array di strutture, **una voce per processo**, chiamata anche **PCB** (*Process Control Block*). Conserva tutto ciò che serve a **sospendere e riprendere** un processo come se non si fosse mai fermato: quando passa da *running* a *ready*/*blocked*, il suo stato viene salvato qui. I campi tipici si raggruppano in tre aree:
+
+| Gestione del processo | Gestione della memoria | Gestione dei file |
+|---|---|---|
+| Registri, **PC**, **PSW**, puntatore allo stack | Puntatore al segmento **testo** (codice) | Directory radice |
+| Stato del processo, priorità, parametri di scheduling | Puntatore al segmento **dati** | Directory di lavoro |
+| **PID**, processo genitore, gruppo del processo | Puntatore al segmento **stack** | Descrittori dei file aperti |
+| Segnali, tempi di CPU (proprio e dei figli), allarmi | | **UID**, **GID** |
+
+I campi di memoria sono ripresi in [[06 - Gestione della Memoria]], quelli dei file in [[07 - File System]]. È sulla voce del PCB che, a ogni **interrupt**, l'hardware e la routine assembly salvano i registri del processo corrente (vedi sotto).
+## Modellazione della multiprogrammazione
+Quanto rende davvero la [[01 - Introduzione ai Sistemi Operativi#Terza generazione (1965-80) — circuiti integrati e multiprogrammazione|multiprogrammazione]]? Un modello **probabilistico** lo quantifica. Se un processo passa una frazione **$p$** del suo tempo in **attesa di I/O**, con **$n$** processi in memoria la probabilità che siano **tutti** in attesa nello stesso istante (CPU inattiva) è $p^n$. L'utilizzo della CPU è quindi:
+$$\text{Utilizzo CPU} = 1 - p^n$$
+dove **$n$** è il **grado di multiprogrammazione** (numero di processi contemporaneamente in memoria).
+Conseguenze pratiche:
+- Più processi in memoria → più utilizzo, ma con **rendimenti decrescenti**.
+- Se i processi attendono l'I/O l'**80%** del tempo ($p = 0{,}8$), servono almeno **10 processi** in memoria perché lo spreco di CPU scenda sotto il 10%.
+- È un'**approssimazione**: assume i processi **indipendenti** (con una sola CPU non lo sono del tutto — un modello esatto userebbe la **teoria delle code**), ma la conclusione resta valida.
+
+> [!example] Esempio — quanta CPU guadagno aggiungendo RAM?
+> Memoria di 8 GB: 2 GB al SO e 2 GB per programma → **3 programmi** in memoria. Con $p = 0{,}8$:
+> $$\text{Utilizzo} = 1 - 0{,}8^3 = 1 - 0{,}512 \approx 49\%$$
+> Salendo a 16 GB → **7 programmi**: $1 - 0{,}8^7 \approx 79\%$ (**+30%** di throughput). Altri 8 GB portano dal 79% a circa il **91%** (solo **+12%**): il primo upgrade conviene, il secondo molto meno.
+
+> [!example] Domanda tipica d'esame
+> **D:** Qual è la formula dell'utilizzo della CPU in multiprogrammazione e cosa significano i suoi termini? **R:** $\text{Utilizzo CPU} = 1 - p^n$, dove **$p$** è la frazione di tempo che un processo passa in **attesa di I/O** e **$n$** è il **grado di multiprogrammazione** (processi in memoria). Il termine $p^n$ è la probabilità che **tutti** gli $n$ processi attendano l'I/O nello stesso istante, lasciando la **CPU inattiva**. Il modello assume i processi indipendenti, quindi è un'approssimazione.
 ## Segnali e interrupt
 Sia i **segnali** sia gli **interrupt** servono a gestire **eventi asincroni**, ma a livelli diversi.
 

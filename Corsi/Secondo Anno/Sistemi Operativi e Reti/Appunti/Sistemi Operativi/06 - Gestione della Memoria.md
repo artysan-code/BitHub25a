@@ -319,6 +319,11 @@ Le **librerie condivise** (*Dynamic Link Libraries*, DLL; in UNIX: file `.so`, *
 > Un processo può **mappare** un file nel proprio spazio di indirizzi virtuali. Alla mappatura **nessuna pagina** viene caricata subito: sono paginate su richiesta man mano che vengono "toccate". Quando il processo termina (o la mappatura è eliminata), tutte le pagine modificate vengono **riscritte sul file**.
 
 Offre un **modello di I/O alternativo**: si accede al file come a un grande array di caratteri in memoria. Se più processi mappano lo **stesso** file, possono **comunicare** attraverso questa memoria condivisa (le modifiche di uno sono immediatamente visibili agli altri).
+### Interfaccia della memoria virtuale
+Finora la memoria virtuale è stata **trasparente** al programmatore. Alcuni sistemi avanzati permettono invece ai processi di **controllare esplicitamente la propria mappa di memoria**, soprattutto per **condividere** regioni con altri processi: se un processo può *dare un nome* a una regione, può comunicarlo a un altro, che la mappa nel proprio spazio di indirizzi. Tre usi tipici:
+- **Memoria condivisa ad alta banda**: due processi mappano le **stesse pagine** — uno scrive, l'altro legge, senza copie intermedie. È la versione *esplicita* di quanto già visto coi [[#File mappati in memoria|file mappati]].
+- **Scambio di messaggi ad alte prestazioni**: invece di **copiare** il messaggio da uno spazio di indirizzi all'altro (costoso), il mittente *toglie* dalla propria mappa la pagina che lo contiene e il destinatario la *mappa* nella sua — il messaggio "passa" senza copia (cfr. [[04 - Sincronizzazione#Scambio di messaggi|scambio di messaggi]]).
+- **Distributed Shared Memory (DSM)**: estende l'idea **attraverso la rete** — più macchine condividono un unico spazio di indirizzi paginato; l'accesso a una pagina non presente in locale genera un fault che la **recupera dalla macchina remota**.
 ## Dettagli implementativi
 ### Attività del SO nella paginazione
 - **Creazione del processo**: determinare le dimensioni iniziali di programma e dati, creare e inizializzare la tabella delle pagine, allocare lo spazio di scambio su memoria non volatile, inizializzare l'area di scambio e registrare le informazioni nella tabella dei processi.

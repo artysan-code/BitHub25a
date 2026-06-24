@@ -134,6 +134,52 @@ Introdotti da **E. W. Dijkstra (1965)** per contare e gestire i wakeup. Un semaf
 > down(&empty);   /* 2. verifica lo spazio — TROPPO TARDI */
 > ```
 > Supponiamo che il buffer sia **pieno** ($\text{empty} = 0$): il produttore acquisisce `mutex` (ora $= 0$), poi si blocca su `down(&empty)` perché il buffer è pieno. Il consumatore tenta `down(&mutex)` per prelevare un elemento, ma `mutex = 0` — va in sleep. Nessuno può proseguire: il produttore attende spazio, il consumatore attende il mutex, ma solo il consumatore potrebbe liberare spazio e solo il produttore potrebbe rilasciare il mutex. **Deadlock**. Lo stesso ragionamento vale per l'inversione nel consumatore (`down(&mutex)` prima di `down(&full)`).
+### I filosofi a cena
+Problema classico posto e risolto da **Dijkstra (1965)**, da allora banco di prova per ogni nuova primitiva di sincronizzazione. **Cinque filosofi** siedono a un tavolo circolare e alternano il **pensare** e il **mangiare**; per mangiare servono **due forchette** (sinistra e destra), ma fra ogni coppia di piatti c'è **una sola forchetta** condivisa coi vicini. Obiettivo: farli mangiare senza che restino bloccati per sempre.
+La soluzione "ovvia" — *prendi la forchetta sinistra, poi la destra* — è **sbagliata**:
+
+> [!warning] Deadlock e starvation
+> - Se **tutti** afferrano la forchetta sinistra nello stesso istante, nessuno può prendere la destra: **deadlock**.
+> - Variante "se la destra è occupata, posa la sinistra e riprova": se i filosofi restano sincronizzati prendono-posano all'infinito senza progredire — **starvation** (*livelock*). Aspettare un tempo **casuale** riduce il rischio (è ciò che fa Ethernet con le collisioni), ma non lo elimina: inaccettabile dove serve garanzia (es. il controllo di un impianto nucleare).
+
+Una soluzione corretta ma **senza parallelismo** è racchiudere l'intera fase in un **mutex**: mangia un filosofo per volta. La soluzione di Tanenbaum permette invece il **massimo parallelismo** (due filosofi non vicini mangiano insieme) usando un **array di stati** + **un semaforo per filosofo**:
+```c
+#define N 5
+#define LEFT  (i+N-1)%N        /* vicino di sinistra di i */
+#define RIGHT (i+1)%N          /* vicino di destra di i   */
+#define THINKING 0
+#define HUNGRY   1
+#define EATING   2
+typedef int sema;
+int  state[N];                 /* stato di ogni filosofo        */
+sema mutex = 1;                /* protegge l'array state[]      */
+sema s[N];                     /* un semaforo per filosofo (init 0) */
+
+void philosopher(int i){
+    while(TRUE){ think(); take_forks(i); eat(); put_forks(i); }
+}
+void take_forks(int i){
+    down(&mutex);
+    state[i] = HUNGRY;
+    test(i);                   /* prova a prendere le due forchette */
+    up(&mutex);
+    down(&s[i]);               /* si blocca se non le ha ottenute   */
+}
+void put_forks(int i){
+    down(&mutex);
+    state[i] = THINKING;
+    test(LEFT);                /* un vicino può mangiare adesso? */
+    test(RIGHT);
+    up(&mutex);
+}
+void test(int i){
+    if(state[i]==HUNGRY && state[LEFT]!=EATING && state[RIGHT]!=EATING){
+        state[i] = EATING;
+        up(&s[i]);             /* sblocca il filosofo i */
+    }
+}
+```
+Un filosofo passa a **EATING solo se nessuno dei due vicini sta mangiando**: il `mutex` protegge `state[]`, mentre il semaforo `s[i]` tiene bloccato il filosofo affamato finché le forchette non si liberano. Risultato: **niente deadlock né starvation**, con il massimo parallelismo possibile.
 ### Lettori e scrittori
 Regola base: in ogni istante sono ammessi **R lettori oppure 1 scrittore** (es. un database: molte letture simultanee, una sola scrittura). Il **primo** lettore blocca l'accesso agli scrittori (`down(&db)`), i successivi incrementano un contatore `rc`, l'**ultimo** lo rilascia (`up(&db)`).
 ```c

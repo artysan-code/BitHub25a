@@ -110,7 +110,7 @@ La memoria è organizzata in una **gerarchia**, con trade-off tra velocità, cap
 | Memoria centrale (RAM) | decine di ns | GB | sì |
 | Disco / SSD | µs–ms | TB | no |
 
-Le **cache** nascondono la latenza della RAM sfruttando la **località spaziale** (dati vicini) e **temporale** (dati usati di recente).
+Le **cache** nascondono la latenza della RAM scommettendo su due principi di **località**: **temporale** (un dato usato di recente sarà probabilmente riusato a breve) e **spaziale** (accedendo a un dato, è probabile accedere a quelli a esso vicini). Su questi due principi si fonda l'efficacia di qualsiasi cache.
 
 > [!info] I quattro problemi di gestione di una cache
 > Qualsiasi sistema di cache (non solo quella della CPU) deve risolvere quattro domande, che ritroveremo identiche negli [[06 - Gestione della Memoria#Algoritmi di sostituzione delle pagine|algoritmi di sostituzione delle pagine]] e nella [[07 - File System#Block cache buffer cache|block cache]]:
@@ -119,7 +119,7 @@ Le **cache** nascondono la latenza della RAM sfruttando la **località spaziale*
 > 3. **Quale elemento rimuovere** quando serve liberare uno slot?
 > 4. **Dove** mettere nella memoria più grande l'elemento appena rimosso?
 
-La **MMU (Memory Management Unit)** traduce gli indirizzi **virtuali** in **fisici**, abilita la [[06 - Gestione della Memoria|memoria virtuale]] e protegge lo spazio di indirizzi di ogni processo; usa il **TLB** come cache delle traduzioni.
+La **MMU (Memory Management Unit)** traduce gli indirizzi **virtuali** in **fisici**, abilita la [[06 - Gestione della Memoria|memoria virtuale]] e protegge lo spazio di indirizzi di ogni processo. Per non rifare ogni volta la stessa traduzione, si appoggia al **TLB (Translation Lookaside Buffer)**: una piccola cache che conserva le traduzioni indirizzo→pagina più recenti, così la MMU le riusa invece di ricalcolarle (approfondito in [[06 - Gestione della Memoria]]).
 ### Dischi e memoria di massa
 - **HDD (Hard Disk Drive)**: piatti magnetici rotanti, testine su braccio mobile. Tempo di accesso = *seek time* + *rotational delay* + *transfer time*. Organizzazione in tracce, settori, cilindri.
 - **SSD (Solid State Drive)**: memoria flash NAND, nessuna parte mobile, molto più veloce negli accessi casuali; richiede **wear leveling**.

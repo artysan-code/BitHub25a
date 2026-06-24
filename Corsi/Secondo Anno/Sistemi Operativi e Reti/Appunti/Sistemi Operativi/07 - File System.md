@@ -432,6 +432,20 @@ La coerenza è cruciale per l'integrità dei dati; problemi sorgono dopo un **cr
 > - **(a) Blocco mancante**: un blocco non appare in nessuna delle due tabelle → viene **aggiunto alla lista dei blocchi liberi**.
 > - **(b) Blocco duplicato nella lista dei liberi**: un blocco compare più volte tra i liberi → la lista viene **deduplicata**.
 > - **(c) Blocco di dati presente in più file**: un blocco risulta assegnato a due file distinti → il blocco viene **copiato** e ciascun file riceve la propria copia, segnalando all'utente che uno dei due è probabilmente corrotto.
+### File system strutturati a log (LFS)
+Approccio nato dalla ricerca di **Berkeley** (Rosenblum & Ousterhout, 1991) da un'osservazione: i dischi crescono in capacità ma il **tempo di ricerca resta quasi invariato**, e le cache, sempre più grandi, assorbono gran parte delle **letture**. Conseguenza: la maggioranza degli accessi al disco diventa in **scrittura**, e le **scritture piccole** sono inefficientissime (pochi byte preceduti da ~10 ms di *seek* + ~4 ms di rotazione → efficienza del disco sotto l'**1%**).
+> [!quote] Definizione — Log-Structured File System (LFS)
+> File system che struttura l'**intero disco come un unico log circolare**. Tutte le scritture (i-node, blocchi di directory, blocchi dati) sono **bufferizzate in memoria** e scaricate periodicamente in un **singolo segmento contiguo** (~1 MB) accodato alla **fine del log**, sfruttando quasi tutta la banda del disco. Ogni segmento inizia con un **segment summary** che ne descrive il contenuto.
+
+Gli i-node non stanno più in posizione fissa ma **sparsi nel log**: per ritrovarli si usa una **mappa degli i-node** (indicizzata per *i-number*, tenuta su disco e in cache). Aprire un file = consultare la mappa → i-node → blocchi.
+> [!info] Il thread *cleaner* (pulitore)
+> Il disco è finito: il log finirebbe per riempirlo e i blocchi **sovrascritti** restano a occupare spazio morto. Un thread **cleaner** scandisce il log in modo circolare: legge il *summary* di un segmento, verifica con la mappa quali i-node/blocchi sono **ancora validi**, sposta quelli vivi nel segmento successivo e marca il vecchio segmento come **libero**. Il disco diventa così un **grande buffer circolare**: il thread scrivente accoda nuovi segmenti in testa, il cleaner libera i vecchi dal retro.
+
+Risultato: l'LFS supera UNIX di **un ordine di grandezza** sulle piccole scritture, con prestazioni pari o migliori su letture e scritture grandi.
+> [!warning] LFS ≠ journaling
+> Sono entrambi "log", ma diversi — da non confondere:
+> - nel **journaling** il file system tradizionale resta, e il log è un'**aggiunta** dove si annotano le operazioni *prima* di eseguirle (per recuperare dopo un crash);
+> - nell'**LFS** il log **è** il file system: non esiste una struttura separata, il disco intero *è* il log.
 ### Journaling
 > [!quote] Definizione — Journaling
 > Un file system con **journaling** registra **anticipatamente** in un **log (journal)** le operazioni da eseguire, per garantire la coerenza in caso di crash. Il journal è come un **registro che tiene traccia delle modifiche prima che avvengano effettivamente**. Usato in **NTFS**, **ext4**, **ReiserFS**; default in macOS.

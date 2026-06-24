@@ -3,13 +3,25 @@ Il sistema operativo offre le proprie funzionalità — i **servizi** (es. *File
 ## System call (chiamate di sistema)
 Le **system call** sono l'interfaccia con cui un processo in [[01 - Introduzione ai Sistemi Operativi#Modalità kernel e modalità utente|modalità utente]] richiede un servizio al kernel. Il meccanismo è **specifico** del SO e dell'hardware, perciò viene **incapsulato** in una libreria: in UNIX la **libreria C** (`libc`, basata su POSIX) esporta una procedura per ogni chiamata di sistema.
 ### Meccanismo: i passi di una system call
-Esempio: `read(fd, buffer, nbytes)`.
-1. **Preparazione parametri** (user space): il chiamante mette i parametri nei **registri** (`RDI`, `RSI`, `RDX`) o sullo stack.
-2. **Chiamata alla procedura di libreria** `read()` della `libc`.
-3. La libreria mette il **numero della system call** in un registro (`RAX`) — indice nella *tabella delle system call* del kernel.
-4. **Istruzione TRAP** (`SYSCALL` su x86-64): commuta in **modalità kernel**. È simile a una chiamata di procedura ma *cambia modalità* e può saltare solo a indirizzi controllati.
-5. Il kernel identifica la chiamata da `RAX`, **valida i parametri** ed esegue il gestore (es. legge dal file descriptor).
-6. **Ritorno** alla procedura di libreria e quindi al programma, all'istruzione successiva alla TRAP.
+Dal punto di vista del programmatore una system call **sembra** una normale chiamata di funzione (`read(...)`), ma sotto c'è un passaggio in più: la funzione di libreria è solo un **involucro sottile** che prepara i dati ed esegue una **TRAP**, l'unica istruzione capace di portare la CPU in [[01 - Introduzione ai Sistemi Operativi#Modalità kernel e modalità utente|modalità kernel]]. Il codice utente non può "saltare" nel kernel di sua iniziativa: deve passare per la trap, che entra solo in punti controllati.
+
+> [!info] I tre livelli attraversati
+> **Applicazione** → *function call* → **libreria (`libc`)** → *system call / TRAP* → **kernel (SO)** → **hardware** (CPU, memoria, periferiche).
+> La libreria fa da ponte: l'applicazione chiama una funzione comoda e portabile (basata su POSIX), la `libc` si occupa dei dettagli — dipendenti dal SO e dall'hardware — per entrare nel kernel. È questo che rende il codice C portabile tra UNIX diversi.
+
+Esempio: `read(fd, buffer, nbytes)`. Il diagramma del corso (figura di Tanenbaum) scompone la chiamata in **11 passi**; la colonna *modalità* mostra dove avviene ciascuno e dove si attraversa la barriera utente↔kernel:
+
+| # | Cosa succede | Modalità |
+|---|---|---|
+| 1–3 | Il chiamante colloca i parametri `fd`, `&buffer`, `nbytes` nei **registri** (`RDI`, `RSI`, `RDX`) o sullo **stack** se sono troppi | utente |
+| 4 | Chiama la procedura di libreria `read()` della `libc` (ancora una normale chiamata di funzione) | utente |
+| 5 | La `libc` mette il **numero** della system call in `RAX` — l'indice che identifica *quale* gestore del kernel eseguire | utente |
+| 6 | Esegue l'istruzione **TRAP** (`SYSCALL` su x86-64): commuta in modalità kernel; è come una call ma *cambia modalità* e può saltare solo a indirizzi controllati | utente → kernel |
+| 7 | **Dispatch**: il kernel usa il numero in `RAX` per indicizzare la **tabella delle system call** e trovare il gestore corrispondente | kernel |
+| 8 | Esegue il **gestore**: valida i parametri e svolge il servizio (qui: legge dal file descriptor) | kernel |
+| 9 | Il controllo torna alla procedura di libreria, all'istruzione **successiva alla TRAP** | kernel → utente |
+| 10 | La libreria **ritorna** al programma, che prosegue come dopo una normale chiamata | utente |
+| 11 | Il programma **ripulisce lo stack** (incremento dello Stack Pointer), come dopo ogni chiamata di funzione | utente |
 
 > [!warning] La chiamata può bloccare
 > Se il dato richiesto non è disponibile, la system call **blocca** il processo: il SO ne esegue altri e riprende il chiamato quando la condizione è soddisfatta. Lo stato di blocco è gestito dallo [[05 - Scheduling|scheduler]].
@@ -28,6 +40,25 @@ Esempio: `read(fd, buffer, nbytes)`.
 | `pid = waitpid(pid, &statloc, options)` | Attende la terminazione di un figlio         |
 | `s = execve(name, argv, environp)`      | Sostituisce l'immagine del processo          |
 | `exit(status)`                          | Termina il processo e restituisce lo stato   |
+
+> [!info] Come funziona `fork()`: duplicazione e doppio ritorno
+> `fork()` **non avvia un altro programma**: **duplica** il processo che la chiama. Subito dopo esistono **due processi** quasi identici — il **padre** (l'originale) e il **figlio** (la copia) — che eseguono lo **stesso codice** e proseguono **entrambi dalla riga successiva** alla `fork()`, come se il programma venisse eseguito due volte in parallelo.
+> Per far fare loro cose diverse (il sorgente è uno solo) si usa il **valore restituito**, diverso nei due processi:
+> - nel **figlio** vale `0`;
+> - nel **padre** vale il **PID del figlio** (> 0);
+> - vale `-1` se la creazione fallisce (nessun figlio creato; causa leggibile da `errno`).
+>
+> ```c
+> pid_t pid = fork();
+> if (pid == 0) {
+>     /* lo esegue SOLO il figlio */
+> } else if (pid > 0) {
+>     /* lo esegue SOLO il padre — pid è il PID del figlio */
+> } else {
+>     /* errore: fork fallita */
+> }
+> ```
+> Quindi `pid` non è "il proprio identificatore", ma il modo per sapere **in quale dei due processi mi trovo**. Per il PID vero ci sono `getpid()` (il proprio) e `getppid()` (quello del padre). Il flusso completo padre-figlio è in [[03 - Processi e Thread]] e, lato programmazione C, in [[10 - Programmazione C e Concorrente]].
 
 **Gestione dei file** (vedi [[07 - File System]]):
 
@@ -60,28 +91,28 @@ Esempio: `read(fd, buffer, nbytes)`.
 | `s = kill(pid, signal)` | Invia un **segnale** a un processo (non lo "uccide" e basta!) |
 | `s = time(&seconds)` | Secondi trascorsi dal 1° gennaio 1970 |
 
-Convenzioni: `s = -1` indica errore; `pid` = id processo; `fd` = file descriptor; `n` = numero di byte.
+Convenzioni dei valori di ritorno: `pid` = id processo, `fd` = file descriptor, `n` = numero di byte, `s` = esito. Quasi tutte le call ritornano **-1 in caso di errore** — impostando la variabile globale `errno`, che `perror()` traduce in un messaggio leggibile — e `0` o un valore utile in caso di successo (`open` → un `fd ≥ 0`; `read` → byte letti, `0` a fine file; `lseek` → la nuova posizione). Tre **eccezioni** da ricordare: `fork()` ritorna **due volte** (riquadro sopra); `execve()` **non ritorna** se ha successo — l'immagine del processo è stata sostituita — e dà `-1` solo su errore (mnemonico: *se `execve` ritorna, è andata male*); `exit()` **non ritorna mai**, perché termina il processo (lo `status`, 0–255, lo raccoglie il padre con `waitpid`).
 ### API Win32 di Windows
 Windows offre API equivalenti (non identiche) alle system call UNIX:
 
-| UNIX | Win32 | Note |
-|------|-------|------|
-| `fork` | `CreateProcess` | `CreateProcess` = `fork` + `execve` |
-| `waitpid` | `WaitForSingleObject` | Attende un processo |
-| `execve` | (nessuna) | `CreateProcess` assorbe già `execve` |
-| `exit` | `ExitProcess` | Termina il processo |
-| `open`/`close` | `CreateFile`/`CloseHandle` | |
-| `read`/`write` | `ReadFile`/`WriteFile` | |
-| `lseek` | `SetFilePointer` | |
-| `stat` | `GetFileAttributesEx` | Ottiene attributi del file |
-| `mkdir`/`rmdir` | `CreateDirectory`/`RemoveDirectory` | |
-| `unlink` | `DeleteFile` | |
-| `link` | (nessuna) | Win32 non supporta i link |
-| `mount`/`umount` | (nessuna) | Win32 non supporta `mount` |
-| `chdir` | `SetCurrentDirectory` | |
-| `chmod` | (nessuna) | Win32 non supporta i permessi POSIX (NT ha ACL proprie) |
-| `kill` | (nessuna) | Win32 non supporta i segnali |
-| `time` | `GetLocalTime` | Ora locale di sistema |
+| UNIX             | Win32                               | Note                                                    |
+| ---------------- | ----------------------------------- | ------------------------------------------------------- |
+| `fork`           | `CreateProcess`                     | `CreateProcess` = `fork` + `execve`                     |
+| `waitpid`        | `WaitForSingleObject`               | Attende un processo                                     |
+| `execve`         | (nessuna)                           | `CreateProcess` assorbe già `execve`                    |
+| `exit`           | `ExitProcess`                       | Termina il processo                                     |
+| `open`/`close`   | `CreateFile`/`CloseHandle`          |                                                         |
+| `read`/`write`   | `ReadFile`/`WriteFile`              |                                                         |
+| `lseek`          | `SetFilePointer`                    |                                                         |
+| `stat`           | `GetFileAttributesEx`               | Ottiene attributi del file                              |
+| `mkdir`/`rmdir`  | `CreateDirectory`/`RemoveDirectory` |                                                         |
+| `unlink`         | `DeleteFile`                        |                                                         |
+| `link`           | (nessuna)                           | Win32 non supporta i link                               |
+| `mount`/`umount` | (nessuna)                           | Win32 non supporta `mount`                              |
+| `chdir`          | `SetCurrentDirectory`               |                                                         |
+| `chmod`          | (nessuna)                           | Win32 non supporta i permessi POSIX (NT ha ACL proprie) |
+| `kill`           | (nessuna)                           | Win32 non supporta i segnali                            |
+| `time`           | `GetLocalTime`                      | Ora locale di sistema                                   |
 ### Costo delle system call
 Una system call è **costosa**: richiede un cambio di contesto user↔kernel, salvataggio/ripristino dei registri, validazione dei parametri ed eventuale blocco del chiamante. Per questo si tende a minimizzarne il numero (es. I/O bufferizzato).
 
@@ -110,16 +141,28 @@ I file sono raccolti in **directory** (a loro volta file). Filosofia UNIX: **"ev
 > [!example] File system di un dipartimento universitario
 > La radice contiene due directory di primo livello: `Students/` (con sottodirectory per studente: `Robbert/`, `Matty/`, `Leo/`) e `Faculty/` (con sottodirectory per docente: `Prof.Brown/`, `Prof.Green/`, `Prof.White/`). A sua volta `Prof.Brown/` contiene `Papers/`, `Grants/`, `Committees/`; `Prof.Green/` contiene `Courses/` (con `CS101/`, `CS105/`). Ogni sottoalbero è indipendente: aggiungere un professore significa creare una nuova directory sotto `Faculty/` senza toccare il resto.
 ### Diritti di accesso
-I file sono protetti da **tuple di 3 bit** per **owner**, **group** e **others**: **r**ead, **w**rite, e**x**ecute.
+Ogni file o directory ha **un proprietario** (*owner*) e **un gruppo** (*group*); i permessi si esprimono con **tre tuple da 3 bit** che dicono *cosa può fare* ciascuna categoria di utente. Attenzione: `owner`/`group`/`others` **non** sono parti del file, ma indicano **chi** vi accede:
+- **owner**: l'utente che possiede il file/directory;
+- **group**: gli utenti che appartengono al suo gruppo;
+- **others**: tutti gli altri.
+
+I tre bit sono **r**ead, **w**rite, e**x**ecute, ma il loro significato **cambia tra file e directory**:
+
+| | `r` | `w` | `x` |
+|---|---|---|---|
+| **File** | leggere il contenuto | modificarne il contenuto | eseguirlo come programma |
+| **Directory** | elencarne i nomi (`ls`) | creare/rinominare/eliminare voci | **attraversarla**: entrarci (`cd`) e accedere ai file dentro |
 
 ```
 -rwxr-x--x  myuser mygroup ...  myfile
 ```
 Owner `rwx` (legge, scrive, esegue), group `r-x` (legge, esegue), others `--x` (solo esegue).
+In **notazione ottale** ogni tupla è la somma dei suoi bit — **`r`=4, `w`=2, `x`=1** — quindi `rwx`=7, `rw-`=6, `r-x`=5, `r--`=4. È così che si leggono i numeri di `chmod`: `755`=`rwxr-xr-x`, `644`=`rw-r--r--`.
 
 > [!example] Permessi in pratica — `chmod 744` e `chmod 644`
 > `chmod 744 os/hello.sh` → `rwxr--r--`: owner può eseguire, group e others solo leggere.
 > `chmod 644 os/` → `rw-r--r--` sulla **directory**: rimuove il bit execute (`x`) dalla directory, rendendo impossibile attraversarla (*traversal*) o accedere ai file al suo interno — anche se i file stessi avessero i permessi giusti. Creare file, listare con `ls` e aprire file nella directory richiedono tutti che `x` sia impostato sulla directory.
+> Per una directory funzionante si usa di norma **`755`** (`rwxr-xr-x`): qui `644` è mostrato apposta come esempio di cosa la *rompe* (toglie `x`, cioè l'attraversabilità).
 ### File speciali e pipe
 In UNIX i dispositivi sono astratti come file:
 - **Block special files**: dispositivi a blocchi (dischi), es. `/dev/sda2`.
@@ -155,7 +198,12 @@ La **protezione** è il meccanismo con cui il SO controlla l'accesso a risorse e
 > }
 > ```
 
-Ogni processo eredita dalla shell tre **stream standard**, identificati da un **file descriptor** intero — lo stesso tipo restituito da `open()` e usato da `read()`/`write()` (vedi [[#Categorie principali di system call POSIX|system call POSIX]]): **stdin** (fd 0), **stdout** (fd 1), **stderr** (fd 2). Su questi tre fd la shell costruisce la **redirezione** (`>`, `2>`, `|`): tra `fork` ed `execve` cambia *dove puntano* prima di avviare il programma, in modo trasparente al programma stesso. Il meccanismo completo, con tabelle ed esempi, è in [[09 - Linux e BASH|Redirezione e pipe]].
+Ogni processo eredita dalla shell tre **stream standard** (i canali di I/O predefiniti), ciascuno identificato da un **file descriptor** intero — lo stesso tipo di numero restituito da `open()` e usato da `read()`/`write()` (vedi [[#Categorie principali di system call POSIX|system call POSIX]]):
+- **stdin** — *standard input*, **fd 0**: da dove il programma **legge** (di default la tastiera);
+- **stdout** — *standard output*, **fd 1**: dove scrive l'**output** normale (di default lo schermo);
+- **stderr** — *standard error*, **fd 2**: dove scrive i **messaggi d'errore** (di default lo schermo, ma separabile dall'output).
+
+Su questi tre fd la shell costruisce la **redirezione** (`>`, `2>`, `|`): tra `fork` ed `execve` cambia *dove puntano* prima di avviare il programma, in modo trasparente al programma stesso. Il meccanismo completo, con tabelle ed esempi, è in [[09 - Linux e BASH|Redirezione e pipe]].
 ## Strutture del sistema operativo
 Come è organizzato *internamente* il SO. Ogni struttura ha un compromesso fra prestazioni, robustezza e manutenibilità.
 ### Sistemi monolitici
@@ -200,14 +248,14 @@ Il risultato è che si ottengono **N interfacce di system call indipendenti dal 
 > [!info] Container — diversi dalle VM
 > I **container** (Docker, LXC, Podman, Kubernetes) condividono il **kernel dell'host** e isolano a livello di **processo**: niente SO completo dentro, quindi leggeri e ad avvio rapido. Limite: non possono eseguire un kernel diverso da quello dell'host e non c'è partizionamento rigido delle risorse come nelle VM.
 
-| Caratteristica | Virtual Machine (VM) | Container |
-|---|---|---|
-| **Kernel** | ogni VM ha il proprio kernel | condividono il kernel dell'host |
-| **Peso** | pesanti (OS completo) | leggeri (solo app + dipendenze) |
-| **Avvio** | lento (minuti) | rapido (secondi) |
-| **Isolamento** | molto forte | più debole (a livello di processo) |
-| **Compatibilità OS** | può eseguire OS diversi | deve usare lo stesso kernel dell'host |
-| **Uso tipico** | sistemi legacy, ambienti multipli | microservizi, app cloud-native |
+| Caratteristica       | Virtual Machine (VM)              | Container                             |
+| -------------------- | --------------------------------- | ------------------------------------- |
+| **Kernel**           | ogni VM ha il proprio kernel      | condividono il kernel dell'host       |
+| **Peso**             | pesanti (OS completo)             | leggeri (solo app + dipendenze)       |
+| **Avvio**            | lento (minuti)                    | rapido (secondi)                      |
+| **Isolamento**       | molto forte                       | più debole (a livello di processo)    |
+| **Compatibilità OS** | può eseguire OS diversi           | deve usare lo stesso kernel dell'host |
+| **Uso tipico**       | sistemi legacy, ambienti multipli | microservizi, app cloud-native        |
 
 > [!example] Domande tipiche d'esame
 > - **D:** Cos'è una macchina virtuale e che differenza c'è tra hypervisor **Type 1** e **Type 2**? **R:** Una VM è la copia virtuale dell'hardware su cui può girare un intero SO isolato; l'hypervisor (VMM) emula l'hardware. **Type 1 (bare metal)**: l'hypervisor gira direttamente sull'hardware (VMware ESXi, Xen, Hyper-V). **Type 2 (hosted)**: gira sopra un SO host (VirtualBox, QEMU).

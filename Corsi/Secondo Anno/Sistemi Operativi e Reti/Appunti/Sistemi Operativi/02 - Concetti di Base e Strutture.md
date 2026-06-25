@@ -173,7 +173,7 @@ In **notazione ottale** ogni tupla è la somma dei suoi bit — **`r`=4, `w`=2, 
 
 > [!info] Mettiti alla prova
 > - **Comando:** crea un file di test e prova `chmod`, `ls -l`, `stat` nel terminale, verificando i bit `rwx` ↔ notazione ottale (`755`, `644`).
-> - **Teorico:** permessi e comandi sono svolti in [[04 - Linux e BASH]] (Esercizi Teorici) e approfonditi in [[09 - Linux e BASH]].
+> - **Teorico:** permessi e comandi sono svolti in [[09 - Linux e BASH (Esercizi)]] e approfonditi in [[09 - Linux e BASH]].
 ### File speciali e pipe
 In UNIX i dispositivi sono astratti come file:
 - **Block special files**: dispositivi a blocchi (dischi), es. `/dev/sda2`.

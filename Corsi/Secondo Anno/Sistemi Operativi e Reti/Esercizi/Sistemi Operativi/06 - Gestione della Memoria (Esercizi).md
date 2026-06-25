@@ -103,6 +103,7 @@ Totale: **9 page fault** (e 3 hit). Al riferimento `3` la lancetta parte dallo s
 ## Es. 7 — Aging (NFU con scorrimento)
 > [!quote] Consegna
 > Quattro pagine, contatori a **8 bit** inizializzati a 0. A ogni *tick* di clock il contatore diventa `(R << 7) | (contatore >> 1)` (si inserisce il bit R a **sinistra** dopo aver shiftato a destra). Dati i bit R sotto, calcolare i contatori dopo 5 tick e indicare la pagina da rimuovere.
+
 | Pagina | R ai tick 0–4 |
 |---|---|
 | 0 | 1 0 1 0 0 |
@@ -133,7 +134,27 @@ Ogni richiesta è arrotondata alla **potenza di 2** ≥ richiesta; un blocco si 
 | **D=16** | usa il 32: divide 32→16: `[A:8][B:8][C:4][4][D:16][16]` |
 | **libera B** | `[A:8][8][C:4][4][D:16][16]` — il buddy di B (dove sta A) è **occupato** → nessuna fusione |
 | **libera A** | A e il blocco da 8 adiacente sono **buddy entrambi liberi** → fusione in `[16]`: `[16][C:4][4][D:16][16]` |
+
 > [!note] Frammentazione interna del buddy
 > Una richiesta di 5 KB occuperebbe un blocco da **8 KB** (potenza di 2 successiva), sprecando 3 KB: è la **frammentazione interna**. È il motivo per cui Linux mette lo **SLAB allocator** sopra il buddy, per ritagliare oggetti piccoli dentro i blocchi. Vedi [[06 - Gestione della Memoria#Buddy allocation (Linux)]].
+## Es. 9 — Page table a due livelli: scomposizione dell'indirizzo
+> [!quote] Consegna
+> Sistema a **32 bit**, pagine da **4 KB**, page table a **due livelli** con $10 + 10 + 12$ bit (`PT1` | `PT2` | offset). Scomporre l'indirizzo virtuale $\text{VA} = \mathtt{0x00403004}$ in indice di primo livello, indice di secondo livello e offset, e descrivere il *page table walk*.
+**Maschere dei campi** (dai 32 bit, dall'alto): `PT1` = bit 31–22 (10 bit), `PT2` = bit 21–12 (10 bit), offset = bit 11–0 (12 bit). In binario $\mathtt{0x00403004} = \mathtt{0000000001\,0000000011\,000000000100}$:
+$$\text{offset} = \text{VA} \bmod 2^{12} = \mathtt{0x004} = 4; \quad \text{PT2} = \left\lfloor \frac{\text{VA}}{2^{12}} \right\rfloor \bmod 2^{10} = 3; \quad \text{PT1} = \left\lfloor \frac{\text{VA}}{2^{22}} \right\rfloor = 1.$$
+**Page table walk** della [[06 - Gestione della Memoria|MMU]]:
+1. legge la voce **1** della directory di primo livello → ottiene l'indirizzo della tabella di secondo livello;
+2. in quella tabella legge la voce **3** → ottiene il numero di frame fisico;
+3. concatena `frame × 4096 + offset` (l'**offset 4** resta invariato, come nell'[[#Es. 1 — Traduzione indirizzo virtuale → fisico|Es. 1]]).
+> [!check] Verifica e vantaggio
+> Ricomponendo: $(1 \ll 22) \,|\, (3 \ll 12) \,|\, 4 = \mathtt{0x00403004}$ ✓. Con due livelli si caricano **solo** le tabelle di secondo livello effettivamente usate: se un processo usa poca memoria, la gran parte delle $2^{10}$ tabelle di 2° livello non viene mai allocata (vedi [[#Es. 2 — Dimensione della page table|Es. 2]]).
+## Da svolgere
+Esercizi senza soluzione. Equivalenze: $4\,\text{KB} = 2^{12}$, $1\,\text{GB} = 2^{30}$, $1\,\text{TB} = 2^{40}$. Teoria in [[06 - Gestione della Memoria]].
+> [!todo] Da svolgere
+> 1. **Traduzione con page fault.** Spazio virtuale a **16 bit**, pagine da **2 KB**. Page table: pagina 0→frame 4, pagina 1→frame 7, pagina 3→frame 2, pagina 5→assente. Traduci gli indirizzi virtuali $100$, $2148$, $7000$, $10300$; segnala i page fault.
+> 2. **EAT con TLB a 3 livelli.** TLB $1\,\text{ns}$, RAM $80\,\text{ns}$, hit ratio $95\%$, page table a **3 livelli**. Calcola l'[[#Es. 3 — Tempo di accesso effettivo (EAT) con TLB|EAT]].
+> 3. **LRU vs Ottimale.** Stringa `1 2 3 4 1 2 5 1 2 3 4 5` con **4 frame**: conta i page fault con **LRU** e con **Ottimale** e confronta (riusa la tecnica dell'[[#Es. 4 — Simulazione algoritmi di sostituzione (FIFO, LRU, Ottimale)|Es. 4]]).
+> 4. **Working set / thrashing.** Spiega cosa accade quando la somma dei working set dei processi supera i frame disponibili. Cos'è il *thrashing* e come lo si mitiga?
+> 5. **Buddy.** Memoria da **128 KB**: servi A = 10 KB, B = 30 KB, C = 12 KB, poi libera A; mostra divisioni, taglie arrotondate e frammentazione interna (riusa l'[[#Es. 8 — Buddy allocation|Es. 8]]).
 ---
-**Teoria di riferimento:** [[06 - Gestione della Memoria]] · **Altri esercizi svolti:** [[01 - Scheduling]] · [[03 - File System]] · [[04 - Linux e BASH]]
+**Teoria di riferimento:** [[06 - Gestione della Memoria]] · **Indice di tutti gli esercizi:** [[Indice degli Esercizi]]

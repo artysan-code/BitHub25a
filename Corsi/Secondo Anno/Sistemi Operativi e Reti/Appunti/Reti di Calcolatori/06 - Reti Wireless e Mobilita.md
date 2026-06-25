@@ -1,7 +1,7 @@
 # Reti Wireless e Mobilita
 Le reti wireless e la gestione della mobilità costituiscono il capitolo conclusivo del modello a strati analizzato in questo modulo. Dopo aver studiato i protocolli dal livello di applicazione ([[02 - Livello di Applicazione]]) fino al livello di collegamento ([[05 - Livello di Collegamento]]), questa nota affronta le peculiarità dei canali radio e la sfida di mantenere la connettività quando un host si sposta tra punti di aggancio diversi — problema che le reti cablate non devono affrontare.
 ## Contesto e componenti di una rete wireless
-Nel 2019 si contavano già 10 abbonati wireless ogni abbonato fisso, e 5 dispositivi a banda larga mobile ogni dispositivo fisso. Le reti 4G/5G abbracciano oggi lo stack Internet completo, compreso l'uso di [[04 - Livello di Rete#SDN|SDN]].
+Nel 2019 si contavano già 10 abbonati wireless ogni abbonato fisso, e 5 dispositivi a banda larga mobile ogni dispositivo fisso. Le reti 4G/5G abbracciano oggi lo stack Internet completo, compreso l'uso di [[04 - Livello di Rete#Piano di controllo SDN|SDN]].
 
 > [!quote] Definizione — Wireless e Mobilità
 > **Wireless** indica la comunicazione tramite collegamento radio; **mobilità** indica la gestione dell'utente che cambia punto di aggancio alla rete spostandosi. I due problemi sono distinti: un host può essere wireless senza essere mobile, e un host mobile può temporaneamente non usare un collegamento wireless.
@@ -50,7 +50,7 @@ Il livello fisico si adatta **dinamicamente** (cambio di tecnica di modulazione)
 | QAM16 | 4 Mbps |
 | QAM256 | 8 Mbps |
 ### Problema del terminale nascosto
-Due nodi A e C non si "vedono" tra loro ma trasmettono entrambi verso B: l'interferenza avviene presso B senza che A e C lo sappiano. Anche l'attenuazione può causare terminali nascosti: A e C sono fuori raggio l'uno dell'altro ma entrambi nel raggio di B. Questo problema rende impossibile il rilevamento delle collisioni tipico di CSMA/CD (vedi [[05 - Livello di Collegamento#CSMA/CD|CSMA/CD in Ethernet]]) e motiva l'uso di CSMA/CA nel WiFi.
+Due nodi A e C non si "vedono" tra loro ma trasmettono entrambi verso B: l'interferenza avviene presso B senza che A e C lo sappiano. Anche l'attenuazione può causare terminali nascosti: A e C sono fuori raggio l'uno dell'altro ma entrambi nel raggio di B. Questo problema rende impossibile il rilevamento delle collisioni tipico di CSMA/CD (vedi [[05 - Livello di Collegamento#CSMA/CD (CSMA with Collision Detection)|CSMA/CD in Ethernet]]) e motiva l'uso di CSMA/CA nel WiFi.
 ## WiFi: 802.11 Wireless LAN
 ### Standard 802.11
 Lo standard IEEE 802.11 definisce una famiglia di specifiche per le reti locali wireless. Tutti gli standard usano **CSMA/CA** per l'accesso multiplo e supportano sia la modalità infrastruttura sia quella ad hoc.
@@ -254,7 +254,7 @@ Come WiFi e LTE, i device Bluetooth possono mettere la radio in **sleep mode** p
 ## Impatto della mobilità sui protocolli di livello superiore
 Il modello best effort di Internet rimane inalterato: TCP e UDP funzionano su reti wireless e mobili. L'impatto si avverte sulle prestazioni:
 - Perdita di pacchetti per handover e per BER elevato → ritrasmissioni.
-- **TCP interpreta la perdita wireless come congestione** e riduce inutilmente la finestra di congestione (vedi [[03 - Livello di Trasporto#Controllo della congestione|controllo della congestione TCP]]).
+- **TCP interpreta la perdita wireless come congestione** e riduce inutilmente la finestra di congestione (vedi [[03 - Livello di Trasporto#Controllo della congestione TCP|controllo della congestione TCP]]).
 - Il traffico in tempo reale è danneggiato dai ritardi da handover.
 - La larghezza di banda wireless è una **risorsa scarsa** (canale condiviso): le applicazioni devono tenerne conto.
 

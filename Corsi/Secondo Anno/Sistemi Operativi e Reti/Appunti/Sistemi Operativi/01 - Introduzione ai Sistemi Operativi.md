@@ -117,7 +117,7 @@ La memoria è organizzata in una **gerarchia**, con trade-off tra velocità, cap
 Le **cache** nascondono la latenza della RAM scommettendo su due principi di **località**: **temporale** (un dato usato di recente sarà probabilmente riusato a breve) e **spaziale** (accedendo a un dato, è probabile accedere a quelli a esso vicini). Su questi due principi si fonda l'efficacia di qualsiasi cache.
 
 > [!info] I quattro problemi di gestione di una cache
-> Qualsiasi sistema di cache (non solo quella della CPU) deve risolvere quattro domande, che ritroveremo identiche negli [[06 - Gestione della Memoria#Algoritmi di sostituzione delle pagine|algoritmi di sostituzione delle pagine]] e nella [[07 - File System#Block cache buffer cache|block cache]]:
+> Qualsiasi sistema di cache (non solo quella della CPU) deve risolvere quattro domande, che ritroveremo identiche negli [[06 - Gestione della Memoria#Algoritmi di sostituzione delle pagine|algoritmi di sostituzione delle pagine]] e nella [[07 - File System#Block cache (buffer cache)|block cache]]:
 > 1. **Quando** inserire un nuovo elemento nella cache?
 > 2. **In quale riga** della cache inserirlo?
 > 3. **Quale elemento rimuovere** quando serve liberare uno slot?

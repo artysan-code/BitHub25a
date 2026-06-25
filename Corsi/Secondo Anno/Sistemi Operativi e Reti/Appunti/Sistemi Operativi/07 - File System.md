@@ -24,7 +24,7 @@ A basso livello un disco è una **sequenza lineare di blocchi di dimensione fiss
 > [!info] Roadmap — dove operano queste lezioni
 > Tra il programma utente e lo storage il SO impila più livelli:
 > - **Syscall** (`open`, `read`, `write`, `readdir`, …) ← interfaccia del programma utente.
-> - **Virtual File System (VFS)** ← strato comune che unifica i file system reali (vedi [[#File System virtuali VFS]]).
+> - **Virtual File System (VFS)** ← strato comune che unifica i file system reali (vedi [[#File system virtuali (VFS)]]).
 > - **Page cache** + driver specifici (FAT, NTFS, Ext4, …).
 > - **Buffer cache** ← blocchi del disco tenuti in RAM (vedi [[#Performance del file system]]).
 > - **Storage** (HDD, SSD, rete, RAM).
@@ -189,7 +189,7 @@ Un programma `11_show_dir_content.c` mostra informazioni dettagliate sui file (s
 ## Link e file condivisi
 - **`link`** — crea un **hard link**: collega un file esistente a un nuovo percorso **condividendone l'i-node**.
 - **`unlink`** — rimuove una voce di directory, cancellando il file solo se è l'**ultimo** link.
-- **Link simbolici (soft link)**: varianti che puntano al **nome** di un file (non all'i-node) e possono attraversare i confini del file system o macchine remote; più flessibili ma meno efficienti. Approfonditi in [[#File condivisi hard link e link simbolici]].
+- **Link simbolici (soft link)**: varianti che puntano al **nome** di un file (non all'i-node) e possono attraversare i confini del file system o macchine remote; più flessibili ma meno efficienti. Approfonditi in [[#File condivisi: hard link e link simbolici]].
 # Creazione di archivi
 Operazioni di livello utente per raggruppare e comprimere file. *(Argomento pratico, ripreso anche in [[09 - Linux e BASH]]; qui per completezza rispetto al file system.)*
 
@@ -609,7 +609,7 @@ In Linux **anche i dispositivi sono visti come file**. La gerarchia parte dalla 
 > Queste operazioni richiedono privilegi di root.
 # Collegamenti con altri argomenti
 > [!info] Mappa dei rimandi
-> - **Memoria virtuale e paginazione**: gli algoritmi di sostituzione della [[#Block cache buffer cache|block cache]] (FIFO, seconda chance, LRU) e la frammentazione interna/esterna sono trattati in [[06 - Gestione della Memoria]].
+> - **Memoria virtuale e paginazione**: gli algoritmi di sostituzione della [[#Block cache (buffer cache)|block cache]] (FIFO, seconda chance, LRU) e la frammentazione interna/esterna sono trattati in [[06 - Gestione della Memoria]].
 > - **I/O e storage fisico**: il comportamento di dischi e SSD (tempo di `seek`, ritardo di rotazione, **DMA**, buffer cache lato hardware) è nelle lezioni su [[08 - Input Output]].
 > - **Processi**: i descrittori di file e le syscall sono legati alla gestione dei [[03 - Processi e Thread|processi]].
 > - **Concetti di base**: il ruolo del file system come gestore di risorse è introdotto in [[02 - Concetti di Base e Strutture]].

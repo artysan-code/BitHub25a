@@ -60,7 +60,7 @@ Un solo thread alla volta può accedere al buffer (mutex); dopo ogni accesso att
 La sincronizzazione usa solo il mutex (senza `pthread_cond_t`): i thread di lettura fanno **busy-waiting** sul flag.
 **Soluzione svolta:** `Thread e Sincronizzazione/init_max_min_mutex.c`
 ## Thread — Semafori
-Le tracce di questa sezione usano [[04 - Sincronizzazione#Semafori|sem_t]] (POSIX, `<semaphore.h>`). Il semaforo binario sostituisce il mutex dove specificato; i semafori di conteggio (`full`/`empty`) realizzano lo schema **produttore–consumatore** classico (si veda [[04 - Sincronizzazione]]).
+Le tracce di questa sezione usano [[04 - Sincronizzazione#Semafori|sem_t]] (POSIX, `<semaphore.h>`). Il semaforo binario sostituisce il mutex dove specificato; i semafori di conteggio (`full`/`empty`) realizzano lo schema **produttore–consumatore** classico (si veda [[04 - Sincronizzazione#Semafori|04 - Sincronizzazione]]).
 ### TS1 — Produttore–consumatore con semafori (pari/dispari)
 **Consegna.** Buffer di $N$ elementi inizializzato a $-1$. Il **produttore** inserisce:
 - numeri dispari in $[1, 99]$ nelle posizioni dispari,

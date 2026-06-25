@@ -73,3 +73,16 @@ Il **consumatore** legge una coppia (posizione dispari, posizione pari), calcola
 - **Scrittore** — scrive in posizioni dispari numeri dispari in $[1, 49]$ e in posizioni pari numeri pari in $[52, 100]$. Accede al buffer con semaforo `arr` (mutua esclusione totale).
 - **Cinque lettori** — leggono coppie (posizione dispari, posizione pari), le sommano e stampano. Implementano lo schema **readers–writers**: più lettori possono leggere in contemporanea; il primo lettore acquisisce `arr`, l'ultimo lo rilascia (contatore `r_count` protetto da `mutex`).
 **Soluzione svolta:** `Thread e Sincronizzazione/readers_writers_pari_dispari.c`
+## Tracce da svolgere (senza soluzione)
+Tracce d'esercitazione **volutamente senza soluzione svolta**, per prepararsi alla prova pratica. Riusano gli stessi pattern delle sezioni precedenti; per il metodo vedi le schede in [[03 - Processi e Thread (Esercizi)#Soluzioni C — Processi (fork, pipe, segnali, file)|Processi]] e [[04 - Sincronizzazione (Esercizi)#Soluzioni C — Thread, mutex, condizioni, semafori|Thread e Sincronizzazione]].
+
+> [!todo] Processi (fork, pipe, segnali, file)
+> - **D1 — Minimo parallelo.** Due figli generano numeri casuali in $[0, 100]$ e li inviano al padre tramite pipe separate; il padre tiene traccia del **minimo** ricevuto finora e, quando riceve tre valori consecutivi $\geq 90$, termina i figli con `SIGTERM`. *(Pattern: fork + due pipe + segnali.)*
+> - **D2 — Conteggio parole su file.** Come [[#P1 — Conteggio occorrenze (fork + pipe + file)|P1]], ma i due figli contano il numero **totale di parole** (non di una specifica) in metà file ciascuno (`stat` + `lseek`); il padre somma e stampa. *(Pattern: fork + pipe + lseek + stat.)*
+> - **D3 — Filtro su directory.** Come [[#P4 — Lettura directory (dirent + readdir + permessi)|P4]], ma i figli inviano al padre **solo** i nomi dei file più grandi di $1\,\text{KB}$ (`stat` → `st_size`); il padre stampa l'elenco ordinato. *(Pattern: fork + readdir + stat + pipe.)*
+> - **D4 — `fork` + `exec`.** Scrivi una mini-shell: legge una riga da `stdin`, fa `fork`, nel figlio esegue il comando con `execvp`, il padre attende con `waitpid` e stampa il codice di uscita. *(Pattern: fork + exec + wait.)*
+
+> [!todo] Thread (mutex, variabili condizione, semafori)
+> - **D5 — Somma a blocchi (mutex).** $K$ thread sommano ciascuno una **porzione** di un array di $N$ interi in un accumulatore globale protetto da `mutex`; il `main` stampa la somma totale. Verifica che rimuovendo il `mutex` compaia una *race condition*.
+> - **D6 — Produttore–consumatore con `pthread_cond`.** Riscrivi [[#TS1 — Produttore–consumatore con semafori (pari/dispari)|TS1]] usando **mutex + due variabili condizione** (`not_full`, `not_empty`) invece dei semafori `empty`/`full`.
+> - **D7 — Barriera.** $N$ thread eseguono una fase 1, si **attendono a vicenda** su una barriera (`pthread_barrier_t` oppure mutex + cond + contatore), poi proseguono con la fase 2 solo quando tutti hanno finito la fase 1.

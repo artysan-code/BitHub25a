@@ -52,6 +52,7 @@ Quattro condizioni tipiche:
 > **D:** Cosa fa `fork()` e in che modo è usata con `exec`? **R:** `fork()` crea un nuovo processo figlio come clone "privato" del genitore: condividono il segmento di codice e le variabili d'ambiente ereditate, ma hanno spazi di indirizzi separati. Il valore di ritorno distingue padre (PID del figlio) da figlio (0). `exec` (nella forma `execve`) sostituisce poi l'immagine del processo figlio con un nuovo programma: il pattern `fork` + `exec` + `wait` è quello usato dalla shell per lanciare comandi.
 
 > [!info] Mettiti alla prova
+> - **Teorico:** conteggio processi da `fork` → [[03 - Processi e Thread (Esercizi)#Es. 1 — Conteggio processi: `fork` sequenziali|Es. 1]] e [[03 - Processi e Thread (Esercizi)#Es. 2 — `fork` dentro un ciclo|Es. 2]]; duplicazione del buffer (`fflush` prima della `fork`) → [[03 - Processi e Thread (Esercizi)#Es. 4 — Duplicazione del buffer: `printf` prima della `fork`|Es. 4]].
 > - **Tracce d'esame:** tutte le [[Tracce d'Esame Pratiche#Processi|tracce P1–P10]] usano `fork`/`exec`/`wait`/`kill`.
 > - **C:** [[Indice degli Esercizi#Processi|fork_sum.c]] (fork + pipe + `SIGTERM`) e [[Indice degli Esercizi#Processi|matrix_fork.c]] (fork + calcolo parallelo su pipe).
 ## Stati di un processo

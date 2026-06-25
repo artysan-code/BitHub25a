@@ -53,6 +53,8 @@ void leave_region(int process) {
 > [!question] Domanda tipica d'esame
 > **D:** Perché l'alternanza rigorosa non è una soluzione accettabile alla mutua esclusione? Come la risolve l'algoritmo di Peterson? **R:** L'alternanza rigorosa viola il requisito 3: un processo fermo fuori dalla propria regione critica può bloccare l'altro impedendogli di entrarvi due volte di fila (non si può entrare due volte consecutive). L'algoritmo di Peterson combina la variabile `turn` con l'array `interested[]`: prima di entrare ogni processo segnala il proprio interesse e scrive il proprio indice in `turn`; se entrambi tentano insieme, l'ultimo a scrivere `turn` attende mentre l'altro entra, eliminando l'attesa reciproca senza violare nessuno dei quattro requisiti.
 
+> [!info] Mettiti alla prova
+> - **Teorico:** traccia di un'esecuzione interlacciata di Peterson (chi entra, chi attende) → [[04 - Sincronizzazione (Esercizi)#Es. 1 — Traccia dell'algoritmo di Peterson|Es. 1]].
 ### TSL e XCHG
 Molte CPU offrono un'istruzione hardware per la mutua esclusione: **TSL** (*Test and Set Lock*). TSL legge il contenuto di una locazione di memoria (`LOCK`) in un registro e vi scrive un valore non zero, il tutto in modo **atomico** — il bus viene bloccato verso le altre CPU per tutta la durata dell'operazione, impedendo qualsiasi accesso concorrente alla stessa locazione.
 ```asm
@@ -218,6 +220,7 @@ void writer(void){
 > Se nuovi lettori continuano ad arrivare mentre uno scrittore attende, lo scrittore potrebbe **non ottenere mai** l'accesso (blocco perpetuo). Una soluzione mette i nuovi lettori **in coda dietro** gli scrittori in attesa: riduce la concorrenza ma evita la starvation. Codice in `code/6_thread_e_sincronizzazione/6.3_reader_writer_semaphore.c`.
 
 > [!info] Mettiti alla prova
+> - **Teorico:** traccia dei valori di un semaforo → [[04 - Sincronizzazione (Esercizi)#Es. 2 — Valori di un semaforo e coda dei bloccati|Es. 2]]; deadlock da inversione dei `down` → [[04 - Sincronizzazione (Esercizi)#Es. 3 — Deadlock da inversione dei `down`|Es. 3]]; traccia produttore–consumatore → [[04 - Sincronizzazione (Esercizi)#Es. 4 — Produttore–consumatore: traccia dei semafori|Es. 4]]; lettori–scrittori → [[04 - Sincronizzazione (Esercizi)#Es. 5 — Lettori e scrittori: il contatore `rc`|Es. 5]].
 > - **C:** [[Indice degli Esercizi#Thread e Sincronizzazione|prod_cons_sem.c]] (produttore–consumatore con la tripla `mutex`/`full`/`empty`) e [[Indice degli Esercizi#Thread e Sincronizzazione|readers_writers_pari_dispari.c]] (lettori–scrittori con priorità ai lettori).
 > - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Thread — Semafori|TS1]] (produttore–consumatore) e [[Tracce d'Esame Pratiche#Thread — Semafori|TS3]] (uno scrittore, cinque lettori).
 ## Mutex

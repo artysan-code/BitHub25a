@@ -40,6 +40,9 @@ I dispositivi di I/O variano **enormemente** in velocità di trasferimento, e qu
 | SSD NVMe PCIe Gen 3.0 (lettura) | 3,5 GB/s |
 | USB 4.0 | 5 GB/s |
 | PCI Express 6.0 | 126 GB/s |
+
+> [!info] Mettiti alla prova
+> - **Teorico:** tempo di trasferimento di un file sui vari bus → [[08 - Input Output (Esercizi)#Es. 1 — Tempo di trasferimento su bus diversi|Es. 1]]; frequenza di interrupt di una scheda di rete → [[08 - Input Output (Esercizi)#Es. 4 — Frequenza di interrupt di una scheda di rete|Es. 4]].
 ### Controller dei dispositivi
 Un dispositivo di I/O è composto da una **parte meccanica** (il dispositivo vero e proprio) e da una **parte elettronica**.
 
@@ -113,6 +116,8 @@ Le **modalità di interazione col bus** sono: **cycle stealing** (il DMA trasfer
 > [!question] Domanda tipica d'esame
 > **D:** Descrivi il funzionamento del DMA in un trasferimento di lettura da disco e spiega in che modo elimina il coinvolgimento continuo della CPU. **R:** La CPU programma il controller DMA con indirizzo di memoria destinazione, contatore di byte e direzione del trasferimento, poi invia il comando al controller del disco. Da quel momento il DMA richiede i dati al controller del disco, che li scrive direttamente in memoria (*fly-by* o tramite bus mastering); i passi si ripetono finché il contatore non si azzera. Solo al termine il DMA invia un unico interrupt alla CPU. In questo modo la CPU non deve copiare ogni byte manualmente: viene impegnata solo nella fase di impostazione iniziale e nella gestione dell'interrupt finale.
 
+> [!info] Mettiti alla prova
+> - **Teorico:** overhead I/O guidato da interrupt vs DMA → [[08 - Input Output (Esercizi)#Es. 2 — I/O guidato da interrupt vs DMA (overhead)|Es. 2]]; spreco di CPU in polling → [[08 - Input Output (Esercizi)#Es. 3 — Polling: quando spreca la CPU|Es. 3]].
 ## Interrupt
 Gli **interrupt** sono uno dei tre modi in cui un evento comunica con la CPU.
 - **Trap**: azione *deliberata* del programma, come una [[02 - Concetti di Base e Strutture|chiamata di sistema]].

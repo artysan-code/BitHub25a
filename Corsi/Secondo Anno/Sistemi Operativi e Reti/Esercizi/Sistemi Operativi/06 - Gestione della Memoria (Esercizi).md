@@ -159,7 +159,7 @@ Ogni richiesta è arrotondata alla **potenza di 2** ≥ richiesta; un blocco si 
 
 **Maschere dei campi** (dai 32 bit, dall'alto): `PT1` = bit 31–22 (10 bit), `PT2` = bit 21–12 (10 bit), offset = bit 11–0 (12 bit). In binario $\mathtt{0x00403004} = \mathtt{0000000001\,0000000011\,000000000100}$:
 $$\text{offset} = \text{VA} \bmod 2^{12} = \mathtt{0x004} = 4; \quad \text{PT2} = \left\lfloor \frac{\text{VA}}{2^{12}} \right\rfloor \bmod 2^{10} = 3; \quad \text{PT1} = \left\lfloor \frac{\text{VA}}{2^{22}} \right\rfloor = 1.$$
-**Page table walk** della [[06 - Gestione della Memoria|MMU]]:
+**Page table walk** della [[06 - Gestione della Memoria#La MMU e la page table|MMU]]:
 1. legge la voce **1** della directory di primo livello → ottiene l'indirizzo della tabella di secondo livello;
 2. in quella tabella legge la voce **3** → ottiene il numero di frame fisico;
 3. concatena `frame × 4096 + offset` (l'**offset 4** resta invariato, come nell'[[#Es. 1 — Traduzione indirizzo virtuale → fisico|Es. 1]]).

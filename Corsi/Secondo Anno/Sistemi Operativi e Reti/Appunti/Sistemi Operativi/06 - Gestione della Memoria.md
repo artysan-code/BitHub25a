@@ -99,7 +99,7 @@ Quando un oggetto viene deallocato non torna subito al sistema: resta nella **ca
 > 3. **`kmalloc()`** (sopra lo Slab): interfaccia generale del kernel per allocazioni di piccole dimensioni; internamente usa lo Slab allocator.
 
 > [!info] Mettiti alla prova
-> - **Teorico:** [[02 - Gestione della Memoria#Es. 8 — Buddy allocation|Es. 8 — Buddy allocation]] — simulazione di allocazione/deallocazione con coalescenza dei *buddy*.
+> - **Teorico:** [[06 - Gestione della Memoria (Esercizi)#Es. 8 — Buddy allocation|Es. 8 — Buddy allocation]] — simulazione di allocazione/deallocazione con coalescenza dei *buddy*.
 ## Memoria virtuale
 > [!info] Equivalenze di memoria (base 2)
 > | Nome | Simbolo | Decimale | Binario |
@@ -187,10 +187,10 @@ Uno spazio di indirizzi virtuali molto grande porterebbe a una tabella enorme e 
 > - **Indirizzo non valido**: la page walk non trova la pagina né in RAM né altrove; il SO invia un segnale al processo (tipicamente **SIGSEGV** → *segmentation fault*) e lo termina.
 
 > [!info] Mettiti alla prova
-> Esercizi di calcolo svolti in [[02 - Gestione della Memoria]]:
-> - **Traduzione** indirizzo virtuale→fisico → [[02 - Gestione della Memoria#Es. 1 — Traduzione indirizzo virtuale → fisico|Es. 1]];
-> - **Dimensione** della page table (32/64 bit, multi-livello) → [[02 - Gestione della Memoria#Es. 2 — Dimensione della page table|Es. 2]];
-> - **EAT con TLB** (hit ratio, 1 e 2 livelli) → [[02 - Gestione della Memoria#Es. 3 — Tempo di accesso effettivo (EAT) con TLB|Es. 3]].
+> Esercizi di calcolo svolti in [[06 - Gestione della Memoria (Esercizi)]]:
+> - **Traduzione** indirizzo virtuale→fisico → [[06 - Gestione della Memoria (Esercizi)#Es. 1 — Traduzione indirizzo virtuale → fisico|Es. 1]];
+> - **Dimensione** della page table (32/64 bit, multi-livello) → [[06 - Gestione della Memoria (Esercizi)#Es. 2 — Dimensione della page table|Es. 2]];
+> - **EAT con TLB** (hit ratio, 1 e 2 livelli) → [[06 - Gestione della Memoria (Esercizi)#Es. 3 — Tempo di accesso effettivo (EAT) con TLB|Es. 3]].
 ## Algoritmi di sostituzione delle pagine
 Quando si verifica un **page fault** e la memoria fisica è piena, il SO deve scegliere **quale pagina** rimuovere (scrivendola su disco se modificata). La paginazione crea l'illusione di una memoria praticamente illimitata. Promemoria sui bit della voce: **M** (modificato/*dirty*) e **R** (riferito/*accessed*).
 ### Algoritmo ottimale
@@ -286,11 +286,11 @@ Per limitare il traffico su disco si fissa un **numero massimo** di scritture (*
 > **R:** **NRU** classifica le pagine in 4 classi in base ai bit R (riferimento) e M (modificato/dirty); il bit R è azzerato periodicamente a ogni interrupt del clock. Al page fault viene rimossa una pagina a caso dalla classe più bassa non vuota (classe 0 = non referenziata, non modificata; classe 3 = referenziata e modificata). Semplice e veloce, ma approssimazione rozza dell'LRU. **Seconda Chance** migliora FIFO controllando il bit R della pagina più vecchia: se R = 0 la rimuove, se R = 1 azzera R, reinserisce la pagina in fondo alla lista e controlla la successiva; degenera in FIFO puro se tutte le pagine sono referenziate. **Clock** realizza la stessa logica con una lista circolare e una lancetta: se R = 0 sulla pagina puntata la rimuove, se R = 1 azzera R e avanza; più efficiente di Seconda Chance perché evita spostamenti nella lista. Confronto: NRU e Clock hanno complessità O(1) per sostituzione; Seconda Chance può richiedere scansione intera. Clock è considerato il migliore tra i tre per il rapporto prestazioni/semplicità implementativa.
 
 > [!info] Mettiti alla prova
-> Simulazioni svolte passo-passo in [[02 - Gestione della Memoria]]:
-> - **FIFO / LRU / Ottimale** (conteggio dei page fault) → [[02 - Gestione della Memoria#Es. 4 — Simulazione algoritmi di sostituzione (FIFO, LRU, Ottimale)|Es. 4]];
-> - **Anomalia di Belady** → [[02 - Gestione della Memoria#Es. 5 — Anomalia di Belady (FIFO)|Es. 5]];
-> - **Clock** (seconda chance circolare) → [[02 - Gestione della Memoria#Es. 6 — Algoritmo Clock (seconda chance circolare)|Es. 6]];
-> - **Aging** (NFU con scorrimento) → [[02 - Gestione della Memoria#Es. 7 — Aging (NFU con scorrimento)|Es. 7]].
+> Simulazioni svolte passo-passo in [[06 - Gestione della Memoria (Esercizi)]]:
+> - **FIFO / LRU / Ottimale** (conteggio dei page fault) → [[06 - Gestione della Memoria (Esercizi)#Es. 4 — Simulazione algoritmi di sostituzione (FIFO, LRU, Ottimale)|Es. 4]];
+> - **Anomalia di Belady** → [[06 - Gestione della Memoria (Esercizi)#Es. 5 — Anomalia di Belady (FIFO)|Es. 5]];
+> - **Clock** (seconda chance circolare) → [[06 - Gestione della Memoria (Esercizi)#Es. 6 — Algoritmo Clock (seconda chance circolare)|Es. 6]];
+> - **Aging** (NFU con scorrimento) → [[06 - Gestione della Memoria (Esercizi)#Es. 7 — Aging (NFU con scorrimento)|Es. 7]].
 ## Problemi di progettazione
 La paginazione richiede di bilanciare molti aspetti. I problemi più comuni: allocazione **globale vs locale**, **equa vs proporzionale**, dinamica di allocazione, policy di pulizia, dimensione delle pagine, spazi separati istruzioni/dati, pagine e librerie condivise, file mappati in memoria.
 ### Allocazione globale vs locale

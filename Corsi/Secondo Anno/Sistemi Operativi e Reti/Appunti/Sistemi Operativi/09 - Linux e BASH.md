@@ -97,7 +97,7 @@ find . -name '*.log' -exec wc -l {} \;    # conta righe in ogni .log (un wc per 
 find . -name '*.log' -exec wc -l {} +    # stesso risultato, un solo wc per tutti
 find . -type f -empty -exec rm {} +       # rimuove tutti i file vuoti
 ```
-`{}` è il segnaposto che viene sostituito dal nome del file trovato. Vedi applicazioni pratiche in [[04 - Linux e BASH]].
+`{}` è il segnaposto che viene sostituito dal nome del file trovato. Vedi applicazioni pratiche in [[09 - Linux e BASH (Esercizi)]].
 ## Redirezione e pipe
 È il cuore della filosofia Unix — comporre piccoli programmi. Per capirla serve il concetto di **file descriptor standard**.
 ### I tre stream standard
@@ -152,7 +152,7 @@ w | grep 'danilo'       # c'è danilo connesso?
 > **R:** `> file` **sovrascrive** il file (lo crea se non esiste); `>> file` **accoda** in fondo senza cancellare il contenuto precedente. La pipe `|` connette lo stdout di un processo allo stdin di un altro processo in parallelo (senza file intermedio); `>` scrive su un file disco.
 
 > [!info] Mettiti alla prova
-> Esercizio `3.1_Exercises` del prof: **6** (redirezione di input/output e log). Svolto in [[04 - Linux e BASH]].
+> Esercizio `3.1_Exercises` del prof: **6** (redirezione di input/output e log). Svolto in [[09 - Linux e BASH (Esercizi)]].
 ## Permessi dei file
 Il concetto è introdotto in [[02 - Concetti di Base e Strutture#Diritti di accesso]]; qui la pratica con **`chmod`**. Ogni file ha permessi **read/write/execute** per **owner**, **group** e **other**, visibili con `ls -l`:
 ```
@@ -189,7 +189,7 @@ Esempi: `chmod 660 foo` → `rw-rw----` (owner e group `6`=rw, other `0`); `chmo
 > **R:** `+x` aggiunge il permesso di **attraversamento** (entrare nella directory con `cd`, accedere ai file dentro); `+r` aggiunge il permesso di **lettura dell'elenco** (fare `ls`). Senza `x` si può avere `r` ma non si riesce ad accedere ai file al suo interno; è una combinazione rara ma significativa.
 
 > [!info] Mettiti alla prova
-> Esercizio `3.1_Exercises` del prof: **15** (`chmod` simbolico e ottale). Svolto in [[04 - Linux e BASH]].
+> Esercizio `3.1_Exercises` del prof: **15** (`chmod` simbolico e ottale). Svolto in [[09 - Linux e BASH (Esercizi)]].
 ## Eseguire comandi e script
 - **Comando nel PATH**: basta il nome, `command_name` (se l'eseguibile sta in una directory del [[#Variabili e ambiente|PATH]]).
 - **Eseguibile nella directory corrente**: `./executable_name` (il prefisso `./` dice "è qui"), previo `chmod +x`.
@@ -254,7 +254,7 @@ Per processi lunghi che devono **sopravvivere alla disconnessione** del terminal
 > **R:** Entrambi sopravvivono alla disconnessione. `nohup comando &` stacca il processo in modo **permanente**: non è ri-agganciabile, l'output va in `nohup.out`. `screen` crea una sessione **ri-agganciabile** (`screen -r`): si può rientrare, interagire, usare più finestre nella stessa sessione. Per task non interattivi va bene `nohup`; per task interattivi o lunghi con output da monitorare si preferisce `screen`.
 
 > [!info] Mettiti alla prova
-> Esercizi `3.1_Exercises` del prof: **7, 8, 9, 10** (script `countdown.sh`, job control). Svolti in [[04 - Linux e BASH]].
+> Esercizi `3.1_Exercises` del prof: **7, 8, 9, 10** (script `countdown.sh`, job control). Svolti in [[09 - Linux e BASH (Esercizi)]].
 ## File di configurazione
 I file di configurazione iniziano con `.` (sono **dotfiles**, *hidden files*) e non compaiono con `ls`: servono `ls -a` o `ls -al`.
 - **`.bash_profile`**: eseguito al **login**; qui di solito è impostato PATH.
@@ -294,7 +294,7 @@ Strumenti combinabili in [[#Redirezione e pipe|pipeline]]:
 - Calcoli: `awk -F'\t' '{sum+=$4} END {print sum/NR}' studenti.tsv` → media del voto.
 - Output selettivo: `awk -F'\t' '{print $1, $3}' studenti.tsv` → solo colonne 1 e 3, separate da spazio.
 
-Vedi esempi con output reale in [[04 - Linux e BASH]].
+Vedi esempi con output reale in [[09 - Linux e BASH (Esercizi)]].
 **`sed`** — *stream editor*, opera riga per riga:
 - Sostituzione: `sed 's/vecchio/nuovo/' file` sostituisce la **prima occorrenza** per riga; con il flag `g` le **tutte**: `sed 's/danilo/scholar/g'`.
 - `-i` modifica il file **in place** (sovrascrive il file originale): `sed -i 's/foo/bar/g' file.txt`. Attenzione: non c'è undo senza backup.
@@ -323,7 +323,7 @@ Vedi esempi con output reale in [[04 - Linux e BASH]].
 - `split -b 1M file.bin blocco_` spezza per dimensione (1 MiB per blocco).
 
 > [!info] Mettiti alla prova
-> Esercizi `3.1_Exercises` del prof su filtri e testo: **2, 3, 4, 12, 13, 14, 18, 19, 20, 21** (`awk`, `sed`, `cut`, `tr`, `od`, `split`, `sort`/`uniq`). Svolti con output reale in [[04 - Linux e BASH]].
+> Esercizi `3.1_Exercises` del prof su filtri e testo: **2, 3, 4, 12, 13, 14, 18, 19, 20, 21** (`awk`, `sed`, `cut`, `tr`, `od`, `split`, `sort`/`uniq`). Svolti con output reale in [[09 - Linux e BASH (Esercizi)]].
 
 > [!question] Domanda tipica d'esame
 > - **D:** Come si estrae la lista degli utenti unici da `w` usando una pipeline?
@@ -353,7 +353,7 @@ Molti strumenti (**grep**, **sed**) usano stringhe che descrivono sequenze di ca
 > - **D:** Cosa seleziona il pattern `^foo` in `grep`, e in cosa differisce da `foo$`? **R:** `^foo` seleziona le righe che **iniziano** con "foo" (il simbolo `^` àncora il pattern all'inizio della riga); `foo$` seleziona quelle che **finiscono** con "foo" (`$` àncora alla fine). Combinati, `^foo$` seleziona le righe che contengono *esattamente* "foo".
 
 > [!info] Mettiti alla prova
-> Esercizi `3.1_Exercises` del prof: **4** (punti 5-6) e **11** (regex con `grep`). Svolti in [[04 - Linux e BASH]].
+> Esercizi `3.1_Exercises` del prof: **4** (punti 5-6) e **11** (regex con `grep`). Svolti in [[09 - Linux e BASH (Esercizi)]].
 ## Creare utenti (useradd)
 `sudo useradd -s /bin/bash -d /home/vivek/ -m -G sudo vivek` crea l'utente: `-s` shell di login, `-d` home directory, `-m` crea la home, `-G` gruppo secondario (`sudo` = privilegi admin). Poi `sudo passwd vivek` imposta la password. **`sudo`** esegue un comando come **root** (vedi [[02 - Concetti di Base e Strutture|UID e superuser]]).
 ## Editor di testo

@@ -274,9 +274,9 @@ Ottimizza le liste concatenate **spostando i puntatori** dai blocchi a una tabel
 > **R:** (1) **Allocazione contigua**: blocchi consecutivi — semplice e lettura veloce, ma causa frammentazione e richiede di conoscere la dimensione finale. (2) **Liste concatenate**: ogni blocco punta al successivo — zero frammentazione esterna, ma accesso casuale lentissimo e spazio ridotto per i dati (puntatori nel blocco). (3) **FAT**: i puntatori sono in una tabella in RAM anziché nei blocchi — accesso casuale più rapido, ma la tabella deve stare intera in memoria e non scala su dischi grandi. (4) **I-node**: struttura con metadati e indirizzi dei blocchi, solo gli i-node dei file aperti stanno in memoria — efficiente, scala bene, gestisce file grandi con indirizzamento indiretto; è il modello dei file system UNIX-like.
 
 > [!info] Mettiti alla prova
-> Esercizi di calcolo svolti in [[03 - File System]]:
-> - **Dimensione massima** di un file con i-node multi-livello → [[03 - File System#Es. 1 — Dimensione massima di un file con i-node multi-livello|Es. 1]];
-> - **Occupazione della FAT** in memoria → [[03 - File System#Es. 2 — Occupazione di memoria della FAT|Es. 2]].
+> Esercizi di calcolo svolti in [[07 - File System (Esercizi)]]:
+> - **Dimensione massima** di un file con i-node multi-livello → [[07 - File System (Esercizi)#Es. 1 — Dimensione massima di un file con i-node multi-livello|Es. 1]];
+> - **Occupazione della FAT** in memoria → [[07 - File System (Esercizi)#Es. 2 — Occupazione di memoria della FAT|Es. 2]].
 ## Implementazione delle directory
 > [!quote] Definizione — Funzione delle directory
 > Le directory mappano i **nomi ASCII** dei file sulle informazioni necessarie a localizzare i dati su disco. Il metodo di allocazione varia: indirizzi di blocchi contigui, primo blocco delle liste concatenate, oppure **numero di i-node**.
@@ -356,9 +356,9 @@ Nei sistemi **multiutente** il SO limita lo spazio per utente.
 > - **Limiti soft e hard**: il limite **soft** può essere superato *temporaneamente* (durante una sessione), il **hard** mai. Superare il hard o ignorare gli avvisi del soft porta alla **restrizione dell'accesso**; l'utente deve rientrare nel soft prima di scollegarsi.
 
 > [!info] Mettiti alla prova
-> Esercizi di calcolo in [[03 - File System]]:
-> - **Bitmap vs free list** per i blocchi liberi → [[03 - File System#Es. 3 — Bitmap vs free list per i blocchi liberi|Es. 3]];
-> - **Dimensione del blocco** e frammentazione interna → [[03 - File System#Es. 4 — Dimensione del blocco e frammentazione interna|Es. 4]].
+> Esercizi di calcolo in [[07 - File System (Esercizi)]]:
+> - **Bitmap vs free list** per i blocchi liberi → [[07 - File System (Esercizi)#Es. 3 — Bitmap vs free list per i blocchi liberi|Es. 3]];
+> - **Dimensione del blocco** e frammentazione interna → [[07 - File System (Esercizi)#Es. 4 — Dimensione del blocco e frammentazione interna|Es. 4]].
 ## Struttura di Ext2 (esempio concreto)
 > [!example] Componenti del file system Ext2 (cap. 10.6.3 del libro)
 > Il disco è diviso in **gruppi di blocchi**. Ogni gruppo contiene:

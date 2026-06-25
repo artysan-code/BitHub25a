@@ -44,7 +44,7 @@ Algoritmo batch **senza prelazione** che esegue per primo il **job più breve**;
 **Ottimalità**: SJF minimizza il tempo di turnaround medio **solo quando tutti i job sono disponibili contemporaneamente**. Se i job arrivano in momenti diversi, può **non** essere ottimale.
 
 > [!example] SJF non ottimale con arrivi sfasati
-> Cinque job A–E con tempi di esecuzione 2, 4, 1, 1, 1 minuti e arrivi a $t = 0, 0, 3, 3, 3$. Due sequenze di esecuzione producono tempi medi di attesa diversi: una sequenza dà media $4{,}6$, un'altra dà media $4{,}4$. Il fatto che esistano due ordini con medie diverse dimostra che SJF **non è ottimale** quando i job non arrivano tutti allo stesso istante. *(I valori 4,6 e 4,4 sono quelli delle slide; l'[[01 - Scheduling#Es. 2 — SJF non è ottimale con arrivi sfasati|esercizio svolto]] ricostruisce un caso verificabile passo-passo, con numeri diversi ma stessa conclusione.)*
+> Cinque job A–E con tempi di esecuzione 2, 4, 1, 1, 1 minuti e arrivi a $t = 0, 0, 3, 3, 3$. Due sequenze di esecuzione producono tempi medi di attesa diversi: una sequenza dà media $4{,}6$, un'altra dà media $4{,}4$. Il fatto che esistano due ordini con medie diverse dimostra che SJF **non è ottimale** quando i job non arrivano tutti allo stesso istante. *(I valori 4,6 e 4,4 sono quelli delle slide; l'[[05 - Scheduling (Esercizi)#Es. 2 — SJF non è ottimale con arrivi sfasati|esercizio svolto]] ricostruisce un caso verificabile passo-passo, con numeri diversi ma stessa conclusione.)*
 ### Shortest Remaining Time Next (SRTN)
 Versione **con prelazione** di SJF: sceglie sempre il processo con il **tempo rimanente più breve**. All'arrivo di un nuovo job, se il suo tempo totale è inferiore al tempo rimanente del processo corrente, quest'ultimo viene sospeso. Garantisce servizio rapido ai job brevi (richiede comunque tempi noti in anticipo).
 
@@ -52,10 +52,10 @@ Versione **con prelazione** di SJF: sceglie sempre il processo con il **tempo ri
 > - **D:** Quali parametri si ottimizzano nello scheduling per sistemi batch? Descrivere FCFS, SJF e SRTN con pregi e limiti. **R:** Obiettivi batch: **throughput**, minimo **tempo di turnaround**, alto **utilizzo della CPU**. **FCFS** (senza prelazione, ordine d'arrivo): semplice ed equo, ma un processo CPU-bound fa attendere a lungo gli I/O-bound. **SJF** (senza prelazione, job più breve per primo): minimizza il turnaround medio *se tutti i job sono disponibili insieme*, ma richiede di conoscere i tempi in anticipo. **SRTN** (versione con prelazione di SJF, tempo rimanente più breve): serve rapidamente i job brevi, ma può causare starvation dei lunghi.
 
 > [!info] Mettiti alla prova
-> Esercizi di calcolo svolti passo-passo in [[01 - Scheduling]]:
-> - **FCFS vs SJF** (turnaround e attesa medi) → [[01 - Scheduling#Es. 1 — FCFS vs SJF (turnaround e attesa medi)|Es. 1]];
-> - **SJF non ottimale** con arrivi sfasati → [[01 - Scheduling#Es. 2 — SJF non è ottimale con arrivi sfasati|Es. 2]];
-> - **SRTN** con prelazione → [[01 - Scheduling#Es. 3 — SRTN (Shortest Remaining Time Next, con prelazione)|Es. 3]].
+> Esercizi di calcolo svolti passo-passo in [[05 - Scheduling (Esercizi)]]:
+> - **FCFS vs SJF** (turnaround e attesa medi) → [[05 - Scheduling (Esercizi)#Es. 1 — FCFS vs SJF (turnaround e attesa medi)|Es. 1]];
+> - **SJF non ottimale** con arrivi sfasati → [[05 - Scheduling (Esercizi)#Es. 2 — SJF non è ottimale con arrivi sfasati|Es. 2]];
+> - **SRTN** con prelazione → [[05 - Scheduling (Esercizi)#Es. 3 — SRTN (Shortest Remaining Time Next, con prelazione)|Es. 3]].
 ## Scheduling nei sistemi interattivi
 Nei sistemi interattivi, a differenza dei batch, conta soprattutto il **tempo di risposta** percepito dall'utente: la **prelazione** diventa essenziale per evitare che un singolo processo monopolizzi la CPU.
 ### Round-Robin
@@ -112,8 +112,8 @@ Gli algoritmi precedenti schedulano i singoli processi; ma se l'utente 1 ha 9 pr
 | **Fair-Share** | equità tra **utenti**, non tra processi | impedisce a un utente "ricco di processi" di dominare | più complesso da bilanciare |
 
 > [!info] Mettiti alla prova
-> - **Round-Robin** e calcolo dell'overhead del quanto → [[01 - Scheduling#Es. 4 — Round-Robin e calcolo dell'overhead|Es. 4]];
-> - **Guaranteed scheduling** (rapporto consumato/dovuto) → [[01 - Scheduling#Es. 6 — Guaranteed scheduling (rapporto consumato/dovuto)|Es. 6]].
+> - **Round-Robin** e calcolo dell'overhead del quanto → [[05 - Scheduling (Esercizi)#Es. 4 — Round-Robin e calcolo dell'overhead|Es. 4]];
+> - **Guaranteed scheduling** (rapporto consumato/dovuto) → [[05 - Scheduling (Esercizi)#Es. 6 — Guaranteed scheduling (rapporto consumato/dovuto)|Es. 6]].
 ## Scheduling nei sistemi real-time
 Usato dove il **tempo di risposta** è critico (lettori CD, monitoraggio in terapia intensiva, piloti automatici, controllo robotico): ritardi o scadenze mancate possono avere gravi conseguenze. La **prelazione** non è sempre necessaria nei sistemi real-time: i processi sanno di non poter essere eseguiti a lungo e in genere svolgono il proprio lavoro e si bloccano rapidamente.
 - **Categorie**: **hard real-time** (scadenze assolute, inviolabili) vs **soft real-time** (qualche scadenza mancata è tollerabile).
@@ -129,7 +129,7 @@ Usato dove il **tempo di risposta** è critico (lettori CD, monitoraggio in tera
 Gli algoritmi possono essere **statici** (decisioni prese prima dell'esecuzione, richiedono perfetta conoscenza di esigenze e scadenze) o **dinamici** (decisioni durante l'esecuzione).
 
 > [!info] Mettiti alla prova
-> - **Schedulabilità real-time** (verifica di $\sum_i C_i / P_i \le 1$) → [[01 - Scheduling#Es. 5 — Schedulabilità real-time|Es. 5]].
+> - **Schedulabilità real-time** (verifica di $\sum_i C_i / P_i \le 1$) → [[05 - Scheduling (Esercizi)#Es. 5 — Schedulabilità real-time|Es. 5]].
 ## Meccanismo e politica di scheduling
 Negli scheduler tradizionali i processi utente non possono influenzare le decisioni, il che porta a scelte **sub-ottimali** (es. un processo padre che conosce l'importanza relativa dei suoi figli). Il principio (**Levin et al., 1975**) è **separare il meccanismo dalla politica**: l'algoritmo (il **meccanismo**) sta nel kernel ed è **parametrizzabile**, ma i parametri (la **policy**) sono forniti dai processi utente. Esempio: il kernel implementa lo scheduling a priorità, ma una system call permette al padre di impostare le priorità dei figli.
 ## Scheduling dei thread

@@ -137,5 +137,43 @@ Quota dovuta a ciascuno: $100 / 3 \approx 33{,}3$ minuti. Rapporto $= \dfrac{\te
 Si esegue il processo con il **rapporto più basso** (chi è più indietro rispetto alla propria quota): ordine **Luca** $(0{,}3)$ → **Giulia** $(0{,}6)$ → **Matteo** $(1{,}2)$.
 > [!note] Collegamento
 > È l'idea alla base del **CFS** (Completely Fair Scheduler) di Linux: tenere tutti il più vicino possibile alla quota equa $1/n$. Vedi [[05 - Scheduling#Guaranteed scheduling]].
+## Es. 7 — Round-Robin: l'effetto del quanto
+> [!quote] Consegna
+> Quattro processi disponibili a $t = 0$ (ordine di arrivo $A, B, C, D$) con durate $A = 6$, $B = 3$, $C = 1$, $D = 7$. Calcolare turnaround e attesa medi con **quanto $q = 3$** e con **quanto $q = 2$**, e confrontare.
+**$q = 3$** — chi non finisce torna in fondo alla coda:
+```
+A.. B.. C. D.. A.. D.. D.
+0   3   6  7   10  13  16 17
+```
+| Processo | Burst | Compl. | Turnaround | Attesa $=T-b$ |
+|---|---|---|---|---|
+| A | 6 | 13 | 13 | 7 |
+| B | 3 | 6 | 6 | 3 |
+| C | 1 | 7 | 7 | 6 |
+| D | 7 | 17 | 17 | 10 |
+
+Turnaround medio $= \dfrac{13+6+7+17}{4} = \dfrac{43}{4} = \mathbf{10{,}75}$ · attesa media $= \dfrac{7+3+6+10}{4} = \dfrac{26}{4} = \mathbf{6{,}50}$.
+**$q = 2$** — più turni, più cambi di contesto:
+```
+A. B. C D. A. B D. A. D. D.
+0  2  4 5  7  9 10 12 14 16 17
+```
+| Processo | Burst | Compl. | Turnaround | Attesa |
+|---|---|---|---|---|
+| A | 6 | 14 | 14 | 8 |
+| B | 3 | 10 | 10 | 7 |
+| C | 1 | 5 | 5 | 4 |
+| D | 7 | 17 | 17 | 10 |
+
+Turnaround medio $= \dfrac{14+10+5+17}{4} = \dfrac{46}{4} = \mathbf{11{,}50}$ · attesa media $= \dfrac{8+7+4+10}{4} = \dfrac{29}{4} = \mathbf{7{,}25}$.
+> [!check] Il compromesso del quanto
+> Con $q = 2$ i tempi medi **peggiorano** (turnaround $11{,}50 > 10{,}75$): un quanto più piccolo aumenta i cambi di contesto e spezzetta i job lunghi. In compenso **migliora il tempo di risposta** — ogni processo riceve la CPU prima la prima volta — vantaggio prezioso nei sistemi interattivi. È lo stesso trade-off dell'[[#Es. 4 — Round-Robin e calcolo dell'overhead|overhead del quanto (Es. 4)]]: né troppo grande (RR → FCFS), né troppo piccolo (overhead dominante).
+## Da svolgere
+Esercizi senza soluzione, per esercitarsi. Per la teoria vedi [[05 - Scheduling]].
+> [!todo] Da svolgere
+> 1. **SRTN.** Processi con (arrivo, burst): $P_1(0,8)$, $P_2(1,4)$, $P_3(2,2)$, $P_4(3,1)$. Costruisci il diagramma [[#Es. 3 — SRTN (Shortest Remaining Time Next, con prelazione)|SRTN]] e calcola turnaround e attesa medi.
+> 2. **Priorità con prelazione.** Quattro processi con (arrivo, burst, priorità — 1 = più alta): $A(0,4,3)$, $B(1,2,1)$, $C(2,3,2)$, $D(3,1,1)$. Schedula a [[05 - Scheduling#Scheduling a priorità|priorità con prelazione]] (a parità, FCFS) e calcola i tempi medi. Quale processo rischia la *starvation*?
+> 3. **Confronto FCFS/SJF/RR.** Per i processi dell'[[#Es. 1 — FCFS vs SJF (turnaround e attesa medi)|Es. 1]] calcola anche il turnaround medio con **Round-Robin $q = 4$** e confrontalo con FCFS e SJF.
+> 4. **Lottery scheduling.** Tre processi hanno rispettivamente 10, 30 e 60 biglietti. Qual è la probabilità che ciascuno venga scelto a una data estrazione? Su 100 estrazioni, quante volte ci si aspetta venga eseguito il terzo? (vedi [[05 - Scheduling#Lottery scheduling|lottery scheduling]]).
 ---
-**Teoria di riferimento:** [[05 - Scheduling]] · **Altri esercizi svolti:** [[02 - Gestione della Memoria]] · [[03 - File System]] · [[04 - Linux e BASH]]
+**Teoria di riferimento:** [[05 - Scheduling]] · **Indice di tutti gli esercizi:** [[Indice degli Esercizi]]

@@ -1,5 +1,6 @@
 # Input/Output
 Oltre a fornire astrazioni come [[03 - Processi e Thread|processi e thread]], [[06 - Gestione della Memoria|spazi di indirizzi]] e [[07 - File System|file]], il sistema operativo **controlla tutti i dispositivi di I/O**: invia comandi, intercetta gli [[#Interrupt|interrupt]], gestisce gli errori. Il codice dedicato all'I/O è una **parte significativa** del sistema operativo.
+
 > [!quote] Le due funzioni del sistema operativo verso l'I/O
 > 1. **Controllo dei dispositivi**: invio di comandi, intercettazione degli interrupt, gestione degli errori.
 > 2. **Interfaccia uniforme**: offrire ai programmi un'interfaccia *semplice e uniforme*, idealmente identica per tutti i dispositivi (**indipendenza dal dispositivo**, vedi [[#^device-independence]]).
@@ -15,7 +16,7 @@ I dispositivi di I/O si dividono in due grandi categorie.
 
 La classificazione non è perfetta: alcuni dispositivi non vi rientrano (il **clock** genera solo interrupt a intervalli; gli schermi mappati in memoria e i touch screen sono casi ibridi). Resta però utile perché rende il software del SO **indipendente dal tipo di dispositivo**: il [[07 - File System|file system]], ad esempio, gestisce solo *dispositivi a blocchi astratti*, lasciando ai livelli inferiori le specificità.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Qual è la differenza tra un dispositivo a blocchi e un dispositivo a caratteri? Fai esempi per ciascuna categoria. **R:** Un [[#^blocchi|dispositivo a blocchi]] memorizza dati in blocchi di dimensione fissa (da 512 B a 32 KiB), ognuno con un proprio indirizzo leggibile/scrivibile indipendentemente (es. disco rigido, SSD). Un [[#^caratteri|dispositivo a caratteri]] gestisce un flusso non strutturato di byte, senza indirizzamento né operazione di seek (es. stampante, mouse, interfaccia di rete). La distinzione permette al SO di offrire un'astrazione uniforme per ciascuna categoria.
 
 ### Velocità dei dispositivi
@@ -41,6 +42,7 @@ I dispositivi di I/O variano **enormemente** in velocità di trasferimento, e qu
 | PCI Express 6.0 | 126 GB/s |
 ### Controller dei dispositivi
 Un dispositivo di I/O è composto da una **parte meccanica** (il dispositivo vero e proprio) e da una **parte elettronica**.
+
 > [!quote] Definizione — Controller del dispositivo
 > Il **controller** (o **adattatore**) è la parte elettronica del dispositivo. È spesso integrato nella scheda madre o realizzato come scheda aggiuntiva su slot **PCIe**, e può gestire **più dispositivi identici** tramite i suoi connettori.
 
@@ -63,6 +65,7 @@ Nel **port-mapped I/O** ogni registro di controllo ha un **numero di porta** ass
 Lo spazio delle porte e quello della memoria sono **distinti e non correlati**: `IN R0,4` legge dalla **porta** 4, `MOV R0,4` legge dalla **parola di memoria** 4 — lo stesso numero riferisce spazi diversi. Approccio molto usato nei vecchi mainframe (es. IBM 360).
 ### I/O mappato in memoria (MMIO)
 Introdotto col **PDP-11**, il **memory-mapped I/O** assegna a ogni registro di controllo un **indirizzo di memoria univoco**, mappandolo nello *spazio della memoria*.
+
 > [!info] Vantaggi del MMIO
 > - **Niente istruzioni speciali**: non servono `IN`/`OUT`.
 > - **Registri come variabili C**: si possono scrivere **driver interamente in C**, senza assembly.
@@ -75,11 +78,11 @@ Con MMIO tutti i moduli di memoria e i dispositivi devono **esaminare ogni rifer
 ### Approccio ibrido (PMIO + MMIO)
 Combina i due metodi: la **configurazione** iniziale del dispositivo avviene via **PMIO** (`IN`/`OUT`), mentre l'**accesso ai dati** ad alta velocità (schede grafiche, controller di rete) avviene via **MMIO** (`LOAD`/`STORE`). Vantaggi: flessibilità, ottimizzazione delle prestazioni, **compatibilità legacy**. Svantaggi: maggiore complessità e il fatto che alcune CPU moderne (es. **ARM**) **non supportano PMIO**. Esempio pratico su **x86**: i dispositivi **PCIe** si configurano tramite le porte `0xCF8`/`0xCFC` e poi si accede ai loro registri via MMIO.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Spiega la differenza tra PMIO (port-mapped I/O) e MMIO (memory-mapped I/O), e descrivi il principale rischio del MMIO legato alla cache. **R:** Nel [[#I/O mappato sulle porte (PMIO)|PMIO]] ogni registro di controllo ha un numero di porta nello spazio degli indirizzi di I/O, accessibile solo con istruzioni speciali `IN`/`OUT`. Nel [[#I/O mappato in memoria (MMIO)|MMIO]] i registri sono mappati nello spazio di memoria normale, accessibili con normali istruzioni `LOAD`/`STORE` e scrivibili in C senza assembly. Il rischio del MMIO è che se un registro di controllo viene inserito in cache, la CPU legge sempre il valore vecchio e non rileva le modifiche del dispositivo, causando un potenziale ciclo infinito; occorre disabilitare selettivamente la cache per le pagine dedicate ai dispositivi.
 
 ### Dal modello astratto al chipset reale
-Il MMIO definisce un **modello di indirizzamento** (un solo spazio di indirizzi), ma l'hardware reale deve mantenere **alte prestazioni** sulla memoria *e* supportare **molti dispositivi eterogenei**: un bus unico non scala né in banda né in latenza. La soluzione storica è il **chipset a due livelli**.
+*(Approfondimento dal Tanenbaum, oltre le slide di Croce.)* Il MMIO definisce un **modello di indirizzamento** (un solo spazio di indirizzi), ma l'hardware reale deve mantenere **alte prestazioni** sulla memoria *e* supportare **molti dispositivi eterogenei**: un bus unico non scala né in banda né in latenza. La soluzione storica è il **chipset a due livelli**.
 - **Northbridge** (*Memory Controller Hub*): interposto tra **CPU e memoria**, gestisce gli accessi alla **RAM**, il collegamento agli acceleratori grafici (AGP/PCIe) e la **decodifica primaria degli indirizzi** (decide se un indirizzo è memoria reale o **I/O mappato in memoria** da inoltrare). Caratteristiche: **latenza minima**, **banda elevata**, impatto diretto sulle prestazioni.
 - **Southbridge** (*I/O Controller Hub*): gestisce l'I/O — IDE, SATA, USB, Ethernet, audio, CMOS. Dal Southbridge parte un **LPC Bus** (*Low Pin Count*) a cui sono connessi il chip **Super I/O** (che gestisce porta seriale, porta parallela, controller floppy, tastiera e mouse) e la **Flash ROM** contenente il **BIOS**.
 
@@ -90,10 +93,12 @@ Inviato un comando, l'operazione richiede **tempo**. La maggior parte dei dispos
 È una buona soluzione? **No, se la CPU ha altro da fare**: il polling la tiene occupata a vuoto. Da qui nascono le alternative — gli **interrupt** e il **DMA**.
 ## DMA
 Il **DMA** (*Direct Memory Access*) permette di trasferire dati tra **dispositivo e memoria** senza che la CPU debba spostare ogni byte manualmente, riducendo lo spreco di tempo della CPU. ^dma-def
+
 > [!quote] Definizione — Controller DMA
 > Il **controller DMA** è un componente (sulla scheda madre o integrato nel controller del dispositivo) dotato di registri per l'**indirizzo di memoria**, il **conteggio dei byte** e il **controllo** (direzione del trasferimento, unità, ecc.). Può gestire trasferimenti verso **più dispositivi**.
 
 Senza DMA, il controller del disco legge i dati nel proprio buffer, controlla gli errori e genera un interrupt; poi è il **SO a copiare** i dati in memoria. Con il DMA la CPU si limita a impostare il trasferimento.
+
 > [!example] I quattro passi di un trasferimento DMA (lettura da disco)
 > 1. La **CPU programma** il controller DMA (indirizzo, contatore, controllo) e invia il comando al controller del disco.
 > 2. Il **DMA richiede** la lettura al controller del disco.
@@ -101,10 +106,11 @@ Senza DMA, il controller del disco legge i dati nel proprio buffer, controlla gl
 > 4. Il controller del disco invia una **conferma** al DMA. I passi 2-4 si ripetono fino al completamento; al termine il DMA invia un **interrupt** alla CPU.
 
 Le **modalità di interazione col bus** sono: **cycle stealing** (il DMA trasferisce una parola per volta, "rubando" cicli alla CPU che rallenta lievemente ma condivide il bus); **burst mode** (il DMA prende il controllo completo del bus per più trasferimenti — efficiente ma blocca la CPU); **fly-by mode** (trasferimento diretto dispositivo→memoria senza intermediari). Il DMA usa **indirizzi fisici**, che il SO deve convertire. Molti dischi hanno un **buffer interno** per verificare la checksum e gestire il flusso costante di bit, evitando il *buffer overrun*.
+
 > [!info] Dove sta il DMA nei sistemi moderni?
 > Guardando una scheda madre si vedono CPU, Northbridge/Southbridge e i controller, ma **il DMA non si vede**. Storicamente esisteva un controller dedicato (es. **Intel 8237**); oggi il DMA **non è un componente fisico unico**, bensì una **funzionalità** — il *bus mastering* — implementata **dentro i controller dei dispositivi** (SATA, USB, NIC, GPU) e supportata dal chipset. Ogni controller moderno contiene un **motore DMA**, può diventare **bus master** e legge/scrive direttamente la RAM. I ruoli: la **CPU** programma il trasferimento (via MMIO), il **controller** lo esegue, il **chipset** arbitra e instrada l'accesso alla memoria, la **CPU** riceve un interrupt a fine operazione.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Descrivi il funzionamento del DMA in un trasferimento di lettura da disco e spiega in che modo elimina il coinvolgimento continuo della CPU. **R:** La CPU programma il controller DMA con indirizzo di memoria destinazione, contatore di byte e direzione del trasferimento, poi invia il comando al controller del disco. Da quel momento il DMA richiede i dati al controller del disco, che li scrive direttamente in memoria (*fly-by* o tramite bus mastering); i passi si ripetono finché il contatore non si azzera. Solo al termine il DMA invia un unico interrupt alla CPU. In questo modo la CPU non deve copiare ogni byte manualmente: viene impegnata solo nella fase di impostazione iniziale e nella gestione dell'interrupt finale.
 
 ## Interrupt
@@ -120,11 +126,13 @@ Al minimo va salvato il **program counter** per riavviare il processo interrotto
 - **stack del kernel**: più sicuro, ma comporta cambio di contesto della [[06 - Gestione della Memoria|MMU]] e invalidazione di **cache** e **TLB** → *overhead*.
 ### Interrupt precisi vs imprecisi
 Le CPU moderne usano **pipeline** e architetture **superscalari**, avviando più istruzioni prima che le precedenti siano completate: al momento di un interrupt molte istruzioni vicine al PC possono essere in **stati di completamento diversi**.
+
 > [!quote] Definizione — Interrupt preciso e impreciso
 > Un interrupt è **preciso** se lascia la macchina in uno stato ben definito: il **PC è salvato** in un luogo noto, **tutte** le istruzioni prima del PC sono completate, **nessuna** dopo è stata eseguita, e lo **stato dell'istruzione puntata** dal PC è noto. È **impreciso** quando più istruzioni vicine al PC sono in stati diversi: la CPU deve "vomitare" molto stato interno sullo stack.
 
-L'architettura **x86** garantisce interrupt **precisi** (per compatibilità e prevedibilità), al costo di una logica interna complessa: la CPU **annulla** gli effetti delle istruzioni transitorie eseguite dopo il PC. Gli interrupt imprecisi rendono il SO più lento e complesso e hanno **implicazioni di sicurezza**, perché le istruzioni transitorie annullate lasciano tracce nella **microarchitettura** sfruttabili da un attaccante.
-> [!example] Domanda tipica d'esame
+L'architettura **x86** garantisce interrupt **precisi** (per compatibilità e prevedibilità), al costo di una logica interna complessa: la CPU **annulla** gli effetti delle istruzioni transitorie eseguite dopo il PC. Gli interrupt imprecisi rendono il SO più lento e complesso e hanno **implicazioni di sicurezza**, perché le istruzioni transitorie annullate lasciano tracce nella **microarchitettura** sfruttabili da un attaccante *(è il meccanismo alla base di attacchi come Spectre/Meltdown — extra, oltre le slide)*.
+
+> [!question] Domanda tipica d'esame
 > - **D:** Descrivi il flusso completo di gestione di un **interrupt hardware**, dalla ricezione del numero di interrupt fino all'esecuzione del processo successivo. **R:** Il dispositivo segnala il completamento sul bus; il **controller degli interrupt** mette il numero del dispositivo sulle linee d'indirizzo, usato come indice nel [[#Processo di gestione degli interrupt|vettore degli interrupt]]. La CPU salva **PC** e **PSW** sullo stack, passa in **modalità kernel** e salta alla [[#Processo di gestione degli interrupt|ISR]] indicata dal vettore. La ISR salva il resto dello stato, conferma (*ack*) al controller, legge i registri di stato del dispositivo e **sblocca** il processo in attesa; poi interviene lo [[05 - Scheduling|scheduler]], che sceglie il processo successivo (quello interrotto oppure uno a **priorità più alta** sbloccato dall'interrupt). Infine si ripristinano [[06 - Gestione della Memoria|MMU/TLB]] e i registri del processo scelto e si riprende l'esecuzione in user mode.
 ## Principi del software di I/O
 Prima gli **obiettivi** del software di I/O, poi i **modi** in cui il SO può gestirlo, infine la sua **organizzazione a livelli**.
@@ -187,11 +195,12 @@ return_from_interrupt();
 ```
 **Limite**: il controller DMA è spesso **più lento della CPU**; se la CPU non ha altro da fare, l'I/O guidato dagli interrupt (o anche quello programmato) può risultare preferibile. Nella maggior parte dei casi, però, il DMA conviene.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Descrivi le tre tecniche di I/O (programmato, guidato dagli interrupt, con DMA) e indica il principale vantaggio e svantaggio di ciascuna. **R:** L'**I/O programmato** fa gestire alla CPU l'intero trasferimento tramite [[#^polling|polling]] del registro di stato: semplicissimo ma tiene la CPU occupata a vuoto. L'**I/O guidato dagli interrupt** invia il primo dato e poi cede la CPU ad altri processi; la stampante genera un interrupt a ogni carattere pronto: la CPU viene liberata ma il numero di interrupt è elevato. L'**I/O con [[#DMA|DMA]]** delega al controller DMA l'intero trasferimento, riducendo gli interrupt da uno per carattere a uno per buffer e liberando la CPU per tutta la durata; lo svantaggio è che il controller DMA è spesso più lento della CPU.
 
 ## I quattro livelli del software di I/O
 Il software di I/O è organizzato in **quattro livelli**, ciascuno con funzione e interfaccia ben definite. Dal basso verso l'alto, sopra l'**hardware**:
+
 > [!info] I livelli del software di I/O (dal basso)
 > | Livello | Funzioni nell'I/O |
 > |---|---|
@@ -202,6 +211,7 @@ Il software di I/O è organizzato in **quattro livelli**, ciascuno con funzione 
 > | **Hardware** | eseguire l'operazione di I/O |
 ### Gestori degli interrupt
 Il driver che avvia un'operazione si **blocca** (ad esempio con un [[04 - Sincronizzazione|semaforo]]) fino al completamento dell'I/O e all'arrivo dell'interrupt. L'elaborazione di un interrupt è **complessa** e, su sistemi con [[06 - Gestione della Memoria|memoria virtuale]], richiede passaggi aggiuntivi per MMU, TLB e cache.
+
 > [!example] I dieci passi della gestione di un interrupt (lato software)
 > 1. **Salvataggio dei registri** non salvati dall'interrupt hardware.
 > 2. **Impostazione del contesto** della ISR (TLB, MMU, tabella delle pagine).
@@ -215,6 +225,7 @@ Il driver che avvia un'operazione si **blocca** (ad esempio con un [[04 - Sincro
 > 10. **Avvio** del nuovo processo.
 ### Driver di dispositivo
 Ogni dispositivo richiede un codice specifico — il **driver** — che ne gestisce i registri, di solito fornito dal **produttore**. Un driver gestisce un tipo o una *classe* di dispositivi (tecnologie come **USB** usano una **pila di driver**: dal livello base che gestisce l'I/O seriale, ai livelli superiori per i pacchetti dati, fino alle API di alto livello). I driver fanno di norma parte del **kernel** (per accedere ai registri del controller); se eseguiti in **spazio utente** sono più facili da installare e mettono meno a rischio il SO, ma sono **più lenti** (serve passare al kernel per ogni operazione).
+
 > [!info] Caricamento dei driver — da statico a dinamico
 > Storicamente i driver erano inclusi nel **binario** del SO: aggiungere un dispositivo significava **ricompilare il kernel**. Nei sistemi moderni i driver si caricano **dinamicamente** a runtime.
 
@@ -224,7 +235,14 @@ Ma il software di I/O dipende *sempre* dal dispositivo? No: il **software indipe
 #### Interfaccia uniforme dei driver
 Senza uniformità, ogni nuovo dispositivo richiederebbe modifiche al SO. La soluzione è un **modello uniforme** in cui tutti i driver condividono la **stessa interfaccia**: per ogni *classe* di dispositivi il SO definisce un insieme di funzioni che i driver devono supportare (per i dischi: lettura, scrittura, formattazione…). Il driver espone una **tabella di puntatori a funzioni** che il SO usa per **chiamate indirette**. La **denominazione** mappa i nomi simbolici sui driver (es. `/dev/disk0` in UNIX, tramite **major** e **minor device number**) e la **protezione** dei dispositivi segue le stesse regole dei file.
 #### Buffering
-Il buffering è cruciale ma delicato. In **input** si passa da nessun buffer (riavvio del processo a ogni carattere, inefficiente) a un buffer nello **spazio utente** (problemi se la pagina viene paginata fuori), a un buffer nel **kernel**, fino al **doppio buffer** (uno accumula i nuovi caratteri mentre l'altro viene copiato nello spazio utente) e al **buffer circolare**. In **output**, un buffer nel kernel permette di **sbloccare subito** il processo utente. Il costo è la **copia multipla** (utente → kernel → controller → rete), che rallenta la velocità effettiva di trasmissione.
+Il buffering è cruciale ma delicato. In **input** si procede per gradi:
+- **nessun buffer**: il processo è riavviato a ogni carattere → inefficiente;
+- **buffer nello spazio utente**: problemi se la pagina viene paginata fuori durante l'I/O;
+- **buffer nel kernel**: più sicuro del precedente;
+- **doppio buffer**: uno accumula i nuovi caratteri mentre l'altro viene copiato nello spazio utente;
+- **buffer circolare**: gestisce un flusso continuo di dati.
+
+In **output**, un buffer nel kernel permette di **sbloccare subito** il processo utente. Il costo del buffering è la **copia multipla** (utente → kernel → controller → rete), che riduce la velocità effettiva di trasmissione.
 #### Segnalazione degli errori
 Gli **errori di programmazione** (scrivere su un dispositivo di input, indirizzo di buffer non valido, dispositivo inesistente) restituiscono un **codice d'errore** al chiamante. I **veri errori di I/O** (es. blocco danneggiato) sono gestiti dal driver e, se irrisolvibili, passati al software indipendente: con un **utente interattivo** si può aprire un dialogo (riprova/ignora/termina), altrimenti la chiamata fallisce con un codice d'errore. Gli **errori critici** (strutture dati danneggiate) possono richiedere un messaggio e la **terminazione** del sistema.
 #### Dispositivi dedicati e spooling
@@ -234,7 +252,7 @@ SSD e dischi hanno settori e pagine flash di **dimensioni variabili**. Il softwa
 ### Software di I/O nello spazio utente
 Parte del software di I/O sta **fuori dal kernel**, come **librerie** collegate ai programmi: la chiamata di sistema `write(fd, buffer, nbytes)` in C è facilitata da procedure di libreria, e funzioni come `printf()` e `scanf()` **formattano** i dati prima di invocare le syscall. Qui vive anche lo **spooling**. Queste librerie permettono al programmatore di concentrarsi sulla **logica dell'applicazione** invece che sui dettagli di basso livello.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Elenca e descrivi i quattro livelli del software di I/O, indicando per ciascuno la funzione principale. **R:** Dal basso verso l'alto, sopra l'hardware: (1) **[[#Gestori degli interrupt|Gestori degli interrupt]]** — si attivano al completamento dell'I/O, salvano lo stato, confermano al controller degli interrupt e sbloccano il driver; (2) **[[#Driver di dispositivo|Driver di dispositivo]]** — codice specifico per classe di dispositivo, traduce le richieste astratte in comandi sui registri del controller, gestisce errori ed è rientrante; (3) **[[#Software di I/O indipendente dal dispositivo|Software indipendente dal dispositivo]]** — offre interfaccia uniforme tra driver e applicazioni, gestisce denominazione (`/dev/sda`), protezione, buffering, segnalazione errori, spooling e dimensione blocco uniforme; (4) **[[#Software di I/O nello spazio utente|Software a livello utente]]** — librerie (es. `printf`, `scanf`) e daemon di spooling che formattano i dati e invocano le syscall, astraendo i dettagli di basso livello dal programmatore.
 
 ## Flusso completo di una richiesta di I/O

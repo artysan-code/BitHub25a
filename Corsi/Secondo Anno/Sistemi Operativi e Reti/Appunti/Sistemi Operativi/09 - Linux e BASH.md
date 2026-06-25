@@ -1,5 +1,6 @@
 # Linux e BASH
 Questa nota copre la parte **pratica** del corso — l'uso di **Linux** e della shell **BASH** (slide 3.1) — complementare ai concetti del [[02 - Concetti di Base e Strutture]]. Là si spiega *cos'è* una shell e *come* il SO espone i suoi servizi (system call, astrazione di file e processo, ciclo `fork`/`execve`); qui si vede *come si usa* davvero il sistema da terminale: comandi, redirezione, permessi, processi, scripting.
+
 > [!info] Inquadramento nel programma
 > Corrisponde al punto «**Unix e Linux (caso di studio)**» del programma. È materiale **pratico**, da eseguire a terminale: gli esercizi di autovalutazione del prof (`3.1_Exercises`) coprono tutti i comandi di questa nota. Fonte originale delle slide: Robert Putnam (Boston University), adattate da Danilo Croce.
 ## Cos'è Linux
@@ -16,6 +17,7 @@ A differenza di Windows (più dischi `C:`, `D:`), Unix/Linux ha **una sola gerar
 **BASH** = **Bourne-again Shell** (versione GNU della shell scritta da Stephen Bourne intorno al 1977); è la shell di default. Un'alternativa comune è **TCSH**. Il *ciclo interno* della shell — legge un comando, fa `fork`, il figlio fa `execve`, il padre `waitpid` — è descritto in [[02 - Concetti di Base e Strutture#Protezione e shell]].
 ### Anatomia di un comando
 Un comando ha tre parti: **command**, **options**, **parameters**. Esempio: `cal -j 3 1999` → `cal` è il comando, `-j` un'opzione (*switch*), `3` e `1999` i parametri. Le opzioni hanno forma **breve** e **lunga**: `date -u` ≡ `date --universal`. Comandi base per provare: `whoami` (il mio login), `hostname` (nome macchina), `echo "Hello, world"`, `echo $HOME`, `date`, `cal`.
+
 > [!example] Sostituzione di comando (command substitution)
 > `echo my login is $(whoami)` → la shell **sostituisce** `$(...)` con l'output del comando interno. Es. `echo "Oggi è $(date)"`.
 ### History e aiuto
@@ -23,10 +25,12 @@ La shell tiene la cronologia dei comandi:
 - `history` elenca i comandi recenti; frecce ↑/↓ per scorrerli.
 - `!!` ripete l'ultimo comando; `!132` ripete il comando n°132; `!ls` ripete l'ultimo che inizia per `ls`.
 - Aiuto: `comando --help`, `man comando`, `help` (built-in BASH), `man bash`.
+
 > [!info] man usa less
 > `man` mostra le pagine tramite il pager **`less`**: `Spazio`/`f` pagina avanti, `b` indietro, `<`/`>` inizio/fine, `/pattern` cerca avanti (`n` ripete), `?pattern` cerca indietro (`N`), `h` aiuto, `q` esci.
 ## Variabili e ambiente
 Per creare una variabile si usa l'assegnamento, **senza spazi** attorno a `=`: `foo="un valore"` oppure `foo=5`. La si ritrova con il comando `set`.
+
 > [!quote] Definizione — Variabili d'ambiente
 > Variabili usate convenzionalmente dalla shell per memorizzare informazioni (es. dove cercare i comandi: **PATH**). A differenza delle variabili ordinarie, sono **condivise con i programmi** che la shell lancia.
 
@@ -96,13 +100,6 @@ find . -type f -empty -exec rm {} +       # rimuove tutti i file vuoti
 `{}` è il segnaposto che viene sostituito dal nome del file trovato. Vedi applicazioni pratiche in [[04 - Linux e BASH]].
 ## Redirezione e pipe
 È il cuore della filosofia Unix — comporre piccoli programmi. Per capirla serve il concetto di **file descriptor standard**.
-### Il comando `w`
-`w` mostra gli **utenti attualmente connessi** al sistema e cosa stanno eseguendo (TTY, da quanto sono connessi, programma in esecuzione). È il comando usato come sorgente nelle pipeline di esempio delle slide perché produce sempre qualche riga di output interessante:
-```bash
-w                        # elenco utenti + processo in primo piano
-w | wc -l               # quante righe (= quanti utenti + 2 righe header)
-w | grep 'danilo'       # c'è danilo connesso?
-```
 ### I tre stream standard
 Quando la shell lancia un processo, gli consegna **già tre file descriptor aperti** (interi, gli stessi di `open`/`read`/`write` POSIX visti in [[02 - Concetti di Base e Strutture#Categorie principali di system call POSIX]]):
 
@@ -113,6 +110,7 @@ Quando la shell lancia un processo, gli consegna **già tre file descriptor aper
 | 2 | **stderr** | terminale |
 
 Un programma fa `write` su fd 1 per l'output normale e su fd 2 per gli errori, **senza sapere** dove puntano davvero.
+
 > [!info] Cosa fa davvero la redirezione (il nesso con POSIX)
 > La redirezione **non** è una magia della shell: tra `fork` ed `execve` (vedi il [[02 - Concetti di Base e Strutture#Protezione e shell|ciclo della shell]]) la shell **cambia dove punta un fd** *prima* di avviare il programma. `comando > file` fa sì che fd 1 punti a `file` invece che al terminale; il programma continua a fare `write` su fd 1, ignaro di tutto. Per questo `stdin`/`stdout`/`stderr` sono solo un caso particolare dei file descriptor POSIX.
 ### Operatori di redirezione
@@ -125,6 +123,13 @@ Un programma fa `write` su fd 1 per l'output normale e su fd 2 per gli errori, *
 | `< file` | prende **stdin** da `file` |
 
 Esempi: `ls /etc /pippo > out.txt 2> err.txt` separa output ed errori; `comando > tutto.txt 2>&1` li unisce nello stesso file.
+### Il comando `w`
+`w` mostra gli **utenti attualmente connessi** al sistema e cosa stanno eseguendo (TTY, da quanto sono connessi, programma in esecuzione). È il comando usato come sorgente nelle pipeline di esempio perché produce sempre qualche riga di output interessante:
+```bash
+w                        # elenco utenti + processo in primo piano
+w | wc -l               # quante righe (= quanti utenti + 2 righe header)
+w | grep 'danilo'       # c'è danilo connesso?
+```
 ### Le pipe
 > [!quote] Definizione — Pipe
 > L'operatore `|` collega lo **stdout** di un comando allo **stdin** del successivo, formando una **pipeline**. È l'uso pratico della [[02 - Concetti di Base e Strutture#File speciali e pipe|pipe come canale FIFO]] tra processi.
@@ -140,11 +145,14 @@ Esempi: `ls /etc /pippo > out.txt 2> err.txt` separa output ed errori; `comando 
 > w | awk -F" " '{print $1}' | sort | uniq > users  # ...salvati su file
 > ```
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Cosa fa il comando `ls /etc /xyz > out.txt 2>&1`? Cosa finisce in `out.txt`?
 > **R:** `> out.txt` redirige **stdout** (fd 1) su `out.txt`. `2>&1` redirige **stderr** (fd 2) sullo stesso file descriptor di stdout, cioè anch'esso su `out.txt`. Quindi in `out.txt` finiscono sia l'elenco dei file in `/etc` sia il messaggio di errore «No such file or directory» per `/xyz`. Senza `2>&1`, l'errore apparirebbe solo a terminale.
 > - **D:** Qual è la differenza tra `>` e `>>` nella redirezione? E tra `|` e `>`?
 > **R:** `> file` **sovrascrive** il file (lo crea se non esiste); `>> file` **accoda** in fondo senza cancellare il contenuto precedente. La pipe `|` connette lo stdout di un processo allo stdin di un altro processo in parallelo (senza file intermedio); `>` scrive su un file disco.
+
+> [!info] Mettiti alla prova
+> Esercizio `3.1_Exercises` del prof: **6** (redirezione di input/output e log). Svolto in [[04 - Linux e BASH]].
 ## Permessi dei file
 Il concetto è introdotto in [[02 - Concetti di Base e Strutture#Diritti di accesso]]; qui la pratica con **`chmod`**. Ogni file ha permessi **read/write/execute** per **owner**, **group** e **other**, visibili con `ls -l`:
 ```
@@ -170,18 +178,23 @@ read = **4**, write = **2**, execute = **1**, sommati per ogni tripletta:
 | 7 | rwx | `111` |
 
 Esempi: `chmod 660 foo` → `rw-rw----` (owner e group `6`=rw, other `0`); `chmod 744 foo` → `rwxr--r--`.
+
 > [!warning] x sulle directory
 > Sulla directory il bit `x` non significa "eseguire" ma **attraversare**: senza `x` non si può entrare nella directory né accedere ai file al suo interno, anche se i file hanno i permessi giusti (vedi [[02 - Concetti di Base e Strutture#Diritti di accesso]]).
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Cosa rappresenta il permesso `chmod 644 file`? Esprimi sia in ottale sia in simbolico.
 > **R:** `6` = `110` = `rw-` (owner: lettura e scrittura); `4` = `100` = `r--` (group: solo lettura); `4` = `100` = `r--` (other: solo lettura). In simbolico equivale a `chmod u=rw,go=r file`. È il permesso tipico di un file di testo: il proprietario lo modifica, gli altri lo leggono.
 > - **D:** Quale differenza c'è tra `chmod +x dir` e `chmod +r dir` su una directory?
 > **R:** `+x` aggiunge il permesso di **attraversamento** (entrare nella directory con `cd`, accedere ai file dentro); `+r` aggiunge il permesso di **lettura dell'elenco** (fare `ls`). Senza `x` si può avere `r` ma non si riesce ad accedere ai file al suo interno; è una combinazione rara ma significativa.
+
+> [!info] Mettiti alla prova
+> Esercizio `3.1_Exercises` del prof: **15** (`chmod` simbolico e ottale). Svolto in [[04 - Linux e BASH]].
 ## Eseguire comandi e script
 - **Comando nel PATH**: basta il nome, `command_name` (se l'eseguibile sta in una directory del [[#Variabili e ambiente|PATH]]).
 - **Eseguibile nella directory corrente**: `./executable_name` (il prefisso `./` dice "è qui"), previo `chmod +x`.
 - **Script bash**: `bash scriptname.sh`, oppure renderlo eseguibile e lanciarlo con `./`.
+
 > [!quote] Definizione — Shebang
 > La prima riga di uno script può indicare l'interprete con `#!` (**shebang**): `#!/bin/bash` per Bash, `#!/usr/bin/python3` per Python. Così `./script` viene eseguito dall'interprete giusto, senza chiamarlo esplicitamente.
 
@@ -215,6 +228,7 @@ mycommand &
 - **Ctrl-Z** sospende il processo in foreground; poi `bg` lo fa ripartire in background, `fg` lo riporta in foreground.
 - `jobs` elenca i job della shell; `bg 2` / `fg 2` agiscono sul job n°2.
 - `kill PID` oppure `kill %n` (per *job number*) terminano un processo inviandogli un [[03 - Processi e Thread#I segnali|segnale]].
+
 > [!example] Sequenza tipica
 > ```bash
 > countdown 20 > c.txt &   # background, output su file (così non disturba)
@@ -233,11 +247,14 @@ Per processi lunghi che devono **sopravvivere alla disconnessione** del terminal
 | Più finestre | sì | no |
 | Uso tipico | task lunghi **interattivi** | task **non interattivi** in background |
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Cosa succede se si usa Ctrl+Z su un processo in foreground? Come si fa poi a riportarlo in esecuzione?
 > **R:** Ctrl+Z invia il segnale di **sospensione** al processo in foreground: il processo viene messo in pausa e il controllo torna alla shell. Da lì: `fg` lo riporta in **foreground** (torna a girare nel terminale); `bg` lo manda in **background** (continua a girare senza occupare il terminale); `jobs` elenca tutti i job sospesi o in background con il loro numero; `kill %n` lo termina.
 > - **D:** Qual è la differenza tra `screen` e `nohup` per far sopravvivere un processo alla chiusura del terminale?
 > **R:** Entrambi sopravvivono alla disconnessione. `nohup comando &` stacca il processo in modo **permanente**: non è ri-agganciabile, l'output va in `nohup.out`. `screen` crea una sessione **ri-agganciabile** (`screen -r`): si può rientrare, interagire, usare più finestre nella stessa sessione. Per task non interattivi va bene `nohup`; per task interattivi o lunghi con output da monitorare si preferisce `screen`.
+
+> [!info] Mettiti alla prova
+> Esercizi `3.1_Exercises` del prof: **7, 8, 9, 10** (script `countdown.sh`, job control). Svolti in [[04 - Linux e BASH]].
 ## File di configurazione
 I file di configurazione iniziano con `.` (sono **dotfiles**, *hidden files*) e non compaiono con `ls`: servono `ls -a` o `ls -al`.
 - **`.bash_profile`**: eseguito al **login**; qui di solito è impostato PATH.
@@ -305,9 +322,10 @@ Vedi esempi con output reale in [[04 - Linux e BASH]].
 - `split -l 100 f parte_` spezza `f` in blocchi da **100 righe** ciascuno, con nomi `parte_aa`, `parte_ab`, `parte_ac`, … (suffisso alfabetico automatico).
 - `split -b 1M file.bin blocco_` spezza per dimensione (1 MiB per blocco).
 
-Vedi applicazioni pratiche in [[04 - Linux e BASH]].
+> [!info] Mettiti alla prova
+> Esercizi `3.1_Exercises` del prof su filtri e testo: **2, 3, 4, 12, 13, 14, 18, 19, 20, 21** (`awk`, `sed`, `cut`, `tr`, `od`, `split`, `sort`/`uniq`). Svolti con output reale in [[04 - Linux e BASH]].
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Come si estrae la lista degli utenti unici da `w` usando una pipeline?
 > **R:** `w | awk -F" " '{print $1}' | sort | uniq`. `awk` estrae la prima colonna (il nome utente), `sort` ordina (necessario perché `uniq` rimuove solo i **duplicati adiacenti**), `uniq` rimuove i duplicati. Per salvare il risultato su file si aggiunge `> users` in fondo.
 > - **D:** Qual è la differenza tra `sed 's/a/b/' file` e `sed 's/a/b/g' file`?
@@ -321,6 +339,21 @@ Molti strumenti (**grep**, **sed**) usano stringhe che descrivono sequenze di ca
 | `bar$` | la riga **finisce** con "bar" |
 | `[0-9]\{3\}` | un numero di **3 cifre** |
 | `.*a.*e.*i.*o.*u.*` | parole con le vocali **in ordine** |
+
+> [!example] Regex in pratica con `grep`
+> ```bash
+> grep '^foo' file         # righe che INIZIANO con "foo"
+> grep 'bar$' file         # righe che FINISCONO con "bar"
+> grep -E '[0-9]{3}' file  # righe con almeno 3 cifre consecutive (-E = regex estese)
+> grep '^$' file           # righe vuote
+> ```
+> Con `grep -E` (o `egrep`) le graffe `{3}` si scrivono direttamente; con `grep` classico vanno protette: `[0-9]\{3\}`.
+
+> [!question] Domanda tipica d'esame
+> - **D:** Cosa seleziona il pattern `^foo` in `grep`, e in cosa differisce da `foo$`? **R:** `^foo` seleziona le righe che **iniziano** con "foo" (il simbolo `^` àncora il pattern all'inizio della riga); `foo$` seleziona quelle che **finiscono** con "foo" (`$` àncora alla fine). Combinati, `^foo$` seleziona le righe che contengono *esattamente* "foo".
+
+> [!info] Mettiti alla prova
+> Esercizi `3.1_Exercises` del prof: **4** (punti 5-6) e **11** (regex con `grep`). Svolti in [[04 - Linux e BASH]].
 ## Creare utenti (useradd)
 `sudo useradd -s /bin/bash -d /home/vivek/ -m -G sudo vivek` crea l'utente: `-s` shell di login, `-d` home directory, `-m` crea la home, `-G` gruppo secondario (`sudo` = privilegi admin). Poi `sudo passwd vivek` imposta la password. **`sudo`** esegue un comando come **root** (vedi [[02 - Concetti di Base e Strutture|UID e superuser]]).
 ## Editor di testo
@@ -328,6 +361,7 @@ Molti strumenti (**grep**, **sed**) usano stringhe che descrivono sequenze di ca
 - **vim**: erede di `vi`, efficiente e veloce, popolare tra i sistemisti.
 - **gedit**: in stile Notepad (richiede ambiente grafico).
 - **nano**: editor leggero da terminale.
+
 > [!info] Le tre modalità di Vim
 > - **Normal**: navigazione e manipolazione (frecce o `j k l`, `x` cancella un carattere, `dd` cancella la riga, `p` incolla, `:` entra in command mode).
 > - **Insert**: inserimento di testo (si entra con `i`, si esce con `ESC`).

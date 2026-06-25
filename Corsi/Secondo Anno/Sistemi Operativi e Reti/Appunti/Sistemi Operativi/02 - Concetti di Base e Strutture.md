@@ -91,7 +91,10 @@ Esempio: `read(fd, buffer, nbytes)`. Il diagramma del corso (figura di Tanenbaum
 | `s = kill(pid, signal)` | Invia un **segnale** a un processo (non lo "uccide" e basta!) |
 | `s = time(&seconds)` | Secondi trascorsi dal 1° gennaio 1970 |
 
-Convenzioni dei valori di ritorno: `pid` = id processo, `fd` = file descriptor, `n` = numero di byte, `s` = esito. Quasi tutte le call ritornano **-1 in caso di errore** — impostando la variabile globale `errno`, che `perror()` traduce in un messaggio leggibile — e `0` o un valore utile in caso di successo (`open` → un `fd ≥ 0`; `read` → byte letti, `0` a fine file; `lseek` → la nuova posizione). Tre **eccezioni** da ricordare: `fork()` ritorna **due volte** (riquadro sopra); `execve()` **non ritorna** se ha successo — l'immagine del processo è stata sostituita — e dà `-1` solo su errore (mnemonico: *se `execve` ritorna, è andata male*); `exit()` **non ritorna mai**, perché termina il processo (lo `status`, 0–255, lo raccoglie il padre con `waitpid`).
+Convenzioni dei valori di ritorno: `pid` = id processo, `fd` = file descriptor, `n` = numero di byte, `s` = esito. Quasi tutte le call ritornano **-1 in caso di errore** — impostando la variabile globale `errno`, che `perror()` traduce in un messaggio leggibile — e `0` o un valore utile in caso di successo (`open` → un `fd ≥ 0`; `read` → byte letti, `0` a fine file; `lseek` → la nuova posizione). Vanno ricordate tre **eccezioni**:
+- `fork()` ritorna **due volte** (riquadro sopra);
+- `execve()` **non ritorna** se ha successo — l'immagine del processo è stata sostituita — e dà `-1` solo su errore (mnemonico: *se `execve` ritorna, è andata male*);
+- `exit()` **non ritorna mai**, perché termina il processo (lo `status`, 0–255, lo raccoglie il padre con `waitpid`).
 ### API Win32 di Windows
 Windows offre API equivalenti (non identiche) alle system call UNIX:
 
@@ -114,11 +117,15 @@ Windows offre API equivalenti (non identiche) alle system call UNIX:
 | `kill`           | (nessuna)                           | Win32 non supporta i segnali                            |
 | `time`           | `GetLocalTime`                      | Ora locale di sistema                                   |
 ### Costo delle system call
-Una system call è **costosa**: richiede un cambio di contesto user↔kernel, salvataggio/ripristino dei registri, validazione dei parametri ed eventuale blocco del chiamante. Per questo si tende a minimizzarne il numero (es. I/O bufferizzato).
+Una system call è **costosa**: richiede un cambio di contesto user↔kernel, salvataggio/ripristino dei registri, validazione dei parametri ed eventuale blocco del chiamante. Per questo si tende a minimizzarne il numero: ad esempio la `libc` **bufferizza** le scritture e le svuota in blocco, sostituendo molte `write()` con una sola e riducendo i cambi di contesto.
 
-> [!example] Domande tipiche d'esame
+> [!question] Domande tipiche d'esame
 > - **D:** Cosa sono le system call e perché vengono incapsulate in una libreria? **R:** Sono il meccanismo con cui un processo in **modalità utente** richiede un servizio al kernel. Il meccanismo è specifico del SO e dell'hardware, quindi viene **incapsulato** nella libreria C (`libc`, basata su POSIX), che esporta una funzione per ogni system call → **portabilità** del codice.
 > - **D:** Descrivi i passi di una system call (es. `read`). **R:** (1) i parametri vanno nei **registri** (`RDI`, `RSI`, `RDX`); (2) si chiama la funzione di libreria `read()`; (3) il **numero** della syscall va in `RAX`; (4) l'istruzione **TRAP** (`SYSCALL`) commuta in **modalità kernel**; (5) il kernel identifica la chiamata da `RAX`, valida i parametri ed esegue il gestore; (6) ritorno alla libreria e al programma. La chiamata può **bloccare** il processo (gestione affidata allo scheduler).
+
+> [!info] Mettiti alla prova
+> - **C — processi** (`fork`/`waitpid`/`execve`/`exit`): [[Indice degli Esercizi#Processi|fork_pari_dispari_soglia.c]] e [[Indice degli Esercizi#Processi|26_01_24_appello.c]] · tracce [[Tracce d'Esame Pratiche#Processi|P2]], [[Tracce d'Esame Pratiche#Processi|P6]], [[Tracce d'Esame Pratiche#Processi|P10]].
+> - **C — file** (`open`/`read`/`lseek`/`stat`): [[Indice degli Esercizi#Processi|fork_seek_occurrences.c]] · tracce [[Tracce d'Esame Pratiche#Processi|P1]], [[Tracce d'Esame Pratiche#Processi|P9]].
 ## L'astrazione di processo
 Un **processo** è l'astrazione di un programma in esecuzione per conto di un utente. È un *contenitore* con tutto il necessario all'esecuzione. Trattazione completa in [[03 - Processi e Thread]]; qui i concetti base.
 
@@ -134,7 +141,7 @@ Trattazione completa in [[07 - File System]]; qui le basi necessarie a capire l'
 > [!quote] Definizione — File
 > Astrazione di un dispositivo di memorizzazione: si leggono/scrivono dati indicando posizione e quantità, senza conoscere i dettagli fisici del disco.
 
-I file sono raccolti in **directory** (a loro volta file). Filosofia UNIX: **"everything is a file"**.
+I file sono raccolti in **directory** (a loro volta file). Filosofia UNIX: **"everything is a file"** — o, più precisamente a livello di interfaccia, *"everything is a file descriptor"*, dato che file, pipe e dispositivi si manipolano tutti con le stesse system call (`read`/`write`/`close`).
 
 **Gerarchia e percorsi**: la gerarchia parte dalla **directory radice** `/`. Si accede ai file con **percorsi assoluti** (`/home/ast/todo`) o **relativi** alla directory di lavoro (`../slides.pdf`). Altri file system possono essere **montati** (`mount`) nella gerarchia (es. `/mnt/usb`).
 
@@ -163,6 +170,10 @@ In **notazione ottale** ogni tupla è la somma dei suoi bit — **`r`=4, `w`=2, 
 > `chmod 744 os/hello.sh` → `rwxr--r--`: owner può eseguire, group e others solo leggere.
 > `chmod 644 os/` → `rw-r--r--` sulla **directory**: rimuove il bit execute (`x`) dalla directory, rendendo impossibile attraversarla (*traversal*) o accedere ai file al suo interno — anche se i file stessi avessero i permessi giusti. Creare file, listare con `ls` e aprire file nella directory richiedono tutti che `x` sia impostato sulla directory.
 > Per una directory funzionante si usa di norma **`755`** (`rwxr-xr-x`): qui `644` è mostrato apposta come esempio di cosa la *rompe* (toglie `x`, cioè l'attraversabilità).
+
+> [!info] Mettiti alla prova
+> - **Comando:** crea un file di test e prova `chmod`, `ls -l`, `stat` nel terminale, verificando i bit `rwx` ↔ notazione ottale (`755`, `644`).
+> - **Teorico:** permessi e comandi sono svolti in [[04 - Linux e BASH]] (Esercizi Teorici) e approfonditi in [[09 - Linux e BASH]].
 ### File speciali e pipe
 In UNIX i dispositivi sono astratti come file:
 - **Block special files**: dispositivi a blocchi (dischi), es. `/dev/sda2`.
@@ -178,10 +189,11 @@ I **link** sono un caso particolare: esistono in due varianti distinte.
 
 Le **pipe** sono pseudo-file per la comunicazione tra processi su un canale **FIFO**: vanno predisposte in anticipo, appaiono come file normali a chi legge/scrive e permettono comunicazione (tipicamente unidirezionale) tra processi.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Differenza tra **hard link** e **symbolic link**. **R:** L'**hard link** è una seconda voce di directory che punta allo **stesso inode** del file (non è una copia): vale solo all'interno dello stesso file system e il dato esiste finché c'è almeno un link (`ln nome1 nome2`). Il **symbolic link** è un file speciale che contiene un **percorso** verso la destinazione: può attraversare file system diversi e puntare a directory, ma diventa *dangling* se la destinazione viene eliminata (`ln -s nome1 nome2`).
 ## Protezione e shell
 La **protezione** è il meccanismo con cui il SO controlla l'accesso a risorse e dati (i bit `rwx`, gli UID/GID, la separazione kernel/user). La **shell** non è il SO ma il suo principale programma di interfaccia: legge comandi e li esegue creando processi.
+
 > [!info] Anticipazione — qui è la prospettiva concettuale (cap. 1)
 > Shell, redirezione e permessi sono introdotti qui solo per capire *l'interfaccia* del SO. La trattazione **pratica** di Linux e BASH — comandi, permessi con `chmod`, redirezione e pipe in dettaglio, file descriptor, processi e job control, scripting — è nella nota [[09 - Linux e BASH]].
 
@@ -214,19 +226,19 @@ L'intero SO è **un unico programma** in modalità kernel: un *main* che invoca 
 
 Esempi: UNIX tradizionale, **Linux**, gran parte di Windows.
 ### Sistemi a livelli (layered)
-Generalizzazione del monolitico: il SO è diviso in **livelli gerarchici**, ognuno costruito su quello sotto. Il sistema **THE** (Dijkstra) ne usava 6 (dall'allocazione del processore in basso ai programmi utente in alto); **MULTICS** usava **anelli concentrici** di privilegio (i livelli interni più privilegiati).
+Generalizzazione del monolitico: il SO è diviso in **livelli gerarchici**, ognuno costruito su quello sotto. Il sistema **THE** (Dijkstra, 1968) ne usava **6**, dal più basso al più alto: **(0)** allocazione del processore e multiprogrammazione, **(1)** gestione della memoria, **(2)** comunicazione operatore-processo, **(3)** gestione dell'I/O, **(4)** programmi utente, **(5)** l'operatore. **MULTICS** usava invece **anelli concentrici** di privilegio (i livelli interni più privilegiati).
 - **Pro**: separazione delle responsabilità, **protezione**, debug livello per livello.
 - **Contro**: difficile definire i livelli; overhead negli attraversamenti.
 ### Microkernel (client-server)
 Solo le funzioni **essenziali** restano nel kernel (**microkernel**); i servizi (file system, gestione processi, driver) girano come **processi in user mode** che comunicano tramite **scambio di messaggi**. È il modello **client-server**: un client invia un messaggio al server competente, che risponde.
 
 Nel kernel restano: gestione memoria di basso livello, [[05 - Scheduling|scheduling]], **IPC** e gestione base degli interrupt.
-- **Pro**: aderisce al **Principle of Least Authority** (TCB piccolo); **affidabilità** e **sicurezza** (un server che cade non blocca il sistema); portabilità ed estensibilità.
+- **Pro**: aderisce al **Principle of Least Authority** (POLA: ogni componente ha solo i privilegi che gli servono, così la **Trusted Computing Base** — TCB, l'insieme di codice di cui ci si deve necessariamente fidare — resta piccola); **affidabilità** e **sicurezza** (un server che cade non blocca il sistema); portabilità ed estensibilità.
 - **Contro**: lo **scambio di messaggi** è più lento di una chiamata di funzione → overhead e prestazioni inferiori al monolitico.
 
 Esempi: **MINIX 3**, Mach, QNX, Symbian.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Differenza tra kernel **monolitico** e **microkernel**. **R:** Nel **monolitico** l'intero SO è un unico programma in modalità kernel: le procedure si chiamano direttamente (molto **efficiente**), ma un bug in una parte può compromettere tutto e non c'è isolamento interno. Nel **microkernel** restano nel kernel solo le funzioni essenziali (scheduling, IPC, memoria di basso livello); i servizi (file system, driver) girano come **processi in user mode** che comunicano via **scambio di messaggi** → maggiore **affidabilità** e **sicurezza** (TCB piccolo, *Principle of Least Authority*), ma più lento per l'overhead dei messaggi.
 ### Macchine virtuali
 Una **macchina virtuale (VM)** è la copia virtuale dell'hardware, su cui può girare un intero SO. Idea nata con **VM/370** di IBM (anni '70) per separare la multiprogrammazione dalla macchina estesa; oggi alla base del **cloud**. Il **Virtual Machine Monitor (VMM)** o **hypervisor** emula l'hardware:
@@ -257,7 +269,7 @@ Il risultato è che si ottengono **N interfacce di system call indipendenti dal 
 | **Compatibilità OS** | può eseguire OS diversi           | deve usare lo stesso kernel dell'host |
 | **Uso tipico**       | sistemi legacy, ambienti multipli | microservizi, app cloud-native        |
 
-> [!example] Domande tipiche d'esame
+> [!question] Domande tipiche d'esame
 > - **D:** Cos'è una macchina virtuale e che differenza c'è tra hypervisor **Type 1** e **Type 2**? **R:** Una VM è la copia virtuale dell'hardware su cui può girare un intero SO isolato; l'hypervisor (VMM) emula l'hardware. **Type 1 (bare metal)**: l'hypervisor gira direttamente sull'hardware (VMware ESXi, Xen, Hyper-V). **Type 2 (hosted)**: gira sopra un SO host (VirtualBox, QEMU).
 > - **D:** Differenza tra **VM** e **container**. **R:** La VM include un kernel/OS **completo** (pesante, avvio in minuti, isolamento forte, può eseguire OS diversi dall'host). Il container **condivide il kernel dell'host** e isola a livello di **processo** (leggero, avvio in secondi, ma deve usare lo stesso kernel e ha isolamento più debole).
 ### Exokernel

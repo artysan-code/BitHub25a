@@ -1,5 +1,6 @@
 # Programmazione C e Concorrente
 Questa nota copre gli **elementi di programmazione in C** strumentali al laboratorio (slide 5): come un programma scritto in C usa concretamente i servizi del SO — system call, creazione di processi, segnali, comunicazione tra processi. È il complemento "a livello di codice" dei concetti teorici di [[02 - Concetti di Base e Strutture]] (system call), [[03 - Processi e Thread]] (processi e segnali) e [[04 - Sincronizzazione]] (IPC).
+
 > [!info] Inquadramento
 > Il C fu creato da **Dennis Ritchie (1972)** per scrivere UNIX, e molte scelte di UNIX traspaiono ancora nel linguaggio. Materiale strumentale: gli esempi (`5.x_*.c`) sono in `Materiale Didattico/.../code/`. Non serve impararlo a memoria, ma capire *come* il codice arriva al kernel.
 ## Everything is a file
@@ -12,6 +13,7 @@ La filosofia UNIX **"everything is a file"** ([[09 - Linux e BASH|già vista]]) 
 | Standard Error | `stderr` | 2 | console |
 ## Stampare "Hello World" a tre livelli
 Lo stesso risultato — scrivere su stdout — si ottiene a tre livelli di astrazione decrescente, ed è il filo conduttore per capire il rapporto **libreria ↔ system call**.
+
 > [!example] (1) Libreria standard — `printf`
 > ```c
 > #include <stdio.h>
@@ -50,6 +52,7 @@ Lo stesso risultato — scrivere su stdout — si ottiene a tre livelli di astra
 Da sorgente a eseguibile: il **C preprocessor** elabora `#include`/`#define` di `.c` e `.h`, il **C compiler** produce i file oggetto `.o`, il **linker** li unisce alle librerie (es. `libc.a`) generando il binario eseguibile (storicamente `a.out`). La struttura interna dell'eseguibile (header, numero magico, segmenti) è in [[07 - File System#Struttura interna dei file]].
 ## Dalla libreria alla system call
 Cosa accade *davvero* quando un programma chiama `read()`? La catena, dal user space fino al kernel, è lunga (qui semplificata ma corretta). È l'approfondimento concreto del [[02 - Concetti di Base e Strutture#Meccanismo: i passi di una system call|meccanismo delle system call]].
+
 > [!info] La libreria standard wrappa le system call
 > `libc` fornisce wrapper comodi (`read`, `write`, `exit`, …). Il passaggio effettivo al kernel richiede l'istruzione macchina **`syscall`** (storicamente l'interrupt `int 0x80`), scritta in assembly dentro `libc`.
 
@@ -70,10 +73,11 @@ Cosa accade *davvero* quando un programma chiama `read()`? La catena, dal user s
 | Meccanismo | prepara i registri + `syscall` | dispatcher `do_syscall_64` |
 | Funzione finale | — | `ksys_read` → `vfs_read` |
 ## Creazione di processi: fork, exec, wait
-Le tre system call cardine (concetti in [[03 - Processi e Thread#System call di gestione]]); qui in C.
+Le tre system call cardine (concetti in [[03 - Processi e Thread#System call di gestione]]), qui usate in C:
 - **`fork()`** duplica il processo corrente: restituisce il **PID del figlio** al genitore e **0** al figlio (così i due rami si distinguono).
 - **`wait(&status)`** sospende il genitore finché un figlio cambia stato (es. `exit` o segnale), scrivendo lo stato in `status`.
 - **`execv(path, argv)`** sostituisce l'immagine del processo con un nuovo binario; `argv` termina con `NULL`. Esistono varianti (`execl`, `execlp`, `execvp`, …).
+
 > [!example] fork + wait + execv
 > ```c
 > void main(void) {
@@ -107,7 +111,7 @@ Le tre system call cardine (concetti in [[03 - Processi e Thread#System call di 
 > }
 > ```
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Cosa restituisce `fork()` e come fanno padre e figlio a distinguersi? **R:** `fork()` duplica il processo; restituisce il **PID del figlio** al genitore e **0** al figlio (`-1` in caso di errore). I due rami eseguono lo stesso codice ma si distinguono testando il valore di ritorno: `if (fork() == 0) { /* figlio */ } else { /* padre */ }`.
 > - **D:** Differenza tra `wait` e `waitpid`. **R:** `wait(&status)` attende la terminazione di **un qualsiasi** figlio; `waitpid(pid, &status, 0)` attende il figlio **con quel PID** specifico — utile quando un processo ne ha generati più di uno.
 
@@ -148,11 +152,16 @@ Le tre system call cardine (concetti in [[03 - Processi e Thread#System call di 
 > }
 > ```
 > Questa è la ragione per cui una shell reale mantiene una lista di builtin (`cd`, `exit`, `export`, …) che non genera processi figli.
+
+> [!info] Mettiti alla prova
+> - **C:** [[Indice degli Esercizi#Processi|fork_sum.c]], [[Indice degli Esercizi#Processi|fork_pari_dispari_soglia.c]], [[Indice degli Esercizi#Processi|fork_catena_moltiplica.c]], [[Indice degli Esercizi#Processi|matrix_fork.c]], [[Indice degli Esercizi#Processi|26_01_24_appello.c]].
+> - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Processi|P2]], [[Tracce d'Esame Pratiche#Processi|P3]], [[Tracce d'Esame Pratiche#Processi|P5]], [[Tracce d'Esame Pratiche#Processi|P6]], [[Tracce d'Esame Pratiche#Processi|P10]].
 ## Segnali in C
 I [[03 - Processi e Thread#I segnali|segnali]] gestiscono eventi asincroni. API principali:
 - `signal(signum, handler)` registra un **gestore** (signal handler) per `signum`.
 - `alarm(seconds)` consegna `SIGALRM` dopo un certo numero di secondi.
 - `kill(pid, sig)` invia il segnale `sig` al processo `pid` — **non** lo "uccide" e basta (es. `Ctrl+C` → `SIGINT`, `Ctrl+Z` → `SIGTSTP`, vedi [[09 - Linux e BASH#Foreground e background|job control]]).
+
 > [!example] alarm + handler
 > ```c
 > #include <stdio.h>
@@ -185,6 +194,10 @@ I [[03 - Processi e Thread#I segnali|segnali]] gestiscono eventi asincroni. API 
 > }
 > ```
 > `strsignal(sig)` restituisce la descrizione testuale del segnale (es. "Interrupt"). Catturando `SIGINT` con un handler, `Ctrl+C` viene gestito invece di terminare il programma.
+
+> [!info] Mettiti alla prova
+> - **C:** [[Indice degli Esercizi#Processi|fork_pari_dispari_soglia.c]] e [[Indice degli Esercizi#Processi|fork_sum.c]] terminano i figli con `kill(pid, SIGTERM)`.
+> - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Processi|P2]], [[Tracce d'Esame Pratiche#Processi|P6]].
 ## Comunicazione tra processi: le pipe
 Le [[02 - Concetti di Base e Strutture#File speciali e pipe|pipe]] collegano processi su un canale FIFO. In shell: `cat names.txt | sort` (pipe anonima) oppure `mkfifo named.pipe` (pipe **con nome**). In C servono quattro system call: `open`, `close`, `pipe(pipefd[2])` (crea la pipe e i due fd delle estremità), `dup`/`dup2`.
 
@@ -200,6 +213,7 @@ Le [[02 - Concetti di Base e Strutture#File speciali e pipe|pipe]] collegano pro
 > `dup(oldfd)` duplica un file descriptor sul **più basso fd libero**; `dup2(oldfd, newfd)` lo duplica su un fd **specifico**. Servono ad **"agganciare"** `STDOUT_FILENO` (1) o `STDIN_FILENO` (0) a un file o a una pipe.
 
 Questo è il **meccanismo concreto** dietro la [[09 - Linux e BASH#Redirezione e pipe|redirezione della shell]]: "cambiare dove punta un fd" significa fare `dup2` prima di `execv`.
+
 > [!example] Redirezione dell'output su file
 > ```c
 > int fd = open("output.txt", O_WRONLY | O_CREAT, 0644);
@@ -253,7 +267,7 @@ Questo è il **meccanismo concreto** dietro la [[09 - Linux e BASH#Redirezione e
 > ```
 > La **seconda `fork` è eseguita dal padre** (il figlio 1 ha già fatto `execlp` e non la raggiunge). Ogni `waitpid` identifica uno specifico figlio tramite il suo PID: un `wait` generico non consentirebbe di attenderli in un ordine preciso.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Come si realizza in C la redirezione dell'output di un programma su una pipe (o un file)? **R:** Si **aggancia** lo stdout alla pipe/file con `dup2(fd, STDOUT_FILENO)` (o `close(STDOUT_FILENO); dup(fd);`) **prima** della `execv`: il programma eseguito scriverà su `STDOUT_FILENO` (1) senza saperlo, ma l'fd 1 ora punta alla pipe/file. È il meccanismo dietro la redirezione della shell.
 ### Perché chiudere le estremità della pipe?
 Le `close` sulle estremità non usate **non** sono opzionali:
@@ -262,8 +276,16 @@ Le `close` sulle estremità non usate **non** sono opzionali:
 3. **Evitare letture accidentali** dalla pipe nel processo sbagliato.
 4. Dopo `dup2`, chiudere il fd **originale** così ogni processo usa solo la pipe (lato scrittura in chi scrive, lato lettura in chi legge).
 5. Il **padre** deve chiudere entrambe le estremità dopo la `fork`.
+
+> [!example] Esercizio d'esame — somma di pari e dispari
+> Un processo genera due figli **P1** e **P2**. P1 cicla generando interi casuali in $[0,100]$ e comunica al padre **solo i dispari**; P2 fa lo stesso ma **solo i pari**. Il padre, per ogni coppia ricevuta, ne calcola e stampa la somma. Il programma termina quando la somma supera **190**: il padre invia allora un segnale di terminazione a ciascun figlio. Richiede `fork`, `pipe`, `signal`/`kill`. Altre tracce in [[Tracce d'Esame Pratiche]].
+
+> [!info] Mettiti alla prova
+> - **C — pipe:** [[Indice degli Esercizi#Processi|fork_sum.c]], [[Indice degli Esercizi#Processi|fork_seek_occurrences.c]], [[Indice degli Esercizi#Processi|fork_file_pari_dispari.c]], [[Indice degli Esercizi#Processi|fork_fusione_pari_dispari.c]].
+> - **dup/dup2 + pipe bidirezionale:** [[Indice degli Esercizi#Processi|fork_pipe_bidirezionale_quadrato.c]] (traccia [[Tracce d'Esame Pratiche#Processi|P7]]).
+> - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Processi|P1]], [[Tracce d'Esame Pratiche#Processi|P8]], [[Tracce d'Esame Pratiche#Processi|P9]].
 ## File di esempio del laboratorio
-Gli esempi del corso (in `Materiale Didattico/.../code/`):
+*(Sezione di riferimento rapido — inventario del codice, non argomento d'esame.)* Gli esempi del corso (in `Materiale Didattico/.../code/`):
 - `5.1_hello_world_1/2/3.c` — le tre versioni di Hello World.
 - `5.2_my_first_fork_1/2.c` — creazione di processi con `fork`.
 - `5.3_my_signal_1/2.c` — gestione di segnali e allarmi.
@@ -274,9 +296,6 @@ Lo **script di compilazione** (`compile.sh`) fa parte del materiale: vale la pen
 
 > [!info] `compile.sh` e i livelli di ottimizzazione
 > Lo script compila gli esempi con `gcc` (o `clang`, intercambiabili) ed espone i flag di **ottimizzazione**: `-O0` (nessuna ottimizzazione → compilazione rapida e debug facile), `-O1`/`-O2`/`-O3` (ottimizzazioni crescenti → eseguibile più veloce ma compilazione più lenta e codice più difficile da debuggare). In laboratorio si usa tipicamente `-O0` o `-O2`.
-
-> [!example] Esercizio d'esame — somma di pari e dispari
-> Un processo genera due figli **P1** e **P2**. P1 cicla generando interi casuali in $[0,100]$ e comunica al padre **solo i dispari**; P2 fa lo stesso ma **solo i pari**. Il padre, per ogni coppia ricevuta, ne calcola e stampa la somma. Il programma termina quando la somma supera **190**: il padre invia allora un segnale di terminazione a ciascun figlio. Richiede `fork`, `pipe`, `signal`/`kill`. Altre tracce in [[Tracce d'Esame Pratiche]].
 ## Collegamenti con altri argomenti
 > [!info] Mappa dei rimandi
 > - **Meccanismo delle system call (TRAP, registri, modalità kernel/user)** → [[02 - Concetti di Base e Strutture]]

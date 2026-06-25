@@ -1,5 +1,6 @@
 # Gestione della Memoria
 Il **gestore della memoria** (*memory manager*) è la parte del sistema operativo che astrae la [gerarchia fisica della memoria](#Gerarchia%20della%20memoria%20e%20ruolo%20del%20gestore) in un modello utilizzabile, tiene traccia di quali zone sono occupate o libere, alloca memoria ai processi che la richiedono e la libera quando non serve più. Tutta questa lezione riguarda la **memoria principale (RAM)**; lo storage di massa (dischi/SSD) e il [[07 - File System|file system]] sono trattati a parte.
+
 > [!quote] Legge di Parkinson (parafrasi)
 > *I programmi si espandono fino a riempire tutta la memoria disponibile.* Per quanta RAM si aggiunga, il software cresce più in fretta: un laptop con 32 GB ha 20 000 volte la memoria dell'IBM 7094 (il più grande computer del mondo nei primi anni '60)… ed è sempre pieno.
 
@@ -9,6 +10,7 @@ Il **desiderio** dell'utente sarebbe una memoria privata, grande, veloce, persis
 Compito del SO è **astrarre** questa gerarchia e gestirla: il gestore della memoria traccia l'uso, alloca e libera spazio per i processi.
 ## Memoria senza astrazione
 Il modello più semplice è l'**uso diretto della memoria fisica**: il programma vede solo indirizzi fisici. Con un'istruzione come `MOV REGISTER1,1000` il contenuto della cella fisica `1000` finisce in `REGISTER1`.
+
 > [!warning] Il problema della memoria fisica nuda
 > Senza astrazione **un programma può interferire con un altro** scrivendo nei suoi indirizzi, e un applicativo utente può addirittura **cancellare il sistema operativo**. È impossibile far convivere in sicurezza più programmi.
 ### Monoprogrammazione
@@ -18,12 +20,14 @@ Con un solo programma per volta in memoria, esistono tre organizzazioni storiche
 - **OS + driver in ROM, resto in RAM** — primi PC: la ROM con i driver di base si chiamava **BIOS** (*Basic Input Output System*), es. MS-DOS.
 ### Multiprogrammazione senza astrazione
 Si possono eseguire più programmi anche senza astrazione, usando lo **swapping**.
+
 > [!quote] Definizione — Swapping
 > Salvataggio dell'intero contenuto della memoria di un processo in un file su memoria **non volatile**, e successivo caricamento del programma seguente. Sposta interi processi tra RAM e disco/SSD.
 
 L'approccio *naive* di caricare più programmi consecutivamente in memoria fisica **non funziona**: due programmi che iniziano con `JMP 24` e `JMP 28` usano **indirizzi assoluti**; il secondo, caricato dopo il primo, salta erroneamente dentro le istruzioni del primo, causando errori e crash. È il sintomo che serve una **astrazione dell'indirizzo**.
 ## Astrazione della memoria: spazi degli indirizzi
 La soluzione è separare e proteggere i programmi tramite l'astrazione dello **spazio degli indirizzi**.
+
 > [!quote] Definizione — Spazio degli indirizzi (*address space*)
 > Insieme **unico** di indirizzi che un programma può usare per indirizzare la memoria. È indipendente da quello degli altri processi e rappresenta una forma astratta di memoria: ogni processo "crede" di avere la propria memoria privata.
 ### Registri base e limite
@@ -53,6 +57,7 @@ I segmenti di **dati** e di **stack** possono crescere durante l'esecuzione. Si 
 Per tenere traccia della memoria (es. in blocchi da 4 byte) ci sono due metodi; il problema riguarda non solo la memoria, ma anche risorse come il [[07 - File System|file system]].
 - **Bitmap**: un bit per blocco indica se è allocato. Trovare un buco di *k* blocchi richiede una **scansione** (lenta).
 - **Lista collegata** di segmenti processo/buco (P/H, con indirizzo di partenza e lunghezza): trade-off tra allocazione lenta e deallocazione lenta. Tenere i buchi **ordinati per indirizzo** permette una rapida **coalescenza** (fusione di buchi adiacenti). In pratica si usa spesso una **doppia** linked list, che facilita il controllo del segmento precedente e l'aggiornamento dei puntatori alla terminazione di un processo.
+
 > [!example] I quattro casi di coalescenza (doppia lista)
 > Quando un processo X termina e libera la propria zona di memoria, si possono presentare quattro configurazioni con i segmenti adiacenti nella lista (A = processo a sinistra, B = processo a destra, H = buco):
 > - **(a)** A — X — B: nessun buco adiacente → si sostituisce X con un **singolo buco**.
@@ -69,14 +74,17 @@ Scelto un buco abbastanza grande per una richiesta:
 - **Buddy Allocation** (Linux): migliora la coalescenza (vedi sotto).
 ### Buddy allocation (Linux)
 Linux alloca le pagine principalmente con l'algoritmo di **Buddy Memory Allocation** (descritto al Cap. 10.4 del libro).
+
 > [!example] Funzionamento del buddy
 > La memoria parte come un singolo blocco contiguo (es. 64 pagine). A ogni richiesta la dimensione è **arrotondata a una potenza di 2** e il blocco viene **diviso a metà** ripetutamente finché si ottiene un pezzo della taglia giusta, che viene allocato. Quando due blocchi **adiacenti** provenienti dalla stessa divisione vengono liberati, vengono **uniti** (coalescenza) per riformare il blocco più grande.
 ### SLAB allocator
 Il buddy può causare **frammentazione interna** (una richiesta di 65 pagine ne fa allocare 128). Lo **SLAB allocator** di Linux risolve prendendo blocchi grandi tramite il buddy e ritagliandoli in unità più piccole.
+
 > [!quote] Definizione — Slab
 > Il kernel crea e distrugge di continuo piccoli oggetti di tipo e dimensione specifici. Nello slab allocation la memoria è divisa in blocchi detti **slab**, ulteriormente suddivisi in **chunk** di dimensione uniforme adatti a ospitare un oggetto di un certo tipo. Uno slab può essere **pieno**, **parzialmente pieno** o **vuoto**.
 
 Quando un oggetto viene deallocato non torna subito al sistema: resta nella **cache**, così una nuova istanza dello stesso tipo è riallocata rapidamente **senza overhead di inizializzazione**. Lo slab tiene un puntatore all'inizio della memoria, l'indice del prossimo slot libero e un array `bufctl` di indici dei prossimi oggetti liberi.
+
 > [!example] Struttura interna di uno slab
 > Un singolo slab in memoria è disposto così:
 > ```
@@ -84,11 +92,14 @@ Quando un oggetto viene deallocato non torna subito al sistema: resta nella **ca
 > ```
 > Il **slab descriptor** contiene il puntatore all'inizio e l'indice del prossimo slot libero. Il **bufctl array** è un array di indici che, per ogni slot, indica il successivo slot libero (forma una lista linkata implicita nei liberi). Gli slot "Free slot" corrispondono a oggetti deallocati ma non ancora restituiti al sistema.
 
-> [!info] Livelli di allocazione della memoria in Linux
+> [!info] Livelli di allocazione della memoria in Linux *(extra, non da slide)*
 > Linux organizza l'allocazione della memoria del kernel in tre livelli sovrapposti:
 > 1. **Buddy allocator** (base): gestisce blocchi di pagine fisiche contigue. Causa **frammentazione interna**: una richiesta di 65 pagine porta ad allocarne 128 (potenza di 2 successiva).
 > 2. **vmalloc** e **Slab allocator** (sopra il Buddy): entrambi usano il Buddy per ottenere blocchi grandi e li ritagliano in unità più piccole. `vmalloc` gestisce regioni virtualmente contigue ma non necessariamente fisicamente contigue; lo **Slab** gestisce oggetti di tipo uniforme con riuso della cache.
 > 3. **`kmalloc()`** (sopra lo Slab): interfaccia generale del kernel per allocazioni di piccole dimensioni; internamente usa lo Slab allocator.
+
+> [!info] Mettiti alla prova
+> - **Teorico:** [[02 - Gestione della Memoria#Es. 8 — Buddy allocation|Es. 8 — Buddy allocation]] — simulazione di allocazione/deallocazione con coalescenza dei *buddy*.
 ## Memoria virtuale
 > [!info] Equivalenze di memoria (base 2)
 > | Nome | Simbolo | Decimale | Binario |
@@ -106,6 +117,7 @@ Quando un oggetto viene deallocato non torna subito al sistema: resta nella **ca
 Il problema dei programmi **più grandi della memoria** disponibile esiste fin dalle origini dell'informatica (anni '60), specie in ambito scientifico e ingegneristico. La prima soluzione furono gli **overlay**: piccoli segmenti del programma di cui viene caricato in memoria solo quello **necessario**, mentre gli overlay successivi lo **sovrascrivono** (o coesistono), scambiandosi tra memoria e disco. Il limite era che il **programmatore** doveva suddividere *manualmente* il programma in overlay — un lavoro tedioso e soggetto a errori: da qui la motivazione storica della **memoria virtuale**, che automatizza questo meccanismo.
 
 La **memoria virtuale** estende l'idea dei registri base e limite. Ogni programma ha il proprio spazio degli indirizzi suddiviso in **pagine** (intervalli contigui di indirizzi); **non tutte** devono stare contemporaneamente in memoria fisica. L'hardware mappa le pagine effettivamente presenti; se una pagina manca, interviene il sistema operativo.
+
 > [!quote] Definizione — Memoria virtuale
 > Crea per il processo l'**illusione** di uno spazio di indirizzi ampio (es. indicizzabile con 48 bit) detto **spazio di indirizzi virtuale**, mentre la RAM, molto più limitata, è la **memoria fisica**. La **MMU** (*Memory Management Unit*) traduce gli indirizzi virtuali (usati dal processo) in indirizzi fisici (inviati alla memoria).
 
@@ -115,6 +127,7 @@ La maggior parte dei sistemi moderni usa il **paging** (paginazione); un'alterna
 > Si dividono memoria fisica e virtuale in **pagine** di dimensione fissa (es. 4096 byte = 4 KB) e si traducono le **pagine virtuali** in **pagine fisiche** (dette **frame**).
 
 Se 16 pagine virtuali sono mappate su 8 frame, alcune pagine restano **non mappate** (contrassegnate con `X`). Se un programma riferisce una pagina non mappata si verifica un **page fault**: il SO assegna un frame (eventualmente spostando su disco un frame poco usato — *quale?* vedi [Algoritmi di sostituzione](#Algoritmi%20di%20sostituzione%20delle%20pagine)), carica la pagina richiesta e aggiorna la mappa della MMU.
+
 > [!example] Esempi — traduzione riuscita (page present)
 > I due esempi seguenti usano 64 KB di spazio virtuale diviso in 16 pagine da 4 KB, mappate su 8 frame fisici. Si assume la mappatura dell'esempio del testo, in cui la **pagina virtuale 2** è ospitata nel **frame 6** e la **pagina virtuale 5** nel **frame 3**:
 > 1. **`MOV REG,8192`** → l'indirizzo virtuale $8192 = 2 \times 4096$ cade nella **pagina virtuale 2** (offset 0). Questa pagina è mappata sul **frame 6**, che inizia a $6 \times 4096 = 24576$. La MMU traduce quindi in `MOV REG,24576`.
@@ -140,9 +153,10 @@ Ogni voce contiene il numero del frame (es. 12 bit per pagine da 4 KB) più dive
 - **Supervisor**: se la pagina è accessibile solo al SO o anche ai programmi utente.
 - **Modificato (M)**, detto *dirty bit*: si attiva quando la pagina viene **scritta** (serve a sapere se va riscritta su disco).
 - **Riferimento (R)**, detto *accessed bit*: si attiva ogni volta che si **accede** alla pagina.
-- **Caching disabled**: disabilita la cache per quella pagina.
+- **Caching disabled**: disabilita la cache per quella pagina (utile per gli indirizzi mappati su registri di I/O, dove la cache restituirebbe valori obsoleti).
 
 L'indirizzo in memoria della tabella delle pagine «del processo» è scritto nel registro **PTBR** (*Page Table Base Register*). I bit **M** e **R** sono fondamentali per gli [algoritmi di sostituzione](#Algoritmi%20di%20sostituzione%20delle%20pagine).
+
 > [!info] Dove memorizzare la tabella delle pagine?
 > Due opzioni principali, con un netto trade-off:
 > - **Registri hardware** (un registro per ogni pagina): la tabella è caricata in un insieme di registri dedicati all'avvio del processo. Semplice e senza accessi aggiuntivi alla RAM; ma l'insieme di registri è costoso, e con tabelle grandi il **cambio di contesto** richiede di ricaricare tutti i registri → molto lento.
@@ -150,6 +164,7 @@ L'indirizzo in memoria della tabella delle pagine «del processo» è scritto ne
 ### TLB (Translation Lookaside Buffer)
 La paginazione ha un problema di prestazioni: ogni istruzione richiede un accesso alla memoria per prelevarla **più** un accesso alla page table → **raddoppio** degli accessi, prestazioni dimezzate. Se un'istruzione impiega 1 ns, la ricerca nella tabella dovrebbe stare sotto 0,2 ns per non creare colli di bottiglia.
 La soluzione sfrutta la **località di riferimento**: i programmi fanno molti riferimenti a un **piccolo** numero di pagine.
+
 > [!quote] Definizione — TLB (*Translation Lookaside Buffer*)
 > Dispositivo hardware (cache) che mappa indirizzi virtuali in fisici **senza** passare dalla tabella delle pagine, riducendo gli accessi in memoria. Ha poche voci (es. 8–256), ciascuna con numero di pagina virtuale, bit modificato, codice di protezione e frame fisico.
 
@@ -164,11 +179,18 @@ Uno spazio di indirizzi virtuali molto grande porterebbe a una tabella enorme e 
 - **Soft miss**: la pagina è in memoria ma non nel TLB → serve solo aggiornare il TLB.
 - **Hard miss**: la pagina **non è in memoria** → serve un accesso alla memoria non volatile (disco/SSD), molto più lento.
 - La ricerca nella gerarchia delle tabelle si chiama **page table walk**. Un accesso a un **indirizzo non valido** può portare a un **segmentation fault** e alla terminazione del programma.
-> [!info] Terminologia Linux: minor e major page fault
+
+> [!info] Terminologia Linux: minor e major page fault *(extra, non da slide)*
 > I miss non sono tutti uguali; esaminando la page table walk si distinguono tre casi:
 > - **Minor page fault** (variante più costosa del soft miss): la pagina è in RAM ma **non ancora mappata nella page table di *questo* processo** (es. caricata da un altro processo tramite COW, o non ancora inserita). Richiede un page table walk + aggiornamento della PT, senza alcun I/O su disco/SSD. Costo: 10–20 istruzioni, nell'ordine dei nanosecondi. — Il **soft miss** classico (già definito in «Tipi di miss» sopra) è il caso ancora più leggero in cui la pagina è già nella page table ma manca solo dal TLB; non va confuso con il minor page fault.
 > - **Hard miss ↔ major page fault**: la pagina **non è in memoria** e deve essere caricata dalla memoria non volatile. Costo: nell'ordine dei millisecondi — milioni di volte più lento del miss soft.
 > - **Indirizzo non valido**: la page walk non trova la pagina né in RAM né altrove; il SO invia un segnale al processo (tipicamente **SIGSEGV** → *segmentation fault*) e lo termina.
+
+> [!info] Mettiti alla prova
+> Esercizi di calcolo svolti in [[02 - Gestione della Memoria]]:
+> - **Traduzione** indirizzo virtuale→fisico → [[02 - Gestione della Memoria#Es. 1 — Traduzione indirizzo virtuale → fisico|Es. 1]];
+> - **Dimensione** della page table (32/64 bit, multi-livello) → [[02 - Gestione della Memoria#Es. 2 — Dimensione della page table|Es. 2]];
+> - **EAT con TLB** (hit ratio, 1 e 2 livelli) → [[02 - Gestione della Memoria#Es. 3 — Tempo di accesso effettivo (EAT) con TLB|Es. 3]].
 ## Algoritmi di sostituzione delle pagine
 Quando si verifica un **page fault** e la memoria fisica è piena, il SO deve scegliere **quale pagina** rimuovere (scrivendola su disco se modificata). La paginazione crea l'illusione di una memoria praticamente illimitata. Promemoria sui bit della voce: **M** (modificato/*dirty*) e **R** (riferito/*accessed*).
 ### Algoritmo ottimale
@@ -205,6 +227,7 @@ Si ripete finché non si trova una pagina con R = 0. **Più efficiente** di Seco
 Tende all'ottimo ma è **costoso**: ogni riferimento richiederebbe di aggiornare la lista (uno *stack*) e copiare pagine intere, anche con hardware dedicato. Esiste una variante hardware con un **contatore a 64 bit** per ogni riferimento: al page fault si rimuove la pagina con il contatore più basso (uso meno recente). Praticamente non utilizzato nella forma pura.
 ### NFU e Aging
 **NFU** (*Not Frequently Used*) simula LRU via software: associa un **contatore** a ogni pagina, incrementato a ogni interrupt del clock in base al bit R. Tanti accessi → alto valore → minore probabilità di rimozione. **Limite**: NFU **non dimentica** mai l'uso passato, e può fare scelte subottimali (una pagina usatissima in un periodo e poi abbandonata potrebbe non venire mai sostituita).
+
 > [!quote] Definizione — Aging
 > Miglioramento di NFU con contatori a numero di bit **fisso** (es. 8 bit). A ogni interrupt del clock i bit vengono **shiftati a destra** e il bit R viene aggiunto a **sinistra**. Così l'**emula LRU** dando meno peso agli usi passati e preferendo le pagine meno referenziate di recente.
 
@@ -217,10 +240,12 @@ Tende all'ottimo ma è **costoso**: ogni riferimento richiederebbe di aggiornare
 > Insieme delle pagine **attualmente** usate da un processo; rappresenta la **località di riferimento**, cioè le pagine a cui il processo accede durante una fase dell'esecuzione. Formalmente $w(k,t)$ è l'insieme di pagine usate negli ultimi $k$ riferimenti.
 
 Con il **demand paging** le pagine sono caricate "on demand", solo quando servono: inizialmente si verificano molti page fault finché tutte le pagine necessarie non sono in memoria. La funzione $w(k,t)$ è **monotona non decrescente** al crescere di $k$ e ha un **asintoto finito** (correlato allo spazio degli indirizzi del programma): esiste un ampio intervallo di $k$ in cui il working set resta invariato.
+
 > [!warning] Thrashing
 > Se il working set è completamente in memoria, si hanno **pochi** page fault. Se è **più grande** della memoria disponibile, si verificano **frequenti** page fault che rallentano drasticamente il processo: questo fenomeno è il **thrashing**.
 
 Molti SO tracciano il working set di ogni processo e lo mantengono in memoria; la **pre-paginazione** carica in anticipo le pagine basandosi sul working set. In pratica il working set è definito **in termini di tempo**: le pagine usate negli ultimi $\tau$ secondi di esecuzione.
+
 > [!example] Algoritmo Working Set
 > Un interrupt periodico azzera il bit R a ogni ciclo di clock. Durante un page fault si scandiscono tutte le pagine controllando R:
 > - **R = 1** → aggiorna il tempo di ultimo utilizzo (la pagina è nel working set).
@@ -236,6 +261,9 @@ Evoluzione del Clock che integra le informazioni del working set; popolare per *
   - **M = 1** (sporca): non c'è copia valida → non può essere sfrattata subito. Per evitare rallentamenti la **scrittura su disco viene schedulata** e rimandata, la lancetta avanza e l'algoritmo procede (lungo la lista potrebbe esserci una pagina pulita e vecchia usabile subito).
 
 Per limitare il traffico su disco si fissa un **numero massimo** di scritture (*n* pagine) per giro di orologio. Al completamento del giro: se ci sono scritture pendenti la lancetta cerca pagine **pulite** (una scrittura completata rende la pagina pulita); se **non** ci sono scritture pendenti significa che tutte le pagine sono nel working set, e si sceglie una pagina pulita **a caso** (o, se non ce ne sono, la corrente, scrivendola su disco).
+
+> [!question] Domanda tipica d'esame
+> **D:** Cos'è il *working set* di un processo e come lo sfrutta l'algoritmo **WSClock**? **R:** Il **working set** è l'insieme delle pagine che un processo sta usando in una fase dell'esecuzione (formalmente $w(k,t)$, le pagine usate negli ultimi $k$ riferimenti — in pratica negli ultimi $\tau$ secondi): cattura la **località di riferimento**. Se sta tutto in RAM i page fault sono pochi; se eccede la memoria si ha **thrashing**. **WSClock** unisce il [[#Clock]] al working set: scorre una lista circolare di frame con bit **R**, bit **M** ed età. Una pagina con $R=1$ è "graziata" ($R \to 0$, lancetta avanza); con $R=0$ ed **età $> \tau$** è fuori dal working set e viene sostituita se **pulita** ($M=0$), mentre se **sporca** ($M=1$) se ne **schedula la scrittura** su disco e si prosegue. Efficiente e con buone prestazioni, perciò molto usato.
 ### Riepilogo
 | Algoritmo | Commento |
 |---|---|
@@ -252,10 +280,17 @@ Per limitare il traffico su disco si fissa un **numero massimo** di scritture (*
 
 **Aging** e **WSClock** sono i «migliori» (basati rispettivamente su LRU e sull'idea di working set): buone prestazioni e implementazione efficiente. Windows e Linux adottano **varianti** di questi algoritmi, combinando elementi diversi in base a esigenze e hardware.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Algoritmi di sostituzione delle pagine: descrivere NRU, Seconda Chance e Clock, spiegare i criteri di scelta (bit R e M) e confrontarne le prestazioni e la complessità implementativa.
 >
 > **R:** **NRU** classifica le pagine in 4 classi in base ai bit R (riferimento) e M (modificato/dirty); il bit R è azzerato periodicamente a ogni interrupt del clock. Al page fault viene rimossa una pagina a caso dalla classe più bassa non vuota (classe 0 = non referenziata, non modificata; classe 3 = referenziata e modificata). Semplice e veloce, ma approssimazione rozza dell'LRU. **Seconda Chance** migliora FIFO controllando il bit R della pagina più vecchia: se R = 0 la rimuove, se R = 1 azzera R, reinserisce la pagina in fondo alla lista e controlla la successiva; degenera in FIFO puro se tutte le pagine sono referenziate. **Clock** realizza la stessa logica con una lista circolare e una lancetta: se R = 0 sulla pagina puntata la rimuove, se R = 1 azzera R e avanza; più efficiente di Seconda Chance perché evita spostamenti nella lista. Confronto: NRU e Clock hanno complessità O(1) per sostituzione; Seconda Chance può richiedere scansione intera. Clock è considerato il migliore tra i tre per il rapporto prestazioni/semplicità implementativa.
+
+> [!info] Mettiti alla prova
+> Simulazioni svolte passo-passo in [[02 - Gestione della Memoria]]:
+> - **FIFO / LRU / Ottimale** (conteggio dei page fault) → [[02 - Gestione della Memoria#Es. 4 — Simulazione algoritmi di sostituzione (FIFO, LRU, Ottimale)|Es. 4]];
+> - **Anomalia di Belady** → [[02 - Gestione della Memoria#Es. 5 — Anomalia di Belady (FIFO)|Es. 5]];
+> - **Clock** (seconda chance circolare) → [[02 - Gestione della Memoria#Es. 6 — Algoritmo Clock (seconda chance circolare)|Es. 6]];
+> - **Aging** (NFU con scorrimento) → [[02 - Gestione della Memoria#Es. 7 — Aging (NFU con scorrimento)|Es. 7]].
 ## Problemi di progettazione
 La paginazione richiede di bilanciare molti aspetti. I problemi più comuni: allocazione **globale vs locale**, **equa vs proporzionale**, dinamica di allocazione, policy di pulizia, dimensione delle pagine, spazi separati istruzioni/dati, pagine e librerie condivise, file mappati in memoria.
 ### Allocazione globale vs locale
@@ -270,6 +305,7 @@ Gli algoritmi globali si adattano meglio quando il working set varia nel tempo. 
 È importante un **limite minimo di pagine** per processo: garantire abbastanza pagine per le operazioni fondamentali, evitando che istruzioni che attraversano i limiti di pagina non possano eseguire.
 ### Page Fault Frequency (PFF)
 Gestione **dinamica** dei frame: si parte da un'allocazione proporzionale e la si aggiorna durante l'esecuzione.
+
 > [!quote] Definizione — PFF (Page Fault Frequency)
 > Monitora la frequenza dei page fault per regolare l'allocazione di memoria di un processo: **aumenta** i frame se i page fault sono troppo frequenti, li **diminuisce** se sono rari. Non specifica *quale* pagina rimuovere, ma la **dimensione** dell'allocazione.
 
@@ -282,6 +318,7 @@ Anche con il miglior algoritmo, il **thrashing** può sempre verificarsi se i wo
 - **Altre tecniche**: **compattamento**, **compressione** e **deduplicazione** (*same page merging*).
 ### Policy di pulizia e paging daemon
 L'aging è più efficace con molti **frame liberi** disponibili: se i frame sono tutti occupati e modificati, occorre scrivere le vecchie pagine su disco prima di caricarne di nuove. È preferibile mantenere un buon numero di frame liberi.
+
 > [!quote] Definizione — Paging daemon
 > Processo in background, inattivo per la maggior parte del tempo, che si attiva **periodicamente** per controllare lo stato della memoria. Quando i frame liberi scarseggiano, seleziona pagine da rimpiazzare con un algoritmo di sostituzione.
 
@@ -300,6 +337,9 @@ La scelta della dimensione delle pagine (es. unire due pagine da 4 KB in una da 
 > **Overhead totale**: $\dfrac{se}{p} + \dfrac{p}{2}$. Derivando rispetto a $p$ e ponendo a zero: $-\dfrac{se}{p^2} + \dfrac{1}{2} = 0 \Rightarrow p = \sqrt{2se}$. Per $s = 1$ MB ed $e = 8$ byte, $p$ ottimale ≈ **4 KB**.
 
 La gamma tipica va da 512 byte a 64 KB; la dimensione comune attuale è **4 KB**. Alcuni SO usano pagine di **diverse dimensioni** (es. pagine grandi per il kernel); le **Transparent Huge Pages (THP)** usano pagine grandi spostando la memoria del processo per creare intervalli contigui. L'architettura **x86-64** supporta nativamente tre dimensioni: **4 KB**, **2 MB** e **1 GB**, mescolabili a discrezione del SO; nella pratica si usano tipicamente 4 KB per le applicazioni utente e 1 GB per il kernel.
+
+> [!question] Domanda tipica d'esame
+> **D:** Quali compromessi guidano la scelta della dimensione di pagina e come si ricava quella ottimale? **R:** Le **pagine piccole** riducono la **frammentazione interna** (meno spreco nell'ultima pagina) ma richiedono **tabelle delle pagine più grandi** (più voci, più overhead); le **pagine grandi** rimpiccioliscono le tabelle ma aumentano la frammentazione interna. Bilanciando i due costi — overhead di tabella $se/p$ e spreco medio dell'ultima pagina $p/2$ — si minimizza $\frac{se}{p}+\frac{p}{2}$ derivando rispetto a $p$ e ponendo a zero: $p_\text{ott}=\sqrt{2se}$. Con $s = 1$ MB ed $e = 8$ byte risulta $\approx$ **4 KB**, la dimensione tipica odierna (x86-64 supporta anche 2 MB e 1 GB).
 ### Spazi separati istruzioni/dati
 La maggior parte dei computer ha un **unico** spazio di indirizzi condiviso da programma e dati. Alcuni sistemi storici avevano spazi separati **I-space** (istruzioni) e **D-space** (dati), raddoppiando lo spazio disponibile. Oggi si vedono ancora spazi separati nelle **cache**, nei **TLB** e nella **cache L1**: dove lo spazio è poco, si tende a separare le istruzioni (più importanti) dai dati.
 ### Pagine e librerie condivise (copy on write)
@@ -381,7 +421,7 @@ La memoria vista finora è **monodimensionale**: gli indirizzi virtuali vanno da
 
 La segmentazione offre più flessibilità e gestione delle strutture dati, ma è **più complessa da implementare**.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Paginazione e segmentazione a confronto: differenze strutturali, vantaggi e limiti di ciascun approccio, con un esempio concreto di traduzione degli indirizzi (da virtuale a fisico) per entrambi i modelli.
 >
 > **R:** La **segmentazione** introduce spazi di indirizzi multipli e indipendenti a dimensione variabile, visibili al programmatore (l'indirizzo ha due componenti: numero di segmento e offset); favorisce condivisione e protezione per unità logiche (procedure, dati, stack). La **paginazione** suddivide lo spazio di indirizzi lineare in pagine fisse trasparenti al programmatore; risolve il problema di avere uno spazio virtuale grande senza più memoria fisica. Traduzione indirizzi: in **paginazione** il numero di pagina virtuale viene usato come indice nella page table per ottenere il frame fisico, l'offset è copiato direttamente (es. indirizzo virtuale 8192 = pagina 2 × 4 KB, frame 6 → indirizzo fisico 24576 + offset); in **segmentazione** la coppia (numero di segmento, offset) viene risolta tramite la tabella dei segmenti che fornisce base e limite del segmento in memoria fisica.
@@ -425,5 +465,6 @@ Fino all'x86-64, Intel x86 rifletteva il modello MULTICS combinando segmentazion
 > - `available`: stima della memoria disponibile per nuove applicazioni, considerando buffer e cache.
 
 Opzioni utili: `-h` (formato leggibile MB/GB); `-b`, `--kilo`, `--mega`, `--giga` (unità di misura); `-t` (mostra i totali); `-s N` (aggiornamento continuo ogni N secondi, simile a `watch`).
+
 > [!info] Collegamenti con Architettura
 > La struttura della **CPU**, dei registri e della gerarchia di cache è approfondita nel corso di Architettura dei Sistemi di Elaborazione del primo anno: vedi [[2 - Organizzazione dei sistemi di calcolo]] e la nota dedicata [[3 - Gestione della Memoria]], che copre lo stesso materiale di Tanenbaum (paginazione, MMU, sostituzione delle pagine) da una prospettiva architetturale.

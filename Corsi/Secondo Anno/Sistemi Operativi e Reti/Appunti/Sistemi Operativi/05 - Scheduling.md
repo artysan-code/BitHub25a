@@ -11,16 +11,16 @@ Con CPU sempre più veloci i processi tendono a essere più **I/O-bound**, quind
 ### Quando interviene lo scheduler
 - Alla **creazione** di un nuovo processo (eseguire il padre o il figlio?).
 - All'**uscita** di un processo (scegliere il prossimo; se nessuno è pronto, eseguire il processo *idle*).
-- al **blocco** di un processo (I/O, semaforo…).
-- a un **interrupt di I/O** (un processo potrebbe essere diventato pronto).
+- Al **blocco** di un processo (I/O, semaforo…).
+- A un **interrupt di I/O** (un processo potrebbe essere diventato pronto).
 ### Preemptive vs non-preemptive
 - **Non-preemptive (senza prelazione)**: il processo scelto esegue **fino al blocco o al rilascio volontario**; gli interrupt del clock non causano decisioni.
 - **Preemptive (con prelazione)**: il processo esegue per un **tempo massimo** definito; se non termina viene **sospeso**. Richiede un **interrupt del clock** ed è fondamentale per evitare che un processo (o una syscall lenta) monopolizzi la CPU.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Differenza tra scheduling con e senza prelazione; quando è accettabile rinunciare alla prelazione? **R:** **Senza prelazione** il processo scelto esegue fino al blocco o al rilascio volontario; **con prelazione** esegue per un tempo massimo (quanto) e poi viene sospeso (serve un interrupt del clock). Si può rinunciare alla prelazione nei sistemi **batch** (job non interattivi) e in molti sistemi **real-time**, dove i processi sanno di non poter girare a lungo e si bloccano rapidamente.
 ### Costo del context switch
-Il **cambio di contesto** è oneroso: passaggio user→kernel, salvataggio dello stato, esecuzione dell'algoritmo di scheduling, cambio della **mappa di memoria** (vedi [[06 - Gestione della Memoria]]) e potenziale **invalidazione della cache**. Troppe commutazioni sprecano CPU: la prudenza è essenziale.
+Il **cambio di contesto** è oneroso: passaggio user→kernel, salvataggio dello stato, esecuzione dell'algoritmo di scheduling, cambio della **mappa di memoria** (vedi [[06 - Gestione della Memoria]]) e potenziale **invalidazione della cache**. Troppe commutazioni sprecano CPU: minimizzarne il numero è essenziale per l'efficienza del sistema.
 ### Obiettivi degli algoritmi
 | Ambiente | Obiettivi specifici |
 |---|---|
@@ -32,6 +32,7 @@ Per **tutti**: **equità** (CPU equa a tutti), imposizione della **policy**, bil
 ## Scheduling nei sistemi batch
 ### First-Come First-Served (FCFS)
 Algoritmo **senza prelazione**: i processi ricevono la CPU **nell'ordine di arrivo**, gestiti con una singola coda (lista). Semplice ed equo per ordine di arrivo, ma con prestazioni **non ottimali** in scenari misti: un processo CPU-bound può far attendere a lungo molti processi I/O-bound.
+
 > [!example] FCFS e processi I/O-bound
 > Un processo CPU-bound che gira per 1 s può far sì che molti processi I/O-bound impieghino circa 1000 s per terminare, invece dei circa 10 s che richiederebbero con un algoritmo di scheduling **con prelazione** che interrompa il processo CPU-bound dopo il suo quanto.
 ### Shortest Job First (SJF)
@@ -41,22 +42,29 @@ Algoritmo batch **senza prelazione** che esegue per primo il **job più breve**;
 > Quattro job con tempi 8, 4, 4, 4 minuti. In ordine d'arrivo (8,4,4,4) i turnaround sono 8, 12, 16, 20 → media **14**. Con SJF (4,4,4,8) sono 4, 8, 12, 20 → media **11**.
 
 **Ottimalità**: SJF minimizza il tempo di turnaround medio **solo quando tutti i job sono disponibili contemporaneamente**. Se i job arrivano in momenti diversi, può **non** essere ottimale.
+
 > [!example] SJF non ottimale con arrivi sfasati
-> Cinque job A–E con tempi di esecuzione 2, 4, 1, 1, 1 minuti e arrivi a $t = 0, 0, 3, 3, 3$. Due sequenze di esecuzione producono tempi medi di attesa diversi: una sequenza dà media $4{,}6$, un'altra dà media $4{,}4$. Il fatto che esistano due ordini con medie diverse dimostra che SJF **non è ottimale** quando i job non arrivano tutti allo stesso istante.
+> Cinque job A–E con tempi di esecuzione 2, 4, 1, 1, 1 minuti e arrivi a $t = 0, 0, 3, 3, 3$. Due sequenze di esecuzione producono tempi medi di attesa diversi: una sequenza dà media $4{,}6$, un'altra dà media $4{,}4$. Il fatto che esistano due ordini con medie diverse dimostra che SJF **non è ottimale** quando i job non arrivano tutti allo stesso istante. *(I valori 4,6 e 4,4 sono quelli delle slide; l'[[01 - Scheduling#Es. 2 — SJF non è ottimale con arrivi sfasati|esercizio svolto]] ricostruisce un caso verificabile passo-passo, con numeri diversi ma stessa conclusione.)*
 ### Shortest Remaining Time Next (SRTN)
 Versione **con prelazione** di SJF: sceglie sempre il processo con il **tempo rimanente più breve**. All'arrivo di un nuovo job, se il suo tempo totale è inferiore al tempo rimanente del processo corrente, quest'ultimo viene sospeso. Garantisce servizio rapido ai job brevi (richiede comunque tempi noti in anticipo).
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Quali parametri si ottimizzano nello scheduling per sistemi batch? Descrivere FCFS, SJF e SRTN con pregi e limiti. **R:** Obiettivi batch: **throughput**, minimo **tempo di turnaround**, alto **utilizzo della CPU**. **FCFS** (senza prelazione, ordine d'arrivo): semplice ed equo, ma un processo CPU-bound fa attendere a lungo gli I/O-bound. **SJF** (senza prelazione, job più breve per primo): minimizza il turnaround medio *se tutti i job sono disponibili insieme*, ma richiede di conoscere i tempi in anticipo. **SRTN** (versione con prelazione di SJF, tempo rimanente più breve): serve rapidamente i job brevi, ma può causare starvation dei lunghi.
+
+> [!info] Mettiti alla prova
+> Esercizi di calcolo svolti passo-passo in [[01 - Scheduling]]:
+> - **FCFS vs SJF** (turnaround e attesa medi) → [[01 - Scheduling#Es. 1 — FCFS vs SJF (turnaround e attesa medi)|Es. 1]];
+> - **SJF non ottimale** con arrivi sfasati → [[01 - Scheduling#Es. 2 — SJF non è ottimale con arrivi sfasati|Es. 2]];
+> - **SRTN** con prelazione → [[01 - Scheduling#Es. 3 — SRTN (Shortest Remaining Time Next, con prelazione)|Es. 3]].
 ## Scheduling nei sistemi interattivi
-Qui il **tempo di risposta** è fondamentale e la prelazione è essenziale.
+Nei sistemi interattivi, a differenza dei batch, conta soprattutto il **tempo di risposta** percepito dall'utente: la **prelazione** diventa essenziale per evitare che un singolo processo monopolizzi la CPU.
 ### Round-Robin
 Uno degli algoritmi più vecchi, semplici ed equi. Ogni processo riceve un intervallo di tempo, il **quanto** (quantum); se non termina entro il quanto, la CPU passa (per prelazione) al processo successivo nella lista; se si blocca o termina prima, il passaggio è immediato. Implementazione: una lista dei processi eseguibili, il processo esaurito va in **fondo** alla lista.
 
 > [!warning] La durata del quanto è un compromesso
 > Con cambio di contesto di 1 ms e quanto di 4 ms si spreca il **20%** della CPU in overhead. **Quanto troppo breve** → troppi cambi di contesto (inefficiente); **quanto troppo lungo** → tempi di risposta scadenti per le richieste interattive: con un quanto da $100\,\text{ms}$ e 50 richieste a un server, l'ultimo utente può attendere fino a $50 \times 100\,\text{ms} = 5\,\text{s}$ se tutti gli altri usano interamente il loro quanto. Compromesso ragionevole: **20-50 ms**.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Come funziona il Round-Robin e qual è il compromesso nella scelta del quanto? **R:** Ogni processo riceve un **quanto**; se non termina entro il quanto, la CPU passa per prelazione al successivo e il processo torna in **fondo** alla coda. Compromesso: quanto troppo **breve** → troppi context switch (overhead, es. 20% con switch 1 ms e quanto 4 ms); quanto troppo **lungo** → tempi di risposta scadenti (degenera verso FCFS). Valore tipico **20–50 ms**.
 ### Scheduling a priorità
 Round-robin tratta tutti i processi come ugualmente importanti, ma spesso serve una **gerarchia**. Nello scheduling a priorità ogni processo ha una **priorità** e si esegue quello pronto con priorità più alta. Per evitare che i processi ad alta priorità monopolizzino la CPU, la priorità del processo in esecuzione può **diminuire nel tempo** o si assegna un quanto massimo.
@@ -69,20 +77,21 @@ Round-robin tratta tutti i processi come ugualmente importanti, ma spesso serve 
 > [!info] Collegamento
 > Un uso scorretto delle priorità può causare l'[[04 - Sincronizzazione#Inversione delle priorità|inversione delle priorità]].
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Come funziona lo scheduling a priorità e come si evita la starvation dei processi a bassa priorità? **R:** Ogni processo ha una **priorità** e si esegue il pronto con priorità più alta. Per evitare la **starvation** si fa **diminuire nel tempo** la priorità del processo in esecuzione (o si assegna un quanto, scalandolo poi nella classe inferiore) e si **rivedono periodicamente** le priorità, usando l'**aging** per promuovere chi attende da troppo tempo.
 ### Shortest Process Next con aging
 Idea: applicare SJF ai sistemi interattivi, stimando quale processo sarà il più breve in base al **comportamento passato** (**aging**). Data una stima $T_0$, dopo una nuova esecuzione misurata $T_1$ la stima si aggiorna come:
 $$\text{stima} = a\,T_0 + (1-a)\,T_1$$
-Il parametro $a$ pesa le esecuzioni passate. Con $a = 1/2$, dopo 3 esecuzioni il peso di $T_0$ è $1/8$ (le informazioni vecchie "invecchiano" e contano sempre meno), così nessuno rischia la starvation.
+Il parametro $a$ pesa le esecuzioni passate. Espandendo con $a = 1/2$: $\text{stima}_1 = \tfrac{T_0}{2} + \tfrac{T_1}{2}$, $\text{stima}_2 = \tfrac{T_0}{4} + \tfrac{T_1}{4} + \tfrac{T_2}{2}$, e così via — dopo 3 esecuzioni il peso di $T_0$ è già $1/8$: le informazioni vecchie "invecchiano" e contano sempre meno, così nessuno rischia la starvation.
 ### Guaranteed scheduling
 Fa **promesse concrete** sulle prestazioni: con $n$ processi/utenti, ciascuno ottiene circa $1/n$ della CPU. Il sistema traccia quanta CPU ha **realmente ricevuto** ogni processo e quanta **avrebbe dovuto** (tempo da creazione $\div n$), calcola il **rapporto** consumato/dovuto ed esegue il processo con il **rapporto più basso** (chi è più indietro rispetto alla sua quota). Una variante di questo approccio è adottata da Linux come **CFS** (**Completely Fair Scheduler**).
 ### Lottery scheduling
 A ogni processo si assegnano **biglietti della lotteria** per le risorse; a ogni decisione si **estrae** un biglietto a caso e vince il processo corrispondente. Un processo con il 20% dei biglietti otterrà a lungo termine il **20%** della CPU. È flessibile (più biglietti = più probabilità) e i processi cooperanti possono **scambiarsi biglietti** (es. un client li dona al server per farsi servire prima). Limite: è **non deterministico**.
+
 > [!example] Lottery scheduling — parametri quantitativi
 > L'estrazione avviene $\approx 50$ volte al secondo; ogni vincita assegna $20\,\text{ms}$ di CPU. Caso d'uso tipico: un **server video** con flussi a frequenze di fotogrammi diverse (es. 25 fps e 10 fps). Assegnando biglietti proporzionali alla frequenza richiesta, la CPU viene ripartita automaticamente nelle proporzioni corrette — più biglietti = più frame/s.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Come funziona il Lottery scheduling e in quale scenario è particolarmente adatto? **R:** A ogni processo si assegnano **biglietti**; a ogni decisione si **estrae** un biglietto a caso e vince il processo corrispondente, così la quota di CPU è **proporzionale** ai biglietti posseduti. È adatto quando servono proporzioni flessibili senza starvation, es. un **server video** con flussi a frame rate diversi (biglietti proporzionali al frame rate). Limite: è **non deterministico**.
 ### Fair-share scheduling
 Gli algoritmi precedenti schedulano i singoli processi; ma se l'utente 1 ha 9 processi e l'utente 2 ne ha 1, con round-robin l'utente 1 otterrebbe il **90%** della CPU. Il **fair-share** considera il **proprietario**: ogni utente riceve una frazione predefinita di CPU, indipendentemente dal numero di processi.
@@ -90,7 +99,7 @@ Gli algoritmi precedenti schedulano i singoli processi; ma se l'utente 1 ha 9 pr
 > [!example] Equità per utente
 > Due utenti al 50%: l'utente 1 ha i processi A, B, C, D; l'utente 2 ha solo E. La sequenza diventa `A E B E C E D E …` (E ottiene metà CPU pur avendo un solo processo). Se invece l'utente 1 ha il **doppio** del tempo di CPU rispetto all'utente 2 (rapporto 2:1), la sequenza diventa del tipo `A B E C D E A B E …` (l'utente 1 ottiene due slot ogni tre).
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Spiegare il Fair-Share scheduling: perché è necessario rispetto al Round-Robin classico? **R:** Il Round-Robin schedula i singoli **processi**: un utente con molti processi ottiene una quota di CPU maggiore (9 processi su 10 → 90% della CPU). Il **fair-share** considera il **proprietario**: assegna a ogni utente una frazione predefinita di CPU **indipendentemente** dal numero dei suoi processi, garantendo equità *tra utenti* e impedendo a un utente "ricco di processi" di dominare.
 ### Tabella riassuntiva
 | Algoritmo | Idea base | Punti di forza | Limiti |
@@ -101,6 +110,10 @@ Gli algoritmi precedenti schedulano i singoli processi; ma se l'utente 1 ha 9 pr
 | **Guaranteed** | a ciascuno la sua quota equa ($1/n$) | equità forte e misurabile | serve tracciare le quote |
 | **Lottery** | probabilità proporzionale ai biglietti | flessibile, semplice da regolare | non deterministico |
 | **Fair-Share** | equità tra **utenti**, non tra processi | impedisce a un utente "ricco di processi" di dominare | più complesso da bilanciare |
+
+> [!info] Mettiti alla prova
+> - **Round-Robin** e calcolo dell'overhead del quanto → [[01 - Scheduling#Es. 4 — Round-Robin e calcolo dell'overhead|Es. 4]];
+> - **Guaranteed scheduling** (rapporto consumato/dovuto) → [[01 - Scheduling#Es. 6 — Guaranteed scheduling (rapporto consumato/dovuto)|Es. 6]].
 ## Scheduling nei sistemi real-time
 Usato dove il **tempo di risposta** è critico (lettori CD, monitoraggio in terapia intensiva, piloti automatici, controllo robotico): ritardi o scadenze mancate possono avere gravi conseguenze. La **prelazione** non è sempre necessaria nei sistemi real-time: i processi sanno di non poter essere eseguiti a lungo e in genere svolgono il proprio lavoro e si bloccano rapidamente.
 - **Categorie**: **hard real-time** (scadenze assolute, inviolabili) vs **soft real-time** (qualche scadenza mancata è tollerabile).
@@ -114,6 +127,9 @@ Usato dove il **tempo di risposta** è critico (lettori CD, monitoraggio in tera
 > Eventi con periodi 100, 200, 500 ms e tempi richiesti 50, 30, 100 ms: $0{,}5 + 0{,}15 + 0{,}2 = 0{,}85 \le 1$ → **schedulabile**.
 
 Gli algoritmi possono essere **statici** (decisioni prese prima dell'esecuzione, richiedono perfetta conoscenza di esigenze e scadenze) o **dinamici** (decisioni durante l'esecuzione).
+
+> [!info] Mettiti alla prova
+> - **Schedulabilità real-time** (verifica di $\sum_i C_i / P_i \le 1$) → [[01 - Scheduling#Es. 5 — Schedulabilità real-time|Es. 5]].
 ## Meccanismo e politica di scheduling
 Negli scheduler tradizionali i processi utente non possono influenzare le decisioni, il che porta a scelte **sub-ottimali** (es. un processo padre che conosce l'importanza relativa dei suoi figli). Il principio (**Levin et al., 1975**) è **separare il meccanismo dalla politica**: l'algoritmo (il **meccanismo**) sta nel kernel ed è **parametrizzabile**, ma i parametri (la **policy**) sono forniti dai processi utente. Esempio: il kernel implementa lo scheduling a priorità, ma una system call permette al padre di impostare le priorità dei figli.
 ## Scheduling dei thread

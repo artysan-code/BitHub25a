@@ -51,6 +51,22 @@ Hackathons/**/.claude/
 # File sorgente Xournal++ — committare solo l'export PDF
 *.xopp
 
+# Artefatti rigenerabili — ambienti e cache Python degli esercizi
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Binari compilati dagli esercizi C/C++/Java (rigenerabili dal sorgente)
+a.out
+*.o
+*.class
+*.exe
+
+# Build front-end (es. esperimenti hackathon fuori dalla cartella Oracle)
+dist/
+build/
+
 # Secrets — mai committare credenziali, chiavi, wallet, token
 *credentials*
 *.pem

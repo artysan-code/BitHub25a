@@ -22,11 +22,11 @@ Con CPU sempre più veloci i processi tendono a essere più **I/O-bound**, quind
 ### Costo del context switch
 Il **cambio di contesto** è oneroso: passaggio user→kernel, salvataggio dello stato, esecuzione dell'algoritmo di scheduling, cambio della **mappa di memoria** (vedi [[06 - Gestione della Memoria]]) e potenziale **invalidazione della cache**. Troppe commutazioni sprecano CPU: minimizzarne il numero è essenziale per l'efficienza del sistema.
 ### Obiettivi degli algoritmi
-| Ambiente | Obiettivi specifici |
-|---|---|
-| **Batch** | throughput, minimo **tempo di turnaround**, alto utilizzo CPU |
+| Ambiente        | Obiettivi specifici                                            |
+| --------------- | -------------------------------------------------------------- |
+| **Batch**       | throughput, minimo **tempo di turnaround**, alto utilizzo CPU  |
 | **Interattivo** | **tempo di risposta** rapido, proporzionalità alle aspettative |
-| **Real-time** | rispetto delle **scadenze**, prevedibilità |
+| **Real-time**   | rispetto delle **scadenze**, prevedibilità                     |
 
 Per **tutti**: **equità** (CPU equa a tutti), imposizione della **policy**, bilanciamento (tenere attivi tutti i componenti).
 ## Scheduling nei sistemi batch

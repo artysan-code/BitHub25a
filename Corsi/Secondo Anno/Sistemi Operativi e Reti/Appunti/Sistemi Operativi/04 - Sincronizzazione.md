@@ -1,5 +1,8 @@
 # Sincronizzazione
-I processi (e i [[03 - Processi e Thread|thread]]) hanno bisogno di **comunicare** (condividere dati durante l'esecuzione) e di **sincronizzarsi** (tenere conto delle dipendenze ed evitare di intralciarsi). Questa nota tratta la **comunicazione tra processi (IPC)** e in particolare il problema della **mutua esclusione**, con le sue soluzioni: semafori, mutex, variabili condizionali e monitor.
+I processi (e i [[03 - Processi e Thread|thread]]) raramente vivono isolati: hanno bisogno di **comunicare** — scambiarsi dati durante l'esecuzione — e di **sincronizzarsi**, cioè coordinarsi per rispettare le dipendenze reciproche ed evitare di intralciarsi. L'insieme dei meccanismi con cui il sistema operativo consente ai processi di scambiarsi informazioni e coordinare le proprie azioni prende il nome di **comunicazione tra processi** (*Inter-Process Communication*, **IPC**). Questa nota affronta il nodo centrale dell'IPC con memoria condivisa — la **mutua esclusione**, cioè garantire che un solo processo alla volta entri nella porzione di codice che usa una risorsa condivisa — e ne presenta le soluzioni in ordine di astrazione crescente: semafori, mutex, variabili condizionali e monitor. ^ipc
+
+> [!info] Per il laboratorio
+> Gli esercizi di questa parte si scrivono in **C** con le **POSIX Threads** (`pthread`). Se segui l'ordine delle lezioni conviene affrontare prima [[10 - Programmazione C e Concorrente]] (compilazione, `pthread_create`/`pthread_join`) e [[09 - Linux e BASH]] (shell e strumenti del terminale): nelle slide il laboratorio in C precede la teoria della sincronizzazione, mentre in queste note l'ordine segue il libro di testo (Tanenbaum).
 ## Il problema della concorrenza
 Poiché i processi sono [[03 - Processi e Thread#Processi concorrenti|concorrenti]] e il SO non garantisce ordine né tempistica, l'accesso non coordinato a dati condivisi produce errori.
 ### Race condition
@@ -7,19 +10,19 @@ Poiché i processi sono [[03 - Processi e Thread#Processi concorrenti|concorrent
 > Situazione in cui due o più processi accedono a dati condivisi e il risultato finale **dipende dall'ordine** preciso di esecuzione. La lettura/aggiornamento di un dato dovrebbe essere **atomica**: se non lo è, i processi "gareggiano" e possono giungere a conclusioni errate.
 
 > [!example] Lo spooler di stampa
-> Lo spooler ha una variabile `in` che indica la prossima posizione libera. Il processo A legge `in = 7`, ma viene **sospeso** prima di scrivere. B legge anch'esso `in = 7`, scrive il suo file in posizione 7 e imposta `in = 8`. Quando A riprende, scrive in posizione 7, **sovrascrivendo** il file di B. Un file di stampa va perso.
+> Lo *spooler di stampa* è il servizio che mette in coda i documenti da stampare depositandoli in un'apposita **directory di spooling**; più processi vi accodano file contemporaneamente, ed è questa scrittura concorrente a generare la corsa. Una variabile condivisa `in` indica la prossima posizione libera nella coda. Il processo A legge `in = 7`, ma viene **sospeso** prima di usarla; B legge a sua volta `in = 7`, scrive il proprio file in posizione 7 e aggiorna `in = 8`. Quando A riprende, scrive anch'esso in posizione 7, **sovrascrivendo** il file di B: un lavoro di stampa va perso. L'esito finale dipende dall'**ordine di esecuzione** dei due processi — ecco la race condition.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Cos'è una race condition e perché è problematica? **R:** Una race condition è una situazione in cui due o più processi accedono a dati condivisi e il risultato finale dipende dall'ordine preciso di esecuzione. È problematica perché produce risultati errati e non deterministici: nell'esempio dello spooler di stampa, due processi leggono la stessa posizione libera e uno sovrascrive l'altro, causando la perdita di un lavoro di stampa.
 
 ### Regioni critiche e requisiti
-La parte di codice che accede alla risorsa condivisa è la **regione critica**. Una buona soluzione di mutua esclusione deve soddisfare **quattro requisiti**:
+La parte di codice in cui un processo accede a una risorsa condivisa è la **regione critica** (*critical region*). Concettualmente ogni processo attraversa quattro fasi in sequenza: la **sezione di ingresso** (*entry*), in cui chiede il permesso di entrare; la **regione critica** vera e propria; la **sezione di uscita** (*exit*), che segnala l'avvenuta uscita; e la **sezione non critica** (*remainder*), tutto il resto del lavoro che non tocca risorse condivise. Il problema della mutua esclusione consiste nel progettare le sezioni di ingresso e di uscita in modo che due regioni critiche non si sovrappongano mai. Una buona soluzione deve soddisfare **quattro requisiti**:
 1. Due processi non possono trovarsi **contemporaneamente** nelle rispettive regioni critiche.
 2. Non si possono fare **ipotesi** sulla velocità o sul numero di CPU.
 3. Nessun processo **fuori** dalla propria regione critica può bloccarne altri.
 4. Nessun processo deve **aspettare all'infinito** per entrare nella propria regione critica.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Elenca i quattro requisiti di una buona soluzione alla mutua esclusione. **R:** (1) Due processi non possono trovarsi contemporaneamente nelle rispettive regioni critiche; (2) non si possono fare ipotesi sulla velocità o sul numero di CPU; (3) nessun processo fuori dalla propria regione critica può bloccarne altri; (4) nessun processo deve aspettare all'infinito per entrare nella propria regione critica.
 
 ## Mutua esclusione con busy waiting
@@ -47,7 +50,7 @@ void leave_region(int process) {
 }
 ```
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Perché l'alternanza rigorosa non è una soluzione accettabile alla mutua esclusione? Come la risolve l'algoritmo di Peterson? **R:** L'alternanza rigorosa viola il requisito 3: un processo fermo fuori dalla propria regione critica può bloccare l'altro impedendogli di entrarvi due volte di fila (non si può entrare due volte consecutive). L'algoritmo di Peterson combina la variabile `turn` con l'array `interested[]`: prima di entrare ogni processo segnala il proprio interesse e scrive il proprio indice in `turn`; se entrambi tentano insieme, l'ultimo a scrivere `turn` attende mentre l'altro entra, eliminando l'attesa reciproca senza violare nessuno dei quattro requisiti.
 
 ### TSL e XCHG
@@ -75,16 +78,23 @@ Due primitive: `sleep()` blocca il processo chiamante (stato `BLOCKED`, CPU allo
 > Due processi condividono un buffer di dimensione fissa e un contatore `count`. Il **produttore** inserisce e dorme se il buffer è pieno (`count == N`); il **consumatore** preleva e dorme se è vuoto (`count == 0`). Ciascuno risveglia l'altro al momento giusto.
 > ```c
 > void producer(void){
->     while(TRUE){ item = produce_item();
->         if(count == N) sleep();
->         insert_item(item); count++;
->         if(count == 1) wakeup(cons); } }
+>     while(TRUE){
+>         item = produce_item();
+>         if(count == N) sleep();         /* buffer pieno: si addormenta */
+>         insert_item(item);
+>         count++;
+>         if(count == 1) wakeup(cons);    /* era vuoto: sveglia il consumatore */
+>     }
+> }
 > void consumer(void){
 >     while(TRUE){
->         if(count == 0) sleep();
->         item = remove_item(); count--;
->         if(count == N-1) wakeup(prod);
->         consume_item(item); } }
+>         if(count == 0) sleep();         /* buffer vuoto: si addormenta */
+>         item = remove_item();
+>         count--;
+>         if(count == N-1) wakeup(prod);  /* era pieno: sveglia il produttore */
+>         consume_item(item);
+>     }
+> }
 > ```
 
 > [!warning] Il problema del wakeup perso (lost wakeup)
@@ -140,7 +150,7 @@ La soluzione "ovvia" — *prendi la forchetta sinistra, poi la destra* — è **
 
 > [!warning] Deadlock e starvation
 > - Se **tutti** afferrano la forchetta sinistra nello stesso istante, nessuno può prendere la destra: **deadlock**.
-> - Variante "se la destra è occupata, posa la sinistra e riprova": se i filosofi restano sincronizzati prendono-posano all'infinito senza progredire — **starvation** (*livelock*). Aspettare un tempo **casuale** riduce il rischio (è ciò che fa Ethernet con le collisioni), ma non lo elimina: inaccettabile dove serve garanzia (es. il controllo di un impianto nucleare).
+> - Variante "se la destra è occupata, posa la sinistra e riprova": se i filosofi restano sincronizzati prendono-posano all'infinito senza progredire. I processi *eseguono* azioni ma non *avanzano*: è una forma di **livelock** (un tipo di starvation in cui non c'è blocco passivo, ma assenza di progresso). Aspettare un tempo **casuale** riduce il rischio (è ciò che fa Ethernet con le collisioni), ma non lo elimina: inaccettabile dove serve garanzia (es. il controllo di un impianto nucleare).
 
 Una soluzione corretta ma **senza parallelismo** è racchiudere l'intera fase in un **mutex**: mangia un filosofo per volta. La soluzione di Tanenbaum permette invece il **massimo parallelismo** (due filosofi non vicini mangiano insieme) usando un **array di stati** + **un semaforo per filosofo**:
 ```c
@@ -203,8 +213,13 @@ void writer(void){
     }
 }
 ```
+
 > [!warning] Starvation degli scrittori
 > Se nuovi lettori continuano ad arrivare mentre uno scrittore attende, lo scrittore potrebbe **non ottenere mai** l'accesso (blocco perpetuo). Una soluzione mette i nuovi lettori **in coda dietro** gli scrittori in attesa: riduce la concorrenza ma evita la starvation. Codice in `code/6_thread_e_sincronizzazione/6.3_reader_writer_semaphore.c`.
+
+> [!info] Mettiti alla prova
+> - **C:** [[Indice degli Esercizi#Thread e Sincronizzazione|prod_cons_sem.c]] (produttore–consumatore con la tripla `mutex`/`full`/`empty`) e [[Indice degli Esercizi#Thread e Sincronizzazione|readers_writers_pari_dispari.c]] (lettori–scrittori con priorità ai lettori).
+> - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Thread — Semafori|TS1]] (produttore–consumatore) e [[Tracce d'Esame Pratiche#Thread — Semafori|TS3]] (uno scrittore, cinque lettori).
 ## Mutex
 Un **mutex** è una versione **esplicita e semplificata** del semaforo, usata per la sola mutua esclusione quando **non serve contare**. Ha due stati: **locked** e **unlocked** (basta un bit). Due procedure: `mutex_lock` e `mutex_unlock`.
 
@@ -222,16 +237,20 @@ Quando un thread vuole entrare nella regione critica chiama `mutex_lock`: se il 
 | `pthread_mutex_unlock` | Sblocca (solo il thread che detiene il lock) |
 
 **`lock` vs `trylock`**: `lock` quando l'accesso esclusivo è necessario e si **può attendere** in coda; `trylock` quando si vuole **solo tentare** e proseguire con altro se il lock è occupato (utile per evitare deadlock).
-> [!info] Futex (Fast User Space Mutex)
+
+> [!info] Futex (Fast User Space Mutex) *(extra, non da slide)*
 > Gli **spin-lock** e i mutex con busy waiting sprecano CPU per attese lunghe; passare al kernel per bloccare un processo è oneroso se le contese sono poche. Il **Futex** combina i due approcci: tenta prima di acquisire il lock in **user space** (senza syscall, come TSL/XCHG) e ricorre al kernel per bloccarsi solo se la contesa è reale. Così le acquisizioni non contese restano veloci, e si paga il costo del kernel solo quando davvero necessario.
 ### Semaforo o mutex?
 - **Finalità**: il **mutex** garantisce la mutua esclusione (una risorsa, un thread alla volta); il **semaforo** controlla l'accesso a una risorsa ma serve anche per la **sincronizzazione** tra thread (es. produttore/consumatore).
 - **Semantica**: il mutex ha una semantica di **proprietà** (solo chi l'ha acquisito può rilasciarlo); il semaforo **no** (qualsiasi thread può fare `up`/`down`).
 - **Regola pratica**: per la sola esclusione mutua → **mutex** (più semplice e prevedibile); per coordinare più thread o risorse con N istanze → **semaforo**.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Qual è la differenza tra mutex e semaforo? Quando si preferisce l'uno all'altro? **R:** Il mutex è una primitiva binaria (locked/unlocked) con semantica di **proprietà**: solo il thread che ha acquisito il lock può rilasciarlo. Il semaforo è un contatore intero ≥ 0 incrementabile/decrementabile da qualsiasi thread, e serve sia per la mutua esclusione sia per la sincronizzazione tra thread (es. produttore/consumatore con semafori `empty` e `full`). Si usa il mutex per la sola esclusione mutua (più semplice e prevedibile); il semaforo quando occorre coordinare più thread o gestire risorse con N istanze.
 
+> [!info] Mettiti alla prova
+> - **C:** [[Indice degli Esercizi#Thread e Sincronizzazione|thread_mutex_file.c]] (accesso esclusivo a un file via mutex) e [[Indice degli Esercizi#Thread e Sincronizzazione|init_max_min_mutex.c]] (mutex senza variabile condizione, con flag e busy-wait).
+> - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Thread — Mutex|TM1]] e [[Tracce d'Esame Pratiche#Thread — Mutex|TM3]].
 ## Variabili condizionali (pthread_cond)
 Il mutex da solo **non** consente di attendere efficientemente una **condizione specifica** (es. "il buffer non è vuoto"): senza altri strumenti il thread dovrebbe fare busy waiting su un `while`. Le **variabili condizionali** (`pthread_cond`) aggiungono la possibilità di sospendersi finché un evento non si verifica, **senza consumare CPU**.
 
@@ -270,10 +289,15 @@ while (buffer == 0) {              /* attesa passiva finché il buffer non è pi
 consume(buffer);
 pthread_mutex_unlock(&mutex);
 ```
+
 > [!warning] while, non if — risvegli spuri
 > La condizione va sempre verificata in un ciclo `while`, **mai con un semplice `if`**. Il motivo: i **risvegli spuri** (*spurious wakeup*). Su alcune implementazioni POSIX `pthread_cond_wait` può tornare anche senza che nessuno abbia chiamato `signal`. Se si usa `if`, il thread procede erroneamente anche quando la condizione non è ancora vera. Il ciclo `while` ricontrolla la condizione a ogni risveglio, proteggendo da questo scenario.
 
 Esempio completo nel codice del corso: `code/6_thread_e_sincronizzazione/6.4_producer_consumer_pthread.c`.
+
+> [!info] Mettiti alla prova
+> - **C:** [[Indice degli Esercizi#Thread e Sincronizzazione|pari_dispari_insert_mutex.c]] — pattern `wait`/`signal` con `pthread_cond_wait` e somma progressiva.
+> - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Thread — Mutex|TM2]] (buffer pari/dispari + somma progressiva) e [[Tracce d'Esame Pratiche#Thread — Mutex|TM1]] (controllo con variabile condizione).
 ## Monitor
 La programmazione con semafori **richiede estrema attenzione**: un piccolo errore (es. invertire due `down`) causa race condition o deadlock. **Brinch Hansen** e **Hoare** proposero un costrutto di sincronizzazione ad alto livello: il **monitor**.
 
@@ -302,6 +326,9 @@ Per le attese, i monitor usano **variabili condizionali** con `wait` e `signal`.
 > ```
 > L'accesso a `enter` e `remove` è **serializzato dal monitor**.
 
+> [!info] Perché il monitor usa «if» e le pthread_cond usano «while»
+> Nella [[#Variabili condizionali (pthread_cond)|sezione precedente]] abbiamo imposto sempre `while`, mai `if`, per difenderci dai risvegli spuri; qui invece il monitor usa `if(count == N) wait(full)` ed è **corretto**. La differenza sta nella **semantica della segnalazione**. Nel monitor classico (semantica di **Hoare**) `signal` **cede immediatamente** il controllo al processo risvegliato, che riprende l'esecuzione quando la condizione attesa è *certamente* vera: un solo controllo con `if` basta. Le **pthread_cond** seguono invece la semantica di **Mesa**: `signal` marca soltanto il thread come risvegliabile, ma questo riacquisisce il mutex *più tardi* — quando la condizione potrebbe essere tornata falsa — e può subire risvegli spuri; per questo serve il `while`, che ricontrolla la condizione a ogni risveglio. Stesso schema, garanzie diverse.
+
 > [!info] sleep/wakeup vs wait/signal
 > Differenza cruciale: `wait` e `signal` sono **protetti dalla mutua esclusione del monitor**. Un processo che entra in una procedura del monitor ne ha l'esclusività finché non chiama `wait`: non può quindi essere interrotto a metà e **non può perdere un segnale**, eliminando il problema del wakeup perso visto con `sleep/wakeup`.
 
@@ -311,12 +338,13 @@ Per le attese, i monitor usano **variabili condizionali** con `wait` e `signal`.
 > I monitor delegano la **mutua esclusione al compilatore** (o al runtime), sottraendo il controllo diretto al programmatore — e quindi anche al sistema operativo. Questo crea una tensione: il SO vuole il pieno controllo della macchina, e un linguaggio che si rivolge **direttamente** al SO (come il **C**) non può imporre per conto suo politiche di accesso esclusivo. In **Java**, invece, tra il programma e il SO si interpone la **JVM** (Java Virtual Machine): è la JVM a fare da arbitro, garantendo che i metodi `synchronized` siano eseguiti in mutua esclusione prima di passare al SO. Lo strato intermedio è la ragione per cui i monitor sono implementabili in Java ma non direttamente in C.
 ## Scambio di messaggi
 Per i sistemi **senza memoria condivisa** (es. distribuiti) la sincronizzazione usa lo **scambio di messaggi** con due primitive: `send(destinazione, messaggio)` e `receive(sorgente, messaggio)`. È il meccanismo alla base del modello [[02 - Concetti di Base e Strutture#Microkernel (client-server)|client-server]] e della comunicazione di rete.
+
 > [!example] Produttore-consumatore con scambio di messaggi
 > Si usano in totale **N messaggi**, analoghi agli N posti del buffer in memoria condivisa. All'avvio il **consumatore** invia al produttore N messaggi vuoti (i "gettoni" che segnalano posti disponibili). Il **produttore** esegue `receive` per prendere un messaggio vuoto, lo riempie con l'elemento prodotto e lo invia al consumatore con `send`. Il consumatore esegue `receive` per prelevare un messaggio pieno, lo elabora e rimanda un messaggio vuoto al produttore. Se il produttore è più veloce, esaurisce i messaggi vuoti e si blocca su `receive`; se il consumatore è più veloce, esaurisce i messaggi pieni e si blocca. La corrispondenza con il buffer condiviso è diretta: i messaggi vuoti contano i posti liberi, quelli pieni i posti occupati — gli stessi ruoli dei semafori `empty` e `full` (vedi [[#Semafori]]).
 
 > [!info] Problemi progettuali specifici del modello a messaggi
 > A differenza di semafori e monitor — che operano su **memoria condivisa** e non devono preoccuparsi di perdite o imposture — lo scambio di messaggi introduce problemi assenti negli altri modelli:
-> - **Perdita di messaggi**: il canale di comunicazione (rete, IPC) può scartare messaggi; occorre un meccanismo di ritrasmissione.
+> - **Perdita di messaggi**: il canale di comunicazione (rete, [[#^ipc|IPC]]) può scartare messaggi; occorre un meccanismo di ritrasmissione.
 > - **Acknowledgment (ACK)**: il mittente deve poter confermare che il destinatario ha ricevuto il messaggio; senza ACK non può distinguere tra «messaggio perso» e «risposta persa».
 > - **Messaggi duplicati**: se l'ACK si perde, il mittente ritrasmette e il destinatario riceve lo stesso messaggio due volte; serve un numero di sequenza per scartare i duplicati.
 > - **Autenticazione**: in un sistema distribuito occorre verificare di comunicare con il processo corretto e non con un impostore.
@@ -333,11 +361,11 @@ Le **barriere** sincronizzano processi divisi in **fasi**: quando un processo ra
 
 > [!info] Soluzioni all'inversione di priorità
 > Le tre strategie principali per prevenire o limitare l'inversione sono:
-> 1. **Priority Ceiling** — si assegna una *priorità-tetto* al mutex stesso: il thread che acquisisce il mutex riceve automaticamente quella priorità. Finché nessun thread con priorità superiore al tetto deve acquisire quel mutex, l'inversione è impossibile per costruzione.
+> 1. **Priority Ceiling** *(extra, non da slide)* — si assegna una *priorità-tetto* al mutex stesso: il thread che acquisisce il mutex riceve automaticamente quella priorità. Finché nessun thread con priorità superiore al tetto deve acquisire quel mutex, l'inversione è impossibile per costruzione.
 > 2. **Priority Inheritance** — il thread a bassa priorità che detiene il mutex **eredita temporaneamente** la priorità del thread ad alta priorità in attesa; completa la sezione critica, rilascia il mutex e torna alla propria priorità originale. È la soluzione adottata dalla NASA per il Mars Pathfinder.
-> 3. **Random Boosting** — aumenta in modo casuale la priorità di thread che detengono un mutex, con l'obiettivo probabilistico di sbloccare prima la risorsa contesa. Approccio meno deterministico degli altri due, usato in alcuni ambienti Windows.
+> 3. **Random Boosting** *(extra, non da slide)* — aumenta in modo casuale la priorità di thread che detengono un mutex, con l'obiettivo probabilistico di sbloccare prima la risorsa contesa. Approccio meno deterministico degli altri due, usato in alcuni ambienti Windows.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Cos'è l'inversione delle priorità? Descrivi il caso del Mars Pathfinder e la soluzione adottata. **R:** L'inversione delle priorità si verifica quando un thread ad alta priorità attende una risorsa bloccata da un thread a bassa priorità, mentre un thread a priorità media — estraneo alla risorsa — monopolizza la CPU impedendo al thread a bassa priorità di completare e rilasciare il lock. Nel caso del rover Sojourner (Mars Pathfinder), questo causava continui riavvii del sistema real-time. La NASA risolse con il **Priority Inheritance Protocol**: il thread a bassa priorità eredita temporaneamente la priorità del thread in attesa, completa la sezione critica, rilascia il mutex e torna alla priorità originale.
 
 ### Read-Copy-Update (RCU)

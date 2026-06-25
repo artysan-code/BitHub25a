@@ -1,5 +1,8 @@
 # Processi e Thread
 Il **processo** è l'astrazione con cui il SO esegue programmi per conto degli utenti; il **thread** è il flusso di esecuzione *dentro* un processo. Questa nota copre modello, gestione, stati, segnali/interrupt e thread. Prerequisito: l'astrazione di processo introdotta in [[02 - Concetti di Base e Strutture]].
+
+> [!info] Per il laboratorio
+> La pratica di questa nota — `fork`/`exec`/`wait`, segnali, pipe, pthreads — si scrive in **C**. Se segui l'ordine delle lezioni, vedi prima [[10 - Programmazione C e Concorrente]] (le system call in C) e [[09 - Linux e BASH]] (shell e terminale): nelle slide il laboratorio precede questa teoria, mentre qui l'ordine segue il libro.
 ## Il modello di processo
 > [!quote] Definizione — Processo
 > Un **processo è un programma in esecuzione**. È un'astrazione fondamentale del SO, che gli consente di semplificare **allocazione**, **accounting** (contabilizzazione) e **limitazione** delle risorse. Il SO mantiene in una **tabella dei processi** le informazioni sulle risorse e sullo stato interno di ogni processo.
@@ -12,14 +15,14 @@ Il SO crea in genere un solo processo iniziale, **`init`** (nei sistemi moderni 
 
 > [!example] La shell crea processi
 > ```bash
-> $ find /tmp & > t.log &
+> $ find /tmp > t.log &
 > $ ls | more
 > ```
 > Ogni comando lanciato dalla shell diventa un processo figlio; `init → login → sh → (ls, find, more)` è un tipico albero.
 
 L'uso pratico della shell e del **job control** (`ps`, `kill`, `bg`/`fg`, `&`) è in [[09 - Linux e BASH#Processi e job control]].
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Cos'è un processo e in cosa differisce da un programma? **R:** Un processo è un *programma in esecuzione*: è l'istanza dinamica di un programma statico, dotata di proprio spazio di indirizzi, stato della CPU (registri, PC, stack) e risorse (file aperti, segnali). Il programma è il codice statico su disco; il processo è l'entità a cui il SO alloca la CPU e le risorse.
 ## Gestione dei processi
 ### Creazione di un processo
@@ -45,8 +48,12 @@ Quattro condizioni tipiche:
 > [!info] Codice di laboratorio
 > Esempi C su `fork`, `exec`, segnali e pipe in `Materiale Didattico/.../code/5_elementi_di_programmazione_concorrente_code/`. Il pattern `fork` + `exec` + `waitpid` è quello della shell visto in [[02 - Concetti di Base e Strutture]]. La trattazione in C di `fork`/`exec`/`wait`, dei segnali (`signal`/`alarm`/`kill`) e delle pipe (`pipe`/`dup2`) è in [[10 - Programmazione C e Concorrente]].
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Cosa fa `fork()` e in che modo è usata con `exec`? **R:** `fork()` crea un nuovo processo figlio come clone "privato" del genitore: condividono il segmento di codice e le variabili d'ambiente ereditate, ma hanno spazi di indirizzi separati. Il valore di ritorno distingue padre (PID del figlio) da figlio (0). `exec` (nella forma `execve`) sostituisce poi l'immagine del processo figlio con un nuovo programma: il pattern `fork` + `exec` + `wait` è quello usato dalla shell per lanciare comandi.
+
+> [!info] Mettiti alla prova
+> - **Tracce d'esame:** tutte le [[Tracce d'Esame Pratiche#Processi|tracce P1–P10]] usano `fork`/`exec`/`wait`/`kill`.
+> - **C:** [[Indice degli Esercizi#Processi|fork_sum.c]] (fork + pipe + `SIGTERM`) e [[Indice degli Esercizi#Processi|matrix_fork.c]] (fork + calcolo parallelo su pipe).
 ## Stati di un processo
 Un processo può trovarsi in **tre stati**:
 - **Running** (in esecuzione): sta effettivamente usando la CPU.
@@ -61,8 +68,14 @@ Running ──(2) lo scheduler sceglie un altro──►  Ready
 Ready   ──(3) lo scheduler sceglie questo────►  Running
 Blocked ──(4) l'input diventa disponibile────►  Ready
 ```
-> [!example] Domanda tipica d'esame
+
+Il corso adotta il modello a **tre stati** *operativi*: la **creazione** e la **terminazione** del processo (le sezioni precedenti) sono **eventi** agli estremi del ciclo di vita, non stati stazionari del diagramma — un processo «non finisce mai» *nel diagramma* perché questo descrive solo la fase in cui è *vivo* e contende la CPU. Alcuni testi rendono espliciti due stati aggiuntivi — **new** (appena creato, non ancora ammesso tra i *ready*) e **terminated/zombie** (ha già fatto `exit`, ma la sua voce resta finché il genitore non ne raccoglie lo stato di uscita con `wait`) — ma **non sono nelle slide di Croce**, che si fermano ai tre stati.
+
+> [!question] Domanda tipica d'esame
 > **D:** Quali sono i tre stati di un processo e le quattro transizioni tra essi? **R:** Gli stati sono **Running** (la CPU è assegnata al processo), **Ready** (eseguibile ma in attesa della CPU) e **Blocked** (non eseguibile, in attesa di un evento esterno). Le transizioni sono: (1) Running→Blocked, quando il processo si blocca in attesa di input; (2) Running→Ready, quando lo [[05 - Scheduling|scheduler]] sceglie un altro processo; (3) Ready→Running, quando lo scheduler sceglie questo processo; (4) Blocked→Ready, quando l'input atteso diventa disponibile.
+
+> [!question] Domanda tipica d'esame
+> **D:** Il modello a tre stati (Running/Ready/Blocked) descrive l'intero ciclo di vita del processo? **R:** No: descrive solo la fase *operativa* in cui il processo è vivo e contende la CPU. La **creazione** e la **terminazione** sono **eventi** agli estremi — alla nascita il processo entra come *ready*, e con `exit` lascia il diagramma — non stati di esso. Il corso e il Tanenbaum si fermano a tre stati; il modello a cinque stati di altri testi esplicita anche *new* e *terminated/zombie*.
 ### Informazioni associate a un processo
 La **tabella dei processi** è un array di strutture, **una voce per processo**, chiamata anche **PCB** (*Process Control Block*). Conserva tutto ciò che serve a **sospendere e riprendere** un processo come se non si fosse mai fermato: quando passa da *running* a *ready*/*blocked*, il suo stato viene salvato qui. I campi tipici si raggruppano in tre aree:
 
@@ -74,7 +87,14 @@ La **tabella dei processi** è un array di strutture, **una voce per processo**,
 | Segnali, tempi di CPU (proprio e dei figli), allarmi | | **UID**, **GID** |
 
 I campi di memoria sono ripresi in [[06 - Gestione della Memoria]], quelli dei file in [[07 - File System]]. È sulla voce del PCB che, a ogni **interrupt**, l'hardware e la routine assembly salvano i registri del processo corrente (vedi sotto).
+
+**Anche il processo in *running* ha la sua voce nel PCB**: la tabella contiene *tutti* i processi e un campo ne registra proprio lo *stato* (`running`/`ready`/`blocked`). Ciò che cambia è *dove* vive lo stato «vivo»: mentre il processo esegue, i suoi registri e il PC stanno nei **registri fisici della CPU**, e la copia nel PCB è quella salvata all'ultimo cambio di contesto (quindi non aggiornata); al successivo **context switch** (running → ready/blocked) l'hardware e la routine assembly riscrivono i registri correnti nella sua voce. Il PCB esiste appunto per poter **sospendere e riprendere** ogni processo, qualunque sia il suo stato.
+
+> [!question] Domanda tipica d'esame
+> **D:** Anche il processo in esecuzione (*running*) ha una voce nel PCB, o solo i processi *ready*/*blocked*? **R:** Tutti i processi hanno una voce nella tabella, **incluso quello in *running*** (un campo ne registra lo *stato*). Per il processo in esecuzione lo stato «vivo» (registri, PC) sta nei registri della CPU; la copia nel PCB viene aggiornata al **context switch**, quando il processo lascia la CPU. Il PCB serve proprio a **sospenderlo e riprenderlo** come se non si fosse mai fermato.
 ## Modellazione della multiprogrammazione
+*(Approfondimento dal Tanenbaum, cap. 2 — non presente nelle slide di Croce: utile per capire il «perché» della multiprogrammazione, non materia d'esame stretta.)*
+
 Quanto rende davvero la [[01 - Introduzione ai Sistemi Operativi#Terza generazione (1965-80) — circuiti integrati e multiprogrammazione|multiprogrammazione]]? Un modello **probabilistico** lo quantifica. Se un processo passa una frazione **$p$** del suo tempo in **attesa di I/O**, con **$n$** processi in memoria la probabilità che siano **tutti** in attesa nello stesso istante (CPU inattiva) è $p^n$. L'utilizzo della CPU è quindi:
 $$\text{Utilizzo CPU} = 1 - p^n$$
 dove **$n$** è il **grado di multiprogrammazione** (numero di processi contemporaneamente in memoria).
@@ -88,7 +108,7 @@ Conseguenze pratiche:
 > $$\text{Utilizzo} = 1 - 0{,}8^3 = 1 - 0{,}512 \approx 49\%$$
 > Salendo a 16 GB → **7 programmi**: $1 - 0{,}8^7 \approx 79\%$ (**+30%** di throughput). Altri 8 GB portano dal 79% a circa il **91%** (solo **+12%**): il primo upgrade conviene, il secondo molto meno.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Qual è la formula dell'utilizzo della CPU in multiprogrammazione e cosa significano i suoi termini? **R:** $\text{Utilizzo CPU} = 1 - p^n$, dove **$p$** è la frazione di tempo che un processo passa in **attesa di I/O** e **$n$** è il **grado di multiprogrammazione** (processi in memoria). Il termine $p^n$ è la probabilità che **tutti** gli $n$ processi attendano l'I/O nello stesso istante, lasciando la **CPU inattiva**. Il modello assume i processi indipendenti, quindi è un'approssimazione.
 ## Segnali e interrupt
 Sia i **segnali** sia gli **interrupt** servono a gestire **eventi asincroni**, ma a livelli diversi.
@@ -98,6 +118,7 @@ Sia i **segnali** sia gli **interrupt** servono a gestire **eventi asincroni**, 
 | **Origine** | dispositivi **hardware** (tastiera, disco) | eventi **software** (da un processo o dal SO) |
 | **Gestione** | routine di servizio (**ISR**) | handler personalizzato o azione di default |
 | **Uso** | comunicazione hardware↔software | condizioni eccezionali nelle applicazioni |
+| **Asincronia** | gestiti **immediatamente** dall'hardware | inviati in modo **asincrono**, ma il processo può gestirli in modo sincrono |
 ### Gli interrupt
 **Idea**: per togliere la CPU a un processo e ridarla allo scheduler ci si appoggia al supporto hardware agli interrupt, così lo **scheduler ottiene periodicamente il controllo** — ogni volta che l'hardware genera un interrupt.
 
@@ -122,6 +143,11 @@ L'**interrupt vector** è associato a ciascun dispositivo di I/O e linea di inte
 - **Tipi**: indotti da hardware (es. `SIGKILL`) o da software (es. `SIGQUIT`, `SIGPIPE`).
 - **Azioni** possibili: `Term`, `Ign`, `Core`, `Stop`, `Cont`. Ogni segnale ha un'azione di **default**, tipicamente **sovrascrivibile**; i segnali possono essere **bloccati** e le azioni ritardate.
 - **Catching**: il processo registra un **handler**; il SO consegna il segnale e fa eseguire l'handler; il contesto corrente va salvato/ripristinato.
+
+La parola «**tipicamente**» (sovrascrivibile, bloccabile) è importante: a differenza di un **interrupt** hardware — che il processo *non* può rifiutare — un segnale è di norma **mascherabile**, cioè catturabile con un handler, ignorabile o bloccabile. Fanno eccezione **due segnali «forti»**, `SIGKILL` (termina) e `SIGSTOP` (sospende): **non** possono essere catturati, ignorati né bloccati, e in questo senso hanno verso il processo una «forza» paragonabile a quella di un interrupt. *(Dettaglio dello standard POSIX, oltre le slide ma coerente con il loro «tipicamente bloccabili».)*
+
+> [!question] Domanda tipica d'esame
+> **D:** Un segnale può essere «forte» come un interrupt, cioè non rifiutabile dal processo? **R:** Di norma **no**: il segnale è software ed è **mascherabile** (il processo può catturarlo, ignorarlo o bloccarlo), mentre un **interrupt** hardware non è rifiutabile dal processo. L'eccezione sono i due segnali **non mascherabili** `SIGKILL` e `SIGSTOP`: non si possono catturare, ignorare né bloccare, e in quel caso il segnale è «forte» quanto un interrupt nei confronti del processo.
 #### Permessi e consegna
 Un processo può inviare segnali **solo a processi dello stesso utente** (il kernel controlla **UID/EUID** → niente `Ctrl+C` ai processi di root). L'invio (`kill`) è una **system call**: il segnale viene **accodato nel kernel** al processo/thread target.
 
@@ -145,8 +171,12 @@ int main() {
 }
 ```
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Qual è la differenza tra interrupt e segnale? **R:** Un **interrupt** è generato da un dispositivo *hardware* (tastiera, disco) e gestito da una ISR (Interrupt Service Routine) del SO tramite il vettore di interrupt (IDT); interrompe il processo corrente e cede il controllo allo [[05 - Scheduling|scheduler]]. Un **segnale** è un meccanismo *software* che notifica a un processo un evento (es. `SIGINT` da Ctrl+C, `SIGKILL` per forzare la terminazione): il processo può registrare un handler, ignorarlo (se il segnale lo permette) o accettare l'azione di default. La consegna avviene tramite il kernel, che salva il contesto corrente, esegue l'handler in user space e lo ripristina via `rt_sigreturn`.
+
+> [!info] Mettiti alla prova
+> - **C:** [[Indice degli Esercizi#Processi|fork_sum.c]], [[Indice degli Esercizi#Processi|fork_pari_dispari_soglia.c]] e [[Indice degli Esercizi#Processi|26_01_24_appello.c]] terminano i figli con `kill(pid, SIGTERM)`.
+> - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Processi|P2]], [[Tracce d'Esame Pratiche#Processi|P6]], [[Tracce d'Esame Pratiche#Processi|P10]].
 ## Thread
 Finora abbiamo assunto **1 processo ⇒ 1 thread**. Con l'esecuzione **multithreaded** un processo ha **N thread**. Perché più thread per processo? Sono **lightweight process** (processi leggeri): consentono **parallelismo efficiente** in spazio e tempo e una **comunicazione/sincronizzazione semplici** (condividono lo **spazio di indirizzi**).
 
@@ -211,11 +241,16 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 ```
+
 > [!warning] Output non deterministico — domanda del docente
 > Il `main` **non chiama `pthread_join`**: termina (con `return 0`) senza attendere il completamento dei thread figli. L'ordine in cui i 10 thread eseguono `printf` dipende dallo **scheduler**, che non offre garanzie di tempistica né di ordine (cfr. [[#Processi concorrenti]]). L'output osservabile può essere qualsiasi permutazione dei messaggi, o addirittura incompleto se il processo termina prima che tutti i thread abbiano stampato. *"What will the output be?"* — la risposta corretta è: **non si può sapere a priori**.
 
 > [!info] Codice di laboratorio
 > Esempi su thread, producer-consumer e reader-writer in `Materiale Didattico/.../code/6_thread_e_sincronizzazione/`.
+
+> [!info] Mettiti alla prova
+> - **C — pthreads:** [[Indice degli Esercizi#Thread e Sincronizzazione|pos_neg_one_thread_mutex.c]], [[Indice degli Esercizi#Thread e Sincronizzazione|pari_dispari_insert_mutex.c]], [[Indice degli Esercizi#Thread e Sincronizzazione|init_max_min_mutex.c]] — `pthread_create`/`join`/`exit`.
+> - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Thread — Mutex|TM1]], [[Tracce d'Esame Pratiche#Thread — Mutex|TM2]], [[Tracce d'Esame Pratiche#Thread — Mutex|TM3]].
 ### Implementazione dei thread
 Esistono **tre luoghi** di implementazione: nello **spazio utente**, nel **kernel**, o **ibrida**.
 #### Nello spazio utente
@@ -226,12 +261,17 @@ I thread sono gestiti da una **libreria** in user space; il kernel li vede come 
 È il **kernel** a gestire i thread: niente sistema run-time per processo. Le chiamate potenzialmente bloccanti sono **system call** (costo più alto), ma se un thread si blocca il kernel può eseguire un altro thread (dello stesso o di un altro processo). Alcuni sistemi **riciclano** i thread per ridurre i costi; a un page fault il kernel verifica se ci sono altri thread eseguibili.
 #### Ibrida
 Si effettua il **multiplexing** dei thread utente su un numero scelto di **thread del kernel**: il programmatore decide quanti thread kernel usare e quanti thread utente multiplexare. Il kernel è consapevole solo dei thread kernel, ma ciascuno di essi può gestire più thread utente. Combina i vantaggi dei due approcci.
+
+Per fissare i termini: un **thread utente** è un flusso che la **libreria** (in user space) crea e avvicenda *senza* che il kernel lo sappia; un **thread kernel** è invece un flusso che il **kernel** conosce e **schedula** direttamente sulla CPU. Il *multiplexing* ibrido **mappa N thread utente su M thread kernel** (con $M \le N$): è il modello **M:N**. *Multiplexing* significa proprio far passare **più** flussi logici (i thread utente) attraverso un **numero minore** di canali realmente schedulabili (i thread kernel), alternandoli — ogni thread kernel è una «corsia» su cui la libreria avvicenda più thread utente. Per confronto, i thread *solo utente* sono il modello **N:1** (tutti mappati sull'unica entità che il kernel vede, il processo) e i thread *solo kernel* sono **1:1** (a ogni thread utente corrisponde un thread kernel).
+
+> [!question] Domanda tipica d'esame
+> **D:** Che differenza c'è tra thread utente e thread kernel, e cosa significa farne il *multiplexing* nell'approccio ibrido? **R:** Un **thread utente** è gestito e schedulato da una **libreria** in user space ed è invisibile al kernel; un **thread kernel** è conosciuto e schedulato dal **kernel**. Il *multiplexing* ibrido **mappa N thread utente su M thread kernel** ($M \le N$, modello **M:N**): più thread utente si avvicendano sullo stesso thread kernel, che è l'unità realmente messa in esecuzione. Solo-utente corrisponde a **N:1**, solo-kernel a **1:1**.
 ### Problemi aperti
 La programmazione con thread richiede cautela:
 - Molte **procedure di libreria** possono causare **conflitti** se un thread sovrascrive dati cruciali per un altro (es. un buffer condiviso per assemblare un messaggio di rete, sovrascritto da un secondo thread dopo un interrupt del clock). I **wrapper** (un bit "libreria in uso") evitano i conflitti ma limitano il parallelismo → tema della [[04 - Sincronizzazione]].
 - La **gestione dei segnali** è complicata: alcuni sono specifici di un thread, altri no, e decidere chi li gestisce è non banale.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Quali sono i vantaggi dei thread rispetto ai processi e come differiscono le tre implementazioni (user space, kernel, ibrida)? **R:** I thread (processi leggeri) condividono lo spazio di indirizzi del processo, quindi la comunicazione è più rapida e il context switch tra thread è meno costoso di quello tra processi. Nell'implementazione **user space** il cambio di thread non richiede trap al kernel (più veloce, personalizzabile), ma una system call bloccante ferma tutti i thread del processo. Nell'implementazione **kernel** il cambio è una system call (costo maggiore), ma se un thread si blocca il kernel può eseguirne un altro dello stesso processo. L'approccio **ibrido** effettua il multiplexing di N thread utente su M thread kernel, combinando i vantaggi di entrambi.
 
 ---

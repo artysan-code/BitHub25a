@@ -1,5 +1,6 @@
 # Indice degli Esercizi di Laboratorio
 Questa raccolta raccoglie gli esercizi pratici in linguaggio C a supporto del **Modulo 1** del corso di Sistemi Operativi e Reti. L'obiettivo è consolidare i concetti teorici mediante implementazione diretta delle primitive POSIX: **fork**, **pipe**, **lseek**, **pthread**, **mutex**, **variabili condizione** e **semafori**. Il materiale è pensato come preparazione all'esonero e all'esame scritto.
+
 > [!info] Attribuzione
 > Gli esercizi provengono dalla repository del collega **Ionut Zbir** ([github.com/IonutZbir/University](https://github.com/IonutZbir/University)), adattati e verificati per questo vault.
 ## Processi

@@ -1,11 +1,14 @@
 # Esercizi Svolti — Sincronizzazione
 Esercizi di ragionamento sulla mutua esclusione (Peterson, semafori, deadlock) e **schede di svolgimento** delle soluzioni C con thread, mutex, variabili condizione e semafori. Per lo scritto del **Modulo 1**. Teoria di riferimento: [[04 - Sincronizzazione]].
+
 > [!info] Verifica
 > Le tracce dei semafori (valori, processi bloccati) sono state **verificate** simulando passo-passo la semantica `down`/`up`. Le soluzioni C complete sono in `Thread e Sincronizzazione/`, con le consegne in [[Tracce d'Esame Pratiche]].
 ## Es. 1 — Traccia dell'algoritmo di Peterson
 > [!quote] Consegna
 > Due processi $P_0$ e $P_1$ chiamano `enter_region` quasi simultaneamente. Mostrare un'esecuzione interlacciata e spiegare **chi entra** e **chi attende**, senza violare la mutua esclusione. (Codice in [[04 - Sincronizzazione#Algoritmo di Peterson|nota — Peterson]].)
+
 Ricordando la condizione di attesa `while (turn == process && interested[other])`: si attende **solo** se è il proprio turno *e* l'altro è interessato. Interlacciamento critico (entrambi segnalano interesse, poi scrivono `turn`):
+
 | Passo | Azione | Stato dopo |
 |---|---|---|
 | 1 | $P_0$: `interested[0] = TRUE` | `interested = [T, F]` |
@@ -20,7 +23,9 @@ Ricordando la condizione di attesa `while (turn == process && interested[other])
 ## Es. 2 — Valori di un semaforo e coda dei bloccati
 > [!quote] Consegna
 > Un semaforo $S$ è inizializzato a **2**. Quattro processi $A, B, C, D$ eseguono `down(S)` in quest'ordine, poi arrivano due `up(S)`. Indicare, a ogni passo, il valore di $S$, chi prosegue e chi si blocca; e lo stato finale.
+
 Semantica: [[04 - Sincronizzazione#Semafori|`down`]] entra se $S > 0$ (e decrementa), altrimenti **blocca** in coda; [[04 - Sincronizzazione#Semafori|`up`]] **risveglia** un processo in coda se ce n'è (e $S$ resta invariato), altrimenti incrementa $S$.
+
 | Operazione | $S$ | Effetto | Coda bloccati |
 |---|---|---|---|
 | init | 2 | — | — |
@@ -36,11 +41,13 @@ Semantica: [[04 - Sincronizzazione#Semafori|`down`]] entra se $S > 0$ (e decreme
 ## Es. 3 — Deadlock da inversione dei `down`
 > [!quote] Consegna
 > Nel produttore–consumatore con semafori (`mutex = 1`, `empty = N`, `full = 0`), il produttore corretto fa `down(empty)` **poi** `down(mutex)`. Cosa succede se i due `down` vengono **invertiti**? Costruire lo scenario di blocco.
+
 Con l'ordine **invertito** nel produttore (`down(mutex)` prima di `down(empty)`) e il buffer **pieno** ($\text{empty} = 0$):
 1. il produttore esegue `down(mutex)` → entra nella regione critica, `mutex = 0`;
 2. poi `down(empty)` con `empty = 0` → si **blocca** (il buffer è pieno), **tenendo ancora il mutex**;
 3. il consumatore tenta `down(mutex)` per prelevare → `mutex = 0` → si **blocca**.
 Ora: il produttore aspetta che il consumatore liberi un posto (`up(empty)`), ma il consumatore aspetta il mutex che **solo** il produttore può rilasciare. Nessuno avanza.
+
 > [!warning] La regola
 > **Acquisire sempre prima il semaforo di conteggio (`empty`/`full`) e poi il `mutex`**, e rilasciare in ordine inverso. Invertirli crea un'attesa circolare → **deadlock**. È l'errore classico d'esame: lo stesso vale per il consumatore (`down(mutex)` prima di `down(full)`).
 ## Es. 4 — Produttore–consumatore: traccia dei semafori
@@ -75,6 +82,7 @@ Ora: il produttore aspetta che il consumatore liberi un posto (`up(empty)`), ma 
 > Con questo schema lo scrittore entra **solo** quando `rc` torna a 0. Se i lettori arrivano in continuazione, `rc` non si azzera mai e lo scrittore **attende all'infinito** (*starvation*). Le soluzioni con priorità agli scrittori, o "giuste", risolvono il problema a scapito della semplicità.
 ## Soluzioni C — Thread, mutex, condizioni, semafori
 Schede di svolgimento dei `.c` in `Thread e Sincronizzazione/`. Consegne in [[Tracce d'Esame Pratiche#Thread — Mutex]] e [[Tracce d'Esame Pratiche#Thread — Semafori]]. Scheletro comune:
+
 > [!example] Scheletro comune — pthreads
 > 1. `pthread_create(&tid, NULL, funzione, arg)` avvia un thread; `pthread_join(tid, NULL)` ne attende la fine. I thread **condividono** lo spazio di indirizzi → le variabili globali sono memoria comune da proteggere.
 > 2. **Mutex** (`pthread_mutex_lock`/`unlock`) per la **mutua esclusione**; **variabile condizione** (`pthread_cond_wait`/`signal`) per **attendere un evento** senza busy-wait; **semaforo** (`sem_wait`/`sem_post`) per contare permessi.
@@ -96,6 +104,7 @@ Schede di svolgimento dei `.c` in `Thread e Sincronizzazione/`. Consegne in [[Tr
 
 ## Da svolgere
 Tracce senza soluzione. Le prime sono di ragionamento, le ultime di programmazione (riusano lo [[#Soluzioni C — Thread, mutex, condizioni, semafori|scheletro pthreads]]).
+
 > [!todo] Da svolgere — ragionamento
 > 1. **Semaforo con `up` in eccesso.** $S$ inizia a **1**. Sequenza: `down`, `down`, `up`, `up`, `up`, `down`. Traccia il valore di $S$ e la coda a ogni passo. Qual è il valore finale?
 > 2. **Deadlock dei filosofi.** Perché la soluzione "ognuno prende prima la forchetta sinistra, poi la destra" porta a deadlock se **tutti** iniziano insieme? Quale requisito di [[04 - Sincronizzazione#Regioni critiche e requisiti|sezione critica]] viola? (vedi [[04 - Sincronizzazione#I filosofi a cena|filosofi a cena]]).
@@ -106,5 +115,6 @@ Tracce senza soluzione. Le prime sono di ragionamento, le ultime di programmazio
 > 5. **Conto alla rovescia sincronizzato.** Tre thread incrementano un contatore globale fino a 30; proteggi l'accesso con un mutex e stampa il valore finale (deve essere esattamente 30, non meno: dimostra la *race condition* rimuovendo il mutex).
 > 6. **Barriera.** $N$ thread fanno ciascuno un calcolo, poi si **attendono a vicenda** su una barriera (`pthread_barrier_t` oppure mutex + cond) prima di proseguire alla fase 2.
 > 7. **Produttore–consumatore con `pthread_cond`.** Riscrivi `prod_cons_sem.c` usando **mutex + due variabili condizione** (`not_full`, `not_empty`) invece dei semafori `empty`/`full`.
+
 ---
 **Teoria di riferimento:** [[04 - Sincronizzazione]] · **Indice di tutti gli esercizi:** [[Indice degli Esercizi]]

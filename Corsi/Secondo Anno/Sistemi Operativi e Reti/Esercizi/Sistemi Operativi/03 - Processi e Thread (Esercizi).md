@@ -1,5 +1,6 @@
 # Esercizi Svolti — Processi e Thread
 Esercizi di ragionamento sui processi (conteggio da `fork`, duplicazione del buffer, multiprogrammazione) e **schede di svolgimento** delle soluzioni C di laboratorio. Per lo scritto del **Modulo 1**. Teoria di riferimento: [[03 - Processi e Thread]] e [[10 - Programmazione C e Concorrente]].
+
 > [!info] Verifica
 > I conteggi di processi e gli output sono stati **verificati compilando ed eseguendo** programmi C reali (`gcc -Wall -Wextra`). Le soluzioni complete dei `.c` citati sono nelle cartelle `Processi/` e `Thread e Sincronizzazione/`, con le consegne in [[Tracce d'Esame Pratiche]].
 ## Es. 1 — Conteggio processi: `fork` sequenziali
@@ -10,6 +11,7 @@ Esercizi di ragionamento sui processi (conteggio da `fork`, duplicazione del buf
 > fork();
 > fork();
 > ```
+
 Ogni `fork()` **raddoppia** il numero di processi in vita: chi esegue la `fork` continua, e in più nasce un clone che eseguirà *anch'esso* le `fork` successive. Partendo da 1 processo:
 $$1 \xrightarrow{\text{fork}} 2 \xrightarrow{\text{fork}} 4 \xrightarrow{\text{fork}} 8.$$
 L'albero (P = processo iniziale; ogni nodo genera un figlio a ogni `fork` che gli resta):
@@ -22,6 +24,7 @@ L'albero (P = processo iniziale; ogni nodo genera un figlio a ogni `fork` che gl
    ┌┴┐ │ ┌┴┐ │
    P D B E A F C G          → 8 processi totali
 ```
+
 > [!check] Regola generale
 > $n$ `fork()` **in sequenza** (non annidate) producono $2^n$ processi totali, di cui $2^n - 1$ figli. Con 3 `fork` → $2^3 = \mathbf{8}$ processi (verificato: 8 stampe di `getpid`).
 ## Es. 2 — `fork` dentro un ciclo
@@ -31,10 +34,12 @@ L'albero (P = processo iniziale; ogni nodo genera un figlio a ogni `fork` che gl
 > for (int i = 0; i < n; i++)
 >     fork();
 > ```
+
 Il ciclo equivale a $n$ `fork()` in sequenza: ogni iterazione raddoppia i processi (anche i figli appena nati proseguono il ciclo da dove l'hanno ereditato). Quindi:
 $$\text{processi totali} = 2^n.$$
 - $n = 3 \Rightarrow 2^3 = \mathbf{8}$ (verificato);
 - $n = 4 \Rightarrow 2^4 = \mathbf{16}$ (verificato).
+
 > [!warning] Errore tipico
 > Rispondere "$n+1$" pensando che solo il padre forki: **anche i figli eseguono le iterazioni rimanenti** del ciclo. Per ottenere davvero una catena di $n+1$ processi serve far uscire il padre dal ciclo (es. `if (fork() != 0) break;`).
 ## Es. 3 — `fork` condizionali (solo il figlio si riproduce)
@@ -45,6 +50,7 @@ $$\text{processi totali} = 2^n.$$
 >     fork();
 > }
 > ```
+
 [[03 - Processi e Thread#^fork|`fork()`]] restituisce **0 al figlio** e il **PID del figlio (≠ 0) al padre**. Quindi:
 - il **padre** valuta la condizione come falsa → **non** rientra nell'`if`, prosegue;
 - il **figlio** valuta `0 == 0` vera → esegue la seconda `fork`, generando un nipote.
@@ -59,20 +65,25 @@ Processi: padre $P_0$, figlio $P_1$, nipote $P_2$ → **3 processi** (verificato
 > fork();
 > return 0;
 > ```
+
 La `stdout` del C è **bufferizzata**. Quando l'output è un **file o una pipe** il buffering è *full* (a blocchi): la stringa `"A\n"` resta nel **buffer in memoria** e non viene scritta subito. Al momento delle `fork`, il buffer — *contenuto della memoria del processo* — viene **copiato in ogni figlio**. I 4 processi finali (vedi [[#Es. 1 — Conteggio processi: `fork` sequenziali|Es. 1]]) svuotano ciascuno il proprio buffer all'uscita → **4 righe `A`** (verificato).
 Con `fflush(stdout)` **prima** della `fork`, il buffer viene svuotato subito: alla `fork` non c'è nulla da duplicare → **1 sola riga `A`** (verificato).
+
 > [!warning] Insidia d'esame e regola di laboratorio
 > Su **terminale** (TTY) la `stdout` è *line-buffered*: il `\n` provoca lo svuotamento immediato, quindi a video si vedrebbe **1** sola `A` anche senza `fflush` *(comportamento standard di line-buffering; non riproducibile qui perché in ambiente non interattivo la `stdout` è una pipe, quindi full-buffered)*. Morale operativa: **chiamare sempre `fflush(stdout)` prima di `fork()`** per non duplicare l'output bufferizzato — è la convenzione adottata in tutte le soluzioni C di questa raccolta.
 ## Es. 5 — Utilizzo della CPU in multiprogrammazione *(extra, non da slide)*
 > [!quote] Consegna
 > Un processo passa l'**80%** del tempo in attesa di I/O ($p = 0{,}8$). Qual è l'utilizzo della CPU con **4** processi in memoria? E con **8**? Quanto si guadagna raddoppiando da 4 a 8?
+
 Con il modello probabilistico [[03 - Processi e Thread#Modellazione della multiprogrammazione|$\text{Utilizzo} = 1 - p^n$]] (probabilità che **non** siano tutti in attesa insieme):
 $$n = 4:\quad 1 - 0{,}8^4 = 1 - 0{,}4096 = \mathbf{0{,}590} \;(\approx 59\%).$$
 $$n = 8:\quad 1 - 0{,}8^8 = 1 - 0{,}1678 = \mathbf{0{,}832} \;(\approx 83\%).$$
+
 > [!note] Rendimenti decrescenti
 > Raddoppiando da 4 a 8 processi l'utilizzo sale di **$\approx 24$ punti** (da 59% a 83%): un buon guadagno. Ma da 8 a 16 si passerebbe solo da 83% a $\approx 97\%$ (**+14**): ogni processo aggiunto rende meno del precedente. È il motivo per cui aumentare la RAM oltre un certo punto dà benefici sempre minori.
 ## Soluzioni C — Processi (fork, pipe, segnali, file)
 Schede di svolgimento ragionato dei `.c` in `Processi/`. La **consegna** di ciascuno è in [[Tracce d'Esame Pratiche#Processi]]; qui sta *come* si costruisce la soluzione. Tutte condividono lo stesso scheletro:
+
 > [!example] Scheletro comune — `fork` + pipe
 > 1. **Crea le pipe PRIMA della `fork`** (`pipe(fd)`): solo così i figli le ereditano. `fd[0]` = lettura, `fd[1]` = scrittura (convenzione `#define PIPE_RD 0`, `PIPE_WR 1`).
 > 2. **`fflush(stdout)` prima della `fork`** (evita la duplicazione del buffer, vedi [[#Es. 4 — Duplicazione del buffer: `printf` prima della `fork`|Es. 4]]).
@@ -101,6 +112,7 @@ Schede di svolgimento ragionato dei `.c` in `Processi/`. La **consegna** di cias
 
 ## Da svolgere
 Tracce senza soluzione, per esercitarsi. Riusano lo [[#Soluzioni C — Processi (fork, pipe, segnali, file)|scheletro comune]] visto sopra.
+
 > [!todo] Da svolgere — ragionamento
 > 1. **Albero misto.** Quanti processi crea `fork(); if (fork() == 0) fork(); fork();`? Disegna l'albero e verifica contando gli `getpid`.
 > 2. **Catena di $k$.** Scrivi un frammento che crei una **catena** di esattamente $k$ processi (ognuno figlio del precedente), non un albero. Perché serve `break` dopo la `fork` nel padre?
@@ -111,5 +123,6 @@ Tracce senza soluzione, per esercitarsi. Riusano lo [[#Soluzioni C — Processi 
 > 5. **Conteggio righe parallelo.** Come [[Tracce d'Esame Pratiche#Processi|P1]] ma i due figli contano le **righe** (non le occorrenze di una parola) di metà file ciascuno; il padre stampa il totale.
 > 6. **Pipe a tre stadi.** Estendi [[Tracce d'Esame Pratiche#Processi|P3]] a una catena figlio1 → padre → figlio2 → padre: il figlio2 rimanda il risultato al padre, che stampa solo se è un quadrato perfetto.
 > 7. **`fork` + `exec`.** Scrivi una mini-shell che legge un comando da `stdin`, fa `fork` e nel figlio esegue `execvp`; il padre attende con `waitpid` e stampa lo stato di uscita.
+
 ---
 **Teoria di riferimento:** [[03 - Processi e Thread]] · [[10 - Programmazione C e Concorrente]] · **Indice di tutti gli esercizi:** [[Indice degli Esercizi]]

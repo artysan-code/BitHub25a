@@ -1,5 +1,6 @@
 # Esercizi Svolti — Linux e BASH
 Soluzioni svolte di una selezione degli **Esercizi di Autovalutazione** del prof. Croce (file `SOR2025-2026_3.1_Exercises-on-Linux-and-BASH`), scelti perché usano strumenti (`awk`, `sed`, `cut`, `od`, `split`, `tr`, `find -exec`) la cui sintassi operativa va oltre quella di base. Per la teoria dei comandi vedi [[09 - Linux e BASH]].
+
 > [!info] Verifica
 > Tutti i comandi sono stati **eseguiti** e l'output riportato è quello reale. I file di prova sono **tab-separated** dove indicato (`\t`).
 ## Es. 3 — Manipolazione con grep, awk, sed
@@ -67,6 +68,7 @@ od -c bytes.bin      # ogni byte come carattere (con escape per i non stampabili
 0000000   A   B  \n
 0000003
 ```
+
 > [!note]
 > `-t x1` = *type hexadecimal, 1 byte alla volta* (vista "grezza" dei byte); `-c` = *character* (mostra i caratteri, usando escape come `\n`, `\t`, `\0` per i non stampabili). La colonna di sinistra (`0000000`, `0000003`) è l'**offset in ottale** del byte. Utile per capire la codifica reale di un file.
 ## Es. 19 — Selezione colonne con `cut` (TSV)
@@ -149,6 +151,7 @@ cat parte_* > numeri_join.txt
 wc -l numeri_join.txt            # → 1000
 diff numeri.txt numeri_join.txt && echo "IDENTICI"   # nessuna differenza → IDENTICI
 ```
+
 > [!note]
 > `cat parte_*` funziona perché la **globbing** espande i nomi in **ordine alfabetico** (`parte_aa`, `parte_ab`, …), che coincide con l'ordine di generazione: la ricomposizione preserva l'ordine originale.
 ## Es. 24 — Ricerca file con `find` (nome, tipo, azione)
@@ -184,6 +187,7 @@ find . -name '*.log' -exec wc -l {} +
 ```bash
 find . -type f -empty > empty_files.txt
 ```
+
 > [!warning] `-exec ... {} +` vs `-exec ... {} \;`
 > `{} +` accoda quanti più file possibile in **una sola** invocazione del comando (come fa `xargs`); `{} \;` esegue il comando **una volta per file**. Per `wc -l` la differenza è anche semantica: con `+` si ottiene la riga `total`, con `\;` no.
 ## Conteggio di frequenze: `sort | uniq -c`
@@ -207,6 +211,7 @@ cut -d' ' -f1 log.txt | sort | uniq -c | sort -rn
       2 WARN
       2 ERROR
 ```
+
 > [!note] Perché `sort` prima di `uniq`
 > `uniq` collassa solo i duplicati **consecutivi**: senza il `sort` iniziale, `INFO` sparso su righe non adiacenti verrebbe contato più volte. La pipe `sort | uniq -c | sort -rn` è il modo standard per una "classifica" di frequenze.
 ## Aggregazione di colonne con `awk`
@@ -234,15 +239,18 @@ mela 16
 pera 4
 uva 2
 ```
+
 > [!note] Il blocco `END` e gli array associativi
 > Il blocco `{ … }` viene eseguito **per ogni riga**; il blocco `END { … }` **una volta sola** alla fine, quando si stampano i totali accumulati. `q[$1]+=$2` crea automaticamente una voce dell'array per ogni valore distinto della prima colonna: è il modo `awk` di fare un *group-by*.
 ## Da svolgere
 Esercizi senza soluzione: prova i comandi a terminale e verifica l'output. Teoria in [[09 - Linux e BASH]].
+
 > [!todo] Da svolgere
 > 1. **grep + regex.** Da `log.txt`, estrai solo le righe che **non** sono di livello `INFO` (suggerimento: `grep -v`), poi solo quelle che contengono `memoria` **o** `rete` (regex con `grep -E`). Vedi [[09 - Linux e BASH#Espressioni regolari|espressioni regolari]].
 > 2. **sed.** In `vendite.tsv` sostituisci `mela` con `mela rossa` su tutte le righe, stampando il risultato **senza** modificare il file; poi rifallo **in place** con `-i`.
 > 3. **find + xargs.** Trova tutti i file `.tsv` nella directory corrente e, per ciascuno, stampa numero di righe e nome (`wc -l`), usando sia `-exec … {} +` sia `xargs`. Confronta con [[#Es. 24 — Ricerca file con `find` (nome, tipo, azione)|Es. 24]].
 > 4. **Pipeline completa.** Da `vendite.tsv`, ottieni la classifica dei prodotti per **incasso** decrescente (qta×prezzo per riga, sommato per prodotto, ordinato). Combina `awk` e `sort`.
 > 5. **cut + sort -u.** Estrai l'elenco dei prodotti **distinti** da `vendite.tsv`, in ordine alfabetico, senza intestazione.
+
 ---
 **Teoria di riferimento:** [[09 - Linux e BASH]] · **Indice di tutti gli esercizi:** [[Indice degli Esercizi]]

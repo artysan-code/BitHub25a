@@ -41,8 +41,10 @@ Le tracce di questa sezione usano [[04 - Sincronizzazione#Mutex|pthread_mutex_t]
 - **Thread 2** — sceglie casualmente una cella e vi scrive $-1$.
 - **Thread 3** — verifica se tutte le celle sono diverse da $0$; in caso affermativo confronta il numero di $+1$ con quello di $-1$, stampa il risultato e termina tutti i thread.
 Un solo thread alla volta può accedere al buffer (mutex); dopo ogni accesso attende un tempo casuale in $[0, 3]$ secondi.
+
 > [!warning] Nota sulla soluzione svolta
 > La soluzione `pos_neg_one_thread_mutex.c` usa $N = 5$ celle invece delle $11$ della traccia originale. Usa inoltre una `pthread_cond_t`: thread 1 e thread 2 chiamano `pthread_cond_signal` dopo ogni scrittura; thread 3 attende su `pthread_cond_wait` prima di rieseguire il controllo di inizializzazione.
+
 **Soluzione svolta:** `Thread e Sincronizzazione/pos_neg_one_thread_mutex.c`
 ### TM2 — Buffer N interi: pari/dispari + somma progressiva
 **Consegna.** Buffer di $N$ interi inizializzato a $-1$:

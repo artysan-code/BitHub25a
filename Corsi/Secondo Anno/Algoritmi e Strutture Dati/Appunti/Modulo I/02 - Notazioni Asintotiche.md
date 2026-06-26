@@ -1,3 +1,10 @@
+---
+tags:
+  - algoritmi
+  - notazioni-asintotiche
+slide: "1,3"
+capitolo: "Demetrescu cap. 2"
+---
 # Notazioni Asintotiche
 La complessità computazionale di un algoritmo è espressa da una funzione $T(n)$, dove $n$ è la dimensione dell'istanza e $T(n)$ rappresenta il numero di passi elementari eseguiti su una RAM nel caso peggiore. L'**analisi asintotica** descrive $T(n)$ in modo qualitativo: si perde un po' di precisione — ignorando costanti moltiplicative e termini di ordine inferiore — ma si guadagna in semplicità e generalità. Questa è una grande idea perché fornisce una misura indipendente dall'implementazione e dalla macchina reale su cui l'algoritmo viene eseguito.
 ## Modelli di calcolo
@@ -58,6 +65,7 @@ Scriviamo semplicemente $T(n) = \Theta(n^2)$, che vuol dire: $T(n)$ è proporzio
 ![[notazioni.png]]
 
 La scrittura $2n^2 + 4 = O(n^3)$ è un abuso di notazione per $2n^2 + 4 \in O(n^3)$.
+
 > [!example] Esempi O-grande
 > Sia $f(n) = 2n^2 + 3n$.
 > - $f(n) = O(n^3)$ — con $c = 1$, $n_0 = 3$
@@ -192,8 +200,10 @@ Le cinque notazioni si distinguono per il comportamento del rapporto $f(n)/g(n)$
 > - $n^2 + O(n) = O(n^2)$ significa: per ogni $f(n) \in O(n)$ esiste $h(n) \in O(n^2)$ tale che $n^2 + f(n) = h(n)$.
 ## Gerarchia degli ordini di infinito
 Le principali famiglie di funzioni si ordinano per velocità di crescita (dal più lento al più veloce):
-$$1 \prec \log \log n \prec \log n \prec n^\varepsilon \prec n \prec n \log n \prec n^c \prec c^n \prec n! \prec n^n$$
-dove $0 < \varepsilon < 1 < c$ e $a \prec b$ significa $a = o(b)$.
+$$1 \prec \log \log n \prec \log n \prec n^\varepsilon \prec n \prec n \log n \prec n^c \prec n^{\log n} \prec c^n \prec (\log n)^n \prec n! \prec n^n$$
+dove $0 < \varepsilon < 1 < c$ e $a \prec b$ significa $a = o(b)$. I due livelli $n^{\log n}$ e $(\log n)^n$ sono i più facili da dimenticare:
+- $n^{\log n} = 2^{(\log n)^2}$ è **super-polinomiale** (più veloce di ogni $n^c$, perché l'esponente $\log n$ supera ogni costante) ma **sub-esponenziale** (più lento di ogni $c^n$);
+- $(\log n)^n = 2^{n \log\log n}$ sta invece *sopra* ogni esponenziale $c^n$ (l'esponente $n \log\log n$ batte $n \log c$) ma sotto $n!$.
 
 I risultati dimostrabili tramite limite sulle singole famiglie sono:
 
@@ -202,10 +212,24 @@ I risultati dimostrabili tramite limite sulle singole famiglie sono:
 **Esponenziali vs polinomi:** Per $a > 1$ e qualunque $d > 0$:
 $$\lim_{n \to \infty} \frac{n^d}{a^n} = 0 \implies n^d = o(a^n)$$
 
+**Esponenziali a basi diverse:** Per $1 < a < b$ vale $a^n = o(b^n)$, perché $a^n/b^n = (a/b)^n \to 0$ (base $< 1$): due esponenziali a basi diverse non sono mai dello stesso ordine. Conta *come* si modifica l'esponente:
+$$2^{n+20} = 2^{20}\cdot 2^n = \Theta(2^n) \qquad\text{ma}\qquad 4^n = 2^{2n} = (2^n)^2 = \omega(2^n)$$
+Una costante **additiva** nell'esponente è solo un fattore moltiplicativo costante (resta $\Theta$); una costante **moltiplicativa** nell'esponente cambia di fatto la base (rompe $\Theta$).
+
+**Esponenziale di un logaritmo:** vale l'identità $a^{\log_b n} = n^{\log_b a}$, che trasforma un esponenziale di logaritmo in una **potenza** di $n$. Per esempio $2^{\log_2 n} = n$, $\;4^{\log_2 n} = n^2$, $\;3^{\log_2 n} = n^{\log_2 3} \approx n^{1.585}$.
+
 **Logaritmi vs potenze:** Per $b > 1$ e qualunque $c, d > 0$:
 $$\lim_{n \to \infty} \frac{(\log_b n)^c}{n^d} = 0 \implies (\log_b n)^c = o(n^d)$$
 
 **Fattoriali:** $n! = \omega(a^n)$ per qualunque $a > 1$ (il fattoriale cresce più di ogni esponenziale), e $n! = o(n^n)$.
+
+> [!example] Stirling senza la formula — $\log(n!) = \Theta(n \log n)$
+> Non serve ricordare la costante $\sqrt{2\pi n}$: basta "incastrare" $n!$ fra due stime.
+> **Sopra:** $n! = 1\cdot 2\cdots n \le n\cdot n\cdots n = n^n$, quindi $\log(n!) \le n \log n$, cioè $O(n \log n)$.
+> **Sotto:** tenendo solo la metà alta dei fattori, ciascuno $\ge n/2$:
+> $$n! \ge \underbrace{\tfrac{n}{2}\cdot\Big(\tfrac{n}{2}+1\Big)\cdots n}_{n/2 \text{ fattori}} \ge \Big(\tfrac{n}{2}\Big)^{n/2} \implies \log(n!) \ge \tfrac{n}{2}\log\tfrac{n}{2} = \Theta(n \log n)$$
+> Le due delimitazioni insieme danno $\log(n!) = \Theta(n \log n)$.
+
 > [!warning] Errore comune: confondere $O$ con $\Theta$
 > Scrivere $T(n) = O(n^2)$ per un algoritmo quadratico è corretto ma non è il bound più stretto. Quando si può provare la delimitazione inferiore, si preferisce sempre $T(n) = \Theta(n^2)$, che è più informativo. Dire solo $O$ non esclude che l'algoritmo sia in realtà lineare o logaritmico.
 ## Velocità delle funzioni composte: il termine dominante
@@ -222,7 +246,7 @@ $$O(f) \cdot O(g) = O(f \cdot g)$$
 > $$\frac{n^3 \log n + n \log^3 n}{n^2 + 1} = \Theta\!\left(\frac{n^3 \log n}{n^2}\right) = \Theta(n \log n)$$
 > Il numeratore è dominato da $n^3 \log n$; il denominatore da $n^2$.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Qual è la classe asintotica di $5n^3 + 2n^2 \log n + 100n$?
 >
 > **R:** Il termine dominante è $5n^3$ (polinomio di grado 3). Tutti gli altri termini crescono più lentamente ($n^2 \log n = o(n^3)$ e $n = o(n^3)$), quindi:
@@ -237,6 +261,11 @@ $$O(f) \cdot O(g) = O(f \cdot g)$$
 | $n^k$ vs $c^n$ ($c > 1$) | $n^k = o(c^n)$ | Esponenziali dominano i polinomi |
 | $c^n$ vs $n!$ | $c^n = o(n!)$ | Il fattoriale cresce più velocemente |
 | $\log(n!)$ vs $n \log n$ | $\log(n!) = \Theta(n \log n)$ | Formula di Stirling: $n! \approx (n/e)^n \sqrt{2\pi n}$ |
+| $2^n$ vs $3^n$ | $2^n = o(3^n)$ | Basi diverse: vince la più grande, $(2/3)^n \to 0$ |
+| $4^n$ vs $2^n$ | $4^n = \omega(2^n)$ | $4^n = 2^{2n}$: costante *moltiplicativa* nell'esponente |
+| $2^{n+20}$ vs $2^n$ | $2^{n+20} = \Theta(2^n)$ | Costante *additiva* nell'esponente = fattore $2^{20}$ |
+| $3^{\log_2 n}$ vs $n^2$ | $3^{\log_2 n} = o(n^2)$ | Identità $a^{\log_b n}=n^{\log_b a}$: $\,n^{\log_2 3}\approx n^{1.585}$ |
+| $n^{\log n}$ vs $n^c$ | $n^{\log n} = \omega(n^c)$ | Super-polinomiale: l'esponente $\log n$ supera ogni costante |
 ## Uso pratico nell'analisi di `fibonacci3`
 L'algoritmo `fibonacci3` (definito in [[01 - Il Problema di Fibonacci]]) calcola $F_n$ con un ciclo da $3$ a $n$. Denotando con $c_j$ il costo (numero di passi elementari) della linea $j$:
 
@@ -247,6 +276,7 @@ $$T(n) \le c_1 + c_2 + c_5 + (c_3 + c_4) n = O(n)$$
 $$T(n) \ge c_4(n - 3) = \Omega(n)$$
 
 Quindi $T(n) = \Theta(n)$.
+
 > [!info] Perché è una grande idea
 > La notazione asintotica è utile perché:
 > - è **indipendente dall'implementazione** e dalla macchina reale;

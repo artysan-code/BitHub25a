@@ -1,3 +1,10 @@
+---
+tags:
+  - algoritmi
+  - alberi-ricerca
+slide: "9"
+capitolo: "Demetrescu cap. 6"
+---
 # Alberi di Ricerca BST e AVL
 Il problema del [[05 - Strutture Dati Elementari e Dizionari|dizionario]] — implementare efficientemente le operazioni `search`, `insert` e `delete` — si risolve in modo elegante con strutture ad albero. L'idea di fondo è duplice: definire un **albero binario di ricerca (BST)** tale che ogni operazione costi $O(\text{altezza})$, e poi garantire che l'altezza resti sempre $O(\log n)$ tramite il meccanismo di auto-bilanciamento degli **alberi AVL**. Il risultato è un dizionario con tutte le operazioni garantite in $O(\log n)$ nel senso della [[02 - Notazioni Asintotiche|notazione asintotica]].
 ## Alberi Binari di Ricerca (BST)
@@ -27,7 +34,7 @@ Esempio di BST con $n = 10$ nodi:
 Visita simmetrica: 2 3 4 6 8 9 13 15 17 18 20
 ```
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Come si usa un BST per ottenere una sequenza ordinata? **R:** Si esegue una **visita in ordine simmetrico** (sinistra → radice → destra): la proprietà di ricerca garantisce che i nodi vengano visitati in ordine crescente di chiave, con costo $\Theta(n)$.
 ### Operazioni di ricerca
 Tutte le operazioni del dizionario su un BST costano $O(h)$ dove $h$ è l'altezza dell'albero.
@@ -176,10 +183,11 @@ delete(BST T, nodo u)
 >
 > Il caso degenere si verifica ad esempio inserendo chiavi già in ordine crescente: ogni nodo diventa figlio destro del precedente, producendo un albero "linearizzato". La soluzione è garantire strutturalmente che $h = O(\log n)$ — ed è qui che entrano gli **alberi AVL**.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Qual è il costo di `search` su un BST? Quando è peggiore? **R:** Il costo è $O(h)$ dove $h$ è l'altezza. Nel **caso peggiore** — albero degenere ottenuto inserendo elementi già ordinati — $h = \Theta(n)$ e la ricerca costa $O(n)$ come in una lista. Nel caso di albero bilanciato $h = \Theta(\log n)$.
 ## Alberi AVL
 Gli **alberi AVL** (Adel'son-Vel'skii e Landis, 1962) sono BST che si auto-bilanciano dopo ogni inserimento o cancellazione, garantendo $h = O(\log n)$ sempre.
+
 > [!quote] Definizione — Fattore di bilanciamento
 > Il **fattore di bilanciamento** $\beta(v)$ di un nodo $v$ è:
 > $$\beta(v) = h(\text{sottoalbero sinistro di } v) - h(\text{sottoalbero destro di } v)$$
@@ -247,18 +255,20 @@ T0       T1         T2              T3
 ```
 
 Ogni nodo non foglia ha $|\beta| = 1$; togliendo qualsiasi nodo o l'albero si sbilancia o cambia altezza.
+
 > [!quote] Lemma — Nodi degli alberi di Fibonacci
 > Sia $n_h$ il numero di nodi di $T_h$. Allora:
 > $$n_h = F_{h+3} - 1$$
 > dove $F_k$ è il $k$-esimo numero di Fibonacci.
 >
 > **Dimostrazione per induzione su $h$:** si usa la relazione $n_h = 1 + n_{h-1} + n_{h-2}$ (radice + due sottoalberi di Fibonacci di altezze $h-1$ e $h-2$); la struttura ricorsiva richiama quella delle [[03 - Equazioni di Ricorrenza|equazioni di ricorrenza]].
+
 > [!quote] Corollario — $h = O(\log n)$
 > Poiché $F_k = \Theta(\phi^k)$ con $\phi = 1{,}618\ldots$ (sezione aurea; si veda [[01 - Il Problema di Fibonacci]] per la sequenza di Fibonacci), si ha:
 > $$n_h = F_{h+3} - 1 = \Theta(\phi^h)$$
 > Quindi $h = \Theta(\log_\phi n_h) = O(\log n)$. Siccome ogni AVL con $n$ nodi ha $n \ge n_h$, vale $h = O(\log n)$.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Perché un albero AVL ha altezza $O(\log n)$? **R:** Si considera l'albero di Fibonacci $T_h$ — l'AVL di altezza $h$ con il **minimo numero di nodi** $n_h$. Vale $n_h = F_{h+3} - 1 = \Theta(\phi^h)$, quindi $h = O(\log n)$. Ogni AVL con $n \ge n_h$ nodi ha altezza al più $h$, dunque $h = O(\log n)$.
 ### Implementazione delle operazioni
 `search` si esegue identica al BST, con costo $O(\log n)$ garantito dall'altezza.
@@ -350,7 +360,7 @@ Simmetrico al caso SD. Si applicano:
 | **SD** | $+2$ | sottoalbero destro del figlio sx | 1 sinistra su figlio, 1 destra su $v$ |
 | **DS** | $-2$ | sottoalbero sinistro del figlio dx | 1 destra su figlio, 1 sinistra su $v$ |
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Quali sono i 4 casi di rotazione negli AVL e quando si applicano? **R:** I casi dipendono dal segno di $\beta(v)$ (nodo critico) e dalla posizione del sottoalbero che sbilancia. **SS** ($\beta = +2$, sottoalbero sx-sx): rotazione semplice destra. **DD** ($\beta = -2$, sottoalbero dx-dx): rotazione semplice sinistra. **SD** ($\beta = +2$, sottoalbero sx-dx): doppia rotazione (sinistra sul figlio, destra su $v$). **DS** ($\beta = -2$, sottoalbero dx-sx): doppia rotazione (destra sul figlio, sinistra su $v$). I 4 casi sono simmetrici a coppie: SS↔DD, SD↔DS.
 ### Insert nell'AVL
 **`insert(elem e, chiave k)` — AVL**
@@ -440,7 +450,7 @@ Le tre proprietà richieste per la correttezza dell'implementazione:
 | `min` / `max` | $O(\log n)$ | cammino più a sinistra/destra |
 | `successore` / `predecessore` | $O(\log n)$ | cammino di lunghezza $O(h)$ |
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Perché insert in un AVL richiede al più 1 rotazione mentre delete può richiederne $O(\log n)$? **R:** Nell'**insert** la rotazione riporta l'altezza del sottoalbero ruotato uguale a quella precedente l'inserimento, quindi nessun antenato si sbilancia ulteriormente. Nella **delete**, invece, la rotazione può abbassare l'altezza di 1, propagando lo sbilanciamento verso l'alto: nel caso peggiore occorre ribilanciare ad ogni livello fino alla radice, per un totale di $O(\log n)$ rotazioni.
 
 > [!info] Confronto BST vs AVL

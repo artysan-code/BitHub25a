@@ -1,3 +1,10 @@
+---
+tags:
+  - algoritmi
+  - analisi-algoritmi
+slide: "1-2"
+capitolo: "Demetrescu cap. 1"
+---
 # Il Problema di Fibonacci
 Il **problema di Fibonacci** è il caso di studio introduttivo del corso: permette di confrontare diverse strategie algoritmiche per uno stesso problema e di ragionare in modo qualitativo sulla **complessità temporale e spaziale** senza ancora le notazioni formali (trattate in [[02 - Notazioni Asintotiche]]). Il punto centrale non è Fibonacci in sé, ma capire che algoritmi diversi e corretti possono avere costi radicalmente differenti.
 ## L'isola dei conigli
@@ -7,6 +14,7 @@ Leonardo da Pisa (Fibonacci, XIII sec.) si chiese: partendo da una coppia di con
 - I conigli si riproducono solo dal secondo anno di vita.
 - I conigli sono immortali.
 Nell'anno $n$ sono presenti tutte le coppie dell'anno precedente ($F_{n-1}$) più una nuova coppia per ogni coppia presente due anni prima ($F_{n-2}$), da cui la relazione di ricorrenza.
+
 > [!quote] Definizione — Numeri di Fibonacci
 > $$F_n = \begin{cases} F_{n-1} + F_{n-2} & \text{se } n \geq 3 \\ 1 & \text{se } n = 1, 2 \end{cases}$$
 > (Per convenzione si fissa $F_0 = 0$, utile nelle dimostrazioni per induzione.)
@@ -57,6 +65,7 @@ Il numero totale di righe eseguite è quindi:
 $$T(n) = 2 \cdot (\text{nodi interni}) + 1 \cdot (\text{foglie})$$
 
 Servono due lemmi per contare foglie e nodi interni.
+
 > [!quote] Lemma 1 — Foglie dell'albero di ricorsione
 > Il numero di foglie dell'albero della ricorsione di fibonacci2(n) è pari a $F_n$.
 > **Dimostrazione** (per induzione su $n$):
@@ -74,7 +83,8 @@ Dai due lemmi, il tempo totale di fibonacci2(n) è:
 $$T(n) = F_n + 2(F_n - 1) = 3F_n - 2$$
 
 Poiché $F_n \approx \phi^n / \sqrt{5}$, si ha $T(n) = O(\phi^n)$, crescita **esponenziale**.
-> [!example] Domanda tipica d'esame
+
+> [!question] Domanda tipica d'esame
 > D: Qual è la complessità temporale di fibonacci2? Perché è così lenta?
 > R: $T(n) = 3F_n - 2 = O(\phi^n)$, esponenziale in $n$. La causa è che fibonacci2 **ricalcola ripetutamente gli stessi sottoproblemi**: ad esempio fibonacci2(n-2) viene calcolato sia dalla chiamata fibonacci2(n-1) sia direttamente. Per $n=45$ si eseguono $3 \cdot F_{45} - 2 = 3 \cdot 1\,134\,903\,170 - 2 = 3\,404\,709\,508$ righe di codice; con le tecnologie attuali, calcolare $F_{100}$ richiederebbe circa 8000 anni.
 
@@ -116,10 +126,12 @@ fibonacci4(intero n) → intero
 **Analisi del tempo**: $T(n) \leq 4n + 2 = O(n)$ (costante per iterazione, $n-2$ iterazioni).
 
 **Spazio**: solo tre variabili scalari, indipendentemente da $n$: $O(1)$.
+
 > [!info] Confronto fibonacci3 vs fibonacci4
 > Hanno la stessa complessità temporale $O(n)$, ma fibonacci4 usa spazio $O(1)$ invece di $O(n)$. La memoria può essere la risorsa critica: se un algoritmo richiede più spazio di quello disponibile non termina mai, indipendentemente dall'attesa.
 ### Algoritmo 5 — Potenza di matrice (iterativa)
 **Approccio**: si può dimostrare per induzione la seguente proprietà.
+
 > [!quote] Proprietà — Potenza di matrice
 > $$\begin{pmatrix}1 & 1\\1 & 0\end{pmatrix}^n = \begin{pmatrix}F_{n+1} & F_n\\F_n & F_{n-1}\end{pmatrix}$$
 > **Dimostrazione** (per induzione su $n$, con $F_0 = 0$):
@@ -173,6 +185,7 @@ $$T(n) \leq c + T(n/2) \leq 2c + T(n/4) \leq \ldots \leq ic + T(n/2^i)$$
 Per $i = \lfloor \log_2 n \rfloor$ si ottiene $T(n) \leq c \log_2 n + T(1) = O(\log_2 n)$.
 
 **Spazio**: l'albero delle chiamate ricorsive ha altezza $O(\log n)$; ogni livello usa memoria costante. Totale: $O(\log n)$.
+
 > [!info] Guadagno rispetto a fibonacci3
 > fibonacci6 è **esponenzialmente più veloce** di fibonacci3: dove fibonacci3 esegue $O(n)$ operazioni, fibonacci6 ne esegue $O(\log n)$. Per $n = 10^9$, fibonacci3 richiederebbe miliardi di operazioni; fibonacci6 ne basta circa 30.
 ## Riepilogo complessità
@@ -197,9 +210,10 @@ Nella tabella del prof le righe riportate sono fibonacci2–fibonacci6 (fibonacc
 | fibonacci5 | $O(n)$ | $O(1)$ |
 | fibonacci6 | $O(\log_2 n)$ | $O(\log_2 n)$ |
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > D: Perché fibonacci6 usa spazio $O(\log n)$ e non $O(1)$?
 > R: fibonacci6 è ricorsivo: le chiamate attive simultaneamente formano un cammino radice-foglia nell'albero della ricorsione di `potenzaDiMatrice`, che ha altezza $O(\log n)$. Ogni chiamata occupa memoria costante (la matrice $P$ è $2\times2$), quindi lo spazio totale è $O(\log n)$. Al contrario, fibonacci4 e fibonacci5 sono iterativi e usano $O(1)$ variabili.
+
 > [!info] Collegamento ad altri argomenti
 > - La notazione $O(\cdot)$ e le sue varianti ($\Omega$, $\Theta$) sono trattate formalmente in [[02 - Notazioni Asintotiche]].
 > - Le tecniche per risolvere equazioni di ricorrenza come $T(n) = T(n/2) + c$ sono in [[03 - Equazioni di Ricorrenza]].

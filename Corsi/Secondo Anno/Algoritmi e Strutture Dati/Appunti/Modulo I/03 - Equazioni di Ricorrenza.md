@@ -1,3 +1,10 @@
+---
+tags:
+  - algoritmi
+  - ricorrenze
+slide: "4"
+capitolo: "Demetrescu cap. 2"
+---
 # Equazioni di Ricorrenza
 La complessità temporale di un algoritmo ricorsivo si esprime in modo naturale come un'**equazione di ricorrenza**: una relazione che definisce $T(n)$ in termini di $T$ su istanze più piccole. L'obiettivo è trovare una forma chiusa o asintotica (nel senso di [[02 - Notazioni Asintotiche]]), eliminando la dipendenza ricorsiva. Questo è il punto di partenza per analizzare tutti gli algoritmi divide-et-impera, tra cui il [[04 - Algoritmi di Ordinamento#Merge Sort|Merge Sort]] e la ricerca binaria, nonché algoritmi più semplici come [[01 - Il Problema di Fibonacci|Fibonacci]] ricorsivo.
 ## Struttura generale
@@ -64,6 +71,7 @@ Se $a > 1$, a ogni passo il numero di chiamate si moltiplica, producendo un albe
 Questa ricorrenza corrisponde esattamente all'algoritmo [[01 - Il Problema di Fibonacci|fibonacci2]] ricorsivo, in cui ogni chiamata di dimensione $n$ genera due chiamate di dimensione $n-1$ e $n-2$.
 **Upper bound (maggiorazione):** si maggiora con $R(n) = 2R(n-1)+1$, che dà $R(n) = \Theta(2^n)$, quindi $T(n) = O(2^n)$.
 **Lower bound (albero della ricorsione):** l'albero delle chiamate ricorsive è identico all'albero di fibonacci2. Ogni nodo costa $O(1)$, quindi $T(n)$ è proporzionale al numero di nodi. I nodi del livello $k$ sono quanti modi ci sono di decomporre $n$ in somme di 1 e 2, il che cresce come $\Theta(\phi^n)$ dove $\phi = \frac{1+\sqrt{5}}{2} \approx 1.618$ (numero aureo). Poiché $\phi < 2$, si ha $T(n) = o(2^n)$.
+
 > [!example] Fibonacci2: stima del numero di nodi
 > L'albero delle chiamate di fibonacci2 ha $\Theta(\phi^n)$ nodi, perché i livelli si espandono esattamente con i numeri di Fibonacci. Il costo per nodo è $O(1)$, quindi:
 > $$T(n) = T(n-1)+T(n-2)+1 \implies T(n) = \Theta(\phi^n)$$
@@ -149,6 +157,7 @@ Il metodo della sostituzione non serve a trovare la soluzione, ma a **verificare
 > L'ipotesi $T(n) \le cn^2$ con un solo parametro può fallire anche quando la risposta è $O(n^2)$: il residuo positivo "rompe" la dimostrazione. In quel caso si introduce un termine di correzione (sottrattivo) nella forma dell'ipotesi, ad es. $c_1n^2 - c_2n$. Il metodo di sostituzione richiede **esperienza**: scegliere un bound sovra-stimato (es. $O(n^3)$) è sempre più semplice, ma per ottenere il bound stretto occorre affinare l'ipotesi iterativamente.
 ## 4. Teorema Master
 Il Teorema Master fornisce una soluzione diretta per le ricorrenze prodotte dalla tecnica **divide et impera**: il problema di dimensione $n$ viene suddiviso in $a$ sottoproblemi di dimensione $n/b$, e la fase di divisione/combinazione costa $f(n)$.
+
 > [!quote] Teorema — Master
 > Data la ricorrenza
 > $$T(n) = \begin{cases} a\,T(n/b) + f(n) & n > 1 \\ \Theta(1) & n = 1 \end{cases}$$
@@ -181,6 +190,7 @@ La condizione $a\,f(n/b) \le c\,f(n)$ con $c < 1$ dice che il costo totale dei f
 > 5. **$f(n)$ non è polinomialmente più grande dello spartiacque**: $T(n) = 2T(n/2) + n\log n$ — $f(n) = \Theta(n \log n)$ non è $\Theta(n^{1+\varepsilon})$, quindi il Caso 3 non scatta (in realtà è un caso 2 esteso: $T(n) = \Theta(n \log^2 n)$, ma il teorema base non lo copre).
 ## 5. Cambiamento di variabile
 Alcune ricorrenze con argomenti non lineari (radici, potenze frazionarie) si risolvono introducendo una sostituzione che riconduce a una forma nota.
+
 > [!example] Esempio — $T(n) = T(\sqrt{n}) + O(1)$, $T(1) = 1$
 > Poniamo $n = 2^m$, ovvero $m = \log_2 n$. Osserviamo che $\sqrt{n} = n^{1/2} = 2^{m/2}$.
 >

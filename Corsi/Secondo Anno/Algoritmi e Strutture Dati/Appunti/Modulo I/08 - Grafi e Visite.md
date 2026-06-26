@@ -1,3 +1,9 @@
+---
+tags:
+  - algoritmi
+  - grafi
+slide: "11-12"
+---
 # Grafi e Visite
 I **grafi** sono strutture dati non lineari che modellano relazioni tra oggetti: reti stradali, social network, dipendenze tra moduli software, cammini minimi su mappe. Introdotti storicamente da Eulero nel 1736 per risolvere il celebre problema dei sette ponti di Königsberg, sono oggi uno strumento fondamentale per descrivere e risolvere problemi algoritmici. Questa nota copre le definizioni essenziali, le due principali rappresentazioni in memoria e i due algoritmi di visita — BFS e DFS; le applicazioni avanzate della DFS (tempi pre/post, classificazione degli archi, ordinamento topologico, componenti fortemente connesse) sono trattate in [[09 - Applicazioni della DFS]], mentre i cammini minimi su grafi pesati sono in [[10 - Cammini Minimi e Dijkstra]]. Le complessità sono espresse con la notazione asintotica di [[02 - Notazioni Asintotiche]].
 ## Definizioni fondamentali
@@ -34,7 +40,7 @@ Useremo le seguenti notazioni standard per tutto il corso:
 > $$\sum_{v \in V} \delta_{out}(v) = \sum_{v \in V} \delta_{in}(v) = m$$
 > Corollario: in ogni grafo non orientato il numero di nodi di **grado dispari è pari**.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Perché in un grafo non orientato la somma dei gradi vale $2m$? **R:** Ogni arco $(u,v)$ contribuisce $+1$ al grado di $u$ e $+1$ al grado di $v$, quindi viene contato due volte nella somma.
 ### Cammini, cicli e connessione
 > [!quote] Definizione — Cammino, lunghezza, distanza
@@ -82,7 +88,7 @@ Un array di $n$ liste, dove la lista del nodo $u$ contiene tutti i nodi $v$ adia
 > [!info] Quale rappresentazione scegliere?
 > La scelta dipende dalla **densità** del grafo. Per **grafi densi** ($m \approx n^2$) le due rappresentazioni hanno costo simile e la matrice garantisce lookup $O(1)$. Per **grafi sparsi** ($m \ll n^2$, il caso più comune nelle applicazioni reali) le liste di adiacenza sono sia più efficienti in spazio sia più veloci per iterare sui vicini. La maggior parte degli algoritmi di visita assume liste di adiacenza.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Quando conviene usare liste di adiacenza invece della matrice di adiacenza? **R:** Quando il grafo è **sparso** ($m = o(n^2)$): le liste occupano $O(n+m)$ invece di $O(n^2)$ e la visita dei vicini è $O(\delta(u))$ invece di $O(n)$, rendendo algoritmi come BFS e DFS più efficienti.
 ## Visita in ampiezza — BFS
 Una **visita** di un grafo permette di esaminare sistematicamente nodi e archi a partire da una **sorgente** $s$. La **BFS** (Breadth-First Search, visita in ampiezza) esplora il grafo "a livelli": prima tutti i vicini di $s$ a distanza 1, poi quelli a distanza 2, e così via. Utilizza una **coda** (struttura FIFO, si veda [[05 - Strutture Dati Elementari e Dizionari]]) per tenere traccia dei nodi da visitare.
@@ -129,7 +135,7 @@ Con liste di adiacenza: il ciclo esterno considera ogni nodo al più una volta (
 > 2. Poiché $m \leq \frac{n(n-1)}{2}$, si ha $O(n + m) = O(n^2)$ nel caso peggiore (grafo denso).
 > 3. Per $m = o(n^2)$ (grafo sparso), le liste di adiacenza sono asintoticamente più efficienti della matrice.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Qual è la complessità della BFS e da cosa dipende? **R:** Dipende dalla struttura dati usata: $O(n + m)$ con **liste di adiacenza** (ottimale per grafi sparsi), $O(n^2)$ con **matrice di adiacenza**. Il termine $n$ viene dai nodi estratti dalla coda; il termine $m$ dall'esplorazione di tutti gli archi.
 > - **D:** Cosa garantisce la BFS sui cammini? **R:** La BFS trova il **cammino minimo in numero di archi** da $s$ a ogni nodo raggiungibile. Il livello di ogni nodo nell'albero BFS corrisponde esattamente alla sua distanza da $s$.
 ## Visita in profondità — DFS
@@ -215,7 +221,7 @@ L'analisi è analoga alla BFS: ogni nodo viene marcato al più una volta ($O(n)$
 > [!info] Applicazioni avanzate della DFS
 > La DFS può essere arricchita con **tempi pre/post** (timestamp di scoperta e abbandono di ogni nodo) per classificare gli archi, rilevare cicli, eseguire l'**ordinamento topologico** di un DAG e trovare le **componenti fortemente connesse** di un grafo orientato. Tutte queste applicazioni sono trattate in dettaglio in [[09 - Applicazioni della DFS]].
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > - **D:** Qual è la struttura dati usata da BFS e DFS? Perché la differenza? **R:** BFS usa una **coda** (FIFO): estraendo sempre il nodo più "vecchio" si garantisce di visitare prima i nodi a distanza minore dalla sorgente. DFS usa una **pila** (LIFO) o la ricorsione: si segue ogni ramo fino in fondo prima di tornare indietro.
 > - **D:** Qual è la complessità di BFS e DFS con liste di adiacenza? **R:** Entrambe $O(n + m)$: lineare nella dimensione del grafo (nodi + archi).
 ## Riepilogo

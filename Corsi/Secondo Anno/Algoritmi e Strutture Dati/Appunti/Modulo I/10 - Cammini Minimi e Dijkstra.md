@@ -1,3 +1,9 @@
+---
+tags:
+  - algoritmi
+  - cammini-minimi
+slide: "14"
+---
 # Cammini Minimi e Dijkstra
 In molti problemi applicativi — navigazione stradale, instradamento di rete, pianificazione — si vuole trovare il percorso di costo minimo tra due nodi di un grafo pesato. Questa nota studia il **problema dei cammini minimi a singola sorgente** (SSSP, *Single-Source Shortest Path*) su grafi con pesi non negativi, e l'**algoritmo di Dijkstra** che lo risolve con un approccio greedy. Prerequisiti: [[08 - Grafi e Visite]] (definizioni, BFS, rappresentazioni), [[07 - Code con Priorità e Heap]] (heap binario, heap di Fibonacci, operazione `decreaseKey`) e [[02 - Notazioni Asintotiche]] (notazione $O$, $\Theta$, $\Omega$).
 ## Definizioni fondamentali
@@ -159,10 +165,10 @@ La scelta pratica dipende dalla densità del grafo:
 - $m \ll n^2$ (grafo sparso) $\Rightarrow$ heap binario o Fibonacci equivalenti; heap binario preferito per semplicità.
 - $m = \Theta(n^2)$ (grafo denso) $\Rightarrow$ heap di Fibonacci ottimale ($O(n^2)$) oppure array non ordinato ($O(n^2)$, più semplice di Fibonacci).
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Qual è la complessità dell'algoritmo di Dijkstra con heap binario e con heap di Fibonacci? In quale caso conviene l'uno o l'altro?
 > **R:** Con **heap binario** la complessità è $O(m \log n)$: si eseguono $n$ insert, $n$ deleteMin e al più $m$ decreaseKey, ciascuna a costo $O(\log n)$. Con **heap di Fibonacci** la complessità è $O(m + n \log n)$: insert e decreaseKey costano $O(1)$ ammortizzato, solo le $n$ deleteMin costano $O(\log n)$ ammortizzato. L'heap di Fibonacci è **mai peggiore** e conveniente su grafi densi ($m = \Theta(n^2)$): in quel caso dà $O(n^2)$ contro $O(n^2 \log n)$ dell'heap binario. Su grafi sparsi ($m = O(n)$) le due strutture sono equivalenti e si preferisce l'heap binario per semplicità implementativa.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame
 > **D:** Perché l'algoritmo di Dijkstra non è corretto in presenza di archi con peso negativo?
 > **R:** La correttezza di Dijkstra si basa sul fatto che, con pesi non negativi, estrarre il nodo $v$ con stima minima garantisce che il costo residuo di qualunque cammino alternativo sia $\geq 0$, quindi nessun cammino futuro potrà migliorare la stima di $v$. Con un arco di peso negativo questa garanzia cade: un cammino che passa per nodi ancora non estratti e poi percorre un arco negativo verso $v$ potrebbe avere costo inferiore a $D_{sv}$, ma l'algoritmo ha già "chiuso" $v$ restituendo una distanza potenzialmente errata.

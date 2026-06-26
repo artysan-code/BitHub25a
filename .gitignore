@@ -25,7 +25,6 @@ Thumbs.db
 *.swo
 
 # File specifici del progetto
-/Corsi/Primo Anno/Geometria ed Algebra/Geometria e algebra.zip
 Situazione Universitaria.md
 Piano di Studio.md
 Piano di Studi.md
@@ -37,8 +36,10 @@ Estratti/
 # Hackathon Oracle — repository git indipendente nidificata, gestita a sé
 /Hackathons/Oracle 2025-2026/
 
-# Claude Code — permesso solo alla root
+# Claude Code — config harness locale (CLAUDE.md, skill, hook, settings):
+# condivisa fra le macchine via Syncthing, non versionata in git
 CLAUDE.md
+/.claude/
 Corsi/**/.claude/
 Hackathons/**/.claude/
 
@@ -66,6 +67,15 @@ a.out
 # Build front-end (es. esperimenti hackathon fuori dalla cartella Oracle)
 dist/
 build/
+
+# Archivi binari — estrarre e versionare i singoli file utili, non lo zip
+*.zip
+
+# Artefatti di compilazione LaTeX (i sorgenti .tex restano versionati)
+*.aux
+*.synctex.gz
+*.fls
+*.fdb_latexmk
 
 # Secrets — mai committare credenziali, chiavi, wallet, token
 *credentials*

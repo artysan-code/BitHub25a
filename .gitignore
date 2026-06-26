@@ -36,8 +36,10 @@ Estratti/
 # Hackathon Oracle — repository git indipendente nidificata, gestita a sé
 /Hackathons/Oracle 2025-2026/
 
-# Claude Code — config harness locale (CLAUDE.md, skill, hook, settings):
-# condivisa fra le macchine via Syncthing, non versionata in git
+# Claude Code — config harness LOCALE (CLAUDE.md, skill, hook, settings):
+# non versionata in git; e nemmeno sincronizzata (la cartella bithub25a è
+# esclusa da Syncthing in ~/university/.stignore) → resta su questa macchina.
+# Lo standard "visibile" (frontmatter note, README, CI) è in git, condiviso.
 CLAUDE.md
 /.claude/
 Corsi/**/.claude/

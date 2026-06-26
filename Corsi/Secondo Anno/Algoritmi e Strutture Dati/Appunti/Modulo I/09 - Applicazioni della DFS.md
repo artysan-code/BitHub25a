@@ -1,3 +1,10 @@
+---
+tags:
+  - algoritmi
+  - dfs
+slide: "13"
+capitolo: "Dasgupta-Papadimitriou-Vazirani cap. 3"
+---
 # Applicazioni della DFS
 Questa nota approfondisce gli usi meno scontati della visita in profondità, basandosi sul capitolo 3 del libro *Algorithms* di Dasgupta, Papadimitriou e Vazirani (McGraw-Hill). Vedremo come la [[08 - Grafi e Visite|DFS]], arricchita di un semplice contatore di tempo, permette di classificare gli archi di un grafo, rilevare cicli, calcolare ordinamenti topologici e trovare componenti fortemente connesse — tutto in tempo $\Theta(n+m)$ (notazione in [[02 - Notazioni Asintotiche]]).
 ## Tempi di visita: pre(v) e post(v)
@@ -33,6 +40,7 @@ VisitaDFS(grafo G):
 
 - $\text{pre}(v)$: **tempo di scoperta** — quando la DFS entra in $v$ per la prima volta.
 - $\text{post}(v)$: **tempo di abbandono** — quando la DFS finisce di esplorare $v$ e tutti i suoi discendenti.
+
 > [!quote] Proprietà — Intervalli annidati
 > Per ogni coppia di nodi $u$ e $v$, gli intervalli $[\text{pre}(u), \text{post}(u)]$ e $[\text{pre}(v), \text{post}(v)]$ o sono **disgiunti** o l'uno è **contenuto** nell'altro. Non possono sovrapporsi parzialmente.
 > **Conseguenza:** $u$ è antenato di $v$ nell'albero DFS se e solo se
@@ -55,7 +63,8 @@ In un grafo **diretto**, ogni arco $(u, v)$ viene incontrato durante la DFS e pu
 **Dimostrazione ($\Rightarrow$):** se esiste un arco all'indietro $(u, v)$ con $v$ antenato di $u$, allora il cammino da $v$ a $u$ nell'albero DFS, seguito dall'arco $(u, v)$, forma un ciclo.
 
 **Dimostrazione ($\Leftarrow$):** sia $\langle v_0, v_1, \ldots, v_k = v_0 \rangle$ un ciclo. Sia $v_i$ il primo nodo del ciclo scoperto dalla DFS. Poiché $v_{i-1}$ è raggiungibile da $v_i$, la DFS visita $v_{i-1}$ prima di abbandonare $v_i$, quindi $v_i$ è ancora "aperto" quando si attraversa l'arco $(v_{i-1}, v_i)$, che risulta perciò un arco all'indietro.
-> [!example] Domanda tipica d'esame — Rilevamento ciclo
+
+> [!question] Domanda tipica d'esame — Rilevamento ciclo
 > D: Come si verifica in tempo $\Theta(n+m)$ se un grafo diretto $G$ contiene un ciclo?
 > R: Si esegue una visita DFS completa (dalla procedura `VisitaDFS` che gestisce nodi non raggiungibili). Durante la visita si controlla se viene incontrato un arco $(u, v)$ tale che $v$ è già marcato ma $\text{post}(v)$ non è ancora stato impostato (cioè $v$ è ancora "in pila"). Se sì, $(u,v)$ è un arco all'indietro e il grafo ha un ciclo. La complessità è $\Theta(n+m)$.
 ## Ordinamento topologico
@@ -70,6 +79,7 @@ Un ordinamento topologico rappresenta un modo di "linearizzare" i nodi del grafo
 Nodi particolari in un DAG:
 - **Sorgente**: nodo con solo archi *uscenti* (in-degree 0).
 - **Pozzo**: nodo con solo archi *entranti* (out-degree 0).
+
 > [!quote] Teorema — Caratterizzazione dei DAG
 > Un grafo diretto $G$ ammette un ordinamento topologico **se e solo se** $G$ è un DAG.
 >
@@ -97,7 +107,8 @@ OrdinamentoTopologico(grafo G):
 > [!info] Algoritmo alternativo (rimozione iterativa di sorgenti)
 > Si può calcolare l'ordinamento topologico anche senza DFS: si estrae ripetutamente un nodo senza archi entranti, lo si appende all'ordinamento e si rimuovono i suoi archi uscenti. Se il grafo non diventa vuoto al termine, il grafo contiene un ciclo.
 > Complessità: $\Theta(n+m)$ se si mantiene una struttura dati per le sorgenti.
-> [!example] Domanda tipica d'esame — Ordinamento topologico
+
+> [!question] Domanda tipica d'esame — Ordinamento topologico
 > D: Dato un DAG $G$, si esegue `VisitaDFS`. Il nodo $v$ con il massimo valore $\text{post}(v)$ che posizione occupa nell'ordinamento topologico?
 > R: Occupa la posizione 1 (la prima), ossia è una sorgente. Poiché non esistono archi all'indietro in un DAG, quando la DFS abbandona $v$ per ultima, significa che $v$ non è discendente di nessun altro nodo nell'albero DFS — quindi non esiste un arco entrante in $v$ da nodi non ancora completati. In un DAG questo implica che $v$ è una sorgente.
 ## Componenti fortemente connesse
@@ -162,6 +173,7 @@ CompConnesse(grafo G):
 > Nel grafo delle CFC esiste l'arco $C_1 \to C_2$ (via $B \to D$), quindi $C_1$ è sorgente e $C_2$ è pozzo.
 > In $G^R$ la situazione si inverte: $C_2$ diventa sorgente e $C_1$ diventa pozzo.
 > `VisitaDFS(GR)` assegna il massimo $\text{post}$ a un nodo di $C_2$. Quindi `CompConnesse` visita prima $C_2$ in $G$ (componente pozzo), poi $C_1$.
+
 > [!warning] Errore comune — Confondere il grafo su cui si calcolano i post
 > I valori $\text{post}(v)$ nell'algoritmo di Kosaraju vengono calcolati su **$G^R$**, non su $G$. La seconda DFS (quella che raccoglie le componenti) viene eseguita invece su **$G$**, usando quell'ordinamento. Invertire i due grafi dà risultati errati.
 ## Riepilogo delle complessità

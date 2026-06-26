@@ -1,3 +1,10 @@
+---
+tags:
+  - algoritmi
+  - heap
+slide: "10"
+capitolo: "Demetrescu cap. 8"
+---
 # Code con Priorità e Heap
 Una **coda con priorità** è un tipo di dato astratto che generalizza la coda standard: anziché restituire gli elementi nell'ordine di arrivo, estrae sempre quello con **chiave minima** (o massima, a seconda della convenzione). Questa struttura è fondamentale in moltissimi algoritmi — dall'ordinamento ([[04 - Algoritmi di Ordinamento#Heap Sort|Heap Sort]]) al calcolo dei [[10 - Cammini Minimi e Dijkstra|cammini minimi con Dijkstra]] — e studiarne le implementazioni mostra perché le scelte strutturali impattano direttamente sulla complessità degli algoritmi che le usano.
 ## ADT CodaPriorità
@@ -152,7 +159,7 @@ increaseKey(heap T, nodo v, chiave d)
 
 $T(n) = O(d \log_d n)$.
 
-> [!example] Domanda tipica d'esame — decreaseKey e increaseKey
+> [!question] Domanda tipica d'esame — decreaseKey e increaseKey
 > **D:** Perché `decreaseKey` usa `muoviAlto` e `increaseKey` usa `muoviBasso`?
 > **R:** `decreaseKey` riduce una chiave, che potrebbe diventare inferiore a quella del padre, violando la proprietà dal basso verso l'alto → si corregge salendo con `muoviAlto`. `increaseKey` aumenta una chiave, che potrebbe superare quella di un figlio → si corregge scendendo con `muoviBasso`.
 ### Heapify — costruzione in O(n)
@@ -176,7 +183,7 @@ Ci sono due approcci per fondere due d-heap $c_1$ e $c_2$:
 ### Quando conviene d > 2?
 Aumentare $d$ riduce l'altezza dell'albero (da $\log_2 n$ a $\log_d n$), accelerando le operazioni che **salgono** (`insert`, `decreaseKey`). Tuttavia, ad ogni livello occorre confrontare $d$ figli, rallentando le operazioni che **scendono** (`deleteMin`, `muoviBasso`, `increaseKey`, `delete`).
 
-> [!example] Domanda tipica d'esame — quando usare d > 2
+> [!question] Domanda tipica d'esame — quando usare d > 2
 > **D:** In quale scenario conviene usare un d-heap con $d > 2$?
 > **R:** Quando le operazioni di salita (`insert`, `decreaseKey`) sono molto più frequenti delle operazioni di discesa (`deleteMin`, `increaseKey`). Esempio: nell'algoritmo di Dijkstra su grafi densi si eseguono molti più `decreaseKey` che `deleteMin`, quindi un 4-heap (o un heap di Fibonacci) migliora le prestazioni pratiche rispetto a un 2-heap.
 ## Heap Binomiali
@@ -257,7 +264,7 @@ Rimuovendo la radice di $B_h$, i suoi $h$ figli $B_0, B_1, \ldots, B_{h-1}$ form
 
 **delete**: si chiama `decreaseKey` con $-\infty$ per portare il nodo in cima, poi `deleteMin`. $T(n) = O(\log n)$.
 
-> [!example] Domanda tipica d'esame — merge heap binomiali
+> [!question] Domanda tipica d'esame — merge heap binomiali
 > **D:** Perché merge di due heap binomiali costa $O(\log n)$ invece di $O(n)$ come per i d-heap?
 > **R:** Negli heap binomiali le due foreste si fondono simulando la **somma binaria**: si scorrono le due liste di radici ($O(\log n)$ alberi in totale) e si fondono le coppie di $B_i$ con lo stesso grado, generando "riporti" verso gradi superiori. Ogni fusione richiede $O(1)$ e ci sono al più $O(\log n)$ fusioni totali.
 >
@@ -296,7 +303,7 @@ Le complessità di d-Heap e Heap Binomiali sono nel **caso peggiore**; quelle co
 > [!warning] FindMin in heap binomiale
 > A differenza dei d-heap (dove la radice è il minimo globale in $O(1)$), in un heap binomiale il minimo può essere in **qualsiasi** radice della foresta. Occorre scorrerle tutte: costo $O(\log n)$. Si può ottimizzare mantenendo un puntatore al minimo corrente.
 
-> [!example] Domanda tipica d'esame — scelta della struttura
+> [!question] Domanda tipica d'esame — scelta della struttura
 > **D:** Qual è la struttura più adatta se `merge` di code è un'operazione frequente?
 > **R:** L'**heap binomiale**, che garantisce `merge` in $O(\log n)$ contro $O(n)$ di d-heap e liste. Se si accettano costi ammortizzati, l'heap di Fibonacci offre `merge` in $O(1)$ ammortizzato.
 >

@@ -1,3 +1,10 @@
+---
+tags:
+  - algoritmi
+  - ordinamento
+slide: "5-7"
+capitolo: "Demetrescu cap. 4"
+---
 # Algoritmi di Ordinamento
 L'ordinamento è uno dei problemi fondamentali dell'informatica e costituisce la subroutine di moltissimi algoritmi. Conoscere i limiti teorici del problema — non solo le soluzioni pratiche — permette di capire quando un algoritmo è ottimo e quando è invece possibile fare meglio cambiando modello computazionale. In questa nota si presentano gli algoritmi basati su confronti (quadratici e ottimi), il lower bound $\Omega(n \log n)$ (la cui notazione è formalizzata in [[02 - Notazioni Asintotiche]]), e gli algoritmi lineari che operano al di fuori del modello a confronti.
 ## Il problema dell'ordinamento
@@ -28,6 +35,7 @@ SelectionSort(A)
 4.          if A[j] < A[m] then m = j
 5.      scambia A[m] con A[k+1]
 ```
+
 > [!quote] Proprietà — Invariante del Selection Sort
 > Dopo la fase $k$ (per $k = 0, \dots, n-2$):
 > 1. i primi $k+1$ elementi sono ordinati;
@@ -36,6 +44,7 @@ SelectionSort(A)
 **Complessità:** il ciclo interno esegue esattamente $n-k-1$ confronti al passo $k$, quindi
 $$T(n) = \sum_{k=0}^{n-2}(n-k-1) = \sum_{j=1}^{n-1} j = \frac{n(n-1)}{2} = \Theta(n^2).$$
 La complessità è $\Theta(n^2)$ in tutti i casi (l'analisi è stretta: si contano i confronti).
+
 > [!info] Proprietà del Selection Sort
 > - **In loco:** sì — usa $O(1)$ memoria ausiliaria.
 > - **Stabile:** no — uno scambio può alterare l'ordine relativo di elementi uguali.
@@ -54,6 +63,7 @@ InsertionSort(A)
 6.          j = j-1
 7.      A[j+1] = x
 ```
+
 > [!quote] Proprietà — Invariante del Insertion Sort
 > All'inizio dell'iterazione $k$, il sottoarray $A[1 \dots k]$ contiene gli stessi $k$ elementi originali in ordine crescente.
 
@@ -61,6 +71,7 @@ InsertionSort(A)
 - **Caso peggiore** (array ordinato al contrario): $T(n) = \Theta(n^2)$.
 - **Caso migliore** (array già ordinato): $T(n) = \Theta(n)$ — solo $n-1$ confronti, nessuno spostamento.
 - **Caso medio:** $\Theta(n^2)$.
+
 > [!info] Proprietà del Insertion Sort
 > - **In loco:** sì.
 > - **Stabile:** sì — l'elemento viene inserito *dopo* tutti gli uguali già presenti.
@@ -77,6 +88,7 @@ BubbleSort(A)
 4.              scambia A[j] con A[j+1]
 ```
 **Complessità:** $\Theta(n^2)$ in tutti i casi (stessa analisi del Selection Sort sul conteggio dei confronti).
+
 > [!info] Proprietà del Bubble Sort
 > - **In loco:** sì.
 > - **Stabile:** sì — lo scambio avviene solo con $>$ stretto.
@@ -101,6 +113,7 @@ MergeSort(A, i, f)                  -- ordina A[i;f]
 5.      Merge(A, i, m, f)
 ```
 Chiamata iniziale: `MergeSort(A, 1, n)`.
+
 > [!quote] Lemma — Complessità di Merge
 > La procedura Merge fonde due sequenze ordinate di lunghezza $n_1$ e $n_2$ in tempo $\Theta(n_1 + n_2)$.
 >
@@ -119,12 +132,14 @@ Merge(A, i1, f1, f2)               -- fonde A[i1;f1] e A[f1+1;f2], output in A[i
 8.  else copia A[k2;f2] alla fine di X
 9.  copia X in A[i1;f2]
 ```
+
 > [!quote] Teorema — Complessità del Merge Sort
 > La complessità temporale del Merge Sort soddisfa la ricorrenza
 > $$T(n) = 2\,T(n/2) + O(n).$$
 > Applicando il [[03 - Equazioni di Ricorrenza#4. Teorema Master|Teorema Master]] (caso 2, con $a=b=2$, $f(n)=O(n)$) si ottiene $T(n) = \Theta(n \log n)$.
 
 **Complessità spaziale:** il Merge Sort **non ordina in loco** — utilizza $\Theta(n)$ memoria ausiliaria (l'array $X$ nelle chiamate attive non è mai sovrapposto; le chiamate ricorsive attive contemporaneamente sono $O(\log n)$, ciascuna con memoria costante esclusa quella di Merge).
+
 > [!info] Proprietà del Merge Sort
 > - **In loco:** no — $\Theta(n)$ memoria ausiliaria.
 > - **Stabile:** sì — il Merge usa $\le$ (non $<$) per favorire l'elemento di sinistra in caso di parità.
@@ -163,6 +178,7 @@ Partition(A, i, f)                  -- partiziona A[i;f] rispetto ad A[i]
 9.  scambia A[i] e A[sup]          -- posiziona il perno
 10. return sup                      -- restituisce la posizione del perno
 ```
+
 > [!quote] Proprietà — Invariante di Partition
 > In ogni istante, gli elementi $A[i], \dots, A[\text{inf}-1]$ sono $\le$ del perno, mentre gli elementi $A[\text{sup}+1], \dots, A[f]$ sono $>$ del perno.
 
@@ -175,10 +191,12 @@ $$T(n) = T(n-1) + T(0) + O(n) = T(n-1) + O(n) \implies T(n) = O(n^2).$$
 **Caso migliore:** il perno divide sempre perfettamente a metà: $T(n) = 2T(n/2) + O(n) = O(n \log n)$.
 
 **Caso medio:** si può dimostrare che, assumendo distribuzione uniforme sulle istanze, Quick Sort ha complessità media $O(n \log n)$. Anche con partizioni sistematicamente sbilanciate (es. 9-a-1 o 99-a-1) la complessità resta $O(n \log n)$.
+
 > [!warning] Caso peggiore del Quick Sort
 > Il caso peggiore $O(n^2)$ si verifica su input specifici (es. array già ordinato con perno = primo elemento). Per evitarlo si usa la **versione randomizzata**.
 #### Versione randomizzata
 Anziché scegliere il perno come $A[i]$, lo si estrae a caso tra gli elementi $A[i], \dots, A[f]$.
+
 > [!quote] Teorema — Quick Sort Randomizzato
 > L'algoritmo Quick Sort randomizzato ordina in loco un array di lunghezza $n$ in tempo $O(n^2)$ nel caso peggiore e $O(n \log n)$ **con alta probabilità**, ovvero con probabilità almeno $1 - 1/n$.
 
@@ -186,6 +204,7 @@ I vantaggi rispetto alla versione deterministica:
 - non si fa alcuna assunzione sulla distribuzione delle istanze;
 - non esiste un input specifico che provochi sistematicamente il caso peggiore;
 - il caso peggiore dipende solo dal generatore di numeri casuali.
+
 > [!info] Proprietà del Quick Sort
 > - **In loco:** sì.
 > - **Stabile:** no — gli scambi di Partition non preservano l'ordine relativo.
@@ -209,6 +228,7 @@ HeapSort(A)
 5.      heapsize[A] = heapsize[A]-1 -- riduce l'heap
 6.      fixHeap(1, A)               -- ripristina la proprietà heap: O(log n)
 ```
+
 > [!info] Perché max-heap e non min-heap?
 > L'uso del **max-heap** implementato con vettore posizionale permette di ordinare in loco usando **solo memoria ausiliaria costante**: il massimo estratto va nella posizione $A[i]$ appena liberata. Con un min-heap si otterrebbe l'ordine decrescente, non crescente, a meno di un'inversione finale.
 
@@ -216,12 +236,14 @@ HeapSort(A)
 > L'algoritmo Heap Sort ordina in loco un array di lunghezza $n$ in tempo $O(n \log n)$ **nel caso peggiore**.
 >
 > **Dimostrazione:** `Heapify` costa $O(n)$; ogni delle $n-1$ chiamate a `fixHeap` costa $O(\log n)$; quindi $T(n) = O(n) + (n-1) \cdot O(\log n) = O(n \log n)$.
+
 > [!info] Proprietà di Heap Sort
 > - **In loco:** sì — a differenza del Merge Sort, usa solo $O(1)$ memoria ausiliaria.
 > - **Stabile:** no.
 > - **Complessità:** $O(n \log n)$ nel caso peggiore (garanzia più forte del Quick Sort non randomizzato).
 ## Lower bound per confronti: l'albero di decisione
 Un **algoritmo di ordinamento per confronti** può accedere ai dati solo tramite confronti del tipo $a_i \le a_j$, $a_i < a_j$, ecc. Tutti gli algoritmi visti finora (Selection, Insertion, Bubble, Merge, Quick, Heap Sort) rientrano in questa classe.
+
 > [!quote] Definizione — Albero di Decisione
 > L'**albero di decisione** di un algoritmo di ordinamento per confronti, fissata la dimensione $n$ dell'input, è un albero binario in cui:
 > - ogni **nodo interno** etichettato $i\!:\!j$ modella il confronto tra $a_i$ e $a_j$;
@@ -232,23 +254,28 @@ Un **algoritmo di ordinamento per confronti** può accedere ai dati solo tramite
 **Osservazioni chiave:**
 - L'albero di decisione dipende dall'algoritmo *e* dalla dimensione $n$ dell'input (non è associato solo al problema).
 - Un algoritmo corretto deve produrre un output distinto per ciascuna delle $n!$ permutazioni possibili → l'albero deve avere **almeno $n!$ foglie**.
+
 > [!quote] Lemma — Altezza di un albero binario
 > Un albero binario $T$ con $k$ foglie ha altezza almeno $\log_2 k$.
 >
 > **Dimostrazione** (induzione su $k$): per $k=1$ l'altezza è $0 = \log_2 1$. Per $k > 1$, considera il nodo interno $v$ più vicino alla radice che ha due figli; il sottoalbero radicato in un figlio di $v$ ha almeno $\lceil k/2 \rceil$ foglie e meno di $k$ foglie, quindi per ipotesi induttiva ha altezza $\ge \log_2\lceil k/2 \rceil$; l'altezza di $T$ è almeno $1 + \log_2\lceil k/2 \rceil \ge \log_2 k$.
+
 > [!quote] Teorema — Lower Bound $\Omega(n \log n)$
 > Ogni algoritmo basato su confronti che ordina $n$ elementi deve effettuare nel caso peggiore $\Omega(n \log n)$ confronti.
 >
 > **Dimostrazione:** l'altezza $h$ dell'albero di decisione è almeno $\log_2(n!)$. Per la formula di Stirling $n! \ge (n/e)^n$, quindi
 > $$h \ge \log_2(n!) \ge \log_2\!\left(\frac{n}{e}\right)^{\!n} = n\log_2 n - n\log_2 e = \Omega(n \log n).$$
+
 > [!quote] Corollario
 > Merge Sort e Heap Sort sono **algoritmi ottimi** all'interno della classe degli algoritmi basati su confronti.
-> [!example] Domanda tipica d'esame
+
+> [!question] Domanda tipica d'esame
 > D: Perché il lower bound $\Omega(n \log n)$ non contraddice la possibilità di ordinare in $O(n)$?
 >
 > R: Il lower bound vale **solo per gli algoritmi basati su confronti**. Algoritmi come Integer Sort o Radix Sort non usano confronti tra elementi ma sfruttano le proprietà numeriche dei valori — quindi operano fuori dalla classe a cui si applica il lower bound.
 ## Ordinamento lineare (senza confronti)
 Uscendo dalla classe degli algoritmi basati su confronti è possibile superare il limite $\Omega(n \log n)$, a patto di avere **informazioni aggiuntive** sui dati (es. range limitato).
+
 > [!warning] Il lower bound non si applica
 > Integer Sort e Bucket Sort non sono algoritmi basati su confronti: non esaminano l'ordine relativo degli elementi tramite $\le$ o $<$, ma sfruttano i valori numerici come indici. Pertanto la dimostrazione dell'albero di decisione non li riguarda.
 ### Integer Sort (Counting Sort)
@@ -269,10 +296,12 @@ IntegerSort(X, k)
 ```
 **Analisi del ciclo riga 5–9:**
 $$\sum_{i=1}^{k}(1 + Y[i]) = k + \sum_{i=1}^{k} Y[i] = k + n \implies O(n+k).$$
+
 > [!quote] Proprietà — Complessità di Integer Sort
 > $T(n) = O(n+k)$. **Lineare se $k = O(n)$.**
 >
 > Se $k = \Theta(n^c)$ con $c > 1$, allora $T(n) = \Theta(n^c) = \omega(n \log n)$: non conviene.
+
 > [!info] Proprietà di Integer Sort
 > - **In loco:** no — array ausiliario $Y$ di dimensione $k$.
 > - **Stabile:** no nella versione base (sovrascrive $X$); diventa stabile con il Bucket Sort.
@@ -291,6 +320,7 @@ BucketSort(X, k)
 6.      copia ordinatamente in X gli elementi della lista Y[i]
 ```
 Tempo totale: $O(n+k)$, lineare se $k = O(n)$.
+
 > [!quote] Proprietà — Stabilità del Bucket Sort
 > Il Bucket Sort è **stabile** se gli elementi vengono appesi **in coda** alla lista $Y[i]$ (non in testa): l'ordine di inserimento è preservato tra elementi con la stessa chiave.
 
@@ -301,6 +331,7 @@ Ordina $n$ interi con valori in $[1, k]$ **rappresentandoli in base $b$** ed ese
 **Algoritmo:**
 1. Rappresenta ogni elemento con $d = \lceil \log_b k \rceil$ cifre in base $b$.
 2. Per $t = 1, \dots, d$: esegui un Bucket Sort stabile usando la $t$-esima cifra come chiave (la chiave è un intero in $[0, b-1]$).
+
 > [!quote] Proprietà — Correttezza del Radix Sort
 > - Se $x$ e $y$ differiscono alla cifra $t$, la $t$-esima passata li ordina correttamente.
 > - Se $x$ e $y$ coincidono alla cifra $t$, la **stabilità** del Bucket Sort garantisce che il loro ordine relativo (stabilito dalle passate precedenti) venga preservato.
@@ -314,9 +345,11 @@ $$T(n) = O\!\left((n+b)\cdot\frac{\log k}{\log b}\right).$$
 Con la scelta ottimale $b = \Theta(n)$:
 $$T(n) = O\!\left(n \cdot \frac{\log k}{\log n}\right).$$
 **Lineare se $k = O(n^c)$** con $c$ costante (numero di cifre $d$ costante).
+
 > [!example] Scelta della base per 32 bit
 > Si vogliono ordinare $10^6 \approx 2^{20}$ numeri da 32 bit ($k = 2^{32}$).
 > Scegliendo $b = 2^{16}$: servono $\lceil 32/16 \rceil = 2$ passate, ciascuna di costo $O(n + 2^{16}) = O(n)$. Totale: $O(n)$.
+
 > [!info] Proprietà del Radix Sort
 > - **Stabile:** sì (richiede Bucket Sort stabile come subroutine).
 > - **In loco:** no.
@@ -330,6 +363,7 @@ $$T(n) = O\!\left(n \cdot \frac{\log k}{\log n}\right).$$
 **Soluzione 2 — precalcolo di tutte le query:** costruzione $\Omega(k^2)$, query $O(1)$. Troppo pesante in costruzione.
 
 **Soluzione ottimale — prefix sums:**
+
 > [!quote] Proprietà — Costruzione dell'Oracolo con Somme Prefisse
 > Si costruisce un array $Y$ di dimensione $k$ dove $Y[i]$ = numero di elementi di $X$ che sono $\le i$ (somma prefissa dei contatori).
 
@@ -349,13 +383,15 @@ InterrogaOracolo(Y, k, a, b)
 2.  if a ≤ 1 then return Y[b]
 3.  else return Y[b] - Y[a-1]
 ```
+
 > [!quote] Proprietà — Complessità dell'Oracolo
 > - **Costruzione:** $O(n+k)$.
 > - **Ogni query:** $O(1)$ — una sola sottrazione.
 > - **Spazio:** $O(k)$.
 
 La correttezza si basa sul fatto che $Y[b] - Y[a-1]$ conta esattamente gli elementi in $[a, b]$: $Y[b]$ è il numero di elementi $\le b$, e $Y[a-1]$ è il numero di elementi $\le a-1$ (ovvero $< a$).
-> [!example] Domanda tipica d'esame
+
+> [!question] Domanda tipica d'esame
 > D: Dato un vettore $A$ di $n$ numeri reali arbitrari, è possibile costruire un oracolo per range counting con costruzione $O(n \log n)$ e query $O(\log n)$?
 >
 > R: Sì. Si ordina $A$ con Merge Sort o Heap Sort in $O(n \log n)$, poi si risponde a ogni query $[a, b]$ con due ricerche binarie (trovare il primo elemento $\ge a$ e l'ultimo $\le b$), ciascuna in $O(\log n)$. (Non è richiesto che i valori siano interi né che il range sia limitato.)

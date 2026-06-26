@@ -1,10 +1,19 @@
+---
+tags:
+  - algoritmi
+  - strutture-dati
+slide: "8"
+capitolo: "Demetrescu cap. 3"
+---
 # Strutture Dati Elementari e Dizionari
 Questo capitolo introduce la distinzione fondamentale tra **tipo di dato** e **struttura dati**, e analizza le implementazioni elementari dei tipi di dato Dizionario, Pila e Coda. Le complessità sono espresse con la notazione asintotica di [[02 - Notazioni Asintotiche]]. Si esaminano poi le principali tecniche di rappresentazione degli alberi in memoria e gli algoritmi di visita (DFS e BFS), con applicazioni pratiche e pseudocodice tratto direttamente dalle slide del corso. Gli argomenti più avanzati — BST, AVL, heap e code con priorità — sono trattati nelle note successive [[06 - Alberi di Ricerca BST e AVL]] e [[07 - Code con Priorità e Heap]].
 ## Tipo di Dato vs Struttura Dati
 > [!quote] Definizione — Tipo di Dato
 > Un **tipo di dato** specifica una collezione di oggetti e le operazioni di interesse su tale collezione (es. `insert`, `delete`, `search`). Definisce *cosa* si può fare, non *come*.
+
 > [!quote] Definizione — Struttura Dati
 > Una **struttura dati** è un'organizzazione dei dati che permette di memorizzare la collezione e supportare le operazioni di un tipo di dato usando meno risorse di calcolo possibile. Definisce *come* i dati sono organizzati in memoria.
+
 L'obiettivo del progettista è scegliere la struttura dati che minimizza il costo (tempo e spazio) delle operazioni richieste dal tipo di dato.
 ## Rappresentazioni Indicizzate e Collegate
 Le strutture dati si dividono in due grandi famiglie.
@@ -58,6 +67,7 @@ Non è possibile usare la ricerca binaria su una lista (manca accesso diretto), 
 | **BST/AVL** | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ |
 
 L'ultima riga anticipa il risultato degli [[06 - Alberi di Ricerca BST e AVL]]: per garantire $O(\log n)$ su tutte le operazioni occorrono strutture più sofisticate.
+
 > [!warning] Lista ordinata non migliora la search
 > L'ordinamento nella lista non porta vantaggi per la ricerca: senza accesso diretto alle celle non si può applicare la ricerca binaria. Si paga il costo di insert e delete senza guadagnare su search.
 ## Il Tipo di Dato Pila
@@ -88,6 +98,7 @@ pop(Pila P)
 ```
 
 Complessità: `push` → $O(1)$, `pop` → $O(1)$, `top` → $O(1)$.
+
 > [!info] Pila con lista collegata
 > In alternativa si usa una lista con inserimento e rimozione in testa: `push` = inserimento in testa $O(1)$, `pop` = rimozione in testa $O(1)$. Dimensione non prefissata.
 ## Il Tipo di Dato Coda
@@ -118,9 +129,11 @@ dequeue(Coda C)
 ```
 
 Complessità: `enqueue` → $O(1)$, `dequeue` → $O(1)$, `first` → $O(1)$.
+
 > [!info] Coda con lista collegata
 > In alternativa: lista con due puntatori `head` e `tail`. `enqueue` inserisce in fondo ($O(1)$ con puntatore `tail`), `dequeue` rimuove dalla testa ($O(1)$).
-> [!example] Domanda tipica d'esame — Pila e Coda
+
+> [!question] Domanda tipica d'esame — Pila e Coda
 > D: Progettare strutture dati indicizzate e collegate per Pila e Coda con tutte le operazioni in $O(1)$.
 > R: Con array, la Pila usa un indice `top` (push/pop in $O(1)$); la Coda usa un array circolare con indici `head` e `tail` (enqueue/dequeue in $O(1)$). Con liste, sia Pila che Coda inseriscono/rimuovono in testa/coda in $O(1)$ mantenendo i puntatori opportuni.
 ## Alberi: Definizioni e Terminologia
@@ -143,6 +156,7 @@ Complessità delle operazioni:
 - trovare i figli di un nodo: $O(n)$ (bisogna scorrere l'intero array).
 
 Numero di figli: arbitrario (nessun vincolo sulla struttura dell'albero).
+
 > [!info] Utilizzo tipico del vettore dei padri
 > Il vettore dei padri è ideale per algoritmi bottom-up come Union-Find (struttura Disjoint Set). Si veda anche l'esercizio di ri-radicazione più avanti.
 ### Vettore posizionale (per alberi $d$-ari quasi completi)
@@ -157,6 +171,7 @@ Con indici a partire da **1**:
 - padre di $i$: posizione $\lfloor (i-2)/d \rfloor + 1$.
 
 Complessità: trovare padre e figlio $j$-esimo entrambi in $O(1)$.
+
 > [!warning] Spreco di spazio su alberi non completi
 > Il vettore posizionale funziona bene solo per alberi completi o quasi completi. Un albero di $n$ nodi che è una catena (ogni nodo ha al più un figlio) ha altezza $n-1$: l'albero binario completo di altezza $n-1$ ha $2^n - 1$ nodi, quindi la dimensione del vettore posizionale cresce esponenzialmente nel numero di nodi. Il vettore posizionale è la struttura usata per gli [[07 - Code con Priorità e Heap|heap]].
 ### Rappresentazioni collegate (puntatori ai figli)
@@ -218,6 +233,7 @@ L'operazione `visita(r)` va inserita in *una sola* delle tre posizioni indicate:
 - **Preordine**: radice → sottoalbero sinistro → sottoalbero destro.
 - **Visita simmetrica** (in-order): sottoalbero sinistro → radice → sottoalbero destro.
 - **Postordine**: sottoalbero sinistro → sottoalbero destro → radice.
+
 > [!example] Ordini di visita sull'albero di esempio
 > Considerare l'albero binario con radice A, figlio sinistro L (con figli E e R) e figlio destro B (con figlio destro O):
 > ```
@@ -249,8 +265,10 @@ BFS(nodo r)
 ```
 
 Complessità: ogni nodo è inserito ed estratto dalla coda una sola volta → $O(1)$ per nodo → $T(n) = O(n)$.
+
 > [!example] Ordine di visita BFS
 > Sull'albero dell'esempio precedente: A, L, B, E, R, O (livello per livello).
+
 > [!info] DFS vs BFS — ruolo delle strutture dati
 > La DFS usa una **Pila** (o la pila di sistema della ricorsione): elabora in profondità. La BFS usa una **Coda**: elabora per larghezza. Questo dualismo Pila/DFS e Coda/BFS ricompare nella visita dei grafi in [[08 - Grafi e Visite]].
 ## Applicazioni delle Visite
@@ -343,8 +361,10 @@ RiRadica(VettorePadri T, indice j)
 ```
 
 Complessità: $O(h)$, dove $h$ è l'altezza di $T$ rispetto alla radice $r$ originale (si percorre al più il cammino radice–$r'$).
-> [!example] Domanda tipica d'esame — Ricostruzione dell'albero dalle visite (Problema 3.7)
+
+> [!question] Domanda tipica d'esame — Ricostruzione dell'albero dalle visite (Problema 3.7)
 > D: Dati gli ordini di visita simmetrica `G D H B A E C J I K F` e preordine `A B D G H C E F I J K`, ricostruire l'albero binario $T$.
 > R: La radice è il primo nodo del preordine (A). La simmetrica divide i nodi in sottoalbero sinistro (G D H B) e destro (E C J I K F) rispetto ad A. Si procede ricorsivamente: il secondo nodo del preordine (B) è radice del sottoalbero sinistro; nella simmetrica B separa (G D H) a sinistra e vuoto a destra. E così via. La radice del sottoalbero destro è C (terzo nodo del preordine dopo aver esaurito il ramo sinistro).
+
 > [!warning] Preordine + postordine non bastano in generale
 > Con preordine e postordine non è sempre possibile ricostruire univocamente l'albero binario: se un nodo ha un solo figlio, non si riesce a determinare se è figlio sinistro o destro. Servono preordine + simmetrica oppure simmetrica + postordine.

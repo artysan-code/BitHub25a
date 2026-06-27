@@ -1,4 +1,5 @@
 # BitHub25a - Appunti Universitari
+[![Licenza: CC BY-NC-SA 4.0](https://img.shields.io/badge/Licenza-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 Repository di condivisione appunti del Corso di Laurea in Informatica - Università degli Studi di Roma Tor Vergata.
 
 Mantenuta da [Artysan](https://github.com/artysan-code) (Samuel Tagliacozzo), [Cromocon](https://github.com/Cromocon) (Marius Craciun). Contiene appunti personali e contributi di altri studenti.
@@ -33,12 +34,25 @@ Gli appunti sono forniti "così come sono" senza garanzie di correttezza o compl
 - [Programmazione Web](Corsi/Terzo%20Anno/Programmazione%20Web)
 
 ---
-## Visualizzazione con Obsidian
-Questa repository è ottimizzata per [Obsidian](https://obsidian.md/), un editor Markdown con supporto per collegamenti bidirezionali e grafo delle note.
+## Come usare questa repository
+La repo è un **vault [Obsidian](https://obsidian.md/)**: Markdown con wikilink, grafo, formule LaTeX e callout. Per leggerla al meglio:
+1. Clona la repo e aprila come vault: *File → Open vault → Open folder as vault*.
+2. Installa i **community plugin** necessari (*Settings → Community plugins → Browse*): i binari non sono versionati, Obsidian li reinstalla dal manifest.
+3. Abilita lo **snippet CSS** condiviso: *Settings → Appearance → CSS snippets → bithub-readability*.
 
-### Plugin Consigliati
-- **LaTeX Suite** - Per formule matematiche avanzate
+Puoi anche sfogliare i `.md` direttamente su GitHub, ma wikilink, alcuni callout e gli pseudocodici non rendono come in Obsidian.
+### Plugin necessari
+- **LaTeX Suite** (`obsidian-latex-suite`) — scrittura e resa di formule LaTeX.
+- **Pseudocode** (`pseudocode-in-obs`) — resa degli pseudocodici in blocchi ` ```pseudo ` (stile LaTeX *algorithmic*); usato ad es. negli appunti di *Algoritmi e Strutture Dati*.
+### Snippet CSS
+- **bithub-readability** — tipografia formule, margini callout, wrap dei code block, bordi immagini e resa dei blocchi pseudocodice. Da abilitare manualmente.
 
 ---
 ## Contribuire
-Pull request e segnalazioni tramite Issues sono benvenute. Ogni contributo sarà revisionato prima dell'accettazione.
+Pull request e segnalazioni tramite Issues sono benvenute; ogni contributo è revisionato prima dell'accettazione. Leggi **[CONTRIBUTING.md](CONTRIBUTING.md)** per setup, struttura, naming e convenzioni di commit.
+
+---
+## Licenza
+Gli **appunti** (testi, note ed esercizi rielaborati) sono distribuiti sotto **[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](LICENSE)**: puoi condividerli e rielaborarli **citando gli autori** e **senza scopi commerciali** — la rivendita è vietata — e le opere derivate vanno rilasciate con la **stessa licenza**.
+
+Il **materiale didattico dei docenti** (slide, esercitazioni e PDF in `Materiale Didattico/`) resta dei rispettivi proprietari e **non** è coperto da questa licenza.

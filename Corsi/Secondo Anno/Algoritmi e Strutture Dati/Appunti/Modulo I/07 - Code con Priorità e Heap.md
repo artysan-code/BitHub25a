@@ -84,77 +84,95 @@ Non sono necessari puntatori: la struttura è **implicita** nel vettore. Questo 
 ### Procedure ausiliarie
 Le due procedure seguenti ripristinano la proprietà di ordinamento a heap su un nodo che la violi.
 
-**muoviAlto** (analogo a MoveUp):
-
-```text
-muoviAlto(heap T, nodo v)
-1. while v ≠ radice(T) and chiave(v) < chiave(padre(v)) do
-2.   scambia di posto v e padre(v) in T
-3.   v = padre(v)
+```pseudo
+\begin{algorithm}
+\caption{muoviAlto($T, v$) — analogo a MoveUp}
+\begin{algorithmic}
+\While{$v \neq \text{radice}(T)$ and $\text{chiave}(v) < \text{chiave}(\text{padre}(v))$}
+  \State scambia di posto $v$ e $\text{padre}(v)$ in $T$
+  \State $v \gets \text{padre}(v)$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
 ```
 
 $T(n) = O(\log_d n)$ — si risale al massimo per tutta l'altezza dell'albero.
 
-**muoviBasso** (analogo a FixHeap):
-
-```text
-muoviBasso(heap T, nodo v)
-1. repeat
-2.   sia u il figlio di v con chiave minima (se esiste)
-3.   if v non ha figli or chiave(v) ≤ chiave(u) then break
-4.   scambia di posto v e u in T
-5.   v = u
+```pseudo
+\begin{algorithm}
+\caption{muoviBasso($T, v$) — analogo a FixHeap}
+\begin{algorithmic}
+\While{\text{vero}}
+  \State sia $u$ il figlio di $v$ con chiave minima (se esiste)
+  \If{$v$ non ha figli or $\text{chiave}(v) \leq \text{chiave}(u)$}
+    \State \textbf{break}
+  \EndIf
+  \State scambia di posto $v$ e $u$ in $T$
+  \State $v \gets u$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
 ```
 
 $T(n) = O(d \log_d n)$ — ad ogni livello occorre confrontare $d$ figli per trovare il minimo.
 ### Operazioni e complessità
-**findMin**
-
-```text
-findMin(heap T)
-1. return elem(radice(T))
+```pseudo
+\begin{algorithm}
+\caption{findMin($T$)}
+\begin{algorithmic}
+\State \Return $\text{elem}(\text{radice}(T))$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 $T(n) = O(1)$ — la radice è il minimo per definizione.
 
-**insert**
-
-```text
-insert(heap T, elem e, chiave k)
-1. crea un nuovo nodo F con elem = e, chiave = k
-2. aggiungi F come ultima foglia di T
-3. muoviAlto(T, F)
+```pseudo
+\begin{algorithm}
+\caption{insert($T, e, k$)}
+\begin{algorithmic}
+\State crea un nuovo nodo $F$ con $\text{elem} \gets e$, $\text{chiave} \gets k$
+\State aggiungi $F$ come ultima foglia di $T$
+\State \Call{muoviAlto}{$T, F$}
+\end{algorithmic}
+\end{algorithm}
 ```
 
 $T(n) = O(\log_d n)$ — dominato da `muoviAlto`.
 
-**delete e deleteMin**
-
-```text
-delete(heap T, nodo v)
-1. scambia v con l'ultima foglia u di T
-2. rimuovi v (ora in ultima posizione)
-3. ripristina la proprietà di heap su u: muoviAlto(T, u) o muoviBasso(T, u)
+```pseudo
+\begin{algorithm}
+\caption{delete($T, v$)}
+\begin{algorithmic}
+\State scambia $v$ con l'ultima foglia $u$ di $T$
+\State rimuovi $v$ (ora in ultima posizione)
+\State ripristina la proprietà di heap su $u$: \Call{muoviAlto}{$T, u$} o \Call{muoviBasso}{$T, u$}
+\end{algorithmic}
+\end{algorithm}
 ```
 
 $T(n) = O(\log_d n)$ oppure $O(d \log_d n)$ a seconda che si esegua `muoviAlto` o `muoviBasso`. `deleteMin` si implementa come `delete` sulla radice: costo $O(d \log_d n)$.
 
-**decreaseKey**
-
-```text
-decreaseKey(heap T, nodo v, chiave d)
-1. chiave(v) = chiave(v) - d
-2. muoviAlto(T, v)
+```pseudo
+\begin{algorithm}
+\caption{decreaseKey($T, v, d$)}
+\begin{algorithmic}
+\State $\text{chiave}(v) \gets \text{chiave}(v) - d$
+\State \Call{muoviAlto}{$T, v$}
+\end{algorithmic}
+\end{algorithm}
 ```
 
 $T(n) = O(\log_d n)$.
 
-**increaseKey**
-
-```text
-increaseKey(heap T, nodo v, chiave d)
-1. chiave(v) = chiave(v) + d
-2. muoviBasso(T, v)
+```pseudo
+\begin{algorithm}
+\caption{increaseKey($T, v, d$)}
+\begin{algorithmic}
+\State $\text{chiave}(v) \gets \text{chiave}(v) + d$
+\State \Call{muoviBasso}{$T, v$}
+\end{algorithmic}
+\end{algorithm}
 ```
 
 $T(n) = O(d \log_d n)$.
@@ -225,14 +243,22 @@ Ogni nodo contiene: chiave, elemento, puntatore al padre, puntatore al primo fig
 ### Procedura ausiliaria: ristruttura
 La procedura `ristruttura` ripristina la proprietà di unicità fondendo coppie di $B_i$ con lo stesso grado, analogamente alla somma di due numeri binari con riporti.
 
-```text
-ristruttura(heap binomiale H)
-1. i = 0
-2. while esistono due B(i) nella foresta do
-3.   sia T1, T2 i due B(i) con radici r1, r2
-4.   if chiave(r1) ≤ chiave(r2) then poni r2 come figlio di r1
-5.   else poni r1 come figlio di r2
-6.   i = i + 1
+```pseudo
+\begin{algorithm}
+\caption{ristruttura($H$)}
+\begin{algorithmic}
+\State $i \gets 0$
+\While{esistono due $B_i$ nella foresta}
+  \State sia $T_1, T_2$ i due $B_i$ con radici $r_1, r_2$
+  \If{$\text{chiave}(r_1) \leq \text{chiave}(r_2)$}
+    \State poni $r_2$ come figlio di $r_1$
+  \Else
+    \State poni $r_1$ come figlio di $r_2$
+  \EndIf
+  \State $i \gets i + 1$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
 ```
 
 $T(n)$: lineare nel numero di alberi binomiali in input (ogni fusione riduce di 1 il numero di alberi).
@@ -246,14 +272,16 @@ $T(n)$: lineare nel numero di alberi binomiali in input (ogni fusione riduce di 
 
 **insert**: si crea un heap con un solo nodo ($B_0$) e si esegue `merge` con l'heap originale. $T(n) = O(\log n)$.
 
-**deleteMin**:
-
-```text
-deleteMin(heap binomiale H)
-1. trova la radice r con chiave minima (scorre le radici) in O(log n)
-2. rimuovi r dalla lista delle radici di H
-3. H' = heap binomiale formato dai figli di r (in ordine: B(h-1), ..., B(0))
-4. return merge(H, H')
+```pseudo
+\begin{algorithm}
+\caption{deleteMin($H$)}
+\begin{algorithmic}
+\State trova la radice $r$ con chiave minima (scorre le radici) in $O(\log n)$
+\State rimuovi $r$ dalla lista delle radici di $H$
+\State $H' \gets$ heap binomiale formato dai figli di $r$ (in ordine: $B_{h-1}, \ldots, B_0$)
+\State \Return \Call{merge}{$H, H'$}
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Rimuovendo la radice di $B_h$, i suoi $h$ figli $B_0, B_1, \ldots, B_{h-1}$ formano un nuovo heap binomiale. Si fonde con il resto dell'heap. $T(n) = O(\log n)$.

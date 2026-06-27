@@ -84,12 +84,19 @@ Allora $S^* \setminus \{v_n\}$ è una soluzione ottima per $G''$.
 ### Prima idea (ingenua): ricorsione diretta
 Dalla proprietà di sottostruttura ottima viene naturale un algoritmo ricorsivo che calcola entrambi i casi e restituisce il migliore:
 
-```text
-WIS-Ricorsivo(G, j)
-1.  if j = 1 then return w_1
-2.  if j = 2 then return max{w_1, w_2}
-3.  return max{ WIS-Ricorsivo(G, j-1),
-                w_j + WIS-Ricorsivo(G, j-2) }
+```pseudo
+\begin{algorithm}
+\caption{WIS-Ricorsivo($G, j$)}
+\begin{algorithmic}
+\If{$j = 1$}
+  \State \Return $w_1$
+\EndIf
+\If{$j = 2$}
+  \State \Return $\max\{w_1, w_2\}$
+\EndIf
+\State \Return $\max\bigl\{\text{WIS-Ricorsivo}(G, j-1),\; w_j + \text{WIS-Ricorsivo}(G, j-2)\bigr\}$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Il problema è il costo: l'equazione di ricorrenza è
@@ -115,15 +122,18 @@ $$\text{OPT}[1] = w_1 \qquad \text{OPT}[2] = \max\{w_1, w_2\}$$
 
 La ricorrenza cattura esattamente i due casi della struttura ottima: o $v_j$ non è nell'ottimo (e il valore coincide con l'ottimo di $G_{j-1}$), oppure $v_j$ è nell'ottimo (e il valore è $w_j$ più l'ottimo di $G_{j-2}$, poiché $v_{j-1}$ è escluso).
 ### Calcolo bottom-up con tabella
-**WIS-BottomUp**
-
-```text
-WIS-BottomUp(w[1..n])
-1.  OPT[1] ← w[1]
-2.  OPT[2] ← max{w[1], w[2]}
-3.  for j = 3 to n do
-4.      OPT[j] ← max{OPT[j-1], w[j] + OPT[j-2]}
-5.  return OPT[n]
+```pseudo
+\begin{algorithm}
+\caption{WIS-BottomUp($w[1 \ldots n]$)}
+\begin{algorithmic}
+\State $\text{OPT}[1] \gets w[1]$
+\State $\text{OPT}[2] \gets \max\{w[1], w[2]\}$
+\For{$j \gets 3$ \To $n$}
+  \State $\text{OPT}[j] \gets \max\{\text{OPT}[j-1],\; w[j] + \text{OPT}[j-2]\}$
+\EndFor
+\State \Return $\text{OPT}[n]$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Avanzamento sulla tabella** per l'esempio di riferimento (pesi: $1, 4, 8, 4, 3, 10$):
@@ -163,20 +173,28 @@ Partendo da $j = n$ e percorrendo il vettore $\text{OPT}$ a ritroso:
 - se $\text{OPT}[j-1] \geq w_j + \text{OPT}[j-2]$: $v_j \notin S^*$, si retrocede di un passo ($j \leftarrow j-1$);
 - altrimenti: $v_j \in S^*$, si aggiunge $v_j$ e si retrocede di due passi ($j \leftarrow j-2$).
 
-**WIS-Ricostruisci**
-
-```text
-WIS-Ricostruisci(OPT[1..n], w[1..n])
-1.  S* ← ∅
-2.  j ← n
-3.  while j ≥ 3 do
-4.      if OPT[j-1] ≥ w[j] + OPT[j-2]
-5.          then j ← j - 1
-6.          else S* ← S* ∪ {v_j}; j ← j - 2
-7.  if j = 2 and w[2] > w[1]
-8.      then S* ← S* ∪ {v_2}
-9.      else S* ← S* ∪ {v_1}
-10. return S*
+```pseudo
+\begin{algorithm}
+\caption{WIS-Ricostruisci($\text{OPT}[1 \ldots n],\, w[1 \ldots n]$)}
+\begin{algorithmic}
+\State $S^* \gets \emptyset$
+\State $j \gets n$
+\While{$j \geq 3$}
+  \If{$\text{OPT}[j-1] \geq w[j] + \text{OPT}[j-2]$}
+    \State $j \gets j - 1$
+  \Else
+    \State $S^* \gets S^* \cup \{v_j\}$
+    \State $j \gets j - 2$
+  \EndIf
+\EndWhile
+\If{$j = 2 \text{ e } w[2] > w[1]$}
+  \State $S^* \gets S^* \cup \{v_2\}$
+\Else
+  \State $S^* \gets S^* \cup \{v_1\}$
+\EndIf
+\State \Return $S^*$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Traccia sull'esempio** ($\text{OPT} = [1, 4, 9, 9, 12, 19]$, pesi $[1, 4, 8, 4, 3, 10]$):

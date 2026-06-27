@@ -222,14 +222,21 @@ Quando un problema di ottimizzazione è NP-hard, gli **algoritmi di approssimazi
 
 **`List-Scheduling`** — algoritmo greedy: assegna ogni job, nell'ordine dato, alla macchina con carico minimo corrente.
 
-**`List-Scheduling(macchine M[1..m], job J[1..n])`**
-```text
-1   for i = 1 to m: L[i] = 0; S[i] = {}
-2   for j = 1 to n:
-3       i* = argmin_{i} L[i]          // macchina con carico minimo
-4       S[i*] = S[i*] ∪ {j}
-5       L[i*] = L[i*] + t_j
-6   return S
+```pseudo
+\begin{algorithm}
+\caption{List-Scheduling($M[1..m], J[1..n]$)}
+\begin{algorithmic}
+\For{$i \gets 1$ \To $m$}
+  \State $L[i] \gets 0$, $S[i] \gets \emptyset$
+\EndFor
+\For{$j \gets 1$ \To $n$}
+  \State $i^* \gets \arg\min_i L[i]$ \Comment{macchina con carico minimo}
+  \State $S[i^*] \gets S[i^*] \cup \{j\}$
+  \State $L[i^*] \gets L[i^*] + t_j$
+\EndFor
+\State \Return $S$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Teorema — List-Scheduling è una 2-approssimazione
@@ -243,15 +250,20 @@ Quando un problema di ottimizzazione è NP-hard, gli **algoritmi di approssimazi
 ### Vertex Cover — 2-approssimazione
 Un algoritmo greedy elementare fornisce una 2-approssimazione per Vertex Cover (problema di minimizzazione):
 
-**`Approx-Vertex-Cover(G)`**
-```text
-1   C = {}
-2   E' = E                             // copia degli archi
-3   while E' ≠ {} do:
-4       scegli un arco (u, v) ∈ E'
-5       C = C ∪ {u, v}
-6       rimuovi da E' tutti gli archi incidenti a u o v
-7   return C
+```pseudo
+\begin{algorithm}
+\caption{Approx-Vertex-Cover($G$)}
+\begin{algorithmic}
+\State $C \gets \emptyset$
+\State $E' \gets E$ \Comment{copia degli archi}
+\While{$E' \neq \emptyset$}
+  \State scegli un arco $(u, v) \in E'$
+  \State $C \gets C \cup \{u, v\}$
+  \State rimuovi da $E'$ tutti gli archi incidenti a $u$ o $v$
+\EndWhile
+\State \Return $C$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Teorema — Approx-Vertex-Cover è una 2-approssimazione

@@ -97,22 +97,29 @@ Dato un grafo $G$ (non pesato) e un nodo sorgente $s$, la BFS trova le **distanz
 
 L'idea di base: appena si scopre un nuovo nodo $v$ visitando un arco $(u, v)$, si sa che $\mathrm{dist}(s, v) = \mathrm{dist}(s, u) + 1$. Tenendo in coda i nodi nell'ordine di scoperta si garantisce che i nodi a distanza $k$ siano visitati prima di quelli a distanza $k+1$.
 ### Pseudocodice BFS
-**`visitaBFS(nodo s) → albero T`**
-```text
-1   rendi tutti i nodi non marcati
-2   sia T un albero con unico nodo s
-3   sia F una coda vuota
-4   marca il vertice s, poni dist(s) = 0
-5   F.enqueue(s)
-6   while F non è vuota do
-7       u = F.dequeue()
-8       for each arco (u, v) in G do
-9           if v non è marcato then
-10              marca v
-11              poni dist(v) = dist(u) + 1
-12              rendi u padre di v in T
-13              F.enqueue(v)
-14  return T
+```pseudo
+\begin{algorithm}
+\caption{visitaBFS($s$) — visita BFS da sorgente $s$, restituisce l'albero $T$}
+\begin{algorithmic}
+\State rendi tutti i nodi non marcati
+\State sia $T$ un albero con unico nodo $s$
+\State sia $F$ una coda vuota
+\State marca il vertice $s$, poni $\mathrm{dist}(s) \gets 0$
+\State \Call{F.enqueue}{$s$}
+\While{$F$ non è vuota}
+  \State $u \gets$ \Call{F.dequeue}{}
+  \ForAll{arco $(u, v) \in G$}
+    \If{$v$ non è marcato}
+      \State marca $v$
+      \State $\mathrm{dist}(v) \gets \mathrm{dist}(u) + 1$
+      \State rendi $u$ padre di $v$ in $T$
+      \State \Call{F.enqueue}{$v$}
+    \EndIf
+  \EndFor
+\EndWhile
+\State \Return $T$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 L'albero $T$ restituito si chiama **albero BFS** (o albero dei cammini minimi) radicato in $s$.
@@ -145,54 +152,80 @@ La **DFS** (Depth-First Search, visita in profondità) esplora il grafo seguendo
 ### Versione ricorsiva
 La formulazione naturale è ricorsiva: si visita un nodo $v$, poi si itera sui suoi vicini non ancora marcati, chiamando ricorsivamente la visita su ciascuno.
 
-**`visitaDFSRicorsiva(nodo v, albero T)`**
-```text
-1   marca e visita il vertice v
-2   for each arco (v, w) in G do
-3       if w non è marcato then
-4           aggiungi l'arco (v, w) all'albero T
-5           visitaDFSRicorsiva(w, T)
+```pseudo
+\begin{algorithm}
+\caption{visitaDFSRicorsiva($v$, $T$) — visita DFS ricorsiva da $v$, estende $T$}
+\begin{algorithmic}
+\State marca e visita il vertice $v$
+\ForAll{arco $(v, w) \in G$}
+  \If{$w$ non è marcato}
+    \State aggiungi l'arco $(v, w)$ all'albero $T$
+    \State \Call{visitaDFSRicorsiva}{$w, T$}
+  \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 ```
 
-**`visitaDFS(nodo s) → albero T`**
-```text
-1   T = albero vuoto
-2   rendi tutti i nodi non marcati
-3   visitaDFSRicorsiva(s, T)
-4   return T
+```pseudo
+\begin{algorithm}
+\caption{visitaDFS($s$) — DFS da sorgente $s$, restituisce l'albero $T$}
+\begin{algorithmic}
+\State $T \gets$ albero vuoto
+\State rendi tutti i nodi non marcati
+\State \Call{visitaDFSRicorsiva}{$s, T$}
+\State \Return $T$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Per visitare **tutti** i nodi del grafo (anche quelli non raggiungibili da $s$, in grafi non connessi) si usa la versione che produce una **foresta DFS**:
 
-**`visitaDFS(grafo G) → foresta F`**
-```text
-1   for each nodo v do imposta v come non marcato
-2   F = foresta vuota
-3   for each nodo v do
-4       if v non è marcato then
-5           T = albero vuoto
-6           visitaDFSRicorsiva(v, T)
-7           aggiungi T a F
-8   return F
+```pseudo
+\begin{algorithm}
+\caption{visitaDFS($G$) — DFS completa su $G$, restituisce la foresta $F$}
+\begin{algorithmic}
+\ForAll{nodo $v \in V$}
+  \State imposta $v$ come non marcato
+\EndFor
+\State $F \gets$ foresta vuota
+\ForAll{nodo $v \in V$}
+  \If{$v$ non è marcato}
+    \State $T \gets$ albero vuoto
+    \State \Call{visitaDFSRicorsiva}{$v, T$}
+    \State aggiungi $T$ a $F$
+  \EndIf
+\EndFor
+\State \Return $F$
+\end{algorithmic}
+\end{algorithm}
 ```
 ### Versione iterativa
 La versione ricorsiva può essere riscritta con una **pila esplicita** (utile per evitare overflow dello stack su grafi molto profondi).
 
-**`visitaDFSIterativa(nodo s) → albero T`**
-```text
-1   rendi tutti i nodi non marcati
-2   T = albero con unico nodo s
-3   sia P una pila vuota
-4   P.push(s)
-5   while P non è vuota do
-6       u = P.top(); P.pop()
-7       if u non è marcato then
-8           marca u
-9           for each arco (u, v) in G do
-10              if v non è marcato then
-11                  rendi u padre di v in T
-12                  P.push(v)
-13  return T
+```pseudo
+\begin{algorithm}
+\caption{visitaDFSIterativa($s$) — DFS iterativa con pila esplicita, restituisce $T$}
+\begin{algorithmic}
+\State rendi tutti i nodi non marcati
+\State $T \gets$ albero con unico nodo $s$
+\State sia $P$ una pila vuota
+\State \Call{P.push}{$s$}
+\While{$P$ non è vuota}
+  \State $u \gets$ \Call{P.top}{}; \Call{P.pop}{}
+  \If{$u$ non è marcato}
+    \State marca $u$
+    \ForAll{arco $(u, v) \in G$}
+      \If{$v$ non è marcato}
+        \State rendi $u$ padre di $v$ in $T$
+        \State \Call{P.push}{$v$}
+      \EndIf
+    \EndFor
+  \EndIf
+\EndWhile
+\State \Return $T$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!warning] Ordine di visita ricorsivo vs iterativo

@@ -26,14 +26,21 @@ Gli algoritmi quadratici usano un **approccio incrementale**: estendono l'ordina
 ### Selection Sort
 **Approccio incrementale:** al passo $k$, cerca il minimo tra gli elementi non ancora ordinati $A[k+1], \dots, A[n]$ e lo mette in posizione $k+1$.
 
-**SelectionSort**
-```text
-SelectionSort(A)
-1.  for k = 0 to n-2 do
-2.      m = k+1
-3.      for j = k+2 to n do
-4.          if A[j] < A[m] then m = j
-5.      scambia A[m] con A[k+1]
+```pseudo
+\begin{algorithm}
+\caption{SelectionSort($A$)}
+\begin{algorithmic}
+\For{$k \gets 0$ \To $n-2$}
+  \State $m \gets k+1$
+  \For{$j \gets k+2$ \To $n$}
+    \If{$A[j] < A[m]$}
+      \State $m \gets j$
+    \EndIf
+  \EndFor
+  \State scambia $A[m]$ con $A[k+1]$
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Proprietà — Invariante del Selection Sort
@@ -52,16 +59,21 @@ La complessità è $\Theta(n^2)$ in tutti i casi (l'analisi è stretta: si conta
 ### Insertion Sort
 **Approccio incrementale:** al passo $k$, inserisce l'elemento $(k+1)$-esimo nella posizione corretta rispetto ai primi $k$ elementi già ordinati.
 
-**InsertionSort**
-```text
-InsertionSort(A)
-1.  for k = 1 to n-1 do
-2.      x = A[k+1]
-3.      j = k
-4.      while j > 0 e A[j] > x do
-5.          A[j+1] = A[j]
-6.          j = j-1
-7.      A[j+1] = x
+```pseudo
+\begin{algorithm}
+\caption{InsertionSort($A$)}
+\begin{algorithmic}
+\For{$k \gets 1$ \To $n-1$}
+  \State $x \gets A[k+1]$
+  \State $j \gets k$
+  \While{$j > 0$ e $A[j] > x$}
+    \State $A[j+1] \gets A[j]$
+    \State $j \gets j-1$
+  \EndWhile
+  \State $A[j+1] \gets x$
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Proprietà — Invariante del Insertion Sort
@@ -79,13 +91,19 @@ InsertionSort(A)
 ### Bubble Sort
 **Approccio incrementale:** esegue $n-1$ scansioni; ad ogni scansione confronta coppie di elementi adiacenti e li scambia se sono fuori ordine. Alla $k$-esima scansione il $k$-esimo massimo "risale" in posizione.
 
-**BubbleSort**
-```text
-BubbleSort(A)
-1.  for k = 1 to n-1 do
-2.      for j = 1 to n-k do
-3.          if A[j] > A[j+1] then
-4.              scambia A[j] con A[j+1]
+```pseudo
+\begin{algorithm}
+\caption{BubbleSort($A$)}
+\begin{algorithmic}
+\For{$k \gets 1$ \To $n-1$}
+  \For{$j \gets 1$ \To $n-k$}
+    \If{$A[j] > A[j+1]$}
+      \State scambia $A[j]$ con $A[j+1]$
+    \EndIf
+  \EndFor
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 ```
 **Complessità:** $\Theta(n^2)$ in tutti i casi (stessa analisi del Selection Sort sul conteggio dei confronti).
 
@@ -103,14 +121,18 @@ Questi algoritmi usano la tecnica [[03 - Equazioni di Ricorrenza|Divide et Imper
 
 Rispetto al Quick Sort, la fase di *divide* è banale e quella di *impera* (Merge) è la parte complessa.
 
-**MergeSort**
-```text
-MergeSort(A, i, f)                  -- ordina A[i;f]
-1.  if i < f then
-2.      m = ⌊(i+f)/2⌋
-3.      MergeSort(A, i, m)
-4.      MergeSort(A, m+1, f)
-5.      Merge(A, i, m, f)
+```pseudo
+\begin{algorithm}
+\caption{MergeSort($A, i, f$) — ordina $A[i;f]$}
+\begin{algorithmic}
+\If{$i < f$}
+  \State $m \gets \lfloor (i+f)/2 \rfloor$
+  \State \Call{MergeSort}{$A, i, m$}
+  \State \Call{MergeSort}{$A, m+1, f$}
+  \State \Call{Merge}{$A, i, m, f$}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 Chiamata iniziale: `MergeSort(A, 1, n)`.
 
@@ -119,18 +141,27 @@ Chiamata iniziale: `MergeSort(A, 1, n)`.
 >
 > **Dimostrazione:** ogni confronto "consuma" un elemento di una delle due sequenze; ogni posizione dell'array ausiliario $X$ è riempita in tempo costante; anche la copia finale di $X$ costa $\Theta(n_1+n_2)$.
 
-**Merge**
-```text
-Merge(A, i1, f1, f2)               -- fonde A[i1;f1] e A[f1+1;f2], output in A[i1;f2]
-1.  Sia X un array ausiliario di lunghezza f2-i1+1
-2.  i = 1;  k1 = i1;  k2 = f1+1
-3.  while k1 ≤ f1 e k2 ≤ f2 do
-4.      if A[k1] ≤ A[k2]
-5.      then X[i] = A[k1];  incrementa i e k1
-6.      else X[i] = A[k2];  incrementa i e k2
-7.  if k1 ≤ f1 then copia A[k1;f1] alla fine di X
-8.  else copia A[k2;f2] alla fine di X
-9.  copia X in A[i1;f2]
+```pseudo
+\begin{algorithm}
+\caption{Merge($A, i_1, f_1, f_2$) — fonde $A[i_1;f_1]$ e $A[f_1+1;f_2]$, output in $A[i_1;f_2]$}
+\begin{algorithmic}
+\State Sia $X$ un array ausiliario di lunghezza $f_2 - i_1 + 1$
+\State $i \gets 1$; $k_1 \gets i_1$; $k_2 \gets f_1+1$
+\While{$k_1 \leq f_1$ e $k_2 \leq f_2$}
+  \If{$A[k_1] \leq A[k_2]$}
+    \State $X[i] \gets A[k_1]$; incrementa $i$ e $k_1$
+  \Else
+    \State $X[i] \gets A[k_2]$; incrementa $i$ e $k_2$
+  \EndIf
+\EndWhile
+\If{$k_1 \leq f_1$}
+  \State copia $A[k_1;f_1]$ alla fine di $X$
+\Else
+  \State copia $A[k_2;f_2]$ alla fine di $X$
+\EndIf
+\State copia $X$ in $A[i_1;f_2]$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Teorema — Complessità del Merge Sort
@@ -152,31 +183,46 @@ Merge(A, i1, f1, f2)               -- fonde A[i1;f1] e A[f1+1;f2], output in A[i
 
 Rispetto al Merge Sort, la fase di *divide* (Partition) è la parte complessa, mentre la fase di *impera* è banale.
 
-**QuickSort**
-```text
-QuickSort(A, i, f)                  -- ordina A[i;f]
-1.  if i < f then
-2.      m = Partition(A, i, f)
-3.      QuickSort(A, i, m-1)
-4.      QuickSort(A, m+1, f)
+```pseudo
+\begin{algorithm}
+\caption{QuickSort($A, i, f$) — ordina $A[i;f]$}
+\begin{algorithmic}
+\If{$i < f$}
+  \State $m \gets$ \Call{Partition}{$A, i, f$}
+  \State \Call{QuickSort}{$A, i, m-1$}
+  \State \Call{QuickSort}{$A, m+1, f$}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 Chiamata iniziale: `QuickSort(A, 1, n)`.
 #### La procedura Partition
 Il perno è scelto come $x = A[i]$ (primo elemento). Due indici scorrono l'array in parallelo: `inf` da sinistra verso destra si ferma sul primo elemento $> x$; `sup` da destra verso sinistra si ferma sul primo elemento $\le x$. Quando entrambi si sono fermati si scambiano i due elementi; si continua finché i due indici non si incrociano. Alla fine, il perno viene posizionato al centro.
 
-**Partition**
-```text
-Partition(A, i, f)                  -- partiziona A[i;f] rispetto ad A[i]
-1.  x = A[i]
-2.  inf = i
-3.  sup = f+1
-4.  while true do
-5.      do (inf = inf+1) while (inf ≤ f e A[inf] ≤ x)
-6.      do (sup = sup-1) while (A[sup] > x)
-7.      if inf < sup then scambia A[inf] e A[sup]
-8.      else break
-9.  scambia A[i] e A[sup]          -- posiziona il perno
-10. return sup                      -- restituisce la posizione del perno
+```pseudo
+\begin{algorithm}
+\caption{Partition($A, i, f$) — partiziona $A[i;f]$ rispetto ad $A[i]$}
+\begin{algorithmic}
+\State $x \gets A[i]$
+\State $inf \gets i$
+\State $sup \gets f+1$
+\While{$\mathrm{true}$}
+  \Repeat
+    \State $inf \gets inf+1$
+  \Until{$inf > f$ o $A[inf] > x$}
+  \Repeat
+    \State $sup \gets sup-1$
+  \Until{$A[sup] \leq x$}
+  \If{$inf < sup$}
+    \State scambia $A[inf]$ e $A[sup]$
+  \Else
+    \State \textbf{break}
+  \EndIf
+\EndWhile
+\State scambia $A[i]$ e $A[sup]$ \Comment{posiziona il perno}
+\State \Return $sup$ \Comment{restituisce la posizione del perno}
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Proprietà — Invariante di Partition
@@ -218,15 +264,19 @@ Per la definizione di heap, le proprietà strutturali, la procedura `fixHeap` e 
 - `fixHeap` ripristina la proprietà heap in $O(\log n)$;
 - `heapify` costruisce un heap in tempo $O(n)$.
 
-**HeapSort**
-```text
-HeapSort(A)
-1.  Heapify(A)                      -- costruisce il max-heap: O(n)
-2.  heapsize[A] = n
-3.  for i = n downto 2 do           -- n-1 estrazioni
-4.      scambia A[1] e A[i]         -- sposta il massimo nella posizione i
-5.      heapsize[A] = heapsize[A]-1 -- riduce l'heap
-6.      fixHeap(1, A)               -- ripristina la proprietà heap: O(log n)
+```pseudo
+\begin{algorithm}
+\caption{HeapSort($A$)}
+\begin{algorithmic}
+\State \Call{Heapify}{$A$} \Comment{costruisce il max-heap: $O(n)$}
+\State $\mathit{heapsize}[A] \gets n$
+\For{$i \gets n$ downto $2$} \Comment{$n-1$ estrazioni}
+  \State scambia $A[1]$ e $A[i]$ \Comment{sposta il massimo nella posizione $i$}
+  \State $\mathit{heapsize}[A] \gets \mathit{heapsize}[A]-1$ \Comment{riduce l'heap}
+  \State \Call{fixHeap}{$1, A$} \Comment{ripristina la proprietà heap: $O(\log n)$}
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!info] Perché max-heap e non min-heap?
@@ -281,18 +331,27 @@ Uscendo dalla classe degli algoritmi basati su confronti è possibile superare i
 ### Integer Sort (Counting Sort)
 Ordina $n$ **interi** con valori in $[1, k]$ mantenendo un array $Y$ di $k$ contatori: $Y[x]$ = numero di occorrenze del valore $x$ in $X$.
 
-**IntegerSort**
-```text
-IntegerSort(X, k)
-1.  Sia Y un array di dimensione k
-2.  for i = 1 to k do Y[i] = 0          -- O(k): inizializza contatori
-3.  for i = 1 to n do incrementa Y[X[i]] -- O(n): conta le occorrenze
-4.  j = 1
-5.  for i = 1 to k do                    -- O(n+k): ricostruisce X
-6.      while Y[i] > 0 do
-7.          X[j] = i
-8.          incrementa j
-9.          decrementa Y[i]
+```pseudo
+\begin{algorithm}
+\caption{IntegerSort($X, k$)}
+\begin{algorithmic}
+\State Sia $Y$ un array di dimensione $k$
+\For{$i \gets 1$ \To $k$} \Comment{$O(k)$: inizializza contatori}
+  \State $Y[i] \gets 0$
+\EndFor
+\For{$i \gets 1$ \To $n$} \Comment{$O(n)$: conta le occorrenze}
+  \State incrementa $Y[X[i]]$
+\EndFor
+\State $j \gets 1$
+\For{$i \gets 1$ \To $k$} \Comment{$O(n+k)$: ricostruisce $X$}
+  \While{$Y[i] > 0$}
+    \State $X[j] \gets i$
+    \State incrementa $j$
+    \State decrementa $Y[i]$
+  \EndWhile
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 ```
 **Analisi del ciclo riga 5–9:**
 $$\sum_{i=1}^{k}(1 + Y[i]) = k + \sum_{i=1}^{k} Y[i] = k + n \implies O(n+k).$$
@@ -309,15 +368,22 @@ $$\sum_{i=1}^{k}(1 + Y[i]) = k + \sum_{i=1}^{k} Y[i] = k + n \implies O(n+k).$$
 ### Bucket Sort
 Estende Integer Sort al caso di **record** con chiave intera in $[1, k]$ e informazioni satellite. Anziché contatori, mantiene un array $Y$ di **liste**: la lista $Y[i]$ contiene tutti i record con chiave $= i$.
 
-**BucketSort**
-```text
-BucketSort(X, k)
-1.  Sia Y un array di dimensione k
-2.  for i = 1 to k do Y[i] = lista vuota -- O(k)
-3.  for i = 1 to n do                     -- O(n)
-4.      appendi il record X[i] alla lista Y[chiave(X[i])]
-5.  for i = 1 to k do                     -- O(n+k)
-6.      copia ordinatamente in X gli elementi della lista Y[i]
+```pseudo
+\begin{algorithm}
+\caption{BucketSort($X, k$)}
+\begin{algorithmic}
+\State Sia $Y$ un array di dimensione $k$
+\For{$i \gets 1$ \To $k$} \Comment{$O(k)$}
+  \State $Y[i] \gets$ lista vuota
+\EndFor
+\For{$i \gets 1$ \To $n$} \Comment{$O(n)$}
+  \State appendi il record $X[i]$ alla lista $Y[\mathit{chiave}(X[i])]$
+\EndFor
+\For{$i \gets 1$ \To $k$} \Comment{$O(n+k)$}
+  \State copia ordinatamente in $X$ gli elementi della lista $Y[i]$
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 ```
 Tempo totale: $O(n+k)$, lineare se $k = O(n)$.
 
@@ -367,21 +433,39 @@ $$T(n) = O\!\left(n \cdot \frac{\log k}{\log n}\right).$$
 > [!quote] Proprietà — Costruzione dell'Oracolo con Somme Prefisse
 > Si costruisce un array $Y$ di dimensione $k$ dove $Y[i]$ = numero di elementi di $X$ che sono $\le i$ (somma prefissa dei contatori).
 
-**CostruisciOracolo**
-```text
-CostruisciOracolo(X, k)
-1.  Sia Y un array di dimensione k
-2.  for i = 1 to k do Y[i] = 0
-3.  for i = 1 to n do incrementa Y[X[i]]   -- conta le occorrenze (come IntegerSort)
-4.  for i = 2 to k do Y[i] = Y[i] + Y[i-1] -- somme prefisse
-5.  return Y
+```pseudo
+\begin{algorithm}
+\caption{CostruisciOracolo($X, k$)}
+\begin{algorithmic}
+\State Sia $Y$ un array di dimensione $k$
+\For{$i \gets 1$ \To $k$}
+  \State $Y[i] \gets 0$
+\EndFor
+\For{$i \gets 1$ \To $n$} \Comment{conta le occorrenze (come IntegerSort)}
+  \State incrementa $Y[X[i]]$
+\EndFor
+\For{$i \gets 2$ \To $k$} \Comment{somme prefisse}
+  \State $Y[i] \gets Y[i] + Y[i-1]$
+\EndFor
+\State \Return $Y$
+\end{algorithmic}
+\end{algorithm}
 ```
-**InterrogaOracolo**
-```text
-InterrogaOracolo(Y, k, a, b)
-1.  if b > k then b = k
-2.  if a ≤ 1 then return Y[b]
-3.  else return Y[b] - Y[a-1]
+
+```pseudo
+\begin{algorithm}
+\caption{InterrogaOracolo($Y, k, a, b$)}
+\begin{algorithmic}
+\If{$b > k$}
+  \State $b \gets k$
+\EndIf
+\If{$a \leq 1$}
+  \State \Return $Y[b]$
+\Else
+  \State \Return $Y[b] - Y[a-1]$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Proprietà — Complessità dell'Oracolo

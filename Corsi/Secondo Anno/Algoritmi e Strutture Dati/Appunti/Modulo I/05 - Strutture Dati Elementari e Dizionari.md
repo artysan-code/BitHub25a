@@ -80,21 +80,25 @@ L'ultima riga anticipa il risultato degli [[06 - Alberi di Ricerca BST e AVL]]: 
 ### Implementazione con array (indicizzata)
 Si mantiene un indice `top` che punta all'ultimo elemento inserito.
 
-**`push`**
-
-```text
-push(Pila P, elem e)
-1. P.top = P.top + 1
-2. P[P.top] = e
+```pseudo
+\begin{algorithm}
+\caption{push($P$, $e$)}
+\begin{algorithmic}
+\State $P.\text{top} \gets P.\text{top} + 1$
+\State $P[P.\text{top}] \gets e$
+\end{algorithmic}
+\end{algorithm}
 ```
 
-**`pop`**
-
-```text
-pop(Pila P)
-1. e = P[P.top]
-2. P.top = P.top - 1
-3. return e
+```pseudo
+\begin{algorithm}
+\caption{pop($P$)}
+\begin{algorithmic}
+\State $e \gets P[P.\text{top}]$
+\State $P.\text{top} \gets P.\text{top} - 1$
+\State \Return $e$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Complessità: `push` → $O(1)$, `pop` → $O(1)$, `top` → $O(1)$.
@@ -111,21 +115,25 @@ Complessità: `push` → $O(1)$, `pop` → $O(1)$, `top` → $O(1)$.
 ### Implementazione con array circolare
 Si usano due indici, `head` e `tail`, in un array di dimensione $n$ con aritmetica modulo $n$.
 
-**`enqueue`**
-
-```text
-enqueue(Coda C, elem e)
-1. C[C.tail] = e
-2. C.tail = (C.tail + 1) mod n
+```pseudo
+\begin{algorithm}
+\caption{enqueue($C$, $e$)}
+\begin{algorithmic}
+\State $C[C.\text{tail}] \gets e$
+\State $C.\text{tail} \gets (C.\text{tail} + 1) \bmod n$
+\end{algorithmic}
+\end{algorithm}
 ```
 
-**`dequeue`**
-
-```text
-dequeue(Coda C)
-1. e = C[C.head]
-2. C.head = (C.head + 1) mod n
-3. return e
+```pseudo
+\begin{algorithm}
+\caption{dequeue($C$)}
+\begin{algorithmic}
+\State $e \gets C[C.\text{head}]$
+\State $C.\text{head} \gets (C.\text{head} + 1) \bmod n$
+\State \Return $e$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Complessità: `enqueue` → $O(1)$, `dequeue` → $O(1)$, `first` → $O(1)$.
@@ -199,34 +207,42 @@ L'algoritmo di visita in profondità (**DFS**, *Depth-First Search*) parte dalla
 
 **Versione iterativa** con Pila (per alberi binari; nella pila vengono inseriti anche i nodi `null`):
 
-**`DFS`**
-
-```text
-DFS(nodo r)
-1. Pila S
-2. S.push(r)
-3. while S non vuota do
-4.   u = S.pop()
-5.   if u ≠ null then
-6.     visita(u)
-7.     S.push(figlio destro di u)
-8.     S.push(figlio sinistro di u)
+```pseudo
+\begin{algorithm}
+\caption{DFS($r$)}
+\begin{algorithmic}
+\State Pila $S$
+\State \Call{S.push}{$r$}
+\While{$S$ non vuota}
+  \State $u \gets$ \Call{S.pop}{}
+  \If{$u \neq \text{null}$}
+    \State \Call{visita}{$u$}
+    \State \Call{S.push}{figlio destro di $u$}
+    \State \Call{S.push}{figlio sinistro di $u$}
+  \EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Complessità: ogni nodo (e ogni `null`) è inserito ed estratto dalla pila una sola volta → $O(1)$ per nodo → $T(n) = O(n)$.
 
 **Versione ricorsiva** con i tre ordini di visita (per alberi binari):
 
-**`DFS_ricorsiva`**
-
-```text
-DFS_ricorsiva(nodo r)
-1. if r = null then return
-2. [visita(r)]                         ← preordine: radice prima
-3. DFS_ricorsiva(figlio sinistro di r)
-4. [visita(r)]                         ← simmetrica: radice in mezzo
-5. DFS_ricorsiva(figlio destro di r)
-6. [visita(r)]                         ← postordine: radice dopo
+```pseudo
+\begin{algorithm}
+\caption{DFS\_ricorsiva($r$)}
+\begin{algorithmic}
+\If{$r = \text{null}$}
+  \State \Return
+\EndIf
+\State [\Call{visita}{$r$}] \Comment{preordine: radice prima}
+\State \Call{DFS\_ricorsiva}{figlio sinistro di $r$}
+\State [\Call{visita}{$r$}] \Comment{simmetrica: radice in mezzo}
+\State \Call{DFS\_ricorsiva}{figlio destro di $r$}
+\State [\Call{visita}{$r$}] \Comment{postordine: radice dopo}
+\end{algorithmic}
+\end{algorithm}
 ```
 
 L'operazione `visita(r)` va inserita in *una sola* delle tre posizioni indicate:
@@ -251,17 +267,21 @@ L'algoritmo di visita in ampiezza (**BFS**, *Breadth-First Search*) parte dalla 
 
 **Versione iterativa** con Coda (nella coda vengono inseriti solo nodi non `null`):
 
-**`BFS`**
-
-```text
-BFS(nodo r)
-1. Coda Q
-2. Q.enqueue(r)
-3. while Q non vuota do
-4.   u = Q.dequeue()
-5.   visita(u)
-6.   for each figlio v di u (non null) do
-7.     Q.enqueue(v)
+```pseudo
+\begin{algorithm}
+\caption{BFS($r$)}
+\begin{algorithmic}
+\State Coda $Q$
+\State \Call{Q.enqueue}{$r$}
+\While{$Q$ non vuota}
+  \State $u \gets$ \Call{Q.dequeue}{}
+  \State \Call{visita}{$u$}
+  \ForAll{figlio $v$ di $u$ (non null)}
+    \State \Call{Q.enqueue}{$v$}
+  \EndFor
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Complessità: ogni nodo è inserito ed estratto dalla coda una sola volta → $O(1)$ per nodo → $T(n) = O(n)$.
@@ -275,68 +295,95 @@ Complessità: ogni nodo è inserito ed estratto dalla coda una sola volta → $O
 ### Calcolo dell'altezza
 L'altezza si calcola con una visita in postordine (bottom-up): prima si calcolano le altezze dei sottoalberi, poi si combina.
 
-**`CalcolaAltezza`**
-
-```text
-CalcolaAltezza(nodo r)
-1. if r = null then return -1
-2. sin = CalcolaAltezza(figlio sinistro di r)
-3. des = CalcolaAltezza(figlio destro di r)
-4. return 1 + max{sin, des}
+```pseudo
+\begin{algorithm}
+\caption{CalcolaAltezza($r$)}
+\begin{algorithmic}
+\If{$r = \text{null}$}
+  \State \Return $-1$
+\EndIf
+\State $sin \gets$ \Call{CalcolaAltezza}{figlio sinistro di $r$}
+\State $des \gets$ \Call{CalcolaAltezza}{figlio destro di $r$}
+\State \Return $1 + \max\{sin, des\}$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Caso base: nodo `null` restituisce $-1$. Una foglia (entrambi i figli `null`) restituisce $1 + \max(-1, -1) = 0$.
 
 Complessità: $O(n)$ — ogni nodo visitato esattamente una volta.
 ### Calcolo del numero di foglie (Problema 3.6.1)
-**`CalcolaNumFoglie`**
-
-```text
-CalcolaNumFoglie(nodo r)
-1. if r = null then return 0
-2. if r è una foglia then return 1
-3. sin = CalcolaNumFoglie(figlio sinistro di r)
-4. des = CalcolaNumFoglie(figlio destro di r)
-5. return sin + des
+```pseudo
+\begin{algorithm}
+\caption{CalcolaNumFoglie($r$)}
+\begin{algorithmic}
+\If{$r = \text{null}$}
+  \State \Return $0$
+\EndIf
+\If{$r$ è una foglia}
+  \State \Return $1$
+\EndIf
+\State $sin \gets$ \Call{CalcolaNumFoglie}{figlio sinistro di $r$}
+\State $des \gets$ \Call{CalcolaNumFoglie}{figlio destro di $r$}
+\State \Return $sin + des$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Complessità: $O(n)$.
 ### Calcolo del grado medio (Problema 3.6.2)
 Il **grado medio** dei nodi non foglia è il rapporto tra la somma dei gradi di tutti i nodi e il numero di nodi interni ($n - n_{\text{foglie}}$).
 
-**`CalcolaGradoMedio`**
-
-```text
-CalcolaGradoMedio(nodo r)
-1. n = numero di nodi dell'albero
-2. nfoglie = CalcolaNumFoglie(r)
-3. if r ≠ null then return SommaGradi(r) / (n - nfoglie)
+```pseudo
+\begin{algorithm}
+\caption{CalcolaGradoMedio($r$)}
+\begin{algorithmic}
+\State $n \gets$ numero di nodi dell'albero
+\State $nfoglie \gets$ \Call{CalcolaNumFoglie}{$r$}
+\If{$r \neq \text{null}$}
+  \State \Return \Call{SommaGradi}{$r$} $/ (n - nfoglie)$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 
-**`SommaGradi`**
-
-```text
-SommaGradi(nodo r)
-1. if r = null then return 0
-2. if r è una foglia then return 0
-3. S = numero figli di r + SommaGradi(figlio sinistro di r)
-         + SommaGradi(figlio destro di r)
-4. return S
+```pseudo
+\begin{algorithm}
+\caption{SommaGradi($r$)}
+\begin{algorithmic}
+\If{$r = \text{null}$}
+  \State \Return $0$
+\EndIf
+\If{$r$ è una foglia}
+  \State \Return $0$
+\EndIf
+\State $S \gets$ numero figli di $r$ $+$ \Call{SommaGradi}{figlio sinistro di $r$} $+$ \Call{SommaGradi}{figlio destro di $r$}
+\State \Return $S$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Complessità: $O(n)$.
 ### Ricerca di un elemento (Problema 3.6.3)
 Ricerca in un albero generico (non BST): visita DFS, si esplora prima il sottoalbero sinistro e, solo se non trovato, il destro (cortocircuito).
 
-**`CercaElemento`**
-
-```text
-CercaElemento(nodo r, chiave k)
-1. if r = null then return null
-2. if chiave(r) = k then return r
-3. sin = CercaElemento(figlio sinistro di r, k)
-4. if sin ≠ null then return sin
-5. return CercaElemento(figlio destro di r, k)
+```pseudo
+\begin{algorithm}
+\caption{CercaElemento($r$, $k$)}
+\begin{algorithmic}
+\If{$r = \text{null}$}
+  \State \Return $\text{null}$
+\EndIf
+\If{$\text{chiave}(r) = k$}
+  \State \Return $r$
+\EndIf
+\State $sin \gets$ \Call{CercaElemento}{figlio sinistro di $r$, $k$}
+\If{$sin \neq \text{null}$}
+  \State \Return $sin$
+\EndIf
+\State \Return \Call{CercaElemento}{figlio destro di $r$, $k$}
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Complessità: $O(n)$ nel caso peggiore (chiave assente).
@@ -345,19 +392,21 @@ Dato un albero $T$ con vettore dei padri e radice $r$, si vuole restituire il ve
 
 **Osservazione chiave**: i soli nodi che cambiano padre sono quelli lungo il cammino da $r'$ a $r$. L'algoritmo inverte i puntatori lungo questo cammino.
 
-**`RiRadica`**
-
-```text
-RiRadica(VettorePadri T, indice j)
-1. x = j
-2. px = T[j].parent
-3. T[j].parent = null
-4. while px ≠ null do
-5.   y = T[px].parent
-6.   T[px].parent = x
-7.   x = px
-8.   px = y
-9. endwhile
+```pseudo
+\begin{algorithm}
+\caption{RiRadica($T$, $j$)}
+\begin{algorithmic}
+\State $x \gets j$
+\State $px \gets T[j].\text{parent}$
+\State $T[j].\text{parent} \gets \text{null}$
+\While{$px \neq \text{null}$}
+  \State $y \gets T[px].\text{parent}$
+  \State $T[px].\text{parent} \gets x$
+  \State $x \gets px$
+  \State $px \gets y$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Complessità: $O(h)$, dove $h$ è l'altezza di $T$ rispetto alla radice $r$ originale (si percorre al più il cammino radice–$r'$).

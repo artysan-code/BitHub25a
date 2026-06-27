@@ -35,19 +35,24 @@ La correttezza si dimostra per **exchange argument**: se il sotto-allineamento n
 > $$\text{OPT}(i,\,j) = \begin{cases} j\,\delta & \text{se } i = 0 \\ i\,\delta & \text{se } j = 0 \\ \min\!\bigl\{\,\alpha_{x_i y_j} + \text{OPT}(i-1,\,j-1),\;\; \delta + \text{OPT}(i-1,\,j),\;\; \delta + \text{OPT}(i,\,j-1)\,\bigr\} & \text{altrimenti} \end{cases}$$
 ### Algoritmo bottom-up
 La ricorrenza ha la proprietà che $\text{OPT}(i, j)$ dipende solo da celle con indici strettamente minori: la matrice si riempie per righe (o per colonne) in modo che ogni cella sia già disponibile quando serve.
-**Sequence-Alignment($m, n, x_1, \ldots, x_m, y_1, \ldots, y_n, \delta, \alpha$)**
-
-```text
-1.  FOR i = 0 TO m DO
-2.      M[i, 0] ← i · δ
-3.  FOR j = 0 TO n DO
-4.      M[0, j] ← j · δ
-5.  FOR i = 1 TO m DO
-6.      FOR j = 1 TO n DO
-7.          M[i, j] ← min{ α[x_i, y_j] + M[i-1, j-1],
-8.                          δ + M[i-1, j],
-9.                          δ + M[i, j-1] }
-10. RETURN M[m, n]
+```pseudo
+\begin{algorithm}
+\caption{Sequence-Alignment($m, n, x_1, \ldots, x_m, y_1, \ldots, y_n, \delta, \alpha$)}
+\begin{algorithmic}
+\For{$i \gets 0$ \To $m$}
+  \State $M[i, 0] \gets i \cdot \delta$
+\EndFor
+\For{$j \gets 0$ \To $n$}
+  \State $M[0, j] \gets j \cdot \delta$
+\EndFor
+\For{$i \gets 1$ \To $m$}
+  \For{$j \gets 1$ \To $n$}
+    \State $M[i, j] \gets \min\{\, \alpha_{x_i y_j} + M[i-1, j-1],\;\; \delta + M[i-1, j],\;\; \delta + M[i, j-1] \,\}$
+  \EndFor
+\EndFor
+\State \Return $M[m, n]$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Teorema — Complessità Sequence Alignment
@@ -162,18 +167,25 @@ Due casi per il cammino ottimo da $v$ a $t$ con $\leq i$ archi:
 > [!quote] Proprietà — Equazione di Bellman (cammini minimi)
 > $$\text{OPT}(i,\,v) = \begin{cases} 0 & \text{se } i = 0 \text{ e } v = t \\ +\infty & \text{se } i = 0 \text{ e } v \neq t \\ \min\!\Bigl(\text{OPT}(i-1,\,v),\;\; \min_{(v,w)\in E}\bigl\{\ell_{vw} + \text{OPT}(i-1,\,w)\bigr\}\Bigr) & \text{se } i > 0 \end{cases}$$
 
-**Algoritmo DP naïve — Shortest-Paths($V, E, \ell, t$)**
-
-```text
-1.  FOREACH nodo v ∈ V:
-2.      M[0, v] ← +∞
-3.  M[0, t] ← 0
-4.  FOR i = 1 TO n-1 DO
-5.      FOREACH nodo v ∈ V:
-6.          M[i, v] ← M[i-1, v]
-7.          FOREACH arco (v, w) ∈ E:
-8.              M[i, v] ← min{ M[i, v],  M[i-1, w] + ℓ(v,w) }
-9.  RETURN M[n-1, ·]
+```pseudo
+\begin{algorithm}
+\caption{Shortest-Paths($V, E, \ell, t$) — algoritmo DP naïve}
+\begin{algorithmic}
+\ForAll{nodo $v \in V$}
+  \State $M[0, v] \gets +\infty$
+\EndFor
+\State $M[0, t] \gets 0$
+\For{$i \gets 1$ \To $n-1$}
+  \ForAll{nodo $v \in V$}
+    \State $M[i, v] \gets M[i-1, v]$
+    \ForAll{arco $(v, w) \in E$}
+      \State $M[i, v] \gets \min\{\, M[i, v],\;\; M[i-1, w] + \ell(v,w) \,\}$
+    \EndFor
+  \EndFor
+\EndFor
+\State \Return $M[n-1, \cdot]$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Teorema 1 — Complessità dell'algoritmo DP
@@ -189,21 +201,32 @@ Lo spazio $\Theta(n^2)$ è spesso inaccettabile. L'ottimizzazione chiave usa:
 - Un vettore **$\text{successor}[v]$** che punta al nodo successivo sul cammino corrente.
 - **Ottimizzazione di prestazione:** alla passata $i$, l'arco $(v,w)$ viene considerato solo se $d[w]$ è stato aggiornato alla passata $i-1$ (non ha senso riesaminare nodi la cui distanza non è cambiata).
 
-**Bellman-Ford-Moore($V, E, \ell, t$)**
-
-```text
-1.  FOREACH nodo v ∈ V:
-2.      d[v] ← +∞
-3.      successor[v] ← null
-4.  d[t] ← 0
-5.  FOR i = 1 TO n-1 DO
-6.      FOREACH nodo w ∈ V:
-7.          IF (d[w] è stato aggiornato alla passata i-1) THEN
-8.              FOREACH arco (v, w) ∈ E:
-9.                  IF (d[v] > d[w] + ℓ(v,w)) THEN
-10.                     d[v] ← d[w] + ℓ(v,w)
-11.                     successor[v] ← w
-12.     IF (nessun d[·] è cambiato in questa passata) STOP
+```pseudo
+\begin{algorithm}
+\caption{Bellman-Ford-Moore($V, E, \ell, t$)}
+\begin{algorithmic}
+\ForAll{nodo $v \in V$}
+  \State $d[v] \gets +\infty$
+  \State $\text{successor}[v] \gets \text{null}$
+\EndFor
+\State $d[t] \gets 0$
+\For{$i \gets 1$ \To $n-1$}
+  \ForAll{nodo $w \in V$}
+    \If{$d[w]$ è stato aggiornato alla passata $i-1$}
+      \ForAll{arco $(v, w) \in E$}
+        \If{$d[v] > d[w] + \ell(v,w)$}
+          \State $d[v] \gets d[w] + \ell(v,w)$
+          \State $\text{successor}[v] \gets w$
+        \EndIf
+      \EndFor
+    \EndIf
+  \EndFor
+  \If{nessun $d[\cdot]$ è cambiato in questa passata}
+    \State \textbf{break}
+  \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!info] Variante single-source
@@ -255,13 +278,18 @@ Lo spazio $\Theta(n^2)$ è spesso inaccettabile. L'ottimizzazione chiave usa:
 ### Rilevamento di cicli negativi
 Per rilevare cicli negativi raggiungibili da $t$, si esegue una **passata aggiuntiva** ($i = n$) dopo le $n-1$ normali:
 
-**Bellman-Ford-Moore con rilevamento dei cicli negativi**
-
-```text
-1.  [stesse righe 1–12 di Bellman-Ford-Moore]
-13. FOREACH arco (v, w) ∈ E:
-14.     IF (d[v] > d[w] + ℓ(v,w)) THEN
-15.         RETURN "esiste un ciclo negativo"
+```pseudo
+\begin{algorithm}
+\caption{Bellman-Ford-Moore($V, E, \ell, t$) — con rilevamento dei cicli negativi}
+\begin{algorithmic}
+\State $\ldots$ \Comment{righe 1–12 di Bellman-Ford-Moore: inizializzazione e ciclo principale}
+\ForAll{arco $(v, w) \in E$}
+  \If{$d[v] > d[w] + \ell(v,w)$}
+    \State \Return "esiste un ciclo negativo"
+  \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Lemma — Correttezza del rilevamento

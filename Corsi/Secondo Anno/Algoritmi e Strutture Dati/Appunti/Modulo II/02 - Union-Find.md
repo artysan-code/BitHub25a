@@ -16,24 +16,38 @@ L'obiettivo è progettare una struttura dati che sia efficiente su **sequenze ar
 - la **radice** contiene il nome dell'insieme;
 - le **foglie** sono gli elementi dell'insieme (incluso l'elemento rappresentativo, il cui valore è memorizzato anche nella radice).
 
-**makeSet(elem e)**
-```text
-1. crea un nuovo albero con due nodi: una radice e un'unica foglia
-2. memorizza e sia nella foglia che come nome della radice
+```pseudo
+\begin{algorithm}
+\caption{makeSet($e$)}
+\begin{algorithmic}
+\State crea un nuovo albero con due nodi: una radice e un'unica foglia
+\State memorizza $e$ sia nella foglia che come nome della radice
+\end{algorithmic}
+\end{algorithm}
 ```
 
-**union(name A, name B)**
-```text
-1. considera l'albero A (insieme di nome A) e l'albero B (insieme di nome B)
-2. per ogni foglia di B, reindirizza il suo puntatore dalla radice di B alla radice di A
-3. cancella la vecchia radice di B
+```pseudo
+\begin{algorithm}
+\caption{union($A, B$)}
+\begin{algorithmic}
+\State considera l'albero $A$ (insieme di nome $A$) e l'albero $B$ (insieme di nome $B$)
+\ForAll{foglia di $B$}
+  \State reindirizza il suo puntatore dalla radice di $B$ alla radice di $A$
+\EndFor
+\State cancella la vecchia radice di $B$
+\end{algorithmic}
+\end{algorithm}
 ```
 
-**find(elem e)**
-```text
-1. accedi alla foglia corrispondente all'elemento e
-2. segui il puntatore al padre (la radice)
-3. restituisci il nome memorizzato nella radice
+```pseudo
+\begin{algorithm}
+\caption{find($e$)}
+\begin{algorithmic}
+\State accedi alla foglia corrispondente all'elemento $e$
+\State segui il puntatore al padre (la radice)
+\State \Return il nome memorizzato nella radice
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Esempio**
@@ -73,16 +87,21 @@ find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
 ### Euristica union by size (QuickFind)
 **Idea**: evitare che un nodo cambi padre troppo spesso. Nell'unione di $A$ e $B$, si attaccano gli elementi dell'insieme di **cardinalità minore** a quello di cardinalità maggiore; se necessario si aggiorna la radice per mantenere il nome corretto. Ogni insieme mantiene esplicitamente la propria **size** (numero di elementi).
 
-**union con union by size (QuickFind)**
-```text
-1. considera l'albero A e l'albero B
-2. se size(A) >= size(B):
-3.     reindirizza le foglie di B verso la radice di A
-4.     aggiorna size(A) <- size(A) + size(B)
-5. altrimenti (size(B) > size(A)):
-6.     reindirizza le foglie di A verso la radice di B
-7.     memorizza nella radice di B il nome di A  (il nome dell'insieme diventa A)
-8.     aggiorna size(B) <- size(A) + size(B)
+```pseudo
+\begin{algorithm}
+\caption{union($A, B$) — con union by size}
+\begin{algorithmic}
+\State considera l'albero $A$ e l'albero $B$
+\If{$\text{size}(A) \geq \text{size}(B)$}
+  \State reindirizza le foglie di $B$ verso la radice di $A$
+  \State $\text{size}(A) \gets \text{size}(A) + \text{size}(B)$
+\Else \Comment{$\text{size}(B) > \text{size}(A)$}
+  \State reindirizza le foglie di $A$ verso la radice di $B$
+  \State memorizza nella radice di $B$ il nome di $A$ \Comment{il nome dell'insieme diventa $A$}
+  \State $\text{size}(B) \gets \text{size}(A) + \text{size}(B)$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Teorema — Analisi ammortizzata QuickFind con union by size
@@ -110,20 +129,32 @@ find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
 - la **radice** è l'elemento rappresentativo dell'insieme (il suo nome);
 - i **nodi non radice** sono gli altri elementi dell'insieme.
 
-**makeSet(elem e)**
-```text
-1. crea un nuovo albero con un unico nodo e
+```pseudo
+\begin{algorithm}
+\caption{makeSet($e$)}
+\begin{algorithmic}
+\State crea un nuovo albero con un unico nodo $e$
+\end{algorithmic}
+\end{algorithm}
 ```
 
-**union(name A, name B)**
-```text
-1. imposta un puntatore dalla radice dell'albero B alla radice dell'albero A
+```pseudo
+\begin{algorithm}
+\caption{union($A, B$)}
+\begin{algorithmic}
+\State imposta un puntatore dalla radice dell'albero $B$ alla radice dell'albero $A$
+\end{algorithmic}
+\end{algorithm}
 ```
 
-**find(elem e)**
-```text
-1. a partire dal nodo e, risali i puntatori padre fino alla radice
-2. restituisci il nome memorizzato nella radice
+```pseudo
+\begin{algorithm}
+\caption{find($e$)}
+\begin{algorithmic}
+\State a partire dal nodo $e$, risali i puntatori padre fino alla radice
+\State \Return il nome memorizzato nella radice
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Esempio**
@@ -169,14 +200,19 @@ find(3): 3 -> 2 -> 4 -> (radice) = "4"
 ### Euristica union by size (QuickUnion)
 **Idea**: mantenere gli alberi di altezza piccola. Nell'unione di $A$ e $B$, la radice dell'albero con **meno nodi** diventa figlia della radice dell'albero con **più nodi**.
 
-**union con union by size (QuickUnion)**
-```text
-1. se size(A) >= size(B):
-2.     rendi la radice di B figlia della radice di A
-3. altrimenti (size(B) > size(A)):
-4.     rendi la radice di A figlia della radice di B
-5.     il nome del nuovo insieme è A (memorizzato nella nuova radice)
-6. aggiorna la size del nuovo albero radice
+```pseudo
+\begin{algorithm}
+\caption{union($A, B$) — con union by size}
+\begin{algorithmic}
+\If{$\text{size}(A) \geq \text{size}(B)$}
+  \State rendi la radice di $B$ figlia della radice di $A$
+\Else \Comment{$\text{size}(B) > \text{size}(A)$}
+  \State rendi la radice di $A$ figlia della radice di $B$
+  \State il nome del nuovo insieme è $A$ \Comment{memorizzato nella nuova radice}
+\EndIf
+\State aggiorna la size del nuovo albero radice
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Esempio con union by size**
@@ -230,13 +266,18 @@ union(a,b):  size(a)=2 < size(b)=3, b assorbe a; il nome dell'insieme diventa a
 ### Euristica compressione dei cammini (path compression)
 **Idea**: durante l'esecuzione di `find(x)`, mentre si risale il cammino da $x$ alla radice, si **comprimono tutti i nodi del cammino rendendoli figli diretti della radice**. La prima `find(x)` ha lo stesso costo (lineare nella lunghezza del cammino), ma le `find` successive su quegli stessi nodi costeranno $O(1)$.
 
-**find con path compression**
-```text
-find(elem x):
-1. se x è la radice: restituisci x
-2. radice <- find(padre[x])   // risale ricorsivamente
-3. padre[x] <- radice         // compressione: x diventa figlio della radice
-4. restituisci radice
+```pseudo
+\begin{algorithm}
+\caption{find($x$) — con compressione dei cammini}
+\begin{algorithmic}
+\If{$x$ è la radice}
+  \State \Return $x$
+\EndIf
+\State $\mathit{radice} \gets$ \Call{find}{$\mathit{padre}[x]$} \Comment{risale ricorsivamente}
+\State $\mathit{padre}[x] \gets \mathit{radice}$ \Comment{compressione: $x$ diventa figlio della radice}
+\State \Return $\mathit{radice}$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Esempio**

@@ -28,31 +28,45 @@ Due job sono **compatibili** se non si sovrappongono. L'obiettivo è trovare il 
 
 La correttezza si dimostra tramite **argomento di scambio** (exchange argument): qualunque soluzione ottima deve cadere in uno dei due casi; la proprietà di sottostruttura ottima garantisce che il sottoproblema residuo sia a sua volta ottimo.
 ### Algoritmo bottom-up
-**Bottom-Up(n, $s$, $f$, $w$)**
-
-```text
-1.  Ordina i job per finish time: f[1] ≤ f[2] ≤ ... ≤ f[n]
-2.  Calcola p[j] per ogni j (ricerca binaria su f[1..j-1])
-3.  M[0] = 0
-4.  FOR j = 1 TO n
-5.      M[j] = max(M[j-1], w[j] + M[p[j]])
-6.  RETURN M[n]
+```pseudo
+\begin{algorithm}
+\caption{Bottom-Up($n, s, f, w$)}
+\begin{algorithmic}
+\State ordina i job per finish time: $f[1] \leq f[2] \leq \cdots \leq f[n]$
+\State calcola $p[j]$ per ogni $j$ (ricerca binaria su $f[1..j-1]$)
+\State $M[0] \gets 0$
+\For{$j \gets 1$ \To $n$}
+  \State $M[j] \gets \max(M[j-1],\; w[j] + M[p[j]])$
+\EndFor
+\State \Return $M[n]$
+\end{algorithmic}
+\end{algorithm}
 ```
 ### Algoritmo con memoization (top-down)
 Il calcolo ricorsivo senza memoization ha $T(n) = T(n-1) + T(n-2) + O(1)$, che cresce come la sequenza di Fibonacci: **esponenziale**. La memoization elimina i ricalcoli.
 
-**Top-Down(n, $s$, $f$, $w$)**
+```pseudo
+\begin{algorithm}
+\caption{Top-Down($n, s, f, w$)}
+\begin{algorithmic}
+\State ordina i job per finish time
+\State calcola $p[j]$ per ogni $j$
+\State $M[0] \gets 0$
+\State \Return \Call{M-Compute-Opt}{$n$}
+\end{algorithmic}
+\end{algorithm}
+```
 
-```text
-1.  Ordina i job per finish time
-2.  Calcola p[j] per ogni j
-3.  M[0] = 0
-4.  RETURN M-Compute-Opt(n)
-
-M-Compute-Opt(j):
-5.  IF M[j] è non inizializzato
-6.      M[j] = max(M-Compute-Opt(j-1), w[j] + M-Compute-Opt(p[j]))
-7.  RETURN M[j]
+```pseudo
+\begin{algorithm}
+\caption{M-Compute-Opt($j$)}
+\begin{algorithmic}
+\If{$M[j]$ è non inizializzato}
+  \State $M[j] \gets \max\bigl(\text{M-Compute-Opt}(j-1),\; w[j] + \text{M-Compute-Opt}(p[j])\bigr)$
+\EndIf
+\State \Return $M[j]$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Lemma — Complessità della memoization
@@ -60,14 +74,19 @@ M-Compute-Opt(j):
 
 **Dimostrazione.** Definiamo $\Phi$ = numero di celle $M[1..n]$ già inizializzate. Inizialmente $\Phi = 0$ e $\Phi \le n$ per tutto il calcolo. Ogni chiamata ricorsiva che inizializza una nuova cella aumenta $\Phi$ di 1 ed effettua al più 2 chiamate figlie. Le chiamate che trovano la cella già inizializzata costano $O(1)$ senza generare ulteriori chiamate. Quindi le chiamate totali sono $\le 2n$, con costo $O(n)$ ciascuna a costo $O(1)$. Il bottleneck è l'ordinamento e il calcolo di $p[j]$, entrambi $O(n \log n)$. $\square$
 ### Ricostruzione della soluzione
-**Find-Solution(j)**
-```text
-1.  IF j = 0
-2.      RETURN {}
-3.  ELSE IF w[j] + M[p[j]] > M[j-1]
-4.      RETURN {j} ∪ Find-Solution(p[j])
-5.  ELSE
-6.      RETURN Find-Solution(j-1)
+```pseudo
+\begin{algorithm}
+\caption{Find-Solution($j$)}
+\begin{algorithmic}
+\If{$j = 0$}
+  \State \Return $\emptyset$
+\ElsIf{$w[j] + M[p[j]] > M[j-1]$}
+  \State \Return $\{j\} \cup \text{Find-Solution}(p[j])$
+\Else
+  \State \Return \Call{Find-Solution}{$j-1$}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Complessità: $O(n)$ — al più $n$ chiamate ricorsive.
@@ -112,15 +131,22 @@ dove $E$ è la somma degli SSE di ciascun segmento, $L$ è il numero di rette us
 
 La **scelta multipla** (multiway choice) distingue questo problema da Weighted Interval Scheduling, dove la scelta era binaria.
 ### Algoritmo bottom-up
-**Segmented-Least-Squares(n, $p_1, \ldots, p_n$, $c$)**
-```text
-1.  FOR j = 1 TO n
-2.      FOR i = 1 TO j
-3.          Calcola e[i][j] = SSE per i punti p_i, ..., p_j
-4.  M[0] = 0
-5.  FOR j = 1 TO n
-6.      M[j] = min_{1 ≤ i ≤ j} { e[i][j] + c + M[i-1] }
-7.  RETURN M[n]
+```pseudo
+\begin{algorithm}
+\caption{Segmented-Least-Squares($n, p_1, \ldots, p_n, c$)}
+\begin{algorithmic}
+\For{$j \gets 1$ \To $n$}
+  \For{$i \gets 1$ \To $j$}
+    \State calcola $e[i][j]$ = SSE per i punti $p_i, \ldots, p_j$
+  \EndFor
+\EndFor
+\State $M[0] \gets 0$
+\For{$j \gets 1$ \To $n$}
+  \State $M[j] \gets \min_{1 \leq i \leq j} \{ e[i][j] + c + M[i-1] \}$
+\EndFor
+\State \Return $M[n]$
+\end{algorithmic}
+\end{algorithm}
 ```
 > [!warning] Pre-calcolo degli SSE con somme cumulative
 > Il calcolo naïf di tutti gli $e_{ij}$ richiede $O(n)$ per coppia $\Rightarrow O(n^3)$ in totale. Si può pre-calcolare le **somme cumulative** $\Sigma x$, $\Sigma y$, $\Sigma x^2$, $\Sigma xy$ in $O(n)$, e poi ogni $e_{ij}$ si ottiene in $O(1)$, riducendo il totale a $O(n^2)$.
@@ -156,17 +182,25 @@ La ricostruzione risale la tabella $M$: partendo da $j = n$, si trova l'indice $
 > [!quote] Equazione di Bellman — Knapsack 0/1
 > $$\text{OPT}(i, w) = \begin{cases} 0 & i = 0 \\ \text{OPT}(i-1, w) & w_i > w \\ \max\bigl\{\text{OPT}(i-1, w),\; v_i + \text{OPT}(i-1, w - w_i)\bigr\} & w_i \le w \end{cases}$$
 ### Algoritmo bottom-up
-**Knapsack(n, W, $w_1, \ldots, w_n$, $v_1, \ldots, v_n$)**
-```text
-1.  FOR w = 0 TO W
-2.      M[0][w] = 0
-3.  FOR i = 1 TO n
-4.      FOR w = 0 TO W
-5.          IF w[i] > w
-6.              M[i][w] = M[i-1][w]
-7.          ELSE
-8.              M[i][w] = max(M[i-1][w], v[i] + M[i-1][w - w[i]])
-9.  RETURN M[n][W]
+```pseudo
+\begin{algorithm}
+\caption{Knapsack($n, W, w_1, \ldots, w_n, v_1, \ldots, v_n$)}
+\begin{algorithmic}
+\For{$w \gets 0$ \To $W$}
+  \State $M[0][w] \gets 0$
+\EndFor
+\For{$i \gets 1$ \To $n$}
+  \For{$w \gets 0$ \To $W$}
+    \If{$w_i > w$}
+      \State $M[i][w] \gets M[i-1][w]$
+    \Else
+      \State $M[i][w] \gets \max(M[i-1][w],\; v_i + M[i-1][w - w_i])$
+    \EndIf
+  \EndFor
+\EndFor
+\State \Return $M[n][W]$
+\end{algorithmic}
+\end{algorithm}
 ```
 ### Tabella di esempio
 Con gli oggetti $\{(v_1=1,w_1=1),\,(v_2=6,w_2=2),\,(v_3=18,w_3=5),\,(v_4=22,w_4=6),\,(v_5=28,w_5=7)\}$ e $W = 11$:
@@ -225,12 +259,17 @@ Se si definisce $\text{OPT}[i]$ = lunghezza della LIS di $S[1], \ldots, S[i]$, n
 
 **Lettura**: la LIS che termina in $S[i]$ è l'estensione della migliore LIS che termina in qualche $S[j] < S[i]$ con $j < i$. Se non esiste tale $j$, la LIS è di lunghezza $1$ (solo $S[i]$).
 ### Algoritmo bottom-up
-**LIS($S[1..n]$)**
-```text
-1.  OPT[1] = 1
-2.  FOR i = 2 TO n
-3.      OPT[i] = 1 + max(0, max_{j=1..i-1 t.c. S[j]<S[i]} OPT[j])
-4.  RETURN max_{i=1..n} OPT[i]
+```pseudo
+\begin{algorithm}
+\caption{LIS($S[1..n]$)}
+\begin{algorithmic}
+\State $\text{OPT}[1] \gets 1$
+\For{$i \gets 2$ \To $n$}
+  \State $\text{OPT}[i] \gets 1 + \max\!\Bigl(0,\; \max_{\substack{j=1,\ldots,i-1 \\ S[j] < S[i]}} \text{OPT}[j]\Bigr)$
+\EndFor
+\State \Return $\max_{i=1,\ldots,n} \text{OPT}[i]$
+\end{algorithmic}
+\end{algorithm}
 ```
 ### Esempio di calcolo
 Sequenza: $S = [4, 1, 8, 3, 4, 8, 2, 7, 5, 6, 9, 8]$, indici da $1$ a $12$.
@@ -275,14 +314,21 @@ La soluzione ottima è $\min\{R[n], G[n], B[n]\}$.
 > $$B[i] = \text{cost}(i, \text{blu}) + \min\{R[i-1],\, G[i-1]\}$$
 > Casi base: $R[1] = \text{cost}(1, R)$, $G[1] = \text{cost}(1, G)$, $B[1] = \text{cost}(1, B)$.
 ### Algoritmo bottom-up
-**House-Coloring(n, cost)**
-```text
-1.  R[1] = cost(1, R);  G[1] = cost(1, G);  B[1] = cost(1, B)
-2.  FOR i = 2 TO n
-3.      R[i] = cost(i, R) + min(G[i-1], B[i-1])
-4.      G[i] = cost(i, G) + min(R[i-1], B[i-1])
-5.      B[i] = cost(i, B) + min(R[i-1], G[i-1])
-6.  RETURN min(R[n], G[n], B[n])
+```pseudo
+\begin{algorithm}
+\caption{House-Coloring($n, \text{cost}$)}
+\begin{algorithmic}
+\State $R[1] \gets \text{cost}(1, R)$
+\State $G[1] \gets \text{cost}(1, G)$
+\State $B[1] \gets \text{cost}(1, B)$
+\For{$i \gets 2$ \To $n$}
+  \State $R[i] \gets \text{cost}(i, R) + \min(G[i-1],\; B[i-1])$
+  \State $G[i] \gets \text{cost}(i, G) + \min(R[i-1],\; B[i-1])$
+  \State $B[i] \gets \text{cost}(i, B) + \min(R[i-1],\; G[i-1])$
+\EndFor
+\State \Return $\min(R[n],\; G[n],\; B[n])$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Complessità**: $O(n)$ — un'unica passata con $O(1)$ lavoro per ogni casa.

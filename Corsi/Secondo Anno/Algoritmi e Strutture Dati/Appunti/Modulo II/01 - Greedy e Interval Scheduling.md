@@ -37,17 +37,22 @@ Uno schema naturale è: *considera i job in un certo ordine, aggiungili a $S$ se
 ### Algoritmo earliest-finish-time-first
 L'unico ordine che garantisce l'ottimalità è **earliest finish time**: si processa ogni job in ordine crescente di tempo di fine e lo si aggiunge alla soluzione se compatibile con l'ultimo job selezionato.
 
-**Earliest-Finish-Time-First($n$, $s_1, \ldots, s_n$, $f_1, \ldots, f_n$)**
-
-```text
-1. ORDINA i job per tempo di fine: f[1] <= f[2] <= ... <= f[n]
-2. S <- insieme vuoto
-3. j* <- nessuno          // ultimo job aggiunto a S
-4. FOR j = 1 TO n DO
-5.     IF (j* = nessuno) OR (s[j] >= f[j*]) THEN
-6.         S <- S ∪ {j}
-7.         j* <- j
-8. RETURN S
+```pseudo
+\begin{algorithm}
+\caption{Earliest-Finish-Time-First($n$, $s_1, \ldots, s_n$, $f_1, \ldots, f_n$)}
+\begin{algorithmic}
+\State Ordina i job per tempo di fine: $f_1 \leq f_2 \leq \ldots \leq f_n$
+\State $S \gets \emptyset$
+\State $j^* \gets \text{nessuno}$ \Comment{ultimo job aggiunto a $S$}
+\For{$j \gets 1$ \To $n$}
+  \If{$j^* = \text{nessuno}$ o $s_j \geq f_{j^*}$}
+    \State $S \gets S \cup \{j\}$
+    \State $j^* \gets j$
+  \EndIf
+\EndFor
+\State \Return $S$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!info] Implementazione in $O(n \log n)$
@@ -141,18 +146,23 @@ Questa proprietà fornisce un lower bound immediato e non dipende dall'algoritmo
 ### Schemi greedy candidati e ordine corretto
 Per Interval Partitioning il template greedy è: *considera le lezioni in un certo ordine; assegnala a una classe compatibile se esiste, altrimenti apri una nuova classe*. L'ordine corretto è **earliest start time** (ordine crescente di $s_j$); gli altri ordini ammettono controesempi analoghi a quelli visti per Interval Scheduling.
 ### Algoritmo earliest-start-time-first
-**Earliest-Start-Time-First($n$, $s_1, \ldots, s_n$, $f_1, \ldots, f_n$)**
-
-```text
-1. ORDINA le lezioni per tempo di inizio: s[1] <= s[2] <= ... <= s[n]
-2. d <- 0                  // numero di classi allocate
-3. FOR j = 1 TO n DO
-4.     IF (esiste una classe k compatibile con la lezione j) THEN
-5.         Schedula la lezione j nella classe k
-6.     ELSE
-7.         d <- d + 1
-8.         Schedula la lezione j nella nuova classe d
-9. RETURN schedule
+```pseudo
+\begin{algorithm}
+\caption{Earliest-Start-Time-First($n$, $s_1, \ldots, s_n$, $f_1, \ldots, f_n$)}
+\begin{algorithmic}
+\State Ordina le lezioni per tempo di inizio: $s_1 \leq s_2 \leq \ldots \leq s_n$
+\State $d \gets 0$ \Comment{numero di classi allocate}
+\For{$j \gets 1$ \To $n$}
+  \If{esiste una classe $k$ compatibile con la lezione $j$}
+    \State Schedula la lezione $j$ nella classe $k$
+  \Else
+    \State $d \gets d + 1$
+    \State Schedula la lezione $j$ nella nuova classe $d$
+  \EndIf
+\EndFor
+\State \Return $\text{schedule}$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!info] Implementazione efficiente con coda con priorità — $O(n \log n)$

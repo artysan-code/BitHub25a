@@ -30,9 +30,13 @@ $$F_n = \frac{1}{\sqrt{5}}\left(\phi^n - \hat{\phi}^n\right) \qquad \phi = \frac
 
 **fibonacci1** implementa direttamente questa formula:
 
-```text
-fibonacci1(intero n) → intero
-1.  return (1/sqrt(5)) * (phi^n - hat_phi^n)
+```pseudo
+\begin{algorithm}
+\caption{fibonacci1($n$) → intero}
+\begin{algorithmic}
+\State \Return $\frac{1}{\sqrt{5}} \cdot (\phi^n - \hat{\phi}^n)$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!warning] Problema di correttezza
@@ -42,10 +46,17 @@ fibonacci1(intero n) → intero
 ### Algoritmo 2 — Ricorsione diretta
 **Approccio**: applicare direttamente la definizione ricorsiva (tecnica del *divide et impera*).
 
-```text
-fibonacci2(intero n) → intero
-1.  if (n ≤ 2) then return 1
-2.  else return fibonacci2(n-1) + fibonacci2(n-2)
+```pseudo
+\begin{algorithm}
+\caption{fibonacci2($n$) → intero}
+\begin{algorithmic}
+\If{$n \leq 2$}
+  \State \Return $1$
+\Else
+  \State \Return \Call{fibonacci2}{$n-1$} $+$ \Call{fibonacci2}{$n-2$}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 
 fibonacci2 è **corretto**. Per analizzarne il costo, modelliamo il tempo $T(n)$ come numero di righe di codice eseguite (ogni riga costa un'unità di tempo).
@@ -92,13 +103,18 @@ Poiché $F_n \approx \phi^n / \sqrt{5}$, si ha $T(n) = O(\phi^n)$, crescita **es
 ### Algoritmo 3 — Programmazione dinamica (array)
 **Idea**: memorizzare le soluzioni dei sottoproblemi in un array per evitare ricalcoli (tecnica della **programmazione dinamica**).
 
-```text
-fibonacci3(intero n) → intero
-1.  sia Fib un array di n interi
-2.  Fib[1] ← 1; Fib[2] ← 1
-3.  for i = 3 to n do
-4.      Fib[i] ← Fib[i-1] + Fib[i-2]
-5.  return Fib[n]
+```pseudo
+\begin{algorithm}
+\caption{fibonacci3($n$) → intero}
+\begin{algorithmic}
+\State sia $Fib$ un array di $n$ interi
+\State $Fib[1] \gets 1$; $Fib[2] \gets 1$
+\For{$i \gets 3$ \To $n$}
+  \State $Fib[i] \gets Fib[i-1] + Fib[i-2]$
+\EndFor
+\State \Return $Fib[n]$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 fibonacci3 è **corretto** (calcola $F_n$ esattamente, senza aritmetica in virgola mobile).
@@ -113,14 +129,19 @@ Per $n=45$: $T(45) \leq 93$ righe — contro le $3{,}4$ miliardi di fibonacci2. 
 ### Algoritmo 4 — Iterativo con spazio costante
 **Osservazione**: per calcolare $F_n$ servono solo i due valori precedenti. Non occorre un array di dimensione $n$.
 
-```text
-fibonacci4(intero n) → intero
-1.  a ← 1; b ← 1; c ← 1
-2.  for i = 3 to n do
-3.      c ← a + b
-4.      a ← b
-5.      b ← c
-6.  return c
+```pseudo
+\begin{algorithm}
+\caption{fibonacci4($n$) → intero}
+\begin{algorithmic}
+\State $a \gets 1$; $b \gets 1$; $c \gets 1$
+\For{$i \gets 3$ \To $n$}
+  \State $c \gets a + b$
+  \State $a \gets b$
+  \State $b \gets c$
+\EndFor
+\State \Return $c$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Analisi del tempo**: $T(n) \leq 4n + 2 = O(n)$ (costante per iterazione, $n-2$ iterazioni).
@@ -140,13 +161,18 @@ fibonacci4(intero n) → intero
 
 Sia $M = \begin{pmatrix}1&1\\1&0\end{pmatrix}$ e $I$ la matrice identità $2 \times 2$. Un primo algoritmo calcola $M^{n-1}$ moltiplicando iterativamente:
 
-```text
-fibonacci5(intero n) → intero
-1.  M ← [[1,1],[1,0]]
-2.  R ← [[1,0],[0,1]]       // matrice identità
-3.  for i = 1 to n-1 do
-4.      R ← R * M
-5.  return R[0][0]           // R[0][0] = F_n
+```pseudo
+\begin{algorithm}
+\caption{fibonacci5($n$) → intero}
+\begin{algorithmic}
+\State $M \gets [[1,1],[1,0]]$
+\State $R \gets [[1,0],[0,1]]$ \Comment{matrice identità}
+\For{$i \gets 1$ \To $n-1$}
+  \State $R \gets R \cdot M$
+\EndFor
+\State \Return $R[0][0]$ \Comment{$R[0][0] = F_n$}
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Tempo**: $O(n)$ — $n-1$ moltiplicazioni di matrici $2\times 2$, ciascuna a costo costante.
@@ -160,18 +186,30 @@ $$A^n = \begin{cases}(A^{n/2})^2 & \text{se } n \text{ è pari} \\ A \cdot (A^{(
 
 Esempio: $3^2=9$, $3^4=(9)^2=81$, $3^8=(81)^2=6561$ — solo 3 moltiplicazioni invece di 7.
 
-```text
-fibonacci6(intero n) → intero
-1.  M ← [[1,1],[1,0]]
-2.  R ← potenzaDiMatrice(M, n-1)
-3.  return R[0][0]
+```pseudo
+\begin{algorithm}
+\caption{fibonacci6($n$) → intero}
+\begin{algorithmic}
+\State $M \gets [[1,1],[1,0]]$
+\State $R \gets$ \Call{potenzaDiMatrice}{$M, n-1$}
+\State \Return $R[0][0]$
+\end{algorithmic}
+\end{algorithm}
 
-potenzaDiMatrice(matrice A, intero k) → matrice
-1.  if (k = 0) then return [[1,0],[0,1]]    // identità
-2.  P ← potenzaDiMatrice(A, ⌊k/2⌋)
-3.  P ← P * P
-4.  if (k è dispari) then P ← P * A
-5.  return P
+\begin{algorithm}
+\caption{potenzaDiMatrice($A$, $k$) → matrice}
+\begin{algorithmic}
+\If{$k = 0$}
+  \State \Return $[[1,0],[0,1]]$ \Comment{identità}
+\EndIf
+\State $P \gets$ \Call{potenzaDiMatrice}{$A, \lfloor k/2 \rfloor$}
+\State $P \gets P \cdot P$
+\If{$k$ è dispari}
+  \State $P \gets P \cdot A$
+\EndIf
+\State \Return $P$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Analisi del tempo**: all'interno di `potenzaDiMatrice` si spende tempo costante (due prodotti di matrici $2\times2$, ciascuno $O(1)$) e si effettua una sola chiamata ricorsiva su input $\lfloor k/2 \rfloor$. L'equazione di ricorrenza è:

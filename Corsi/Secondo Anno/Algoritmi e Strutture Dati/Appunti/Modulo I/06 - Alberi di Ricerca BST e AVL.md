@@ -45,25 +45,36 @@ Si traccia un cammino dalla radice verso il basso. Ad ogni nodo $v$ si confronta
 - se $k >$ `chiave(v)` si prosegue a destra;
 - se il nodo corrente è `null`, la chiave non è presente.
 
-**`search(chiave k)`**
-```text
-search(BST T, chiave k)
-1. curr = T.radice
-2. while curr ≠ null and k ≠ chiave(curr) do
-3.   if k ≤ chiave(curr) then curr = curr.sx
-4.   else curr = curr.dx
-5. return curr
+```pseudo
+\begin{algorithm}
+\caption{Search($T, k$) — ricerca la chiave $k$ nel BST $T$}
+\begin{algorithmic}
+\State $curr \gets T.radice$
+\While{$curr \neq null$ e $k \neq chiave(curr)$}
+  \If{$k \leq chiave(curr)$}
+    \State $curr \gets curr.sx$
+  \Else
+    \State $curr \gets curr.dx$
+  \EndIf
+\EndWhile
+\State \Return $curr$
+\end{algorithmic}
+\end{algorithm}
 ```
 #### Minimo e Massimo
 Grazie alla proprietà di ricerca, il **minimo** si trova seguendo sempre i puntatori sinistri fino al nodo più a sinistra; il **massimo** seguendo i puntatori destri.
 
-**`min(nodo u)`**
-```text
-min(nodo u)
-1. curr = u
-2. while curr.sx ≠ null do
-3.   curr = curr.sx
-4. return curr
+```pseudo
+\begin{algorithm}
+\caption{Min($u$) — nodo con chiave minima nel sottoalbero di $u$}
+\begin{algorithmic}
+\State $curr \gets u$
+\While{$curr.sx \neq null$}
+  \State $curr \gets curr.sx$
+\EndWhile
+\State \Return $curr$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 `max(nodo u)` è simmetrica: si segue il puntatore destro.
@@ -86,15 +97,21 @@ suc(6): caso 1 → min(sottoalbero destro di 6) = 8
 suc(13): caso 2 → risale fino a 8, poi a 6, poi a 15 (15 ha 6 come figlio sinistro) → suc = 15
 ```
 
-**`successore(nodo u)`**
-```text
-successore(nodo u)
-1. if u.dx ≠ null then return min(u.dx)
-2. p = u.padre
-3. while p ≠ null and u == p.dx do
-4.   u = p
-5.   p = p.padre
-6. return p
+```pseudo
+\begin{algorithm}
+\caption{Successore($u$) — restituisce il successore del nodo $u$}
+\begin{algorithmic}
+\If{$u.dx \neq null$}
+  \State \Return \Call{Min}{$u.dx$}
+\EndIf
+\State $p \gets u.padre$
+\While{$p \neq null$ e $u = p.dx$}
+  \State $u \gets p$
+  \State $p \gets p.padre$
+\EndWhile
+\State \Return $p$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Il **predecessore** è simmetrico: massimo del sottoalbero sinistro se esiste, altrimenti primo antenato di cui il nodo è figlio destro.
@@ -106,19 +123,30 @@ Il nuovo elemento viene inserito sempre come **foglia**, simulando una ricerca c
 2. Simulare `search(k)` tenendo traccia del padre $v$ dell'ultimo nodo visitato.
 3. Appendere $u$ come figlio sinistro di $v$ se $k \le$ `chiave(v)`, altrimenti come figlio destro.
 
-**`insert(elem e, chiave k)`**
-```text
-insert(BST T, elem e, chiave k)
-1. u = nuovo nodo con elem = e, chiave = k
-2. padre = null, curr = T.radice
-3. while curr ≠ null do
-4.   padre = curr
-5.   if k ≤ chiave(curr) then curr = curr.sx
-6.   else curr = curr.dx
-7. u.padre = padre
-8. if padre == null then T.radice = u         // albero era vuoto
-9. else if k ≤ chiave(padre) then padre.sx = u
-10. else padre.dx = u
+```pseudo
+\begin{algorithm}
+\caption{Insert($T, e, k$) — inserisce l'elemento $e$ con chiave $k$ nel BST $T$}
+\begin{algorithmic}
+\State $u \gets$ nuovo nodo con $elem = e$, $chiave = k$
+\State $padre \gets null$, $curr \gets T.radice$
+\While{$curr \neq null$}
+  \State $padre \gets curr$
+  \If{$k \leq chiave(curr)$}
+    \State $curr \gets curr.sx$
+  \Else
+    \State $curr \gets curr.dx$
+  \EndIf
+\EndWhile
+\State $u.padre \gets padre$
+\If{$padre = null$}
+  \State $T.radice \gets u$ \Comment{albero era vuoto}
+\ElsIf{$k \leq chiave(padre)$}
+  \State $padre.sx \gets u$
+\Else
+  \State $padre.dx \gets u$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!info] Coerenza con la convenzione sx $\le$, dx $>$
@@ -162,18 +190,36 @@ delete(u) con u avente chiave 4, due figli:
   ...
 ```
 
-**`delete(BST T, nodo u)`**
-```text
-delete(BST T, nodo u)
-1. if u.sx == null or u.dx == null then y = u     // 0 o 1 figlio: rimuovi u
-2. else y = successore(u)                          // 2 figli: rimuovi il successore
-3. // y è il nodo da rimuovere fisicamente (ha al più 1 figlio)
-4. if y.sx ≠ null then x = y.sx else x = y.dx
-5. if x ≠ null then x.padre = y.padre
-6. if y.padre == null then T.radice = x
-7. else if y == y.padre.sx then y.padre.sx = x
-8. else y.padre.dx = x
-9. if y ≠ u then copia elem e chiave di y in u    // caso 3: copia il contenuto
+```pseudo
+\begin{algorithm}
+\caption{Delete($T, u$) — rimuove il nodo $u$ dal BST $T$}
+\begin{algorithmic}
+\If{$u.sx = null$ o $u.dx = null$}
+  \State $y \gets u$ \Comment{0 o 1 figlio: rimuovi $u$}
+\Else
+  \State $y \gets$ \Call{Successore}{$u$} \Comment{2 figli: rimuovi il successore}
+\EndIf
+\State \Comment{$y$ è il nodo da rimuovere fisicamente (ha al più 1 figlio)}
+\If{$y.sx \neq null$}
+  \State $x \gets y.sx$
+\Else
+  \State $x \gets y.dx$
+\EndIf
+\If{$x \neq null$}
+  \State $x.padre \gets y.padre$
+\EndIf
+\If{$y.padre = null$}
+  \State $T.radice \gets x$
+\ElsIf{$y = y.padre.sx$}
+  \State $y.padre.sx \gets x$
+\Else
+  \State $y.padre.dx \gets x$
+\EndIf
+\If{$y \neq u$}
+  \State copia $elem$ e $chiave$ di $y$ in $u$ \Comment{caso 3: copia il contenuto}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 ### Analisi del costo
 > [!warning] Il problema del bilanciamento
@@ -363,16 +409,20 @@ Simmetrico al caso SD. Si applicano:
 > [!question] Domanda tipica d'esame
 > **D:** Quali sono i 4 casi di rotazione negli AVL e quando si applicano? **R:** I casi dipendono dal segno di $\beta(v)$ (nodo critico) e dalla posizione del sottoalbero che sbilancia. **SS** ($\beta = +2$, sottoalbero sx-sx): rotazione semplice destra. **DD** ($\beta = -2$, sottoalbero dx-dx): rotazione semplice sinistra. **SD** ($\beta = +2$, sottoalbero sx-dx): doppia rotazione (sinistra sul figlio, destra su $v$). **DS** ($\beta = -2$, sottoalbero dx-sx): doppia rotazione (destra sul figlio, sinistra su $v$). I 4 casi sono simmetrici a coppie: SS↔DD, SD↔DS.
 ### Insert nell'AVL
-**`insert(elem e, chiave k)` — AVL**
-```text
-insert(AVL T, elem e, chiave k)
-1. Crea un nuovo nodo u con elem = e, chiave = k
-2. Inserisci u come in un BST (righe 1–10 della procedura BST)
-3. Ricalcola i fattori di bilanciamento dei nodi nel cammino da u alla radice
-4. Sia v il nodo critico più profondo (il primo con |β(v)| = 2)
-5. if v esiste then
-6.   Determina il caso (SS / DD / SD / DS)
-7.   Esegui la rotazione opportuna su v
+```pseudo
+\begin{algorithm}
+\caption{Insert($T, e, k$) — inserimento AVL con ribilanciamento}
+\begin{algorithmic}
+\State crea un nuovo nodo $u$ con $elem = e$, $chiave = k$
+\State inserisci $u$ come in un BST
+\State ricalcola i fattori di bilanciamento nel cammino da $u$ alla radice
+\State sia $v$ il nodo critico più profondo (il primo con $|\beta(v)| = 2$)
+\If{$v$ esiste}
+  \State determina il caso (SS / DD / SD / DS)
+  \State esegui la rotazione opportuna su $v$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!info] Perché basta una sola rotazione per insert
@@ -394,18 +444,24 @@ Prima dell'insert:         Dopo l'insert di 10:      Rotazione SD su nodo 13:
                                   10(β=0)
 ```
 ### Delete nell'AVL
-**`delete(elem e)` — AVL**
-```text
-delete(AVL T, elem e)
-1. Cancella il nodo contenente e come in un BST (3 casi)
-2. curr = padre del nodo eliminato fisicamente
-3. while curr ≠ null do
-4.   Ricalcola β(curr)
-5.   if |β(curr)| == 2 then
-6.     Determina il caso e applica la rotazione opportuna su curr
-7.     if altezza del sottoalbero di curr uguale a prima della cancellazione then
-8.       break   // sbilanciamento non si propaga, termina
-9.   curr = curr.padre
+```pseudo
+\begin{algorithm}
+\caption{Delete($T, e$) — cancellazione da AVL con ribilanciamento}
+\begin{algorithmic}
+\State cancella il nodo contenente $e$ come in un BST (3 casi)
+\State $curr \gets$ padre del nodo eliminato fisicamente
+\While{$curr \neq null$}
+  \State ricalcola $\beta(curr)$
+  \If{$|\beta(curr)| = 2$}
+    \State determina il caso e applica la rotazione opportuna su $curr$
+    \If{altezza del sottoalbero di $curr$ uguale a prima della cancellazione}
+      \State \textbf{break} \Comment{sbilanciamento non si propaga, termina}
+    \EndIf
+  \EndIf
+  \State $curr \gets curr.padre$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!warning] Delete richiede fino a $O(\log n)$ rotazioni
@@ -427,12 +483,16 @@ Continuando a risalire, se il padre della radice del sottoalbero appena ribilanc
 ### Campo altezza nei nodi
 Per garantire $O(1)$ per il calcolo di $\beta(v)$ e $O(\log n)$ per l'aggiornamento dei fattori lungo il cammino, ogni nodo $v$ memorizza il campo **`altezza(v)`** (altezza del sottoalbero radicato in $v$).
 
-```text
-aggiornaAltezza(nodo v)
-1. h_sx = altezza(v.sx)   // -1 se v.sx == null
-2. h_dx = altezza(v.dx)   // -1 se v.dx == null
-3. v.altezza = 1 + max(h_sx, h_dx)
-4. β(v) = h_sx - h_dx
+```pseudo
+\begin{algorithm}
+\caption{AggiornaAltezza($v$) — aggiorna altezza e fattore di bilanciamento di $v$}
+\begin{algorithmic}
+\State $h_{sx} \gets altezza(v.sx)$ \Comment{$-1$ se $v.sx = null$}
+\State $h_{dx} \gets altezza(v.dx)$ \Comment{$-1$ se $v.dx = null$}
+\State $v.altezza \gets 1 + \max(h_{sx}, h_{dx})$
+\State $\beta(v) \gets h_{sx} - h_{dx}$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 Dopo ogni rotazione si aggiornano i campi altezza dei nodi coinvolti in $O(1)$.

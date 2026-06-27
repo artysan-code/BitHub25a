@@ -33,3 +33,41 @@
 .markdown-rendered img {
   border-radius: 4px;
 }
+
+/*
+ * Pseudocodice (plugin pseudocode-in-obs / pseudocode.js).
+ * Il CSS di default rende testo nero su fondo chiaro: lo riportiamo
+ * al tema (fondo trasparente, testo e bordi dal tema attivo).
+ * NB: se in futuro si passa a un fork con CSS proprio, questo blocco va rimosso.
+ */
+/* Container esterno sobrio: pannello tenue, elevazione minima */
+.block-language-pseudo {
+  background: var(--code-background);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 8px);
+  padding: 0.2em 1.1em 0.45em;
+  margin: 1em 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  overflow-x: auto;
+}
+/* Tutto trasparente, testo dal tema */
+.block-language-pseudo .ps-root,
+.block-language-pseudo .ps-algorithm,
+.block-language-pseudo .ps-line,
+.block-language-pseudo .katex {
+  background: transparent !important;
+  color: var(--text-normal) !important;
+}
+/* Via i filetti CLRS: aspetto piatto come testo normale */
+.block-language-pseudo .ps-algorithm.with-caption,
+.block-language-pseudo .ps-algorithmic {
+  border: 0 !important;
+}
+/* Padding attorno al titolo dell'algoritmo (caption) + via la sua linea nera */
+.block-language-pseudo .ps-algorithm.with-caption > .ps-line:first-child {
+  padding: 0.15em 0 0.5em 0;
+  border: 0 !important;
+}
+.block-language-pseudo .ps-line {
+  line-height: 1.5;
+}

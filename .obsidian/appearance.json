@@ -1,3 +1,6 @@
 {
-  "cssTheme": "Encore"
+  "cssTheme": "Encore",
+  "enabledCssSnippets": [
+    "bithub-readability"
+  ]
 }

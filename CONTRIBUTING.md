@@ -7,8 +7,8 @@ Grazie per voler contribuire! Questa repository è una raccolta di appunti unive
 ## Prima di iniziare
 
 1. Clona la repository e apri la cartella come **vault Obsidian** (File → Open vault → Open folder as vault).
-2. Obsidian userà la configurazione versionata: stesso tema (**Obsidian Nord** — scaricalo da Settings → Appearance al primo avvio) e stessi plugin core abilitati.
-3. Al primo avvio Obsidian ti chiederà di installare i **community plugin** elencati (`obsidian-latex-suite`). Accetta: i binari non sono versionati per mantenere la history pulita.
+2. Obsidian userà la configurazione versionata: stesso tema (**Encore** — installalo da Settings → Appearance al primo avvio) e stessi plugin core abilitati.
+3. Installa i **community plugin** elencati (`obsidian-latex-suite`, `pseudocode-in-obs`) da *Settings → Community plugins → Browse*: i binari non sono versionati per mantenere la history pulita.
 4. **Opzionale ma consigliato**: abilita lo snippet CSS condiviso in `Settings → Appearance → CSS snippets → bithub-readability`.
 
 ### Plugin opzionali
@@ -109,6 +109,7 @@ slide: "<file.pdf>"  # opzionale, se la nota deriva da una slide specifica
 
 - **Obsidian Flavored Markdown**: callout (`> [!info]`), wikilink (`[[Nota]]`), embed (`![[assets/foo.png]]`).
 - **LaTeX**: inline `$...$`, block `$$...$$`. Il plugin Latex Suite è già configurato.
+- **Pseudocodice**: blocchi ` ```pseudo ` (plugin Pseudocode), sintassi LaTeX *algorithmic* (nome nel `\caption`, niente `\Procedure`); vedi gli appunti di Algoritmi e Strutture Dati per il modello.
 - Evita HTML grezzo quando esiste l'equivalente Markdown/Obsidian.
 - Link interni: preferisci **wikilink** (`[[...]]`) ai link relativi — restano validi anche se si rinomina una cartella.
 
@@ -123,17 +124,24 @@ slide: "<file.pdf>"  # opzionale, se la nota deriva da una slide specifica
 
 ### Commit
 
-Commit atomici, messaggio breve in italiano. Stile usato nella repo:
+Commit **atomici** (un cambiamento logico ciascuno), messaggio breve in italiano nel formato `tipo(scope): descrizione`:
 
 ```
-<Materia> - <Descrizione breve>
+tipo(scope): descrizione breve
 
-Aggiornamento 05.03.26
-Fondamenti Revisione Lezione 1
-Fix typo Basi di Dati lezione 3
+corpo opzionale (il "perché", se non ovvio)
 ```
 
-Non serve seguire conventional commits rigidi.
+**Tipi**: `note` (appunti), `fix` (correzioni di contenuto), `docs` (meta-doc: README, CONTRIBUTING), `chore` (manutenzione/normalizzazioni), `assets` (immagini/PDF), `struct` (riorganizzazioni di cartelle), `ci` (workflow). **Scope** = codice del corso (es. `asd`, `bdc`, `ro`) oppure `repo` / `obsidian` / `hackathon`.
+
+Esempi:
+
+```
+note(bdc): aggiunta lezione 6 Algebra Relazionale
+fix(fis): correzione formula cinetica in lezione 3
+chore(asd): normalizzazione pseudocodici a blocchi pseudo
+docs(repo): aggiornamento indice corsi
+```
 
 **Non committare mai**: file `.zip` di materiali pesanti, file binari personali, file di stato Obsidian (`workspace.json`, `data.json` dei plugin) — già gestiti dal `.gitignore`.
 
@@ -162,6 +170,12 @@ Usa **Issues** con il template appropriato:
 - Non aggiungere `README.md`, indici o file di metadata a ogni materia se non utili.
 - Non modificare le note altrui per ragioni puramente stilistiche (grassetti/corsivi diversi).
 - Non committare la cartella `.obsidian/workspace*.json` o `.obsidian/plugins/*/data.json`: sono stato personale.
+
+---
+
+## Licenza dei contributi
+
+Contribuendo, accetti che il tuo contributo agli **appunti** sia rilasciato sotto la stessa licenza **[CC BY-NC-SA 4.0](LICENSE)** della repository. Non caricare materiale protetto da copyright altrui (es. slide o testi dei docenti) se non ne hai il diritto.
 
 ---
 

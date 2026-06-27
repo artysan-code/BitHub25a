@@ -10,32 +10,42 @@ Questa nota approfondisce gli usi meno scontati della visita in profondità, bas
 ## Tempi di visita: pre(v) e post(v)
 Durante la DFS si mantiene una variabile globale **clock** inizializzata a 1. Ogni volta che si *scopre* un nodo $v$ si registra $\text{pre}(v) = \text{clock}$ e si incrementa clock; ogni volta che si *abbandona* $v$ (backtracking) si registra $\text{post}(v) = \text{clock}$ e si incrementa di nuovo.
 
-**visitaDFSRicorsiva arricchita con clock**
-
-```text
-visitaDFSRicorsiva(nodo v, albero T):
-1.  marca v
-2.  pre(v) = clock;  clock = clock + 1
-3.  for each arco (v, w) in G do
-4.      if w non è marcato then
-5.          aggiungi (v, w) a T
-6.          visitaDFSRicorsiva(w, T)
-7.  post(v) = clock;  clock = clock + 1
+```pseudo
+\begin{algorithm}
+\caption{visitaDFSRicorsiva($v$, $T$) — arricchita con clock}
+\begin{algorithmic}
+\State marca $v$
+\State $\text{pre}(v) \gets \text{clock}$; $\text{clock} \gets \text{clock} + 1$
+\ForAll{arco $(v, w) \in G$}
+  \If{$w$ non è marcato}
+    \State aggiungi $(v, w)$ a $T$
+    \State \Call{visitaDFSRicorsiva}{$w, T$}
+  \EndIf
+\EndFor
+\State $\text{post}(v) \gets \text{clock}$; $\text{clock} \gets \text{clock} + 1$
+\end{algorithmic}
+\end{algorithm}
 ```
 
-**VisitaDFS globale (gestisce nodi non raggiungibili)**
-
-```text
-VisitaDFS(grafo G):
-1.  for each nodo v do  imposta v come non marcato
-2.  clock = 1
-3.  F = foresta vuota
-4.  for each nodo v do
-5.      if v è non marcato then
-6.          T = albero vuoto
-7.          visitaDFSRicorsiva(v, T)
-8.          aggiungi T a F
-9.  return F
+```pseudo
+\begin{algorithm}
+\caption{VisitaDFS($G$) — gestisce nodi non raggiungibili}
+\begin{algorithmic}
+\ForAll{nodo $v \in G$}
+  \State imposta $v$ come non marcato
+\EndFor
+\State $\text{clock} \gets 1$
+\State $F \gets$ foresta vuota
+\ForAll{nodo $v \in G$}
+  \If{$v$ è non marcato}
+    \State $T \gets$ albero vuoto
+    \State \Call{visitaDFSRicorsiva}{$v, T$}
+    \State aggiungi $T$ a $F$
+  \EndIf
+\EndFor
+\State \Return $F$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 - $\text{pre}(v)$: **tempo di scoperta** — quando la DFS entra in $v$ per la prima volta.
@@ -88,16 +98,18 @@ Nodi particolari in un DAG:
 ### Algoritmo via DFS (post-order decrescente)
 L'idea chiave: in un DAG, il nodo che viene abbandonato per **ultimo** dalla DFS (il più alto valore $\text{post}$) deve essere una sorgente nell'ordinamento topologico. Basta quindi restituire i nodi in ordine **decrescente** di $\text{post}(v)$.
 
-**OrdinamentoTopologico**
-
-```text
-OrdinamentoTopologico(grafo G):
-1.  top = n;  L = lista vuota
-2.  esegui VisitaDFS su G, ma al momento di impostare post(v):
-3.      sigma(v) = top
-4.      top = top - 1
-5.      aggiungi v in testa alla lista L
-6.  return L e sigma
+```pseudo
+\begin{algorithm}
+\caption{OrdinamentoTopologico($G$)}
+\begin{algorithmic}
+\State $\text{top} \gets n$; $L \gets$ lista vuota
+\State esegui \Call{VisitaDFS}{$G$}, ma al momento di impostare $\text{post}(v)$:
+\State \hspace{1em} $\sigma(v) \gets \text{top}$
+\State \hspace{1em} $\text{top} \gets \text{top} - 1$
+\State \hspace{1em} aggiungi $v$ in testa alla lista $L$
+\State \Return $L$ e $\sigma$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Complessità temporale:** $\Theta(n+m)$ con liste di adiacenza (identico alla DFS base).
@@ -137,23 +149,35 @@ L'idea è partire da una componente **pozzo** (più semplice da estrarre), fare 
 > [!info] Grafo inverso e CFC
 > Le CFC di $G^R$ sono le **stesse** di $G$ (la mutua raggiungibilità è simmetrica per inversione degli archi). Però le componenti sorgente di $G$ diventano componenti pozzo in $G^R$ e viceversa. Quindi il nodo con il massimo $\text{post}$ in $G^R$ appartiene a una **sorgente** di $G^R$, che corrisponde a un **pozzo** di $G$ — esattamente ciò di cui abbiamo bisogno.
 ### Algoritmo di Kosaraju
-**ComponentiFortementeConnesse**
+```pseudo
+\begin{algorithm}
+\caption{ComponentiFortementeConnesse($G$)}
+\begin{algorithmic}
+\State calcola $G^R$ \Comment{grafo con archi invertiti}
+\State \Call{VisitaDFS}{$G^R$} \Comment{calcola i valori $\text{post}(v)$ in $G^R$}
+\State \Return \Call{CompConnesse}{$G$}
+\end{algorithmic}
+\end{algorithm}
+```
 
-```text
-ComponentiFortementeConnesse(grafo G):
-1.  calcola GR  (grafo con archi invertiti)
-2.  esegui VisitaDFS(GR) per calcolare i valori post(v) in GR
-3.  return CompConnesse(G)
-
-CompConnesse(grafo G):
-1.  for each nodo v do  imposta v come non marcato
-2.  Comp = insieme vuoto
-3.  for each nodo v in ordine decrescente di post(v) (calcolato su GR) do
-4.      if v è non marcato then
-5.          T = albero vuoto
-6.          visitaDFSRicorsiva(v, T)
-7.          aggiungi T a Comp
-8.  return Comp
+```pseudo
+\begin{algorithm}
+\caption{CompConnesse($G$)}
+\begin{algorithmic}
+\ForAll{nodo $v \in G$}
+  \State imposta $v$ come non marcato
+\EndFor
+\State $\text{Comp} \gets$ insieme vuoto
+\ForAll{nodo $v$ in ordine decrescente di $\text{post}(v)$ calcolato su $G^R$}
+  \If{$v$ è non marcato}
+    \State $T \gets$ albero vuoto
+    \State \Call{visitaDFSRicorsiva}{$v, T$}
+    \State aggiungi $T$ a $\text{Comp}$
+  \EndIf
+\EndFor
+\State \Return $\text{Comp}$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 **Complessità temporale:** $\Theta(n+m)$ — si eseguono due DFS complete più la costruzione di $G^R$, ognuna $\Theta(n+m)$ con liste di adiacenza.

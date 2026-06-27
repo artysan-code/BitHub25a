@@ -112,18 +112,26 @@ Visuale dello scambio:
 ## Algoritmo di Kruskal
 L'algoritmo di **Kruskal** (1956) parte da $T = \emptyset$ e aggiunge gli archi uno alla volta in ordine crescente di costo, saltando quelli che formerebbero un ciclo.
 ### Pseudocodice
-**`Kruskal(grafo G = (V, E, c)) → albero T`**
-```text
-1   sia T = insieme vuoto
-2   per ogni vertice v: UF.makeset(v)
-3   ordina gli archi E in ordine crescente di costo
-4   per ogni arco (x, y) in ordine crescente do
-5       Tx = UF.find(x)
-6       Ty = UF.find(y)
-7       se Tx ≠ Ty allora
-8           UF.union(Tx, Ty)
-9           aggiungi (x, y) a T
-10  return T
+```pseudo
+\begin{algorithm}
+\caption{Kruskal($G = (V, E, c)$) — restituisce l'MST $T$}
+\begin{algorithmic}
+\State $T \gets \emptyset$
+\ForAll{vertice $v \in V$}
+  \State \Call{UF.makeset}{$v$}
+\EndFor
+\State ordina gli archi $E$ in ordine crescente di costo
+\ForAll{arco $(x, y) \in E$ in ordine crescente di costo}
+  \State $T_x \gets$ \Call{UF.find}{$x$}
+  \State $T_y \gets$ \Call{UF.find}{$y$}
+  \If{$T_x \neq T_y$}
+    \State \Call{UF.union}{$T_x, T_y$}
+    \State aggiungi $(x, y)$ a $T$
+  \EndIf
+\EndFor
+\State \Return $T$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 La struttura dati [[02 - Union-Find]] mantiene le **[[08 - Grafi e Visite|componenti connesse]]** di $T$ durante l'esecuzione:
@@ -183,23 +191,34 @@ L'implementazione naïve (per $n-1$ volte, scansione lineare di tutti gli archi)
 
 Per ogni nodo non ancora esplorato $v$, si mantiene la chiave $a[v]$ = costo del **miglior arco** che collega $v$ a un nodo già in $S$ ($+\infty$ se nessun tale arco esiste).
 ### Pseudocodice
-**`Prim(grafo G, nodo s) → albero T`**
-```text
-1   per ogni vertice v: a[v] = +inf
-2   a[s] = 0
-3   Q = nuova coda con priorità (min-heap)
-4   per ogni vertice v: Q.insert(v, a[v])
-5   S = insieme vuoto
-6   T = albero con radice s (senza archi)
-7   while Q non è vuota do
-8       u = Q.deleteMin()
-9       S = S ∪ {u}
-10      per ogni arco e = (u, v) incidente a u do
-11          se v ∉ S e c_e < a[v] allora
-12              rendi u genitore di v in T
-13              Q.decreaseKey(v, c_e)
-14              a[v] = c_e
-15  return T
+```pseudo
+\begin{algorithm}
+\caption{Prim($G, s$) — restituisce l'MST $T$ radicato in $s$}
+\begin{algorithmic}
+\ForAll{vertice $v \in V$}
+  \State $a[v] \gets +\infty$
+\EndFor
+\State $a[s] \gets 0$
+\State $Q \gets$ nuova coda con priorità (min-heap)
+\ForAll{vertice $v \in V$}
+  \State \Call{Q.insert}{$v, a[v]$}
+\EndFor
+\State $S \gets \emptyset$
+\State $T \gets$ albero con radice $s$ (senza archi)
+\While{$Q$ non è vuota}
+  \State $u \gets$ \Call{Q.deleteMin}{}
+  \State $S \gets S \cup \{u\}$
+  \ForAll{arco $e = (u, v)$ incidente a $u$}
+    \If{$v \notin S$ e $c_e < a[v]$}
+      \State rendi $u$ genitore di $v$ in $T$
+      \State \Call{Q.decreaseKey}{$v, c_e$}
+      \State $a[v] \gets c_e$
+    \EndIf
+  \EndFor
+\EndWhile
+\State \Return $T$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!info] Analogia con Dijkstra

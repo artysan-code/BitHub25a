@@ -70,29 +70,36 @@ La stima di un nodo $y \in V \setminus X$ nella coda è:
 $$D_{sy} = \min\{D_{sx} + w(x, y) : (x, y) \in E,\ x \in X\}$$
 L'arco $(x, y)$ che fornisce il minimo è l'arco "arancione" di $y$, cioè il candidato a entrare in $T$ per portare $y$ nell'albero.
 ### Pseudocodice
-**Dijkstra(grafo $G$, nodo $s$) $\to$ albero $T$**
-
-```text
-1.  for each nodo v in G do
-2.      v.dist = +inf
-3.  s.dist = 0
-4.  T = albero con radice s (senza archi)
-5.  X = insieme vuoto
-6.  CP = nuova CodaConPriorità
-7.  CP.insert(s, 0)
-8.  while not CP.isEmpty() do
-9.      u = CP.deleteMin()
-10.     X = X ∪ {u}
-11.     for each arco (u,v) in G do
-12.         if v.dist == +inf then
-13.             v.dist = u.dist + w(u, v)
-14.             CP.insert(v, v.dist)
-15.             rendi u padre di v in T
-16.         else if u.dist + w(u,v) < v.dist then
-17.             CP.decreaseKey(v, u.dist + w(u,v))
-18.             v.dist = u.dist + w(u, v)
-19.             rendi u nuovo padre di v in T
-20. return T
+```pseudo
+\begin{algorithm}
+\caption{Dijkstra($G, s$) — albero dei cammini minimi da $s$}
+\begin{algorithmic}
+\ForAll{$v \in G$}
+  \State $v.dist \gets +\infty$
+\EndFor
+\State $s.dist \gets 0$
+\State $T \gets$ albero con radice $s$ (senza archi)
+\State $X \gets \emptyset$
+\State $CP \gets$ nuova CodaConPriorità
+\State \Call{CP.insert}{$s, 0$}
+\While{non \Call{CP.isEmpty}{}}
+  \State $u \gets$ \Call{CP.deleteMin}{}
+  \State $X \gets X \cup \{u\}$
+  \ForAll{arco $(u,v) \in G$}
+    \If{$v.dist = +\infty$}
+      \State $v.dist \gets u.dist + w(u, v)$
+      \State \Call{CP.insert}{$v, v.dist$}
+      \State rendi $u$ padre di $v$ in $T$
+    \ElsIf{$u.dist + w(u,v) < v.dist$}
+      \State \Call{CP.decreaseKey}{$v, u.dist + w(u,v)$}
+      \State $v.dist \gets u.dist + w(u, v)$
+      \State rendi $u$ nuovo padre di $v$ in $T$
+    \EndIf
+  \EndFor
+\EndWhile
+\State \Return $T$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!info] Nota sull'implementazione — puntatore per decreaseKey

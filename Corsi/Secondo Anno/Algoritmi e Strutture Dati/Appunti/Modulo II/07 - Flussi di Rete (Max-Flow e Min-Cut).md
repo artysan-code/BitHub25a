@@ -106,15 +106,21 @@ Esempio — arco originale e arco residuo
 
 **Procedura AUGMENT.** Dato un cammino aumentante $P$ con bottleneck $\delta$:
 
-**`AUGMENT(f, c, P)`**
-```text
-1. delta <- bottleneck(G_f, P)
-2. FOREACH arco e in P:
-3.     IF e in E (arco diretto):
-4.         f(e) <- f(e) + delta
-5.     ELSE (arco inverso e^rev):
-6.         f(e^rev) <- f(e^rev) - delta
-7. RETURN f
+```pseudo
+\begin{algorithm}
+\caption{Augment($f, c, P$)}
+\begin{algorithmic}
+\State $\delta \gets \operatorname{bottleneck}(G_f, P)$
+\ForAll{arco $e \in P$}
+  \If{$e \in E$} \Comment{arco diretto}
+    \State $f(e) \gets f(e) + \delta$
+  \Else \Comment{arco inverso $e^{\text{rev}}$}
+    \State $f(e^{\text{rev}}) \gets f(e^{\text{rev}}) - \delta$
+  \EndIf
+\EndFor
+\State \Return $f$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Proprietà — Aumento del flusso
@@ -123,14 +129,21 @@ Esempio — arco originale e arco residuo
 ## Algoritmo di Ford-Fulkerson
 L'algoritmo di **Ford-Fulkerson** (1955) risolve il problema Max-Flow iterando la ricerca di cammini aumentanti nel grafo residuo.
 
-**`FORD-FULKERSON(G)`**
-```text
-1. FOREACH arco e in E: f(e) <- 0
-2. G_f <- grafo residuo di G rispetto a f
-3. WHILE (esiste un cammino s~>t P in G_f):
-4.     f <- AUGMENT(f, c, P)
-5.     Aggiorna G_f
-6. RETURN f
+```pseudo
+\begin{algorithm}
+\caption{Ford-Fulkerson($G$)}
+\begin{algorithmic}
+\ForAll{arco $e \in E$}
+  \State $f(e) \gets 0$
+\EndFor
+\State $G_f \gets$ grafo residuo di $G$ rispetto a $f$
+\While{esiste un cammino $s \leadsto t$ $P$ in $G_f$}
+  \State $f \gets$ \Call{Augment}{$f, c, P$}
+  \State aggiorna $G_f$
+\EndWhile
+\State \Return $f$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!info] Invariante di integralità
@@ -226,15 +239,22 @@ La scelta del cammino aumentante determina l'efficienza pratica dell'algoritmo.
 ### Algoritmo di Edmonds-Karp (cammino più corto)
 L'algoritmo di **Edmonds-Karp** (1970, indipendentemente da Dinitz) sceglie sempre il cammino aumentante con il **minor numero di archi**, trovato tramite BFS nel grafo residuo (vedi [[08 - Grafi e Visite]]).
 
-**`SHORTEST-AUGMENTING-PATH(G)` (Edmonds-Karp)**
-```text
-1. FOREACH arco e in E: f(e) <- 0
-2. G_f <- grafo residuo di G rispetto a f
-3. WHILE (esiste un cammino s~>t in G_f):
-4.     P <- BFS(G_f, s, t)    // cammino con meno archi
-5.     f <- AUGMENT(f, c, P)
-6.     Aggiorna G_f
-7. RETURN f
+```pseudo
+\begin{algorithm}
+\caption{ShortestAugmentingPath($G$) — Edmonds-Karp}
+\begin{algorithmic}
+\ForAll{arco $e \in E$}
+  \State $f(e) \gets 0$
+\EndFor
+\State $G_f \gets$ grafo residuo di $G$ rispetto a $f$
+\While{esiste un cammino $s \leadsto t$ in $G_f$}
+  \State $P \gets$ \Call{BFS}{$G_f, s, t$} \Comment{cammino con meno archi}
+  \State $f \gets$ \Call{Augment}{$f, c, P$}
+  \State aggiorna $G_f$
+\EndWhile
+\State \Return $f$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Teorema — Complessità di Edmonds-Karp
@@ -249,17 +269,25 @@ La strategia **capacity scaling** (Edmonds-Karp, 1972; versione migliorata Gabow
 
 L'algoritmo mantiene un parametro di scala $\Delta$ e lavora solo sugli archi con capacità residua $\geq \Delta$, detto **$\Delta$-grafo residuo** $G_f(\Delta)$.
 
-**`CAPACITY-SCALING(G)`**
-```text
-1. FOREACH arco e in E: f(e) <- 0
-2. Delta <- la più grande potenza di 2 <= C
-3. WHILE (Delta >= 1):
-4.     G_f(Delta) <- Delta-grafo residuo di G rispetto a f
-5.     WHILE (esiste un cammino s~>t P in G_f(Delta)):
-6.         f <- AUGMENT(f, c, P)
-7.         Aggiorna G_f(Delta)
-8.     Delta <- Delta / 2      // fase di scaling successiva
-9. RETURN f
+```pseudo
+\begin{algorithm}
+\caption{CapacityScaling($G$)}
+\begin{algorithmic}
+\ForAll{arco $e \in E$}
+  \State $f(e) \gets 0$
+\EndFor
+\State $\Delta \gets$ la più grande potenza di $2 \leq C$
+\While{$\Delta \geq 1$}
+  \State $G_f(\Delta) \gets$ $\Delta$-grafo residuo di $G$ rispetto a $f$
+  \While{esiste un cammino $s \leadsto t$ $P$ in $G_f(\Delta)$}
+    \State $f \gets$ \Call{Augment}{$f, c, P$}
+    \State aggiorna $G_f(\Delta)$
+  \EndWhile
+  \State $\Delta \gets \Delta / 2$ \Comment{fase di scaling successiva}
+\EndWhile
+\State \Return $f$
+\end{algorithmic}
+\end{algorithm}
 ```
 
 > [!quote] Teorema — Complessità di Capacity Scaling

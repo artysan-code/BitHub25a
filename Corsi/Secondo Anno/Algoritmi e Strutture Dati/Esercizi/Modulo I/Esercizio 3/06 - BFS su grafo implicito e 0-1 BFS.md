@@ -67,11 +67,12 @@ Con $|E| = O(n)$ basta una BFS classica dalla sorgente: si costruisce la lista d
     \EndIf
   \EndFor
 \EndFor
-\State \Return \Call{BFS}{$G$, $s$}$[t]$
+\State $d \gets$ \Call{visitaBFS}{$G$, $s$} \Comment{distanze in numero di colpi da $s$}
+\State \Return $d[t]$
 \end{algorithmic}
 \end{algorithm}
 ```
-Non serve né Dijkstra né la 0-1 BFS: il grado costante è la chiave dell'efficienza.
+Non serve né Dijkstra né la 0-1 BFS: il grado costante è la chiave dell'efficienza. La routine `visitaBFS` è quella standard di [[08 - Grafi e Visite]], invocata sul grafo implicito $G$.
 
 **Complessità:** $O(n)$ — grafo implicito a grado $\le 4$, BFS lineare nella dimensione del grafo.
 **Trappola:** la BFS classica (FIFO) è corretta solo perché tutti i pesi sono $1$; se le mosse avessero costi diversi occorrerebbe Dijkstra. Costruire la lista di adiacenza esplicitamente prima di lanciare BFS ha costo $O(n)$ e non peggiora la complessità, purché si generi solo un numero costante di archi per nodo.

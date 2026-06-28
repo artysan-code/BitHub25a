@@ -13,10 +13,22 @@ import glob
 import os
 import re
 import sys
+from fnmatch import fnmatch
 
 SCAN_DIRS = ("Corsi", "Hackathons")
 EXCLUDE_SUBSTR = ("/.obsidian/", "/.github/", "/.claude/", "/.trash/")
 EXCLUDE_BASENAMES = {"CLAUDE.md"}  # contengono wikilink-esempio, non reali
+
+# Note personali volutamente non versionate (vedi .gitignore): esistono in locale
+# ma non nel repo, quindi in CI non sono raggiungibili. I wikilink che le
+# referenziano sono intenzionali e NON vanno segnalati come rotti. Pattern in
+# minuscolo, confrontati col nome target (senza estensione) via fnmatch.
+PERSONAL_NOTE_GLOBS = (
+    "piano esame *",            # .gitignore: Piano Esame *.md (checklist per materia)
+    "situazione universitaria",
+    "piano di studi",
+    "piano di studio",
+)
 
 FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
 WIKILINK_RE = re.compile(r"(?<!!)\[\[([^\[\]\n]+?)\]\]")  # esclude gli embed ![[...]]
@@ -90,6 +102,8 @@ def main():
                     continue  # embed/link a un asset, non a una nota
                 paths = note_by_name.get(target.lower())
                 if not paths:
+                    if any(fnmatch(target.lower(), g) for g in PERSONAL_NOTE_GLOBS):
+                        continue  # nota personale non versionata: link intenzionale
                     broken.append((f, m.group(0), "nota inesistente"))
                     continue
                 target_path = paths[0]

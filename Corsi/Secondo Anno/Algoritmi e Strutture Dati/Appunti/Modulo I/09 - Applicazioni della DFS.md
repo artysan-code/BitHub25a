@@ -132,7 +132,7 @@ Il **grafo delle componenti fortemente connesse** di $G$ ha un nodo per ogni CFC
 
 Una componente è **pozzo** se ha solo archi entranti nel grafo delle CFC; è **sorgente** se ha solo archi uscenti.
 ### Idea dell'algoritmo
-L'algoritmo di Kosaraju si basa su tre proprietà:
+L'algoritmo **Componenti Fortemente Connesse** si basa su tre proprietà:
 
 **Proprietà 1:** se si esegue `visitaDFSRicorsiva` a partire da $u$, la procedura termina dopo aver visitato tutti i nodi raggiungibili da $u$ (e solo quelli).
 
@@ -148,7 +148,7 @@ L'idea è partire da una componente **pozzo** (più semplice da estrarre), fare 
 
 > [!info] Grafo inverso e CFC
 > Le CFC di $G^R$ sono le **stesse** di $G$ (la mutua raggiungibilità è simmetrica per inversione degli archi). Però le componenti sorgente di $G$ diventano componenti pozzo in $G^R$ e viceversa. Quindi il nodo con il massimo $\text{post}$ in $G^R$ appartiene a una **sorgente** di $G^R$, che corrisponde a un **pozzo** di $G$ — esattamente ciò di cui abbiamo bisogno.
-### Algoritmo di Kosaraju
+### Algoritmo Componenti Fortemente Connesse
 ```pseudo
 \begin{algorithm}
 \caption{ComponentiFortementeConnesse($G$)}
@@ -199,13 +199,13 @@ L'idea è partire da una componente **pozzo** (più semplice da estrarre), fare 
 > `VisitaDFS(GR)` assegna il massimo $\text{post}$ a un nodo di $C_2$. Quindi `CompConnesse` visita prima $C_2$ in $G$ (componente pozzo), poi $C_1$.
 
 > [!warning] Errore comune — Confondere il grafo su cui si calcolano i post
-> I valori $\text{post}(v)$ nell'algoritmo di Kosaraju vengono calcolati su **$G^R$**, non su $G$. La seconda DFS (quella che raccoglie le componenti) viene eseguita invece su **$G$**, usando quell'ordinamento. Invertire i due grafi dà risultati errati.
+> I valori $\text{post}(v)$ nell'algoritmo Componenti Fortemente Connesse vengono calcolati su **$G^R$**, non su $G$. La seconda DFS (quella che raccoglie le componenti) viene eseguita invece su **$G$**, usando quell'ordinamento. Invertire i due grafi dà risultati errati.
 ## Riepilogo delle complessità
 | Applicazione | Complessità | Note |
 |---|---|---|
 | Tempi $\text{pre}/\text{post}$ | $\Theta(n+m)$ | overhead costante sulla DFS base |
 | Rilevamento cicli | $\Theta(n+m)$ | basta verificare archi all'indietro |
 | Ordinamento topologico | $\Theta(n+m)$ | DFS + ordine $\text{post}$ decrescente |
-| CFC (Kosaraju) | $\Theta(n+m)$ | due DFS + costruzione $G^R$ |
+| CFC | $\Theta(n+m)$ | due DFS + costruzione $G^R$ |
 
 Tutti i risultati assumono rappresentazione con **liste di adiacenza**; con matrice di adiacenza le complessità diventano $\Theta(n^2)$.

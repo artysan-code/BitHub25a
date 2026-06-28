@@ -1158,7 +1158,7 @@ Ordina un DAG per `post(v)` decrescente; $O(n+m)$.
 \end{algorithmic}
 \end{algorithm}
 ```
-### ComponentiFortementeConnesse (Kosaraju)
+### ComponentiFortementeConnesse
 Due DFS: una su $G^R$ per ordinare i nodi per `post` decrescente, una su $G$ per estrarre le SCC; $O(n+m)$.
 ```pseudo
 \begin{algorithm}
@@ -1252,7 +1252,7 @@ Tabellone di riferimento ($n$ = elementi/nodi, $m$ = archi, $k$ = ampiezza del d
 | AVL: tutte le operazioni | $O(\log n)$ | altezza garantita $O(\log n)$ |
 | BFS / DFS su grafo | $O(n+m)$ | liste di adiacenza |
 | Ordinamento topologico | $O(n+m)$ | solo su DAG |
-| Componenti fortemente connesse (Kosaraju) | $O(n+m)$ | due DFS |
+| Componenti fortemente connesse | $O(n+m)$ | due DFS |
 | Dijkstra | $O(m\log n)$ | heap binario; pesi non negativi |
 ## Trappole ricorrenti
 Errori che costano punti all'esame.

@@ -24,7 +24,8 @@ Esercizio di progettazione su insiemi (casistica [[Casistiche d'Esame Modulo I|i
 \end{algorithm}
 ```
 
-**Variante — 26/06/2025.** Dati due array $A[1..n]$ e $B[1..m]$ di interi (con possibili duplicati), calcolare $\Phi(A,B)=|A\cap B|/|A|$, dove l'intersezione è su insiemi (ogni valore distinto contato al più una volta).
+> [!question] Traccia — 26/06/2025
+> Dati due array $A[1..n]$ e $B[1..m]$ di interi (con possibili duplicati), calcolare l'*inclusion coefficient* $\Phi(A,B)=|A\cap B|/|A|$, dove l'intersezione è su insiemi (ogni valore distinto contato al più una volta), in tempo $o(n^2)$.
 
 *Approccio (A) sort+merge — $O((n+m)\log(n+m))$:* ordinare $A$ e $B$ separatamente, poi scandire con due puntatori; ad ogni match avanzare entrambi saltando i duplicati dello stesso valore.
 

@@ -58,13 +58,13 @@ Non è possibile usare la ricerca binaria su una lista (manca accesso diretto), 
 - `insert` → $O(n)$: devo mantenere la lista ordinata.
 - `delete` → $O(n)$.
 #### Tabella riassuntiva
-| Implementazione | `search` | `insert` | `delete` |
-|:---|:---:|:---:|:---:|
-| Array non ordinato | $O(n)$ | $O(1)$ | $O(n)$ |
-| Array ordinato | $O(\log n)$ | $O(n)$ | $O(n)$ |
-| Lista non ordinata | $O(n)$ | $O(1)$ | $O(n)$ |
-| Lista ordinata | $O(n)$ | $O(n)$ | $O(n)$ |
-| **BST/AVL** | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ |
+| Implementazione    |  `search`   |  `insert`   |  `delete`   |
+| :----------------- | :---------: | :---------: | :---------: |
+| Array non ordinato |   $O(n)$    |   $O(1)$    |   $O(n)$    |
+| Array ordinato     | $O(\log n)$ |   $O(n)$    |   $O(n)$    |
+| Lista non ordinata |   $O(n)$    |   $O(1)$    |   $O(n)$    |
+| Lista ordinata     |   $O(n)$    |   $O(n)$    |   $O(n)$    |
+| **BST/AVL**        | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ |
 
 L'ultima riga anticipa il risultato degli [[06 - Alberi di Ricerca BST e AVL]]: per garantire $O(\log n)$ su tutte le operazioni occorrono strutture più sofisticate.
 

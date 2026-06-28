@@ -480,18 +480,18 @@ La correttezza si basa sul fatto che $Y[b] - Y[a-1]$ conta esattamente gli eleme
 >
 > R: Sì. Si ordina $A$ con Merge Sort o Heap Sort in $O(n \log n)$, poi si risponde a ogni query $[a, b]$ con due ricerche binarie (trovare il primo elemento $\ge a$ e l'ultimo $\le b$), ciascuna in $O(\log n)$. (Non è richiesto che i valori siano interi né che il range sia limitato.)
 ## Tabella riassuntiva
-| Algoritmo | Caso migliore | Caso peggiore | Caso medio | In loco | Stabile |
-|---|---|---|---|---|---|
-| Selection Sort | $\Theta(n^2)$ | $\Theta(n^2)$ | $\Theta(n^2)$ | Sì | No |
-| Insertion Sort | $\Theta(n)$ | $\Theta(n^2)$ | $\Theta(n^2)$ | Sì | Sì |
-| Bubble Sort | $\Theta(n^2)$ | $\Theta(n^2)$ | $\Theta(n^2)$ | Sì | Sì |
-| Merge Sort | $\Theta(n \log n)$ | $\Theta(n \log n)$ | $\Theta(n \log n)$ | No | Sì |
-| Quick Sort | $\Theta(n \log n)$ | $O(n^2)$ | $\Theta(n \log n)$ | Sì | No |
-| Quick Sort rand. | $\Theta(n \log n)$ | $O(n^2)$ | $\Theta(n \log n)$ atteso | Sì | No |
-| Heap Sort | $\Theta(n \log n)$ | $\Theta(n \log n)$ | $\Theta(n \log n)$ | Sì | No |
-| Integer Sort | $\Theta(n+k)$ | $\Theta(n+k)$ | $\Theta(n+k)$ | No | No |
-| Bucket Sort | $\Theta(n+k)$ | $\Theta(n+k)$ | $\Theta(n+k)$ | No | Sì |
-| Radix Sort | $\Theta((n+b)\log_b k)$ | $\Theta((n+b)\log_b k)$ | $\Theta((n+b)\log_b k)$ | No | Sì |
+| Algoritmo        | Caso migliore           | Caso peggiore           | Caso medio                | In loco | Stabile |
+| ---------------- | ----------------------- | ----------------------- | ------------------------- | ------- | ------- |
+| Selection Sort   | $\Theta(n^2)$           | $\Theta(n^2)$           | $\Theta(n^2)$             | Sì      | No      |
+| Insertion Sort   | $\Theta(n)$             | $\Theta(n^2)$           | $\Theta(n^2)$             | Sì      | Sì      |
+| Bubble Sort      | $\Theta(n^2)$           | $\Theta(n^2)$           | $\Theta(n^2)$             | Sì      | Sì      |
+| Merge Sort       | $\Theta(n \log n)$      | $\Theta(n \log n)$      | $\Theta(n \log n)$        | No      | Sì      |
+| Quick Sort       | $\Theta(n \log n)$      | $O(n^2)$                | $\Theta(n \log n)$        | Sì      | No      |
+| Quick Sort rand. | $\Theta(n \log n)$      | $O(n^2)$                | $\Theta(n \log n)$ atteso | Sì      | No      |
+| Heap Sort        | $\Theta(n \log n)$      | $\Theta(n \log n)$      | $\Theta(n \log n)$        | Sì      | No      |
+| Integer Sort     | $\Theta(n+k)$           | $\Theta(n+k)$           | $\Theta(n+k)$             | No      | No      |
+| Bucket Sort      | $\Theta(n+k)$           | $\Theta(n+k)$           | $\Theta(n+k)$             | No      | Sì      |
+| Radix Sort       | $\Theta((n+b)\log_b k)$ | $\Theta((n+b)\log_b k)$ | $\Theta((n+b)\log_b k)$   | No      | Sì      |
 
 > [!info] Algoritmi ottimi
 > Merge Sort e Heap Sort sono ottimi nella classe dei confronti: raggiungono il lower bound $\Theta(n \log n)$ nel caso peggiore. Integer Sort, Bucket Sort e Radix Sort operano fuori da tale classe e possono essere lineari sotto ipotesi sul range dei valori.

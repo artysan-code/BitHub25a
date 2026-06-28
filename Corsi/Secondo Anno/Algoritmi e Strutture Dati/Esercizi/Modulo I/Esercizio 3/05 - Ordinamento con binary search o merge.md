@@ -24,7 +24,7 @@ Si noti che $A[i]^2 \ge 0$ per ogni intero: se $A$ contiene valori negativi, il 
 \State $\text{cont} \gets 0$
 \For{$i \gets 1$ \To $n$}
   \State $q \gets A[i]^2$
-  \If{\Call{RicercaBinaria}{$A$, $q$} $\ne$ NIL}
+  \If{\Call{RicercaBinaria}{$A$, $q$} $\ne$ null}
     \State $\text{cont} \gets \text{cont} + 1$
   \EndIf
 \EndFor
@@ -34,7 +34,7 @@ Si noti che $A[i]^2 \ge 0$ per ogni intero: se $A$ contiene valori negativi, il 
 ```
 
 **Complessità:** $O(n \log n)$ — dominata dal MergeSort; le $n$ ricerche binarie contribuiscono $O(n \log n)$ complessivamente.
-**Trappola:** nella RicercaBinaria occorre verificare che il valore trovato sia **esattamente** $q$: un lower bound che si ferma sull'elemento più vicino (ma diverso) darebbe un falso positivo. La funzione deve restituire NIL se $q$ non è presente, non l'indice del più vicino.
+**Trappola:** nella RicercaBinaria occorre verificare che il valore trovato sia **esattamente** $q$: un lower bound che si ferma sull'elemento più vicino (ma diverso) darebbe un falso positivo. La funzione deve restituire null se $q$ non è presente, non l'indice del più vicino.
 ## Variante — coefficiente di Jaccard (28/09/2022)
 > [!question] Traccia — 28/09/2022
 > Dati due insiemi di interi $A$ e $B$ di dimensione $n$ e $m$, calcolare il coefficiente di Jaccard $J = |A \cap B| / |A \cup B|$ con costo $O((n+m)\log(n+m))$.

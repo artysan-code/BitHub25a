@@ -39,7 +39,7 @@ L'oracolo per un candidato $\ell$:
 \caption{Fattibile($G$, $s$, $h$, $\ell$) → booleano}
 \begin{algorithmic}
 \State $G_\ell \gets (V,\; \{e \in E : \lambda(e) \le \ell\})$ \Comment{grafo filtrato per livello}
-\State $d \gets$ \Call{BFS}{$G_\ell$, $s$} \Comment{$d[v]$ = numero di hop da $s$ a $v$}
+\State $d \gets$ \Call{visitaBFS}{$G_\ell$, $s$} \Comment{$d[v]$ = numero di hop da $s$ a $v$}
 \For{ogni $v \in V$}
   \If{$d[v] = \infty$ o $d[v] > h$}
     \State \Return falso

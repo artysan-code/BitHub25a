@@ -81,3 +81,34 @@ Esercizio di progettazione con struttura oracolo (casistica [[Casistiche d'Esame
 
 **Complessità:** preprocessing $\Theta(n)$; query $O(\log n)$ (binary search su $P$ monotona).
 **Trappola:** la binary search è valida **solo se $P$ è monotona**, condizione garantita dall'ipotesi $A[i]\ge 0$. Con valori negativi $P$ non sarebbe crescente e la binary search produrrebbe un risultato errato.
+## Pattern C — conteggio per prefisso (query O(1) bidirezionale)
+> [!question] Traccia — 09/09/2025
+> Sia $V$ un vettore di $n$ bit. Progettare una struttura dati con costruzione $O(n)$ che risponda in $O(1)$ alle query $\text{query}(i,x)$: dato un indice $i$ e una direzione $x\in\{s,d\}$, restituire il numero di uni **strettamente a sinistra** di $i$ se $x=s$, il numero di uni **strettamente a destra** di $i$ se $x=d$.
+
+**Idea.** Si precalcola il prefix sum dei bit, $P[0..n]$ con $P[0]=0$ e $P[i]=P[i-1]+V[i]$: $P[i]$ è il numero di uni in $V[1..i]$. Allora gli uni strettamente a sinistra di $i$ sono $P[i-1]$ e quelli strettamente a destra sono $P[n]-P[i]$. Entrambe le risposte sono una differenza di due celle dell'array, quindi $O(1)$.
+```pseudo
+\begin{algorithm}
+\caption{CostruisciPrefix($V$, $n$) → array}
+\begin{algorithmic}
+\State alloca $P[0..n]$; $P[0] \gets 0$
+\For{$i \gets 1$ to $n$}
+  \State $P[i] \gets P[i-1] + V[i]$
+\EndFor
+\State \Return $P$
+\end{algorithmic}
+\end{algorithm}
+```
+```pseudo
+\begin{algorithm}
+\caption{Query($P$, $n$, $i$, $x$) → intero}
+\begin{algorithmic}
+\If{$x = s$}
+  \State \Return $P[i-1]$ \Comment{uni in V[1..i-1]}
+\Else
+  \State \Return $P[n] - P[i]$ \Comment{uni in V[i+1..n]}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+```
+**Complessità:** preprocessing $\Theta(n)$ (una scansione); query $O(1)$.
+**Trappola:** le due query sono **strettamente** a sinistra/destra, quindi escludono $i$: si usa $P[i-1]$ (non $P[i]$) a sinistra e $P[n]-P[i]$ (non $P[n]-P[i-1]$) a destra. Sbagliare l'estremo include erroneamente il bit in posizione $i$.

@@ -3,12 +3,12 @@ tags:
   - algoritmi
 ---
 # Grafo modificato strutturalmente
-Esercizio di progettazione su grafi (casistica [[Casistiche d'Esame Modulo I|grafo modificato strutturalmente]]); ripasso: [[08 - Grafi e Visite]]; checklist [[Piano Esame ASD - Modulo I]].
+Esercizio di progettazione su grafi (casistica [[Casistiche d'Esame Modulo I|grafo modificato strutturalmente]]): si **aggiungono archi** al grafo dato secondo una regola del problema e poi si applica un algoritmo standard (forte connessione, BFS/Dijkstra). Il punto chiave è che gli archi extra siano $O(m)$ o $O(n)$, così le dimensioni non esplodono. Ripasso: [[08 - Grafi e Visite]], [[10 - Cammini Minimi e Dijkstra]]; checklist [[Piano Esame ASD - Modulo I]].
+## Pattern A — archi inversi sui nodi speciali + forte connessione
 > [!question] Traccia — 18/07/2022
 > Dato un grafo diretto $G=(V,E)$ con $n$ nodi e $m$ archi e un sottoinsieme $S\subseteq V$ di nodi "speciali", si definisce il grafo $G'=(V,E')$ in cui $E'$ contiene tutti gli archi di $E$ e, per ogni arco $(v,x)\in E$ con $x\in S$, anche l'arco inverso $(x,v)$. Determinare se $G'$ è fortemente connesso. L'algoritmo deve operare in $O(n+m)$.
 
-**Idea.** Si costruisce $G'$ scandendo $E$ una sola volta: ogni arco $(v,x)$ viene copiato in $E'$; se $x\in S$ (test $O(1)$ con array booleano o hash set su $S$) si aggiunge anche l'arco inverso $(x,v)$. Ogni arco originale genera al più un arco extra, quindi $|E'|=O(m)$ e $|V'|=n$: le dimensioni del grafo non esplodono. Su $G'$ si esegue Kosaraju: se restituisce una sola SCC il grafo è fortemente connesso.
-
+**Idea.** Si costruisce $G'$ scandendo $E$ una sola volta: ogni arco $(v,x)$ viene copiato in $E'$; se $x\in S$ (test $O(1)$ con array booleano o hash set su $S$) si aggiunge anche l'arco inverso $(x,v)$. Ogni arco originale genera al più un arco extra, quindi $|E'|=O(m)$ e $|V'|=n$: le dimensioni del grafo non esplodono. Su $G'$ si esegue l'algoritmo **Componenti Fortemente Connesse**: se restituisce una sola CFC il grafo è fortemente connesso.
 ```pseudo
 \begin{algorithm}
 \caption{GrafoModificato($G$, $S$) → booleano}
@@ -21,11 +21,30 @@ Esercizio di progettazione su grafi (casistica [[Casistiche d'Esame Modulo I|gra
   \EndIf
 \EndFor
 \State $G' \gets (V,\,E')$
-\State $\mathit{scc} \gets$ \Call{Kosaraju}{$G'$}
-\State \Return $|\mathit{scc}| = 1$
+\State $\mathit{cfc} \gets$ \Call{ComponentiFortementeConnesse}{$G'$}
+\State \Return $|\mathit{cfc}| = 1$
 \end{algorithmic}
 \end{algorithm}
 ```
-
-**Complessità:** $O(n+m)$ — la costruzione di $G'$ scandisce $E$ in $O(m)$; Kosaraju opera in $O(n+m)$ su $G'$ che ha $n$ nodi e $O(m)$ archi.
+**Complessità:** $O(n+m)$ — la costruzione di $G'$ scandisce $E$ in $O(m)$; l'algoritmo Componenti Fortemente Connesse opera in $O(n+m)$ su $G'$ che ha $n$ nodi e $O(m)$ archi.
 **Trappola:** aggiungere l'arco inverso per *ogni* coppia $(x,v)$ con $x\in S$ e $v\in V$ (indipendentemente dall'esistenza di $(v,x)$ in $E$) farebbe esplodere $|E'|$ a $O(n\cdot|S|)=O(n^2)$; la regola si applica esclusivamente agli archi già presenti in $E$.
+## Pattern B — archi di teletrasporto + cammino minimo
+> [!question] Traccia — 27/09/2023
+> Un labirinto è un grafo non orientato $G=(V,E)$; si parte da $s$ e l'uscita è in $t$, ogni arco costa $1$ minuto. C'è un nodo speciale $p$ (teletrasporto) e un insieme $U\subseteq V$ di uscite del teletrasporto: stando su $p$ ci si può teletrasportare in un qualsiasi $q\in U$ al costo di $3$ minuti. Calcolare la strategia più veloce per uscire, se esiste.
+
+**Idea.** Si aggiungono al grafo gli **archi di teletrasporto**: un arco *diretto* $p\to q$ di peso $3$ per ogni $q\in U$ (gli archi del labirinto restano non orientati, peso $1$). Sul grafo pesato risultante si esegue **Dijkstra** da $s$: la risposta è $\text{dist}[t]$, oppure "nessuna uscita" se $\text{dist}[t]=+\infty$. Gli archi extra sono $|U|=O(n)$, quindi il grafo resta di taglia $O(n+m)$.
+```pseudo
+\begin{algorithm}
+\caption{FugaDalLabirinto($G$, $s$, $t$, $p$, $U$) → intero oppure $+\infty$}
+\begin{algorithmic}
+\State $G' \gets G$ con tutti gli archi di peso $1$
+\For{ogni $q \in U$}
+  \State aggiungi a $G'$ l'arco diretto $p \to q$ di peso $3$
+\EndFor
+\State $\text{dist} \gets$ \Call{Dijkstra}{$G'$, $s$}
+\State \Return $\text{dist}[t]$
+\end{algorithmic}
+\end{algorithm}
+```
+**Complessità:** costruzione $O(n+m)$; Dijkstra con heap binario $O(m\log n)$, che domina.
+**Trappola:** gli archi di teletrasporto sono **diretti** ($p\to q$, non $q\to p$) e di peso $3$, non $1$: una BFS semplice darebbe distanze sbagliate perché assume archi unitari. *Variante a peso unitario:* si può evitare Dijkstra sostituendo ogni arco $p\to q$ di peso $3$ con una catena di tre archi unitari $p\to d_1\to d_2\to q$ (due nodi fittizi $d_1,d_2$ condivisi); il grafo torna a pesi unitari e basta una BFS in $O(n+m)$.

@@ -102,7 +102,7 @@ $T(n) = O(\log_d n)$ — si risale al massimo per tutta l'altezza dell'albero.
 \begin{algorithm}
 \caption{muoviBasso($T, v$) — analogo a FixHeap}
 \begin{algorithmic}
-\While{\text{vero}}
+\While{$\text{vero}$}
   \State sia $u$ il figlio di $v$ con chiave minima (se esiste)
   \If{$v$ non ha figli or $\text{chiave}(v) \leq \text{chiave}(u)$}
     \State \textbf{break}
@@ -189,7 +189,7 @@ Per il **caso 1 del Teorema Master** ([[03 - Equazioni di Ricorrenza]]):
 $$T(n) = \Theta(n)$$
 
 > [!warning] Heapify vs inserimenti ripetuti
-> Costruire un heap con $n$ inserimenti successivi costa $O(n \log n)$. `Heapify` bottom-up costa $O(n)$. La differenza è rilevante quando si costruisce la struttura una sola volta (come in HeapSort) e si vuole massimizzare l'efficienza della fase di costruzione.
+> Costruire un heap con $n$ inserimenti successivi costa $O(n \log n)$. `Heapify` costa $O(n)$. La differenza è rilevante quando si costruisce la struttura una sola volta (come in HeapSort) e si vuole massimizzare l'efficienza della fase di costruzione.
 ### Merge con d-heap
 Ci sono due approcci per fondere due d-heap $c_1$ e $c_2$:
 

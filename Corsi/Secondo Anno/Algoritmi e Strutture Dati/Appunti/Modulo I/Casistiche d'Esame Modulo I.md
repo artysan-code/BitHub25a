@@ -35,41 +35,44 @@ Dare la soluzione asintotica di una relazione di ricorrenza. → ripasso [[03 - 
 - **Cambio di variabile** — $T(\sqrt n)+1$ → $\Theta(\log\log n)$ *(3×)*
 ## 1.C — Algoritmi e complessità
 Per ogni richiesta: «quale algoritmo useresti e quanto costa». → ripasso note [[04 - Algoritmi di Ordinamento|04]]–[[10 - Cammini Minimi e Dijkstra|10]] · svolti [[1.C — Algoritmi e complessità]]
-- **Ordinamento lineare, range polinomiale** — interi in $[1,n^k]$ → Radix base $n$ *(7×)*
-- **Distanze/raggiungibilità inverse su $G^T$** — distanze di tutti verso $t$ *(10×)*
+- **Ordinamento lineare, range polinomiale** — interi in $[1,n^k]$ → Radix base $n$ (anche $n\log\log n$) *(8×)*
+- **Distanze/raggiungibilità inverse su $G^T$** — distanze di tutti verso $t$ *(9×)*
+- **Forte connessione e CFC** — due DFS; 3 varianti: $\ge 2$ CFC / 1 sola CFC / arco nel DAG *(7×)*
 - **Cammini minimi con vincoli** — nodo/arco proibito, pesi $\{1,2\}$, $\le k$ archi *(6×)*
-- **Dijkstra da sorgente singola** — pesi non negativi, argmax distanze *(7×)*
-- **Build-Heap bottom-up** — costruire heap da $n$ chiavi in $O(n)$ *(6×)*
-- **Ordinamento lineare, range costante** — Counting Sort con offset *(5×)*
+- **Dijkstra da sorgente singola** — pesi non negativi, argmax distanze *(6×)*
+- **Heapify** — costruire un heap da $n$ chiavi in $O(n)$ *(6×)*
+- **Raggiungibilità su grafo** — BFS/DFS, anche con filtri sugli archi *(6×)*
+- **Ordinamento lineare, range costante** — Integer Sort con offset (anche bit $\{0,1\}$) *(5×)*
 - **Ricerca in lista concatenata ordinata** — sequenziale $O(n)$ *(5×)*
-- **Raggiungibilità su grafo** — BFS/DFS, anche con filtri sugli archi *(5×)*
-- **Forte connessione e SCC** — Kosaraju/Tarjan, FC sse 1 sola SCC *(5×)*
-- **Costruzione AVL** — $n$ inserzioni → $O(n\log n)$ *(4×)*
+- **Costruzione AVL** — $n$ inserzioni → $O(n\log n)$ *(3×)*
 - **Visita BST in-order** — chiavi in ordine crescente/decrescente *(3×)*
 - **Selezione dei $k$ massimi/minimi** — heap, $O(n+k\log n)$ *(3×)*
-- **$n$-esimo Fibonacci** — DP $O(n)$ o matrici $O(\log n)$ *(3×)*
+- **$n$-esimo Fibonacci** — `fibonacci4` $O(n)$ o `fibonacci6` $O(\log n)$ *(3×)*
 - **Ricerca binaria su vettore ordinato** — $O(\log n)$ *(3×)*
+- **Selezione/navigazione in BST/AVL** — 2° minimo, predecessore, floor *(3×)*
+- **Ordinamento per confronto generale** — MergeSort/HeapSort, Merge, Partition *(3×)*
 - **Costruzione heap binomiale** — analisi ammortizzata $O(n)$ *(2×)*
-- **Cammino minimo per nodo intermedio** — $d(s,u)+d(u,t)=d(s,t)$ *(1×)*
 - **Merge di heap binomiali** — $O(\log N)$ *(2×)*
-- **Merge di heap binari** — Build-Heap sull'unione *(2×)*
-- **Ordinamento topologico e DAG** — disporre i nodi su una linea *(1×)*
+- **Merge di heap binari** — Heapify sull'unione *(2×)*
 - **Diametro grafo non pesato** — $n$ BFS *(2×)*
+- **Inserzione batch in heap** — $k$ inserzioni vs rebuild *(2×)*
+- **Cammino minimo per nodo intermedio** — $d(s,u)+d(u,t)=d(s,t)$ *(1×)*
+- **Ordinamento topologico e DAG** — disporre i nodi su una linea *(1×)*
 - **All-pairs shortest paths** — $n$ Dijkstra *(1×)*
 - **Merge di AVL asimmetrici** — inserire il piccolo nel grande, $O(\log^2 n)$ *(1×)*
-- **Inserzione batch in heap** — $k$ inserzioni vs rebuild *(2×)*
-- **Selezione/navigazione in BST/AVL** — 2° minimo, predecessore *(4×)*
-- **Ordinamento per confronto generale** — MergeSort/HeapSort, Merge, Partition *(2×)*
+- **Costruzione dizionario per ricerche logaritmiche** — array ordinato/AVL, $O(n\log n)$ *(1×)*
+- **Secondo massimo/minimo in vettore non ordinato** — scansione a 2 variabili, $O(n)$ *(1×)*
+- **Distanze da più sorgenti, grafo non pesato** — una BFS per sorgente, $O(n+m)$ *(1×)*
 ## Esercizio 2 — Progettazione (8 punti)
 Progettare un algoritmo con pseudocodice rispettando un bound dato. → svolti nella cartella `Esercizio 2/` (un file per esercizio).
-- **DFS top-down su albero binario** — contare nodi/foglie con condizione sugli antenati *(8×)* · [[01 - DFS top-down su albero binario|svolto]]
-- **Precalcolo di array ausiliari** — prev/next, left/right, first/last (due scansioni) *(4×)* · [[02 - Precalcolo di array ausiliari|svolto]]
+- **DFS top-down su albero binario** — contare nodi/foglie con condizione cumulativa sugli antenati *(8×)* · [[01 - DFS top-down su albero binario|svolto]]
+- **Precalcolo di array ausiliari** — run left/right, prev/next, first/last per valore *(3×)* · [[02 - Precalcolo di array ausiliari|svolto]]
 - **Struttura oracolo** — preprocessing $O(n)$, query $O(1)$ o $O(\log n)$ *(3×)* · [[03 - Struttura oracolo|svolto]]
-- **Ordinamento/conteggio come preprocessing** — Counting Sort, verifica greedy *(3×)* · [[04 - Ordinamento e conteggio come preprocessing|svolto]]
-- **Scansione con prefix sum** — primo indice, prefisso vs suffisso *(2×)* · [[05 - Scansione lineare con prefix sum|svolto]]
-- **DFS post-order su albero binario** — aggregare contatori dal basso *(1×)* · [[06 - DFS post-order su albero binario|svolto]]
-- **Grafo modificato strutturalmente** — archi extra + BFS/SCC/Dijkstra *(2×)* · [[07 - Grafo modificato strutturalmente|svolto]]
+- **Ordinamento/conteggio come preprocessing** — Integer Sort con outlier, ordina+due puntatori, conteggio+interleaving *(3×)* · [[04 - Ordinamento e conteggio come preprocessing|svolto]]
+- **Grafo modificato strutturalmente** — archi extra (inversi o di teletrasporto) + SCC o Dijkstra *(2×)* · [[07 - Grafo modificato strutturalmente|svolto]]
 - **Intersezione/appartenenza su insiemi** — hash set o sort+merge, memoria $o(N)$ *(2×)* · [[08 - Intersezione e appartenenza su insiemi|svolto]]
+- **Scansione con prefix sum** — primo indice prefisso vs suffisso, $O(1)$ spazio *(1×)* · [[05 - Scansione lineare con prefix sum|svolto]]
+- **DFS post-order su albero binario** — aggregare contatori dal basso (discendenti) *(1×)* · [[06 - DFS post-order su albero binario|svolto]]
 - **Sliding window con BST** — finestra di $k$, $O(n\log k)$ *(1×)* · [[09 - Sliding window con BST|svolto]]
 ## Esercizio 3 — Modellazione (8 punti)
 Problema "a parole" da modellare e risolvere con un algoritmo efficiente. → svolti nella cartella `Esercizio 3/` (un file per esercizio).

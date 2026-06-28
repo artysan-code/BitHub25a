@@ -231,24 +231,22 @@ Complessità: ogni nodo (e ogni `null`) è inserito ed estratto dalla pila una s
 
 ```pseudo
 \begin{algorithm}
-\caption{DFS\_ricorsiva($r$)}
+\caption{DFSRicorsiva($r$)}
 \begin{algorithmic}
 \If{$r = \text{null}$}
   \State \Return
 \EndIf
-\State [\Call{visita}{$r$}] \Comment{preordine: radice prima}
-\State \Call{DFS\_ricorsiva}{figlio sinistro di $r$}
-\State [\Call{visita}{$r$}] \Comment{simmetrica: radice in mezzo}
-\State \Call{DFS\_ricorsiva}{figlio destro di $r$}
-\State [\Call{visita}{$r$}] \Comment{postordine: radice dopo}
+\State \Call{visita}{$r$} \Comment{preordine}
+\State \Call{DFSRicorsiva}{figlio sinistro di $r$}
+\State \Call{DFSRicorsiva}{figlio destro di $r$}
 \end{algorithmic}
 \end{algorithm}
 ```
 
-L'operazione `visita(r)` va inserita in *una sola* delle tre posizioni indicate:
-- **Preordine**: radice → sottoalbero sinistro → sottoalbero destro.
-- **Visita simmetrica** (in-order): sottoalbero sinistro → radice → sottoalbero destro.
-- **Postordine**: sottoalbero sinistro → sottoalbero destro → radice.
+Lo pseudocodice mostra la **visita in preordine**; spostando l'unica riga `visita(r)` si ottengono gli altri due ordini (come sulle slide del corso):
+- **Preordine**: `visita(r)` *prima* delle due chiamate ricorsive → radice → sottoalbero sinistro → sottoalbero destro.
+- **Visita simmetrica** (in-order): `visita(r)` *tra* le due chiamate → sottoalbero sinistro → radice → sottoalbero destro.
+- **Postordine**: `visita(r)` *dopo* entrambe le chiamate → sottoalbero sinistro → sottoalbero destro → radice.
 
 > [!example] Ordini di visita sull'albero di esempio
 > Considerare l'albero binario con radice A, figlio sinistro L (con figli E e R) e figlio destro B (con figlio destro O):

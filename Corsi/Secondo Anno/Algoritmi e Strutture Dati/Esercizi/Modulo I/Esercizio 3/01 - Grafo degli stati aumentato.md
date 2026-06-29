@@ -31,6 +31,7 @@ Tutti gli archi di $G'$ hanno peso uniforme, quindi si usa la visita **`visitaBF
   \State $\tau \gets \lambda(u,v)$
   \State $E' \gets E' \cup \{((u,\tau),(v,\tau))\}$ \Comment{arco temporale}
 \EndFor
+\State $G' \gets (V', E')$
 \State $d \gets$ \Call{visitaBFS}{$G'$, $(s,1)$} \Comment{distanze in numero di archi da $(s,1)$ su $G'$}
 \State $\textit{ans} \gets +\infty$
 \For{$\tau = 1$ \To $5$}
@@ -60,6 +61,7 @@ Tutti gli archi hanno peso unitario e serve la sola raggiungibilità: si lancia 
 \caption{CianoVince($G$, $\sigma$, $B$, $s$, $t$) → booleano}
 \begin{algorithmic}
 \Comment{Costruzione di $G'$ con stati $(v, p)$, $p \in \{0,1\}$}
+\State $V' \gets \{(v,p) : v\in V,\ p\in\{0,1\}\}$
 \State $E' \gets \emptyset$
 \For{ogni arco $e=(u,v) \in E$}
   \If{$\sigma(e) = \text{on}$}
@@ -71,6 +73,7 @@ Tutti gli archi hanno peso unitario e serve la sola raggiungibilità: si lancia 
 \For{ogni $b \in B$}
   \State $E' \gets E' \cup \{((b,0),(b,1)),\ ((b,1),(b,0))\}$
 \EndFor
+\State $G' \gets (V', E')$
 \State $d \gets$ \Call{visitaBFS}{$G'$, $(s,0)$}
 \State \Return $d[(t,0)] < \infty$ o $d[(t,1)] < \infty$
 \end{algorithmic}
@@ -83,17 +86,21 @@ Tutti gli archi hanno peso unitario e serve la sola raggiungibilità: si lancia 
 > [!question] Traccia — 21/01/2025
 > Sia $G=(V,E)$ un grafo orientato. Ogni arco $e$ ha peso $w(e)\ge 0$ e colore $\text{col}(e)\in\{c_1,c_2\}$; ogni nodo $v$ ha due costi $w_1(v), w_2(v)$, dove $w_i(v)$ è il costo di attraversare $v$ se vi si arriva con un arco di colore $c_i$. Il costo di un cammino è la somma dei pesi degli archi più la somma dei costi di attraversamento dei nodi. Calcolare il cammino di costo minimo da $s$ a $t$. Complessità $O(m+n\log n)$.
 
-**Modellazione.** Il costo di "stare in $v$" dipende dal colore dell'arco con cui ci si arriva: lo stato è la coppia $(v, c)$ con $c$ = colore dell'arco entrante. Ogni nodo si **sdoppia** in $(v,c_1)$ e $(v,c_2)$; $|V'|=2n$. Per ogni arco $e=(u,v)$ di colore $c$ e peso $w(e)$ si aggiungono $((u,c_1),(v,c))$ e $((u,c_2),(v,c))$, entrambi di peso $w(e)+w_c(v)$: da entrambe le copie di $u$ si entra nella copia di $v$ etichettata col colore di $e$, pagando l'arco più il costo di $v$ relativo a quel colore. Sono $2m$ archi. Si esegue Dijkstra su $G'$ da entrambe le copie di $s$ (peso iniziale $0$: $s$ non ha arco entrante e quindi non paga costo d'attraversamento). Risposta: $\min(d[(t,c_1)], d[(t,c_2)])$.
+**Modellazione.** Il costo di attraversare un nodo $v$ non è fisso: dipende dal **colore dell'arco con cui vi si arriva** ($w_1(v)$ se l'arco entrante ha colore $c_1$, $w_2(v)$ se ha colore $c_2$). Due cammini che arrivano in $v$ con archi di colore diverso pagano $v$ in modo diverso, quindi il solo nodo non basta a determinare il costo: lo **stato** è la coppia $(v,c)$ = nodo + colore dell'arco d'ingresso. Ogni nodo si **sdoppia** nelle due copie $(v,c_1)$ e $(v,c_2)$, una per colore d'ingresso ($|V'|=2n$).
+Gli archi vanno costruiti in modo che il costo di $v$ si paghi **all'ingresso**, in base al colore dell'arco che entra. Per ogni $e=(u,v)$ di colore $c$ e peso $w(e)$, da **entrambe** le copie di $u$ si entra nella copia $(v,c)$ etichettata col colore di $e$: si aggiungono $((u,c_1),(v,c))$ e $((u,c_2),(v,c))$, entrambi di peso $w(e)+w_c(v)$ (peso dell'arco + costo d'attraversamento di $v$ per il colore $c$). Sono $2m$ archi.
+Si esegue Dijkstra dalle **due** copie di $s$ con distanza iniziale $0$: $s$ non ha arco entrante, quindi non paga alcun costo d'attraversamento. Risposta: $\min(d[(t,c_1)], d[(t,c_2)])$, l'uscita su una qualsiasi delle due copie.
 
 ```pseudo
 \begin{algorithm}
 \caption{CamminoColorato($G$, $w$, $\text{col}$, $w_1$, $w_2$, $s$, $t$) → reale}
 \begin{algorithmic}
+\State $V' \gets \{(v,c) : v\in V,\ c\in\{c_1,c_2\}\}$
 \State $E' \gets \emptyset$
 \For{ogni arco $e=(u,v) \in E$ di colore $c$}
-  \State $\text{peso} \gets w(e) + w_c(v)$
-  \State aggiungi a $E'$ gli archi $((u,c_1),(v,c))$ e $((u,c_2),(v,c))$ di peso $\text{peso}$
+  \State $\text{peso} \gets w(e) + w_c(v)$ \Comment{arco + costo di $v$ per il colore $c$, pagato all'ingresso}
+  \State aggiungi a $E'$ gli archi $((u,c_1),(v,c))$ e $((u,c_2),(v,c))$ di peso $\text{peso}$ \Comment{da entrambe le copie di $u$ alla copia $(v,c)$}
 \EndFor
+\State $G' \gets (V', E')$
 \State $d \gets$ \Call{Dijkstra}{$G'$, $\{(s,c_1),(s,c_2)\}$} \Comment{due sorgenti, distanza iniziale $0$}
 \State \Return $\min(d[(t,c_1)],\ d[(t,c_2)])$
 \end{algorithmic}
@@ -106,20 +113,25 @@ Tutti gli archi hanno peso unitario e serve la sola raggiungibilità: si lancia 
 > [!question] Traccia — 09/09/2025
 > Sia $G=(V,E)$ un grafo orientato. Ogni arco $e$ ha un costo $w(e)$ e un colore $c(e)\in\{1,2,3\}$. Il costo di un cammino da $s$ a $t$ è la somma dei costi degli archi più una penalità $\sigma>0$ per ogni *cambio di colore* fra archi consecutivi. Calcolare il cammino di costo totale minimo.
 
-**Modellazione.** La penalità dipende dal colore dell'**ultimo arco percorso**: lo stato è la coppia $(v, c_{\text{prec}})$ con $c_{\text{prec}}\in\{1,2,3,\bot\}$ ($\bot$ = nessun arco ancora percorso, per la sorgente). Da $(u, c_{\text{prec}})$, percorrere $e=(u,v)$ di colore $c$ porta a $(v,c)$ con peso $w(e)$ più $\sigma$ se $c_{\text{prec}}\neq\bot$ e $c\neq c_{\text{prec}}$, altrimenti $0$. $|V'|=4n$; ogni arco genera $\le 4$ archi (uno per colore precedente) → $O(m)$ archi. Dijkstra da $(s,\bot)$; risposta $\min_{c\in\{1,2,3\}} d[(t,c)]$.
+**Modellazione.** La penalità $\sigma$ non si paga a ogni arco, ma solo quando il colore **cambia** rispetto all'arco precedente: per sapere se il prossimo arco fa scattare la penalità serve ricordare il colore dell'**ultimo arco percorso**. Il solo nodo non basta, quindi lo **stato** è la coppia $(v, c_{\text{prec}})$ = nodo corrente + colore dell'ultimo arco usato, con $c_{\text{prec}}\in\{1,2,3,\bot\}$ ($\bot$ = nessun arco ancora percorso, lo stato della sorgente). Quattro valori → $|V'|=4n$.
+- **Archi:** da $(u, c_{\text{prec}})$, percorrere $e=(u,v)$ di colore $c$ porta a $(v,c)$ (il nuovo "ultimo colore" è $c$) con peso $w(e)$, più $\sigma$ se $c_{\text{prec}}\neq\bot$ e $c\neq c_{\text{prec}}$ (cambio di colore), altrimenti $0$. Ogni arco originale genera così $\le 4$ archi, uno per ciascun colore precedente possibile → $O(m)$ archi.
+
+Si esegue Dijkstra da $(s,\bot)$ (la sorgente non ha ancora percorso archi). Risposta: $\min_{c\in\{1,2,3\}} d[(t,c)]$, il minimo sull'ultimo colore con cui si entra in $t$.
 
 ```pseudo
 \begin{algorithm}
 \caption{CamminoMinPenalita($G$, $w$, $c$, $\sigma$, $s$, $t$) → reale}
 \begin{algorithmic}
+\State $V' \gets \{(v,c_{\text{prec}}) : v\in V,\ c_{\text{prec}}\in\{1,2,3,\bot\}\}$
 \State $E' \gets \emptyset$
 \For{ogni arco $e=(u,v) \in E$ di colore $c(e)$}
   \For{ogni $c_{\text{prec}} \in \{1,2,3,\bot\}$}
-    \State $\text{pen} \gets (c_{\text{prec}} \neq \bot \text{ e } c(e) \neq c_{\text{prec}})\ ?\ \sigma : 0$
-    \State aggiungi a $E'$ l'arco $((u,c_{\text{prec}}),(v,c(e)))$ di peso $w(e)+\text{pen}$
+    \State $\text{pen} \gets (c_{\text{prec}} \neq \bot \text{ e } c(e) \neq c_{\text{prec}})\ ?\ \sigma : 0$ \Comment{penalità solo se cambia colore}
+    \State aggiungi a $E'$ l'arco $((u,c_{\text{prec}}),(v,c(e)))$ di peso $w(e)+\text{pen}$ \Comment{il nuovo ultimo colore è $c(e)$}
   \EndFor
 \EndFor
-\State $d \gets$ \Call{Dijkstra}{$G'$, $(s,\bot)$}
+\State $G' \gets (V', E')$
+\State $d \gets$ \Call{Dijkstra}{$G'$, $(s,\bot)$} \Comment{la sorgente non ha ancora percorso archi}
 \State \Return $\min_{c \in \{1,2,3\}} d[(t,c)]$
 \end{algorithmic}
 \end{algorithm}
@@ -131,28 +143,31 @@ Tutti gli archi hanno peso unitario e serve la sola raggiungibilità: si lancia 
 > [!question] Traccia — 23/09/2025
 > Sia $G=(V,E)$ un grafo orientato; si parte da $s$ con una riserva di forza $\Delta$ e ogni arco $e$ costa $c(e)$ unità. Un sottoinsieme $U\subseteq V$ di stanze speciali consente, per ogni coppia $x,y\in U$, un teletrasporto $x\to y$ che costa $\gamma(x,y)$ la **prima** volta e $5\gamma(x,y)$ la **seconda**; un terzo teletrasporto è fatale. Determinare se si riesce a raggiungere $t$ da $s$ con forza $\le\Delta$.
 
-**Modellazione.** Il costo di un teletrasporto dipende da **quanti** se ne sono già usati: lo stato è la coppia $(v, k)$ con $k\in\{0,1,2\}$ = numero di teletrasporti effettuati. Si hanno $3$ layer ($|V'|=3n$):
-- **Archi normali:** $e=(u,v)$ di costo $c(e)$, replicato in ogni layer: $((u,k),(v,k))$ per $k\in\{0,1,2\}$.
-- **Teletrasporti:** per ogni $x,y\in U$, $((x,0),(y,1))$ di peso $\gamma(x,y)$ (primo uso) e $((x,1),(y,2))$ di peso $5\gamma(x,y)$ (secondo uso). Nessun teletrasporto esce dal layer $k=2$ (il terzo è fatale).
+**Modellazione.** Il costo di un teletrasporto non dipende solo da *dove* ci si trova, ma da **quanti** se ne sono già fatti: il prossimo costa $\gamma$ se è il primo, $5\gamma$ se è il secondo, ed è fatale se è il terzo. Due cammini che arrivano sullo stesso nodo $v$ con un numero diverso di teletrasporti alle spalle **non sono equivalenti**, perché da lì in avanti li pagheranno in modo diverso: l'informazione mancante va quindi inserita nello **stato**, la coppia $(v,k)$ con $k\in\{0,1,2\}$ = nodo corrente + numero di teletrasporti già usati.
+Si costruisce il **grafo espanso** $G'$ replicando il grafo su **3 layer**, uno per ogni valore di $k$ ($|V'|=3n$); ogni layer è una copia identica del labirinto:
+- **Archi normali** (camminare): non cambiano $k$, quindi collegano nodi dello **stesso** layer. Ogni $e=(u,v)$ di costo $c(e)$ diventa $((u,k),(v,k))$ per ogni $k\in\{0,1,2\}$.
+- **Teletrasporti** (cambiano $k$): fanno **salire di un layer**. Per ogni coppia $x,y\in U$ si aggiungono $((x,0),(y,1))$ di peso $\gamma(x,y)$ (primo uso) e $((x,1),(y,2))$ di peso $5\gamma(x,y)$ (secondo uso). Dal layer $k=2$ non esce alcun teletrasporto: il terzo è fatale.
 
-Si esegue Dijkstra da $(s,0)$; si raggiunge $t$ con forza sufficiente se e solo se $\min_{k\in\{0,1,2\}} d[(t,k)]\le\Delta$.
+I pesi sono tutti $\ge 0$, quindi si esegue Dijkstra da $(s,0)$ (si parte da $s$ con zero teletrasporti usati). Si riesce a uscire se e solo se l'uscita $t$ è raggiungibile su **un layer qualsiasi** entro la forza disponibile: $\min_{k\in\{0,1,2\}} d[(t,k)]\le\Delta$.
 
 ```pseudo
 \begin{algorithm}
 \caption{UsciDalLabirinto($G$, $c$, $U$, $\gamma$, $s$, $t$, $\Delta$) → booleano}
 \begin{algorithmic}
+\State $V' \gets \{(v,k) : v\in V,\ k\in\{0,1,2\}\}$
 \State $E' \gets \emptyset$
 \For{ogni arco $e=(u,v) \in E$}
   \For{$k \gets 0$ \To $2$}
-    \State aggiungi a $E'$ l'arco $((u,k),(v,k))$ di peso $c(e)$
+    \State aggiungi a $E'$ l'arco $((u,k),(v,k))$ di peso $c(e)$ \Comment{camminare: si resta nello stesso layer}
   \EndFor
 \EndFor
 \For{ogni coppia $x,y \in U$}
-  \State aggiungi a $E'$ l'arco $((x,0),(y,1))$ di peso $\gamma(x,y)$
-  \State aggiungi a $E'$ l'arco $((x,1),(y,2))$ di peso $5\gamma(x,y)$
+  \State aggiungi a $E'$ l'arco $((x,0),(y,1))$ di peso $\gamma(x,y)$ \Comment{1º teletrasporto: layer $0\to1$}
+  \State aggiungi a $E'$ l'arco $((x,1),(y,2))$ di peso $5\gamma(x,y)$ \Comment{2º teletrasporto: layer $1\to2$}
 \EndFor
+\State $G' \gets (V', E')$
 \State $d \gets$ \Call{Dijkstra}{$G'$, $(s,0)$}
-\State \Return $\min_{k \in \{0,1,2\}} d[(t,k)] \le \Delta$
+\State \Return $\min_{k \in \{0,1,2\}} d[(t,k)] \le \Delta$ \Comment{uscita su un layer qualsiasi entro $\Delta$}
 \end{algorithmic}
 \end{algorithm}
 ```

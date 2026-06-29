@@ -14,6 +14,12 @@ Casistica dell'[[Casistiche d'Esame Modulo I|Esercizio 2 (Progettazione)]] in cu
 3. **Merge** delle due sequenze ordinate con due puntatori in $O(n)$.
 
 Il totale è $O(n)$ perché ogni fase è $O(n)$ o $o(n)$.
+
+> [!info] Le variabili e la scelta dei due ordinamenti
+> - $\text{IN}$ = elementi nel range $[1, 10n]$: tanti (fino a $n$), ma con valori limitati → **Integer Sort** li ordina in tempo lineare ($O(n + 10n)$).
+> - $\text{OUT}$ = gli outlier: pochi ($O(n^{2/3})$), ma con valori arbitrari → si ordinano per confronto (MergeSort), e poiché sono pochi il costo $O(n^{2/3}\log n)$ è $o(n)$.
+> - Il punto dell'esercizio: usare lo strumento giusto su ciascun gruppo. Integer Sort sull'intero $A$ fallirebbe (gli outlier hanno valori illimitati → array dei contatori di taglia indefinita); MergeSort sull'intero $A$ darebbe $O(n\log n)$, non lineare.
+
 ```pseudo
 \begin{algorithm}
 \caption{ordinaConOutlier($A$, $n$) → array ordinato}
@@ -32,6 +38,7 @@ Il totale è $O(n)$ perché ogni fase è $O(n)$ o $o(n)$.
 \end{algorithmic}
 \end{algorithm}
 ```
+
 **Complessità:** $O(n)$ tempo; spazio $O(n)$ per i contatori e gli array.
 **Trappola:** ordinare *tutto* $A$ con un confronto darebbe $O(n\log n)$, non lineare; e Integer Sort sul vettore intero fallisce perché gli outlier possono avere valori arbitrariamente grandi (range non limitato da $10n$). La taglia dell'array dei contatori deve essere il range **effettivo** degli elementi in input ($10n+1$ celle), non $n$.
 ## Pattern B — ordina + due puntatori
@@ -42,6 +49,12 @@ Il totale è $O(n)$ perché ogni fase è $O(n)$ o $o(n)$.
 1. Calcola $S$ e verifica $2S \bmod n = 0$; altrimenti impossibile (target non intero).
 2. Ordina $A$ con MergeSort. Per *exchange argument*, l'elemento più piccolo deve accoppiarsi col più grande, il secondo minimo col secondo massimo, ecc.: ogni altra assegnazione produce almeno una coppia con somma diversa da $t$.
 3. Verifica $A[i] + A[n+1-i] = t$ per $i = 1, \ldots, n/2$; se tutte passano le coppie $(A[i], A[n+1-i])$ sono la risposta.
+
+> [!info] Le variabili e l'idea dei "due puntatori"
+> - $S$ = somma totale; $t = 2S/n$ = somma che **ogni** coppia deve avere (se la divisione non è intera, è subito impossibile).
+> - Dopo l'ordinamento si accoppiano gli estremi: indice $i$ dal basso con indice $n+1-i$ dall'alto. I "due puntatori" sono $i$ e $n+1-i$ che si muovono l'uno verso l'altro.
+> - *Perché estremo con estremo*: se il minimo non si accoppiasse col massimo, la sua coppia avrebbe somma troppo piccola e quella del massimo troppo grande → impossibile pareggiarle tutte a $t$ (exchange argument).
+
 ```pseudo
 \begin{algorithm}
 \caption{CoppieSommaFissa($A$, $n$) → lista di coppie oppure "impossibile"}
@@ -68,6 +81,14 @@ Il totale è $O(n)$ perché ogni fase è $O(n)$ o $o(n)$.
 \end{algorithmic}
 \end{algorithm}
 ```
+
+> [!example] Esempio — $A = [1, 2, 3, 4]$
+> $S = 10$, $2S = 20$, $20 \bmod 4 = 0$ → $t = 20/4 = 5$. Ordinato: $[1,2,3,4]$.
+> - $i=1$: $A[1] + A[4] = 1 + 4 = 5 = t$ ✓
+> - $i=2$: $A[2] + A[3] = 2 + 3 = 5 = t$ ✓
+>
+> Coppie: $(1,4)$ e $(2,3)$. (Se anche un solo controllo fallisse → "impossibile".)
+
 **Complessità:** $O(n \log n)$, dominata dal MergeSort ($o(n^2)$, punteggio pieno); $S$ e le scansioni di verifica/ricostruzione sono $O(n)$.
 **Trappola:** verificare che $t$ sia intero **prima** di ordinare; altrimenti si esegue inutilmente il MergeSort su un'istanza già impossibile.
 ## Pattern C — conteggio frequenze + interleaving
@@ -75,11 +96,17 @@ Il totale è $O(n)$ perché ogni fase è $O(n)$ o $o(n)$.
 > Dato un array $A[1..n]$ ($n$ pari), permutare gli elementi in modo che non ci siano mai due elementi uguali adiacenti, oppure dichiarare correttamente che è impossibile. Spazio $O(n)$.
 
 **Idea.** Si contano le frequenze dei valori distinti. Una permutazione senza uguali adiacenti esiste **se e solo se** la frequenza massima $f_{\max}$ non supera $\lceil n/2 \rceil = n/2$ (con $n$ pari): un valore più frequente non potrebbe essere separato. Se ammissibile, si **interleava**: si dispongono gli elementi in ordine di frequenza decrescente nelle posizioni pari $0,2,4,\dots$ e poi in quelle dispari $1,3,5,\dots$. Così le copie di uno stesso valore (contigue nell'ordine per frequenza) finiscono a distanza $\geq 2$.
+
+> [!info] Le variabili e perché l'interleaving funziona
+> - $f_{\max}$ = frequenza del valore più ripetuto. Condizione di esistenza: $f_{\max} \leq n/2$ (se un valore comparisse più di metà volte, due copie sarebbero per forza adiacenti).
+> - $\text{ord}$ = gli elementi ordinati **per frequenza decrescente**, con le copie di uno stesso valore *contigue* in questa sequenza.
+> - $pos$ = posizione di scrittura in $B$: avanza di $2$ (riempie prima tutte le pari), e quando sfora ($pos \ge n$) riparte da $1$ (le dispari). Così due copie contigue in $\text{ord}$ cadono a distanza $\ge 2$ in $B$: mai adiacenti.
+
 ```pseudo
 \begin{algorithm}
 \caption{permutaSenzaAdiacenti($A$, $n$) → array B oppure "impossibile"}
 \begin{algorithmic}
-\State conta le frequenze dei valori distinti di $A$ \Comment{hash map o Integer Sort, $O(n)$}
+\State conta le frequenze dei valori distinti di $A$ \Comment{Integer Sort, $O(n)$}
 \State $f_{\max} \gets$ frequenza massima
 \If{$f_{\max} > n/2$}
   \State \Return impossibile
@@ -95,5 +122,15 @@ Il totale è $O(n)$ perché ogni fase è $O(n)$ o $o(n)$.
 \end{algorithmic}
 \end{algorithm}
 ```
+
+> [!example] Esempio — $A$ con valori $\{a,a,b,c\}$, $n=4$
+> Frequenze: $a\!:2$, $b\!:1$, $c\!:1$. $f_{\max}=2 \leq n/2 = 2$ → ammissibile. $\text{ord} = [a,a,b,c]$.
+> - $t=0$: $B[0]=a$, $pos \to 2$.
+> - $t=1$: $B[2]=a$, $pos \to 4 \geq 4$ → $pos = 1$.
+> - $t=2$: $B[1]=b$, $pos \to 3$.
+> - $t=3$: $B[3]=c$.
+>
+> $B = [a, b, a, c]$: le due $a$ finiscono in posizione $0$ e $2$ (distanza $2$), nessuna coppia adiacente uguale. ✓
+
 **Complessità:** $O(n\log n)$ per l'ordinamento per frequenza (o $O(n)$ con Integer Sort se il range dei valori è limitato); spazio $O(n)$ per i contatori e per $B$.
 **Trappola:** la condizione di ammissibilità è $f_{\max} \leq n/2$, non $f_{\max} < n$; e l'interleaving deve riempire **prima tutte** le posizioni pari e poi le dispari — invertendo l'ordine, due copie del valore più frequente possono cadere adiacenti a cavallo del passaggio pari→dispari.

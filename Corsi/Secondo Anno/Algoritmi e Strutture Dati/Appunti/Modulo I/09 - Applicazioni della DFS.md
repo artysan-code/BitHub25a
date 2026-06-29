@@ -103,10 +103,10 @@ L'idea chiave: in un DAG, il nodo che viene abbandonato per **ultimo** dalla DFS
 \caption{OrdinamentoTopologico($G$)}
 \begin{algorithmic}
 \State $\text{top} \gets n$; $L \gets$ lista vuota
-\State esegui \Call{VisitaDFS}{$G$}, ma al momento di impostare $\text{post}(v)$:
-\State \hspace{1em} $\sigma(v) \gets \text{top}$
-\State \hspace{1em} $\text{top} \gets \text{top} - 1$
-\State \hspace{1em} aggiungi $v$ in testa alla lista $L$
+\State esegui \Call{VisitaDFS}{$G$}, ma al momento di impostare $\text{post}(v)$ esegui anche:
+\State $\sigma(v) \gets \text{top}$
+\State $\text{top} \gets \text{top} - 1$
+\State aggiungi $v$ in testa alla lista $L$
 \State \Return $L$ e $\sigma$
 \end{algorithmic}
 \end{algorithm}

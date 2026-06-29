@@ -9,29 +9,34 @@ Esercizio di progettazione su insiemi (casistica [[Casistiche d'Esame Modulo I|i
 > Per i problemi su insiemi gli strumenti **del corso** sono due: un **AVL** usato come dizionario ordinato (insert/search in $O(\log n)$ *deterministico*, memoria proporzionale agli elementi **distinti**) e **ordina + due puntatori** ($O(n\log n)$, spesso $O(1)$ spazio extra). La scelta dipende dal vincolo: memoria $o(N)$ → AVL (cresce solo con i distinti); confronto/intersezione di due insiemi → sort+merge. L'**hash set** ($O(1)$ atteso) sarebbe più comodo, ma è **fuori programma** (non compare nelle slide né in [[05 - Strutture Dati Elementari e Dizionari]]): all'esame non si usa.
 
 > [!question] Traccia — 02/02/2026
-> Una collezione completa conta $N$ figurine distinte, identificate da interi in $[1, N]$, con $N$ molto grande. Un collezionista riceve $p$ pacchetti; ogni pacchetto contiene un sottoinsieme (con possibili ripetizioni) di figurine. Determinare quante figurine mancano ancora alla collezione. **Vincolo:** la memoria disponibile è $o(N)$; è vietato allocare strutture di taglia $\Theta(N)$ come `boolean[1..N]`.
+> L'album completo è composto da $N$ figurine (musicisti), numerate da $1$ a $N$. Il collezionista possiede **già** un sottoinsieme $A$ di dimensione $n$, con $n\ll N$ (ad esempio $N=n^3$). Compra poi $k$ pacchetti $P_1,\ldots,P_k$, ognuno contenente $3$ figurine ($P_i\subseteq\{1,\ldots,N\}$). Presi in input $A, P_1,\ldots,P_k$, calcolare quante figurine **mancano ancora** all'album dopo l'apertura dei pacchetti. **Vincolo:** tempo $o(nk)$ e memoria ausiliaria $o(N)$ (vietato allocare strutture di taglia $\Theta(N)$ come `boolean[1..N]`).
 
-**Idea.** Un array `boolean[1..N]` richiederebbe $\Theta(N)$ bit, violando il vincolo. La struttura **in programma** che rispetta $o(N)$ è un **AVL** usato come dizionario: vi si inseriscono solo le figurine ricevute, ignorando i duplicati (prima una `search`, poi `insert` se assente). Il numero di nodi dell'AVL è $n_{\text{dist}}$ = figurine **distinte** possedute, tipicamente $\ll N$ → memoria $O(n_{\text{dist}}) = o(N)$. Al termine la risposta è $N - n_{\text{dist}}$. *(Un hash set darebbe lo stesso risultato in $O(1)$ atteso, ma è fuori programma.)*
+**Idea.** Le figurine possedute alla fine sono l'unione $A\cup P_1\cup\cdots\cup P_k$: la risposta è $N$ meno il numero di figurine **distinte** in tale unione. Un array `boolean[1..N]` la calcolerebbe ma richiede $\Theta(N)$ bit, violando il vincolo. La struttura **in programma** che rispetta $o(N)$ è un **AVL** usato come dizionario: vi si inseriscono prima le figurine di $A$, poi quelle dei pacchetti, ignorando i duplicati (prima una `search`, poi `insert` se assente). Il numero di nodi è $n_{\text{dist}}$ = figurine **distinte** possedute $\le n+3k$, e con $n\ll N$ resta $\ll N$ → memoria $O(n_{\text{dist}}) = o(N)$. Al termine la risposta è $N - n_{\text{dist}}$. *(Un hash set darebbe lo stesso risultato in $O(1)$ atteso, ma è fuori programma.)*
 
 > [!info] Perché l'AVL rispetta il vincolo $o(N)$
-> - $T$ = AVL delle figurine **ricevute** (distinte). Non si traccia *cosa manca* (sarebbe $\Theta(N)$), ma *cosa si ha*: molto meno.
-> - $n_{\text{dist}} \ll N$ → memoria $O(n_{\text{dist}}) = o(N)$: è il cuore della soluzione, perché `boolean[1..N]` è proprio ciò che la traccia vieta.
-> - Si inserisce solo se assente (`search` prima di `insert`): nessun duplicato, quindi i nodi sono esattamente le figurine distinte e le mancanti sono $N - (\#\text{nodi})$.
+> - $T$ = AVL delle figurine **possedute** distinte (sia quelle di $A$ sia quelle uscite dai pacchetti). Non si traccia *cosa manca* (sarebbe $\Theta(N)$), ma *cosa si ha*: molto meno.
+> - $n_{\text{dist}} \le n+3k \ll N$ → memoria $O(n_{\text{dist}}) = o(N)$: è il cuore della soluzione, perché `boolean[1..N]` è proprio ciò che la traccia vieta.
+> - Si inserisce solo se assente (`search` prima di `insert`): nessun duplicato, quindi i nodi sono esattamente le figurine distinte possedute e le mancanti sono $N - (\#\text{nodi})$.
 > - L'AVL garantisce le operazioni in $O(\log n_{\text{dist}})$ **deterministico** — l'$O(1)$ dell'hash è solo *atteso*, e comunque fuori programma.
 
 ```pseudo
 \begin{algorithm}
-\caption{figurineMancanti($P[1..p]$, $N$) → intero}
+\caption{figurineMancanti($A[1..n]$, $P[1..k]$, $N$) → intero}
 \begin{algorithmic}
 \State $T \gets$ AVL vuoto; $\mathit{dist} \gets 0$
-\For{$i \gets 1$ \To $p$}
-  \For{ogni figurina $f$ nel pacchetto $P[i]$}
+\For{$j \gets 1$ \To $n$} \Comment{figurine già possedute: l'insieme $A$}
+  \If{\Call{Search}{$T$, $A[j]$} $=$ null}
+    \State \Call{Insert}{$T$, $A[j]$}; $\mathit{dist} \gets \mathit{dist} + 1$
+  \EndIf
+\EndFor
+\For{$i \gets 1$ \To $k$}
+  \For{ogni figurina $f$ nel pacchetto $P[i]$} \Comment{$3$ figurine per pacchetto}
     \If{\Call{Search}{$T$, $f$} $=$ null} \Comment{$f$ non ancora posseduta}
       \State \Call{Insert}{$T$, $f$}; $\mathit{dist} \gets \mathit{dist} + 1$
     \EndIf
   \EndFor
 \EndFor
-\State \Return $N - \mathit{dist}$
+\State \Return $N - \mathit{dist}$ \Comment{$\mathit{dist}=|A\cup P_1\cup\cdots\cup P_k|$}
 \end{algorithmic}
 \end{algorithm}
 ```
@@ -77,5 +82,5 @@ Esercizio di progettazione su insiemi (casistica [[Casistiche d'Esame Modulo I|i
 
 *Approccio (B) hash set — $O(n+m)$ atteso, **fuori programma**:* inserendo $B$ in un hash set si avrebbe tempo lineare atteso, ma la hash table non è trattata dal corso → non utilizzabile all'esame. Variante deterministica e in programma: un **AVL** sulle chiavi distinte di $B$ (lookup $O(\log m)$), poi si scandisce $A$ deduplicato contando i valori presenti in $B$ → $O((n+m)\log m)$. La soluzione canonica resta la (A).
 
-**Complessità:** figurine mancanti con AVL $O(M \log n_{\text{dist}})$ ($M$ = numero totale di figurine nei $p$ pacchetti), memoria $O(n_{\text{dist}}) = o(N)$; $\Phi$ con sort+merge $O((n+m)\log(n+m))$ tempo, $O(1)$ spazio extra (oppure AVL, $O((n+m)\log m)$). L'hash set darebbe tempi *attesi* migliori ($O(M)$, $O(n+m)$) ma è fuori programma.
-**Trappola:** allocare `boolean[1..N]` viola il vincolo $o(N)$ quando $N$ è molto grande → si usa l'AVL (cresce solo con i distinti), **non** una hash table (fuori programma). Nel merge a due puntatori è obbligatorio saltare tutti i duplicati dopo ogni match — omettendolo si conta lo stesso valore distinto più volte, gonfiando $\text{cnt}$ oltre $|A\cap B|$.
+**Complessità:** figurine mancanti con AVL $O((n+3k)\log n_{\text{dist}}) = O((n+k)\log(n+k))$ tempo ($n$ inserimenti per $A$ più $3k$ per i pacchetti, ciascuno su un AVL di taglia $\le n+3k$), che batte la scansione naive $O(nk)$ e rispetta il vincolo $o(nk)$; memoria $O(n_{\text{dist}}) = o(N)$. $\Phi$ con sort+merge $O((n+m)\log(n+m))$ tempo, $O(1)$ spazio extra (oppure AVL, $O((n+m)\log m)$). L'hash set darebbe tempi *attesi* migliori ($O(n+k)$, $O(n+m)$) ma è fuori programma.
+**Trappola:** allocare `boolean[1..N]` viola il vincolo $o(N)$ quando $N$ è molto grande → si usa l'AVL (cresce solo con i distinti), **non** una hash table (fuori programma). Non dimenticare di inserire **anche le figurine di $A$ già possedute**: contare solo quelle dei pacchetti sovrastima le mancanti — la risposta è $N-|A\cup P_1\cup\cdots\cup P_k|$, non $N-|P_1\cup\cdots\cup P_k|$. Nel merge a due puntatori è obbligatorio saltare tutti i duplicati dopo ogni match — omettendolo si conta lo stesso valore distinto più volte, gonfiando $\text{cnt}$ oltre $|A\cap B|$.

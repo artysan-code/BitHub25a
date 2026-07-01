@@ -215,49 +215,7 @@ Alcune ricorrenze con argomenti non lineari (radici, potenze frazionarie) si ris
 > 4. Risolvi la ricorrenza in $m$ con i metodi standard.
 > 5. Sostituisci $m = \log_b n$ per tornare a $n$.
 ## Esercizi svolti dagli esami
-### Esercizio 1 — $T(n) = 2T(n/2) + n$ (Compito 02/07/2025, 18/02/2025)
-**Metodo:** Teorema Master.
-$a=2,\ b=2$, spartiacque $n^{\log_2 2} = n$. $f(n)=n = \Theta(n)$ → Caso 2 (pareggio).
-**Soluzione:** $\boxed{\Theta(n \log n)}$ — è la complessità del Merge Sort.
-### Esercizio 2 — $T(n) = 2T(n/4) + 1$ (Compito 26/06/2025)
-**Metodo:** Teorema Master.
-$a=2,\ b=4$, spartiacque $n^{\log_4 2} = n^{1/2} = \sqrt{n}$. $f(n)=1 = O(n^{1/2-\varepsilon})$ → Caso 1 (foglie dominano).
-**Soluzione:** $\boxed{\Theta(\sqrt{n})}$.
-### Esercizio 3 — $T(n) = 4T(n/4) + n$ (Compito 18/02/2025)
-**Metodo:** Teorema Master.
-$a=4,\ b=4$, spartiacque $n^{\log_4 4} = n$. $f(n)=n = \Theta(n)$ → Caso 2.
-**Soluzione:** $\boxed{\Theta(n \log n)}$.
-### Esercizio 4 — $T(n) = T(n/8) + n$ (Compito 09/09/2025)
-**Metodo:** Teorema Master.
-$a=1,\ b=8$, spartiacque $n^{\log_8 1} = n^0 = 1$. $f(n)=n = \Omega(n^{0+\varepsilon})$ → Caso 3. Regolarità: $1 \cdot f(n/8) = n/8 \le cn$ per $c = 1/8 < 1$ ✓.
-**Soluzione:** $\boxed{\Theta(n)}$.
-### Esercizio 5 — $T(n) = T(n/8) + \sqrt{n}$ (Compito 23/09/2025)
-**Metodo:** Teorema Master.
-$a=1,\ b=8$, spartiacque $1$. $f(n)=\sqrt{n} = \Omega(1^{+\varepsilon})$ → Caso 3. Regolarità: $\sqrt{n/8} = \sqrt{n}/\sqrt{8} \le c\sqrt{n}$ per $c = 1/\sqrt{8} < 1$ ✓.
-**Soluzione:** $\boxed{\Theta(\sqrt{n})}$.
-### Esercizio 6 — $T(n) = 2T(n/8) + 1$ (Compito 02/02/2026)
-**Metodo:** Teorema Master.
-$a=2,\ b=8$, spartiacque $n^{\log_8 2} = n^{1/3} = \sqrt[3]{n}$. $f(n)=1 = O(n^{1/3-\varepsilon})$ → Caso 1.
-**Soluzione:** $\boxed{\Theta(\sqrt[3]{n})}$.
-### Esercizio 7 — $T(n) = T(n-1) + n^2$ (Compito 23/09/2025)
-**Metodo:** Iterazione (sottrazione, costo polinomiale).
-Srotolando: $T(n) = T(1) + \sum_{i=2}^{n} i^2$. Poiché $\sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6} = \Theta(n^3)$:
-**Soluzione:** $\boxed{\Theta(n^3)}$ (regola rapida: $p=2 \implies p+1=3$).
-### Esercizio 8 — $T(n) = T(n-4) + n^2$ (Compito 18/02/2025)
-**Metodo:** Iterazione (sottrazione, costante $k=4$).
-Numero di passi: $\Theta(n/4) = \Theta(n)$. La costante $k$ non cambia l'ordine: si somma ancora $\Theta(n^2)$ per $\Theta(n)$ passi (con valori decrescenti), ottenendo $\Theta(n^3)$.
-**Soluzione:** $\boxed{\Theta(n^3)}$ (regola rapida indipendente da $k$).
-### Esercizio 9 — $T(n) = 2T(n-2) + 1$ (Compito 02/02/2026, 26/06/2025)
-**Metodo:** Iterazione (sottrazione, coefficiente $a=2>1$).
-Srotolando: dopo $k$ passi $T(n) = 2^k T(n-2k) + \sum_{j=0}^{k-1} 2^j = 2^k T(n-2k) + 2^k - 1$.
-Caso base $n-2k = 1 \implies k = (n-1)/2$:
-$$T(n) = 2^{(n-1)/2} T(1) + 2^{(n-1)/2} - 1 = \Theta(2^{n/2}) = \Theta(\sqrt{2}^n)$$
-**Soluzione:** $\boxed{\Theta(\sqrt{2}^n)}$ (regola rapida: $a=2, k=2 \implies \Theta(2^{n/2})$).
-### Esercizio 10 — $T(n) = T(\sqrt{n}) + 1$ (Compito 09/09/2025, 18/07/2025)
-**Metodo:** Cambiamento di variabile.
-$n = 2^m$, $R(m) = T(2^m)$: $R(m) = R(m/2)+1 \implies R(m) = \Theta(\log m)$.
-Tornando: $T(n) = \Theta(\log(\log n))$.
-**Soluzione:** $\boxed{\Theta(\log \log n)}$.
+La **raccolta completa** delle ricorrenze d'esame (2022–2026), già risolte e classificate per metodo (Master casi 1/2/3, sottrattiva $a\ge2$ e $a=1$, tipo Fibonacci, cambio di variabile), sta negli esercizi svolti [[1.B — Equazioni di ricorrenza]]. Qui sotto resta solo la sintesi dei pattern; per gli svolgimenti passo-passo usa quel file.
 ## Tabella riassuntiva dei pattern comuni
 | Pattern | Metodo | Complessità |
 |---|---|---|

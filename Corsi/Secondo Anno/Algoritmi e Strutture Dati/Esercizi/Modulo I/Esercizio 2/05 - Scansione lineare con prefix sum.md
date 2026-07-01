@@ -1,22 +1,18 @@
 ---
 tags:
   - algoritmi
+  - strutture-dati
 ---
 # Scansione lineare con prefix sum
-Casistica di [[Casistiche d'Esame Modulo I|progettazione]] su array: tecnica del prefisso cumulato, $O(n)$ tempo e $O(1)$ spazio. Per la checklist d'esame: [[Piano Esame ASD - Modulo I]]. Ripasso: [[04 - Algoritmi di Ordinamento]], [[05 - Strutture Dati Elementari e Dizionari]].
-
+Esercizio di **progettazione** su array: la proprietà cercata dipende dalla somma di un prefisso, che si mantiene in **un solo accumulatore** durante una scansione — $O(n)$ tempo e $O(1)$ spazio, senza array ausiliari. Ripasso: [[04 - Algoritmi di Ordinamento#Applicazione: Oracolo per Range Counting|somme di prefisso]].
+## Traccia
 > [!question] Traccia — 19/02/2024
-> Dato un array $A[1..n]$ di interi, trovare il minimo indice $i \in [1, n]$ tale che
-> $$\sum_{j=1}^{i} A[j] > \sum_{j=i+1}^{n} A[j].$$
-> Se nessun tale indice esiste, restituire $-1$.
+> Sia $A[1..n]$ un vettore di $n$ numeri **positivi**. Progettare un algoritmo che in tempo $O(n)$ e **memoria ausiliaria costante** trova il più piccolo indice $i$ tale che la somma dei primi $i$ elementi di $A$ è maggiore della somma dei restanti elementi in $A[i+1..n]$.
 
-**Idea.** Si calcola prima la somma totale $S = \sum_{j=1}^{n} A[j]$ con una scansione sinistra–destra. Si percorre poi $A$ una seconda volta tenendo un solo accumulatore $\text{prefix}$: al termine del passo $i$ vale $\text{prefix} = \sum_{j=1}^{i} A[j]$, e il suffisso corrisponde a $S - \text{prefix}$ senza ricalcolo. La condizione $\text{prefix} > S - \text{prefix}$ si riscrive come $2\cdot\text{prefix} > S$, eliminando la sottrazione esplicita. Al primo $i$ che soddisfa la condizione si restituisce $i$; se il ciclo termina senza trovarne alcuno, si restituisce $-1$.
-
-> [!info] Le due variabili e il trucco del suffisso
-> - $S$ = somma totale dell'array, calcolata una volta sola.
-> - $\text{prefix}$ = somma corrente $A[1..i]$, aggiornata $+A[i]$ a ogni passo: è l'unico stato che si trascina ($O(1)$ spazio, nessun array ausiliario).
-> - **Identità chiave**: il suffisso $A[i+1..n]$ non si ricalcola, è $S - \text{prefix}$. Quindi $\text{prefix} > \text{suffisso} \iff \text{prefix} > S - \text{prefix} \iff 2\cdot\text{prefix} > S$. Confrontare con $S$ evita perfino la sottrazione.
-
+Detta $S$ la somma totale, per un indice $i$ il prefisso vale $\sum_{j=1}^{i} A[j]$ e il suffisso $S - (\text{prefisso})$: si cerca il **primo** $i$ in cui il prefisso supera il suffisso. Il vincolo forte è la **memoria ausiliaria costante**: niente vettore dei prefissi: basta trascinare un accumulatore scalare. Poiché i numeri sono positivi, il prefisso cresce a ogni passo, quindi un tale $i$ esiste sempre (al più $i=n$, dove il suffisso è vuoto).
+## Idea risolutiva
+Con una prima scansione si calcola la somma totale $S$. Con una seconda scansione si tiene un solo accumulatore $\text{prefix}$: dopo il passo $i$ vale $\text{prefix}=\sum_{j=1}^{i}A[j]$, e il suffisso è $S-\text{prefix}$ **senza ricalcolo**. La condizione $\text{prefix} > S-\text{prefix}$ si riscrive come $2\cdot\text{prefix} > S$, che evita perfino la sottrazione. Al primo $i$ che la soddisfa si restituisce $i$.
+## Pseudocodice
 ```pseudo
 \begin{algorithm}
 \caption{prefissoMaggiore($A$, $n$) → intero}
@@ -32,17 +28,22 @@ Casistica di [[Casistiche d'Esame Modulo I|progettazione]] su array: tecnica del
     \State \Return $i$
   \EndIf
 \EndFor
-\State \Return $-1$ \Comment{nessun indice soddisfa la condizione}
 \end{algorithmic}
 \end{algorithm}
 ```
 
-> [!example] Esempio — $A = [1, 3, 1]$
-> Somma totale $S = 5$.
-> - $i=1$: $\text{prefix}=1$ → $2\cdot 1 = 2 > 5$? no.
-> - $i=2$: $\text{prefix}=4$ → $2\cdot 4 = 8 > 5$? sì → si restituisce $2$.
->
-> Verifica: a $i=2$ il prefisso $A[1..2]=4$ supera il suffisso $A[3]=1$; a $i=1$ il prefisso $1$ non superava il suffisso $3+1=4$. Risposta = **2**.
+Due sole variabili scalari ($S$ e $\text{prefix}$): nessun array ausiliario, memoria $O(1)$. La riscrittura $2\cdot\text{prefix} > S$ è algebricamente identica a $\text{prefix} > S - \text{prefix}$ (suffisso), ma non richiede di sottrarre né di ricalcolare la coda dell'array.
+## Complessità
+Due scansioni lineari indipendenti di $A$, ciascuna $O(n)$ con lavoro $O(1)$ per elemento (una somma, un confronto). Complessità **$O(n)$** tempo; memoria ausiliaria **$O(1)$** (le due variabili $S$ e $\text{prefix}$), come richiesto.
+## Correttezza
+La correttezza segue da un'invariante sul secondo ciclo.
 
-**Complessità:** $O(n)$ tempo, $O(1)$ spazio ausiliario (nessun array aggiuntivo: due sole variabili scalari $S$ e $\text{prefix}$).
-**Trappola:** ricalcolare $\sum A[i+1..n]$ con un ciclo interno ad ogni passo porterebbe a $O(n^2)$; la chiave è sfruttare $S - \text{prefix}$ ricavato in $O(1)$ dopo aver calcolato $S$ una volta sola. Occorre inoltre gestire il caso in cui nessun indice soddisfa la condizione restituendo esplicitamente $-1$, non un valore indefinito.
+> [!quote] Invariante — $\text{prefix}$ è la somma del prefisso
+> All'inizio dell'iterazione $i$ del secondo ciclo, dopo l'aggiornamento $\text{prefix} \gets \text{prefix}+A[i]$, vale $\text{prefix}=\sum_{j=1}^{i}A[j]$.
+
+**Dimostrazione.** Prima del ciclo $\text{prefix}=0=\sum_{j=1}^{0}A[j]$. Se all'inizio del passo $i$ vale $\text{prefix}=\sum_{j=1}^{i-1}A[j]$, dopo $\text{prefix}\gets\text{prefix}+A[i]$ vale $\sum_{j=1}^{i}A[j]$: l'invariante si mantiene. $\blacksquare$
+
+Per l'invariante, al passo $i$ la condizione $2\cdot\text{prefix} > S$ equivale a $\sum_{j=1}^{i}A[j] > S-\sum_{j=1}^{i}A[j]=\sum_{j=i+1}^{n}A[j]$, cioè "prefisso $>$ suffisso". Scandendo $i=1,2,\dots$ e restituendo il **primo** $i$ che la soddisfa, l'algoritmo restituisce il minimo indice cercato. L'esistenza è garantita: essendo $A[j]>0$, per $i=n$ si ha $2S>S$ (poiché $S>0$), quindi il ciclo termina sempre con un `return`. $\blacksquare$
+
+> [!warning] Non ricalcolare il suffisso
+> Ricalcolare $\sum_{j=i+1}^{n}A[j]$ con un ciclo interno a ogni $i$ porterebbe a $O(n^2)$. La chiave è ottenerlo in $O(1)$ come $S-\text{prefix}$, avendo calcolato $S$ una volta sola; così basta un accumulatore e la memoria resta $O(1)$.

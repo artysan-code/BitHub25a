@@ -139,3 +139,49 @@ Il costo del teletrasporto dipende da **quanti** se ne sono già fatti: stato $(
 ```
 ### Complessità e correttezza
 $|V'|=3n$, $|E'|=3m+2|U|^2$ → Dijkstra **$O((m+|U|^2)\log n)$**. Il numero d'usi è codificato nel layer $k$ ($\gamma$ poi $5\gamma$); dal layer $2$ non esce alcun teletrasporto (il terzo è fatale); la risposta confronta la distanza minima col budget $\Delta$ (raggiungibilità con vincolo di costo). $\blacksquare$
+## F · Inversione dei colori dei nodi — gioco «Negativo»
+> [!question] Traccia — 30/06/2026
+> «Negativo» si gioca su un grafo $G$ **non orientato** e **non pesato** ($n$ nodi, $m$ archi) in cui ogni nodo è **bianco** (B), **nero** (N) o **grigio** (G). Una pedina parte sul nodo $s$ e va portata su $t$; se finisce su un nodo **nero** si perde. Due mosse: **spostamento** — la pedina va in un nodo adiacente (che non sia nero); **negativo** — inverte i colori del grafo (i bianchi diventano neri e i neri bianchi, i grigi restano grigi). Calcolare il **numero minimo di mosse** per risolvere il gioco, o dire correttamente che è impossibile.
+
+Applicare «negativo» due volte riporta i colori all'originale: conta solo la **parità** $p \in \{0,1\}$ del numero di «negativo» eseguiti. Il colore **effettivo** di un nodo dipende da $p$; definiamo *nero effettivo a parità $p$* la condizione $\text{nero}(u,p) = (\text{col}(u)=N \wedge p=0) \vee (\text{col}(u)=B \wedge p=1)$ — i grigi non sono mai neri. La pedina non può mai sostare su un nodo nero effettivo.
+### Idea risolutiva
+Lo **stato** è la coppia $(v,p)$ = nodo corrente + parità dei «negativo» ($|V'| \leq 2n$, due layer); sono **validi** solo gli stati con $\neg\,\text{nero}(v,p)$. Ogni mossa ha peso unitario:
+
+- **spostamento** — da $(v,p)$ a $(u,p)$ per ogni arco $\{v,u\}$, ammesso solo se anche $u$ è sicuro a parità $p$ (stesso layer);
+
+- **negativo** — da $(v,p)$ a $(v,1-p)$, ammesso solo se $v$ resta sicuro alla nuova parità (cambio di layer sullo stesso nodo).
+
+È un problema di **cammino minimo a pesi unitari** sul grafo espanso → **BFS** da $(s,0)$; il minimo numero di mosse è $\min\big(d[(t,0)],\,d[(t,1)]\big)$ (la parità d'arrivo è irrilevante).
+### Pseudocodice
+```pseudo
+\begin{algorithm}
+\caption{negativoMinMosse($G$, $\text{col}$, $s$, $t$) → intero oppure $\infty$}
+\begin{algorithmic}
+\State \Comment{$\text{nero}(u,p) = (\text{col}(u)=N \wedge p=0) \vee (\text{col}(u)=B \wedge p=1)$}
+\If{$\text{nero}(s,0)$} \State \Return $\infty$ \Comment{partenza su nodo nero} \EndIf
+\State $V' \gets \{(v,p) : v\in V,\ p\in\{0,1\},\ \neg\,\text{nero}(v,p)\}$; \; $E' \gets \emptyset$
+\ForAll{arco $\{u,v\}\in E$ e $p\in\{0,1\}$}
+  \If{$\neg\,\text{nero}(u,p)$ e $\neg\,\text{nero}(v,p)$}
+    \State $E' \mathrel{+}= ((u,p),(v,p)),\ ((v,p),(u,p))$ \Comment{spostamento}
+  \EndIf
+\EndFor
+\ForAll{$v\in V$ e $p\in\{0,1\}$}
+  \If{$\neg\,\text{nero}(v,p)$ e $\neg\,\text{nero}(v,1-p)$}
+    \State $E' \mathrel{+}= ((v,p),(v,1-p))$ \Comment{negativo}
+  \EndIf
+\EndFor
+\State $d \gets$ \Call{visitaBFS}{$(V',E')$, $(s,0)$}
+\State \Return $\min\big(d[(t,0)],\ d[(t,1)]\big)$ \Comment{$\infty$ se entrambi irraggiungibili}
+\end{algorithmic}
+\end{algorithm}
+```
+### Complessità
+$|V'| \leq 2n$ e $|E'| \leq 4m + 2n = O(n+m)$; costruzione $O(n+m)$ e BFS $O(|V'|+|E'|)=O(n+m)$. Totale **$O(n+m)$**.
+### Correttezza
+> [!quote] Invariante — stati validi = configurazioni di gioco lecite
+> Esiste un cammino di lunghezza $d$ da $(s,0)$ a $(v,p)$ in $G'$ **se e solo se** esiste una sequenza di $d$ mosse lecite che porta la pedina su $v$ dopo un numero di «negativo» di parità $p$, senza mai sostare su un nodo nero.
+
+**Dimostrazione.** Ogni mossa del gioco corrisponde a un arco di $G'$ e viceversa: lo *spostamento* muove il nodo lasciando la parità (arco intra-layer, ammesso solo verso un nodo sicuro), il *negativo* cambia la parità lasciando il nodo (arco inter-layer, ammesso solo se il nodo resta sicuro). Gli stati di $V'$ sono esattamente le configurazioni in cui la pedina non è su un nodo nero, quindi ogni cammino in $G'$ è una partita lecita e viceversa. Poiché tutte le mosse costano $1$, la BFS calcola il minimo numero di mosse verso ogni stato; il gioco è risolto appena si raggiunge $t$ (a una parità qualsiasi), da cui $\min(d[(t,0)],d[(t,1)])$; se entrambi sono irraggiungibili è impossibile. $\blacksquare$
+
+> [!warning] Basta la parità, e l'arrivo dev'essere sempre sicuro
+> Non serve contare i «negativo»: due applicazioni si annullano, quindi bastano $2$ layer. Ogni mossa è ammessa solo se il nodo di **arrivo** è sicuro (non nero effettivo) — vale sia per lo spostamento verso $u$ sia per il «negativo», che potrebbe rendere nero il nodo corrente.

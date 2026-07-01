@@ -105,6 +105,29 @@ Identica alla precedente cambiando il colore testato ($N$ invece di $G$): stesso
 > Albero binario e due interi $h_1 \leq h_2$. Contare i nodi **non foglia** con profondità $h$ tale che $h_1 \leq h \leq h_2$. Complessità $O(n)$.
 
 Stesso stato (profondità) e stessa struttura: cambia solo il test — il nodo conta se è **interno** (almeno un figlio non null) e $h_1 \leq prof \leq h_2$; la ricorsione sui figli con $prof+1$ resta.
+
+> [!question] Traccia — 30/06/2026
+> Albero binario di $n$ nodi in cui ogni nodo $v$ ha un valore $\alpha(v)$. Un nodo $v$ è **leggero** se $\alpha(v)$ è minore o uguale alla sua **profondità** (numero di archi dal nodo alla radice; radice a profondità $0$). Restituire il numero di nodi leggeri. Struttura collegata (record e puntatori) con puntatori ai figli sinistro e destro e campo $\alpha(v)$; complessità $O(n)$.
+
+Lo stato che scende è la sola **profondità** $prof$ (radice $0$, $+1$ a ogni discesa). Il test riguarda **ogni** nodo (non solo le foglie) e si fa *direttamente* su $v$: arrivati su $v$ la profondità è già quella corretta, quindi $v$ conta se $\alpha(v) \leq prof$. Si somma il contributo locale $r \in \{0,1\}$ e i due sottoalberi.
+### Pseudocodice
+```pseudo
+\begin{algorithm}
+\caption{contaLeggeri($v$, $prof$) → intero}
+\begin{algorithmic}
+\If{$v = $ null}
+  \State \Return $0$
+\EndIf
+\State $r \gets 0$
+\If{$\alpha(v) \leq prof$}
+  \State $r \gets 1$ \Comment{$v$ è leggero}
+\EndIf
+\State \Return $r + {}$\Call{contaLeggeri}{$v.\text{sx}, prof+1$} $+$ \Call{contaLeggeri}{$v.\text{dx}, prof+1$}
+\end{algorithmic}
+\end{algorithm}
+```
+
+Chiamata iniziale `contaLeggeri(T.radice, 0)`. Una chiamata per nodo con lavoro $O(1)$ → **$O(n)$**, spazio $O(h)$ per la pila. Invariante: a ogni chiamata $prof$ è la profondità di $v$ (*base*: radice, $prof=0$; *passo*: un figlio ha profondità $prof+1$, il valore passato); quindi il test $\alpha(v) \leq prof$ coincide con la definizione di «leggero» e ogni nodo è contato una volta. $\blacksquare$
 ## C · Proprietà del cammino radice→v (stato monotòno)
 Qui il pattern riguarda il cammino **incluso $v$**, perciò si aggiorna lo stato con $v$ *prima* di decidere se contarlo. Spesso lo stato include un flag **monotòno** (una volta falso non torna vero): l'intero sottoalbero sotto la rottura è scartato "gratis".
 

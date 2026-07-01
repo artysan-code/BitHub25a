@@ -1,29 +1,21 @@
 ---
 tags:
   - algoritmi
+  - strutture-dati
 ---
 # Sliding window con BST
-Esercizio di progettazione con strutture dati (casistica [[Casistiche d'Esame Modulo I|sliding window con BST]]); ripasso: [[06 - Alberi di Ricerca BST e AVL]], [[05 - Strutture Dati Elementari e Dizionari]]; checklist [[Piano Esame ASD - Modulo I]].
-
+Esercizio di **progettazione** con struttura dati: una **finestra scorrevole** di ampiezza fissa $k$ mantenuta con un **BST bilanciato aumentato**, così che entrata e uscita di un elemento e la query sul contenuto costino $O(\log k)$. Ripasso: [[06 - Alberi di Ricerca BST e AVL#Alberi AVL|BST bilanciato/AVL]], [[05 - Strutture Dati Elementari e Dizionari#Il Tipo di Dato Dizionario|dizionario]].
+## Traccia
 > [!question] Traccia — 13/06/2024
-> Data una sequenza $S[1..n]$ di interi e un intero $k$ con $1 \le k \le n$, trovare l'indice di inizio della finestra di $k$ elementi consecutivi che massimizza il numero di elementi distinti. Restituire tale indice di inizio.
+> Sia $S[1..n]$ una sequenza di interi (tipi di evento, con ripetizioni) e $1\leq k\leq n$. Scegliere la finestra di $k$ elementi consecutivi che **massimizza il numero di eventi distinti** che contiene, e restituire l'indice di inizio di tale finestra. Complessità $O(n\log k)$.
 
-**Idea.** Si usa una *finestra scorrevole* di ampiezza fissa $k$, mantenuta tramite un BST bilanciato aumentato: ogni chiave $v$ nel BST memorizza un contatore $T[v].\mathit{cnt}$ (numero di occorrenze di $v$ nella finestra corrente). Il numero di elementi distinti coincide con il numero di chiavi presenti nel BST, tenuto aggiornato nel campo $T.\mathit{distinct}$.
-
-L'operazione **InsertWindow** controlla se $v$ è già presente nel BST: in caso affermativo incrementa $T[v].\mathit{cnt}$; altrimenti inserisce $v$ con contatore $1$ e incrementa $T.\mathit{distinct}$. L'operazione **DeleteWindow** decrementa $T[v].\mathit{cnt}$: se il contatore scende a $0$, rimuove la chiave dal BST e decrementa $T.\mathit{distinct}$. Entrambe le operazioni costano $O(\log k)$ perché il BST contiene al più $k$ chiavi contemporaneamente.
-
-L'algoritmo principale inizializza il BST con $S[1..k]$ in $O(k \log k)$, poi scorre la finestra da $i = k+1$ fino a $n$: inserisce $S[i]$, rimuove $S[i-k]$ e aggiorna il candidato ottimo. Ogni passo vale $O(\log k)$, quindi la fase di scorrimento è $O(n \log k)$.
-
-> [!info] Le variabili e perché serve un *contatore* per chiave
-> - $T$ = BST bilanciato **aumentato**; contiene una chiave per ogni valore *distinto* presente nella finestra (al più $k$ chiavi → operazioni $O(\log k)$).
-> - $T[v].\mathit{cnt}$ = quante volte il valore $v$ compare nella finestra corrente (può essere $>1$ se $v$ è ripetuto).
-> - $T.\mathit{distinct}$ = numero di chiavi nel BST = numero di elementi distinti nella finestra: è la quantità da **massimizzare**.
-> - Scorrere la finestra da $i$ a $i+1$ = **una** `InsertWindow`($S[i]$) + **una** `DeleteWindow`($S[i-k]$): entra l'elemento nuovo a destra, esce il più vecchio a sinistra.
-> - Il contatore è essenziale: rimuovere $S[i-k]$ deve eliminare la chiave **solo se era l'ultima copia** ($\mathit{cnt}$ scende a $0$); se nella finestra restano altre copie di quel valore, il distinto non cala.
-
+Ogni finestra di $k$ elementi ha un certo numero di valori distinti; scorrendola di una posizione entra un elemento a destra ed esce quello a sinistra. Serve una struttura che, a ogni scorrimento, aggiorni in fretta il conteggio dei distinti — non ricalcolarlo da zero (sarebbe $O(nk)$).
+## Idea risolutiva
+Si mantiene un BST bilanciato $T$ **aumentato**: una chiave per ogni valore *presente nella finestra*, con un contatore $T[v].\mathit{cnt}$ delle sue occorrenze, e un campo globale $T.\mathit{distinct}$ = numero di chiavi = numero di distinti nella finestra. Scorrere la finestra da $i$ a $i+1$ è **una** `InsertWindow`$(S[i])$ + **una** `DeleteWindow`$(S[i-k])$. Il contatore è essenziale: togliendo $S[i-k]$ la chiave va rimossa **solo se era l'ultima copia** ($\mathit{cnt}$ scende a $0$). Al più $k$ chiavi → ogni operazione $O(\log k)$.
+## Pseudocodice
 ```pseudo
 \begin{algorithm}
-\caption{InsertWindow($T$, $v$) → void}
+\caption{InsertWindow($T$, $v$)}
 \begin{algorithmic}
 \If{$v \in T$}
   \State $T[v].\mathit{cnt} \gets T[v].\mathit{cnt} + 1$
@@ -37,7 +29,7 @@ L'algoritmo principale inizializza il BST con $S[1..k]$ in $O(k \log k)$, poi sc
 
 ```pseudo
 \begin{algorithm}
-\caption{DeleteWindow($T$, $v$) → void}
+\caption{DeleteWindow($T$, $v$)}
 \begin{algorithmic}
 \State $T[v].\mathit{cnt} \gets T[v].\mathit{cnt} - 1$
 \If{$T[v].\mathit{cnt} = 0$}
@@ -50,20 +42,18 @@ L'algoritmo principale inizializza il BST con $S[1..k]$ in $O(k \log k)$, poi sc
 
 ```pseudo
 \begin{algorithm}
-\caption{SlidingWindowBST($S$, $n$, $k$) → intero}
+\caption{finestraPiuVariegata($S$, $n$, $k$) → intero}
 \begin{algorithmic}
 \State $T \gets$ BST vuoto con $T.\mathit{distinct} \gets 0$
 \For{$i \gets 1$ \To $k$}
   \State \Call{InsertWindow}{$T$, $S[i]$}
 \EndFor
-\State $\mathit{best} \gets T.\mathit{distinct}$
-\State $\mathit{start} \gets 1$
+\State $\mathit{best} \gets T.\mathit{distinct}$; $\mathit{start} \gets 1$
 \For{$i \gets k+1$ \To $n$}
   \State \Call{InsertWindow}{$T$, $S[i]$}
   \State \Call{DeleteWindow}{$T$, $S[i-k]$}
   \If{$T.\mathit{distinct} > \mathit{best}$}
-    \State $\mathit{best} \gets T.\mathit{distinct}$
-    \State $\mathit{start} \gets i - k + 1$
+    \State $\mathit{best} \gets T.\mathit{distinct}$; $\mathit{start} \gets i-k+1$
   \EndIf
 \EndFor
 \State \Return $\mathit{start}$
@@ -71,12 +61,16 @@ L'algoritmo principale inizializza il BST con $S[1..k]$ in $O(k \log k)$, poi sc
 \end{algorithm}
 ```
 
-> [!example] Esempio — $S = [1, 1, 2, 3]$, $k = 3$
-> - **Init** finestra $S[1..3] = \{1,1,2\}$: inserisci $1$ ($\mathit{distinct}=1$), $1$ ($\mathit{cnt}[1]=2$, distinct invariato), $2$ ($\mathit{distinct}=2$). $\mathit{best}=2$, $\mathit{start}=1$.
-> - **$i=4$**: `InsertWindow`($S[4]=3$) → nuova chiave, $\mathit{distinct}=3$. `DeleteWindow`($S[i-k]=S[1]=1$) → $\mathit{cnt}[1]: 2\to1$, **non** $0$ → la chiave $1$ resta, $\mathit{distinct}$ resta $3$. Finestra ora $S[2..4]=\{1,2,3\}$.
-> - $\mathit{distinct}=3 > \mathit{best}=2$ → $\mathit{best}=3$, $\mathit{start}=i-k+1=2$.
->
-> Risposta = **2**: la finestra $S[2..4]=\{1,2,3\}$ ha $3$ distinti, contro i $2$ di $S[1..3]$ (che aveva un $1$ ripetuto). Nota come, togliendo $S[1]=1$, la chiave $1$ **non** sparisce perché un'altra copia resta nella finestra: ecco perché serve il contatore.
+`InsertWindow`/`DeleteWindow` usano `search`/`insert`/`delete` del BST bilanciato (scatole nere, $O(\log k)$); l'inserimento e la rimozione aggiornano $\mathit{distinct}$ solo quando una chiave nasce o sparisce davvero.
+## Complessità
+Inizializzazione: $k$ `InsertWindow`, $O(k\log k)$. Scorrimento: $n-k$ passi, ciascuno una `InsertWindow` + una `DeleteWindow`, $O(\log k)$ (il BST ha al più $k$ chiavi). Totale $O(k\log k)+O(n\log k)=$ **$O(n\log k)$**, come richiesto; spazio $O(k)$.
+## Correttezza
+> [!quote] Invariante — $T$ riflette la finestra corrente
+> Prima di valutare la finestra che inizia in $i-k+1$, $T$ contiene una chiave per ogni valore **distinto** presente in $S[i-k+1..i]$, con $T[v].\mathit{cnt}$ = numero di sue occorrenze nella finestra, e $T.\mathit{distinct}$ = numero di valori distinti nella finestra.
 
-**Complessità:** $O(k \log k)$ per l'inizializzazione $+$ $O(n \log k)$ per la fase di scorrimento $= O(n \log k)$.
-**Trappola:** sostituire il BST con una hash table semplice non risolve il problema (oltre a essere **fuori programma**): la hash table non garantisce count-distinct in $O(\log k)$ e, senza un contatore per chiave, decrementare l'occorrenza di $v$ farebbe credere che $v$ non sia più nella finestra anche quando ne esistono altre copie nella finestra corrente.
+**Dimostrazione.** Dopo l'inizializzazione $T$ descrive $S[1..k]$: ogni `InsertWindow` crea la chiave alla prima occorrenza (incrementando $\mathit{distinct}$) e incrementa il contatore alle successive. *Passo*: assumendo l'invariante per la finestra $[i-k, i-1]$, passare a $[i-k+1, i]$ significa aggiungere $S[i]$ e togliere $S[i-k]$: `InsertWindow`$(S[i])$ aggiorna correttamente contatore/distinti per l'ingresso; `DeleteWindow`$(S[i-k])$ decrementa il contatore e rimuove la chiave **solo se** era l'ultima copia, mantenendo $\mathit{distinct}$ pari al numero di valori ancora presenti. $\blacksquare$
+
+Per l'invariante, a ogni passo $T.\mathit{distinct}$ è esattamente il numero di distinti della finestra corrente; l'algoritmo tiene il massimo di questi valori e l'indice di inizio corrispondente, quindi restituisce l'inizio della finestra con più eventi distinti. $\blacksquare$
+
+> [!warning] Il contatore per chiave è indispensabile
+> Senza $\mathit{cnt}$, rimuovere $S[i-k]$ cancellerebbe la chiave anche quando altre copie di quel valore restano nella finestra, sottostimando i distinti. Una hash table semplice, oltre a essere **fuori programma**, non garantisce il conteggio in $O(\log k)$.

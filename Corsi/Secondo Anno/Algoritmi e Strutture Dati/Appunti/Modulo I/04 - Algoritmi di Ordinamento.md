@@ -18,7 +18,7 @@ L'insieme degli elementi deve provenire da un **dominio totalmente ordinato**. I
 > - **Upper bound $O(n^2)$:** Selection Sort, Insertion Sort, Bubble Sort, Quick Sort (caso peggiore).
 > - **Upper bound $O(n \log n)$:** Merge Sort, Heap Sort.
 > - **Lower bound banale $\Omega(n)$:** ogni algoritmo deve almeno leggere tutti gli $n$ elementi.
-> - **Lower bound $\Omega(n \log n)$:** per qualsiasi algoritmo basato su confronti (dimostrato con l'albero di decisione — vedi §[[#Lower bound per confronti: l'albero di decisione]]).
+> - **Lower bound $\Omega(n \log n)$:** per qualsiasi algoritmo basato su confronti (dimostrato con l'albero di decisione — vedi [[#Lower bound per confronti: l'albero di decisione]]).
 
 Tra l'upper bound $O(n \log n)$ e il lower bound $\Omega(n \log n)$ non c'è gap: Merge Sort e Heap Sort sono **algoritmi ottimi** nella classe degli algoritmi basati su confronti.
 ## Ordinamento quadratico

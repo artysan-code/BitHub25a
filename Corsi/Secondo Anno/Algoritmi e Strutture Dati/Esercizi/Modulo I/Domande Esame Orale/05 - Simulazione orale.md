@@ -5,7 +5,7 @@ tags:
 # Simulazione orale 5
 Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo. Guida: [[Piano Orale ASD - Modulo I]].
 ## Domande
-1. **Parlami del problema di Fibonacci**: confronta gli algoritmi e le loro complessità. *(perché lo squaring è $O(\log n)$?)*
+1. **Parlami del problema dell'ordinamento e del lower bound** $\Omega(n\log n)$. *(cos'è l'albero di decisione?)*
 2. **Parlami del Merge Sort e della procedura Merge**. *(perché è stabile?)*
 3. **Parlami delle componenti fortemente connesse** e dell'algoritmo per calcolarle.
 4. **Parlami dei $d$-heap**: struttura, operazioni, costi. *(quando conviene $d>2$?)*
@@ -14,7 +14,7 @@ Colloquio simulato. Domande **generali** («parlami di X») con eventuale approf
 7. **Parlami dell'ordinamento topologico**: quando esiste e come si calcola.
 
 > [!info]- Dove verificare le risposte
-> 1. [[01 - Il Problema di Fibonacci#Riepilogo complessità|riepilogo Fibonacci]] · [[01 - Il Problema di Fibonacci#Algoritmo 6 — Elevamento al quadrato veloce (potenza logaritmica)|squaring]]
+> 1. [[04 - Algoritmi di Ordinamento#Il problema dell'ordinamento|il problema]] · [[04 - Algoritmi di Ordinamento#Lower bound per confronti: l'albero di decisione|lower bound]]
 > 2. [[04 - Algoritmi di Ordinamento#Merge Sort|Merge Sort]]
 > 3. [[09 - Applicazioni della DFS#Componenti fortemente connesse|CFC]]
 > 4. [[07 - Code con Priorità e Heap#d-Heap|d-heap]] · [[07 - Code con Priorità e Heap#Quando conviene d > 2?|quando d>2]]

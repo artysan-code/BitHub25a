@@ -5,7 +5,7 @@ tags:
 # Simulazione orale 2
 Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo. Se il prof drilla su una **dimostrazione**, punta alla *tecnica* (induzione, per assurdo, serie geometrica…). Guida: [[Piano Orale ASD - Modulo I]].
 ## Domande
-1. **Parlami del problema di Fibonacci** e dei vari algoritmi per risolverlo. *(perché la ricorsione diretta è esponenziale?)*
+1. **Parlami del problema di Fibonacci** e dei vari algoritmi per risolverlo. *(⚪ raro, ma è il classico riscaldamento — perché la ricorsione diretta è esponenziale?)*
 2. **Parlami degli alberi AVL**. *(perché l'altezza è $O(\log n)$?)*
 3. **Parlami dei grafi e delle loro rappresentazioni** in memoria. *(quando conviene la lista di adiacenza?)*
 4. **Parlami della visita in profondità (DFS)**. *(struttura dati usata e complessità)*

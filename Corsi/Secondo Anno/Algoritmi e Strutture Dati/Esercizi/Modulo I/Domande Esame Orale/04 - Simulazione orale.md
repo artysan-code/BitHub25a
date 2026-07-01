@@ -11,7 +11,7 @@ Colloquio simulato. Domande **generali** («parlami di X») con eventuale approf
 4. **Parlami del dizionario** come tipo di dato e delle sue implementazioni elementari.
 5. **Parlami dell'oracolo per range counting** (prefix sums). *(costruzione, query, costi)*
 6. **Parlami della correttezza di Dijkstra** e di perché fallisce con pesi negativi.
-7. **Parlami delle notazioni asintotiche e delle loro proprietà** (somma, termine dominante, transitività).
+7. **Parlami delle code con priorità e degli heap**. *(cos'è Heapify e perché costa $O(n)$?)*
 
 > [!info]- Dove verificare le risposte
 > 1. [[10 - Cammini Minimi e Dijkstra#Il problema SSSP e l'albero dei cammini minimi|SSSP e SPT]]
@@ -20,4 +20,4 @@ Colloquio simulato. Domande **generali** («parlami di X») con eventuale approf
 > 4. [[05 - Strutture Dati Elementari e Dizionari#Il Tipo di Dato Dizionario|dizionario]]
 > 5. [[04 - Algoritmi di Ordinamento#Applicazione: Oracolo per Range Counting|oracolo prefix sums]]
 > 6. [[10 - Cammini Minimi e Dijkstra#Correttezza|correttezza Dijkstra]]
-> 7. [[02 - Notazioni Asintotiche#Proprietà della notazione asintotica|proprietà]] · [[02 - Notazioni Asintotiche#Velocità delle funzioni composte: il termine dominante|termine dominante]]
+> 7. [[07 - Code con Priorità e Heap#Heapify — costruzione in O(n)|Heapify O(n)]] · [[07 - Code con Priorità e Heap#Operazioni e complessità|operazioni]]

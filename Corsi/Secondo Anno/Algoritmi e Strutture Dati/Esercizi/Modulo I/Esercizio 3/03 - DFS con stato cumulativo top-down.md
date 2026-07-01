@@ -1,65 +1,62 @@
 ---
 tags:
   - algoritmi
+  - strutture-dati
 ---
 # DFS con stato cumulativo top-down
-Casistica tipica dell'Esercizio 3 (Modellazione) di ASD Modulo I; vedi [[Casistiche d'Esame Modulo I]] per la panoramica delle tipologie e [[Piano Esame ASD - Modulo I]] per la checklist. Ripasso: [[05 - Strutture Dati Elementari e Dizionari]] (visite ricorsive di alberi), [[08 - Grafi e Visite]].
-## Svolgimento — esame 13/06/2024
+Esercizio di **modellazione** su alberi: una singola DFS trasporta verso il basso lo stato del cammino radice→nodo (nei parametri) e aggrega risalendo (nel valore di ritorno). Ripasso: [[08 - Grafi e Visite#Visita in profondità — DFS|DFS]], [[05 - Strutture Dati Elementari e Dizionari#Visite di Alberi|visite di alberi]].
+## A · Foglia buona per massimo antenato
 > [!question] Traccia — 13/06/2024
-> Dato un albero binario i cui nodi hanno un campo intero $\text{val}$, una foglia $v$ è detta **buona** se la somma del massimo valore tra i suoi antenati stretti (escluso $v$ stesso) e $v.\text{val}$ è $\geq 100$. Scrivere un algoritmo efficiente che restituisce il numero di foglie buone.
+> Sia $T$ un albero binario in cui ogni nodo $v$ ha un valore $v.\text{val}\geq 0$. Una foglia $v$ è **buona** se **esiste un antenato** $u$ di $v$ tale che $v.\text{val}+u.\text{val}\geq 100$. Restituire il numero di foglie buone. Complessità $O(n)$.
 
-**Modellazione.** La proprietà di una foglia dipende dall'intera storia del cammino radice–foglia: occorre tenere traccia del massimo $M$ tra i valori degli antenati incontrati finora, passandolo come parametro alla ricorsione (non come variabile globale, per evitare side effect durante il backtracking). Si inizia con $M = -\infty$ (la radice non ha antenati). Quando si ricorre sui figli di $v$, si aggiorna $M' = \max(M, v.\text{val})$: il nodo corrente diventa antenato dei figli, non di sé stesso. Le chiamate ricorsive sui due sottoalberi contribuiscono con somma al conteggio complessivo (combinazione bottom-up).
-
-**Dimensionamento.** L'albero ha $n$ nodi; nessuna struttura ausiliaria aggiuntiva è necessaria. Lo stack di ricorsione è profondo $O(h)$, con $h$ altezza dell'albero.
-
+"Esiste un antenato $u$ con $v.\text{val}+u.\text{val}\geq 100$" equivale a "il **massimo** valore fra gli antenati di $v$, sommato a $v.\text{val}$, è $\geq 100$": conviene quindi portare giù, durante la discesa, il massimo valore visto sul cammino.
+### Idea risolutiva
+Una DFS top-down passa come parametro $M$ = massimo valore fra gli antenati **stretti** di $v$ (radice: $M=-\infty$, nessun antenato). Su una foglia si conta $1$ se $M+v.\text{val}\geq 100$. Ricorrendo sui figli si aggiorna $M'=\max(M,\,v.\text{val})$: il nodo corrente diventa antenato dei figli, non di sé stesso. I conteggi dei due sottoalberi si sommano.
+### Pseudocodice
 ```pseudo
 \begin{algorithm}
-\caption{fogliBuone($r$) → intero}
+\caption{foglieBuone($r$) → intero}
 \begin{algorithmic}
-\State \Return \Call{contaFoglie}{$r$, $-\infty$}
+\State \Return \Call{conta}{$r$, $-\infty$}
 \end{algorithmic}
 \end{algorithm}
 ```
 
 ```pseudo
 \begin{algorithm}
-\caption{contaFoglie($v$, $M$) → intero}
+\caption{conta($v$, $M$) → intero}
 \begin{algorithmic}
-\If{$v = $ null}
-  \State \Return $0$
+\If{$v = $ null} \State \Return $0$ \EndIf
+\If{$v.\text{sx} = $ null e $v.\text{dx} = $ null} \Comment{$v$ è foglia}
+  \If{$M + v.\text{val} \geq 100$} \State \Return $1$ \Else \State \Return $0$ \EndIf
 \EndIf
-\If{$v.\text{sx} = $ null e $v.\text{dx} = $ null} \Comment{$v$ è una foglia}
-  \If{$M + v.\text{val} \geq 100$}
-    \State \Return $1$
-  \Else
-    \State \Return $0$
-  \EndIf
-\EndIf
-\State $M' \gets \max(M,\, v.\text{val})$ \Comment{$v$ è antenato dei suoi figli}
-\State \Return \Call{contaFoglie}{$v.\text{sx},\, M'$} $+$ \Call{contaFoglie}{$v.\text{dx},\, M'$}
+\State $M' \gets \max(M,\, v.\text{val})$ \Comment{$v$ è antenato dei figli}
+\State \Return \Call{conta}{$v.\text{sx}, M'$} $+$ \Call{conta}{$v.\text{dx}, M'$}
 \end{algorithmic}
 \end{algorithm}
 ```
+### Complessità
+Una chiamata per nodo, lavoro $O(1)$: **$O(n)$** tempo; spazio $O(h)$ per la pila di ricorsione.
+### Correttezza
+> [!quote] Invariante — $M$ è il massimo antenato
+> A ogni chiamata `conta($v$, $M$)` con $v\neq\text{null}$, $M$ è il massimo valore fra gli antenati stretti di $v$ (o $-\infty$ se $v$ è la radice).
 
-**Complessità:** $\Theta(n)$ — ogni nodo è visitato esattamente una volta.
+**Dimostrazione** (induzione sulla profondità). *Base*: radice, $M=-\infty$, nessun antenato. *Passo*: un figlio di $v$ riceve $M'=\max(M,v.\text{val})$ = massimo fra (antenati di $v$) e $v$ = massimo fra gli antenati del figlio. $\blacksquare$
 
-**Trappola:** Il nodo corrente non è antenato di sé stesso. L'aggiornamento $M' = \max(M, v.\text{val})$ serve per ricorrere sui figli: va calcolato DOPO il controllo foglia (che usa $M$, non $M'$) e PRIMA delle chiamate ricorsive. Usare $M'$ al posto di $M$ nel controllo foglia darebbe un risultato scorretto contando $v.\text{val}$ due volte.
-## Variante — nodo speciale raggiungibile (18/07/2022)
+Per l'invariante, su una foglia $v$ la condizione $M+v.\text{val}\geq 100$ vale se e solo se esiste un antenato con quella somma (il massimo la realizza). Sommando i contributi delle foglie (ognuna visitata una volta) si ottiene il numero di foglie buone. $\blacksquare$
+
+> [!warning] $M$ non include $v$
+> L'aggiornamento $M'=\max(M,v.\text{val})$ serve **solo** per i figli e va fatto **dopo** il test foglia (che usa $M$, non $M'$): il nodo non è antenato di sé stesso, contarlo sommerebbe $v.\text{val}$ due volte.
+## B · Nodo speciale raggiungibile (top-down + bottom-up)
 > [!question] Traccia — 18/07/2022
-> Sia $T$ un albero binario di $n$ nodi con nomi distinti in $\{1,\ldots,n\}$. Ogni nodo $v$ ha un nome $v.\text{nome}$, un valore $v.\text{val}\ge 0$ e un flag $v.\text{speciale}$. Un nodo $v$ *può raggiungere* un nodo speciale $u$ se $u$ è antenato o discendente di $v$ e il cammino fra $v$ e $u$ non attraversa nodi speciali diversi da $u$. Costruire $V[1..n]$ con $V[i]$ = massimo valore tra i nodi speciali raggiungibili dal nodo di nome $i$. Complessità $O(n)$.
-
-**Modellazione.** Dalla definizione, dal nodo $v$ sono raggiungibili soltanto: (i) il *più vicino antenato speciale* (gli speciali più in alto sono schermati da quest'ultimo), e (ii) per ciascun ramo discendente, il *primo nodo speciale incontrato* scendendo (gli speciali più in basso sono schermati). Un nodo $v$ già speciale raggiunge **solo sé stesso**, perché qualsiasi cammino verso un altro speciale passerebbe per $v$ stesso (speciale, diverso dalla meta).
-Si risolve con una **singola DFS** che porta giù lo stato e aggrega risalendo:
-- *top-down*: $\text{anc}$ = valore del più vicino antenato speciale (scende ai figli aggiornato a $v.\text{val}$ se $v$ è speciale, altrimenti invariato);
-- *bottom-up*: $\text{nsd}(v)$ = valore del più vicino speciale discendente nel sottoalbero di $v$, pari a $v.\text{val}$ se $v$ è speciale, altrimenti al massimo degli $\text{nsd}$ dei figli.
-
-Per ogni nodo: se $v$ è speciale $V[v.\text{nome}]=v.\text{val}$; altrimenti $V[v.\text{nome}]=\max(\text{anc},\ \max_{\text{figli } c}\text{nsd}(c))$.
-
+> Albero binario di $n$ nodi con nomi distinti in $\{1,\dots,n\}$; ogni nodo ha $v.\text{val}\geq 0$ e un flag $v.\text{speciale}$. Un nodo $v$ **può raggiungere** un nodo speciale $u$ se $u$ è antenato o discendente di $v$ e il cammino $v\!-\!u$ non passa per altri nodi speciali oltre $u$. Costruire $V[1..n]$ con $V[i]$ = massimo valore fra i nodi speciali raggiungibili dal nodo di nome $i$. Complessità $O(n)$.
+### Idea risolutiva
+Da $v$ sono raggiungibili solo: il **più vicino antenato speciale** (quelli più in alto sono schermati) e, per ogni ramo, il **primo speciale scendendo** (quelli più in basso sono schermati). Un nodo già speciale raggiunge **solo sé stesso**. Una sola DFS combina due canali: *top-down* $\text{anc}$ = valore del più vicino antenato speciale (diventa $v.\text{val}$ per i figli se $v$ è speciale); *bottom-up* $\text{nsd}(v)$ = valore del più vicino speciale discendente ($v.\text{val}$ se $v$ speciale, altrimenti il massimo degli $\text{nsd}$ dei figli). Per ogni nodo: se speciale $V[v.\text{nome}]=v.\text{val}$, altrimenti $V[v.\text{nome}]=\max(\text{anc},\ \text{nsd}(sx),\ \text{nsd}(dx))$.
+### Pseudocodice
 ```pseudo
 \begin{algorithm}
-\caption{CostruisciV($T$) → array $V[1..n]$}
+\caption{costruisciV($T$) → array $V[1..n]$}
 \begin{algorithmic}
-\State alloca $V[1..n]$
 \State \Call{DFS}{$T.\text{radice}$, $-\infty$}
 \State \Return $V$
 \end{algorithmic}
@@ -70,64 +67,54 @@ Per ogni nodo: se $v$ è speciale $V[v.\text{nome}]=v.\text{val}$; altrimenti $V
 \begin{algorithm}
 \caption{DFS($v$, $\text{anc}$) → nsd($v$)}
 \begin{algorithmic}
-\If{$v = $ null}
-  \State \Return $-\infty$
-\EndIf
+\If{$v = $ null} \State \Return $-\infty$ \EndIf
 \State $\text{ancFigli} \gets (v.\text{speciale}\ ?\ v.\text{val} : \text{anc})$
-\State $sx \gets$ \Call{DFS}{$v.\text{sx}$, $\text{ancFigli}$}
-\State $dx \gets$ \Call{DFS}{$v.\text{dx}$, $\text{ancFigli}$}
-\State $\text{downDesc} \gets \max(sx, dx)$
+\State $sx \gets$ \Call{DFS}{$v.\text{sx}, \text{ancFigli}$}; \; $dx \gets$ \Call{DFS}{$v.\text{dx}, \text{ancFigli}$}
+\State $\text{giù} \gets \max(sx, dx)$
 \If{$v.\text{speciale}$}
-  \State $V[v.\text{nome}] \gets v.\text{val}$
-  \State \Return $v.\text{val}$
+  \State $V[v.\text{nome}] \gets v.\text{val}$; \; \Return $v.\text{val}$
 \Else
-  \State $V[v.\text{nome}] \gets \max(\text{anc},\ \text{downDesc})$
-  \State \Return $\text{downDesc}$
+  \State $V[v.\text{nome}] \gets \max(\text{anc}, \text{giù})$; \; \Return $\text{giù}$
 \EndIf
 \end{algorithmic}
 \end{algorithm}
 ```
+### Complessità e correttezza
+Una visita, $O(1)$ per nodo → **$O(n)$**; pila $O(h)$. Correttezza: un nodo speciale **blocca** la propagazione in entrambe le direzioni, quindi $\text{anc}$ resta il primo speciale salendo e $\text{nsd}$ il primo scendendo; per un nodo non speciale i raggiungibili sono esattamente questi, e $V$ ne prende il massimo. Un nodo speciale raggiunge solo sé stesso perché ogni cammino verso un altro speciale passerebbe per lui. $\blacksquare$
 
-**Complessità:** $\Theta(n)$ — una sola visita, aggiornamento di $V$ in $O(1)$ per nodo; stack profondo $O(h)$.
-**Trappola:** lo stato $\text{anc}$ passato ai figli usa $v.\text{val}$ **solo se $v$ è speciale** (altrimenti propaga l'antenato già noto); un nodo speciale *blocca* la propagazione sia verso l'alto sia verso il basso, quindi i suoi $\text{nsd}$ non scendono oltre; se nessuno speciale è raggiungibile $V[i]$ resta $-\infty$ (sentinella, da rimpiazzare con la convenzione richiesta — es. $0$).
-## Variante — cammini radice-foglia alternati (09/09/2024)
+> [!warning] Blocco bidirezionale
+> $\text{anc}$ passato ai figli diventa $v.\text{val}$ **solo se $v$ è speciale**; un nodo speciale interrompe sia la catena verso il basso sia quella verso l'alto. Se nessuno speciale è raggiungibile, $V[i]$ resta $-\infty$ (sentinella da sostituire con la convenzione richiesta).
+## C · Cammini radice-foglia alternati
 > [!question] Traccia — 09/09/2024
-> Sia $T$ un albero binario in cui ogni nodo $v$ ha un colore $v.\text{col}\in\{1,2\}$. Un cammino radice–foglia è *alternato* se non contiene mai due nodi adiacenti dello stesso colore. Restituire il numero di cammini radice–foglia alternati che terminano su una foglia di colore $1$ e, separatamente, quelli che terminano su una foglia di colore $2$. Complessità $O(n)$.
-
-**Modellazione.** L'alternanza è una proprietà *locale propagata dall'alto*: basta confrontare il colore di ogni nodo con quello del padre. Una DFS top-down porta giù il colore del padre; appena un nodo ha lo stesso colore del padre il cammino radice→nodo è già non alternato e nessun cammino radice–foglia che passa di lì può esserlo: si pota l'intero sottoalbero restituendo $(0,0)$. Su una foglia raggiunta con cammino ancora alternato si conta $1$ nel bucket del suo colore. I conteggi dei due sottoalberi si sommano (aggregazione bottom-up di una coppia).
-
+> Albero binario con $v.\text{col}\in\{1,2\}$. Un cammino radice–foglia è **alternato** se non ha mai due nodi adiacenti dello stesso colore. Restituire, separatamente, il numero di cammini radice–foglia alternati che terminano su una foglia di colore $1$ e quelli che terminano su una foglia di colore $2$. Complessità $O(n)$.
+### Idea risolutiva
+L'alternanza è locale: basta confrontare il colore di ogni nodo con quello del **padre**, portato giù dalla DFS. Appena un nodo ha il colore del padre, il cammino è già non alternato e si **pota** il sottoalbero restituendo $(0,0)$. Su una foglia raggiunta con cammino alternato si conta $1$ nel bucket del suo colore. I risultati dei due sottoalberi si sommano come coppia.
+### Pseudocodice
 ```pseudo
 \begin{algorithm}
-\caption{ContaAlternati($T$) → coppia $(c_1, c_2)$}
+\caption{contaAlternati($T$) → coppia $(c_1, c_2)$}
 \begin{algorithmic}
-\State \Return \Call{Conta}{$T.\text{radice}$, $0$} \Comment{$0$ = nessun padre (colore fittizio)}
+\State \Return \Call{conta}{$T.\text{radice}$, $0$} \Comment{$0$ = padre fittizio (radice)}
 \end{algorithmic}
 \end{algorithm}
 ```
 
 ```pseudo
 \begin{algorithm}
-\caption{Conta($v$, $\text{colPadre}$) → coppia $(c_1, c_2)$}
+\caption{conta($v$, $\text{colPadre}$) → coppia $(c_1, c_2)$}
 \begin{algorithmic}
-\If{$v = $ null}
-  \State \Return $(0, 0)$
+\If{$v = $ null} \State \Return $(0, 0)$ \EndIf
+\If{$\text{colPadre} \neq 0$ e $v.\text{col} = \text{colPadre}$} \State \Return $(0, 0)$ \Comment{alternanza rotta: pota} \EndIf
+\If{$v.\text{sx} = $ null e $v.\text{dx} = $ null} \Comment{foglia, cammino alternato}
+  \If{$v.\text{col} = 1$} \State \Return $(1, 0)$ \Else \State \Return $(0, 1)$ \EndIf
 \EndIf
-\If{$\text{colPadre} \neq 0$ e $v.\text{col} = \text{colPadre}$}
-  \State \Return $(0, 0)$ \Comment{alternanza rotta: pota il sottoalbero}
-\EndIf
-\If{$v.\text{sx} = $ null e $v.\text{dx} = $ null} \Comment{$v$ è foglia, cammino alternato}
-  \If{$v.\text{col} = 1$}
-    \State \Return $(1, 0)$
-  \Else
-    \State \Return $(0, 1)$
-  \EndIf
-\EndIf
-\State $(l_1, l_2) \gets$ \Call{Conta}{$v.\text{sx}$, $v.\text{col}$}
-\State $(r_1, r_2) \gets$ \Call{Conta}{$v.\text{dx}$, $v.\text{col}$}
-\State \Return $(l_1 + r_1,\ l_2 + r_2)$
+\State $(l_1, l_2) \gets$ \Call{conta}{$v.\text{sx}, v.\text{col}$}; \; $(r_1, r_2) \gets$ \Call{conta}{$v.\text{dx}, v.\text{col}$}
+\State \Return $(l_1+r_1,\ l_2+r_2)$
 \end{algorithmic}
 \end{algorithm}
 ```
+### Complessità e correttezza
+Un nodo per visita, $O(1)$ → **$O(n)$**. Correttezza: il confronto col colore del padre (stato top-down) rileva localmente la rottura dell'alternanza; potando, nessuna foglia sotto una rottura viene contata (coerente: il suo cammino contiene la stessa coppia adiacente). Su una foglia con cammino alternato si somma $1$ nel bucket del **suo** colore; l'aggregazione bottom-up delle coppie somma i cammini dei due sottoalberi. $\blacksquare$
 
-**Complessità:** $\Theta(n)$ — ogni nodo visitato una volta, lavoro $O(1)$ per nodo.
-**Trappola:** il confronto è col colore del **padre** (stato top-down), non un controllo globale; un nodo che rompe l'alternanza pota tutto il sottoalbero (le foglie sotto non si contano); il bucket è deciso dal colore della **foglia**, non della radice; la radice non ha padre, quindi non genera mai rottura (colore fittizio $0$).
+> [!warning] Colore del padre, non globale
+> Il test è sull'adiacenza col padre, non un controllo globale; il bucket è deciso dal colore della **foglia**; la radice non ha padre (colore fittizio $0$) e non genera mai rottura.

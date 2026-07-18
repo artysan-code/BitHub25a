@@ -3,7 +3,7 @@ tags:
   - algoritmi
 ---
 # Simulazione orale 5
-Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo. Guida: [[Piano Orale ASD - Modulo I]].
+Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo.
 ## Domande
 1. **Parlami del problema dell'ordinamento e del lower bound** $\Omega(n\log n)$. *(cos'è l'albero di decisione?)*
 2. **Parlami del Merge Sort e della procedura Merge**. *(perché è stabile?)*

@@ -3,7 +3,7 @@ tags:
   - algoritmi
 ---
 # Simulazione orale 4
-Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo. Guida: [[Piano Orale ASD - Modulo I]].
+Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo.
 ## Domande
 1. **Parlami dei cammini minimi e del problema SSSP**. *(cos'è l'albero dei cammini minimi?)*
 2. **Parlami del ribilanciamento degli AVL**. *(i 4 casi di rotazione e quando si applicano)*

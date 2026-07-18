@@ -3,7 +3,7 @@ tags:
   - algoritmi
 ---
 # Simulazione orale 3
-Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo. Guida: [[Piano Orale ASD - Modulo I]].
+Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo.
 ## Domande
 1. **Parlami dell'Heap Sort**. *(perché $O(n\log n)$ garantito e in loco?)*
 2. **Parlami degli algoritmi di ordinamento quadratici** (Selection, Insertion, Bubble). *(invarianti; caso migliore di Insertion?)*

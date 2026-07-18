@@ -3,7 +3,7 @@ tags:
   - algoritmi
 ---
 # Simulazione orale 2
-Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo. Se il prof drilla su una **dimostrazione**, punta alla *tecnica* (induzione, per assurdo, serie geometrica…). Guida: [[Piano Orale ASD - Modulo I]].
+Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo. Se il prof drilla su una **dimostrazione**, punta alla *tecnica* (induzione, per assurdo, serie geometrica…).
 ## Domande
 1. **Parlami del problema di Fibonacci** e dei vari algoritmi per risolverlo. *(⚪ raro, ma è il classico riscaldamento — perché la ricorsione diretta è esponenziale?)*
 2. **Parlami degli alberi AVL**. *(perché l'altezza è $O(\log n)$?)*

@@ -3,7 +3,7 @@ tags:
   - algoritmi
 ---
 # Simulazione orale 6
-Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo. Guida: [[Piano Orale ASD - Modulo I]].
+Colloquio simulato. Domande **generali** («parlami di X») con eventuale approfondimento in corsivo.
 ## Domande
 1. **Parlami del Quick Sort e della procedura Partition**. *(l'invariante; la versione randomizzata)*
 2. **Parlami dell'Heap Sort** e di perché il max-heap consente di non usare memoria ausiliaria.

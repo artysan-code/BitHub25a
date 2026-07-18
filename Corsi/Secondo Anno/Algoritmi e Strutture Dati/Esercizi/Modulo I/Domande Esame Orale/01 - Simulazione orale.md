@@ -3,7 +3,7 @@ tags:
   - algoritmi
 ---
 # Simulazione orale 1
-Colloquio simulato. Il prof parte da una domanda **generale** («parlami di X»): apri con un racconto ordinato (schema in 5 mosse: cos'è → idea → pseudocodice → complessità *col perché* → correttezza) e preparati all'**approfondimento** in corsivo. Guida: [[Piano Orale ASD - Modulo I]].
+Colloquio simulato. Il prof parte da una domanda **generale** («parlami di X»): apri con un racconto ordinato (schema in 5 mosse: cos'è → idea → pseudocodice → complessità *col perché* → correttezza) e preparati all'**approfondimento** in corsivo.
 ## Domande
 1. **Parlami del problema dell'ordinamento**: com'è definito, e cosa sai dire su upper e lower bound. *(approfondimento: perché $\Omega(n\log n)$ per gli algoritmi a confronti?)*
 2. **Parlami dell'Integer Sort** (Counting Sort). *(e perché non contraddice il lower bound $\Omega(n\log n)$?)*

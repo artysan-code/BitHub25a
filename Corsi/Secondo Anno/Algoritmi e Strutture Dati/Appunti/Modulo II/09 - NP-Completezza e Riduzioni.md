@@ -51,6 +51,14 @@ Le riduzioni servono a tre scopi:
 > Se $X \leq_P Y$ e $Y \leq_P Z$, allora $X \leq_P Z$.
 >
 > **Idea della dimostrazione**: componiamo i due algoritmi di riduzione. L'algoritmo per $X$ chiama l'oracolo per $Y$; ogni chiamata all'oracolo per $Y$ è simulata dall'algoritmo che riduce $Y$ a $Z$, che a sua volta chiama l'oracolo per $Z$. Il numero totale di passi rimane polinomiale.
+
+> [!question] Domanda tipica d'esame — Definizione formale di riduzione polinomiale
+> **D:** «Si definisca formalmente il concetto di riduzione polinomiale fra problemi. (Max 5 righe.)» *(chiesto il 16/07/2024)*
+> **R:** $X$ si riduce polinomialmente a $Y$ (scritto $X \leq_P Y$) se esiste un algoritmo che risolve ogni istanza di $X$ usando un numero **polinomiale** di passi di calcolo standard, più un numero **polinomiale** di chiamate a un **oracolo** che risolve $Y$ in un singolo passo, dove ogni istanza passata all'oracolo ha dimensione polinomiale rispetto all'istanza originale di $X$. Intuitivamente $X \leq_P Y$ vuol dire che $X$ non è più difficile di $Y$: un ipotetico algoritmo polinomiale per $Y$, composto con l'algoritmo di riduzione, produce immediatamente un algoritmo polinomiale per $X$.
+
+> [!question] Domanda tipica d'esame — Riduzioni come evidenza di intrattabilità
+> **D:** «Si argomenti su come è possibile utilizzare le riduzioni polinomiali per dare evidenza che un problema è computazionalmente difficile. (Max 5 righe.)» *(chiesto il 16/07/2024)*
+> **R:** Se si dimostra $X \leq_P Y$ e $X$ è (ritenuto) intrattabile, allora anche $Y$ deve esserlo: se esistesse un algoritmo polinomiale per $Y$, componendolo con l'algoritmo di riduzione si otterrebbe un algoritmo polinomiale anche per $X$, contraddicendo l'ipotesi. Concatenando riduzioni in catena a partire da un problema NP-completo "capostipite" (tipicamente 3-SAT, per Cook-Levin) si trasferisce questa evidenza a un'intera famiglia di problemi: si dimostra che sono tutti NP-hard senza dover trovare per ciascuno una dimostrazione diretta e indipendente di intrattabilità.
 ## Classi P e NP
 > [!quote] Definizione — Classe P
 > **P** è la classe dei problemi decisionali (risposta sì/no) risolvibili da un algoritmo deterministico in tempo **polinomiale**.
@@ -73,6 +81,10 @@ Le riduzioni servono a tre scopi:
 
 > [!info] P vs NP — la grande domanda aperta
 > Se anche un solo problema NP-completo fosse risolvibile in tempo polinomiale, allora **P = NP** e tutti i problemi di NP lo sarebbero. La congettura dominante è **P ≠ NP**, ma non è dimostrata. Per il progettista di algoritmi la lezione pratica è: se un problema è NP-completo, non cercare un algoritmo esatto polinomiale — passa ad approssimazioni, euristiche o algoritmi parametrizzati.
+
+> [!question] Domanda tipica d'esame — Certificatore efficiente, classe NP e Vertex Cover
+> **D:** «Si definisca formalmente cos'è un Certificatore efficiente (Efficient Certifier) e si usi tale concetto per definire la classe di problemi NP. Infine, si definisca la versione decisionale del problema del Minimum Vertex Cover indicando come è fatta una generica istanze di input e quale è la domanda del problema. Si dimostri che tale problema appartiene alla classe NP.» *(chiesto il 27/09/2023)*
+> **R:** Un **certificatore efficiente** per un problema decisionale $X$ è un algoritmo $B(s, t)$ che prende in input un'istanza $s$ e un **certificato** $t$ (una presunta prova/soluzione), gira in tempo **polinomiale** in $|s|$, e tale che $s \in X$ se e solo se esiste un certificato $t$ con $|t|$ **polinomiale** in $|s|$ per cui $B(s,t)$ = "sì". In altre parole, un certificatore non deve trovare la soluzione: deve solo verificarla, in modo rapido, quando qualcuno gliela mostra. **NP** è allora definita come la classe dei problemi decisionali che ammettono un certificatore efficiente: problemi per cui, pur non sapendo (in generale) risolvere l'istanza in tempo polinomiale, sappiamo verificarne una soluzione candidata in tempo polinomiale. La versione decisionale di **Minimum Vertex Cover** ha istanza $(G=(V,E), k)$ con $k$ intero, e la domanda è: esiste un sottoinsieme $C \subseteq V$ con $|C| \leq k$ tale che ogni arco di $E$ abbia almeno un estremo in $C$? Per dimostrare che questo problema è in NP, si usa come certificato l'insieme $C$ stesso: $|C| \leq |V|$, quindi la dimensione del certificato è polinomiale in $|V|$; il certificatore verifica in tempo $O(|V| + |E|)$ che $|C| \leq k$ e che, scorrendo tutti gli archi di $E$, ciascuno abbia almeno un estremo in $C$ (test di appartenenza in $O(1)$ con un vettore booleano indicizzato sui vertici). Poiché sia la dimensione del certificato sia il tempo di verifica sono polinomiali nella dimensione dell'istanza, Vertex Cover $\in$ NP.
 ## Problemi di packing e covering
 ### Independent Set
 > [!quote] Definizione — Independent Set
@@ -166,6 +178,14 @@ Clausola 1       Clausola 2        Clausola 3
 
 > [!info] Schema di riduzione: codifica con gadget
 > Questo è il pattern **"codifica con gadget"**: si costruisce una struttura locale (il triangolo) che "forza" la scelta di esattamente un elemento, e archi tra gadget che codificano i vincoli logici (la negazione). È il meccanismo più potente e comune nelle riduzioni NP.
+
+> [!question] Domanda tipica d'esame — Definizioni formali di 3-SAT e Independent Set
+> **D:** «1. Si definiscano formalmente i problemi decisionali 3-SAT e Independet Set. (Max 5 righe).» *(chiesto il 09/09/2024)*
+> **R:** **3-SAT**: data una formula booleana $\Phi$ in forma normale congiuntiva (CNF), in cui ogni clausola contiene esattamente 3 letterali distinti, esiste un assegnamento di verità alle variabili che soddisfa $\Phi$, cioè rende vera almeno un letterale in ciascuna clausola? **Independent Set**: dato un grafo $G=(V,E)$ e un intero $k$, esiste un sottoinsieme $S \subseteq V$ con $|S| \geq k$ tale che nessun arco di $E$ abbia entrambi gli estremi in $S$ (i vertici di $S$ sono a due a due non adiacenti)?
+
+> [!question] Domanda tipica d'esame — Da Independent Set polinomiale a 3-SAT polinomiale
+> **D:** «2. Si mostri come è possibile utilizzare un (ipotetico) algoritmo polinomiale per Independet Set per risolvere 3-SAT. (Max 5 righe)» *(chiesto il 09/09/2024)*
+> **R:** Si applica la riduzione standard 3-SAT $\leq_P$ Independent Set descritta sopra: per ogni clausola (tre letterali) si crea un triangolo di nodi, collegando inoltre ogni letterale al suo complementare nelle altre clausole; una formula è soddisfacibile se e solo se il grafo così costruito ammette un independent set di dimensione pari al numero $m$ di clausole. Costruito $(G, k=m)$ a partire da $\Phi$ in tempo polinomiale, basta invocare l'ipotetico algoritmo polinomiale per Independent Set su questa istanza: se restituisce un independent set di dimensione $k$, $\Phi$ è soddisfacibile (e l'assegnamento si ricostruisce dai letterali scelti in $S$); altrimenti $\Phi$ non lo è. Il tempo totale resta polinomiale, quindi si decide 3-SAT in tempo polinomiale.
 ## La catena di riduzioni
 Le riduzioni viste compongono grazie alla transitività in una **catena**:
 $$\text{3-SAT} \leq_P \text{INDEPENDENT-SET} \leq_P \text{VERTEX-COVER} \leq_P \text{SET-COVER}$$
@@ -195,9 +215,9 @@ I problemi possono essere formulati in tre modi diversi ma equivalenti:
 
 **Idea della riduzione (ric → ott):** per trovare il vertex cover di dimensione minima, si effettua una **ricerca binaria** su $k$ (da $0$ a $n$) e si risolve il problema di ricerca per ciascun valore: $O(\log n)$ chiamate, ognuna polinomiale.
 
-> [!example] Domanda tipica d'esame
-> D: Perché ci concentriamo su problemi decisionali per definire NP-completezza, invece che di ottimizzazione?
-> R: Per semplicità formale: la risposta sì/no è facilmente catturata dal modello teorico (Turing machine non deterministica). Le tre varianti sono comunque polinomialmente equivalenti, quindi la scelta non perde generalità.
+> [!question] Domanda tipica d'esame — Perché la NP-completezza si definisce su problemi decisionali
+> **D:** Perché ci concentriamo su problemi decisionali per definire NP-completezza, invece che di ottimizzazione?
+> **R:** Per semplicità formale: la risposta sì/no è facilmente catturata dal modello teorico (Turing machine non deterministica). Le tre varianti sono comunque polinomialmente equivalenti, quindi la scelta non perde generalità.
 ## Significato pratico per la progettazione
 Quando si dimostra che un problema è NP-completo, le opzioni per la progettazione cambiano radicalmente:
 1. **Algoritmi di approssimazione**: rinunciare all'ottimalità garantendo una soluzione entro un fattore $\alpha$ dall'ottimo (sezione successiva).
@@ -269,12 +289,34 @@ Un algoritmo greedy elementare fornisce una 2-approssimazione per Vertex Cover (
 > [!quote] Teorema — Approx-Vertex-Cover è una 2-approssimazione
 > Sia $M$ l'insieme degli archi selezionati al passo 4 (un **matching** massimale). Ogni arco di $M$ richiede almeno un vertice nel vertex cover ottimo, quindi $|M| \leq \text{OPT}$. L'algoritmo aggiunge entrambi gli estremi per ogni arco in $M$: $|C| = 2|M| \leq 2 \cdot \text{OPT}$.
 
-> [!example] Domanda tipica d'esame
-> D: Perché Vertex Cover ammette una 2-approssimazione ma è NP-completo?
-> R: La NP-completezza riguarda la soluzione **esatta**. Un algoritmo di approssimazione rinuncia all'ottimalità: garantisce una soluzione entro un fattore 2, ma non necessariamente ottima. Le due affermazioni non si contraddicono.
->
-> D: Qual è la struttura della catena di riduzioni 3-SAT → Independent Set → Vertex Cover → Set Cover?
-> R: La catena usa tre tipi diversi di riduzione: equivalenza semplice (Independent Set ↔ Vertex Cover tramite complemento), caso speciale → generale (Vertex Cover ≤ Set Cover), e codifica con gadget (3-SAT → Independent Set tramite triangoli). La transitività garantisce che tutti i problemi a destra di 3-SAT siano NP-hard.
+> [!question] Domanda tipica d'esame — V/F: un solo nodo per arco di M?
+> **D:** *(Vero o Falso)* «ESERCIZIO N. 2. Si consideri l'algoritmo ALG(G=(V,E)), 2-approssimante per il problema Min-Vertex Cover,  basato sul calcolo di un Maximal Matching M di G(V,E). Si selezioni tutte e sole le affermazioni che si ritengano vere.
+> a) L'algoritmo calcola un Maximal Matching M del grafo in input G e poi inserisce, nella soluzione C, un solo nodo per ogni arco di M.» *(chiesto il 25/07/2023)*
+> **R:** Falsa. Lo pseudocodice di Approx-Vertex-Cover inserisce in $C$ **entrambi** gli estremi $u$ e $v$ di ogni arco selezionato di $M$ ($C \gets C \cup \{u,v\}$), non uno solo. Inserire un solo nodo per arco non garantirebbe la copertura: l'estremo escluso potrebbe essere l'unico estremo in $C$ per altri archi incidenti a esso, ma resterebbero scoperti gli archi incidenti **solo** all'estremo escluso.
+
+> [!question] Domanda tipica d'esame — V/F: matching generico vs matching massimale
+> **D:** *(Vero o Falso)* «b) La sola proprietà di essere un Matching, da parte del sottoinsieme di archi M generato da ALG, garantisce che la soluzione C prodotta da ALG sia una soluzione ammissibile per G.» *(chiesto il 25/07/2023)*
+> **R:** Falsa. Essere un semplice matching (archi a due a due senza estremi in comune) non basta: se $M$ non fosse **massimale**, potrebbero esistere archi di $G$ non incidenti a nessun vertice di $M$, quindi non coperti da $C$. È proprio la massimalità — nessun arco è aggiungibile a $M$ restando un matching — a garantire che ogni arco di $G$ sia incidente ad almeno un vertice di $M$ (altrimenti sarebbe aggiungibile a $M$), e quindi che $C$ copra tutti gli archi. Il ciclo `while` dell'algoritmo, che continua finché $E'$ non è vuoto, è ciò che assicura la massimalità di $M$.
+
+> [!question] Domanda tipica d'esame — V/F: |M| come lower bound dell'ottimo
+> **D:** *(Vero o Falso)* «c) Il rapporto di approssimazione 2 è dovuto al fatto che, essendo M un matching di G, la cardinalità |M| è un lower bound alla cardinalità del vertex cover ottimo per G.» *(chiesto il 25/07/2023)*
+> **R:** Vera. Poiché $M$ è un matching, i suoi archi sono a due a due privi di estremi in comune: per coprire ciascuno di essi il vertex cover ottimo deve contenere almeno un vertice, e vertici usati per archi diversi di $M$ non possono coincidere (gli archi non condividono estremi). Servono dunque almeno $|M|$ vertici distinti nell'ottimo, cioè $|M| \leq \text{OPT}$ — esattamente il lower bound usato nella dimostrazione del fattore 2.
+
+> [!question] Domanda tipica d'esame — V/F: tempo polinomiale o pseudopolinomiale se M è dato in input?
+> **D:** *(Vero o Falso)* «d) L'algoritmo ALG(G) ha tempo polinomiale in |V| se M viene dato in input altrimenti possiamo solo dire che il tempo è pseudopolinomiale in |V|.» *(chiesto il 25/07/2023)*
+> **R:** Falsa. L'algoritmo è polinomiale in $|V|$ (anzi in $|E|$) **in ogni caso**, sia che $M$ venga dato in input sia che venga calcolato dall'algoritmo stesso: calcolare un Maximal Matching è già un'operazione polinomiale, $O(|E|)$, scorrendo gli archi e aggiungendoli greedily quando non condividono estremi con quelli già scelti. Non c'è alcuna componente pseudopolinomiale in gioco: Vertex Cover non ha parametri numerici la cui codifica binaria possa causare una dipendenza dal *valore* (anziché dalla dimensione in bit) dell'input, che è la firma tipica della pseudopolinomialità (come in Knapsack, si veda [[05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)]]).
+
+> [!question] Domanda tipica d'esame — V/F: connessione del sottografo indotto G[M]
+> **D:** *(Vero o Falso)* «e) Il sottografo G[M] indotto da M è sempre un sottografo connesso di G. Si ricordi che G[M] è il sottografo composto da tutti gli archi di G che hanno entrambi gli estremi in M.» *(chiesto il 25/07/2023)*
+> **R:** Falsa. Essendo $M$ un matching, i suoi archi sono a due a due disgiunti sui vertici: gli archi *di $M$ stessi* formano già $|M|$ componenti separate all'interno di $G[M]$ (a meno che non esistano in $G$ altri archi, esterni a $M$, che colleghino vertici di coppie diverse di $M$ e li rendano connessi). In generale non c'è nessuna garanzia che tali archi aggiuntivi esistano, quindi $G[M]$ può benissimo essere sconnesso — anzi lo è tipicamente, essendo per costruzione un'unione di $|M|$ componenti indipendenti più eventuali archi accessori.
+
+> [!question] Domanda tipica d'esame — 2-approssimazione e NP-completezza non si contraddicono
+> **D:** Perché Vertex Cover ammette una 2-approssimazione ma è NP-completo?
+> **R:** La NP-completezza riguarda la soluzione **esatta**. Un algoritmo di approssimazione rinuncia all'ottimalità: garantisce una soluzione entro un fattore 2, ma non necessariamente ottima. Le due affermazioni non si contraddicono.
+
+> [!question] Domanda tipica d'esame — Struttura della catena di riduzioni
+> **D:** Qual è la struttura della catena di riduzioni 3-SAT → Independent Set → Vertex Cover → Set Cover?
+> **R:** La catena usa tre tipi diversi di riduzione: equivalenza semplice (Independent Set ↔ Vertex Cover tramite complemento), caso speciale → generale (Vertex Cover ≤ Set Cover), e codifica con gadget (3-SAT → Independent Set tramite triangoli). La transitività garantisce che tutti i problemi a destra di 3-SAT siano NP-hard.
 ## Riepilogo
 | Problema | Classe | Strategia |
 |---|---|---|

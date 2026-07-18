@@ -80,6 +80,10 @@ Allora $S^* \setminus \{v_n\}$ è una soluzione ottima per $G''$.
 > 2. $\{v_n\}$ unito all'insieme indipendente di peso massimo per $G'' = G - \{v_{n-1}, v_n\}$.
 >
 > Formalmente: $S^* = \arg\max\bigl(w(\text{OPT}(G')),\; w_n + w(\text{OPT}(G''))\bigr)$.
+
+> [!question] Domanda tipica d'esame — Sottostruttura ottima del WIS
+> **D:** Qual è la sottostruttura ottima del problema WIS su cammino, e come si dimostra che l'insieme ottimo $S^*$ deve rispettarla?
+> **R:** Considerando l'ultimo nodo $v_n$, ci sono solo due casi possibili per $S^*$: (1) $v_n \notin S^*$, e allora $S^*$ è ottimo anche per $G' = G - \{v_n\}$; (2) $v_n \in S^*$, e allora (per indipendenza $v_{n-1} \notin S^*$) $S^* \setminus \{v_n\}$ è ottimo per $G'' = G - \{v_{n-1}, v_n\}$. La dimostrazione è per assurdo in entrambi i casi: se nel caso 1 esistesse un insieme indipendente $S$ di $G'$ con $w(S) > w(S^*)$, $S$ sarebbe indipendente anche in $G$ (non contiene $v_n$) e con peso maggiore di $S^*$, contraddicendo l'ottimalità di $S^*$ su $G$; analogamente nel caso 2, se esistesse un $S$ di $G''$ con $w(S) > w(S^* \setminus \{v_n\})$, allora $S \cup \{v_n\}$ sarebbe indipendente in $G$ (poiché $v_{n-1} \notin S$) con peso maggiore di $S^*$, di nuovo assurdo. Questa sottostruttura ottima è ciò che genera direttamente l'equazione di Bellman $\text{OPT}[j] = \max\{\text{OPT}[j-1],\, w_j + \text{OPT}[j-2]\}$: senza dimostrarla prima, la ricorrenza non sarebbe giustificata.
 ## Dall'idea ricorsiva all'algoritmo efficiente
 ### Prima idea (ingenua): ricorsione diretta
 Dalla proprietà di sottostruttura ottima viene naturale un algoritmo ricorsivo che calcola entrambi i casi e restituisce il migliore:
@@ -210,9 +214,10 @@ S* = {v1, v3, v6}   w(S*) = 1 + 8 + 10 = 19  ✓
 ```
 
 **Complessità di WIS-Ricostruisci**: $T(n) = \Theta(n)$ — ogni iterazione decrementa $j$ di almeno 1, quindi il ciclo esegue al più $n$ passi.
-> [!example] Domanda tipica d'esame
-> D: Come si ricostruisce la soluzione ottima del WIS senza salvare le scelte durante il calcolo bottom-up?
-> R: Si sfrutta la proprietà chiave: $v_j \in S^*$ se e solo se $w_j + \text{OPT}[j-2] \geq \text{OPT}[j-1]$. Si scorre il vettore $\text{OPT}$ da $j = n$ verso sinistra: se il secondo caso della ricorrenza è stato scelto in posizione $j$, si include $v_j$ e si salta a $j-2$; altrimenti si scorrere a $j-1$. La complessità è $\Theta(n)$ aggiuntivo rispetto al calcolo del valore.
+
+> [!question] Domanda tipica d'esame — Ricostruzione senza traccia delle scelte
+> **D:** Come si ricostruisce la soluzione ottima del WIS senza salvare le scelte durante il calcolo bottom-up?
+> **R:** Si sfrutta la proprietà chiave: $v_j \in S^*$ se e solo se $w_j + \text{OPT}[j-2] \geq \text{OPT}[j-1]$. Si scorre il vettore $\text{OPT}$ da $j = n$ verso sinistra: se vale questa disuguaglianza (il secondo caso della ricorrenza è almeno buono quanto il primo), si include $v_j$ e si salta a $j-2$; altrimenti si esclude $v_j$ e si retrocede a $j-1$. Non serve quindi salvare esplicitamente le scelte fatte durante il riempimento della tabella: bastano i valori $\text{OPT}[1..n]$ già calcolati per ricostruire a posteriori quali nodi appartengono a $S^*$. La complessità è $\Theta(n)$ aggiuntivo rispetto al calcolo del valore, dato che ogni iterazione del while decrementa $j$ di almeno 1.
 ## Principi generali della programmazione dinamica
 Il WIS su cammino è il caso di studio introduttivo che illustra i principi generali della tecnica. Ogni algoritmo di programmazione dinamica ben costruito segue questa struttura:
 > [!quote] Proprietà — I quattro passi della programmazione dinamica
@@ -301,15 +306,21 @@ OPT = A[radice] = 15  ✓
 **Ordine di risoluzione**: bottom-up sull'albero (dalle foglie alla radice). La soluzione cercata è $A[r]$ dove $r$ è la radice.
 
 **Complessità**: $\Theta(n)$ tempo (ogni nodo viene visitato una volta), $\Theta(n)$ spazio.
+
+> [!question] Domanda tipica d'esame — Da cammino ad albero: perché due sottoproblemi per nodo
+> **D:** Come si estende l'algoritmo di programmazione dinamica per il WIS dai cammini agli alberi, e perché serve una coppia di sottoproblemi per ogni nodo invece di uno solo come nel caso del cammino?
+> **R:** Sul cammino basta un solo valore per sottoproblema, $\text{OPT}[j]$, perché la struttura "ultimo nodo incluso o no" si propaga linearmente lungo un solo predecessore. Su un albero questo non basta: quando si combina un nodo $v$ con i suoi figli, per decidere se $v$ può essere incluso bisogna sapere se ciascun figlio è incluso nella soluzione ottima del proprio sottoalbero, altrimenti si rischia di violare il vincolo di indipendenza tra $v$ e i figli. Per questo si definiscono due sottoproblemi per nodo: $A[v]$ (miglior II nel sottoalbero radicato in $v$, senza vincoli su $v$) e $B[v]$ (miglior II nello stesso sottoalbero, ma con $v$ escluso). La ricorrenza $B[v] = \sum_i A[u_i]$ e $A[v] = \max\{B[v],\, w_v + \sum_i B[u_i]\}$ sfrutta esattamente questa distinzione: se $v$ è incluso, tutti i figli devono essere nel loro stato "escluso" ($B[u_i]$); se $v$ non è incluso, ogni figlio può essere preso nel suo stato migliore incondizionato ($A[u_i]$). L'algoritmo resta $\Theta(n)$ tempo e spazio, calcolando ogni coppia $(A[v], B[v])$ una volta sola in ordine bottom-up dalle foglie alla radice.
 ## Riepilogo complessità
 | Fase | Algoritmo | Tempo | Spazio |
 |---|---|---|---|
 | Valore ottimo | WIS-BottomUp | $\Theta(n)$ | $O(n)$ |
 | Ricostruzione soluzione | WIS-Ricostruisci | $\Theta(n)$ | $O(1)$ aggiuntivo |
 | Totale (valore + soluzione) | — | $\Theta(n)$ | $O(n)$ |
-> [!example] Domanda tipica d'esame
-> D: Perché l'approccio ricorsivo diretto per il WIS su cammino ha complessità esponenziale, mentre l'algoritmo bottom-up è lineare?
-> R: L'approccio ricorsivo diretto ha equazione di ricorrenza $T(n) = T(n-1) + T(n-2) + O(1)$, identica a quella di Fibonacci ricorsivo (vedere [[01 - Il Problema di Fibonacci]]), la cui soluzione è $\Theta(\phi^n)$ con $\phi \approx 1{,}618$. Il motivo è che gli stessi sottoproblemi vengono ricalcolati esponenzialmente molte volte: ad esempio $\text{OPT}[j]$ viene ricalcolato da tutte le chiamate che scendono verso prefissi più piccoli. L'algoritmo bottom-up calcola invece ciascuno degli $n$ sottoproblemi esattamente una volta (in ordine crescente di $j$), impiegando $O(1)$ per cella: complessità totale $\Theta(n)$.
+
+> [!question] Domanda tipica d'esame — Perché la ricorsione diretta è esponenziale
+> **D:** Perché l'approccio ricorsivo diretto per il WIS su cammino ha complessità esponenziale, mentre l'algoritmo bottom-up è lineare?
+> **R:** L'approccio ricorsivo diretto ha equazione di ricorrenza $T(n) = T(n-1) + T(n-2) + O(1)$, identica a quella di Fibonacci ricorsivo (vedere [[01 - Il Problema di Fibonacci]]), la cui soluzione è $\Theta(\phi^n)$ con $\phi \approx 1{,}618$. Il motivo è che gli stessi sottoproblemi vengono ricalcolati esponenzialmente molte volte: ad esempio $\text{OPT}[j]$ viene ricalcolato da tutte le chiamate che scendono verso prefissi più piccoli, e il numero di chiamate cresce esattamente come nella ricorsione di Fibonacci. L'algoritmo bottom-up rompe questa esplosione perché calcola ciascuno degli $n$ sottoproblemi esattamente una volta (in ordine crescente di $j$, sfruttando il fatto che i sottoproblemi distinti sono solo $\Theta(n)$), impiegando $O(1)$ per cella: complessità totale $\Theta(n)$.
+
 > [!info] Connessioni ad altri argomenti
 > - La memoization applicata a Fibonacci (fibonacci3) è la versione più semplice della programmazione dinamica: [[01 - Il Problema di Fibonacci]].
 > - Le equazioni di ricorrenza del tipo $T(n) = T(n-1) + T(n-2) + O(1)$ e le tecniche per risolverle sono in [[03 - Equazioni di Ricorrenza]].

@@ -74,11 +74,12 @@ find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
 ```
 
 **Complessità**
-| Operazione | Tempo |
-|---|---|
-| `makeSet` | $O(1)$ |
-| `find` | $O(1)$ |
-| `union` | $O(n)$ nel caso peggiore |
+
+| Operazione | Tempo                    |
+| ---------- | ------------------------ |
+| `makeSet`  | $O(1)$                   |
+| `find`     | $O(1)$                   |
+| `union`    | $O(n)$ nel caso peggiore |
 
 > [!warning] Sequenze di union inefficienti in QuickFind
 > Particolari sequenze di `union` possono essere molto costose. Considerando le union:
@@ -118,6 +119,7 @@ find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
 - **Costo totale**: $O(m + n + n \log n) = O(m + n \log n)$.
 
 **Complessità con union by size**
+
 | Operazione | Caso peggiore | Ammortizzato |
 |---|---|---|
 | `makeSet` | $O(1)$ | $O(1)$ |
@@ -192,6 +194,7 @@ find(3): 3 -> 2 -> 4 -> (radice) = "4"
 > producono un albero di altezza $n-1$ (una lista). Se si eseguono poi $m$ `find`, il costo totale è $O(n + (n-1) + mn) = O(mn)$, che può essere $O(n^2)$ se $m = \Theta(n)$.
 
 **Complessità**
+
 | Operazione | Tempo |
 |---|---|
 | `makeSet` | $O(1)$ |
@@ -257,6 +260,7 @@ union(a,b):  size(a)=2 < size(b)=3, b assorbe a; il nome dell'insieme diventa a
 - se $h_2 \geq h_1$: la nuova altezza è $h_2 + 1$; la nuova size è $s_1 + s_2 \geq 2s_2 \geq 2 \cdot 2^{h_2} = 2^{h_2+1}$.
 
 **Complessità con union by size (QuickUnion)**
+
 | Operazione | Tempo |
 |---|---|
 | `makeSet` | $O(1)$ |
@@ -334,6 +338,7 @@ Per esempio, $\log^* 2^{65536} = 5$. Si può dimostrare che:
 - $\alpha(m,n) \leq 2$ quando $m/n > \log^* \log_2 n$.
 
 **Riepilogo complessità di tutte le implementazioni**
+
 | Implementazione | `makeSet` | `union` | `find` | Sequenza completa |
 |---|---|---|---|---|
 | QuickFind | $O(1)$ | $O(n)$ p.p. | $O(1)$ | $O(m + n^2)$ p.p. |

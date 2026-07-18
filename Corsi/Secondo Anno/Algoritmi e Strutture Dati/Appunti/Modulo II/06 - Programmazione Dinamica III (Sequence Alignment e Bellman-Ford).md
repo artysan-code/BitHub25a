@@ -80,7 +80,7 @@ Dopo aver riempito la matrice, si ripercorre a ritroso da $M[m, n]$ a $M[0, 0]$:
 > ```
 > Il traceback da $M[7,6]=3$ dà l'allineamento `PALETTE` / `PAL–ATE`: 1 gap + 1 mismatch, costo $2+1=3$.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame — Complessità Sequence Alignment
 > **D:** Qual è la complessità del Sequence Alignment e da dove deriva il vincolo sullo spazio?
 > **R:** Tempo $\Theta(mn)$ perché si calcolano $mn$ sotto-problemi in $O(1)$ ciascuno; spazio $\Theta(mn)$ perché si mantiene l'intera matrice per poter eseguire il traceback. Se si vuole solo il valore della distanza (non l'allineamento), basta tenere due colonne adiacenti, riducendo lo spazio a $O(m + n)$.
 ## Algoritmo di Hirschberg (spazio lineare)
@@ -129,6 +129,10 @@ Sia $f(i,j)$ la lunghezza del cammino minimo da $(0,0)$ a $(i,j)$ e $g(i,j)$ que
 |---|---|---|
 | DP standard | $\Theta(mn)$ | $\Theta(mn)$ |
 | Hirschberg | $O(mn)$ | $\Theta(m+n)$ |
+
+> [!question] Domanda tipica d'esame — Idea e complessità di Hirschberg
+> **D:** Qual è l'idea alla base dell'algoritmo di Hirschberg per il sequence alignment, e quali sono tempo e spazio risultanti rispetto alla DP standard?
+> **R:** L'osservazione chiave è che il valore $\text{OPT}(i,j)$ si può calcolare mantenendo solo due colonne della matrice (quella corrente e la precedente), in spazio $O(m+n)$ — ma così si perde la possibilità di fare il traceback. Hirschberg recupera l'allineamento sfruttando il grafo di edit: si calcola $f(i,j)$ (cammino minimo da $(0,0)$ a $(i,j)$, che coincide con $\text{OPT}(i,j)$) e $g(i,j)$ (cammino minimo da $(i,j)$ a $(m,n)$), ciascuno in tempo $O(mn)$ e spazio $O(m+n)$. Sulla colonna centrale $n/2$ si trova l'indice $q^*$ che minimizza $f(q,n/2)+g(q,n/2)$: il nodo $(q^*,n/2)$ appartiene a un allineamento ottimo (Osservazione 2). Si applica poi divide-et-impera, risolvendo ricorsivamente i due sotto-problemi $(x_1\ldots x_{q^*}, y_1\ldots y_{n/2})$ e $(x_{q^*+1}\ldots x_m, y_{n/2+1}\ldots y_n)$. L'analisi mostra che il tempo resta $T(m,n) \leq 2cmn = O(mn)$ (per induzione forte su $m+n$), mentre lo spazio scende a $\Theta(m+n)$ perché ogni chiamata attiva usa solo $\Theta(m)$ spazio e il numero di chiamate ricorsive è limitato. Il vantaggio rispetto alla DP standard ($\Theta(mn)$ tempo e spazio) è quindi lo spazio: stesso ordine di tempo, spazio lineare invece che quadratico.
 ## Cammini minimi con pesi negativi: Bellman-Ford-Moore
 ### Perché Dijkstra non basta
 L'algoritmo di [[10 - Cammini Minimi e Dijkstra|Dijkstra]] risolve il problema SSSP in tempo $O(m + n \log n)$ con pesi **non negativi**. In presenza di pesi negativi, la strategia greedy di Dijkstra — estrarre il nodo con distanza minima e fissarla definitivamente — non è più valida: un arco negativo potrebbe abbreviare un cammino già "chiuso".
@@ -136,14 +140,19 @@ L'algoritmo di [[10 - Cammini Minimi e Dijkstra|Dijkstra]] risolve il problema S
 > [!warning] Dijkstra fallisce con pesi negativi
 > Consideriamo il grafo con nodi $s, t, v, w$ e archi:
 > ```
->     s ──6──> t
->     s ──2──> v
+>     s ──2──> t
+>     s ──6──> v
 >     v ──4──> t
 >     v ──(−8)──> w
 >     w ──3──> t
 > ```
-> Dijkstra visita i nodi nell'ordine $s, t, w, v$. Ma il cammino minimo da $s$ a $t$ è $s \to v \to w \to t$ con lunghezza $2 + (-8) + 3 = -3$, scoperto troppo tardi.
+> Dijkstra estrae $s$, poi **subito $t$** (stima 2, minima in coda) e la **fissa definitivamente**. Solo dopo estrae $v$ (6) e $w$ ($6-8=-2$), scoprendo il cammino $s \to v \to w \to t$ di lunghezza $6 + (-8) + 3 = 1 < 2$. Ma $t$ è già chiuso: l'algoritmo termina restituendo $2$ invece del vero minimo $1$.
+> Il punto delicato è che l'arco negativo deve trovarsi **oltre** un nodo estratto tardi: se il cammino alternativo partisse con un arco più leggero di quello diretto, Dijkstra lo esplorerebbe per primo e — su questo grafo — darebbe per caso la risposta giusta.
 > **Reweighting:** Aggiungere una costante positiva $c$ a tutti i pesi non funziona — cambia le lunghezze relative tra cammini con numero diverso di archi, alterando quale è il minimo.
+
+> [!question] Domanda tipica d'esame — Perché Dijkstra fallisce con pesi negativi
+> **D:** Perché l'algoritmo di Dijkstra non funziona in presenza di archi con peso negativo, e perché non basta sommare una costante positiva a tutti i pesi per aggirare il problema?
+> **R:** Dijkstra è greedy: ad ogni passo estrae il nodo con distanza stimata minima e la fissa come definitiva, assumendo implicitamente che nessun cammino scoperto in seguito possa essere più corto — un'assunzione valida solo se tutti i pesi sono non negativi, perché allora estendere un cammino non può mai diminuirne la lunghezza. Con pesi negativi questa assunzione cade: un arco negativo scoperto più tardi può abbreviare un cammino che termina in un nodo già "chiuso". Nell'esempio sopra Dijkstra fissa subito $t$ a 2 tramite l'arco diretto $s \to t$, e solo dopo scopre $s \to v \to w \to t$ di lunghezza $6 + (-8) + 3 = 1$: la risposta corretta è 1, ma $t$ è ormai chiuso e l'algoritmo restituisce 2. Il reweighting ingenuo — sommare una costante $c>0$ a ogni peso per renderli tutti non negativi — non risolve il problema perché penalizza i cammini in proporzione al numero di archi che contengono: un cammino con $k$ archi vede il proprio costo aumentare di $kc$, quindi cammini con più archi (magari quelli davvero minimi grazie ai pesi negativi) vengono relativamente penalizzati rispetto a cammini più corti in numero di archi ma di costo originario maggiore, alterando quale cammino risulta minimo.
 ### Cicli negativi
 > [!quote] Definizione — Ciclo negativo
 > Un **ciclo negativo** è un ciclo diretto $W = v_1 \to v_2 \to \ldots \to v_k \to v_1$ per cui
@@ -296,7 +305,7 @@ Per rilevare cicli negativi raggiungibili da $t$, si esegue una **passata aggiun
 > Se esiste un ciclo negativo raggiungibile da $t$, la passata $n$ lo rileva.
 > **Dim.** Se non ci fosse nessun ciclo negativo, la passata $n$ non cambierebbe nulla (le distanze sono già ottime dopo $n-1$ passate, per il Teorema 2). Se invece esiste un ciclo negativo $W = v_1 \to \ldots \to v_k \to v_1$, si assume per assurdo che la condizione di riga 14 sia sempre falsa. Allora $d[v_i] \leq d[v_{i+1}] + \ell(v_i, v_{i+1})$ per ogni $i$ (indici ciclici). Sommando lungo $W$: $\ell(W) \geq 0$, contraddizione. $\square$
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame — Rilevamento cicli negativi
 > **D:** Come rileva Bellman-Ford-Moore un ciclo negativo?
 > **R:** Dopo $n-1$ passate normali (sufficienti per i cammini semplici ottimi in assenza di cicli negativi), si esegue una passata $n$-esima. Se almeno un arco $(v,w)$ soddisfa ancora $d[v] > d[w] + \ell_{vw}$, significa che esiste un cammino che beneficia di più di $n-1$ archi, il che è possibile solo in presenza di un ciclo negativo raggiungibile da $t$.
 ### Esempio di esecuzione

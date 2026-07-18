@@ -107,9 +107,13 @@ Complessità: $O(n)$ — al più $n$ chiamate ricorsive.
 > | Analisi complessità | Più delicata | Immediata |
 > | Codice | Più intuitivo | Più compatto e cache-efficiente |
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame — Perché il greedy fallisce
 > **D:** Perché l'algoritmo greedy *earliest-finish-time first* non funziona per il Weighted Interval Scheduling? Come si risolve correttamente?
 > **R:** Il greedy seleziona il job che finisce prima, indipendentemente dal peso. Basta un controesempio: un job di peso $999$ che copre l'intervallo $[0, 11]$ viene ignorato se esistono due job di peso $1$ che coprono $[0, 5]$ e $[6, 11]$. Il greedy sceglie questi due e ottiene peso $2$, perdendo il job da $999$. La soluzione corretta usa la DP con l'equazione di Bellman $\text{OPT}(j) = \max\{\text{OPT}(j-1),\, w_j + \text{OPT}(p(j))\}$, che esplora entrambe le scelte e garantisce l'ottimo in $O(n \log n)$.
+
+> [!question] Domanda tipica d'esame — Riduzione a WIS
+> **D:** *(Vero o Falso)* «Trasformando opportunamente l'istanza I, è possibile darla in input all'algoritmo di Programmazione Dinamica per il Weighted Interval Scheduling ed ottenere la soluzione ottima per I.» *(chiesto il 12/09/2023)*
+> **R:** Vero. La tecnica è la **riduzione**: si trasforma l'istanza I in un'istanza equivalente di WIS (job con intervalli $[s_j, f_j]$ e pesi $w_j$) tale che la soluzione ottima calcolata dall'algoritmo PD di WIS su questa istanza trasformata corrisponda esattamente alla soluzione ottima di I. L'esempio canonico è l'Interval Scheduling **non pesato** (vedi il confronto a inizio sezione): ponendo $w_j = 1$ per ogni job, l'equazione di Bellman $\text{OPT}(j) = \max\{\text{OPT}(j-1),\, w_j + \text{OPT}(p(j))\}$ diventa $\text{OPT}(j) = \max\{\text{OPT}(j-1),\, 1 + \text{OPT}(p(j))\}$, che calcola la cardinalità massima di un sottoinsieme di job compatibili — esattamente l'ottimo del problema non pesato. In generale, per mostrare che un problema P si risolve con l'algoritmo PD di WIS basta esibire una trasformazione polinomiale dell'istanza di P in un'istanza di intervalli pesati che preservi il valore ottimo.
 ## Segmented Least Squares
 ### Il problema
 **Least Squares**: dati $n$ punti $(x_1, y_1), \ldots, (x_n, y_n)$ nel piano, trovare la retta $y = ax + b$ che minimizza la **somma degli scarti quadratici** (SSE):
@@ -164,7 +168,7 @@ La ricostruzione risale la tabella $M$: partendo da $j = n$, si trova l'indice $
 > [!quote] Teorema — Complessità Segmented Least Squares (Bellman 1961)
 > L'algoritmo DP risolve il problema Segmented Least Squares in $O(n^3)$ tempo e $O(n^2)$ spazio (versione base), o in $O(n^2)$ tempo con pre-calcolo delle somme cumulative.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame — Scelta binaria vs multipla
 > **D:** Qual è la differenza strutturale tra l'equazione di Bellman per il Weighted Interval Scheduling e quella per il Segmented Least Squares?
 > **R:** Nel WIS la scelta è **binaria**: includere o escludere il job $j$, con un'unica alternativa per ciascuno dei due casi. Nel SLS la scelta è **multipla** (multiway): l'ultimo segmento può coprire qualunque prefisso finale $[i, j]$ con $1 \le i \le j$, quindi si minimizza su $j$ alternative. Entrambe sfruttano la sottostruttura ottima, ma SLS richiede un ciclo interno aggiuntivo che porta la complessità a $O(n^2)$ invece di $O(n)$.
 ## Knapsack 0/1
@@ -181,6 +185,14 @@ La ricostruzione risale la tabella $M$: partendo da $j = n$, si trova l'indice $
 **Caso 2 — oggetto $i$ selezionato**: si raccoglie $v_i$, la capacità scende a $w - w_i$, e si risolve ottimamente il sottoproblema sui primi $i-1$ oggetti con capacità $w - w_i$.
 > [!quote] Equazione di Bellman — Knapsack 0/1
 > $$\text{OPT}(i, w) = \begin{cases} 0 & i = 0 \\ \text{OPT}(i-1, w) & w_i > w \\ \max\bigl\{\text{OPT}(i-1, w),\; v_i + \text{OPT}(i-1, w - w_i)\bigr\} & w_i \le w \end{cases}$$
+
+> [!question] Domanda tipica d'esame — Significato di OPT(j-1, w-wj)
+> **D:** «B) Prefissato un qualsiasi ordinamento degli items {Ij : j= 1,...,n}, la funzione OPT(j-1,w-wj) calcolata da PD è uguale al valore ottimo relativo alla sottoistanza \<I1,...,Ij-1; w- wj \> ? Se SI, in che modo viene utilizzato questo valore nell'algoritmo PD? Se NO, quale/i valore/i della funzione OPT(j,w) vengono utilizzati da PD al generico passo ricorsivo?» *(chiesto il 14/09/2022)*
+> **R:** Sì: per definizione $\text{OPT}(j,w)$ restituisce sempre il valore ottimo della sottoistanza formata dai primi $j$ item con capacità $w$ (vedi la definizione data in questa sezione), quindi $\text{OPT}(j-1, w-w_j)$ è per definizione il valore ottimo della sottoistanza $\langle I_1,\ldots,I_{j-1}; w-w_j \rangle$. Questo valore viene usato nel passo ricorsivo dell'equazione di Bellman $\text{OPT}(j,w) = \max\{\text{OPT}(j-1,w),\, v_j + \text{OPT}(j-1, w-w_j)\}$ (per $w_j \le w$; altrimenti $\text{OPT}(j,w) = \text{OPT}(j-1,w)$): corrisponde al **Caso 2** descritto sopra, cioè al ramo in cui l'item $I_j$ viene incluso nella soluzione ottima, per cui si somma $v_j$ al valore ottimo ottenibile dai primi $j-1$ item con la capacità residua $w-w_j$.
+
+> [!question] Domanda tipica d'esame — Cosa rappresenta M(j,w)
+> **D:** «C) Nella versione iterativa dell'algoritmo PD, l'entrata della matrice M(j,w) contiene la soluzione ottima formata da un qualsiasi sottoinsieme S di {I1=(w1,v1), ..., Ij=(wj,vj) , ..., In=(wn,vn) } tale che: |S| <= j e Σ_(k∉S) vk = w ?» *(chiesto il 14/09/2022)*
+> **R:** No: l'affermazione è imprecisa su due punti. (1) $M(j,w)$ è definita sui **primi $j$ item** $\{I_1,\ldots,I_j\}$, non su un sottoinsieme $S$ qualunque estratto da **tutta** la lista $\{I_1,\ldots,I_n\}$ con $|S|\le j$: un sottoinsieme di $j$ item presi da posizioni arbitrarie (es. $\{I_2, I_7\}$ con $j=5$) non è ammissibile per $M(j,w)$, che considera solo $S \subseteq \{I_1,\ldots,I_j\}$. (2) Il vincolo sulla capacità è formulato in modo errato: deve valere $\sum_{k \in S} w_k \le w$ (il **peso totale degli item selezionati** non supera la capacità residua $w$), non $\sum_{k \notin S} v_k = w$ (somma dei *valori* degli item *esclusi*, priva di significato per il problema). La definizione corretta, coerente con quella data in questa nota, è $M(j,w) = \max\{\sum_{k\in S} v_k : S \subseteq \{I_1,\ldots,I_j\},\; \sum_{k \in S} w_k \le w\}$.
 ### Algoritmo bottom-up
 ```pseudo
 \begin{algorithm}
@@ -231,13 +243,17 @@ Si risale la tabella dall'angolo in basso a destra: l'oggetto $i$ **è incluso**
 >
 > **Nota**: l'integrità dei pesi è essenziale. Con pesi reali arbitrari la tabella non è indicizzabile e l'approccio DP non funziona direttamente. L'integrità dei valori invece **non** è necessaria per la correttezza.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame — Perché due variabili
 > **D:** Perché per il Knapsack 0/1 è necessario definire il sottoproblema con due variabili $\text{OPT}(i, w)$ invece di una sola $\text{OPT}(i)$?
 > **R:** Con una sola variabile $\text{OPT}(i)$ si fissa il prefisso di oggetti ma non si controlla la capacità residua. Quando si considera se aggiungere l'oggetto $i$, non si sa quanta capacità è ancora disponibile: senza questa informazione non è possibile scrivere una ricorrenza corretta. La variabile $w$ rappresenta la **capacità residua** e permette di esprimere la scelta in modo preciso: se $w_i > w$ l'oggetto non entra, altrimenti si massimizza tra escluderlo (costo $\text{OPT}(i-1,w)$) e includerlo (costo $v_i + \text{OPT}(i-1, w-w_i)$).
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame — Pseudo-polinomialità
 > **D:** L'algoritmo DP per il Knapsack è polinomiale?
 > **R:** No. La complessità è $\Theta(nW)$, che è **pseudo-polinomiale**: è polinomiale nei *valori* dell'input, ma non nella sua *dimensione in bit*. Se $W$ è rappresentato con $k$ bit allora $W = O(2^k)$, e l'algoritmo esegue $\Theta(n \cdot 2^k)$ operazioni — esponenziale in $k$. In effetti, Knapsack è un problema **NP-hard** (vedi [[09 - NP-Completezza e Riduzioni]]) e non si conosce un algoritmo polinomiale nella dimensione dell'input.
+
+> [!question] Domanda tipica d'esame — K è in P?
+> **D:** «ESERCIZIO 1. Si consideri il problema Knapsack (K) e si consideri l'algoritmo ottimale PD per K basato sulla Programmazione Dinamica. Si consideri una generica istanza X = \<I1=(w1,v1), ..., Ij=(wj,vj) , ..., In=(wn,vn) ; W\> di K, dove M = max{wj, vj, W : j=1,...,n}. Si risponda alle seguenti domande con al massimo quattro righe negli spazi appropriati, dando delle brevi spiegazioni. A) L'esistenza di un qualsiasi algoritmo che impiega tempo Θ(n^2 log^24(M)) mostrerebbe che il problema K è nella classe P?» *(chiesto il 14/09/2022)*
+> **R:** Sì: $\Theta(n^2 \log^{24} M)$ è polinomiale nella **dimensione dell'input**, che è $O(n \log M)$ bit (ogni peso, valore e la capacità sono codificati in binario, quindi ciascuno occupa $O(\log M)$ bit). Un tempo $\Theta(n^2 \log^{24} M)$ è quindi polinomiale in $n$ e in $\log M$, cioè nella lunghezza della codifica dell'istanza: un tale algoritmo classificherebbe K in P. Questo contrasta con l'algoritmo PD standard di questa nota, che ha complessità $\Theta(nW)$: quest'ultima è polinomiale nel *valore* $W$ (quindi in $M$), non nella sua *dimensione in bit* $\log W$ — è **pseudo-polinomiale**, non polinomiale (vedi il riquadro sulla pseudo-polinomialità qui sopra). La distinzione è esattamente quella tra $\text{poly}(M)$ e $\text{poly}(\log M)$.
 ## Longest Increasing Subsequence (LIS)
 ### Il problema
 **Input**: una sequenza $S[1], S[2], \ldots, S[n]$ di $n$ numeri reali. **Obiettivo**: trovare la **sottosequenza crescente più lunga** (LIS), cioè una sequenza di indici $i_1 < i_2 < \cdots < i_k$ tale che $S[i_1] < S[i_2] < \cdots < S[i_k]$, con $k$ massimo.
@@ -295,7 +311,7 @@ Per ricostruire la LIS, si mantiene un array `prev[i]` che memorizza l'indice $j
 > [!info] Esiste un algoritmo $O(n \log n)$ per LIS
 > Con una struttura dati ausiliaria (patience sorting o albero di ricerca) è possibile risolvere LIS in $O(n \log n)$, ma l'approccio DP $O(n^2)$ è quello trattato in questo corso.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame — Vincolo sull'ultimo elemento
 > **D:** Perché per LIS è necessario aggiungere il vincolo che la sottosequenza termini con $S[i]$? Come cambia la ricorrenza?
 > **R:** Senza il vincolo, $\text{OPT}[i]$ = lunghezza della LIS di $S[1..i]$ non ammette una ricorrenza semplice: non si sa quale sia l'ultimo elemento scelto, e quindi non si può decidere se $S[i+1]$ può prolungare la sottosequenza. Con il vincolo che la LIS **termini in $S[i]$**, la ricorrenza diventa precisa: $\text{OPT}[i] = 1 + \max(0, \max_{j<i, S[j]<S[i]} \text{OPT}[j])$. La soluzione globale si ottiene poi come $\max_i \text{OPT}[i]$.
 ## House Coloring (esercizio)
@@ -334,11 +350,11 @@ La soluzione ottima è $\min\{R[n], G[n], B[n]\}$.
 **Complessità**: $O(n)$ — un'unica passata con $O(1)$ lavoro per ogni casa.
 
 > [!info] Generalizzazione a $k$ colori
-> Con $k$ colori la stessa struttura si generalizza a $k$ array, con equazione $C_i[c] = \text{cost}(i, c) + \min_{c' \ne c} C_{i-1}[c']$. La complessità diventa $O(nk)$, o $O(n \log k)$ pre-calcolando i due minimi globali per ogni riga.
+> Con $k$ colori la stessa struttura si generalizza a $k$ array, con equazione $C_i[c] = \text{cost}(i, c) + \min_{c' \ne c} C_{i-1}[c']$. Pre-calcolando i due minimi globali della riga precedente in $O(k)$, ogni cella costa $O(1)$ e la complessità è $\Theta(nk)$ — che è già ottima, perché i costi in input sono $nk$ e vanno comunque letti tutti.
 
-> [!example] Domanda tipica d'esame
+> [!question] Domanda tipica d'esame — Generalizzazione a k colori
 > **D:** Qual è la complessità dell'algoritmo DP per House Coloring con 3 colori? Come si generalizza a $k$ colori?
-> **R:** Con 3 colori la complessità è $O(n)$: si scorrono le $n$ case, e per ogni casa si calcolano 3 valori in tempo $O(1)$. Con $k$ colori, si mantengono $k$ array e per ogni casa si calcola il minimo tra i $k-1$ colori alternativi; pre-calcolando i due valori minimi della riga precedente, ogni casa richiede $O(1)$, per un totale di $O(nk)$ — oppure $O(n \log k)$ con strutture dati più elaborate.
+> **R:** Con 3 colori la complessità è $O(n)$: si scorrono le $n$ case, e per ogni casa si calcolano 3 valori in tempo $O(1)$. Con $k$ colori si mantengono $k$ array e per ogni casa serve il minimo tra i $k-1$ colori alternativi: calcolarlo da zero per ogni cella costerebbe $O(k)$, per un totale di $O(nk^2)$. Pre-calcolando invece i **due** minimi più piccoli della riga precedente in $O(k)$ — il secondo serve per il caso in cui il minimo cada proprio sul colore $c$ escluso — ogni cella scende a $O(1)$, quindi $O(k)$ per riga e $\Theta(nk)$ in totale. Questo $\Theta(nk)$ **non è migliorabile**: l'input contiene $nk$ costi e un algoritmo corretto deve leggerli tutti (cambiare un solo $\text{cost}(i,c)$ può cambiare l'ottimo), quindi $\Omega(nk)$ è un lower bound.
 ## Riepilogo dei problemi trattati
 | Problema | Sottoproblemi | Scelta | Equazione di Bellman | Complessità |
 |---|---|---|---|---|

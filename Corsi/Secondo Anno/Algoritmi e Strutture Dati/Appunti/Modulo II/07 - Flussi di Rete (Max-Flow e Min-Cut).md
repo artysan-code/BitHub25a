@@ -1,3 +1,10 @@
+---
+tags:
+  - algoritmi
+  - flussi
+slide: "7-I"
+capitolo: "Kleinberg-Tardos cap. 7"
+---
 # Flussi di Rete (Max-Flow e Min-Cut)
 I **flussi di rete** modellano situazioni in cui un materiale — dati, merci, traffico — deve essere trasportato da una sorgente a un pozzo attraverso una rete con capacità limitate. Il problema del **massimo flusso** (Max-Flow) e quello del **minimo taglio** (Min-Cut) sono due facce della stessa medaglia: il celebre teorema Max-Flow Min-Cut garantisce che il valore ottimale coincide. Questa nota studia la struttura del problema, l'algoritmo di Ford-Fulkerson con grafo residuo, la dimostrazione del teorema e due strategie per scegliere cammini aumentanti efficienti (shortest augmenting path / Edmonds-Karp e capacity scaling). Il collegamento con [[08 - Grafi e Visite]] è diretto: la BFS è al cuore dell'algoritmo di Edmonds-Karp; vedi anche [[10 - Cammini Minimi e Dijkstra]] per il contesto sui cammini minimi pesati.
 ## Rete di flusso
@@ -43,11 +50,23 @@ Nell'esempio, $\operatorname{val}(f) = 5$: dalla sorgente $s$ escono 5 unità ch
 
 > [!question] Domanda tipica d'esame — definizione formale del problema del massimo flusso
 > **D:** «Esercizio 2 [11 punti] Si consideri il problema del massimo flusso. 1. Si definisca formalmente il problema. (Max 5 righe.)» *(chiesto il 13/06/2024)*
-> **R:** Dato un grafo diretto $G=(V,E)$ con capacità $c(e)\geq 0$ su ogni arco, un nodo sorgente $s$ e un nodo pozzo $t$, un flusso è una funzione $f: E \to \mathbb{R}_{\geq 0}$ tale che $0\leq f(e)\leq c(e)$ per ogni arco (vincolo di capacità) e, per ogni nodo $v$ diverso da $s$ e $t$, il flusso entrante in $v$ è uguale al flusso uscente da $v$ (vincolo di conservazione). Il valore del flusso $\operatorname{val}(f)$ è il flusso netto uscente da $s$ (equivalentemente entrante in $t$). Il problema del massimo flusso chiede di trovare un flusso $f$ che massimizzi $\operatorname{val}(f)$.
+> **R:**
+> **Dati.** Rete $G=(V,E,s,t,c)$, con $c: E \to \mathbb{R}_{\geq 0}$ funzione di capacità, $s$ sorgente, $t$ pozzo.
+>
+> **Flusso.** Una funzione $f: E \to \mathbb{R}_{\geq 0}$ che rispetta il **vincolo di capacità** $0\leq f(e)\leq c(e)$ per ogni arco $e$, e il **vincolo di conservazione**: per ogni nodo $v$ diverso da $s$ e $t$, il flusso entrante in $v$ è uguale al flusso uscente da $v$.
+>
+> **Valore e obiettivo.** Il valore $\operatorname{val}(f)$ è il flusso netto uscente da $s$ (equivalentemente, per conservazione, quello entrante in $t$). Il problema del massimo flusso chiede il flusso $f$ che massimizza $\operatorname{val}(f)$.
+>
+> ⏱️ **Se la traccia dà 5 righe**: cita la tupla $G=(V,E,s,t,c)$, i due vincoli (capacità e conservazione) in una riga ciascuno, e chiudi con l'obiettivo di massimizzare $\operatorname{val}(f)$. **Non omettere mai** il vincolo di conservazione: è quello che distingue un flusso da una funzione arbitraria sugli archi.
 
 > [!question] Domanda tipica d'esame — definizione formale (traccia 23/09/2025)
 > **D:** «Si definisca formalmente il problema. (Max 5 righe.)» *(chiesto il 23/09/2025)*
-> **R:** Stessa definizione del problema del massimo flusso: dato $G=(V,E,s,t,c)$ con $c: E \to \mathbb{R}_{\geq 0}$, un flusso $f$ soddisfa il vincolo di capacità $0\leq f(e)\leq c(e)$ e il vincolo di conservazione in ogni nodo diverso da $s,t$; si cerca $f$ di valore $\operatorname{val}(f)$ massimo. (La traccia non specifica esplicitamente il problema, ma il contesto — nello stesso compito compaiono una domanda sulla rete residua e una dimostrazione sui cammini aumentanti — indica che si tratta ancora del massimo flusso.)
+> **R:**
+> **Definizione.** Stessa del problema del massimo flusso (vedi domanda precedente): dato $G=(V,E,s,t,c)$ con $c: E \to \mathbb{R}_{\geq 0}$, un flusso $f$ soddisfa il vincolo di capacità $0\leq f(e)\leq c(e)$ e il vincolo di conservazione in ogni nodo diverso da $s,t$; si cerca $f$ di valore $\operatorname{val}(f)$ massimo.
+>
+> **Perché è questo il problema.** La traccia non nomina esplicitamente "massimo flusso", ma nello stesso compito compaiono una domanda sulla rete residua e una dimostrazione sui cammini aumentanti: entrambe hanno senso solo nel contesto Max-Flow, quindi è quello il problema da definire.
+>
+> ⏱️ **Se la traccia dà 5 righe**: la definizione stessa (vincoli + obiettivo) basta; la nota sull'identificazione del problema è superflua se il testo del compito lo rende ovvio, **ma se la traccia è ambigua come qui, non va mai omessa** — è la parte che giustifica quale definizione si sta scrivendo.
 ## Taglio e problema del minimo taglio
 > [!quote] Definizione — Taglio st (st-cut)
 > Un **taglio st** è una partizione $(A, B)$ dei nodi tale che $s \in A$ e $t \in B$.
@@ -63,7 +82,16 @@ Nell'esempio, $\operatorname{val}(f) = 5$: dalla sorgente $s$ escono 5 unità ch
 
 > [!question] Domanda tipica d'esame — definizione formale del problema del minimo taglio
 > **D:** «Si consideri il problema del calcolo del taglio di capacità minima - Minimum cut problem. 1. Si definisca formalmente il problema. (Max 5 righe.)» *(chiesto il 18/07/2025)*
-> **R:** Dato $G=(V,E,s,t,c)$, un taglio st è una partizione $(A,B)$ dei nodi con $s\in A$ e $t\in B$; la sua capacità è $\operatorname{cap}(A,B)=\sum_{e=(u,v):\,u\in A,\,v\in B} c(e)$, cioè la somma delle capacità dei soli archi diretti da $A$ verso $B$ (gli archi da $B$ ad $A$ non contribuiscono). Il problema del minimo taglio chiede di trovare un taglio $(A^*,B^*)$ che minimizzi $\operatorname{cap}(A,B)$ tra tutte le partizioni st possibili.
+> **R:**
+> **Dati.** Rete $G=(V,E,s,t,c)$.
+>
+> **Taglio.** Un taglio st è una partizione $(A,B)$ dei nodi con $s\in A$ e $t\in B$.
+>
+> **Capacità.** $\operatorname{cap}(A,B)=\sum_{e=(u,v):\,u\in A,\,v\in B} c(e)$, cioè la somma delle capacità dei soli archi diretti **da $A$ verso $B$**: gli archi da $B$ ad $A$ non contribuiscono, per quanto grande sia la loro capacità.
+>
+> **Obiettivo.** Trovare un taglio $(A^*,B^*)$ che minimizzi $\operatorname{cap}(A,B)$ tra tutte le partizioni st possibili.
+>
+> ⏱️ **Se la traccia dà 5 righe**: definisci taglio st, la formula della capacità con l'osservazione che conta solo il verso $A\to B$, e l'obiettivo di minimizzazione. **Non omettere mai** la direzionalità della capacità — è l'errore più comune (sommare anche gli archi da $B$ ad $A$).
 ## Verso l'algoritmo: l'approccio greedy fallisce
 Un approccio greedy naturale è: partire da $f(e) = 0$, trovare un cammino $s \leadsto t$ con capacità residua positiva su ogni arco, aumentare il flusso lungo quel cammino, ripetere. Questo approccio **non è corretto**.
 > [!warning] Perché il greedy fallisce
@@ -112,11 +140,27 @@ Esempio — arco originale e arco residuo
 
 > [!question] Domanda tipica d'esame — definizione formale della rete residua
 > **D:** «Si definisca formalmente il concetto di rete residua. (Max 5 righe.)» *(chiesto il 23/09/2025)*
-> **R:** Dato $G=(V,E,s,t,c)$ e un flusso $f$, la rete residua $G_f=(V,E_f,s,t,c_f)$ ha lo stesso insieme di nodi di $G$ e, per ogni arco $e=(u,v)\in E$: se $f(e)<c(e)$ contiene l'arco diretto $(u,v)$ con capacità residua $c_f(e)=c(e)-f(e)$ (quanto flusso si può ancora inviare); se $f(e)>0$ contiene l'arco inverso $(v,u)$ con capacità residua $c_f(e^{\text{rev}})=f(e)$ (quanto flusso si può annullare). In formule: $E_f=\{e\in E: f(e)<c(e)\}\cup\{e^{\text{rev}}: f(e)>0\}$. Un flusso $f'$ è valido in $G_f$ se e solo se $f+f'$ è valido in $G$: ogni cammino aumentante in $G_f$ corrisponde a un miglioramento del flusso in $G$.
+> **R:**
+> **Dati.** Rete $G=(V,E,s,t,c)$ e flusso $f$.
+>
+> **Costruzione.** $G_f=(V,E_f,s,t,c_f)$ ha lo stesso insieme di nodi di $G$. Per ogni arco $e=(u,v)\in E$:
+> - se $f(e)<c(e)$, l'arco diretto $(u,v)$ sta in $E_f$ con capacità residua $c_f(e)=c(e)-f(e)$ (quanto si può ancora inviare);
+> - se $f(e)>0$, l'arco inverso $(v,u)$ sta in $E_f$ con capacità residua $c_f(e^{\text{rev}})=f(e)$ (quanto si può annullare).
+>
+> In formule: $E_f=\{e\in E: f(e)<c(e)\}\cup\{e^{\text{rev}}: f(e)>0\}$.
+>
+> **Proprietà chiave.** Un flusso $f'$ è valido in $G_f$ se e solo se $f+f'$ è valido in $G$: ogni cammino aumentante in $G_f$ corrisponde a un miglioramento del flusso in $G$.
+>
+> ⏱️ **Se la traccia dà 5 righe**: definisci $G_f$ con i due casi (arco diretto se non saturo, arco inverso se $f(e)>0$) e la formula compatta di $E_f$; la proprietà chiave si può accennare in una riga. **Non omettere mai** la condizione $f(e)>0$ per l'esistenza dell'arco inverso — è il dettaglio che spiega perché il grafo residuo può "annullare" flusso.
 
 > [!question] Domanda tipica d'esame — a cosa serve l'arco inverso
 > **D:** A cosa serve l'arco inverso nel grafo residuo?
-> **R:** L'arco inverso $e^{\text{rev}} = (v, u)$ associato all'arco originale $e = (u, v)$ con $f(e) > 0$ permette di **annullare** parte del flusso già inviato su $e$. Quando un cammino aumentante usa $e^{\text{rev}}$, la procedura AUGMENT riduce $f(e)$ del bottleneck: questo è il meccanismo di "undo" che rende Ford-Fulkerson corretto dove il greedy puro fallisce.
+> **R:**
+> **Ruolo.** L'arco inverso $e^{\text{rev}} = (v, u)$, associato all'arco originale $e = (u, v)$ con $f(e) > 0$, permette di **annullare** parte del flusso già inviato su $e$.
+>
+> **Meccanismo.** Quando un cammino aumentante usa $e^{\text{rev}}$, la procedura AUGMENT riduce $f(e)$ del bottleneck del cammino.
+>
+> **Perché serve.** È il meccanismo di "undo" delle decisioni sbagliate: senza di esso l'algoritmo greedy puro si blocca su cammini sub-ottimali (vedi il controesempio del greedy), perché una volta saturato un arco non c'è modo di dirottare il flusso altrove.
 ## Cammino aumentante
 > [!quote] Definizione — Cammino aumentante
 > Un **cammino aumentante** rispetto al flusso $f$ è un cammino semplice $s \leadsto t$ nel grafo residuo $G_f$.
@@ -149,11 +193,21 @@ Esempio — arco originale e arco residuo
 
 > [!question] Domanda tipica d'esame — il bottleneck non è la capacità residua di un singolo arco
 > **D:** *(Vero o Falso)* «Sia f un flusso e sia e un arco di un cammino P da s a t nella rete residua Gf. Allora è sempre possibile usare il cammino aumentante P per aumentare il flusso f di cf(e), dove cf(e) è il peso di e nella rete residua Gf.» *(chiesto il 26/06/2025)*
-> **R:** Falsa. La quantità di cui si può aumentare il flusso lungo $P$ è il bottleneck del cammino, $\operatorname{bottleneck}(G_f,P)=\min_{e'\in P} c_f(e')$, cioè il minimo tra le capacità residue di **tutti** gli archi di $P$, non la capacità residua $c_f(e)$ di un singolo arco $e\in P$ scelto arbitrariamente. Se un altro arco $e'\in P$ ha $c_f(e')<c_f(e)$, usare $c_f(e)$ come incremento violerebbe il vincolo di capacità su $e'$: la procedura AUGMENT satura sempre l'arco di collo di bottiglia, non l'arco $e$ in questione.
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Perché.** La quantità di cui si può aumentare il flusso lungo $P$ è il bottleneck del cammino, $\operatorname{bottleneck}(G_f,P)=\min_{e'\in P} c_f(e')$, cioè il minimo tra le capacità residue di **tutti** gli archi di $P$, non la capacità residua $c_f(e)$ di un singolo arco $e\in P$ scelto arbitrariamente.
+>
+> **Controesempio.** Se un altro arco $e'\in P$ ha $c_f(e')<c_f(e)$, usare $c_f(e)$ come incremento violerebbe il vincolo di capacità su $e'$: la procedura AUGMENT satura sempre l'arco di collo di bottiglia, non l'arco $e$ in questione.
 
 > [!question] Domanda tipica d'esame — capacità minima non garantisce l'incremento del bottleneck
 > **D:** *(Vero o Falso)* «Se per ogni arco e c(e) ≥ β, allora ogni augmanting step aumenta il flusso corrente di almeno β.» *(chiesto il 02/02/2026)*
-> **R:** Falsa. Il bottleneck di un cammino aumentante $P$ è il minimo delle **capacità residue** $c_f(e)$ degli archi di $P$ nella rete residua $G_f$, non delle capacità originali $c(e)$ nella rete $G$. Anche se ogni arco originale ha $c(e)\geq\beta$, un arco può avere capacità residua arbitrariamente piccola (fino a $c(e)-f(e)$ prossima a 0 se già quasi saturo) oppure essere un arco inverso con capacità residua pari al flusso $f(e)$ già inviato, che può essere minore di $\beta$. Quindi un augmenting step può aumentare il flusso di una quantità inferiore a $\beta$.
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Perché.** Il bottleneck di un cammino aumentante $P$ è il minimo delle **capacità residue** $c_f(e)$ degli archi di $P$ in $G_f$, non delle capacità originali $c(e)$ in $G$. Anche se ogni arco originale ha $c(e)\geq\beta$, un arco può avere capacità residua arbitrariamente piccola (vicina a 0 se quasi saturo) oppure essere un arco inverso con capacità residua pari al flusso $f(e)$ già inviato, che può essere minore di $\beta$.
+>
+> **Conclusione.** Un augmenting step può quindi aumentare il flusso di una quantità inferiore a $\beta$: l'ipotesi $c(e)\geq\beta$ sugli archi originali non si trasferisce alle capacità residue.
 ## Algoritmo di Ford-Fulkerson
 L'algoritmo di **Ford-Fulkerson** (1955) risolve il problema Max-Flow iterando la ricerca di cammini aumentanti nel grafo residuo.
 
@@ -190,7 +244,12 @@ L'algoritmo di **Ford-Fulkerson** (1955) risolve il problema Max-Flow iterando l
 
 > [!question] Domanda tipica d'esame — capacità intere garantiscono incrementi interi ≥1
 > **D:** *(Vero o Falso)* «Se le capacità sono intere, allora ogni cammino aumentante trovato nella rete residua può essere usato per aumentare il flusso corrente di almeno una unità.» *(chiesto il 09/09/2024)*
-> **R:** Vera. Per l'invariante di integralità, se tutte le capacità $c(e)$ sono intere, allora durante l'intera esecuzione di Ford-Fulkerson ogni $f(e)$ e ogni capacità residua $c_f(e)$ restano interi (per induzione sul numero di aumenti, dato che AUGMENT somma/sottrae il bottleneck, esso stesso intero). Il bottleneck di un cammino aumentante è quindi un minimo di quantità intere e strettamente positive (un arco esiste in $G_f$ solo se la sua capacità residua è $>0$), dunque è un intero $\geq 1$.
+> **R:**
+> **Risposta.** Vera.
+>
+> **Perché.** Per l'invariante di integralità, se tutte le capacità $c(e)$ sono intere, ogni $f(e)$ e ogni capacità residua $c_f(e)$ restano interi durante l'intera esecuzione (per induzione sul numero di aumenti, dato che AUGMENT somma/sottrae il bottleneck, esso stesso intero).
+>
+> **Conclusione.** Il bottleneck di un cammino aumentante è quindi un minimo di quantità intere e strettamente positive (un arco esiste in $G_f$ solo se ha capacità residua $>0$), dunque è un intero $\geq 1$.
 ### Terminazione e complessità con capacità intere
 > [!quote] Teorema — Terminazione di Ford-Fulkerson (capacità intere)
 > Se tutte le capacità sono **interi** compresi tra $1$ e $C$, Ford-Fulkerson termina dopo al più $\operatorname{val}(f^*) \leq nC$ aumenti. Ogni aumento costa $O(m)$ (per trovare un cammino con BFS o DFS in [[08 - Grafi e Visite]]).
@@ -213,39 +272,102 @@ L'algoritmo di **Ford-Fulkerson** (1955) risolve il problema Max-Flow iterando l
 
 > [!question] Domanda tipica d'esame — terminazione con capacità irrazionali
 > **D:** Ford-Fulkerson termina sempre?
-> **R:** No. Con capacità **intere** (o razionali), termina in un numero finito di passi per il teorema di terminazione. Con capacità **irrazionali**, possono esistere sequenze infinite di aumenti che convergono a un valore strettamente inferiore al massimo flusso. In questi casi è necessario usare varianti con garanzie di terminazione (come Edmonds-Karp, che usa solo BFS e termina in $O(m^2n)$ indipendentemente dalle capacità).
+> **R:**
+> **Risposta.** No, non sempre.
+>
+> **Caso intere/razionali.** Termina in un numero finito di passi per il teorema di terminazione.
+>
+> **Caso irrazionali.** Possono esistere sequenze infinite di aumenti che convergono a un valore strettamente inferiore al massimo flusso.
+>
+> **Soluzione.** In questi casi servono varianti con garanzie di terminazione indipendenti dalle capacità, come Edmonds-Karp (usa solo BFS, termina in $O(m^2n)$).
 
 > [!question] Domanda tipica d'esame — complessità e polinomialità di Ford-Fulkerson
 > **D:** «2. Si enunci la complessità temporale dell'algoritmo di Ford-Fulkerson, argomentando sulla sua polinomialità o meno. (Max 5 righe.)» *(chiesto il 13/06/2024)*
-> **R:** La complessità è $O(m\cdot\operatorname{val}(f^*))$, dove $m$ è il numero di archi e $\operatorname{val}(f^*)$ è il valore del flusso massimo. Non è un algoritmo polinomiale in senso stretto (è pseudo-polinomiale): la complessità dipende dal valore numerico delle capacità (quindi da $\operatorname{val}(f^*)$), non dalla dimensione dell'input in bit; con capacità intere grandi e scelta sfortunata dei cammini aumentanti il numero di iterazioni può crescere in modo esponenziale rispetto alla dimensione dell'input.
+> **R:**
+> **Complessità.** $O(m\cdot\operatorname{val}(f^*))$, dove $m$ è il numero di archi e $\operatorname{val}(f^*)$ è il valore del flusso massimo.
+>
+> **Polinomialità.** Non è un algoritmo polinomiale in senso stretto: è **pseudo-polinomiale**. La complessità dipende dal valore numerico delle capacità (tramite $\operatorname{val}(f^*)$), non dalla dimensione dell'input in bit.
+>
+> **Perché è un problema.** Con capacità intere grandi e scelta sfortunata dei cammini aumentanti, il numero di iterazioni può crescere in modo esponenziale rispetto alla dimensione dell'input (che è logaritmica nel valore delle capacità).
+>
+> ⏱️ **Se la traccia dà 5 righe**: dai la formula $O(m\cdot\operatorname{val}(f^*))$ e dichiara subito che è pseudo-polinomiale; **non omettere mai** la spiegazione del perché (dipendenza dal valore numerico, non dalla dimensione in bit dell'input) — è quella che distingue pseudo-polinomiale da esponenziale puro.
 
 > [!question] Domanda tipica d'esame — capacità polinomiali in n rendono Ford-Fulkerson polinomiale
 > **D:** *(Vero o Falso)* «L'algoritmo di Ford-Furkerson ha una complessità che in generale può essere esponenziale nella dimensione dell'istanza, ma è sempre polinomiale quando le capacità degli archi sono valori interi non più grandi di n².» *(chiesto il 02/02/2026)*
-> **R:** Vera. Per il teorema di terminazione, se le capacità sono intere e comprese tra 1 e $C$, il numero di aumenti è al più $\operatorname{val}(f^*)\leq nC$, e ogni aumento costa $O(m)$: la complessità totale è $O(mnC)$. Se $C\leq n^2$, questa diventa $O(mn\cdot n^2)=O(mn^3)$, polinomiale sia in $n$ che in $m$ (entrambi limitati da funzioni polinomiali della dimensione dell'istanza). In generale il problema nasce quando $C$ cresce esponenzialmente nel numero di bit usati per rappresentarlo (es. $C=2^{30}$); qui invece $C$ è esso stesso polinomiale in $n$, quindi il fattore $C$ non introduce dipendenza esponenziale.
+> **R:**
+> **Risposta.** Vera.
+>
+> **Perché.** Per il teorema di terminazione, con capacità intere comprese tra 1 e $C$ il numero di aumenti è al più $\operatorname{val}(f^*)\leq nC$, e ogni aumento costa $O(m)$: la complessità totale è $O(mnC)$. Se $C\leq n^2$, questa diventa $O(mn\cdot n^2)=O(mn^3)$, polinomiale sia in $n$ che in $m$.
+>
+> **Osservazione.** Il problema di Ford-Fulkerson nasce quando $C$ cresce esponenzialmente nel numero di bit usati per rappresentarlo (es. $C=2^{30}$); qui invece $C$ è esso stesso polinomiale in $n$, quindi il fattore $C$ non introduce dipendenza esponenziale.
 
 > [!question] Domanda tipica d'esame — bound di complessità con grado entrante limitato e capacità ≤ n²
 > **D:** «2. Si consideri una rete di flusso G = (V, E, s, t, c) di n nodi in cui ogni nodo ha grado entrante al più 3 (mentre il grado uscente di un nodo può essere anche Θ(n)) e la capacità di ogni arco e ∈ E è un numero intero non più grande di n². Si derivi una delimitazione superiore (quanto più stretta possibile) alla complessità temporale dell'algoritmo di Ford-Fulkerson sulla rete G. Si può affermare che in questo caso l'algoritmo è garantito avere complessità polinomiale? (Max 5 righe.)» *(chiesto il 26/06/2025)*
-> **R:** Poiché ogni nodo ha grado entrante al più 3, sommando i gradi entranti su tutti i nodi si ottiene il numero totale di archi: $m=\sum_v \deg^-(v)\leq 3n=O(n)$ (nonostante il grado uscente possa essere $\Theta(n)$, il conteggio via grado entrante limita comunque $m$). Per il teorema di terminazione, $\operatorname{val}(f^*)\leq nC$ con $C\leq n^2$, quindi $\operatorname{val}(f^*)=O(n^3)$. La complessità di Ford-Fulkerson è $O(m\cdot \operatorname{val}(f^*))=O(n)\cdot O(n^3)=O(n^4)$. Sì: l'algoritmo è garantito avere complessità polinomiale ($O(n^4)$), perché sia il numero di archi ($O(n)$, dal vincolo sul grado entrante) sia il valore del flusso massimo ($O(n^3)$, dal vincolo sulle capacità) sono limitati polinomialmente in $n$.
+> **R:**
+> **Bound su $m$.** Ogni nodo ha grado entrante al più 3, quindi sommando i gradi entranti su tutti i nodi si ottiene il numero totale di archi: $m=\sum_v \deg^-(v)\leq 3n=O(n)$ (il grado uscente può essere $\Theta(n)$, ma il conteggio via grado entrante limita comunque $m$).
+>
+> **Bound su $\operatorname{val}(f^*)$, via il taglio intorno a $t$.** Il bound generico $\operatorname{val}(f^*)\leq nC=n\cdot n^2=n^3$ (dal teorema di terminazione) è valido ma non è il più stretto possibile: ignora la struttura del grafo. Per la dualità debole, $\operatorname{val}(f^*)\leq\operatorname{cap}(A,B)$ per **ogni** taglio $(A,B)$; prendo $(A,B)=(V\setminus\{t\},\{t\})$: $\operatorname{cap}(A,B)=\sum_{e\text{ entra in }t} c(e)\leq \deg^-(t)\cdot n^2\leq 3n^2$ (il vincolo sul grado entrante vale anche per $t$). Dunque $\operatorname{val}(f^*)=O(n^2)$, un fattore $n$ più stretto del bound generico.
+>
+> **Complessità.** $O(m\cdot \operatorname{val}(f^*))=O(n)\cdot O(n^2)=O(n^3)$.
+>
+> **Conclusione.** Sì, l'algoritmo è garantito avere complessità polinomiale ($O(n^3)$): sia il numero di archi ($O(n)$, dal vincolo sul grado entrante) sia il valore del flusso massimo ($O(n^2)$, dal taglio intorno a $t$) sono limitati polinomialmente in $n$.
+>
+> ⏱️ **Se la traccia dà 5 righe**: il bound su $m$ (1 riga), il bound su $\operatorname{val}(f^*)$ via il taglio intorno a $t$ (1-2 righe), la moltiplicazione finale $O(n^3)$ con la risposta sì (1 riga). **Non fermarsi** al bound generico $\operatorname{val}(f^*)\leq nC=n^3$ (che dà solo $O(n^4)$): è polinomiale ma non «quanto più stretto possibile» come richiesto dalla traccia — serve il taglio intorno a $t$, che sfrutta il vincolo di grado entrante anche su $t$ stesso.
 
 > [!question] Domanda tipica d'esame — capacità unitarie e numero di iterazioni polinomiale
 > **D:** «Si consideri la seguente affermazione: Se le capacità degli archi sono tutte uguali a 1, allora il numero di iterazioni dell'algoritmo di Ford-Fulkerson, ovvero, il numero di aumenti di flusso tramite cammini aumentanti, è sempre polinomiale nel numero di nodi del grafo, indipendentemente dalla strategia usata per trovare i cammini aumentanti. Dire se l'affermazione è vera o falsa motivando la risposta (Max 5 righe).» *(chiesto il 09/09/2024)*
-> **R:** Vera: con capacità unitarie il valore del flusso massimo è limitato dal grado uscente di $s$ (al più $n-1$ archi in un grafo semplice), quindi ogni cammino aumentante satura almeno un arco e il numero di iterazioni è al più $n-1$, polinomiale (lineare) nel numero di nodi, indipendentemente dall'ordine con cui si scelgono i cammini aumentanti.
+> **R:**
+> **Risposta.** Vera.
+>
+> **Perché.** Con capacità unitarie il valore del flusso massimo è limitato dal grado uscente di $s$ (al più $n-1$ archi in un grafo semplice), quindi ogni cammino aumentante satura almeno un arco.
+>
+> **Conclusione.** Il numero di iterazioni è al più $n-1$, polinomiale (lineare) nel numero di nodi, indipendentemente dall'ordine con cui si scelgono i cammini aumentanti.
+>
+> ⏱️ **Se la traccia dà 5 righe**: il bound sul grado uscente di $s$ e il fatto che ogni aumento satura almeno un arco bastano; **non omettere mai** la conclusione esplicita sul numero di iterazioni ($\leq n-1$).
 
 > [!question] Domanda tipica d'esame — capacità unitarie e complessità O(n³)
 > **D:** *(Vero o Falso)* «Se tutti gli archi hanno capacità pari a 1, allora l'algoritmo di Ford-Fulkerson ha complessità O(n^3).» *(chiesto il 30/06/2026)*
-> **R:** Vera. Con capacità tutte uguali a 1 ($C=1$), il numero di aumenti è al più $\operatorname{val}(f^*)\leq n-1=O(n)$ (bound sul grado uscente di $s$, coerente con la domanda precedente sulle capacità unitarie), e ogni aumento costa $O(m)$ tramite BFS/DFS. In un grafo semplice $m=O(n^2)$, quindi la complessità totale è $O(m\cdot n)=O(n^2\cdot n)=O(n^3)$.
+> **R:**
+> **Risposta.** Vera.
+>
+> **N. di aumenti.** Con capacità tutte uguali a 1 ($C=1$), il numero di aumenti è al più $\operatorname{val}(f^*)\leq n-1=O(n)$ (bound sul grado uscente di $s$, coerente con la domanda precedente sulle capacità unitarie).
+>
+> **Costo per aumento.** $O(m)$ tramite BFS/DFS; in un grafo semplice $m=O(n^2)$.
+>
+> **Complessità totale.** $O(m\cdot n)=O(n^2\cdot n)=O(n^3)$.
 
 > [!question] Domanda tipica d'esame — capacità intere non bastano per la polinomialità in generale
 > **D:** *(Vero o Falso)* «L'algoritmo di Ford-Furkerson ha una complessità che in generale può essere esponenziale nella dimensione dell'istanza, ma è sempre polinomiale quando le capacità degli archi sono valori interi.» *(chiesto il 26/06/2025)*
-> **R:** Falsa. La prima parte è corretta (con scelta arbitraria del cammino, il numero di iterazioni può essere esponenziale, come nel caso patologico con $C=2^{30}$), ma la seconda è sbagliata: capacità **intere** non bastano a garantire la polinomialità. Il controesempio patologico ha proprio capacità intere ($C$, $C$, $1$) eppure richiede $2C$ iterazioni, esponenziale nel numero di bit usati per rappresentare $C$. Serve un vincolo più forte, come capacità polinomiali in $n$ (es. $C\leq n^2$, vedi domanda precedente), oppure una strategia di scelta del cammino con garanzie indipendenti da $C$ (Edmonds-Karp, capacity scaling).
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Prima parte (corretta).** Con scelta arbitraria del cammino, il numero di iterazioni può essere esponenziale, come nel caso patologico con $C=2^{30}$.
+>
+> **Seconda parte (sbagliata).** Capacità **intere** non bastano a garantire la polinomialità: il controesempio patologico ha proprio capacità intere ($C$, $C$, $1$) eppure richiede $2C$ iterazioni, esponenziale nel numero di bit usati per rappresentare $C$.
+>
+> **Cosa serve davvero.** Un vincolo più forte, come capacità polinomiali in $n$ (es. $C\leq n^2$), oppure una strategia di scelta del cammino con garanzie indipendenti da $C$ (Edmonds-Karp, capacity scaling).
 
 > [!question] Domanda tipica d'esame — Θ(n√n) archi e capacità ≤2 non danno complessità lineare
 > **D:** *(Vero o Falso)* «Se G ha Θ(n√n) archi, e le capacità degli archi sono tutte al più 2, allora l'algoritmo di Ford-Fulkerson ha complessità lineare, ovvero O(n√n).» *(chiesto il 02/02/2026)*
-> **R:** Falsa. Con $m=\Theta(n\sqrt n)$ e $C\leq 2$, il numero di aumenti è al più $\operatorname{val}(f^*)\leq nC=O(n)$, e ogni aumento costa $O(m)=O(n\sqrt n)$ per la BFS/DFS che cerca il cammino aumentante. La complessità totale è quindi $O(m\cdot\operatorname{val}(f^*))=O(n\sqrt n\cdot n)=O(n^2\sqrt n)$, non $O(n\sqrt n)$: il costo di ogni singola iterazione (che dipende da $m$) è già $\Theta(n\sqrt n)$, e va moltiplicato per il numero di iterazioni, non confuso con esso.
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Bound sul numero di aumenti.** Con $C\leq 2$, il numero di aumenti è al più $\operatorname{val}(f^*)\leq nC=O(n)$.
+>
+> **Costo per aumento.** $O(m)=O(n\sqrt n)$ per la BFS/DFS che cerca il cammino aumentante.
+>
+> **Complessità totale.** $O(m\cdot\operatorname{val}(f^*))=O(n\sqrt n\cdot n)=O(n^2\sqrt n)$, non $O(n\sqrt n)$.
+>
+> **Errore nella traccia.** Il costo di ogni singola iterazione (che dipende da $m$) è già $\Theta(n\sqrt n)$, e va moltiplicato per il numero di iterazioni, non confuso con esso.
 
 > [!question] Domanda tipica d'esame — un solo nodo con archi entranti unitari non basta
 > **D:** *(Vero o Falso)* «Se esiste un nodo v nella rete i cui archi entranti hanno tutti capacità 1, allora l'algoritmo di Ford-Fulkerson è garantito avere complessità polinomiale.» *(chiesto il 30/06/2026)*
-> **R:** Falsa. Il bound $O(mnC)$ dipende dalla capacità massima $C$ su **tutti** gli archi della rete, non solo su quelli entranti in un singolo nodo $v$. Anche se gli archi entranti in $v$ hanno capacità 1, altri archi della rete (ad esempio quelli del caso patologico con l'arco centrale di capacità $C=2^{30}$) possono avere capacità arbitrariamente grandi e continuare a causare un numero esponenziale di iterazioni con scelta sfortunata dei cammini aumentanti.
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Perché.** Il bound $O(mnC)$ dipende dalla capacità massima $C$ su **tutti** gli archi della rete, non solo su quelli entranti in un singolo nodo $v$.
+>
+> **Controesempio.** Anche se gli archi entranti in $v$ hanno capacità 1, altri archi della rete (ad esempio quelli del caso patologico con l'arco centrale di capacità $C=2^{30}$) possono avere capacità arbitrariamente grandi e continuare a causare un numero esponenziale di iterazioni con scelta sfortunata dei cammini aumentanti.
 ## Relazione tra flussi e tagli
 ### Lemma del valore del flusso
 > [!quote] Lemma — Valore del flusso su un taglio
@@ -258,11 +380,21 @@ Per la conservazione del flusso, ogni termine con $v \neq s$ vale 0. Gli archi i
 
 > [!question] Domanda tipica d'esame — definizioni fondamentali
 > **D:** Qual è la differenza tra la capacità di un taglio e il flusso netto attraverso un taglio?
-> **R:** La **capacità** di un taglio $(A,B)$ è $\operatorname{cap}(A,B) = \sum_{e \text{ da } A \text{ a } B} c(e)$ e dipende solo dalla struttura della rete. Il **flusso netto** è $\sum_{e \text{ da } A \text{ a } B} f(e) - \sum_{e \text{ da } B \text{ a } A} f(e)$ e dipende dal flusso corrente. Per il lemma del valore del flusso, il flusso netto attraverso qualsiasi taglio è uguale a $\operatorname{val}(f)$.
+> **R:**
+> **Capacità.** $\operatorname{cap}(A,B) = \sum_{e \text{ da } A \text{ a } B} c(e)$: dipende solo dalla struttura della rete (le capacità), non dal flusso corrente.
+>
+> **Flusso netto.** $\sum_{e \text{ da } A \text{ a } B} f(e) - \sum_{e \text{ da } B \text{ a } A} f(e)$: dipende dal flusso $f$ scelto.
+>
+> **Relazione.** Per il lemma del valore del flusso, il flusso netto attraverso qualsiasi taglio è uguale a $\operatorname{val}(f)$, indipendentemente da quale taglio si scelga.
 
 > [!question] Domanda tipica d'esame — il flusso netto attraverso un taglio è sempre val(f)
 > **D:** *(Vero o Falso)* «per ogni taglio (A.B) e per ogni flusso f, il flusso netto che attraversa (A.B) è sempre uguale al valore di f.» *(chiesto il 09/09/2024)*
-> **R:** Vera. È esattamente l'enunciato del Lemma del valore del flusso: per ogni flusso $f$ e ogni taglio st $(A,B)$, $\operatorname{val}(f)=\sum_{e\text{ esce da }A} f(e) - \sum_{e\text{ entra in }A} f(e)$, cioè il flusso netto che attraversa il taglio (nella direzione da $A$ a $B$) è sempre uguale al valore del flusso, indipendentemente da quale taglio si scelga. Questo vale per **qualsiasi** flusso valido, non solo per il flusso massimo — a differenza della capacità del taglio, che è un limite superiore (dualità debole) raggiunto con uguaglianza solo per il taglio minimo quando $f$ è massimo.
+> **R:**
+> **Risposta.** Vera.
+>
+> **Perché.** È esattamente l'enunciato del Lemma del valore del flusso: per ogni flusso $f$ e ogni taglio st $(A,B)$, $\operatorname{val}(f)=\sum_{e\text{ esce da }A} f(e) - \sum_{e\text{ entra in }A} f(e)$, cioè il flusso netto che attraversa il taglio è sempre uguale al valore del flusso, indipendentemente da quale taglio si scelga.
+>
+> **Osservazione.** Questo vale per **qualsiasi** flusso valido, non solo per il flusso massimo — a differenza della capacità del taglio, che è un limite superiore (dualità debole) raggiunto con uguaglianza solo per il taglio minimo quando $f$ è massimo.
 ### Dualità debole
 > [!quote] Proprietà — Dualità debole
 > Per qualsiasi flusso $f$ e qualsiasi taglio $(A, B)$:
@@ -281,23 +413,50 @@ La dualità debole dice che il valore di qualsiasi flusso è limitato superiorme
 
 > [!question] Domanda tipica d'esame — il flusso netto non supera mai la capacità del taglio
 > **D:** *(Vero o Falso)* «Dato un taglio (A, B) e un flusso f, allora il flusso netto che passa per (A, B) è sempre maggiore o uguale alla capacità di (A, B).» *(chiesto il 09/09/2024)*
-> **R:** Falsa: per la dualità debole, il flusso netto attraverso un taglio (che, per il lemma del valore, coincide con $\operatorname{val}(f)$) è sempre **minore o uguale** alla capacità del taglio, mai maggiore: $\operatorname{val}(f)\leq\operatorname{cap}(A,B)$. La dimostrazione segue dal fatto che il flusso netto uscente da $A$ è al più la somma delle capacità degli archi uscenti da $A$ (per il vincolo di capacità), meno un termine non negativo dato dal flusso entrante in $A$.
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Perché.** Per la dualità debole, il flusso netto attraverso un taglio (che, per il lemma del valore, coincide con $\operatorname{val}(f)$) è sempre **minore o uguale** alla capacità del taglio, mai maggiore: $\operatorname{val}(f)\leq\operatorname{cap}(A,B)$.
+>
+> **Da dove viene.** Il flusso netto uscente da $A$ è al più la somma delle capacità degli archi uscenti da $A$ (per il vincolo di capacità), meno un termine non negativo dato dal flusso entrante in $A$.
 
 > [!question] Domanda tipica d'esame — val(f) non è sempre uguale a cap(A,B)
 > **D:** *(Vero o Falso)* «dato un flusso f di G e un st-taglio (A, B), il valore del flusso v(f) è sempre uguale alla capacità del taglio cap(A, B)» *(chiesto il 26/06/2025)*
-> **R:** Falsa. Per la dualità debole vale solo $\operatorname{val}(f)\leq\operatorname{cap}(A,B)$, come disuguaglianza, non come uguaglianza. L'uguaglianza $\operatorname{val}(f)=\operatorname{cap}(A,B)$ si verifica solo in casi speciali: per il corollario di certificato di ottimalità, quando accade è garanzia che $f$ è massimo e $(A,B)$ è il taglio minimo — non è quindi una proprietà valida per un flusso e un taglio scelti arbitrariamente.
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Perché.** Per la dualità debole vale solo $\operatorname{val}(f)\leq\operatorname{cap}(A,B)$, come disuguaglianza, non come uguaglianza.
+>
+> **Quando vale l'uguaglianza.** Solo in casi speciali: per il corollario di certificato di ottimalità, quando $\operatorname{val}(f)=\operatorname{cap}(A,B)$ è garanzia che $f$ è massimo e $(A,B)$ è il taglio minimo — non è quindi una proprietà valida per un flusso e un taglio scelti arbitrariamente.
 
 > [!question] Domanda tipica d'esame — non esiste sempre un taglio di capacità uguale a v(f)
 > **D:** *(Vero o Falso)* «Dato un flusso f di G, c'è sempre un s-t-taglio (A, B) la cui capacità è uguale a v(f).» *(chiesto il 02/02/2026)*
-> **R:** Falsa. Vale solo il verso debole: per **ogni** taglio $(A,B)$, $\operatorname{cap}(A,B)\geq\operatorname{val}(f)$ (dualità debole), ma non è garantito che esista un taglio con capacità **esattamente** uguale a $\operatorname{val}(f)$, a meno che $f$ non sia già un flusso massimo (nel qual caso il taglio minimo, individuato dai nodi raggiungibili da $s$ in $G_f$, ha proprio capacità $\operatorname{val}(f)$). Per un flusso $f$ generico, non massimo, tutti i tagli possono avere capacità strettamente maggiore di $\operatorname{val}(f)$.
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Perché.** Vale solo il verso debole: per **ogni** taglio $(A,B)$, $\operatorname{cap}(A,B)\geq\operatorname{val}(f)$ (dualità debole), ma non è garantito che esista un taglio con capacità **esattamente** uguale a $\operatorname{val}(f)$.
+>
+> **Eccezione.** Solo se $f$ è già un flusso massimo: in quel caso il taglio minimo, individuato dai nodi raggiungibili da $s$ in $G_f$, ha proprio capacità $\operatorname{val}(f)$.
+>
+> **Caso generico.** Per un flusso $f$ non massimo, tutti i tagli possono avere capacità strettamente maggiore di $\operatorname{val}(f)$.
 
 > [!question] Domanda tipica d'esame — esiste sempre un taglio di capacità uguale al valore del flusso? (variante)
 > **D:** *(Vero o Falso)* «Per ogni flusso f, esiste sempre un taglio (A, B) la cui capacità è uguale al valore di f.» *(chiesto il 30/06/2026)*
-> **R:** Falsa, per lo stesso motivo della domanda precedente: la dualità debole garantisce solo $\operatorname{cap}(A,B)\geq\operatorname{val}(f)$ per ogni taglio, non l'esistenza di un taglio con uguaglianza esatta. Tale taglio esiste garantito solo se $f$ è un flusso massimo (è allora il taglio minimo, per il teorema Max-Flow Min-Cut); per un flusso qualsiasi non c'è alcuna garanzia.
+> **R:**
+> **Risposta.** Falsa, per lo stesso motivo della domanda precedente.
+>
+> **Perché.** La dualità debole garantisce solo $\operatorname{cap}(A,B)\geq\operatorname{val}(f)$ per ogni taglio, non l'esistenza di un taglio con uguaglianza esatta.
+>
+> **Quando esiste garantito.** Solo se $f$ è un flusso massimo (è allora il taglio minimo, per il teorema Max-Flow Min-Cut); per un flusso qualsiasi non c'è alcuna garanzia.
 
 > [!question] Domanda tipica d'esame — non è garantito un taglio di capacità strettamente maggiore
 > **D:** *(Vero o Falso)* «Per ogni flusso f esiste sempre almeno un taglio (A, B) tale che la capacità di (A, B) è strettamente più grande del valore di f.» *(chiesto il 30/06/2026)*
-> **R:** Falsa. Controesempio: una rete con un solo arco $s\to t$ di capacità $c(s,t)=k$ e flusso $f(s,t)=k$ (cioè $f$ è già massimo, $\operatorname{val}(f)=k$). L'unico taglio st possibile è $(\{s\},\{t\})$, con $\operatorname{cap}(\{s\},\{t\})=k=\operatorname{val}(f)$: non esiste alcun altro taglio, quindi nessun taglio ha capacità strettamente maggiore di $\operatorname{val}(f)$. In generale, quando $f$ è massimo, il taglio minimo ha capacità esattamente uguale a $\operatorname{val}(f)$, non strettamente maggiore.
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Controesempio.** Una rete con un solo arco $s\to t$ di capacità $c(s,t)=k$ e flusso $f(s,t)=k$ (cioè $f$ è già massimo, $\operatorname{val}(f)=k$). L'unico taglio st possibile è $(\{s\},\{t\})$, con $\operatorname{cap}(\{s\},\{t\})=k=\operatorname{val}(f)$: non esiste alcun altro taglio, quindi nessun taglio ha capacità strettamente maggiore di $\operatorname{val}(f)$.
+>
+> **Osservazione.** In generale, quando $f$ è massimo, il taglio minimo ha capacità esattamente uguale a $\operatorname{val}(f)$, non strettamente maggiore.
 ## Teorema Max-Flow Min-Cut
 > [!quote] Teorema — Max-Flow Min-Cut
 > In una rete di flusso, il valore del **massimo flusso** è uguale alla capacità del **minimo taglio**:
@@ -333,31 +492,68 @@ $$\operatorname{val}(f) = \sum_{e \text{ esce da } A} f(e) - \sum_{e \text{ entr
 
 > [!question] Domanda tipica d'esame — teorema Max-Flow Min-Cut
 > **D:** Enuncia il teorema Max-Flow Min-Cut e spiega quando Ford-Fulkerson ci fornisce un certificato di ottimalità.
-> **R:** Il teorema afferma che $\max_f \operatorname{val}(f) = \min_{(A,B)} \operatorname{cap}(A,B)$. Ford-Fulkerson fornisce un certificato quando termina: a quel punto non esistono cammini aumentanti, quindi l'insieme $A$ dei nodi raggiungibili da $s$ in $G_f$ definisce un taglio $(A, B)$ con $\operatorname{cap}(A,B) = \operatorname{val}(f)$, certificando che il flusso è massimo e il taglio è minimo.
+> **R:**
+> **Enunciato.** $\max_f \operatorname{val}(f) = \min_{(A,B)} \operatorname{cap}(A,B)$.
+>
+> **Quando c'è il certificato.** Alla terminazione di Ford-Fulkerson: a quel punto non esistono cammini aumentanti, quindi l'insieme $A$ dei nodi raggiungibili da $s$ in $G_f$ definisce un taglio $(A, B)$ con $\operatorname{cap}(A,B) = \operatorname{val}(f)$, certificando che il flusso è massimo e il taglio è minimo.
 
 > [!question] Domanda tipica d'esame — non esistono grafi con min-cut < max-flow
 > **D:** *(Vero o Falso)* «Ci sono dei grafi per cui la capacità del taglio di capacità minima è strettamente inferiore al massimo flusso.» *(chiesto il 09/09/2024)*
-> **R:** Falsa: per il teorema Max-Flow Min-Cut il valore del massimo flusso è **sempre uguale** alla capacità del taglio di capacità minima ($\max_f\operatorname{val}(f)=\min_{(A,B)}\operatorname{cap}(A,B)$), mai strettamente inferiore. La dualità debole esclude già che il taglio minimo possa avere capacità inferiore al massimo flusso (varrebbe $\operatorname{val}(f^*)\leq\operatorname{cap}(A,B)$ per ogni taglio, incluso quello minimo); il teorema garantisce inoltre che questa disuguaglianza è sempre stretta uguaglianza per il taglio ottimo.
+> **R:**
+> **Risposta.** Falsa.
+>
+> **Perché.** Per il teorema Max-Flow Min-Cut il valore del massimo flusso è **sempre uguale** alla capacità del taglio di capacità minima ($\max_f\operatorname{val}(f)=\min_{(A,B)}\operatorname{cap}(A,B)$), mai strettamente inferiore.
+>
+> **Osservazione.** La dualità debole esclude già che il taglio minimo possa avere capacità inferiore al massimo flusso (varrebbe $\operatorname{val}(f^*)\leq\operatorname{cap}(A,B)$ per ogni taglio, incluso quello minimo); il teorema garantisce inoltre che questa disuguaglianza diventa sempre uguaglianza per il taglio ottimo.
 
 > [!question] Domanda tipica d'esame — f massimo solo se non c'è cammino aumentante
 > **D:** *(Vero o Falso)* «Dato un flusso f, f è massimo solo se nella rete residua G_f non c'è alcun cammino da s a t.» *(chiesto il 30/06/2026)*
-> **R:** Vera. È il teorema dei cammini aumentanti: $f$ è massimo se e solo se non esiste un cammino aumentante in $G_f$. La direzione «solo se» ($f$ massimo $\Rightarrow$ nessun cammino aumentante) segue per contronominale dal fatto che, se un cammino aumentante esistesse, AUGMENT produrrebbe un flusso di valore strettamente maggiore, contraddicendo la massimalità di $f$.
+> **R:**
+> **Risposta.** Vera.
+>
+> **Perché.** È il teorema dei cammini aumentanti: $f$ è massimo se e solo se non esiste un cammino aumentante in $G_f$.
+>
+> **Direzione richiesta.** La direzione «solo se» ($f$ massimo $\Rightarrow$ nessun cammino aumentante) segue per contronominale: se un cammino aumentante esistesse, AUGMENT produrrebbe un flusso di valore strettamente maggiore, contraddicendo la massimalità di $f$.
 
 > [!question] Domanda tipica d'esame — nessun cammino aumentante implica flusso massimo
 > **D:** *(Vero o Falso)* «Dato un flusso f, se nella rete residua Gf non c'è alcun cammino da s a t, allora f è un flusso massimo.» *(chiesto il 26/06/2025)*
-> **R:** Vera. È la direzione $[3\Rightarrow 2]$ del teorema dei cammini aumentanti: se non ci sono cammini $s\leadsto t$ in $G_f$, si può costruire il taglio $(A,B)$ con $A$ = nodi raggiungibili da $s$ in $G_f$; tutti gli archi da $A$ a $B$ risultano saturi e quelli da $B$ ad $A$ hanno flusso nullo, quindi $\operatorname{cap}(A,B)=\operatorname{val}(f)$, che per il corollario di certificato di ottimalità implica che $f$ è massimo.
+> **R:**
+> **Risposta.** Vera.
+>
+> **Perché.** È la direzione $[3\Rightarrow 2]$ del teorema dei cammini aumentanti: se non ci sono cammini $s\leadsto t$ in $G_f$, si può costruire il taglio $(A,B)$ con $A$ = nodi raggiungibili da $s$ in $G_f$; tutti gli archi da $A$ a $B$ risultano saturi e quelli da $B$ ad $A$ hanno flusso nullo.
+>
+> **Conclusione.** Quindi $\operatorname{cap}(A,B)=\operatorname{val}(f)$, che per il corollario di certificato di ottimalità implica che $f$ è massimo.
 
 > [!question] Domanda tipica d'esame — un cammino aumentante implica che f non è massimo
 > **D:** *(Vero o Falso)* «Dato un flusso f, se nella rete residua Gf c'è un cammino da s a t, allora f non è massimo.» *(chiesto il 02/02/2026)*
-> **R:** Vera. È la contronominale della direzione $[2\Rightarrow 3]$ del teorema dei cammini aumentanti: se esiste un cammino aumentante $P$ in $G_f$, $\operatorname{AUGMENT}(f,c,P)$ produce un flusso $f'$ con $\operatorname{val}(f')=\operatorname{val}(f)+\operatorname{bottleneck}(G_f,P)>\operatorname{val}(f)$, quindi $f$ non poteva essere massimo.
+> **R:**
+> **Risposta.** Vera.
+>
+> **Perché.** È la contronominale della direzione $[2\Rightarrow 3]$ del teorema dei cammini aumentanti: se esiste un cammino aumentante $P$ in $G_f$, $\operatorname{AUGMENT}(f,c,P)$ produce un flusso $f'$ con $\operatorname{val}(f')=\operatorname{val}(f)+\operatorname{bottleneck}(G_f,P)>\operatorname{val}(f)$, quindi $f$ non poteva essere massimo.
 
 > [!question] Domanda tipica d'esame — dimostrazione: nessun cammino aumentante implica flusso massimo
 > **D:** «Si dimostri che se nella rete residua corrispondente ad un certo flusso f non c'è nessun cammino dalla sorgente al pozzo, allora f è un flusso massimo. (Max 5 righe.)» *(chiesto il 23/09/2025)*
-> **R:** Sia $A$ l'insieme dei nodi raggiungibili da $s$ in $G_f$: per ipotesi $t\notin A$ (altrimenti esisterebbe un cammino aumentante), quindi $(A,B)$ con $B=V\setminus A$ è un taglio st valido. Per ogni arco $e=(u,v)$ con $u\in A,v\in B$: se fosse $f(e)<c(e)$, allora $e$ apparterrebbe a $G_f$ e $v$ sarebbe raggiungibile da $s$, contraddicendo $v\in B$; dunque $f(e)=c(e)$ (arco saturo). Per ogni arco $e=(v,u)$ con $v\in B,u\in A$: se fosse $f(e)>0$, l'arco inverso apparterrebbe a $G_f$ rendendo $v$ raggiungibile da $s$, assurdo; dunque $f(e)=0$. Per il lemma del valore del flusso, $\operatorname{val}(f)=\sum_{e\text{ esce da }A} f(e)-\sum_{e\text{ entra in }A} f(e)=\sum_{e\text{ esce da }A} c(e)-0=\operatorname{cap}(A,B)$. Per il corollario di certificato di ottimalità, $\operatorname{val}(f)=\operatorname{cap}(A,B)$ implica che $f$ è un flusso massimo. $\square$
+> **R:**
+> **Impostazione.** Sia $A$ l'insieme dei nodi raggiungibili da $s$ in $G_f$: per ipotesi $t\notin A$ (altrimenti esisterebbe un cammino aumentante), quindi $(A,B)$ con $B=V\setminus A$ è un taglio st valido.
+>
+> **Archi da $A$ a $B$ sono saturi.** Per ogni arco $e=(u,v)$ con $u\in A,v\in B$: se fosse $f(e)<c(e)$, allora $e$ apparterrebbe a $G_f$ e $v$ sarebbe raggiungibile da $s$, contraddicendo $v\in B$; dunque $f(e)=c(e)$.
+>
+> **Archi da $B$ a $A$ hanno flusso nullo.** Per ogni arco $e=(v,u)$ con $v\in B,u\in A$: se fosse $f(e)>0$, l'arco inverso apparterrebbe a $G_f$ rendendo $v$ raggiungibile da $s$, assurdo; dunque $f(e)=0$.
+>
+> **Conclusione.** Per il lemma del valore del flusso, $\operatorname{val}(f)=\sum_{e\text{ esce da }A} f(e)-\sum_{e\text{ entra in }A} f(e)=\sum_{e\text{ esce da }A} c(e)-0=\operatorname{cap}(A,B)$. Per il corollario di certificato di ottimalità, $\operatorname{val}(f)=\operatorname{cap}(A,B)$ implica che $f$ è un flusso massimo. $\square$
+>
+> ⏱️ **Se la traccia dà 5 righe**: definisci $A$ e il taglio $(A,B)$ (1 riga), enuncia sinteticamente perché gli archi $A\to B$ sono saturi e quelli $B\to A$ sono nulli (2 righe, l'argomento "altrimenti il nodo sarebbe raggiungibile" in forma compatta), chiudi con l'uguaglianza $\operatorname{val}(f)=\operatorname{cap}(A,B)$ e il richiamo al corollario (1-2 righe). **Non omettere mai** il perché gli archi sono saturi/nulli — è il cuore della dimostrazione, non un dettaglio tecnico.
 
 > [!question] Domanda tipica d'esame — taglio minimo via nodi che raggiungono t
 > **D:** *(Vero o Falso)* «Sia f un flusso tale che, nella rete residua Gf, s e t sono separati. Sia B l'insieme di tutti e soli i nodi che possono raggiungere t. Allora (V \ B, B) è un taglio minimo di G.» *(chiesto il 26/06/2025)*
-> **R:** Vera. È la costruzione duale di quella standard (che usa $A$ = nodi raggiungibili **da** $s$): qui $B$ = nodi che possono **raggiungere** $t$ in $G_f$. Se $s$ e $t$ sono separati in $G_f$ (nessun cammino aumentante), allora $s\notin B$ (altrimenti esisterebbe un cammino da $s$ a $t$), quindi $(V\setminus B, B)$ è un taglio st valido. Con lo stesso argomento di saturazione usato nella dimostrazione del teorema (ogni arco entrante in $B$ dall'esterno deve essere saturo, altrimenti l'origine dell'arco potrebbe raggiungere $t$ e starebbe in $B$; ogni arco uscente da $B$ verso l'esterno ha flusso nullo), si ottiene $\operatorname{cap}(V\setminus B,B)=\operatorname{val}(f)$, che per il corollario di certificato di ottimalità rende $(V\setminus B,B)$ un taglio minimo.
+> **R:**
+> **Risposta.** Vera.
+>
+> **Impostazione.** È la costruzione duale di quella standard (che usa $A$ = nodi raggiungibili **da** $s$): qui $B$ = nodi che possono **raggiungere** $t$ in $G_f$. Se $s$ e $t$ sono separati in $G_f$, allora $s\notin B$ (altrimenti esisterebbe un cammino da $s$ a $t$), quindi $(V\setminus B, B)$ è un taglio st valido.
+>
+> **Argomento di saturazione.** Ogni arco entrante in $B$ dall'esterno deve essere saturo (altrimenti l'origine dell'arco potrebbe raggiungere $t$ e starebbe in $B$); ogni arco uscente da $B$ verso l'esterno ha flusso nullo.
+>
+> **Conclusione.** Si ottiene $\operatorname{cap}(V\setminus B,B)=\operatorname{val}(f)$, che per il corollario di certificato di ottimalità rende $(V\setminus B,B)$ un taglio minimo.
 
 > [!question] Domanda tipica d'esame — calcolo del taglio minimo in tempo lineare da un flusso massimo
 > **D:** «2. Si descriva come è possibile, dato un flusso massimo, calcolare in tempo lineare un taglio di capacità minima. (Max 5 righe.)» *(chiesto il 18/07/2025)*

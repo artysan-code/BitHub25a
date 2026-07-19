@@ -1,3 +1,10 @@
+---
+tags:
+  - algoritmi
+  - flussi
+slide: "7-II"
+capitolo: "Kleinberg-Tardos cap. 7"
+---
 # Applicazioni dei Flussi di Rete
 Il **paradigma della riduzione** consiste nel trasformare un problema $P$ in un'istanza di un problema $Q$ già risolto, ricavando la soluzione di $P$ dalla soluzione di $Q$. I problemi di [[07 - Flussi di Rete (Max-Flow e Min-Cut)]] si prestano naturalmente a questo schema: dalla segmentazione di immagini all'eliminazione nel baseball, moltissimi problemi si formulano come ricerca del massimo flusso o del taglio minimo su una rete opportunamente costruita. Questa nota esplora le quattro applicazioni principali del deck (Bipartite Matching, cammini disgiunti, image segmentation, baseball elimination) mostrandone la costruzione della rete e la correttezza della riduzione.
 ## Schema generale di riduzione al Max-Flow
@@ -57,11 +64,25 @@ Questo risultato è una conseguenza diretta del teorema Max-Flow Min-Cut: il tag
 
 > [!question] Domanda tipica d'esame — Riduzione al Max-Flow
 > **D:** Come si riduce il Bipartite Matching al Max-Flow? Descrivere la costruzione e dimostrare la correttezza.
-> **R:** Si costruisce $G'$ aggiungendo sorgente $s$ collegata a ogni nodo di $L$ con capacità 1, pozzo $t$ raggiunto da ogni nodo di $R$ con capacità 1, e si orientano gli archi da $L$ a $R$ con capacità 1 (o $\infty$). Per il Teorema di integralità, il flusso massimo intero in $G'$ è in corrispondenza biunivoca con il matching massimo in $G$: ogni cammino $s \to u \to v \to t$ con flusso 1 corrisponde all'arco $(u,v)$ nel matching.
+> **R:**
+> **Costruzione.** Si costruisce $G' = (L \cup R \cup \{s,t\}, E')$: arco $s \to u$ di capacità 1 per ogni $u \in L$, arco $v \to t$ di capacità 1 per ogni $v \in R$, arco $u \to v$ di capacità 1 (o $\infty$, equivalente) per ogni $(u,v) \in E$.
+>
+> **Correttezza.** Esiste una corrispondenza biunivoca fra matching di cardinalità $k$ in $G$ e flussi interi di valore $k$ in $G'$.
+> ($\Rightarrow$) Da un matching $M$ si invia 1 unità su ogni cammino $s \to u \to v \to t$ con $(u,v) \in M$: nessun nodo è saturato due volte perché $M$ è un matching, quindi la conservazione del flusso è rispettata.
+> ($\Leftarrow$) Il Teorema di integralità garantisce un flusso massimo intero $f$: per le capacità unitarie su $s\to L$ e $R\to t$, ogni arco porta 0 o 1. Si pone $M = \{(u,v) : f(u,v)=1\}$: ogni $u \in L$ e ogni $v \in R$ vi compaiono al più una volta.
+>
+> **Complessità.** Con Ford-Fulkerson: al più $n = \min(|L|,|R|)$ aumentazioni (il flusso massimo è limitato dal grado di $s$ o $t$), ciascuna $O(m)$ con BFS/DFS sul residuo — totale $O(mn)$.
 
 > [!question] Domanda tipica d'esame — Teorema di König
 > **D:** Perché la cardinalità del matching massimo in un grafo bipartito è uguale alla dimensione del vertex cover minimo? Come si collega questo risultato al Max-Flow?
-> **R:** È il Teorema di König (1931): in un grafo bipartito il matching massimo e il vertex cover minimo hanno la stessa cardinalità. La dimostrazione sfrutta la rete $G'$ della riduzione (sorgente $s$, $L$, $R$, pozzo $t$; capacità 1 su $s \to L$ e $R \to t$; capacità $\infty$ su $L \to R$): un taglio minimo non può contenere archi $L \to R$, che hanno capacità infinita, quindi taglia solo archi $s \to L$ o $R \to t$. Dato un taglio minimo $(A,B)$ con $s \in A$, l'insieme $C = (L \setminus A) \cup (R \cap A)$ è un vertex cover di $G$ di cardinalità pari alla capacità del taglio: se un arco $(u,v)$ con $u \in L$, $v \in R$ non fosse coperto, si avrebbe $u \in A$ (altrimenti $u \in C$) e, non essendo tagliato l'arco $u \to v$, anche $v \in A$, cioè $v \in C$, assurdo. Per il teorema Max-Flow Min-Cut, la capacità del taglio minimo è il flusso massimo, cioè il matching massimo: matching massimo e vertex cover minimo coincidono.
+> **R:**
+> **Impostazione.** È il Teorema di König (1931): in un grafo bipartito il matching massimo e il vertex cover minimo hanno la stessa cardinalità. La dimostrazione sfrutta la rete $G'$ della riduzione (sorgente $s$, $L$, $R$, pozzo $t$; capacità 1 su $s \to L$ e $R \to t$; capacità $\infty$ su $L \to R$): un taglio minimo non può contenere archi $L \to R$, che hanno capacità infinita, quindi taglia solo archi $s \to L$ o $R \to t$.
+>
+> **Costruzione del vertex cover.** Sia $(A,B)$ un taglio minimo con $s \in A$. Si definisce $C = (L \setminus A) \cup (R \cap A)$; la tesi è che $C$ è un vertex cover di $G$.
+>
+> **Dimostrazione (per assurdo).** Sia $(u,v) \in E$ con $u \in L$, $v \in R$ non coperto da $C$: allora $u \notin C$, cioè $u \in A$ (dato che $u \notin L\setminus A$). Se fosse $v \in B$, l'arco $u \to v$ attraverserebbe il taglio — ma è un arco $L \to R$ di capacità $\infty$, che non può comparire in un taglio minimo, assurdo. Dunque $v \in A$, cioè $v \in R \cap A \subseteq C$: contraddice l'ipotesi che $(u,v)$ non fosse coperto.
+>
+> **Conclusione.** $|C|$ è pari alla capacità del taglio minimo, perché conta solo archi $s \to L$ o $R \to t$ (ciascuno capacità 1). Per il teorema Max-Flow Min-Cut la capacità del taglio minimo è il flusso massimo, cioè il matching massimo: matching massimo e vertex cover minimo coincidono.
 ## Cammini Disgiunti (Disjoint Paths)
 ### Definizioni
 > [!quote] Definizione — Cammini arco-disgiunti
@@ -100,13 +121,25 @@ Per grafi **non orientati**, si sostituisce ogni arco $\{u, v\}$ con **due archi
 
 > [!question] Domanda tipica d'esame — Node splitting
 > **D:** Come si riduce il problema dei cammini nodo-disgiunti al Max-Flow?
-> **R:** Si usa la tecnica del *node splitting*: ogni nodo $v \neq s, t$ viene sdoppiato in $v_{in}$ e $v_{out}$, collegati da un arco interno $(v_{in}, v_{out})$ di capacità 1 — questo arco è il collo di bottiglia che impedisce a due cammini diversi di attraversare lo stesso nodo, perché al più 1 unità di flusso può passare per $v$. Ogni arco originale $(u,v)$ diventa $(u_{out}, v_{in})$ con capacità $+\infty$, così da non introdurre vincoli aggiuntivi sugli archi. Il Max-Flow sulla rete risultante ha lo stesso valore del massimo numero di cammini nodo-disgiunti $s \leadsto t$ nel grafo originale, per lo stesso argomento di corrispondenza biunivoca usato per i cammini arco-disgiunti.
+> **R:**
+> **Idea.** Un cammino nodo-disgiunto non può attraversare due volte lo stesso nodo interno, ma la rete originale non ha capacità sui nodi — solo sugli archi. Serve quindi introdurre un "collo di bottiglia" per ogni nodo.
+>
+> **Costruzione.** Ogni nodo $v \neq s,t$ si sdoppia in $v_{in}$ e $v_{out}$, collegati da un arco interno $(v_{in}, v_{out})$ di capacità 1: al più 1 unità di flusso può attraversare $v$. Ogni arco originale $(u,v)$ diventa $(u_{out}, v_{in})$ con capacità $+\infty$, così i vincoli restano solo sui nodi.
+>
+> **Correttezza.** Vale lo stesso argomento di corrispondenza biunivoca dei cammini arco-disgiunti: un flusso intero di valore $k$ (Teorema di integralità) satura $k$ archi interni distinti, quindi individua $k$ nodi interni distinti attraversati da $k$ cammini $s \leadsto t$ nodo-disgiunti, e viceversa. Il Max-Flow sulla rete sdoppiata vale dunque quanto il massimo numero di cammini nodo-disgiunti nel grafo originale.
 ### Complessità
 Con Ford-Fulkerson su capacità unitarie: al più $n$ aumentazioni (il flusso massimo non può eccedere il grado di $s$), ciascuna $O(m)$, per un totale di $O(mn)$.
 
 > [!question] Domanda tipica d'esame — Cammini arco-disgiunti
 > **D:** Come si calcola il massimo numero di cammini arco-disgiunti tra $s$ e $t$ in un grafo diretto $G$?
-> **R:** Si assegna capacità 1 a ogni arco e si calcola il Max-Flow da $s$ a $t$. Per il Teorema di Menger, il valore del flusso massimo è uguale al massimo numero di cammini arco-disgiunti, ed è anche uguale alla dimensione del minimo taglio archi (minimo numero di archi da rimuovere per disconnettere $s$ da $t$).
+> **R:**
+> **Costruzione.** Si assegna capacità 1 a ogni arco di $G$, lasciando la struttura invariata: la rete $G'$ coincide con $G$.
+>
+> **Criterio (Teorema di Menger).** Il valore del Max-Flow $s \to t$ in $G'$ è uguale sia al massimo numero di cammini arco-disgiunti $s \leadsto t$ sia alla dimensione del minimo taglio archi (minimo numero di archi la cui rimozione disconnette $s$ da $t$) — le due quantità coincidono per il teorema Max-Flow Min-Cut applicato a capacità unitarie.
+>
+> **Procedura.** Dal flusso massimo intero $f$ (Teorema di integralità) si estraggono i cammini seguendo, da ogni arco uscente da $s$ con $f=1$, un arco successivo non ancora usato con $f=1$ fino a raggiungere $t$; gli eventuali cicli residui si eliminano con la *flow decomposition* in $O(mn)$.
+>
+> **Complessità.** Con Ford-Fulkerson su capacità unitarie: al più $n$ aumentazioni (il flusso non supera il grado di $s$), ciascuna $O(m)$ — totale $O(mn)$.
 ## Image Segmentation
 ### Il problema
 **Image segmentation** è il problema di dividere un'immagine in regioni coerenti, tipicamente separando oggetti di interesse (primo piano, *foreground*) dallo sfondo (*background*). È un problema centrale nell'elaborazione delle immagini: un'applicazione concreta è la segmentazione di organi in immagini mediche (es. fegato e vascolarizzazione epatica).
@@ -162,7 +195,12 @@ che è esattamente il **costo** da minimizzare.
 
 > [!question] Domanda tipica d'esame — Riduzione a Min-Cut
 > **D:** In che senso il Min-Cut risolve il problema di Image Segmentation? Come si costruisce la rete?
-> **R:** Il problema di massimizzare la qualità della segmentazione si trasforma in minimizzare il costo, che è esattamente la capacità di un taglio $(s$-$t)$ in una rete apposita: sorgente $s$ = foreground, pozzo $t$ = background; arco $(s,i)$ di capacità $a_i$ (verosimiglianza foreground), arco $(i,t)$ di capacità $b_i$ (verosimiglianza background), archi antiparalleli $(i,j)$ e $(j,i)$ di capacità $p_{ij}$ (penalità di separazione). Il Min-Cut taglia gli archi che corrispondono alle assegnazioni sbagliate e alle frontiere tra regioni.
+> **R:**
+> **Trasformazione.** Massimizzare $\text{qualità}(A,B) = \sum_{i\in A} a_i + \sum_{j\in B} b_j - \sum p_{ij}$ equivale a minimizzare $\text{costo}(A,B) = \sum_{i\in A} b_i + \sum_{j\in B} a_j + \sum p_{ij}$: si somma la costante $\sum_i(a_i+b_i)$ e si inverte il segno, il che non cambia chi ottimizza.
+>
+> **Costruzione della rete.** Sorgente $s$ = foreground, pozzo $t$ = background; per ogni pixel $i$ arco $(s,i)$ di capacità $a_i$ e arco $(i,t)$ di capacità $b_i$; per ogni coppia di pixel adiacenti $\{i,j\}$ due archi antiparalleli $(i,j)$ e $(j,i)$ di capacità $p_{ij}$.
+>
+> **Correttezza.** In un taglio $(A,B)$ con $s\in A$ (foreground) e $t\in B$ (background): l'arco $(s,i)$ è tagliato se $i\in B$ e contribuisce $a_i$; l'arco $(i,t)$ è tagliato se $i\in A$ e contribuisce $b_i$; fra pixel adiacenti su lati diversi si paga $p_{ij}$ una sola volta grazie all'antiparallelismo. La capacità del taglio coincide quindi esattamente con $\text{costo}(A,B)$: il Min-Cut taglia gli archi corrispondenti alle assegnazioni sbagliate e alle frontiere fra regioni, cioè minimizza il costo e massimizza la qualità.
 ## Baseball Elimination
 ### Il problema
 Il problema di **Baseball Elimination** chiede: dato lo stato attuale della stagione (vittorie accumulate, partite rimanenti, calendario delle sfide tra coppie), il team $z$ può ancora finire la stagione con il numero massimo di vittorie (cioè a pari merito con il primo)?
@@ -228,7 +266,14 @@ Questa disuguaglianza è la **condizione di eliminazione combinatoria**: il nume
 
 > [!question] Domanda tipica d'esame — Eliminazione matematica
 > **D:** Come si usa Max-Flow per determinare se un team $z$ è matematicamente eliminato nel baseball?
-> **R:** Si costruisce una rete con: nodi-partita $g_{xy}$ per ogni coppia di team $x,y \neq z$ (con arco $s \to g_{xy}$ di capacità $r_{xy}$ e archi $g_{xy} \to x$, $g_{xy} \to y$ di capacità $\infty$); nodi-team $x$ con arco $x \to t$ di capacità $w_z + r_z - w_x$. Il team $z$ non è eliminato se e solo se il Max-Flow satura tutti gli archi uscenti da $s$ (cioè il flusso massimo è $\sum_{x<y} r_{xy}$). Se il flusso non satura, il taglio minimo individua il sottoinsieme $T$ che certifica l'eliminazione.
+> **R:**
+> **Caso banale (da escludere prima).** Se esiste un team $x$ con $w_x > W^* = w_z + r_z$, $z$ è eliminato banalmente senza costruire alcuna rete: la capacità $x \to t$ pari a $W^* - w_x$ sarebbe negativa, quindi va verificato e scartato a priori.
+>
+> **Costruzione della rete.** Sorgente $s$, pozzo $t$; un nodo-partita $g_{xy}$ per ogni coppia $x,y \in S' = S\setminus\{z\}$ con $r_{xy}>0$, con arco $s \to g_{xy}$ di capacità $r_{xy}$ e archi $g_{xy}\to x$, $g_{xy}\to y$ di capacità $\infty$; un nodo-team $x$ per ogni $x\in S'$ con arco $x \to t$ di capacità $W^*-w_x$.
+>
+> **Criterio.** $z$ non è eliminato se e solo se il Max-Flow satura tutti gli archi uscenti da $s$, cioè il flusso massimo vale $\sum_{x,y\in S'} r_{xy}$: per il Teorema di integralità ogni unità di flusso su $g_{xy}$ assegna quella partita a $x$ o a $y$ senza far mai superare a nessun team il tetto $W^*$.
+>
+> **Certificato di eliminazione.** Se il flusso non satura, il taglio minimo individua un sottoinsieme $T \subseteq S'$ tale che $w_z + r_z < \frac{1}{|T|}\left(\sum_{x\in T} w_x + \sum_{x,y\in T} r_{xy}\right)$: i team di $T$ devono complessivamente distribuirsi più vittorie di quante $z$ possa mai raggiungere.
 ## Riepilogo: costruzioni delle reti
 | Problema | Nodi speciali | Capacità archi | Soluzione letta da |
 |---|---|---|---|

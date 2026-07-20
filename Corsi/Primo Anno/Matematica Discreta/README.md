@@ -9,7 +9,7 @@ Ricevimento Brenti:
 - Saper risolvere ricorsioni lineari a coefficienti costanti.
 In tutti gli esami ci sarà una domanda di ogni **OPA**.
 
-**Se non rispondo a tutti gli OPA presenti nell'esame non posso passare l'esame**
+**Rispondere a tutti gli OPA presenti nell'esame è condizione necessaria per superarlo**
 **Gli errori di conto non sono un problema** interessano gli errori di concetto.
 
 Il programma aggiornato sta su un file sul teams. Vi è presente legenda per analizzare competenze esame:

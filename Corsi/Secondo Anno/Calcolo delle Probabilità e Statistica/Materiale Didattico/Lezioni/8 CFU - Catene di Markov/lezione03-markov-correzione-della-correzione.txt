@@ -1,0 +1,15 @@
+Nell'ultima slide del file di correzione (ci sono 2 slides in tutto) della lezione 3, 
+sul lato sinistro in rosso è scritto
+4+4q=6+3q
+e poi
+4q-3q=6-2
+q=4
+che non è accettabile.
+
+C'è un errore di calcolo, comunque ininfluente sulla conclusione finale. Infatti si ha
+4+4q=6+3q
+e poi
+4q-3q=6-4
+q=2
+che non è accettabile.
+

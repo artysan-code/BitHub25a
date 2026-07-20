@@ -1,0 +1,13 @@
+Non ricordo bene quanto scritto in aula, in ogni caso sembra che io abbia
+scambiato il ruolo degli stati 4 e 5, considerando lo stato 4 assorbente, 
+e il passaggio per lo stato 5. Avevo ottenuto risultati diversi.
+
+Precisamente avevo ottenuto ancora lambda1=lambda2 anche in questo caso
+(come uno poteva aspettarsi), ma lambda1=lambda2=1/3 e lambda3=2/3; in 
+effetti non sorprende che lambda3 fosse più grande nel caso studiato in 
+aula.
+
+Quindi, invece di correggere le soluzioni sul file (per avere la stessa
+cosa fatta in aula), ho preferito variare il testo dell'esercizio (vedete
+il file pdf in questa cartella con le correzioni in blu), in modo che la
+soluzione presentata sia corretta.

@@ -11,6 +11,4 @@ Aggiornamenti:
 In questa categoria si cerca di fornire spiegazioni sugli esercizi (la maggior parte) da saper svolgere con il professore. Verranno aggiunti ulteriori esercizi in futuro, se richiesti, con collegamenti alla teoria.
 
 ## Riassunti
-Sono stati eseguiti riassunti del libro con integrazioni del corso per permettere di comprendere in minor tempo i capitoli. Non sono affidabili a causa delle interpretazioni che ciascuno può avere. Consiglio di usarli per infarinature o per ripasso.
-
-[[1° Anno/Architettura/Riassunti/Sistemi Operativi/1 - Introduzione| ]]
+Sono stati eseguiti riassunti del libro con integrazioni del corso per permettere di comprendere in minor tempo i capitoli. Non sono affidabili a causa delle interpretazioni che ciascuno può avere. Sono da usare per infarinature o per ripasso.

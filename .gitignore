@@ -24,13 +24,11 @@ Thumbs.db
 *.swp
 *.swo
 
-# File specifici del progetto
+# Pianificazione e stato personale dello studente — restano fuori dalla repo.
+# Pattern generico: qualunque "Piano ....md" (di studi, esame, orale, ripasso...)
+# è coperto senza doverlo aggiungere qui volta per volta.
+Piano *.md
 Situazione Universitaria.md
-Piano di Studio.md
-Piano di Studi.md
-# Piani-esame personali per materia (checklist studio, come Piano di Studi)
-Piano Esame *.md
-Piano Orale *.md
 
 # Materiale di studio pesante / protetto — tenere solo in locale, mai su GitHub
 # (PDF di libri di testo, scansioni, estratti OCR grezzi: peso eccessivo + copyright)

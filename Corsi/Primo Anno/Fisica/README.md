@@ -14,4 +14,4 @@
 
 ## Note
 
-Nel piano di studi **2025-2026** Fisica è spostata al 3° anno (2° semestre, docente Camarri). In questa repository la cartella si trova sotto `Primo Anno/` perché l'insegnamento è stato seguito con un piano precedente.
+Nel piano di studi **2025-2026** Fisica è spostata al 3° anno (2° semestre, docente Camarri). In questa repository la cartella si trova sotto `Primo Anno/` perché nei piani di studio precedenti l'insegnamento era erogato al 1° anno.

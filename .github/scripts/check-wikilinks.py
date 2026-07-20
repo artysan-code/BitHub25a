@@ -24,10 +24,8 @@ EXCLUDE_BASENAMES = {"CLAUDE.md"}  # contengono wikilink-esempio, non reali
 # referenziano sono intenzionali e NON vanno segnalati come rotti. Pattern in
 # minuscolo, confrontati col nome target (senza estensione) via fnmatch.
 PERSONAL_NOTE_GLOBS = (
-    "piano esame *",            # .gitignore: Piano Esame *.md (checklist per materia)
+    "piano *",                  # .gitignore: Piano *.md (di studi, esame, orale...)
     "situazione universitaria",
-    "piano di studi",
-    "piano di studio",
 )
 
 FENCE_RE = re.compile(r"```.*?```", re.DOTALL)

@@ -28,4 +28,4 @@ Essendo $a=1$ si ha $b=\frac{1}{a^{2}}=\frac{1}{1^{2}}=1$ (i due triangoli sono 
 --- Fine lezione 15 ---
 
 ---
-Nota precedente: [[Distribuzione esponenziale]]. Nota successiva: da trascrivere (lezione 16). Indice del blocco: [[Cap 4 - Modelli Continui]].
+Nota precedente: [[Distribuzione esponenziale]]. Nota successiva: [[Quantili di una variabile aleatoria continua]]. Indice del blocco: [[Cap 4 - Modelli Continui]].

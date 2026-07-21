@@ -1,7 +1,7 @@
 ## Es1 — Probabilità discreta elementare
 Primo esercizio dello scritto. Il contesto è sempre concreto — **urne** con palline colorate o numerate, **dadi** o **monete** lanciati una o più volte — e la richiesta è una probabilità, una densità discreta, oppure una media/varianza di una variabile aleatoria di conteggio.
 
-Non c'è teoria da esporre: tutto l'esercizio consiste nel riconoscere **quale modello discreto** descrive l'esperimento e applicarne le formule. La teoria che sta sotto è quella di [[Variabili aleatorie discrete]] e delle distribuzioni notevoli; qui si tratta solo di scegliere la porta giusta e attraversarla in fretta.
+Non c'è teoria da esporre: tutto l'esercizio consiste nel riconoscere **quale modello discreto** descrive l'esperimento e applicarne le formule. La teoria che sta sotto è quella di [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]] e delle distribuzioni notevoli; qui si tratta solo di scegliere la porta giusta e attraversarla in fretta.
 ### Il ragionamento in tre domande
 Davanti a una traccia di Es1, prima di scrivere qualsiasi formula, rispondere in quest'ordine:
 
@@ -14,13 +14,13 @@ Davanti a una traccia di Es1, prima di scrivere qualsiasi formula, rispondere in
 > [!warning] La prima domanda è il bivio che decide tutto
 > **Con reinserimento** → la composizione dell'urna non cambia mai, le prove sono indipendenti e hanno tutte la stessa probabilità di successo → **binomiale** se conti i successi, **geometrica** o **binomiale negativa** se conti quante prove servono.
 >
-> **Senza reinserimento** → ogni estrazione modifica l'urna, le prove sono dipendenti → **ipergeometrica**, oppure catena di condizionate $P(A_1)P(A_2|A_1)P(A_3|A_1\cap A_2)$ con la [[Cap 2 - Introduzione alla probabilità#Regola del Prodotto|regola del prodotto]].
+> **Senza reinserimento** → ogni estrazione modifica l'urna, le prove sono dipendenti → **ipergeometrica**, oppure catena di condizionate $P(A_1)P(A_2|A_1)P(A_3|A_1\cap A_2)$ con la [[01 - Introduzione alla probabilità#Regola del Prodotto|regola del prodotto]].
 >
-> **In blocco** (tutte insieme, senza ordine) → è equivalente a "senza reinserimento", ma conviene contare direttamente i sottoinsiemi con $\binom{n}{k}$: vedi [[Cap 2 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
+> **In blocco** (tutte insieme, senza ordine) → è equivalente a "senza reinserimento", ma conviene contare direttamente i sottoinsiemi con $\binom{n}{k}$: vedi [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
 
 Il lancio ripetuto di dadi e monete è **sempre** con reinserimento: il dado non si consuma, ogni lancio riparte da zero.
 
-Per il confronto diretto tra i due schemi sullo stesso esercizio, la nota di teoria ha un esempio apposta: [[Distribuzioni binomiale e ipergeometrica#Esempio: confronto binomiale / ipergeometrica|confronto binomiale / ipergeometrica]].
+Per il confronto diretto tra i due schemi sullo stesso esercizio, la nota di teoria ha un esempio apposta: [[02 - Modelli discreti#Esempio: confronto binomiale / ipergeometrica|confronto binomiale / ipergeometrica]].
 ### Distribuzioni discrete da avere a memoria
 
 | Distribuzione | Quando | Densità | Media | Varianza |
@@ -33,24 +33,24 @@ Per il confronto diretto tra i due schemi sullo stesso esercizio, la nota di teo
 | **Multinomiale** | $n$ prove indipendenti con **più di due** esiti | $\dfrac{n!}{k_1!\cdots k_m!}p_1^{k_1}\cdots p_m^{k_m}$ | — | — |
 | **Poisson**$(\lambda)$ | conteggi rari; compare più spesso in Es3 | $\dfrac{\lambda^k}{k!}e^{-\lambda}$ | $\lambda$ | $\lambda$ |
 
-Costruzione e dimostrazioni: [[Distribuzioni binomiale e ipergeometrica]], [[Distribuzione geometrica]], [[Distribuzione binomiale negativa]], [[Distribuzione multinomiale]], [[Distribuzioni uniforme discreta e di Poisson]].
+Costruzione e dimostrazioni: [[02 - Modelli discreti#Distribuzioni binomiale e ipergeometrica|Distribuzioni binomiale e ipergeometrica]], [[02 - Modelli discreti#Distribuzione geometrica|Distribuzione geometrica]], [[02 - Modelli discreti#Distribuzione binomiale negativa|Distribuzione binomiale negativa]], [[02 - Modelli discreti#Distribuzione multinomiale|Distribuzione multinomiale]], [[02 - Modelli discreti#Distribuzioni uniforme discreta e di Poisson|Distribuzioni uniforme discreta e di Poisson]].
 
 > [!warning] Traslata o no: è la trappola più costosa della tabella
 > Le versioni **traslate** contano il **numero di prove** e partono da $k=1$ (o $k=r$); le versioni non traslate contano il **numero di insuccessi prima** del successo e partono da $k=0$.
 >
-> La differenza sulla media è tra $\frac{1}{p}$ e $\frac{1-p}{p}$ — cioè esattamente una prova, quella riuscita. Macci nelle sue soluzioni scrive esplicitamente *"binomiale negativa traslata"*, e nella nota di teoria le due versioni sono costruite in parallelo come $X$ e $Y$: vedi [[Distribuzione binomiale negativa#Calcolo delle densità discrete di $X$ e $Y$|densità di X e Y]].
+> La differenza sulla media è tra $\frac{1}{p}$ e $\frac{1-p}{p}$ — cioè esattamente una prova, quella riuscita. Macci nelle sue soluzioni scrive esplicitamente *"binomiale negativa traslata"*, e nella nota di teoria le due versioni sono costruite in parallelo come $X$ e $Y$: vedi [[02 - Modelli discreti#Calcolo delle densità discrete di $X$ e $Y$|densità di X e Y]].
 
 > [!info] Media e varianza non sono ancora negli appunti di teoria
-> Le note di [[Cap 3 - Modelli Discreti]] costruiscono le densità ma non la **speranza matematica**, che il prof introduce più avanti nel corso. Finché quelle note non arrivano, la tabella qui sopra è l'unica fonte: le formule sono comunque quelle standard e coincidono con i risultati dei cenni alle soluzioni.
+> Le note di [[02 - Modelli discreti]] costruiscono le densità ma non la **speranza matematica**, che il prof introduce più avanti nel corso. Finché quelle note non arrivano, la tabella qui sopra è l'unica fonte: le formule sono comunque quelle standard e coincidono con i risultati dei cenni alle soluzioni.
 
 ### Le serie che chiudono il conto
 Quando la domanda riguarda un evento su **infinite** prove — «esce testa per la prima volta a un lancio pari», «il procedimento si ripete un numero pari di volte» — non c'è nessuna formula da tabella da applicare: la risposta è una **serie geometrica** che devi costruire tu.
 
 $$\sum_{k\ge h}r^{k}=\frac{r^{h}}{1-r}\qquad (|r|<1)$$
 
-È la formula dimostrata in [[Distribuzione geometrica#Formula della serie geometrica|serie geometrica]]. Il punto delicato non è la formula, è **da dove parte l'indice $h$**: va letta la richiesta, scritto l'evento come unione disgiunta $\bigcup_k\{X=\dots\}$, e solo dopo sommato.
+È la formula dimostrata in [[02 - Modelli discreti#Formula della serie geometrica|serie geometrica]]. Il punto delicato non è la formula, è **da dove parte l'indice $h$**: va letta la richiesta, scritto l'evento come unione disgiunta $\bigcup_k\{X=\dots\}$, e solo dopo sommato.
 
-Se invece la domanda è del tipo «servono almeno $j$ prove», esiste già pronta la formula della coda, $P(Y\ge j)=(1-p)^{j-1}$ per la geometrica traslata: [[Distribuzione geometrica#Formula per la "coda" di una v.a. geometrica (e per la traslata)|formula della coda]].
+Se invece la domanda è del tipo «servono almeno $j$ prove», esiste già pronta la formula della coda, $P(Y\ge j)=(1-p)^{j-1}$ per la geometrica traslata: [[02 - Modelli discreti#Formula per la "coda" di una v.a. geometrica (e per la traslata)|formula della coda]].
 ### Esercizi svolti — formato 2025-2026
 #### Binomiale — appello del 6 Febbraio 2026
 Si lancia tre volte un dado equo. Calcolare la probabilità che il numero 4 esca almeno due volte.
@@ -89,7 +89,7 @@ Un'urna ha 4 palline bianche e 4 nere. Si estraggono 3 palline, una alla volta e
 
 **Svolgimento**
 
-Senza reinserimento e con due soli tipi di oggetto: $X\sim\text{Ipergeometrica}$ con $N=8$, $K=4$, $n=3$ — la costruzione è in [[Distribuzioni binomiale e ipergeometrica#Caso 2): distribuzione ipergeometrica|caso ipergeometrico]].
+Senza reinserimento e con due soli tipi di oggetto: $X\sim\text{Ipergeometrica}$ con $N=8$, $K=4$, $n=3$ — la costruzione è in [[02 - Modelli discreti#Caso 2): distribuzione ipergeometrica|caso ipergeometrico]].
 
 **D1)** I due casi (tutte bianche, tutte nere) sono disgiunti e si sommano:
 
@@ -112,7 +112,7 @@ Un'urna ha 9 palline bianche e 18 nere. Si estraggono palline una alla volta **c
 
 **Svolgimento**
 
-Con reinserimento le prove sono indipendenti, con $p=P(\text{bianca})=\frac{9}{27}=\frac{1}{3}$ costante. La variabile conta **quante prove servono** per arrivare all'$r$-esimo successo con $r=2$: è la binomiale negativa traslata, cioè la geometrica generalizzata a più successi ([[Distribuzione binomiale negativa#Caso $r=1$: recupero della geometrica e della geometrica traslata|con $r=1$ si ricade nella geometrica]]).
+Con reinserimento le prove sono indipendenti, con $p=P(\text{bianca})=\frac{9}{27}=\frac{1}{3}$ costante. La variabile conta **quante prove servono** per arrivare all'$r$-esimo successo con $r=2$: è la binomiale negativa traslata, cioè la geometrica generalizzata a più successi ([[02 - Modelli discreti#Caso $r=1$: recupero della geometrica e della geometrica traslata|con $r=1$ si ricade nella geometrica]]).
 
 $$E[X]=\frac{r}{p}=\frac{2}{1/3}=6$$
 
@@ -146,7 +146,7 @@ $$\textbf{D1)}\quad \frac{\binom{2}{2}\binom{4}{1}}{\binom{6}{3}}=\frac{4}{20}=\
 
 In D1 il terzo posto è libero fra le 4 palline non gialle; in D2 è vincolato a essere rossa, e infatti compare anche $\binom{2}{0}$ per le bianche — che sembra superfluo ma tiene la formula leggibile.
 
-Lo stesso esercizio svolto **sia con sia senza reinserimento**, con il confronto tra i due metodi, è in [[Distribuzione multinomiale#Esempio: urna con tre colori (con e senza reinserimento)|urna con tre colori]].
+Lo stesso esercizio svolto **sia con sia senza reinserimento**, con il confronto tra i due metodi, è in [[02 - Modelli discreti#Esempio: urna con tre colori (con e senza reinserimento)|urna con tre colori]].
 
 > [!info] Convenzione del corso
 > Quando la traccia dice «vengono estratte 2 rosse», sottintende sempre **esattamente** 2 e **in un qualsiasi ordine**, salvo indicazione contraria. Se invece elenca una sequenza fra parentesi, l'ordine è fissato.
@@ -170,7 +170,7 @@ Anche il primo esercizio può contenere una condizionata — non è materiale es
 
 $$P(E|X=3)=\frac{P(E\cap\{X=3\})}{P(X=3)}=\frac{P(E)}{P(X=3)}=\frac{(1/6)^3}{(1/2)^3}=\frac{8}{216}=\frac{1}{27}$$
 
-Il riconoscimento dell'inclusione $E\subset\{X=3\}$ è la mossa che semplifica: è la stessa usata negli esercizi di [[Cap 2 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|Cap 2]].
+Il riconoscimento dell'inclusione $E\subset\{X=3\}$ è la mossa che semplifica: è la stessa usata negli esercizi di [[01 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|Cap 2]].
 #### Parametro simbolico ed estrazione in blocco — simulazione 2019-2020
 Un'urna ha $n$ palline numerate da 1 a $n$. Si estraggono 2 palline **in blocco**.
 
@@ -206,8 +206,8 @@ $$P(\max=k)=\frac{k-1}{n(n-1)/2}=\frac{2(k-1)}{n(n-1)}$$
 
 - **Traslata vs non traslata**: vedi il callout nella tabella. È l'errore che costa più punti perché il risultato resta plausibile.
 ### Collegamenti
-- Teoria di base: [[Variabili aleatorie discrete]], [[Cap 2 - Introduzione alla probabilità#Cenni di calcolo combinatorio|calcolo combinatorio]], [[Cap 2 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
+- Teoria di base: [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]], [[01 - Introduzione alla probabilità#Cenni di calcolo combinatorio|calcolo combinatorio]], [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
 
-- Distribuzioni: [[Distribuzioni binomiale e ipergeometrica]], [[Distribuzione geometrica]], [[Distribuzione binomiale negativa]], [[Distribuzione multinomiale]], [[Distribuzioni uniforme discreta e di Poisson]].
+- Distribuzioni: [[02 - Modelli discreti#Distribuzioni binomiale e ipergeometrica|Distribuzioni binomiale e ipergeometrica]], [[02 - Modelli discreti#Distribuzione geometrica|Distribuzione geometrica]], [[02 - Modelli discreti#Distribuzione binomiale negativa|Distribuzione binomiale negativa]], [[02 - Modelli discreti#Distribuzione multinomiale|Distribuzione multinomiale]], [[02 - Modelli discreti#Distribuzioni uniforme discreta e di Poisson|Distribuzioni uniforme discreta e di Poisson]].
 
 - Slot vicini: [[Es2 - Probabilità condizionata]] quando l'esperimento ha due fasi, [[Es3 - Densità congiunta discreta]] che riusa le stesse distribuzioni su due variabili.

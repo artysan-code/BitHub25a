@@ -7,6 +7,8 @@ Appunti sui **modelli continui** del corso (lezioni 15-...), organizzati nelle s
 5. [[04 - Modelli continui#Quantili di una variabile aleatoria continua|Quantili di una variabile aleatoria continua]] — quantile di ordine $\alpha$ e mediana, con esempi per uniforme ed esponenziale.
 6. [[04 - Modelli continui#Trasformazioni di variabili aleatorie continue|Trasformazioni di variabili aleatorie continue]] — densità di $Y=f(X)$ nel caso di $f$ affine non costante.
 7. [[04 - Modelli continui#Trasformazioni monotone di variabili aleatorie continue|Trasformazioni monotone di variabili aleatorie continue]] — procedimento caso per caso per $f$ monotona, con esercizi.
+8. [[04 - Modelli continui#Altri esercizi sulle trasformazioni monotone|Altri esercizi sulle trasformazioni monotone]] — $Y=\log X$ (con una probabilità in quattro modi), $Y=e^{X}$, $Y=\log(1+X)$ e la distribuzione di Cauchy.
+9. [[04 - Modelli continui#Trasformazioni non monotone di variabili aleatorie continue|Trasformazioni non monotone di variabili aleatorie continue]] — metodo della controimmagine per $f$ non monotona, con esercizi e la distribuzione di Laplace.
 ## Nota sulla struttura
 Il prof tratta questi argomenti come un unico capitolo (Capitolo 4). I marcatori `--- Fine lezione NN ---` all'interno delle sezioni conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Lezioni/6 CFU/`. Blocco successivo a [[02 - Modelli discreti]] e a [[03 - Speranza matematica e momenti]].
 
@@ -246,3 +248,41 @@ $f(x)=x^{\beta}$ è crescente su $(0,1)$, quindi $Y$ assume valori in $(f(0),f(1
 $g(x)=x^{-\beta}$ è decrescente su $(0,1)$, quindi $Z$ assume valori in $(g(1),g(0))=(1^{-\beta},0^{-\beta})=(1,\infty)$. Allora $F_{Z}(z)=0$ per $z\leq 1$, e per $z>1$ (quindi $z^{-1/\beta}\in(0,1)$) $$F_{Z}(z)=P(X^{-\beta}\leq z)=P\left( X^{\beta}\geq \tfrac{1}{z} \right)=P(X\geq z^{-1/\beta})=\int_{z^{-1/\beta}}^{1}\alpha x^{\alpha-1}\,dx=[x^{\alpha}]_{z^{-1/\beta}}^{1}=1-(z^{-1/\beta})^{\alpha}=1-z^{-\alpha/\beta}$$Derivando ($F_{Z}$ non derivabile in $z=1$): $$f_{Z}(z)=\frac{\alpha}{\beta}z^{-\frac{\alpha}{\beta}-1}1_{(1,\infty)}(z)=\begin{bmatrix}\frac{\alpha}{\beta}z^{-\left( 1+\frac{\alpha}{\beta} \right)}1_{(1,\infty)}(z)\end{bmatrix}$$Verifica: $\int_{1}^{\infty}\frac{\alpha}{\beta}z^{-(1+\frac{\alpha}{\beta})}\,dz=\frac{\alpha}{\beta}\left[ \frac{z^{-\frac{\alpha}{\beta}}}{-\frac{\alpha}{\beta}} \right]_{1}^{\infty}=[-z^{-\frac{\alpha}{\beta}}]_{1}^{\infty}=-0+1=1$.
 
 --- Fine lezione 16 ---
+
+## Altri esercizi sulle trasformazioni monotone
+Quattro esercizi che consolidano il [[04 - Modelli continui#Trasformazioni monotone di variabili aleatorie continue|procedimento caso per caso]] per $f$ monotona (o monotona su un sottoinsieme $S$ con $P(X\in S)=1$), inclusi due casi che portano a distribuzioni notevoli.
+### Esercizio ($Y=\log X$, con una probabilità in quattro modi)
+Sia $X$ con densità continua $f_{X}(x)=c\,x^{-2}1_{(1,e^{2})}(x)$, $c>0$. Trovare $c$, la densità di $Y=\log X$ e $P(1\leq Y\leq 3)$.
+**Costante.** Da $\int f_{X}=1$: $$1=c\int_{1}^{e^{2}}x^{-2}\,dx=c\left[ -\frac{1}{x} \right]_{1}^{e^{2}}=c\left( -\frac{1}{e^{2}}+1 \right)=c\frac{e^{2}-1}{e^{2}}\implies c=\frac{e^{2}}{e^{2}-1}$$
+**Densità di $Y$.** $f(x)=\log x$ è crescente su $(1,e^{2})$, quindi $Y$ assume valori in $(\log 1,\log e^{2})=(0,2)$. Per $y\in(0,2)$ (quindi $e^{y}\in(1,e^{2})$) $$F_{Y}(y)=P(\log X\leq y)=P(X\leq e^{y})=\int_{1}^{e^{y}}\frac{e^{2}}{e^{2}-1}x^{-2}\,dx=\frac{e^{2}}{e^{2}-1}\left[ -\frac{1}{x} \right]_{1}^{e^{y}}=\frac{e^{2}}{e^{2}-1}(1-e^{-y})$$Derivando ($F_{Y}=0$ per $y\leq 0$, $=1$ per $y\geq 2$): $$f_{Y}(y)=\begin{bmatrix}\frac{e^{2}}{e^{2}-1}e^{-y}1_{(0,2)}(y)\end{bmatrix}$$(in particolare $F_{Y}(2)=\frac{e^{2}}{e^{2}-1}(1-e^{-2})=\frac{e^{2}-1}{e^{2}-1}=1$, ok).
+**$P(1\leq Y\leq 3)=\frac{1}{e+1}$, in quattro modi.**
+- **1° (da $f_{Y}$)**: $$P(1\leq Y\leq 3)=\int_{1}^{3}\frac{e^{2}}{e^{2}-1}e^{-y}1_{(0,2)}(y)\,dy=\frac{e^{2}}{e^{2}-1}\int_{1}^{2}e^{-y}\,dy=\frac{e^{2}}{e^{2}-1}(e^{-1}-e^{-2})=\frac{e^{2}}{e^{2}-1}\cdot\frac{e-1}{e^{2}}=\frac{e-1}{e^{2}-1}=\frac{1}{e+1}$$
+- **2° (da $F_{Y}$)**: $P(1\leq Y\leq 3)=F_{Y}(3)-F_{Y}(1)=1-\frac{e^{2}}{e^{2}-1}(1-e^{-1})=1-\frac{e(e-1)}{e^{2}-1}=1-\frac{e}{e+1}=\frac{1}{e+1}$.
+- **3° (via $X$)**: $P(1\leq \log X\leq 3)=P(e\leq X\leq e^{3})\underset{X\leq e^{2}}{=}P(e\leq X\leq e^{2})=\frac{e^{2}}{e^{2}-1}\int_{e}^{e^{2}}x^{-2}\,dx=\frac{e^{2}}{e^{2}-1}\left( \frac{1}{e}-\frac{1}{e^{2}} \right)=\frac{e-1}{e^{2}-1}=\frac{1}{e+1}$.
+- **4° (via $F_{X}$)**: $P(e\leq X\leq e^{2})=F_{X}(e^{2})-F_{X}(e)$, che dà gli stessi calcoli del 3° modo, cioè $\frac{1}{e+1}$.
+
+### Esercizio ($Y=e^{X}$: da una densità esponenziale a $U(1,e)$)
+Sia $X$ con $f_{X}(x)=\frac{e^{x}}{e-1}1_{(0,1)}(x)$. Trovare la densità di $Y=e^{X}$ e calcolare $P\left( \frac{3}{2}\leq Y\leq 2 \right)$ e $P\left( 0\leq Y\leq \frac{e}{2} \right)$.
+$f(x)=e^{x}$ è crescente su $(0,1)$, quindi $Y$ assume valori in $(e^{0},e^{1})=(1,e)$. Per $y\in(1,e)$ (quindi $\log y\in(0,1)$) $$F_{Y}(y)=P(e^{X}\leq y)=P(X\leq \log y)=\int_{0}^{\log y}\frac{e^{x}}{e-1}\,dx=\frac{1}{e-1}[e^{x}]_{0}^{\log y}=\frac{y-1}{e-1}$$Derivando: $$f_{Y}(y)=\frac{1}{e-1}1_{(1,e)}(y)\implies Y\sim U(1,e)$$Allora, ricordando che $Y$ assume valori in $(1,e)$: $$P\left( \tfrac{3}{2}\leq Y\leq 2 \right)=\int_{3/2}^{2}\frac{1}{e-1}\,dy=\frac{2-\frac{3}{2}}{e-1}=\begin{bmatrix}\frac{1}{2(e-1)}\end{bmatrix}$$ $$P\left( 0\leq Y\leq \tfrac{e}{2} \right)=\int_{1}^{e/2}\frac{1}{e-1}\,dy=\frac{\frac{e}{2}-1}{e-1}=\begin{bmatrix}\frac{\frac{e}{2}-1}{e-1}\end{bmatrix}$$(nel secondo si è usato $Y>1$ con probabilità 1, quindi $P(0\leq Y\leq \frac{e}{2})=P(1<Y\leq \frac{e}{2})$).
+### Esercizio ($Y=\log(1+X)$ con densità $|x|$)
+Sia $X$ con densità continua $f_{X}(x)=|x|\,1_{(-1,1)}(x)$. Trovare la densità di $Y=\log(1+X)$.
+$f(x)=\log(1+x)$ è crescente su $(-1,1)$ (composizione di funzioni crescenti), quindi $Y$ assume valori in $(f(-1),f(1))=(\log 0,\log 2)=(-\infty,\log 2)$. Per $y<\log 2$ (quindi $e^{y}-1<1$) $$F_{Y}(y)=P(\log(1+X)\leq y)=P(1+X\leq e^{y})=P(X\leq e^{y}-1)=\int_{-1}^{e^{y}-1}|x|\,dx$$e qui ci sono **due sottocasi** (perché $|x|$ cambia formula in $x=0$):
+- **$e^{y}-1\leq 0\iff y\leq 0$**: $\displaystyle\int_{-1}^{e^{y}-1}(-x)\,dx=\left[ -\frac{x^{2}}{2} \right]_{-1}^{e^{y}-1}=\frac{1-(e^{y}-1)^{2}}{2}$;
+- **$e^{y}-1>0\iff 0<y<\log 2$**: $\displaystyle\int_{-1}^{0}(-x)\,dx+\int_{0}^{e^{y}-1}x\,dx=\frac{1}{2}+\frac{(e^{y}-1)^{2}}{2}=\frac{1+(e^{y}-1)^{2}}{2}$.
+
+Quindi $$F_{Y}(y)=\begin{cases}
+\dfrac{1-(e^{y}-1)^{2}}{2} & y<0 \\[2mm]
+\dfrac{1+(e^{y}-1)^{2}}{2} & 0<y<\log 2 \\[1mm]
+1 & y\geq \log 2
+\end{cases}$$che è una funzione **continua a tratti** e si raccorda per continuità in $y=0$ e $y=\log 2$. Derivando: $$f_{Y}(y)=\begin{cases}
+-(e^{y}-1)e^{y} & y<0 \\
+(e^{y}-1)e^{y} & 0<y<\log 2 \\
+0 & y\geq \log 2
+\end{cases}=|e^{y}-1|\,e^{y}\,1_{(-\infty,\log 2)}(y)$$
+### Esercizio ($Y=\tan X$: la distribuzione di Cauchy)
+Sia $X\sim U\left( -\frac{\pi}{2},\frac{\pi}{2} \right)$. Trovare la densità di $Y=\tan X$.
+$f(x)=\tan x$ **non** è monotona globalmente, ma è crescente su $S=\left( -\frac{\pi}{2},\frac{\pi}{2} \right)$, con $P(X\in S)=1$; la sua funzione inversa su tale intervallo è $g(x)=\arctan x$. Allora $Y$ assume valori in $\left( f\left( -\frac{\pi}{2} \right),f\left( \frac{\pi}{2} \right) \right)=(-\infty,\infty)$: in questo caso **non** c'è un sottointervallo fuori dal quale $F_{Y}=0$ oppure $F_{Y}=1$. Per ogni $y\in \mathbb{R}$ (quindi $\arctan y\in\left( -\frac{\pi}{2},\frac{\pi}{2} \right)$) $$F_{Y}(y)=P(\tan X\leq y)=P(X\leq \arctan y)=\int_{-\pi/2}^{\arctan y}\frac{1}{\frac{\pi}{2}-\left( -\frac{\pi}{2} \right)}\,dx=\frac{1}{\pi}\left( \arctan y+\frac{\pi}{2} \right)$$($F_{Y}$ è continua, $F_{Y}(y)\to 0$ per $y\to-\infty$ e $\to 1$ per $y\to+\infty$, ok). Derivando: $$\begin{bmatrix}f_{Y}(y)=\frac{1}{\pi}\cdot\frac{1}{1+y^{2}}\end{bmatrix}$$
+> [!quote] Distribuzione di Cauchy
+> La distribuzione di $Y$ è detta **distribuzione di Cauchy**: è un esempio di v.a. continua che **non ha media finita** (cosa significhi nel continuo si vedrà più avanti). Dall'espressione analitica si vede che $f_{Y}$ è una funzione **pari** ($f_{Y}(y)=f_{Y}(-y)$).
+
+--- Fine parte sulle trasformazioni monotone (lezione 17) ---

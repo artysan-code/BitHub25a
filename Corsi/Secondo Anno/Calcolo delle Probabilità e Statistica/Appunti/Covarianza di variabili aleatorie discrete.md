@@ -62,4 +62,4 @@ P_{X_{2}}(2)=P_{\underline{X}}(0,2)=\frac{1}{5}
 --- Fine lezione 13 ---
 
 ---
-Nota precedente: [[Varianza e momenti di una variabile aleatoria discreta]]. Nota successiva: da trascrivere (lezione 14, rette di regressione). Indice del blocco: [[Speranza matematica e momenti]].
+Nota precedente: [[Varianza e momenti di una variabile aleatoria discreta]]. Nota successiva: [[Indipendenza e covarianza]]. Indice del blocco: [[Speranza matematica e momenti]].

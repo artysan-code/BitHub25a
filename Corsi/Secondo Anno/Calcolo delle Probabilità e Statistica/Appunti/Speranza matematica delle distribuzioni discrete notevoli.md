@@ -65,4 +65,4 @@ I valori ottenuti $\mathbb{E}[Y]=\frac{r}{p}$ e $\mathbb{E}[X]=r\left( \frac{1}{
 --- Fine parte sulle speranze notevoli (lezione 13, pp. 1-9) ---
 
 ---
-Nota precedente: [[Speranza matematica di una variabile aleatoria discreta]]. Indice del blocco: [[Speranza matematica e momenti]].
+Nota precedente: [[Speranza matematica di una variabile aleatoria discreta]]. Nota successiva: [[Varianza e momenti di una variabile aleatoria discreta]]. Indice del blocco: [[Speranza matematica e momenti]].

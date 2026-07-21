@@ -5,5 +5,6 @@ Indice del secondo blocco del corso (lezioni 12-14): valore medio, momenti, vari
 3. [[Varianza e momenti di una variabile aleatoria discreta]] — momenti e momento centrato, varianza, scarto quadratico medio, proprietà, disuguaglianza di Chebyshev e formule di calcolo.
 4. [[Covarianza di variabili aleatorie discrete]] — varianza di una somma, definizione di covarianza, formule, interpretazione geometrica ed esercizio riassuntivo.
 5. [[Indipendenza e covarianza]] — indipendenza $\implies$ covarianza nulla (e varianza di una somma di indipendenti), con controesempio per il viceversa.
+6. [[Varianza delle distribuzioni discrete notevoli]] — $\text{Var}[X]$ per bernoulliana, binomiale, ipergeometrica, Poisson, geometrica e binomiale negativa, con confronto tra estrazioni con e senza reinserimento.
 ## Nota sulla struttura
 Blocco successivo a [[Cap 3 - Modelli Discreti]], che raccoglie i modelli discreti. I marcatori `--- Fine lezione NN ---` conservano la corrispondenza con i PDF in `Materiale Didattico/Lezioni/6 CFU/`.

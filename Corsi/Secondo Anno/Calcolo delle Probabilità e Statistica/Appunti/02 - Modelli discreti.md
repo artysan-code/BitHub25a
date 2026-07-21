@@ -14,7 +14,7 @@ Il prof tratta questi argomenti come un unico capitolo (Capitolo 3). I marcatori
 
 ## Variabili aleatorie discrete
 Nozioni generali sulle variabili aleatorie: definizione, funzione di distribuzione, densità discreta.
-In questo capitolo tratteremo essenzialmente Variabili Aleatorie Discrete (spesso definite su spazi di probabilità ($\ohm,\mathcal{A},P$) con $r$ discreto, cioè finito o numerabile).
+In questo capitolo tratteremo essenzialmente Variabili Aleatorie Discrete (spesso definite su [[01 - Introduzione alla probabilità#Fenomeni aleatori e spazio di probabilità|spazi di probabilità]] ($\ohm,\mathcal{A},P$) con $r$ discreto, cioè finito o numerabile).
 
 In ogni caso nella parte iniziale di questa lezione diremo alcune cose sulle variabili aleatorie in generale. Spesso useremo l'abbreviazione "v.a.".
 
@@ -139,10 +139,10 @@ Quindi
   --- vedere terzo grafico pag 16 pdf lezione05 ---
 #### Schemi Successo-Fallimento su un numero finito di prove
 Si tratta di una premessa comune per due casi che vedremo nella prossima lezione:
-1) **Distribuzione Binomiale** (caso di $n$ prove indipendenti, tutte con la stessa probabilità di successo $P$)
-2) **Distribuzione Ipergeometrica** (caso di $n$ estrazioni casuali di un oggetto alle volte senza reinserimento (un caso particolare senza avere prove indipendenti)) ^8912f8
+1) **[[02 - Modelli discreti#Caso 1): distribuzione binomiale|Distribuzione Binomiale]]** (caso di $n$ prove indipendenti, tutte con la stessa probabilità di successo $P$)
+2) **[[02 - Modelli discreti#Caso 2): distribuzione ipergeometrica|Distribuzione Ipergeometrica]]** (caso di $n$ estrazioni casuali di un oggetto alle volte senza reinserimento (un caso particolare senza avere prove indipendenti)) ^8912f8
 ##### Osservazione
-Nel caso [[#^8912f8|2)]] otterremo nuovamente le formule delle estrazioni casuali in blocco già viste in passato
+Nel caso [[#^8912f8|2)]] otterremo nuovamente le formule delle [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni casuali in blocco]] già viste in passato
 
 
 In entrambi i casi si vuole studiare la v.a. $X$ che conta il numero di successi.
@@ -153,9 +153,9 @@ ecc.
 
 In entrambi i casi conviene fare riferimento all'insieme $\ohm$ così definito: $$\ohm=\underset{n\text{ volte}}{\underbrace{\{0,1\}\times\dots\times\{0,1\}}}= \{w=(w_{1},\dots,w_{n}):w_{1},\dots,w_{n}\in\{0,1\}\}$$Ogni punto $w\in\ohm$ ???? i possibili risultati (successi o fallimenti) nelle $n$ prove.
 Sceglieremo $\mathcal{A}=P(\ohm)$.
-Avremo due diverse misure di probabilità $P$ per i casi 1) e 2).
+Avremo due diverse [[01 - Introduzione alla probabilità#Definizione (Misure di Probabilità)|misure di probabilità]] $P$ per i casi 1) e 2).
 ##### Osservazione
-- Per $n=1$ abbiamo ovviamente una distribuzione Bernoulliana
+- Per $n=1$ abbiamo ovviamente una [[02 - Modelli discreti#Distribuzione Bernoulliana|distribuzione Bernoulliana]]
 - In generale si dovrà avere $\delta_{X}=\{0,1,\dots,n\}$ e questo è quel che accadrà.
 
 
@@ -286,7 +286,7 @@ Talvolta si scrive $X\sim BIN(n,p)$.
 ##### Digressione: perché si dice che $0^{0}=1$
 La giustificazione data a lezione (lavagna aggiuntiva) è un calcolo di limite: $$\lim_{x\to 0^{+}}x^{x}=\lim_{x\to 0^{+}}e^{x\log x}\overset{(1)}{=}e^{\overset{(*)}{\overbrace{\lim_{x\to 0^{+}}x\log x}}}=e^{0}=1$$dove in $(1)$ si è usato che $f(x)=e^{x}$ è una funzione continua, e dove il limite $(*)$ si calcola con il teorema di de l'Hôpital: $$(*)=\lim_{x\to 0^{+}}\frac{\log x}{1/x}=\lim_{x\to 0^{+}}\frac{1/x}{-1/x^{2}}=\lim_{x\to 0^{+}}-\frac{x^{2}}{x}=\lim_{x\to 0^{+}}-x=0$$
 #### Caso 2): distribuzione ipergeometrica
-Supponiamo di avere $n_{1}$ oggetti di "tipo 1" e $n_{2}$ oggetti di "tipo 2". Si estraggono a caso $n$ oggetti (dove $n<n_{1}+n_{2}$), una alla volta e **senza** reinserimento: quindi *non* c'è indipendenza, a differenza del caso di estrazioni con reinserimento.
+Supponiamo di avere $n_{1}$ oggetti di "tipo 1" e $n_{2}$ oggetti di "tipo 2". Si estraggono a caso $n$ oggetti (dove $n<n_{1}+n_{2}$), una alla volta e **senza** reinserimento: quindi *non* c'è [[01 - Introduzione alla probabilità#Definizione (Indipendenza tra due eventi)|indipendenza]], a differenza del caso di estrazioni con reinserimento.
 La convenzione è: $$\begin{array}{l}
 \text{successo} & \longleftrightarrow & \text{"estrazione di un oggetto di tipo 1"} \\
 \text{fallimento} & \longleftrightarrow & \text{"estrazione di un oggetto di tipo 2"}
@@ -299,7 +299,7 @@ Quindi siamo nella condizione di dire che, per ogni $k\in\{0,1,\dots,n\}$, esist
 0 & \text{se }k>n_{1}\text{ oppure }n-k>n_{2} \\
 \frac{n_{1}}{n_{1}+n_{2}}\cdot\dots\cdot\frac{n_{1}-(k-1)}{n_{1}+n_{2}-(k-1)}\cdot\frac{n_{2}}{n_{1}+n_{2}-k}\cdot\dots\cdot\frac{n_{2}-(n-k-1)}{n_{1}+n_{2}-(n-1)} & \text{altrimenti}
 \end{cases}$$
-Il secondo caso si riscrive in termini di coefficienti binomiali: $$q_{k}=\frac{\frac{n_{1}!}{(n_{1}-k)!}\cdot\frac{n_{2}!}{(n_{2}-(n-k))!}}{\frac{(n_{1}+n_{2})!}{(n_{1}+n_{2}-n)!}}=\frac{\overset{}{\frac{n_{1}!}{k!(n_{1}-k)!}}k!\cdot \frac{n_{2}!}{(n-k)!(n_{2}-(n-k))!}(n-k)!}{\frac{(n_{1}+n_{2})!}{n!(n_{1}+n_{2}-n)!}n!}=\frac{\binom{n_{1}}{k}k!\binom{n_{2}}{n-k}(n-k)!}{\binom{n_{1}+n_{2}}{n}n!}=\frac{\binom{n_{1}}{k}\binom{n_{2}}{n-k}}{\binom{n_{1}+n_{2}}{n}\binom{n}{k}}$$
+Il secondo caso si riscrive in termini di [[01 - Introduzione alla probabilità#Cenni di calcolo combinatorio|coefficienti binomiali]]: $$q_{k}=\frac{\frac{n_{1}!}{(n_{1}-k)!}\cdot\frac{n_{2}!}{(n_{2}-(n-k))!}}{\frac{(n_{1}+n_{2})!}{(n_{1}+n_{2}-n)!}}=\frac{\overset{}{\frac{n_{1}!}{k!(n_{1}-k)!}}k!\cdot \frac{n_{2}!}{(n-k)!(n_{2}-(n-k))!}(n-k)!}{\frac{(n_{1}+n_{2})!}{n!(n_{1}+n_{2}-n)!}n!}=\frac{\binom{n_{1}}{k}k!\binom{n_{2}}{n-k}(n-k)!}{\binom{n_{1}+n_{2}}{n}n!}=\frac{\binom{n_{1}}{k}\binom{n_{2}}{n-k}}{\binom{n_{1}+n_{2}}{n}\binom{n}{k}}$$
 ##### Osservazione
 Questa formula si estende anche al caso $k>n_{1}$ e $n-k>n_{2}$ con la regola $\binom{a}{b}=0$ per $b>a$ (già incontrata nelle [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni casuali in blocco]]).
 In conclusione, con riferimento alla formula ($\diamondsuit$), si ha $$P_{X}(k)=\cancel{\binom{n}{k}}\frac{\binom{n_{1}}{k}\binom{n_{2}}{n-k}}{\binom{n_{1}+n_{2}}{n}\cancel{\binom{n}{k}}}=\begin{bmatrix}
@@ -332,7 +332,7 @@ Un'urna ha 3 palline bianche e 6 nere. Si estraggono a caso 4 palline, una alla 
 8/81 & k=3 \\
 1/81 & k=4
 \end{cases}$$(la somma fa 1).
-2) **Senza reinserimento**: $X$ è ipergeometrica con $n_{1}=3$, $n_{2}=6$, $n=4$, e per $k\in\{0,1,2,3,4\}$ $$P_{X}(k)=\frac{\binom{3}{k}\binom{6}{4-k}}{\binom{9}{4}}=\begin{cases}
+2) **Senza reinserimento**: $X$ è [[02 - Modelli discreti#Caso 2): distribuzione ipergeometrica|ipergeometrica]] con $n_{1}=3$, $n_{2}=6$, $n=4$, e per $k\in\{0,1,2,3,4\}$ $$P_{X}(k)=\frac{\binom{3}{k}\binom{6}{4-k}}{\binom{9}{4}}=\begin{cases}
 15/126 & k=0 \\
 60/126 & k=1 \\
 45/126 & k=2 \\
@@ -404,7 +404,7 @@ k_{1}\text{ volte }R_{1} \\
 k_{r}\text{ volte }R_{r}
 \end{pmatrix}=\#\{\text{sequenze con "}k_{1}\text{ volte }R_{1},\dots,k_{r}\text{ volte }R_{r}\text{"}\}\cdot p_{1}^{k_{1}}\cdot\dots\cdot p_{r}^{k_{r}}$$e si può verificare che il numero di tali sequenze vale $$\begin{bmatrix}
 \frac{n!}{k_{1}!\cdot\dots\cdot k_{r}!}
-\end{bmatrix}$$detto **coefficiente multinomiale** (per $r=2$ è un coefficiente binomiale).
+\end{bmatrix}$$detto **coefficiente multinomiale** (per $r=2$ è un [[01 - Introduzione alla probabilità#Cenni di calcolo combinatorio|coefficiente binomiale]]).
 ##### Osservazione (risultati equiprobabili)
 Se in ogni prova i risultati $R_{1},\dots,R_{r}$ sono equiprobabili, cioè $p_{1}=\dots=p_{r}=\frac{1}{r}$, si ha $$P\begin{pmatrix}
 k_{1}\text{ volte }R_{1} \\
@@ -446,11 +446,11 @@ Pensiamo a 6 risultati possibili tutti con probabilità $\frac{1}{6}$. Abbiamo l
 \end{array}$$La probabilità richiesta è $$4\cdot \frac{5}{1296}+6\cdot \frac{10}{1296}=\frac{20+60}{1296}=\frac{80}{1296}=\frac{5}{81}$$che è lo stesso risultato visto prima.
 
 ## Distribuzioni uniforme discreta e di Poisson
-Distribuzione uniforme discreta, distribuzione di Poisson e approssimazione poissoniana della binomiale.
+Distribuzione uniforme discreta, distribuzione di Poisson e approssimazione poissoniana della [[02 - Modelli discreti#Caso 1): distribuzione binomiale|binomiale]].
 #### Prossimi argomenti (altre distribuzioni discrete notevoli)
 - **Distribuzione uniforme discreta**
 - **Distribuzione di Poisson** (nome di un matematico francese)
-- **Distribuzione geometrica e distribuzioni collegate** (nelle prossime lezioni)
+- **[[02 - Modelli discreti#Distribuzione geometrica|Distribuzione geometrica]] e distribuzioni collegate** (nelle prossime lezioni)
 ##### Osservazione
 Spesso saranno definite a partire dall'espressione della distribuzione (o della densità discreta) senza fare riferimento a $(\ohm,\mathcal{A},P)$.
 #### Distribuzione uniforme discreta
@@ -490,7 +490,7 @@ Questo limite ha un interesse teorico che non approfondiremo. Al contrario c'è 
 ##### Esempio 1
 Sia $X\sim BIN\left( n=1000,p=\frac{3}{500} \right)$; calcolare $P(X\geq 5)$.
 (Si può pensare di fare riferimento a un'urna con 500 palline numerate da 1 a 500; si compiono 1000 estrazioni casuali **con** reinserimento e si vuole la probabilità di estrarre almeno 5 volte uno dei numeri 1, 2, 3.)
-Il valore esatto è $$P(X\geq 5)=\sum_{k=5}^{1000}\binom{1000}{k}\left( \frac{3}{500} \right)^{k}\left( 1-\frac{3}{500} \right)^{1000-k}=1-\sum_{k=0}^{4}\binom{1000}{k}\left( \frac{3}{500} \right)^{k}\left( 1-\frac{3}{500} \right)^{1000-k}$$ma non è semplice calcolarne un valore approssimato. Facciamo quindi riferimento all'approssimazione Poissoniana della binomiale: si ha $P_{X}(k)\approx P_{Z}(k)$ (per $k\geq 0$ intero) dove $Z\sim POISSON\left( \lambda=np=1000\cdot \frac{3}{500}=6 \right)$. Allora $$P(X\geq 5)=1-P(X\leq 4)=1-\sum_{k=0}^{4}P(X=k)\overset{\text{approx.}}{\approx}1-\sum_{k=0}^{4}\frac{6^{k}}{k!}e^{-6}=1-(1+6+18+36+54)e^{-6}=1-115e^{-6}$$
+Il valore esatto è $$P(X\geq 5)=\sum_{k=5}^{1000}\binom{1000}{k}\left( \frac{3}{500} \right)^{k}\left( 1-\frac{3}{500} \right)^{1000-k}=1-\sum_{k=0}^{4}\binom{1000}{k}\left( \frac{3}{500} \right)^{k}\left( 1-\frac{3}{500} \right)^{1000-k}$$ma non è semplice calcolarne un valore approssimato. Facciamo quindi riferimento all'[[02 - Modelli discreti#Approssimazione della binomiale con la Poisson|approssimazione Poissoniana della binomiale]]: si ha $P_{X}(k)\approx P_{Z}(k)$ (per $k\geq 0$ intero) dove $Z\sim POISSON\left( \lambda=np=1000\cdot \frac{3}{500}=6 \right)$. Allora $$P(X\geq 5)=1-P(X\leq 4)=1-\sum_{k=0}^{4}P(X=k)\overset{\text{approx.}}{\approx}1-\sum_{k=0}^{4}\frac{6^{k}}{k!}e^{-6}=1-(1+6+18+36+54)e^{-6}=1-115e^{-6}$$
 ##### Esempio 2
 Stessa urna dell'esempio precedente. Si estraggono 200 palline, una alla volta e **con** reinserimento. Calcolare la probabilità di estrarre al più 2 volte uno dei numeri 1, 2, 3, 4, 5, 6, 7.
 La probabilità richiesta è $P(Y\leq 2)$ dove $Y\sim BIN\left( n=200,p=\frac{7}{500} \right)$, cioè $P(Y\leq 2)=\sum_{k=0}^{2}\binom{200}{k}\left( \frac{7}{500} \right)^{k}\left( 1-\frac{7}{500} \right)^{200-k}$.
@@ -499,7 +499,7 @@ Si ha $P_{Y}(k)\approx P_{Z}(k)$ (per ogni $k\geq 0$ intero) dove $Z\sim POISSON
 --- Fine lezione 07 ---
 #### Esercizio teorico: un numero aleatorio di lanci (Poisson "assottigliata")
 > [!question] Esercizio segnalato dal prof come "teorico, un po' difficile"
-> È un risultato notevole: se il **numero di prove** è a sua volta aleatorio con distribuzione di Poisson, il numero di successi resta di Poisson, con parametro riscalato da $p$.
+> È un risultato notevole: se il **numero di prove** è a sua volta aleatorio con [[02 - Modelli discreti#Distribuzione di Poisson|distribuzione di Poisson]], il numero di successi resta di Poisson, con parametro riscalato da $p$.
 
 Sia $N\sim POISSON(\lambda)$ per qualche $\lambda>0$. Si lancia una moneta $N$ volte: per ogni lancio esce testa con probabilità $p\in(0,1)$ ed esce croce con probabilità $1-p$. Sia $X$ la v.a. che conta il numero di teste ottenute.
 1) Trovare la densità discreta di $X$.
@@ -570,7 +570,7 @@ Per ogni $h\geq 0$ intero e per ogni $r$ tale che $|r|<1$ (cioè $-1<r<1$) si ha
 ##### Dimostrazione
 Si ha $$\sum_{k=h}^{\infty}r^{k}=r^{h}+r^{h+1}+r^{h+2}+\dots\overset{(*)}{=}r^{h}(1+r+r^{2}+\dots)=?$$Inoltre si ha $1-r^{k}=(1-r)(1+r+r^{2}+\dots+r^{k-1})$ (basta fare i prodotti a secondo membro), da cui segue $$1+r+r^{2}+\dots+r^{k-1}=\frac{1-r^{k}}{1-r}\quad\underset{k\to\infty}{\longrightarrow}\quad \frac{1}{1-r}\quad\text{perché }|r|<1$$Allora, poiché la serie è il limite delle somme parziali, si ha $$\sum_{k=h}^{\infty}r^{k}\overset{(*)}{=}r^{h}\lim_{k\to\infty}(1+\dots+r^{k-1})=r^{h}\cdot \frac{1}{1-r}=\frac{r^{h}}{1-r}\qquad\Box$$
 #### Formula per la "coda" di una v.a. geometrica (e per la traslata)
-- Sia $X\sim Geo(p)$. Allora, per $j\geq 0$, si ha (formula della serie geometrica con $r=1-p$) $$P(X\geq j)=\sum_{k=j}^{\infty}P_{X}(k)=\sum_{k=j}^{\infty}(1-p)^{k}p=p\sum_{k=j}^{\infty}(1-p)^{k}=\cancel{p}\ \frac{(1-p)^{j}}{1-(1-p)}=\cancel{p}\ \frac{(1-p)^{j}}{\cancel{p}}=\begin{bmatrix}
+- Sia $X\sim Geo(p)$. Allora, per $j\geq 0$, si ha ([[02 - Modelli discreti#Formula della serie geometrica|formula della serie geometrica]] con $r=1-p$) $$P(X\geq j)=\sum_{k=j}^{\infty}P_{X}(k)=\sum_{k=j}^{\infty}(1-p)^{k}p=p\sum_{k=j}^{\infty}(1-p)^{k}=\cancel{p}\ \frac{(1-p)^{j}}{1-(1-p)}=\cancel{p}\ \frac{(1-p)^{j}}{\cancel{p}}=\begin{bmatrix}
 (1-p)^{j}
 \end{bmatrix}$$   **Osservazione.** In particolare (per $j=0$) $P(X\geq 0)=(1-p)^{0}=1$, in accordo con quanto ci si aspetta dalla teoria.
 - Sia $Y\sim GeoTraslata(p)$. Allora, per $j\geq 1$, si ha $$P(Y\geq j)=\sum_{h=j}^{\infty}P_{Y}(h)=\sum_{h=j}^{\infty}(1-p)^{h-1}p=\frac{p}{1-p}\sum_{h=j}^{\infty}(1-p)^{h}=\frac{\cancel{p}}{1-p}\cdot \frac{(1-p)^{j}}{\cancel{p}}=\begin{bmatrix}
@@ -867,7 +867,7 @@ P_{Y}(y) & =\displaystyle\sum_{(x_{1},x_{2})\ :\ x_{1}+x_{2}=y}\frac{\lambda_{1}
 > $$Y=X_{1}+X_{2}\sim POISSON(\lambda_{1}+\lambda_{2})$$
 
 ##### Altri commenti
-Il risultato si estende al caso di $m$ addendi indipendenti (simile a quello per le binomiali visto prima): $$\begin{cases}
+Il risultato si estende al caso di $m$ addendi indipendenti (simile a quello per le [[02 - Modelli discreti#Caso specifico 2 (somma di 2 binomiali indipendenti con lo stesso parametro $p$)|binomiali]] visto prima): $$\begin{cases}
 X_{1}\sim POISSON(\lambda_{1}) \\
 \quad\vdots \\
 X_{m}\sim POISSON(\lambda_{m})
@@ -882,7 +882,7 @@ P(X_{1}=0)P(X_{2}=0)=e^{-\lambda}\cdot e^{-\lambda}=e^{-2\lambda}
 --- Fine lezione 11 ---
 
 ## Massimi e minimi di variabili aleatorie discrete
-Come calcolare la densità discreta di $\max\{X_{1},X_{2}\}$ e $\min\{X_{1},X_{2}\}$ passando per le funzioni di distribuzione.
+Come calcolare la densità discreta di $\max\{X_{1},X_{2}\}$ e $\min\{X_{1},X_{2}\}$ passando per le [[02 - Modelli discreti#Funzione di distribuzione di una v.a. reale|funzioni di distribuzione]].
 ### Impostazione
 Per semplicità consideriamo il caso di $\underline{X}=(X_{1},X_{2})$ e consideriamo le seguenti v.a.: $$\begin{array}{l}
 Y=\max\{X_{1},X_{2}\} \\

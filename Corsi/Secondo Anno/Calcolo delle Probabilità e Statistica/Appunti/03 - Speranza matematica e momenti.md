@@ -31,13 +31,13 @@ Al contrario esistono insiemi limitati non finiti: si pensi a intervalli limitat
 
 - **(Terminologia)** $X$ si dice **centrata** se $\mathbb{E}[X]=0$.
 - **(Linearità)** Siano $X_{1},\dots,X_{n}$ v.a. definite su uno stesso spazio di probabilità, con speranza matematica finita. Siano $a_{1},\dots,a_{n}\in \mathbb{R}$. Allora anche $a_{1}X_{1}+\dots+a_{n}X_{n}$ ha speranza matematica finita e si ha $$\mathbb{E}[a_{1}X_{1}+\dots+a_{n}X_{n}]=a_{1}\mathbb{E}[X_{1}]+\dots+a_{n}\mathbb{E}[X_{n}]$$(come caso particolare possiamo considerare $X_{1}+\dots+X_{n}$ ponendo $a_{1}=\dots=a_{n}=1$).
-- **(Prodotto di v.a. indipendenti)** Siano $X_{1},\dots,X_{n}$ definite su uno stesso spazio di probabilità, con speranza matematica finita, e **indipendenti**. Allora $X_{1}\cdot\dots\cdot X_{n}$ ha speranza matematica finita e si ha $$\mathbb{E}[X_{1}\cdot\dots\cdot X_{n}]=\mathbb{E}[X_{1}]\cdot\dots\cdot \mathbb{E}[X_{n}]$$
+- **(Prodotto di v.a. [[02 - Modelli discreti#Indipendenza tra variabili aleatorie|indipendenti]])** Siano $X_{1},\dots,X_{n}$ definite su uno stesso spazio di probabilità, con speranza matematica finita, e **indipendenti**. Allora $X_{1}\cdot\dots\cdot X_{n}$ ha speranza matematica finita e si ha $$\mathbb{E}[X_{1}\cdot\dots\cdot X_{n}]=\mathbb{E}[X_{1}]\cdot\dots\cdot \mathbb{E}[X_{n}]$$
 - **(Monotonia)** Supponiamo che $X(w)\geq Y(w)$ per ogni $w\in\ohm$. Allora, se $X$ e $Y$ hanno speranza matematica finita, si ha $\mathbb{E}[X]\geq \mathbb{E}[Y]$. (In realtà basta avere $P(X\geq Y)=1$.)
 > [!warning] Attenzione
 > La linearità **non** richiede l'indipendenza; la formula del prodotto **sì**.
 
 ### Proposizione (speranza di una trasformazione)
-Sia $\underline{X}$ una v.a. discreta $m$-dimensionale con densità congiunta $P_{\underline{X}}$. Sia $f:\mathbb{R}^{m}\to \mathbb{R}$ e sia $Y=f(\underline{X})$. Allora, se $Y$ ha speranza matematica finita, si ha $$\begin{bmatrix}
+Sia $\underline{X}$ una v.a. discreta $m$-dimensionale con [[02 - Modelli discreti#Densità congiunta e densità marginali|densità congiunta]] $P_{\underline{X}}$. Sia $f:\mathbb{R}^{m}\to \mathbb{R}$ e sia $Y=f(\underline{X})$. Allora, se $Y$ ha speranza matematica finita, si ha $$\begin{bmatrix}
 \mathbb{E}[Y]=\sum_{\underline{x}_{k}\in \delta_{\underline{X}}}f(\underline{x}_{k})P_{\underline{X}}(\underline{x}_{k})
 \end{bmatrix}$$(per $m=1$ si ha una densità discreta non congiunta, perché $\underline{X}$ è una v.a. unidimensionale).
 > [!quote] Commento
@@ -61,9 +61,9 @@ Consideriamo il lancio di due dadi equi e sia $Y=X_{1}+X_{2}$ la v.a. che indica
  & =\frac{1}{36}\left\{ \displaystyle\sum_{x_{2}=1}^{6}\underset{\text{non dipende da }x_{2}}{\underbrace{(1+2+3+4+5+6)}}+\sum_{x_{1}=1}^{6}\underset{\text{non dipende da }x_{1}}{\underbrace{(1+2+3+4+5+6)}} \right\} \\
  & =\frac{1}{36}\{6\cdot 21+6\cdot 21\}=\frac{2\cdot 6\cdot 21}{36}=\frac{252}{36}=7
 \end{array}$$
-**3° modo (con la linearità).** In realtà in questo caso $\mathbb{E}[Y]$ si calcola ancora più facilmente con la linearità (con $n=2$ e $a_{1}=a_{2}=1$): $\mathbb{E}[X_{1}+X_{2}]=\mathbb{E}[X_{1}]+\mathbb{E}[X_{2}]$. Infatti entrambe le v.a. $X_{1}$ e $X_{2}$ hanno [[02 - Modelli discreti#Distribuzione uniforme discreta|distribuzione uniforme discreta]] su $\{1,\dots,6\}$ e quindi $$\mathbb{E}[X_{i}]=\sum_{k=1}^{6}k\underset{=1/6}{\underbrace{P_{X_{i}}(k)}}=\frac{1+2+3+4+5+6}{6}=\frac{21}{6}=\frac{7}{2}\quad\text{per }i=1,2$$da cui $\mathbb{E}[X_{1}+X_{2}]=\frac{7}{2}+\frac{7}{2}=7$.
+**3° modo (con la [[03 - Speranza matematica e momenti#Alcune proprietà di $\mathbb{E}[X]$|linearità]]).** In realtà in questo caso $\mathbb{E}[Y]$ si calcola ancora più facilmente con la linearità (con $n=2$ e $a_{1}=a_{2}=1$): $\mathbb{E}[X_{1}+X_{2}]=\mathbb{E}[X_{1}]+\mathbb{E}[X_{2}]$. Infatti entrambe le v.a. $X_{1}$ e $X_{2}$ hanno [[02 - Modelli discreti#Distribuzione uniforme discreta|distribuzione uniforme discreta]] su $\{1,\dots,6\}$ e quindi $$\mathbb{E}[X_{i}]=\sum_{k=1}^{6}k\underset{=1/6}{\underbrace{P_{X_{i}}(k)}}=\frac{1+2+3+4+5+6}{6}=\frac{21}{6}=\frac{7}{2}\quad\text{per }i=1,2$$da cui $\mathbb{E}[X_{1}+X_{2}]=\frac{7}{2}+\frac{7}{2}=7$.
 #### Esempio (differenza tra massimo e minimo)
-Un'urna ha 4 palline numerate da 1 a 4. Si estraggono 2 palline a caso, una alla volta e **senza** reinserimento. Siano $X_{1}$ e $X_{2}$ le v.a. che indicano il massimo e il minimo tra i due numeri estratti. Calcolare $\mathbb{E}[Y]$ dove $Y=X_{1}-X_{2}$.
+Un'urna ha 4 palline numerate da 1 a 4. Si estraggono 2 palline a caso, una alla volta e **senza** reinserimento. Siano $X_{1}$ e $X_{2}$ le v.a. che indicano [[02 - Modelli discreti#Massimi e minimi di variabili aleatorie discrete|il massimo e il minimo]] tra i due numeri estratti. Calcolare $\mathbb{E}[Y]$ dove $Y=X_{1}-X_{2}$.
 Abbiamo $\ohm=\{w=(w_{1},w_{2}):w_{1},w_{2}\in\{1,2,3,4\}\text{ con }w_{1}\neq w_{2}\}$ (le estrazioni sono senza reinserimento), e $$X_{1}(w)=\max\{w_{1},w_{2}\},\quad X_{2}(w)=\min\{w_{1},w_{2}\},\quad Y(w)=X_{1}(w)-X_{2}(w)\quad\quad\forall\ w\in\ohm$$Per ogni $w=(w_{1},w_{2})$ abbiamo $$P(\{w\})=\underset{=1/4}{\underbrace{P(\text{estrarre }w_{1})}}\ \underset{=1/3}{\underbrace{P(\text{estrarre }w_{2}|\text{è stato estratto }w_{1})}}=\frac{1}{12}$$ed inoltre $\#\ohm=12$. In dettaglio: $$\begin{array}{c|ccc}
 w & X_{1}(w) & X_{2}(w) & Y(w) \\
 \hline
@@ -122,12 +122,12 @@ X=X_{1}+\dots+X_{n} & (\text{per costruzione}) \\
 \end{cases}$$Allora, per la [[Speranza matematica di una variabile aleatoria discreta#Alcune proprietà di $\mathbb{E}[X]$|linearità]], $$\mathbb{E}[X]=\mathbb{E}[X_{1}+\dots+X_{n}]=\mathbb{E}[X_{1}]+\dots+\mathbb{E}[X_{n}]=\underset{n\text{ volte}}{\underbrace{p+\dots+p}}=np$$
 ### 3) Distribuzione ipergeometrica
 $\delta_{X}=\{0,1,\dots,n\}$ è un insieme finito, quindi $(*)$ è verificata. Per definizione si avrebbe $$\mathbb{E}[X]=\sum_{k=0}^{n}k\frac{\binom{n_{1}}{k}\binom{n_{2}}{n-k}}{\binom{n_{1}+n_{2}}{n}}$$ma anche qui bisognerebbe gestire l'espressione con i fattoriali: **il prof non lo fa**.
-Consideriamo invece il procedimento alternativo visto per la binomiale. Anche in questo caso (pensando alle estrazioni **senza** reinserimento) si ha $X=X_{1}+\dots+X_{n}$ dove $$X_{i}=\begin{cases}
+Consideriamo invece il procedimento alternativo visto per la [[02 - Modelli discreti#Caso 1): distribuzione binomiale|binomiale]]. Anche in questo caso (pensando alle estrazioni **senza** reinserimento) si ha $X=X_{1}+\dots+X_{n}$ dove $$X_{i}=\begin{cases}
 1 & \text{estratta pallina di tipo 1} \\
 0 & \text{estratta pallina di tipo 2}
 \end{cases}\ \sim B\left( \frac{n_{1}}{n_{1}+n_{2}} \right)\quad\quad\forall\ i\in\{1,\dots,n\}$$Allora, per la linearità, $$\mathbb{E}[X]=\mathbb{E}[X_{1}+\dots+X_{n}]=\mathbb{E}[X_{1}]+\dots+\mathbb{E}[X_{n}]=\underset{n\text{ volte}}{\underbrace{\frac{n_{1}}{n_{1}+n_{2}}+\dots+\frac{n_{1}}{n_{1}+n_{2}}}}=\begin{bmatrix}n\frac{n_{1}}{n_{1}+n_{2}}\end{bmatrix}$$
 #### Commenti
-- C'è una **differenza** tra i due approcci alternativi visti per binomiale e ipergeometrica: $$\begin{cases}
+- C'è una **differenza** tra i due approcci alternativi visti per binomiale e [[02 - Modelli discreti#Caso 2): distribuzione ipergeometrica|ipergeometrica]]: $$\begin{cases}
 X_{1},\dots,X_{n}\text{ indipendenti nel 1° caso} \\
 X_{1},\dots,X_{n}\ \textbf{non}\text{ indipendenti nel 2° caso}
 \end{cases}$$Questo non ha influenza sui risultati, che coincidono se poniamo $p=\frac{n_{1}}{n_{1}+n_{2}}$. Al contrario ci sarà una differenza nel caso della **varianza**, di cui si parlerà prossimamente.
@@ -209,7 +209,7 @@ $$\text{Var}[X+a]=\mathbb{E}[(X+a-\underset{=\mathbb{E}[X]+a}{\underbrace{\mathb
 ## Covarianza di variabili aleatorie discrete
 Varianza di una somma, definizione di covarianza, formule di calcolo, interpretazione geometrica ed esercizio riassuntivo.
 ### Varianza di una somma e introduzione alla covarianza
-Si vuole dare una formula per $\text{Var}[X_{1}+X_{2}]$, dove entrambe le v.a. sono **non costanti** (se ad esempio $X_{2}$ fosse costante, per quanto [[Varianza e momenti di una variabile aleatoria discreta#3) $\text{Var}[X+a]=\text{Var}[X]$ (per $a\in \mathbb{R}$)|visto in precedenza]] si avrebbe $\text{Var}[X_{1}]$). Si ha $$\begin{array}{ll}
+Si vuole dare una formula per $\text{Var}[X_{1}+X_{2}]$, dove entrambe le v.a. sono **[[03 - Speranza matematica e momenti#Proprietà della varianza|non costanti]]** (se ad esempio $X_{2}$ fosse costante, per quanto [[Varianza e momenti di una variabile aleatoria discreta#3) $\text{Var}[X+a]=\text{Var}[X]$ (per $a\in \mathbb{R}$)|visto in precedenza]] si avrebbe $\text{Var}[X_{1}]$). Si ha $$\begin{array}{ll}
 \text{Var}[X_{1}+X_{2}] & =\mathbb{E}[(X_{1}+X_{2}-\underset{=\mathbb{E}[X_{1}]+\mathbb{E}[X_{2}]}{\underbrace{\mathbb{E}[X_{1}+X_{2}]}})^{2}]=\mathbb{E}[(\underset{\text{quadrato di binomio}}{\underbrace{(X_{1}-\mathbb{E}[X_{1}])+(X_{2}-\mathbb{E}[X_{2}])}})^{2}] \\
  & \overset{\text{lin.}}{=}\underset{=\text{Var}[X_{1}]}{\underbrace{\mathbb{E}[(X_{1}-\mathbb{E}[X_{1}])^{2}]}}+\underset{=\text{Var}[X_{2}]}{\underbrace{\mathbb{E}[(X_{2}-\mathbb{E}[X_{2}])^{2}]}}+2\underset{\overset{\text{def}}{=}\text{Cov}(X_{1},X_{2})}{\underbrace{\mathbb{E}[(X_{1}-\mathbb{E}[X_{1}])(X_{2}-\mathbb{E}[X_{2}])]}}
 \end{array}$$dove l'ultimo termine è per definizione la **covarianza** tra $X_{1}$ e $X_{2}$. Quindi $$\begin{bmatrix}
@@ -276,7 +276,7 @@ Siano $X_{1}$ e $X_{2}$ due v.a. definite su uno stesso spazio di probabilità, 
 X_{1}\text{ e }X_{2}\text{ indipendenti}\implies \text{Cov}(X_{1},X_{2})=0
 \end{bmatrix}$$
 #### Dimostrazione
-Segue da una cosa detta in passato, cioè $$X_{1}\text{ e }X_{2}\text{ indipendenti}\implies \mathbb{E}[X_{1}X_{2}]=\mathbb{E}[X_{1}]\mathbb{E}[X_{2}]$$e dalla [[Covarianza di variabili aleatorie discrete#1) Formula alternativa: $\text{Cov}(X_{1},X_{2})=\mathbb{E}[X_{1}X_{2}]-\mathbb{E}[X_{1}]\mathbb{E}[X_{2}]$|formula alternativa della covarianza]] $$\text{Cov}(X_{1},X_{2})=\mathbb{E}[X_{1}X_{2}]-\mathbb{E}[X_{1}]\mathbb{E}[X_{2}]=0\qquad\Box$$
+Segue da una [[03 - Speranza matematica e momenti#Alcune proprietà di $\mathbb{E}[X]$|cosa detta in passato]], cioè $$X_{1}\text{ e }X_{2}\text{ indipendenti}\implies \mathbb{E}[X_{1}X_{2}]=\mathbb{E}[X_{1}]\mathbb{E}[X_{2}]$$e dalla [[Covarianza di variabili aleatorie discrete#1) Formula alternativa: $\text{Cov}(X_{1},X_{2})=\mathbb{E}[X_{1}X_{2}]-\mathbb{E}[X_{1}]\mathbb{E}[X_{2}]$|formula alternativa della covarianza]] $$\text{Cov}(X_{1},X_{2})=\mathbb{E}[X_{1}X_{2}]-\mathbb{E}[X_{1}]\mathbb{E}[X_{2}]=0\qquad\Box$$
 ### Conseguenza (varianza di una somma di v.a. indipendenti)
 Se $X_{1},\dots,X_{m}$ sono **indipendenti**, allora nella [[03 - Speranza matematica e momenti#Varianza di una somma e introduzione alla covarianza|formula generale per la varianza di una somma]] tutti i termini $\text{Cov}(X_{i},X_{j})$ (con $i<j$) si annullano, e quindi $$\begin{bmatrix}
 \text{Var}[X_{1}+\dots+X_{m}]=\sum_{i=1}^{m}\text{Var}[X_{i}]+2\underset{i<j}{\sum_{i,j=1}^{m}}\underset{=0}{\underbrace{\text{Cov}(X_{i},X_{j})}}=\sum_{i=1}^{m}\text{Var}[X_{i}]
@@ -322,7 +322,7 @@ Con $\mathbb{E}[X]=p$ (già visto) e $\mathbb{E}[X^{2}]=1^{2}\cdot p+0^{2}\cdot(
 > Si vede che $X^{2}(w)=X(w)$ per ogni $w\in\ohm$, perché l'equazione $y^{2}=y$ ha soluzioni $y=0$ e $y=1$ (i soli valori assunti). Quindi $\mathbb{E}[X^{2}]=\mathbb{E}[X]=p$.
 
 ### 2) Distribuzione binomiale: $X\sim BIN(n,p)$
-Il calcolo diretto di $\mathbb{E}[X^{2}]=\sum_{k=0}^{n}k^{2}\binom{n}{k}p^{k}(1-p)^{n-k}$ sarebbe un po' complicato. Usiamo invece il **metodo alternativo**: come visto per la media, $X=X_{1}+\dots+X_{n}$ dove $X_{1},\dots,X_{n}$ sono **i.i.d.** (indipendenti e identicamente distribuite) e bernoulliane di parametro $p$. Allora, per l'[[03 - Speranza matematica e momenti#Conseguenza (varianza di una somma di v.a. indipendenti)|indipendenza]], $$\text{Var}[X]=\sum_{i=1}^{n}\text{Var}[X_{i}]=\underset{n\text{ volte}}{\underbrace{p(1-p)+\dots+p(1-p)}}=\begin{bmatrix}np(1-p)\end{bmatrix}$$
+Il calcolo diretto di $\mathbb{E}[X^{2}]=\sum_{k=0}^{n}k^{2}\binom{n}{k}p^{k}(1-p)^{n-k}$ sarebbe un po' complicato. Usiamo invece il **metodo alternativo**: come visto per la media, $X=X_{1}+\dots+X_{n}$ dove $X_{1},\dots,X_{n}$ sono **i.i.d.** (indipendenti e identicamente distribuite) e [[02 - Modelli discreti#Distribuzione Bernoulliana|bernoulliane]] di parametro $p$. Allora, per l'[[03 - Speranza matematica e momenti#Conseguenza (varianza di una somma di v.a. indipendenti)|indipendenza]], $$\text{Var}[X]=\sum_{i=1}^{n}\text{Var}[X_{i}]=\underset{n\text{ volte}}{\underbrace{p(1-p)+\dots+p(1-p)}}=\begin{bmatrix}np(1-p)\end{bmatrix}$$
 ### 3) Distribuzione ipergeometrica
 Ricordiamo lo schema: $n$ estrazioni **senza** reinserimento con $2\leq n<n_{1}+n_{2}$ (per $n=1$ non ha senso parlare di reinserimento), e $X=$ numero di oggetti di tipo 1 estratti. Con $p=\frac{n_{1}}{n_{1}+n_{2}}$ si avrebbe $\text{Var}[X]=\mathbb{E}[X^{2}]-(np)^{2}$, ma il calcolo diretto di $\mathbb{E}[X^{2}]$ è complicato.
 Con il **metodo alternativo** (che non dimostriamo del tutto) si scrive $X=X_{1}+\dots+X_{n}$ con $X_{i}\sim B(p)$ ma **non** indipendenti. Allora $$\text{Var}[X]=\sum_{i=1}^{n}\underset{=p(1-p)}{\underbrace{\text{Var}[X_{i}]}}+2\underset{i<j}{\sum_{i,j=1}^{n}}\underset{\text{tutte uguali tra loro e negative}}{\underbrace{\text{Cov}(X_{i},X_{j})}}<np(1-p)$$Facendo i calcoli si dimostra che $$\begin{bmatrix}\text{Var}[X]=np(1-p)\frac{n_{1}+n_{2}-n}{n_{1}+n_{2}-1}\end{bmatrix}$$(avendo usato $1-p=\frac{n_{2}}{n_{1}+n_{2}}$).
@@ -330,7 +330,7 @@ Con il **metodo alternativo** (che non dimostriamo del tutto) si scrive $X=X_{1}
 > Essendo $1<n<n_{1}+n_{2}$, si ha $\frac{n_{1}+n_{2}-n}{n_{1}+n_{2}-1}\in(0,1)$, in accordo con $\text{Var}[X]<np(1-p)$. Se $n_{1}+n_{2}$ è molto più grande di $n$ il rapporto è vicino a 1 ("poca differenza" con il caso con reinserimento). Quindi nel confronto tra estrazioni "con" e "senza" reinserimento si hanno **medie uguali** (valore comune $n\frac{n_{1}}{n_{1}+n_{2}}$) e **varianze diverse** (varianza più piccola nel caso senza reinserimento).
 
 ### 4) Distribuzione di Poisson: $X\sim POISSON(\lambda)$
-Con $\mathbb{E}[X]=\lambda$ (già visto) e $\mathbb{E}[X^{2}]=\sum_{k\geq 0}k^{2}\frac{\lambda^{k}}{k!}e^{-\lambda}$, il risultato si prende per buono: $$\begin{bmatrix}\text{Var}[X]=\lambda\end{bmatrix}$$(quindi per la Poisson media e varianza coincidono).
+Con $\mathbb{E}[X]=\lambda$ (già visto) e $\mathbb{E}[X^{2}]=\sum_{k\geq 0}k^{2}\frac{\lambda^{k}}{k!}e^{-\lambda}$, il risultato si prende per buono: $$\begin{bmatrix}\text{Var}[X]=\lambda\end{bmatrix}$$(quindi per la [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]] media e varianza coincidono).
 ### 5) Distribuzione geometrica: $X\sim Geo(p)$
 Con $\mathbb{E}[X]=\frac{1}{p}-1$ (già visto) e $\mathbb{E}[X^{2}]=\sum_{k\geq 0}k^{2}(1-p)^{k}p$, il risultato si prende per buono: $$\begin{bmatrix}\text{Var}[X]=\frac{1-p}{p^{2}}\end{bmatrix}$$
 ### 6) Distribuzione geometrica traslata: $Y\sim GeoTraslata(p)$

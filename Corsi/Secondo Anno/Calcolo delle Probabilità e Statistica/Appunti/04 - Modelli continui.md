@@ -286,3 +286,31 @@ $f(x)=\tan x$ **non** è monotona globalmente, ma è crescente su $S=\left( -\fr
 > La distribuzione di $Y$ è detta **distribuzione di Cauchy**: è un esempio di v.a. continua che **non ha media finita** (cosa significhi nel continuo si vedrà più avanti). Dall'espressione analitica si vede che $f_{Y}$ è una funzione **pari** ($f_{Y}(y)=f_{Y}(-y)$).
 
 --- Fine parte sulle trasformazioni monotone (lezione 17) ---
+
+## Trasformazioni non monotone di variabili aleatorie continue
+Quando $f$ **non** è monotona nemmeno su un sottoinsieme $S$ con $P(X\in S)=1$ (ad esempio $f(x)=x^{2}$, $|x|$), non ci si può ricondurre all'inversa come nel [[04 - Modelli continui#Trasformazioni monotone di variabili aleatorie continue|caso monotono]]. Si procede così:
+1. si individua un insieme $U$ con $P(Y\in U)=1$ (usando come cambia il codominio, tipicamente una "proiezione");
+2. per $y\in U$ si calcola direttamente $F_{Y}(y)=P(f(X)\leq y)$ riscrivendo l'evento $\{f(X)\leq y\}$ come un evento su $X$ (spesso un intervallo o un'unione **simmetrica**) e integrando $f_{X}$ su di esso;
+3. si deriva per ottenere $f_{Y}$.
+
+### Esercizio ($Y=X^{2}$, densità triangolare)
+Sia $X$ con densità continua $f_{X}(x)=(1-|x|)1_{(-1,1)}(x)$. Trovare la densità di $Y=X^{2}$.
+$f(x)=x^{2}$ non è monotona (neppure su un $S$ con $P(X\in S)=1$). L'insieme $[-1,1]$ viene proiettato su $[0,1]$, quindi $P(Y\in U)=1$ con $U=[0,1]$. Per $y\in(0,1)$ (quindi $(-\sqrt{y},\sqrt{y})\subset(-1,1)$) $$(\ast)=P(X^{2}\leq y)=P(-\sqrt{y}\leq X\leq \sqrt{y})=\int_{-\sqrt{y}}^{\sqrt{y}}(1-|x|)\,dx$$
+- **1° modo**: $\displaystyle\int_{-\sqrt{y}}^{0}(1+x)\,dx+\int_{0}^{\sqrt{y}}(1-x)\,dx=\left[ x+\frac{x^{2}}{2} \right]_{-\sqrt{y}}^{0}+\left[ x-\frac{x^{2}}{2} \right]_{0}^{\sqrt{y}}=\left( \sqrt{y}-\frac{y}{2} \right)+\left( \sqrt{y}-\frac{y}{2} \right)=2\sqrt{y}-y$;
+- **2° modo (simmetria)**: $\displaystyle 2\int_{0}^{\sqrt{y}}(1-x)\,dx=2\left[ x-\frac{x^{2}}{2} \right]_{0}^{\sqrt{y}}=2\left( \sqrt{y}-\frac{y}{2} \right)=2\sqrt{y}-y$.
+
+Quindi $F_{Y}(y)=0$ per $y\leq 0$, $=2\sqrt{y}-y$ per $y\in(0,1)$, $=1$ per $y\geq 1$. Derivando ($F_{Y}$ non derivabile in $y=0$ e $y=1$) $$f_{Y}(y)=\left( 2\cdot\frac{1}{2\sqrt{y}}-1 \right)1_{(0,1)}(y)=\begin{bmatrix}\left( \frac{1}{\sqrt{y}}-1 \right)1_{(0,1)}(y)\end{bmatrix}$$Verifica: $\int_{0}^{1}\left( \frac{1}{\sqrt{y}}-1 \right)dy=[2\sqrt{y}-y]_{0}^{1}=2-1=1$.
+### Esercizio ($Y=X^{4}$, $X\sim U(-2,2)$)
+Sia $X\sim U(-2,2)$. Trovare la funzione di distribuzione di $Y=X^{4}$.
+$f(x)=x^{4}$ non è monotona su $(-2,2)$; la proiezione dà $P(0\leq Y\leq 16)=1$ (cioè $U=[0,16]$). Per $y\in(0,16)$ (quindi $(-\sqrt[4]{y},\sqrt[4]{y})\subset(-2,2)$) $$(\ast)=P(X^{4}\leq y)=P(-\sqrt[4]{y}\leq X\leq \sqrt[4]{y})=\int_{-\sqrt[4]{y}}^{\sqrt[4]{y}}\frac{1}{2-(-2)}\,dx=\frac{1}{4}\cdot 2\sqrt[4]{y}=\frac{\sqrt[4]{y}}{2}$$Quindi $$F_{Y}(y)=\begin{cases}0 & y\leq 0 \\ \dfrac{\sqrt[4]{y}}{2} & 0<y<16 \\ 1 & y\geq 16\end{cases}$$(derivando si otterrebbe $f_{Y}(y)=\frac{1}{8}y^{-3/4}1_{(0,16)}(y)$).
+### Esercizio ($Y=2-|X|$)
+Sia $X$ con densità continua $f_{X}(x)=\frac{e}{e^{2}-1}e^{x}1_{(-1,1)}(x)$. Trovare la densità di $Y=2-|X|$.
+$f(x)=2-|x|$ non è monotona su $S=(-1,1)$. Poiché $|x|\in[0,1)$ su $(-1,1)$, si ha $2-|x|\in(1,2]$, quindi $P(Y\in U)=1$ con $U=(1,2)$. Per $y\in(1,2)$ (quindi $2-y\in(0,1)$) $$(\ast)=P(2-|X|\leq y)=P(|X|\geq 2-y)=\int_{-1}^{-(2-y)}\frac{e}{e^{2}-1}e^{x}\,dx+\int_{2-y}^{1}\frac{e}{e^{2}-1}e^{x}\,dx=\frac{e}{e^{2}-1}\left( e^{y-2}-e^{-1}+e-e^{2-y} \right)$$Quindi $F_{Y}(y)=0$ per $y\leq 1$, quell'espressione per $y\in(1,2)$, $=1$ per $y\geq 2$. Derivando $$f_{Y}(y)=\frac{e}{e^{2}-1}\left( e^{y-2}+e^{2-y} \right)1_{(1,2)}(y)$$
+### Esercizio ($Y=|X|$: dalla distribuzione di Laplace all'esponenziale)
+Sia $X$ con densità continua $f_{X}(x)=\frac{\lambda}{2}e^{-\lambda|x|}$, con $\lambda>0$. Trovare la densità di $Y=|X|$.
+> [!info] Distribuzione di Laplace
+> La densità $f_{X}(x)=\frac{\lambda}{2}e^{-\lambda|x|}$ (definita su tutto $\mathbb{R}$) è detta **distribuzione di Laplace** o **biesponenziale**.
+
+$f(x)=|x|$ non è monotona su $S=\mathbb{R}$ (qui $P(X\in S)=1$ con $S=\mathbb{R}$). Essendo $|x|\geq 0$ si ha $U=(0,\infty)$. Per $y>0$ $$(\ast)=P(|X|\leq y)=P(-y\leq X\leq y)=\int_{-y}^{y}\frac{\lambda}{2}e^{-\lambda|x|}\,dx\overset{\text{simmetria}}{=}2\int_{0}^{y}\frac{\lambda}{2}e^{-\lambda x}\,dx=[-e^{-\lambda x}]_{0}^{y}=1-e^{-\lambda y}$$Quindi $F_{Y}(y)=0$ per $y\leq 0$, $=1-e^{-\lambda y}$ per $y>0$. Derivando $$f_{Y}(y)=\lambda e^{-\lambda y}1_{(0,\infty)}(y)\implies Y\sim Exp(\lambda)$$(prendendo il valore assoluto di una Laplace si ottiene un'esponenziale).
+
+--- Fine lezione 17 ---

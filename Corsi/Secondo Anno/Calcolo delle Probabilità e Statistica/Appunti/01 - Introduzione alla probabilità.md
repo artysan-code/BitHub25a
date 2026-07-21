@@ -1,4 +1,5 @@
-## Introduzione alla probabilità
+# Introduzione alla probabilità
+## Fenomeni aleatori e spazio di probabilità
 Un fenomeno è detto "fenomeno aleatorio" se il suo esito è incerto.
 L'insieme dei possibili esiti viene indicato con $\ohm$ 
 $$\begin{array}{}

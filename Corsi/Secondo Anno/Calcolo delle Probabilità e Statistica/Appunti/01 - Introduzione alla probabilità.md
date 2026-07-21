@@ -24,7 +24,7 @@ La richiesta della numerabilità viene fatta per semplificare alcune cose succes
 #### Osservazione
 Definito $A=P(\ohm)$. Questa scelta da altri problemi se $\ohm$ è *più che numerabile* (non trattato nel corso). Per questo motivo il caso di $\ohm$ *discreto* viene trattato più diffusamente nel corso.
 ### Definizione (Misure di Probabilità)
-Sia $\ohm$ un insieme non vuoto e $A$ una $\delta$-algebra di eventi allora una funzione $P: A \to[0,\infty)$ è una **misura di probabilità** se:
+Sia $\ohm$ un insieme non vuoto e $A$ una $\delta$-[[01 - Introduzione alla probabilità#Definizione ($\delta$-algebra)|algebra di eventi]] allora una funzione $P: A \to[0,\infty)$ è una **misura di probabilità** se:
 1) $P(\ohm)=1$
 2) $$\begin{matrix} 
 \forall\{A_{n}\}_{n\geq 1}\subset A\quad \text{tale che}\\ \\
@@ -96,7 +96,7 @@ La formula ottenuta nella [[#^813f60|3).3]] si estende al caso di più di due ev
 Qui richiamo quella per $n=3$; $\quad\forall\ E,F,G\in \mathcal{A}$
 $P(E\cup F\cup G)=P(E)+P(F)+P(G)-P(E\cap F)-P(E\cap G)-P(F\cap G)+P(E\cap F\cap G)$
 #### Commento generale
-Le proprietà della misura di probabilità sono svincolate dalla costruzione del modello, e quindi da come si definisce la misura di probabilità in questione per descrivere il fenomeno aleatorio (tale definizione può dipendere dallo stato di conoscenza dell'osservatore).
+Le proprietà della [[01 - Introduzione alla probabilità#Definizione (Misure di Probabilità)|misura di probabilità]] sono svincolate dalla costruzione del modello, e quindi da come si definisce la misura di probabilità in questione per descrivere il [[01 - Introduzione alla probabilità#Fenomeni aleatori e spazio di probabilità|fenomeno aleatorio]] (tale definizione può dipendere dallo stato di conoscenza dell'osservatore).
 ## Spazio di Probabilità Uniforme Discreto
 Questa terminologia si usa nel caso in cui si ha la seguente situazione:
 - $\ohm$ insieme finito
@@ -116,7 +116,7 @@ $P(A)=P(\underset{w\in\mathcal{A}}{\cup}\{w\})=\displaystyle\sum_{w\in\mathcal{A
    In altri termini non si riesce a modellare il caso di estrazioni a caso da un insieme infinito numerabile di oggetti.
 4) Questo modello si può usare nel caso del lancio di un dato equi con $n=6$ e $\ohm=\{1,2,3,4,5,6\}$
 ### Definizione
-Sia $\ohm,\mathcal{A},\mathbb{P}$ uno spazio di probabilità. Siano $A,B\in\mathcal{A}$ con $P(B)\not=0$ allora si definisce "probabilità condizionata di $A$ dato $B$" (oppure sapendo che si è verificato l'evento $B$) la seguente quantità: $$P(A|B)=\frac{P(A\cap B)}{P(B)}$$
+Sia $\ohm,\mathcal{A},\mathbb{P}$ uno [[01 - Introduzione alla probabilità#Definizione (Misure di Probabilità)|spazio di probabilità]]. Siano $A,B\in\mathcal{A}$ con $P(B)\not=0$ allora si definisce "probabilità condizionata di $A$ dato $B$" (oppure sapendo che si è verificato l'evento $B$) la seguente quantità: $$P(A|B)=\frac{P(A\cap B)}{P(B)}$$
 #### Motivazione
 Nel voler definire $P(A|B)$ è naturale considerare una quantità che dipende da $P(A\cap B)$ proporzionalmente, con una costante di proporzionalità che non dipende da $A$ (ma da $B$): $$P(A|B)=c_{B}\cdot P(A\cap B)$$
 Inoltre si vuole fare in modo che ($\ohm,\mathcal{A},P(\cdot|B)$) sia uno spazio di probabilità. Quindi per $A=\ohm$ si ha $$\underset{=1}{\underbrace{P(\ohm|B)}}=c_{B}\underset{=P(B)}{\underbrace{P(\ohm\cap B)}}\implies c_{B}=\frac{1}{P(B)}=P(A|B)=\frac{P(A\cap B)}{P(B)}$$
@@ -141,20 +141,20 @@ Un urna ha 10 paline numerate da 1 a 10. Si estrae una pallina a caso.
 
 Risposta
 $A=\{6,7,8,9,10\}$ e $B=\{2,4,6,8,10\}\implies A\cap B=\{6,8,10\}$
-1) Spazio di probabilità discreto$\implies P(A|B)=\frac{\#A\cap B}{\#B}=\frac{3}{5}$
+1) [[01 - Introduzione alla probabilità#Spazio di Probabilità Uniforme Discreto|Spazio di probabilità discreto]]$\implies P(A|B)=\frac{\#A\cap B}{\#B}=\frac{3}{5}$
 2) $P(A|B)=\frac{P(A\cap B)}{P(B)}=\frac{P(\{6,8,10\})}{P(\{2,4,6,8,10\})}=\frac{\frac{1+1+2}{\not{12}}}{\frac{1+1+1+1+2}{\not{12}}}=\frac{4}{6}=\frac{2}{3}$
 
 <----- Fine lezione 1 ----->
 ## Formule legate alle probabilità condizionate
-1) Regola del prodotto (o Formula Inversa)
-2) Formula delle Probabilità Totali
-3) Formula di Bayes
+1) [[01 - Introduzione alla probabilità#Regola del Prodotto|Regola del prodotto]] (o Formula Inversa)
+2) [[01 - Introduzione alla probabilità#Formula delle Probabilità Totali|Formula delle Probabilità Totali]]
+3) [[01 - Introduzione alla probabilità#Formula di Bayes|Formula di Bayes]]
 ### Regola del Prodotto
 A partire da $P(A|B)=\frac{P(A\cap B)}{P(B)}$ si ottiene $$P(A\cap B)=P(A|B)P(B)$$
 #### Osservazione
 Vale anche su $P(B)=0$ perché $A\cap B\subset C\implies P(A\cap B)=0$ e quindi $0=0$ anche se $P(A|B)$ è indeterminato
 
-Questa formula è utile quando la probabilità condizionata segue dal testo dell'esercizio e la probabilità dell'intersezione è la grandezza da calcolare. Questa formula può essere usata anche per l'interpretazione di più di due eventi. Ad esempio, nel caso di 3 eventi, si ha $P(A\cap B\cap C)=P(A|B\cap C)P(B\cap C)$ e quindi $$P(A\cap B\cap C)=P(A|B\cap C)P(B|C)P(C)$$
+Questa formula è utile quando la [[01 - Introduzione alla probabilità#Motivazione|probabilità condizionata]] segue dal testo dell'esercizio e la probabilità dell'intersezione è la grandezza da calcolare. Questa formula può essere usata anche per l'interpretazione di più di due eventi. Ad esempio, nel caso di 3 eventi, si ha $P(A\cap B\cap C)=P(A|B\cap C)P(B\cap C)$ e quindi $$P(A\cap B\cap C)=P(A|B\cap C)P(B|C)P(C)$$
 ##### Esempio
 Un urna contiene 2 palline bianche, 3 rosse e 4 nere.
 Si estraggono 3 palline a caso, una alla volta e senza reinserimento.
@@ -197,7 +197,7 @@ E_{1}=E \\
 E_{2}=E^{c}
 \end{cases}\quad \text{ allora } P(A)=P(A|E)P(E)+P(A|E^{c})P(E^{c})$$
 ### Diagramma ad albero associato alla formula delle Prob. Totali
-Si può costruire un diagramma ad albero associato dove ogni diagramma fa riferimento ad una partizione (ogni diagramma considera tutti i casi possibili). Ad ogni ???? si associa una probabilità. Per fissare le idee consideriamo il caso $I=\{1,2,3\}$ $$\begin{matrix}
+Si può costruire un diagramma ad albero associato dove ogni diagramma fa riferimento ad una [[01 - Introduzione alla probabilità#Formula delle Probabilità Totali|partizione]] (ogni diagramma considera tutti i casi possibili). Ad ogni ???? si associa una probabilità. Per fissare le idee consideriamo il caso $I=\{1,2,3\}$ $$\begin{matrix}
  &  &  &  &  & A \\
  &  &  &  & \ \ \ / & \leftarrow P(A|E_{1}) \\
  & \ulcorner & - & E_{1} & \langle &  \\
@@ -256,16 +256,16 @@ B & N \\
 In conclusione $P(B|E_{1})P(E_{1})+P(B|E_{2})P(E_{2})+P(B|E_{3})P(E_{3})=\frac{4}{5}\cdot \frac{1}{6}+\frac{3}{5}\cdot \frac{2}{6}+\frac{2}{5}\cdot \frac{3}{6}=\frac{8}{15}$
 #### Osservazione
 Sappiamo che la probabilità di estrarre nera è $P(B^{c})=1-P(B)=1-\frac{8}{15}=\frac{7}{15}$
-Questo risultato si ottiene anche con la formula delle probabilità totali: 
+Questo risultato si ottiene anche con la [[01 - Introduzione alla probabilità#Formula delle Probabilità Totali|formula delle probabilità totali]]: 
 $P(B^{c})=P(B^{c}|E_{1})P(E_{1})+P(B^{c}|E_{2})P(E_{2})+P(B^{c}|E_{3})P(E_{3})=\frac{1}{5}\cdot \frac{1}{6}+\frac{2}{5}\cdot \frac{2}{6}+\frac{3}{5}\cdot \frac{2}{6}=\frac{7}{15}$
 ### Formula di Bayes
 Sappiamo che $P(A|B)=\frac{P(A\cap B)}{P(B)}$ con l'ipotesi $P(B)\neq 0$
 Inoltre $A\cap B$ e $B\cap A$ sono lo stesso evento; quindi $P(A\cap B)=P(B\cap A)=P(B|A)P(A)$
 Quindi, sostituendo nella formula iniziale, si ha $$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$$
-Questa formula si usa quando viene chiesta una *probabilità condizionata* $P(A|B)$ e la probabilità condizionata $P(B|A)$(cioè quella in cui $A$ e $B$ si scambiano) si calcola facilmente, e comunque questo è più agevole rispetto a valutare l'evento intersezione $A\cap B$.
+Questa formula si usa quando viene chiesta una *[[01 - Introduzione alla probabilità#Motivazione|probabilità condizionata]]* $P(A|B)$ e la probabilità condizionata $P(B|A)$(cioè quella in cui $A$ e $B$ si scambiano) si calcola facilmente, e comunque questo è più agevole rispetto a valutare l'evento intersezione $A\cap B$.
 
-Prima degli esempi, si vuole sottolineare che negli esercii questa formula si usa combinandola con la formula delle probabilità totali per calcolare il denominatore $P(B)$.
-In altri termini negli esercizi si potrà fare riferimento ad una partizione $P(B|E_{n})_{n\in I}$, e verrà chiesto di calcolare la probabilità condizionale del tipo $P(E_{n}|B)_{n\in I}$.
+Prima degli esempi, si vuole sottolineare che negli esercii questa formula si usa combinandola con la [[01 - Introduzione alla probabilità#Formula delle Probabilità Totali|formula delle probabilità totali]] per calcolare il denominatore $P(B)$.
+In altri termini negli esercizi si potrà fare riferimento ad una [[01 - Introduzione alla probabilità#Formula delle Probabilità Totali|partizione]] $P(B|E_{n})_{n\in I}$, e verrà chiesto di calcolare la probabilità condizionale del tipo $P(E_{n}|B)_{n\in I}$.
 Quindi tipicamente si avrà $$P(E_{n}|B)=\frac{P(B|E_{n})P(E_{n})}{\displaystyle\sum_{i\in I}P(B|E_{i})P(E_{i})}\quad\quad\text{ per }n\in I$$
 #### Esempio
 Consideriamo l'esempio visto per la formula delle probabilità totali $$\begin{matrix}
@@ -312,7 +312,7 @@ Abbiamo ottenuto che $$P(E_{i}|B)=\begin{cases}
 \frac{3}{8}\quad i=3
 \end{cases}$$
 Quindi $P(E_{1}|B)+P(E_{2}|B)+P(E_{3}|B)=1$.
-Questo è in accordo con il fatto che la somma delle probabilità degli eventi di una partizione è sempre uguale a 1 e che $P(\cdot|B)$ è una misura di probabilità.
+Questo è in accordo con il fatto che la somma delle probabilità degli eventi di una partizione è sempre uguale a 1 e che $P(\cdot|B)$ è una [[01 - Introduzione alla probabilità#Definizione (Misure di Probabilità)|misura di probabilità]].
 
 "Calcolare la probabilità che sia uscito $[2]$ o $[3]$ sapendo di aver estratto una nera"
 "Calcolare la probabilità che esca un numero dispari nel lancio sapendo di aver estratto una bianca"
@@ -507,7 +507,7 @@ n_{1} & \dots & n_{r} \\
 1 & \dots & r \\
 \hline
 \end{array}$$
-e di estrarre a caso $n$ oggetti in blocco con $n<n_{1}+n_{2}+\dots+n_{r}$
+e di estrarre a caso $n$ [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|oggetti in blocco]] con $n<n_{1}+n_{2}+\dots+n_{r}$
 
 Quanto vale la probabilità di estrarre $k_{1}\text{ oggetti tipo 1},\dots,k_{r}\text{ oggetti tipo }r$, dove $k_{1}+\dots+k_{r}=n$?
 

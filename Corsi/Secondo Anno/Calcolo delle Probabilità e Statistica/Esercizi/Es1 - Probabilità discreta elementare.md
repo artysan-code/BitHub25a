@@ -78,6 +78,13 @@ $$p_X(k)=\binom{n}{k}p^k(1-p)^{n-k},\qquad k=0,1,\dots,n.$$
 $$\mathbb{E}[X]=np,\qquad \text{Var}[X]=np(1-p).$$
 La media si legge da sola: $n$ prove, ciascuna dà in media $p$ successi.
 
+> [!info] Cosa sono $\mathbb{E}[X]$ e $\text{Var}[X]$ (valgono per **ogni** variabile aleatoria discreta)
+> Servono in quasi ogni Es1: vale la pena averle chiare, anche solo per **riconoscere** cosa chiede la traccia.
+> - **$\mathbb{E}[X]$ = valore atteso**, cioè la **media** di $X$: ogni valore pesato sulla sua probabilità, $\mathbb{E}[X]=\sum_k k\,p_X(k)$. È la media dei risultati se ripetessi l'esperimento infinite volte. La traccia lo chiede dicendo «calcolare la **media** / il **valore atteso** / il **valor medio**».
+> - **$\text{Var}[X]$ = varianza**: quanto $X$ si **disperde** attorno alla media, $\text{Var}[X]=\mathbb{E}\big[(X-\mathbb{E}[X])^2\big]=\mathbb{E}[X^2]-\big(\mathbb{E}[X]\big)^2$. Piccola → risultati concentrati sulla media; grande → sparsi. La sua radice $\sqrt{\text{Var}[X]}$ è la **deviazione standard**.
+>
+> Le formule $np$ e $np(1-p)$ qui sopra sono le **scorciatoie** per la binomiale; per le altre distribuzioni cambiano — le trovi in testa a ogni sezione e riassunte nel formulario (§10).
+
 > [!tip] La mossa «almeno uno» → passa al complementare
 > «Almeno un successo» calcolato direttamente sono tanti addendi; il contrario «nessun successo» è **uno solo**. Scrivi subito $P(\text{almeno uno})=1-P(\text{nessuno})$. Conviene quando i casi da escludere sono **meno** di quelli da sommare — se «almeno due su tre» resta comunque due addendi come il diretto, il complementare non aiuta: valutalo, non applicarlo a occhi chiusi.
 

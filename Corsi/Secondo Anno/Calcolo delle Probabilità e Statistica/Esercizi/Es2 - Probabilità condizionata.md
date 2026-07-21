@@ -15,11 +15,11 @@ Tutto Es2 si riduce a capire **in che verso** va la domanda:
 ### Le formule
 Sia $\{H_1,\dots,H_n\}$ una **partizione** dello spazio (gli scenari possibili: le urne, le monete) e sia $E$ l'evento osservato.
 
-**Formula delle probabilità totali** — vedi [[Cap 2 - Introduzione alla probabilità#Formula delle Probabilità Totali|prob. totali]]:
+**Formula delle probabilità totali** — vedi [[01 - Introduzione alla probabilità#Formula delle Probabilità Totali|prob. totali]]:
 
 $$P(E)=\sum_{k=1}^{n}P(E|H_k)P(H_k)$$
 
-**Formula di Bayes** — vedi [[Cap 2 - Introduzione alla probabilità#Formula di Bayes|Bayes]]:
+**Formula di Bayes** — vedi [[01 - Introduzione alla probabilità#Formula di Bayes|Bayes]]:
 
 $$P(H_j|E)=\frac{P(E|H_j)P(H_j)}{\sum_{k=1}^{n}P(E|H_k)P(H_k)}$$
 
@@ -37,7 +37,7 @@ $$P(H_j|E)=\frac{P(E|H_j)P(H_j)}{\sum_{k=1}^{n}P(E|H_k)P(H_k)}$$
 
 4. **Applicare la formula** e semplificare.
 
-Il [[Cap 2 - Introduzione alla probabilità#Diagramma ad albero associato alla formula delle Prob. Totali|diagramma ad albero]] è il modo più sicuro di non perdersi: primo livello gli scenari, secondo livello l'evento, e ogni percorso è il prodotto delle probabilità lungo i rami.
+Il [[01 - Introduzione alla probabilità#Diagramma ad albero associato alla formula delle Prob. Totali|diagramma ad albero]] è il modo più sicuro di non perdersi: primo livello gli scenari, secondo livello l'evento, e ogni percorso è il prodotto delle probabilità lungo i rami.
 ### Esercizi svolti — formato 2025-2026
 #### Probabilità totali con due urne — appello del 6 Febbraio 2026
 Due urne: la prima con due palline bianche e due nere, la seconda con tre bianche e tre nere. Si sceglie un'urna a caso e si estraggono due palline **in blocco** dall'urna scelta. Calcolare la probabilità di estrarre due palline di colori diversi.
@@ -65,7 +65,7 @@ $$P(U_2|B)=\frac{P(B|U_2)P(U_2)}{\sum_{k=1}^{3}P(B|U_k)P(U_k)}=\frac{\frac{3}{6}
 I fattori $\frac{1}{3}$ e i denominatori $6$ si semplificano tutti: resta il rapporto fra i **numeri di palline bianche**. Quando le urne hanno lo stesso totale e le probabilità a priori sono uniformi, Bayes si riduce a questo.
 
 > [!question] L'osservazione che fa il prof
-> $P(U_2|B)=\frac{1}{3}=P(U_2)$: sapere che è uscita una bianca **non cambia** la probabilità di aver scelto la seconda urna, quindi $U_2$ e $B$ sono [[Cap 2 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenti]].
+> $P(U_2|B)=\frac{1}{3}=P(U_2)$: sapere che è uscita una bianca **non cambia** la probabilità di aver scelto la seconda urna, quindi $U_2$ e $B$ sono [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenti]].
 >
 > Non è un caso: la seconda urna è quella "media", con la stessa proporzione di bianche della media delle tre. Se un risultato di Bayes ti restituisce esattamente la probabilità a priori, non è un errore — è indipendenza, e vale la pena scriverlo.
 
@@ -133,6 +133,6 @@ $$P(E)=p^2\cdot\frac{1}{2}+(1-p)^2\cdot\frac{1}{2}=\frac{p^2+1-2p+p^2}{2}=\frac{
 
 - **Risultati "troppo puliti"** ($\frac{1}{2}$, oppure $P(H|E)=P(H)$): quasi sempre sono corretti e segnalano una simmetria o un'indipendenza. Vale la pena commentarlo, come fa il prof.
 ### Collegamenti
-- Teoria: [[Cap 2 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|probabilità condizionate]], [[Cap 2 - Introduzione alla probabilità#Regola del Prodotto|regola del prodotto]], [[Cap 2 - Introduzione alla probabilità#Formula delle Probabilità Totali|probabilità totali]], [[Cap 2 - Introduzione alla probabilità#Formula di Bayes|Bayes]], [[Cap 2 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenza]].
+- Teoria: [[01 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|probabilità condizionate]], [[01 - Introduzione alla probabilità#Regola del Prodotto|regola del prodotto]], [[01 - Introduzione alla probabilità#Formula delle Probabilità Totali|probabilità totali]], [[01 - Introduzione alla probabilità#Formula di Bayes|Bayes]], [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenza]].
 
 - Slot vicini: [[Es1 - Probabilità discreta elementare]] fornisce i conteggi che servono dentro ogni scenario; [[Es3 - Densità congiunta discreta]] usa le condizionate su variabili aleatorie invece che su eventi.

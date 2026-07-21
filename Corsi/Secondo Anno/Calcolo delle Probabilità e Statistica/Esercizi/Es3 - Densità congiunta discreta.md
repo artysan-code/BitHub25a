@@ -33,11 +33,11 @@ Cioè si raggruppano le coppie che danno lo stesso valore di $Y$.
 ### Le serie che devi riconoscere a vista
 Quando il supporto è infinito, la somma diventa una serie, e Macci ne usa sempre le stesse due:
 
-**Serie esponenziale** — è quella della [[Distribuzioni uniforme discreta e di Poisson#Distribuzione di Poisson|Poisson]]:
+**Serie esponenziale** — è quella della [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]]:
 
 $$\sum_{h\ge0}\frac{\lambda^{h}}{h!}=e^{\lambda}$$
 
-**Serie geometrica** — dimostrata in [[Distribuzione geometrica#Formula della serie geometrica|serie geometrica]]:
+**Serie geometrica** — dimostrata in [[02 - Modelli discreti#Formula della serie geometrica|serie geometrica]]:
 
 $$\sum_{k\ge h}r^{k}=\frac{r^{h}}{1-r}\qquad(|r|<1)$$
 
@@ -104,7 +104,7 @@ Riconosciamo una **geometrica** di parametro $q^2$. La coda si somma con la seri
 
 $$P(X_1\ge k)=\sum_{x_1\ge k}(1-q^2)^{x_1}q^2=q^2\cdot\frac{(1-q^2)^{k}}{1-(1-q^2)}=q^2\cdot\frac{(1-q^2)^{k}}{q^2}=(1-q^2)^{k}$$
 
-Stesso risultato che si otterrebbe dalla [[Distribuzione geometrica#Formula per la "coda" di una v.a. geometrica (e per la traslata)|formula della coda]] con $p=q^2$: una volta riconosciuta la marginale, la formula è già pronta.
+Stesso risultato che si otterrebbe dalla [[02 - Modelli discreti#Formula per la "coda" di una v.a. geometrica (e per la traslata)|formula della coda]] con $p=q^2$: una volta riconosciuta la marginale, la formula è già pronta.
 ### Esercizi svolti — varianti dagli appelli precedenti
 #### Densità che si fattorizza: variabili indipendenti — appello del 20 Febbraio 2025
 Densità congiunta:
@@ -178,8 +178,8 @@ Con la densità simbolica non c'è nessun conto da fare: tutto l'esercizio è **
 
 - **Fattorizzazione = indipendenza**: se la densità si scrive come prodotto di una funzione di $x_1$ per una di $x_2$ (supporto rettangolare compreso), le variabili sono indipendenti e ogni marginale si legge direttamente.
 ### Collegamenti
-- Serie e distribuzioni: [[Distribuzione geometrica#Formula della serie geometrica|serie geometrica]], [[Distribuzioni uniforme discreta e di Poisson#Distribuzione di Poisson|Poisson]], [[Variabili aleatorie discrete]].
+- Serie e distribuzioni: [[02 - Modelli discreti#Formula della serie geometrica|serie geometrica]], [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]], [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]].
 
-- Teoria delle condizionate: [[Cap 2 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|Cap 2]], e [[Cap 2 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenza]] per il criterio di fattorizzazione.
+- Teoria delle condizionate: [[01 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|Cap 2]], e [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenza]] per il criterio di fattorizzazione.
 
 - Slot vicini: [[Es2 - Probabilità condizionata]] usa le stesse condizionate su eventi anziché su variabili; [[Es4 - Trasformazione di variabile continua]] fa la stessa operazione di trasformazione, ma nel continuo.

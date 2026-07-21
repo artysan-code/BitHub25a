@@ -4,7 +4,7 @@ Quarto esercizio dello scritto. Viene data la densità $f_X$ di una variabile al
 È lo slot più ripetitivo dei sei: il procedimento è identico in ogni appello, cambia solo la funzione $g$ (radice, quadrato, esponenziale, logaritmo, valore assoluto). Imparato lo schema, si risolve a memoria.
 
 > [!info] Non c'è ancora una nota di teoria sul continuo
-> Gli appunti di [[Cap 3 - Modelli Discreti|teoria]] coprono per ora solo le variabili aleatorie discrete: il prof introduce le continue più avanti nel corso. Finché quelle note non arrivano, questa è autosufficiente.
+> Gli appunti di [[02 - Modelli discreti|teoria]] coprono per ora solo le variabili aleatorie discrete: il prof introduce le continue più avanti nel corso. Finché quelle note non arrivano, questa è autosufficiente.
 
 ### Lo schema che Macci usa sempre
 Le sue soluzioni hanno **tutte** questa forma, parola per parola:

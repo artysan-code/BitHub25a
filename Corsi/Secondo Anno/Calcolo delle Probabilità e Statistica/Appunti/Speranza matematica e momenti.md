@@ -7,5 +7,6 @@ Indice del secondo blocco del corso (lezioni 12-14): valore medio, momenti, vari
 5. [[Indipendenza e covarianza]] — indipendenza $\implies$ covarianza nulla (e varianza di una somma di indipendenti), con controesempio per il viceversa.
 6. [[Varianza delle distribuzioni discrete notevoli]] — $\text{Var}[X]$ per bernoulliana, binomiale, ipergeometrica, Poisson, geometrica e binomiale negativa, con confronto tra estrazioni con e senza reinserimento.
 7. [[Coefficiente di correlazione]] — covarianza normalizzata $\rho\in[-1,1]$, disuguaglianza di Cauchy-Schwarz e caratterizzazione di $\rho=\pm 1$.
+8. [[Retta di regressione]] — metodo dei minimi quadrati, formule per le due rette di regressione, passaggio per $(\mathbb{E}[X_{1}],\mathbb{E}[X_{2}])$ ed esercizio completo.
 ## Nota sulla struttura
 Blocco successivo a [[Cap 3 - Modelli Discreti]], che raccoglie i modelli discreti. I marcatori `--- Fine lezione NN ---` conservano la corrispondenza con i PDF in `Materiale Didattico/Lezioni/6 CFU/`.

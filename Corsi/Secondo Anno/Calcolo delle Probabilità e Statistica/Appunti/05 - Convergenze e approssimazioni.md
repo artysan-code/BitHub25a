@@ -37,7 +37,7 @@ La somma standardizzata di $n$ v.a. i.i.d. tende alla Normale standard.
 
 > [!info] Commenti
 > - "**Centrale**" $=$ "importante". Poiché $\mathbb{E}[X_{1}+\dots+X_{n}]=n\mu$ e $\text{Var}[X_{1}+\dots+X_{n}]=n\sigma^{2}$, la quantità $\frac{X_{1}+\dots+X_{n}-n\mu}{\sigma\sqrt{n}}$ è la **somma standardizzata** (media $0$, varianza $1$).
-> - Compare **sempre** la [[04 - Modelli continui#La funzione $\Phi$|funzione $\Phi$]], qualunque sia la distribuzione comune.
+> - Compare **sempre** la funzione $\Phi$ (vedi [[04 - Modelli continui#Distribuzione normale|Normale]]), qualunque sia la distribuzione comune.
 > - Se le $X_{n}$ sono già $N(\mu,\sigma^{2})$, per la [[04 - Modelli continui#Combinazioni lineari di normali indipendenti|combinazione lineare di Normali]] il risultato è **esatto per ogni $n$**.
 
 ### Formulazione con le medie

@@ -215,6 +215,7 @@ $$P(B_1\cap N_2\cap B_3)=\frac{4}{8}\cdot\frac{4}{7}\cdot\frac{3}{6}=\frac{1}{7}
 
 ### Es3 — Densità congiunta discreta
 La traccia regala la densità congiunta $p_{X_1,X_2}$ di due variabili discrete e chiede di ricavarne qualcosa. Tutto si riduce a **sommare la densità sulle coppie giuste**. Teoria in [[Es3 - Densità congiunta discreta]].
+$p_{X_1,X_2}(x_1,x_2)=P(X_1=x_1\text{ e }X_2=x_2)$ è una **tabella di pesi** (somma 1, vale 0 fuori dal supporto). **Quale richiesta?** barra $\mid$ → condizionata · "densità di $Y$" → trasformazione · "marginale" → sommi via una variabile · $P(\dots)$ senza barra → evento.
 #### Principio unico e quattro richieste
 Ogni domanda è un caso particolare della somma della densità sulle coppie dell'evento:
 $$P\big((X_1,X_2)\in A\big)=\sum_{(x_1,x_2)\in A}p_{X_1,X_2}(x_1,x_2)$$
@@ -253,6 +254,7 @@ $$P(X_1\ge k)=\sum_{x_1\ge k}(1-q^2)^{x_1}q^2=q^2\cdot\frac{(1-q^2)^{k}}{q^2}=(1
 ---
 ### Es4 — Trasformazione di variabile continua
 Data la densità $f_X$ di $X$ continua, si chiede la funzione di distribuzione $F_Y$ di $Y=g(X)$ (metodo della funzione di ripartizione). Teoria in [[Es4 - Trasformazione di variabile continua]].
+La richiesta **è** $F_Y(y)=P(Y\le y)$ (una funzione di $y$); il ponte per calcolarla è $P(Y\le y)=P(g(X)\le y)$, che riporta tutto a $X$ (di cui hai la densità). Isolare $X$ = trovare gli estremi dell'integrale.
 #### Metodo — due mosse
 Prima mossa: applica $g$ agli estremi del supporto di $X$ per trovare il supporto $[a,b]$ di $Y$, e scrivi lo scheletro a 3 casi (F_Y è definita su tutto $\mathbb{R}$):
 $$F_Y(y)=\begin{cases}0 & y\le a\\ (*) & a<y<b\\ 1 & y\ge b\end{cases}$$
@@ -290,6 +292,7 @@ Controllo: $F_Y(1)=\frac{1+1}{2}=1$, coerente col fatto che $F_Y$ raggiunge 1 al
 ---
 ### Es5 — Speranza di variabile continua
 Data una densità continua $f_X$ (spesso la stessa di Es4), si chiede una speranza, tipicamente $E[X^{2}]$ o $E[1/X^{2}]$. Teoria in [[Es5 - Speranza di variabile continua]].
+$E[X]$ = media pesata dalla probabilità, un **numero** (non una funzione: la $x$ sparisce nell'integrale). La $g$ non si sceglie, è ciò che sta dentro $E[\cdots]$: $E[X^{2}]\Rightarrow g(x)=x^{2}$, $E[1/X^{2}]\Rightarrow g(x)=1/x^{2}$.
 #### L'unica formula
 $$E[g(X)]=\int_{-\infty}^{+\infty}g(x)\,f_X(x)\,dx=\int_{a}^{b}g(x)\,f_X(x)\,dx$$
 Si integra **solo sul supporto** $(a,b)$: fuori $f_X=0$. Non serve passare per $f_Y$ (come in Es4): si integra direttamente $g\cdot f_X$. Casi frequenti: $g(x)=x,\ x^{2},\ \frac{1}{x^{2}},\ x^{r}e^{x}$.
@@ -319,6 +322,7 @@ $$E\!\left[\frac{1}{X^{2}}\right]=\frac14\int_{1}^{5}\frac{1}{x^{2}}\,dx=\frac14
 ---
 ### Es6 — Normale e teorema del limite centrale
 Esprimere con $\Phi$ una probabilità sulla Normale o sulla somma standardizzata di v.a. i.i.d. (TLC). $\Phi$ è la funzione di distribuzione della Normale standard; la risposta resta in forma di $\Phi$ (niente tavole). Teoria in [[Es6 - Normale e teorema del limite centrale]].
+$\Phi(z)=P(Z\le z)$ (coda sinistra della standard). **Standardizzare** = $Z=\frac{X-\mu}{\sigma}$ (centra e riscala). $\sigma=\sqrt{\text{varianza}}$: la traccia dà la varianza, a te serve $\sigma$.
 #### Due situazioni
 | Traccia | Metodo | Risultato |
 |---|---|---|

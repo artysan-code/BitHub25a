@@ -1,5 +1,5 @@
 # Modelli continui
-Appunti sui **modelli continui** del corso (lezioni 15-...), organizzati nelle seguenti sezioni:
+Appunti sui **modelli continui** del corso (lezioni 15-21), organizzati nelle seguenti sezioni:
 1. [[04 - Modelli continui#Variabili aleatorie continue|Variabili aleatorie continue]] — definizione di v.a. continua, densità continua, $F_{X}'=f_{X}$ quasi ovunque, analogie e differenze con il caso discreto.
 2. [[04 - Modelli continui#Distribuzione uniforme continua|Distribuzione uniforme continua]] — $X\sim U(a,b)$, funzione di distribuzione e densità, calcolo di probabilità con il metodo delle lunghezze.
 3. [[04 - Modelli continui#Distribuzione esponenziale|Distribuzione esponenziale]] — $X\sim Exp(\lambda)$, mancanza di memoria e legame con la geometrica.
@@ -9,8 +9,13 @@ Appunti sui **modelli continui** del corso (lezioni 15-...), organizzati nelle s
 7. [[04 - Modelli continui#Trasformazioni monotone di variabili aleatorie continue|Trasformazioni monotone di variabili aleatorie continue]] — procedimento caso per caso per $f$ monotona, con esercizi.
 8. [[04 - Modelli continui#Altri esercizi sulle trasformazioni monotone|Altri esercizi sulle trasformazioni monotone]] — $Y=\log X$ (con una probabilità in quattro modi), $Y=e^{X}$, $Y=\log(1+X)$ e la distribuzione di Cauchy.
 9. [[04 - Modelli continui#Trasformazioni non monotone di variabili aleatorie continue|Trasformazioni non monotone di variabili aleatorie continue]] — metodo della controimmagine per $f$ non monotona, con esercizi e la distribuzione di Laplace.
+10. [[04 - Modelli continui#Massimi e minimi di variabili aleatorie continue|Massimi e minimi di variabili aleatorie continue]] — indipendenza continua, distribuzione di $\max$ e $\min$, sistemi in serie/parallelo.
+11. [[04 - Modelli continui#Distribuzione normale|Distribuzione normale]] — $N(0,1)$ e $N(\mu,\sigma^{2})$, standardizzazione, funzione $\Phi$ e half-normal (materia di **Es6**).
+12. [[04 - Modelli continui#Distribuzione Gamma|Distribuzione Gamma]] — $Gamma(\alpha,\beta)$, funzione $\Gamma$, somma di esponenziali e processo di Poisson.
+13. [[04 - Modelli continui#Speranza matematica per variabili aleatorie continue|Speranza matematica per variabili aleatorie continue]] — $\mathbb{E}[X]$, momenti e varianza, media/varianza delle notevoli e la formula $\mathbb{E}[g(X)]$ (materia di **Es5**).
+14. [[04 - Modelli continui#Combinazioni lineari di normali indipendenti|Combinazioni lineari di normali indipendenti]] — ogni combinazione lineare di Normali indipendenti è Normale (materia di **Es6**).
 ## Nota sulla struttura
-Il prof tratta questi argomenti come un unico capitolo (Capitolo 4). I marcatori `--- Fine lezione NN ---` all'interno delle sezioni conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Lezioni/6 CFU/`. Blocco successivo a [[02 - Modelli discreti]] e a [[03 - Speranza matematica e momenti]].
+Il prof tratta questi argomenti come un unico capitolo (Capitolo 4, lezioni 15-21). I marcatori `--- Fine lezione NN ---` all'interno delle sezioni conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Lezioni/6 CFU/`. Blocco successivo a [[02 - Modelli discreti]] e a [[03 - Speranza matematica e momenti]]; prosegue in [[05 - Convergenze e approssimazioni]] (legge dei grandi numeri e teorema del limite centrale).
 
 ## Variabili aleatorie continue
 Definizione di v.a. continua tramite la densità, relazione $F_{X}'=f_{X}$ quasi ovunque e confronto sistematico con il caso discreto.
@@ -314,3 +319,146 @@ Sia $X$ con densità continua $f_{X}(x)=\frac{\lambda}{2}e^{-\lambda|x|}$, con $
 $f(x)=|x|$ non è monotona su $S=\mathbb{R}$ (qui $P(X\in S)=1$ con $S=\mathbb{R}$). Essendo $|x|\geq 0$ si ha $U=(0,\infty)$. Per $y>0$ $$(\ast)=P(|X|\leq y)=P(-y\leq X\leq y)=\int_{-y}^{y}\frac{\lambda}{2}e^{-\lambda|x|}\,dx\overset{\text{simmetria}}{=}2\int_{0}^{y}\frac{\lambda}{2}e^{-\lambda x}\,dx=[-e^{-\lambda x}]_{0}^{y}=1-e^{-\lambda y}$$Quindi $F_{Y}(y)=0$ per $y\leq 0$, $=1-e^{-\lambda y}$ per $y>0$. Derivando $$f_{Y}(y)=\lambda e^{-\lambda y}1_{(0,\infty)}(y)\implies Y\sim Exp(\lambda)$$(prendendo il valore assoluto di una Laplace si ottiene un'esponenziale).
 
 --- Fine lezione 17 ---
+
+## Massimi e minimi di variabili aleatorie continue
+Indipendenza per v.a. continue e distribuzione di $Z=\max\{X_{1},X_{2}\}$ e $W=\min\{X_{1},X_{2}\}$, con l'applicazione ai sistemi in serie e in parallelo.
+### Indipendenza (caso continuo)
+$X_{1},\dots,X_{m}$ si dicono **indipendenti** se $$\forall A_{1},\dots,A_{m}\subseteq \mathbb{R}\qquad P\big(\{X_{1}\in A_{1}\}\cap\dots\cap\{X_{m}\in A_{m}\}\big)=P(X_{1}\in A_{1})\cdots P(X_{m}\in A_{m})$$Basta richiederlo per $A_{1},\dots,A_{m}$ **intervalli** limitati; da qui segue anche per intervalli illimitati. In termini di densità congiunta vale (come nel discreto) che l'indipendenza equivale a "densità congiunta $=$ prodotto delle densità marginali" (la trattazione delle congiunte continue, con integrali multipli, va oltre gli scopi del corso).
+> [!warning] Differenza con il caso discreto
+> Se $X_{1},\dots,X_{m}$ sono **discrete**, allora $\underline{X}=(X_{1},\dots,X_{m})$ è discreta $m$-dimensionale. Se invece sono **continue**, in generale ciò **non** implica che $\underline{X}$ sia continua $m$-dimensionale.
+
+### Distribuzione di $\max$ e $\min$
+Siano $X_{1},X_{2}$ **indipendenti**, $Z=\max\{X_{1},X_{2}\}$, $W=\min\{X_{1},X_{2}\}$. Adattando il [[02 - Modelli discreti|caso discreto]]: $$\{Z\leq z\}=\{X_{1}\leq z\}\cap\{X_{2}\leq z\}\ \overset{\text{indip.}}{\implies}\ \begin{bmatrix}F_{Z}(z)=F_{X_{1}}(z)\,F_{X_{2}}(z)\end{bmatrix}$$ $$\{W>w\}=\{X_{1}>w\}\cap\{X_{2}>w\}\ \overset{\text{indip.}}{\implies}\ \begin{bmatrix}F_{W}(w)=F_{X_{1}}(w)+F_{X_{2}}(w)-F_{X_{1}}(w)F_{X_{2}}(w)\end{bmatrix}$$(la formula per $W$ segue da $1-F_{W}=(1-F_{X_{1}})(1-F_{X_{2}})$). Derivando: $$f_{Z}(z)=F_{X_{2}}(z)f_{X_{1}}(z)+F_{X_{1}}(z)f_{X_{2}}(z)\qquad f_{W}(w)=(1-F_{X_{2}}(w))f_{X_{1}}(w)+(1-F_{X_{1}}(w))f_{X_{2}}(w)$$
+> [!info] Sistemi in serie e in parallelo
+> Se $X_{1},X_{2}$ sono i **tempi di funzionamento** di due dispositivi indipendenti: $Z=\max$ è il tempo del sistema in **parallelo** (funziona finché almeno uno funziona); $W=\min$ è il tempo del sistema in **serie** (funziona finché entrambi funzionano).
+
+### Esercizio (massimo e minimo di due esponenziali)
+$X_{1}\sim Exp(\lambda_{1})$, $X_{2}\sim Exp(\lambda_{2})$ indipendenti. Il minimo è ancora esponenziale: $$f_{W}(w)=(\lambda_{1}+\lambda_{2})e^{-(\lambda_{1}+\lambda_{2})w}1_{(0,\infty)}(w)\implies \begin{bmatrix}W\sim Exp(\lambda_{1}+\lambda_{2})\end{bmatrix}$$Il massimo **non** è esponenziale: $$f_{Z}(z)=\left[ \lambda_{1}e^{-\lambda_{1}z}+\lambda_{2}e^{-\lambda_{2}z}-(\lambda_{1}+\lambda_{2})e^{-(\lambda_{1}+\lambda_{2})z} \right]1_{(0,\infty)}(z)$$
+
+--- Fine lezione 18 (indipendenza, massimi e minimi continui) ---
+
+## Distribuzione normale
+Distribuzione Normale (o Gaussiana): caso standard $N(0,1)$ e caso generale $N(\mu,\sigma^{2})$, standardizzazione e la funzione $\Phi$ (materia di **Es6**).
+### Normale standard e Normale generale
+Una v.a. $X$ ha **distribuzione Normale standard** ($X\sim N(0,1)$) se ha densità $$f_{X}(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^{2}}{2}}$$Data $X\sim N(0,1)$, con $\sigma>0$ e $\mu\in \mathbb{R}$, la v.a. $Y=\sigma X+\mu$ ha **distribuzione Normale di parametri $\mu,\sigma^{2}$** ($Y\sim N(\mu,\sigma^{2})$). Per la [[04 - Modelli continui#Il caso di funzione affine non costante|formula affine]] (con $a=\sigma$, $b=\mu$): $$f_{Y}(y)=\frac{1}{\sigma}f_{X}\left( \frac{y-\mu}{\sigma} \right)=\begin{bmatrix}\frac{1}{\sqrt{2\pi\sigma^{2}}}e^{-\frac{(y-\mu)^{2}}{2\sigma^{2}}}\end{bmatrix}$$($\frac{1}{\sqrt{2\pi\sigma^{2}}}$ è la costante di normalizzazione; per $\mu=0,\sigma=1$ si ritrova il caso standard).
+> [!info] Grafico "a campana"
+> $f_{Y}$ è **simmetrica rispetto a $y=\mu$**, con area totale 1; al diminuire di $\sigma$ la curva si concentra attorno a $\mu$. Si vedrà che $\mu$ e $\sigma^{2}$ sono **media e varianza** di $Y$ (vedi [[04 - Modelli continui#Media e varianza delle distribuzioni notevoli continue|media e varianza delle notevoli]]).
+
+### Standardizzazione
+> [!quote] Standardizzazione
+> Sia $Y\sim N(\mu,\sigma^{2})$ e $Y^{*}=\dfrac{Y-\mu}{\sigma}$. Allora $Y^{*}\sim N(0,1)$.
+
+Si applica la formula affine con $a=\frac{1}{\sigma}$, $b=-\frac{\mu}{\sigma}$: si verifica $f_{Y^{*}}(x)=\frac{1}{\sqrt{2\pi}}e^{-x^{2}/2}$. La standardizzazione riconduce **ogni** Normale al caso standard.
+### La funzione $\Phi$
+Si indica con $\Phi$ la funzione di distribuzione di $X\sim N(0,1)$: $$\Phi(t)=P(X\leq t)=\int_{-\infty}^{t}\frac{1}{\sqrt{2\pi}}e^{-\frac{x^{2}}{2}}\,dx$$Per $Y\sim N(\mu,\sigma^{2})$, standardizzando: $$F_{Y}(t)=P(Y\leq t)=P\left( \frac{Y-\mu}{\sigma}\leq \frac{t-\mu}{\sigma} \right)=\begin{bmatrix}\Phi\left( \frac{t-\mu}{\sigma} \right)\end{bmatrix}$$
+> [!info] Proprietà di $\Phi$
+> $\Phi$ è crescente, continua e derivabile con $\Phi'(t)=\frac{1}{\sqrt{2\pi}}e^{-t^{2}/2}$, $\lim_{t\to-\infty}\Phi=0$, $\lim_{t\to+\infty}\Phi=1$. **Non** ha primitiva elementare, quindi non c'è formula chiusa per $\Phi(t)$: i valori si leggono da tavole. L'unico valore esatto notevole è $\Phi(0)=\frac{1}{2}$.
+
+> [!quote] Simmetria di $\Phi$
+> $$\Phi(t)=1-\Phi(-t)\qquad\forall t$$ (discende dalla simmetria della densità rispetto a $0$: le due code hanno aree uguali). Permette di ricondurre ogni valore a un **argomento positivo**.
+
+> [!info] Quantili notevoli e nota d'esame
+> Dalla tavola: $\Phi(1{,}96)=0{,}975$, quindi $q_{0{,}975}=1{,}96$; inoltre $q_{0{,}5}=0$ (mediana). **Per l'esame:** da qualche anno non si richiede l'uso delle tavole, solo di **esprimere il risultato tramite $\Phi$**, spesso con **argomento positivo** (es. $\Phi(-1)$ si scrive $1-\Phi(1)$).
+
+### Calcolo di probabilità con $\Phi$
+> [!example] $X\sim N(0,1)$: $P(|X|>2)$
+> $$P(|X|>2)=(1-\Phi(2))+\underset{=1-\Phi(2)}{\underbrace{\Phi(-2)}}=2(1-\Phi(2))$$
+
+> [!example] $Y\sim N(\mu=3,\sigma^{2}=25)$: $P(1\leq Y\leq 4)$
+> Standardizzando ($\sigma=5$): $$P(1\leq Y\leq 4)=\Phi\left( \tfrac{1}{5} \right)-\Phi\left( -\tfrac{2}{5} \right)=\Phi\left( \tfrac{1}{5} \right)+\Phi\left( \tfrac{2}{5} \right)-1$$
+
+> [!example] $X\sim N(\mu=2,\sigma^{2}=4)$: $P(X\geq 3)$ e ricerca di $z$ con $P(X\leq z)=P(X\geq 3)$
+> $P(X\geq 3)=P\left( X^{*}\geq \tfrac{3-2}{2} \right)=1-\Phi\left( \tfrac{1}{2} \right)$. Cercando $z$: $P(X\leq z)=\Phi\left( \tfrac{z-2}{2} \right)$; imponendo $\Phi\left( \tfrac{z-2}{2} \right)=1-\Phi\left( \tfrac{1}{2} \right)=\Phi\left( -\tfrac{1}{2} \right)$ e usando l'iniettività di $\Phi$: $\frac{z-2}{2}=-\frac{1}{2}$, cioè $\begin{bmatrix}z=1\end{bmatrix}$.
+
+### Esercizi ricorrenti: condizionamento e ricerca di un valore
+> [!example] Probabilità condizionata con la Normale
+> Ci si riduce a un **rapporto** e si standardizzano numeratore e denominatore; a volte il valore esce **esatto**. Es. $X\sim N(-2,16)$: $$P(-2\leq X\leq 0\mid -4\leq X\leq 0)=\frac{\Phi(\frac{1}{2})-\Phi(0)}{\Phi(\frac{1}{2})-\Phi(-\frac{1}{2})}=\frac{\Phi(\frac{1}{2})-\frac{1}{2}}{2\Phi(\frac{1}{2})-1}=\frac{1}{2}$$
+
+> [!example] Ricerca di $z$ (iniettività di $\Phi$)
+> $X\sim N(9,4)$, trovare $z<9$ con $P(9<X<10\mid z<X<10)=\frac{1}{2}$: si arriva a $\Phi(-\frac{1}{2})=\Phi(\frac{z-9}{2})$, da cui $\frac{z-9}{2}=-\frac{1}{2}$ e $\begin{bmatrix}z=8\end{bmatrix}$.
+
+### Esercizio ($Y=|X|$ con $X\sim N(0,\sigma^{2})$: la "half-normal")
+$\{|X|\leq y\}=\{-y\leq X\leq y\}$; $Y$ assume valori in $(0,\infty)$. Per $y>0$, standardizzando: $$F_{Y}(y)=\Phi\left( \tfrac{y}{\sigma} \right)-\Phi\left( -\tfrac{y}{\sigma} \right)=2\Phi\left( \tfrac{y}{\sigma} \right)-1$$Derivando: $$f_{Y}(y)=\begin{bmatrix}\frac{2}{\sqrt{2\pi\sigma^{2}}}e^{-\frac{y^{2}}{2\sigma^{2}}}1_{(0,\infty)}(y)\end{bmatrix}$$cioè la densità di $N(0,\sigma^{2})$ **raddoppiata e troncata su $(0,\infty)$** (distribuzione *half-normal*); la sua media è $\mathbb{E}[|X|]=\sigma\sqrt{\frac{2}{\pi}}$ (vedi [[04 - Modelli continui#Speranza matematica per variabili aleatorie continue|speranza continua]]).
+
+--- Fine lezione 18-19 (distribuzione Normale) ---
+
+## Distribuzione Gamma
+Distribuzione $Gamma(\alpha,\beta)$ e funzione $\Gamma$, con l'esponenziale come caso particolare, la somma di Gamma indipendenti e il processo di Poisson.
+### Definizione
+Una v.a. $X$ ha **distribuzione Gamma** di parametri $\alpha,\beta>0$ ($X\sim Gamma(\alpha,\beta)$) se ha densità $$f_{X}(x)=\frac{\beta^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}1_{(0,\infty)}(x)\qquad\text{dove}\qquad \Gamma(y)=\int_{0}^{\infty}z^{y-1}e^{-z}\,dz$$è la **funzione Gamma**. Col cambio $z=\beta x$ si verifica che $\frac{\beta^{\alpha}}{\Gamma(\alpha)}$ è la costante di normalizzazione ($\int_{0}^{\infty}f_{X}=1$).
+> [!info] L'esponenziale è una Gamma con $\alpha=1$
+> Per $\alpha=1$ ($\Gamma(1)=1$): $f_{X}(x)=\beta e^{-\beta x}1_{(0,\infty)}(x)$, cioè $X\sim Exp(\beta)$.
+
+### La funzione $\Gamma$
+Vale la **relazione fondamentale** $\Gamma(y)=(y-1)\Gamma(y-1)$ per $y>1$ (integrando per parti). Da $\Gamma(1)=1$ seguono i valori: **$y=n$ intero** $\Rightarrow\Gamma(n)=(n-1)!$; **$\Gamma\left( \frac{1}{2} \right)=\sqrt{\pi}$** (col cambio $z=\frac{s^{2}}{2}$ ci si riconduce all'integrale della densità $N(0,1)$); i semi-interi si iterano fino a $\Gamma\left( \frac{1}{2} \right)$. In generale non c'è valore esplicito; per $\alpha=n$ intero, integrando per parti: $$F_{X}(t)=1-e^{-\beta t}\sum_{k=0}^{n-1}\frac{(\beta t)^{k}}{k!}\qquad(t>0)$$
+### Somma di Gamma indipendenti e scaling
+> [!quote] Somma di Gamma con lo stesso $\beta$
+> $X_{1},\dots,X_{m}$ indipendenti con $X_{i}\sim Gamma(\alpha_{i},\beta)$ $\implies X_{1}+\dots+X_{m}\sim Gamma(\alpha_{1}+\dots+\alpha_{m},\beta)$. **Corollario:** se sono tutte $\sim Exp(\beta)$ (cioè $\alpha_{i}=1$), allora $X_{1}+\dots+X_{m}\sim Gamma(m,\beta)$.
+
+Inoltre (scaling) se $X\sim Gamma(\alpha,\beta)$ e $r>0$, allora $rX\sim Gamma\left( \alpha,\frac{\beta}{r} \right)$ (formula affine con $a=r$).
+### Esercizio ($X^{2}$ di una Normale centrata è una Gamma)
+Sia $X\sim N(0,\sigma^{2})$ e $Y=X^{2}$. Con il metodo della controimmagine e standardizzando $\frac{X}{\sigma}\sim N(0,1)$: per $y>0$, $$F_{Y}(y)=P(-\sqrt{y}\leq X\leq \sqrt{y})=2\Phi\left( \tfrac{\sqrt{y}}{\sigma} \right)-1$$Derivando: $f_{Y}(y)=\frac{1}{\sqrt{2\pi}\,\sigma}y^{\frac{1}{2}-1}e^{-\frac{y}{2\sigma^{2}}}1_{(0,\infty)}(y)$, che confrontata con la densità $Gamma$ dà $$\begin{bmatrix}Y=X^{2}\sim Gamma\left( \tfrac{1}{2},\tfrac{1}{2\sigma^{2}} \right)\end{bmatrix}$$(la costante coincide automaticamente, usando $\Gamma\left( \frac{1}{2} \right)=\sqrt{\pi}$).
+### Il processo di Poisson
+Sia $\{S_{m}:m\geq 1\}$ una successione di v.a. indipendenti tutte $\sim Exp(\lambda)$ (**tempi di inter-arrivo**), e $T_{m}=S_{1}+\dots+S_{m}$ (**istante dell'$m$-simo evento**). Il **processo di conteggio** è $N(t)=\#\{\text{eventi entro il tempo }t\}=\sum_{m\geq 1}1_{\{T_{m}\leq t\}}$. Si parla di **processo di Poisson di intensità $\lambda$**.
+> [!quote] Le due leggi del processo di Poisson
+> Per il corollario sulla somma di esponenziali, $T_{m}\sim Gamma(m,\lambda)$. Inoltre, dall'uguaglianza $\{T_{m}\leq t\}=\{N(t)\geq m\}$ si ricava $$N(t)\sim POISSON(\lambda t)\qquad P(N(t)=m)=\frac{(\lambda t)^{m}}{m!}e^{-\lambda t}$$ Cioè gli **istanti** $T_{m}$ sono Gamma (continue), il **conteggio** $N(t)$ è di Poisson (discreto).
+
+> [!example] Processo di Poisson di intensità $\lambda=3$
+> $P(N_{2}=1)=6e^{-6}$ ($N_{2}\sim POISSON(6)$); $P(N_{4}\geq 1)=1-e^{-12}$; $P(T_{3}\geq 10)=481e^{-30}$ ($T_{3}\sim Gamma(3,3)$, ovvero $P(N(10)\leq 2)$).
+
+--- Fine lezione 19 (Gamma e processo di Poisson) ---
+
+## Speranza matematica per variabili aleatorie continue
+Speranza, momenti e varianza nel continuo, media e varianza delle distribuzioni notevoli e la formula per $\mathbb{E}[g(X)]$ (materia di **Es5**).
+### Definizione
+Una v.a. $X$ con densità continua $f_{X}$ ha **speranza matematica finita** se $\int_{-\infty}^{+\infty}|x|f_{X}(x)\,dx<\infty\ (*)$. In tal caso $$\begin{bmatrix}\mathbb{E}[X]=\int_{-\infty}^{+\infty}x\,f_{X}(x)\,dx\end{bmatrix}$$(sinonimi: media, valore atteso). Analogia col discreto: integrali al posto delle somme, $x\,f_{X}(x)$ al posto di $x_{k}P_{X}(x_{k})$. La $(*)$ è verificata se $f_{X}$ è positiva solo su un insieme **limitato**.
+### Momenti e varianza
+Come nel discreto, quando le grandezze esistono finite: **momento $k$-simo** $\mathbb{E}[X^{k}]=\int x^{k}f_{X}$, **momento centrato** $\mathbb{E}[(X-\mathbb{E}[X])^{k}]=\int (x-\mathbb{E}[X])^{k}f_{X}$, e la **varianza** è il caso $k=2$. Valgono linearità di $\mathbb{E}[\cdot]$ e la **formula alternativa** $$\begin{bmatrix}\text{Var}[X]=\mathbb{E}[X^{2}]-\mathbb{E}^{2}[X]\end{bmatrix}$$
+> [!info] Covarianza e indipendenza nel continuo
+> La covarianza si può considerare anche per v.a. continue (richiederebbe le congiunte, oltre gli scopi del corso). Vale però: $X_{1},\dots,X_{m}$ indipendenti con media finita $\Rightarrow\mathbb{E}[X_{1}\cdots X_{m}]=\mathbb{E}[X_{1}]\cdots\mathbb{E}[X_{m}]$, quindi $\text{Cov}(X_{1},X_{2})=0$. Il **viceversa non vale** (controesempi anche nel continuo).
+
+> [!info] Densità simmetrica
+> Se $X$ ha speranza finita e densità simmetrica rispetto a $x_{0}$ ($f(x_{0}-x)=f(x_{0}+x)$), allora $\mathbb{E}[X]=x_{0}$ (uniforme $\to\frac{a+b}{2}$; Normale $\to\mu$).
+
+### Media e varianza delle distribuzioni notevoli continue
+| Distribuzione | $\mathbb{E}[X]$ | $\text{Var}[X]$ |
+|---|---|---|
+| $U(a,b)$ | $\frac{a+b}{2}$ | $\frac{(b-a)^{2}}{12}$ |
+| $Exp(\lambda)$ | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^{2}}$ |
+| $N(0,1)$ | $0$ | $1$ |
+| $N(\mu,\sigma^{2})$ | $\mu$ | $\sigma^{2}$ |
+| $Gamma(\alpha,\beta)$ | $\frac{\alpha}{\beta}$ | $\frac{\alpha}{\beta^{2}}$ |
+- **Uniforme:** $\mathbb{E}[X]=\frac{1}{b-a}\int_{a}^{b}x\,dx=\frac{b+a}{2}$; da $\mathbb{E}[X^{2}]=\frac{b^{2}+ab+a^{2}}{3}$ segue $\text{Var}[X]=\frac{(b-a)^{2}}{12}$ (dipende solo dalla lunghezza).
+- **Esponenziale:** per parti $\mathbb{E}[X]=\frac{1}{\lambda}$, $\mathbb{E}[X^{2}]=\frac{2}{\lambda^{2}}$, quindi $\text{Var}[X]=\frac{1}{\lambda^{2}}$.
+- **Normale:** $X\sim N(0,1)$ ha densità **pari** $\Rightarrow\mathbb{E}[X]=0$; con $z=\frac{x^{2}}{2}$, $\text{Var}[X]=\mathbb{E}[X^{2}]=\frac{2}{\sqrt{\pi}}\Gamma\left( \frac{3}{2} \right)=\frac{2}{\sqrt{\pi}}\cdot\frac{1}{2}\sqrt{\pi}=1$. Per $Y=\sigma X+\mu\sim N(\mu,\sigma^{2})$: $\mathbb{E}[Y]=\sigma\cdot 0+\mu=\mu$, $\text{Var}[Y]=\sigma^{2}\cdot 1=\sigma^{2}$ (i parametri sono media e varianza).
+- **Gamma:** riconducendosi ogni volta all'integrale di una densità Gamma, $\mathbb{E}[X]=\frac{\beta^{\alpha}}{\Gamma(\alpha)}\cdot\frac{\Gamma(\alpha+1)}{\beta^{\alpha+1}}=\frac{\alpha}{\beta}$ e $\mathbb{E}[X^{2}]=\frac{(\alpha+1)\alpha}{\beta^{2}}$, quindi $\text{Var}[X]=\frac{\alpha}{\beta^{2}}$ (per $\alpha=1$ si ritrova $Exp(\beta)$).
+
+### Speranza di una trasformazione $\mathbb{E}[g(X)]$
+> [!quote] Speranza di una trasformazione (senza dimostrazione)
+> Se $X$ è continua e $Y=g(X)$ ha speranza finita, allora $\mathbb{E}[Y]=\int_{-\infty}^{+\infty}g(x)f_{X}(x)\,dx$ (si estende ai casi $\pm\infty$). Vantaggio: si calcola $\mathbb{E}[Y]$ **senza conoscere $f_{Y}$**.
+
+> [!example] Esempi
+> - $Y=e^{X}$ con $f_{X}=\frac{e^{x}}{e-1}1_{(0,1)}$: $\mathbb{E}[Y]=\frac{1}{e-1}\int_{0}^{1}e^{2x}dx=\frac{e+1}{2}$ (coerente con $Y\sim U(1,e)$).
+> - $Y=X^{\beta}$ con $f_{X}=\alpha x^{\alpha-1}1_{(0,1)}$: $\mathbb{E}[Y]=\frac{\alpha}{\alpha+\beta}$.
+> - $Y=e^{X}$ con $X\sim Exp(1)$: $\mathbb{E}[Y]=\int_{0}^{\infty}1\,dx=+\infty$ (caso con media infinita).
+> - $\mathbb{E}[|X|]$ con $X\sim N(0,\sigma^{2})$: $\frac{2}{\sqrt{2\pi\sigma^{2}}}\int_{0}^{\infty}x\,e^{-x^{2}/2\sigma^{2}}dx=\sigma\sqrt{\frac{2}{\pi}}$ (media della *half-normal*, vedi [[04 - Modelli continui#Distribuzione normale|Normale]]). Trucco analogo: se $Z=\sqrt{X}$ allora $\mathbb{E}[e^{-Z^{2}}]=\mathbb{E}[e^{-X}]$.
+
+--- Fine lezione 20 (speranza e momenti nel continuo) ---
+
+## Combinazioni lineari di normali indipendenti
+Ogni combinazione lineare di v.a. Normali **indipendenti** è ancora Normale (ricorrente in **Es6**).
+### Premessa
+In generale la somma di due Normali **non** è Normale; se però sono **indipendenti**, ogni combinazione lineare è Normale. Per contemplare coefficienti nulli si vede una costante come Normale degenere: $P(X=c)=1\Rightarrow X\sim N(c,0)$.
+### La proposizione
+> [!quote] Combinazione lineare di Normali indipendenti (dim. parziale)
+> $a_{1},\dots,a_{n}\in \mathbb{R}$, $X_{1},\dots,X_{n}$ **indipendenti** con $X_{i}\sim N(\mu_{i},\sigma_{i}^{2})$. Allora $$\begin{bmatrix}a_{1}X_{1}+\dots+a_{n}X_{n}\sim N\big(a_{1}\mu_{1}+\dots+a_{n}\mu_{n},\ a_{1}^{2}\sigma_{1}^{2}+\dots+a_{n}^{2}\sigma_{n}^{2}\big)\end{bmatrix}$$
+
+Non si dimostra la normalità; media e varianza seguono da **linearità** di $\mathbb{E}[\cdot]$ e, per l'indipendenza, dalla somma delle varianze con $\text{Var}[a_{i}X_{i}]=a_{i}^{2}\sigma_{i}^{2}$.
+### Esercizi tipici
+> [!example] $P(2X_{1}-3X_{2}\geq 0)$ con $X_{1}\sim N(1,1)$, $X_{2}\sim N(5,2)$ indipendenti
+> $2X_{1}-3X_{2}\sim N(2\cdot 1-3\cdot 5,\ 2^{2}\cdot 1+3^{2}\cdot 2)=N(-13,22)$. Standardizzando: $$P(2X_{1}-3X_{2}\geq 0)=1-\Phi\left( \frac{13}{\sqrt{22}} \right)$$
+
+> [!example] $X_{1},X_{2}\sim N(0,1)$ indipendenti
+> $X_{1}-X_{2}\sim N(0,2)$. Allora $P(X_{1}-X_{2}\geq 0)=\frac{1}{2}$ (esatto) e $P(X_{1}-X_{2}>\frac{1}{2})=1-\Phi\left( \frac{1}{2\sqrt{2}} \right)$. In generale, per $Z\sim N(\mu,\sigma^{2})$, $P(Z>\mu)=P(Z<\mu)=\frac{1}{2}$.
+
+--- Fine lezione 21 (combinazioni lineari di Normali) ---

@@ -11,4 +11,4 @@
 
 ## Materiale di riferimento
 
-<!-- Da completare -->
+- [The Concise TypeScript Book](https://gibbok.github.io/typescript-book/it-it/) - Guida gratuita e open source per imparare TypeScript.

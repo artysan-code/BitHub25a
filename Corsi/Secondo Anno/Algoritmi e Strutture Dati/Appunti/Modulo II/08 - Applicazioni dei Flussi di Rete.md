@@ -2,7 +2,7 @@
 tags:
   - algoritmi
   - flussi
-slide: "7-II"
+slide: ["07-II"]
 capitolo: "Kleinberg-Tardos cap. 7"
 ---
 # Applicazioni dei Flussi di Rete
@@ -26,6 +26,9 @@ Il **paradigma della riduzione** consiste nel trasformare un problema $P$ in un'
 
 Il **problema del Bipartite Matching** chiede: dato $G = (L \cup R, E)$ bipartito, trovare un matching di cardinalità massima.
 **Esempio pratico:** $L$ = insieme di studenti, $R$ = insieme di laboratori; un arco $(u, v)$ indica che lo studente $u$ è compatibile con il laboratorio $v$. Un matching massimo assegna il massimo numero di studenti a laboratori compatibili.
+
+![[app_matching_definizione.png]]
+Un matching è un insieme di archi che non condividono estremi: ogni nodo è toccato al più una volta.
 ### Costruzione della rete
 Per risolvere il Bipartite Matching tramite Max-Flow si costruisce il grafo diretto $G' = (L \cup R \cup \{s, t\},\ E')$ come segue:
 - Ogni arco $(u, v) \in E$ (con $u \in L$, $v \in R$) diventa un arco **diretto** da $u$ a $v$ con capacità $+\infty$ (o 1 — equivalente poiché i flussi risulteranno 0/1).
@@ -40,6 +43,9 @@ Per risolvere il Bipartite Matching tramite Max-Flow si costruisce il grafo dire
   └──────────► u₄ ──────► v₄' ──────────► t
                L           R
 ```
+
+![[app_bipartite_riduzione.png]]
+La rete $G'$ della riduzione: capacità 1 sugli archi $s \to L$ e $R \to t$, che è ciò che impedisce a un nodo di essere accoppiato due volte.
 ### Correttezza (corrispondenza biunivoca)
 > [!quote] Teorema — Bipartite Matching = Max-Flow
 > Esiste una corrispondenza biunivoca tra i matching di cardinalità $k$ in $G$ e i flussi **interi** di valore $k$ in $G'$.
@@ -48,6 +54,9 @@ Per risolvere il Bipartite Matching tramite Max-Flow si costruisce il grafo dire
 **Dimostrazione ($\Leftarrow$):** Sia $f$ un flusso intero di valore $k$ in $G'$. Per integralità ogni arco trasporta $0$ o $1$ unità. L'insieme $M = \{(u,v) \in E : f(u,v) = 1\}$ è un matching: ogni $u \in L$ ha un solo arco entrante (da $s$, capacità 1), ogni $v \in R$ ha un solo arco uscente (verso $t$, capacità 1). La cardinalità di $M$ vale $k$ per il lemma del valore del flusso applicato al taglio $(L \cup \{s\}, R \cup \{t\})$.
 
 **Corollario.** Poiché esiste sempre un flusso massimo intero (Teorema di integralità), il flusso massimo in $G'$ corrisponde al matching massimo in $G$.
+
+![[app_bipartite_correttezza.png]]
+La corrispondenza biunivoca vista sulla slide: da un matching si costruisce il flusso, e dal flusso intero si rilegge il matching.
 ### Complessità
 | Algoritmo | Aumenti | Tempo totale |
 |---|---|---|
@@ -63,33 +72,18 @@ Questo risultato è una conseguenza diretta del teorema Max-Flow Min-Cut: il tag
 > [!quote] Teorema — Hall (condizione di matrimonio, 1935)
 > Un grafo bipartito $G = (L \cup R, E)$ ammette un **matching perfetto** che satura tutti i nodi di $L$ se e solo se, per ogni sottoinsieme $S \subseteq L$, il vicinato $N(S) \subseteq R$ soddisfa $|N(S)| \geq |S|$.
 
-> [!question] Domanda tipica d'esame — Riduzione al Max-Flow
-> **D:** Come si riduce il Bipartite Matching al Max-Flow? Descrivere la costruzione e dimostrare la correttezza.
-> **R:**
-> **Costruzione.** Si costruisce $G' = (L \cup R \cup \{s,t\}, E')$: arco $s \to u$ di capacità 1 per ogni $u \in L$, arco $v \to t$ di capacità 1 per ogni $v \in R$, arco $u \to v$ di capacità 1 (o $\infty$, equivalente) per ogni $(u,v) \in E$.
->
-> **Correttezza.** Esiste una corrispondenza biunivoca fra matching di cardinalità $k$ in $G$ e flussi interi di valore $k$ in $G'$.
-> ($\Rightarrow$) Da un matching $M$ si invia 1 unità su ogni cammino $s \to u \to v \to t$ con $(u,v) \in M$: nessun nodo è saturato due volte perché $M$ è un matching, quindi la conservazione del flusso è rispettata.
-> ($\Leftarrow$) Il Teorema di integralità garantisce un flusso massimo intero $f$: per le capacità unitarie su $s\to L$ e $R\to t$, ogni arco porta 0 o 1. Si pone $M = \{(u,v) : f(u,v)=1\}$: ogni $u \in L$ e ogni $v \in R$ vi compaiono al più una volta.
->
-> **Complessità.** Con Ford-Fulkerson: al più $n = \min(|L|,|R|)$ aumentazioni (il flusso massimo è limitato dal grado di $s$ o $t$), ciascuna $O(m)$ con BFS/DFS sul residuo — totale $O(mn)$.
+→ **Palestra**: [[Esercizi 08 - Applicazioni dei Flussi di Rete#Riduzione del Bipartite Matching al Max-Flow|riduzione del Bipartite Matching]]
 
-> [!question] Domanda tipica d'esame — Teorema di König
-> **D:** Perché la cardinalità del matching massimo in un grafo bipartito è uguale alla dimensione del vertex cover minimo? Come si collega questo risultato al Max-Flow?
-> **R:**
-> **Impostazione.** È il Teorema di König (1931): in un grafo bipartito il matching massimo e il vertex cover minimo hanno la stessa cardinalità. La dimostrazione sfrutta la rete $G'$ della riduzione (sorgente $s$, $L$, $R$, pozzo $t$; capacità 1 su $s \to L$ e $R \to t$; capacità $\infty$ su $L \to R$): un taglio minimo non può contenere archi $L \to R$, che hanno capacità infinita, quindi taglia solo archi $s \to L$ o $R \to t$.
->
-> **Costruzione del vertex cover.** Sia $(A,B)$ un taglio minimo con $s \in A$. Si definisce $C = (L \setminus A) \cup (R \cap A)$; la tesi è che $C$ è un vertex cover di $G$.
->
-> **Dimostrazione (per assurdo).** Sia $(u,v) \in E$ con $u \in L$, $v \in R$ non coperto da $C$: allora $u \notin C$, cioè $u \in A$ (dato che $u \notin L\setminus A$). Se fosse $v \in B$, l'arco $u \to v$ attraverserebbe il taglio — ma è un arco $L \to R$ di capacità $\infty$, che non può comparire in un taglio minimo, assurdo. Dunque $v \in A$, cioè $v \in R \cap A \subseteq C$: contraddice l'ipotesi che $(u,v)$ non fosse coperto.
->
-> **Conclusione.** $|C|$ è pari alla capacità del taglio minimo, perché conta solo archi $s \to L$ o $R \to t$ (ciascuno capacità 1). Per il teorema Max-Flow Min-Cut la capacità del taglio minimo è il flusso massimo, cioè il matching massimo: matching massimo e vertex cover minimo coincidono.
+→ **Palestra**: [[Esercizi 08 - Applicazioni dei Flussi di Rete#Teorema di König e collegamento col Max-Flow|teorema di König]]
 ## Cammini Disgiunti (Disjoint Paths)
 ### Definizioni
 > [!quote] Definizione — Cammini arco-disgiunti
 > Due cammini in un grafo sono **arco-disgiunti** (*edge-disjoint*) se non condividono nessun arco. Il problema dei **cammini arco-disgiunti** chiede: dato un grafo $G = (V, E)$ e due nodi $s$ e $t$, trovare il massimo numero di cammini $s \leadsto t$ arco-disgiunti.
 
 La motivazione pratica è la **robustezza delle reti di comunicazione**: quanti cammini indipendenti esistono tra $s$ e $t$? Se $k$ cammini sono arco-disgiunti, la rete resiste alla rimozione di $k-1$ archi qualsiasi.
+
+![[app_cammini_disgiunti_definizione.png]]
+Due cammini sono arco-disgiunti se non condividono alcun arco — possono invece condividere nodi.
 ### Costruzione della rete (grafo diretto)
 La riduzione al Max-Flow è immediata: assegnare **capacità 1 a ogni arco** del grafo $G$, mantenendo la stessa struttura. La rete $G'$ coincide con $G$ con tutte le capacità unitarie.
 
@@ -104,6 +98,9 @@ s ──────► 3 ────────► 6 ──────► t
 ```
 
 Nel grafo sopra esistono 2 cammini arco-disgiunti: ad esempio $s \to 2 \to 5 \to t$ e $s \to 4 \to 7 \to t$.
+
+![[app_cammini_disgiunti_riduzione.png]]
+La riduzione è la più economica di tutte: si mette capacità 1 su ogni arco e si lascia il grafo com'è.
 ### Correttezza
 > [!quote] Teorema — Cammini disgiunti = Max-Flow
 > Esiste una corrispondenza biunivoca tra $k$ cammini arco-disgiunti $s \leadsto t$ in $G$ e flussi **interi** di valore $k$ in $G'$ (con capacità unitarie).
@@ -121,27 +118,14 @@ Per grafi **non orientati**, si sostituisce ogni arco $\{u, v\}$ con **due archi
 > [!warning] Cammini nodo-disgiunti
 > Il problema dei **cammini nodo-disgiunti** (vertex-disjoint paths, nessun nodo interno in comune) si riduce al Max-Flow con una tecnica di **node splitting**: ogni nodo $v$ (eccetto $s$ e $t$) viene rimpiazzato da due nodi $v_{in}$ e $v_{out}$ collegati da un arco $(v_{in}, v_{out})$ di capacità 1. Ogni arco $(u,v)$ del grafo originale diventa $(u_{out}, v_{in})$ con capacità $+\infty$. Il massimo flusso nella rete risultante corrisponde al massimo numero di cammini nodo-disgiunti.
 
-> [!question] Domanda tipica d'esame — Node splitting
-> **D:** Come si riduce il problema dei cammini nodo-disgiunti al Max-Flow?
-> **R:**
-> **Idea.** Un cammino nodo-disgiunto non può attraversare due volte lo stesso nodo interno, ma la rete originale non ha capacità sui nodi — solo sugli archi. Serve quindi introdurre un "collo di bottiglia" per ogni nodo.
->
-> **Costruzione.** Ogni nodo $v \neq s,t$ si sdoppia in $v_{in}$ e $v_{out}$, collegati da un arco interno $(v_{in}, v_{out})$ di capacità 1: al più 1 unità di flusso può attraversare $v$. Ogni arco originale $(u,v)$ diventa $(u_{out}, v_{in})$ con capacità $+\infty$, così i vincoli restano solo sui nodi.
->
-> **Correttezza.** Vale lo stesso argomento di corrispondenza biunivoca dei cammini arco-disgiunti: un flusso intero di valore $k$ (Teorema di integralità) satura $k$ archi interni distinti, quindi individua $k$ nodi interni distinti attraversati da $k$ cammini $s \leadsto t$ nodo-disgiunti, e viceversa. Il Max-Flow sulla rete sdoppiata vale dunque quanto il massimo numero di cammini nodo-disgiunti nel grafo originale.
+→ **Palestra**: [[Esercizi 08 - Applicazioni dei Flussi di Rete#Riduzione dei cammini nodo-disgiunti al Max-Flow|cammini nodo-disgiunti e node splitting]]
+
+![[app_cammini_disgiunti_non_orientati.png]]
+Il caso non orientato, dove ogni arco va sdoppiato nei due versi.
 ### Complessità
 Con Ford-Fulkerson su capacità unitarie: al più $n$ aumentazioni (il flusso massimo non può eccedere il grado di $s$), ciascuna $O(m)$, per un totale di $O(mn)$.
 
-> [!question] Domanda tipica d'esame — Cammini arco-disgiunti
-> **D:** Come si calcola il massimo numero di cammini arco-disgiunti tra $s$ e $t$ in un grafo diretto $G$?
-> **R:**
-> **Costruzione.** Si assegna capacità 1 a ogni arco di $G$, lasciando la struttura invariata: la rete $G'$ coincide con $G$.
->
-> **Criterio (Teorema di Menger).** Il valore del Max-Flow $s \to t$ in $G'$ è uguale sia al massimo numero di cammini arco-disgiunti $s \leadsto t$ sia alla dimensione del minimo taglio archi (minimo numero di archi la cui rimozione disconnette $s$ da $t$) — le due quantità coincidono per il teorema Max-Flow Min-Cut applicato a capacità unitarie.
->
-> **Procedura.** Dal flusso massimo intero $f$ (Teorema di integralità) si estraggono i cammini seguendo, da ogni arco uscente da $s$ con $f=1$, un arco successivo non ancora usato con $f=1$ fino a raggiungere $t$; gli eventuali cicli residui si eliminano con la *flow decomposition* in $O(mn)$.
->
-> **Complessità.** Con Ford-Fulkerson su capacità unitarie: al più $n$ aumentazioni (il flusso non supera il grado di $s$), ciascuna $O(m)$ — totale $O(mn)$.
+→ **Palestra**: [[Esercizi 08 - Applicazioni dei Flussi di Rete#Massimo numero di cammini arco-disgiunti|cammini arco-disgiunti]]
 ## Image Segmentation
 ### Il problema
 **Image segmentation** è il problema di dividere un'immagine in regioni coerenti, tipicamente separando oggetti di interesse (primo piano, *foreground*) dallo sfondo (*background*). È un problema centrale nell'elaborazione delle immagini: un'applicazione concreta è la segmentazione di organi in immagini mediche (es. fegato e vascolarizzazione epatica).
@@ -179,6 +163,9 @@ Si costruisce il grafo $G' = (V', E')$ come segue:
 ```
 
 In parole: ogni pixel $i$ riceve un arco da $s$ di capacità $a_i$ (verosimiglianza foreground) e manda un arco a $t$ di capacità $b_i$ (verosimiglianza background). Ogni coppia adiacente $\{i,j\}$ genera due archi antiparalleli $(i \to j)$ e $(j \to i)$ di capacità $p_{ij}$ (penalità di separazione).
+
+![[app_image_segmentation_rete.png]]
+La rete costruita sui pixel: $s$ è il foreground, $t$ il background, e fra pixel adiacenti corrono due archi antiparalleli di capacità $p_{ij}$.
 ### Correttezza (interpretazione del taglio)
 > [!quote] Teorema — Image Segmentation = Min-Cut
 > Il taglio minimo $(A, B)$ in $G'$ (con $s \in A$, $t \in B$) corrisponde alla partizione dei pixel che minimizza il costo, cioè massimizza la qualità.
@@ -195,14 +182,10 @@ che è esattamente il **costo** da minimizzare.
 > [!info] Applicazione reale — GrabCut
 > L'algoritmo **GrabCut** (Rother, Kolmogorov, Blake, 2004) usa ripetutamente Min-Cut per la segmentazione interattiva di immagini. L'utente disegna un rettangolo attorno all'oggetto; l'algoritmo stima iterativamente i modelli di foreground e background (con distribuzioni gaussiane miste) e risolve Min-Cut ad ogni iterazione.
 
-> [!question] Domanda tipica d'esame — Riduzione a Min-Cut
-> **D:** In che senso il Min-Cut risolve il problema di Image Segmentation? Come si costruisce la rete?
-> **R:**
-> **Trasformazione.** Massimizzare $\text{qualità}(A,B) = \sum_{i\in A} a_i + \sum_{j\in B} b_j - \sum p_{ij}$ equivale a minimizzare $\text{costo}(A,B) = \sum_{i\in A} b_i + \sum_{j\in B} a_j + \sum p_{ij}$: si somma la costante $\sum_i(a_i+b_i)$ e si inverte il segno, il che non cambia chi ottimizza.
->
-> **Costruzione della rete.** Sorgente $s$ = foreground, pozzo $t$ = background; per ogni pixel $i$ arco $(s,i)$ di capacità $a_i$ e arco $(i,t)$ di capacità $b_i$; per ogni coppia di pixel adiacenti $\{i,j\}$ due archi antiparalleli $(i,j)$ e $(j,i)$ di capacità $p_{ij}$.
->
-> **Correttezza.** In un taglio $(A,B)$ con $s\in A$ (foreground) e $t\in B$ (background): l'arco $(s,i)$ è tagliato se $i\in B$ e contribuisce $a_i$; l'arco $(i,t)$ è tagliato se $i\in A$ e contribuisce $b_i$; fra pixel adiacenti su lati diversi si paga $p_{ij}$ una sola volta grazie all'antiparallelismo. La capacità del taglio coincide quindi esattamente con $\text{costo}(A,B)$: il Min-Cut taglia gli archi corrispondenti alle assegnazioni sbagliate e alle frontiere fra regioni, cioè minimizza il costo e massimizza la qualità.
+→ **Palestra**: [[Esercizi 08 - Applicazioni dei Flussi di Rete#Riduzione di Image Segmentation al Min-Cut|Image Segmentation e Min-Cut]]
+
+![[app_image_segmentation_taglio.png]]
+La lettura del taglio minimo: $A$ è il foreground, $B$ il background, e si paga $p_{ij}$ solo sulle coppie separate — cioè sulla frontiera.
 ## Baseball Elimination
 ### Il problema
 Il problema di **Baseball Elimination** chiede: dato lo stato attuale della stagione (vittorie accumulate, partite rimanenti, calendario delle sfide tra coppie), il team $z$ può ancora finire la stagione con il numero massimo di vittorie (cioè a pari merito con il primo)?
@@ -227,6 +210,9 @@ Se $w_z + r_z < w_x$ per qualche team $x$, allora $z$ è eliminato banalmente: a
 
 Montreal è eliminato **banalmente**: anche vincendo tutte le 3 restanti arriverebbe a 80, ma Atlanta ha già 83 vittorie. Questo è l'unico caso di cui parlano normalmente i commentatori sportivi, ma non è l'unico scenario possibile.
 Philly è eliminato **non banalmente**: anche vincendo tutte le 3 restanti arriverebbe a 83 ($= w_z + r_z$). Tuttavia ATL e NYM devono ancora giocarsi 6 partite: qualunque sia l'esito, una delle due arriverà ad almeno $83 + 1 = 84$ vittorie totali, superando Philly. La rimozione di questo caso richiede Max-Flow.
+
+![[app_baseball_classifica.png]]
+La classifica da cui parte l'esempio: vittorie accumulate, partite rimanenti e scontri diretti ancora da giocare.
 ### Costruzione della rete (caso generale)
 Si vuole stabilire se il team $z$ può vincere. Si assume w.l.o.g. che $z$ vinca tutte le partite rimanenti: il suo totale massimo è $W^* = w_z + r_z$. L'obiettivo è distribuire le vittorie delle restanti partite tra i team di $S' = S \setminus \{z\}$ in modo che nessun team superi $W^*$.
 Si costruisce la rete $G'$ con le seguenti componenti:
@@ -250,6 +236,9 @@ s ────────────┤
 ```
 
 Ogni coppia $(x,y)$ con $r_{xy}>0$ contribuisce un nodo-partita $g_{xy}$ con capacità in ingresso $r_{xy}$ e capacità uscenti $\infty$ verso i nodi-team $x$ e $y$. I nodi-team (1, 2, 3, …) sono condivisi tra tutti i nodi-partita che li coinvolgono.
+
+![[app_baseball_rete.png]]
+La rete del caso generale: nodi-partita alimentati da $s$ con capacità $r_{xy}$, nodi-team scaricati su $t$ con capacità $W^* - w_x$.
 ### Correttezza
 > [!quote] Teorema — Baseball Elimination = Max-Flow
 > Il team $z$ **non è eliminato** se e solo se il massimo flusso in $G'$ **satura tutti gli archi uscenti da** $s$, cioè il flusso massimo è uguale a $\sum_{x,y \in S'} r_{xy}$.
@@ -266,16 +255,7 @@ Questa disuguaglianza è la **condizione di eliminazione combinatoria**: il nume
 > [!info] Certificato di eliminazione
 > Quando $z$ è eliminato, il taglio minimo fornisce un **certificato esplicito**: il sottoinsieme $T$ di team che "dimostrano" l'eliminazione di $z$. Questo è il tipo di spiegazione che, ad esempio, può apparire in un articolo sportivo: "anche se Philly vincesse tutte le partite, la combinazione Atlanta–New York ne ha già vinte 161 in 6 partite, garantendo che una delle due supererà Philly".
 
-> [!question] Domanda tipica d'esame — Eliminazione matematica
-> **D:** Come si usa Max-Flow per determinare se un team $z$ è matematicamente eliminato nel baseball?
-> **R:**
-> **Caso banale (da escludere prima).** Se esiste un team $x$ con $w_x > W^* = w_z + r_z$, $z$ è eliminato banalmente senza costruire alcuna rete: la capacità $x \to t$ pari a $W^* - w_x$ sarebbe negativa, quindi va verificato e scartato a priori.
->
-> **Costruzione della rete.** Sorgente $s$, pozzo $t$; un nodo-partita $g_{xy}$ per ogni coppia $x,y \in S' = S\setminus\{z\}$ con $r_{xy}>0$, con arco $s \to g_{xy}$ di capacità $r_{xy}$ e archi $g_{xy}\to x$, $g_{xy}\to y$ di capacità $\infty$; un nodo-team $x$ per ogni $x\in S'$ con arco $x \to t$ di capacità $W^*-w_x$.
->
-> **Criterio.** $z$ non è eliminato se e solo se il Max-Flow satura tutti gli archi uscenti da $s$, cioè il flusso massimo vale $\sum_{x,y\in S'} r_{xy}$: per il Teorema di integralità ogni unità di flusso su $g_{xy}$ assegna quella partita a $x$ o a $y$ senza far mai superare a nessun team il tetto $W^*$.
->
-> **Certificato di eliminazione.** Se il flusso non satura, il taglio minimo individua un sottoinsieme $T \subseteq S'$ tale che $w_z + r_z < \frac{1}{|T|}\left(\sum_{x\in T} w_x + \sum_{x,y\in T} r_{xy}\right)$: i team di $T$ devono complessivamente distribuirsi più vittorie di quante $z$ possa mai raggiungere.
+→ **Palestra**: [[Esercizi 08 - Applicazioni dei Flussi di Rete#Eliminazione matematica via Max-Flow|baseball elimination]]
 ## Riepilogo: costruzioni delle reti
 | Problema | Nodi speciali | Capacità archi | Soluzione letta da |
 |---|---|---|---|

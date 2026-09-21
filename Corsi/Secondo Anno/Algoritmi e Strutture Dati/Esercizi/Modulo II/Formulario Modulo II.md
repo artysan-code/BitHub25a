@@ -21,9 +21,9 @@ nota:
 ---
 # Formulario — ASD Modulo II
 Solo ciò che si scrive sul compito: **definizioni** in forma d'esame, **enunciati**, **scheletri di dimostrazione** (i passi, non la prosa), **corollari**, **costi**. Niente esempi, niente metodo, niente esercizi. Fonte: slide del prof. Gualà; ciò che va oltre è marcato *(extra, non da slide)*.
-Per §01-§03 e §07-§09 (Esercizi 1 e 2) il taglio è teoria; per §04-§06 (Esercizio 3) sono definizioni dei problemi, ricorrenze e costi. Notazione: $n = |V|$, $m = |E|$; $T$ è identificato col suo insieme di archi; $\text{OPT}$ è sempre il **valore** ottimo, non l'insieme che lo realizza.
+Per Greedy, Union-Find, MST, Flussi e NP (Esercizi 1 e 2) il taglio è **teoria**; per la Programmazione Dinamica (Esercizio 3) il taglio è **procedura** — cosa scrivere sul foglio, e in che ordine. Notazione: $n = |V|$, $m = |E|$; $T$ è identificato col suo insieme di archi; $\text{OPT}$ è sempre il **valore** ottimo, non l'insieme che lo realizza.
 
-## 01 · Greedy e Interval Scheduling
+## Greedy e Interval Scheduling
 ### Interval Scheduling
 > [!quote] Definizione — Interval Scheduling (forma d'esame)
 > - **Input**: $n$ intervalli $I_1,\ldots,I_n$, con $I_i$ di inizio $s_i$ e fine $f_i$.
@@ -60,7 +60,7 @@ Criterio corretto: **earliest start time** (gli altri tre hanno controesempi).
 **Perché ordini diversi**: IS ha una risorsa sola e massimizza i job → conviene liberarla presto, *finish time*. IP serve tutte le lezioni e minimizza le risorse → conta quante devono coesistere, *start time*, e il picco è la depth.
 Due tecniche di dimostrazione *(nome extra, contenuto da slide — Kleinberg-Tardos §4.1)*: **greedy stays ahead** (una misura $\phi(r)$ in cui il greedy non è mai indietro) ed **exchange argument** (si trasforma un ottimo nella soluzione greedy con scambi che non peggiorano).
 
-## 02 · Union-Find
+## Union-Find
 > [!quote] Definizione — Le tre operazioni
 > - **`makeSet(x)`**: crea l'insieme $\{x\}$ di nome $x$.
 > - **`union(nome A, nome B)`**: fonde i due insiemi in uno di nome **$A$**, distrugge i vecchi.
@@ -102,7 +102,7 @@ Due tecniche di dimostrazione *(nome extra, contenuto da slide — Kleinberg-Tar
 > [!quote] Proprietà — Lower bound $\Omega(m+n)$ *(non sulle slide; chiesto il 16/07/2024 e il 18/02/2025)*
 > Qualunque struttura dati, su $n$ `makeSet`, $n-1$ `union` e $m$ `find`, richiede $\Omega(m+n)$: le makeSet devono creare $n$ insiemi, le find devono rispondere $m$ volte.
 
-## 03 · Minimum Spanning Tree
+## Minimum Spanning Tree
 ### Problema e struttura
 > [!quote] Definizione — MST (forma d'esame)
 > - **Input**: grafo non orientato, **connesso**, pesato $G=(V,E)$ con pesi reali $c_e$.
@@ -227,47 +227,107 @@ Due tecniche di dimostrazione *(nome extra, contenuto da slide — Kleinberg-Tar
 
 La procedura **è** Kruskal fermato a $k$ componenti; eseguito fino in fondo dà un clustering **gerarchico**.
 
-## 04 · Programmazione Dinamica — impianto dell'Esercizio 3
-> [!quote] Le due condizioni
-> **Sottostruttura ottima** (senza, la ricorrenza è sbagliata) e **sottoproblemi sovrapposti** (senza, la tabella non serve). È la seconda a distinguere la DP dal divide-et-impera: in Merge Sort i sottoproblemi sono **disgiunti**.
+## Programmazione Dinamica
+Tre blocchi: **come si fa** l'Esercizio 3, **le sei forme** di tabella in cui ricade ogni traccia, e **il repertorio** dei problemi del corso da cui quelle forme derivano.
+### La procedura dell'Esercizio 3
+L'Esercizio 3 è **sempre** progettazione di un algoritmo di programmazione dinamica su un problema inedito, 11 punti, e la tecnica è dichiarata dalla traccia. Questa sezione non è teoria: è **cosa fai, in che ordine**, dal momento in cui giri il foglio. Le forme di tabella stanno in [[#Le sei forme — riconoscere e scrivere|Le sei forme]], i problemi del corso da cui derivano nel [[#Il repertorio — i problemi del corso|Repertorio]].
+#### Il rito dei primi cinque minuti
+Prima di pensare, esegui.
+1. **Leggi il titolo fra parentesi**, se c'è: nelle tracce recenti il prof ci mette il nome accademico del problema. È il suggerimento.
+2. **Cerchia i numeri che limitano qualcosa** — «al più $k$», «capacità $W$», «una batteria di $\Delta$», «hai una sola pillola». Ogni numero cerchiato è candidato a diventare **una dimensione della tabella**.
+3. **Decidi su cosa scorre il problema**: una fila · una matrice · due collezioni che si consumano · un segmento che si accorcia da due lati. Questo fissa quanti indici *geometrici* servono.
+4. **Scrivi la frase**, a parole, prima di qualunque formula: «$\text{OPT}(\ldots)$ = il miglior valore ottenibile quando \_\_\_\_», e subito dopo **quanti sono**.
+5. **Fatti la domanda diagnostica**: *per decidere su $i$, cosa mi serve sapere che $\text{OPT}(i-1)$ non mi dice?* La risposta è la seconda dimensione, oppure il vincolo.
+#### I cinque passi — cosa scrivere, letteralmente
+| Passo | Cosa scrivi sul foglio | Cosa lo fa valere |
+|---|---|---|
+| **1 · Sottoproblema** | una frase italiana completa che dice cosa contiene **una** cella, poi «i sottoproblemi sono $n+1$» | dichiarare **quanti** sono; senza la frase, il prof ferma tutto: *«devi definire i sottoproblemi!!!»* |
+| **2 · Ricorrenza** | la formula, più una riga: «i casi sono **esaustivi e mutuamente esclusivi**» e il *cut-and-paste* | i casi vengono dalle mosse che **il testo** consente sull'ultimo elemento, riletto alla lettera |
+| **3 · Caso base** | il valore neutro, **con la disuguaglianza** se la ricorrenza salta di più di uno | $0$ per un massimo; $+\infty$ per uno stato **inammissibile** in una minimizzazione. Non si mescolano |
+| **4 · Ordine e risposta** | «riempio per $i$ crescente **perché** ogni cella dipende da indici minori», poi dove si legge | il «perché» distingue la risposta completa |
+| **5 · Complessità** | *celle $\times$ costo per cella*, tempo **e** spazio, più la frase polinomiale/pseudo | decisione **binaria** $\Rightarrow$ cella $O(1)$; scelta **multipla** sul predecessore $\Rightarrow$ cella $O(j)$ |
 
-> [!info] I cinque passi
-> 1. **Sottoproblema** — cosa indicizza la tabella e cosa significa *esattamente* una cella, a parole prima che in formula; dichiara **quanti** sono.
-> 2. **Ricorrenza** — la formula, i casi, e una riga: i casi sull'ultimo elemento sono **esaustivi** e in ciascuno il residuo è ottimo (*cut-and-paste*).
-> 3. **Caso base.**
-> 4. **Ordine di riempimento e dove si legge la risposta.**
-> 5. **Complessità** — celle $\times$ costo per cella, tempo e spazio.
+> [!quote] Le due condizioni che rendono lecita la DP
+> **Sottostruttura ottima** — senza, la ricorrenza è sbagliata. **Sottoproblemi sovrapposti** — senza, la tabella non serve a niente. È la seconda a distinguere la DP dal divide-et-impera: in Merge Sort i sottoproblemi sono **disgiunti**.
+> *Cut-and-paste*, da scrivere in una riga sempre uguale: «se il pezzo rimanente non fosse ottimo, sostituendolo con quello ottimo otterrei una soluzione migliore dell'ottimo — assurdo».
+#### Quando la casella non basta — le tre riparazioni
+Se scrivendo il Passo 2 ti serve un'informazione che la cella non contiene, **non inventare un salto: torna al Passo 1**. La cella è un **numero**, non un insieme: non puoi guardarci dentro, quindi l'informazione va resa vera *per costruzione*.
+
+| Cosa manca | Riparazione | Costo |
+|---|---|---|
+| niente: chi è vietato lo sai dalla **posizione** | sposti il salto: $i-k-1$ | invariato |
+| il vietato **dipende dai dati** | cerchi il salto: $p(j)$, l'ultimo compatibile | $+O(n\log n)$ di precalcolo |
+| **quanta risorsa** hai consumato | aggiungi un indice numerico: $\text{OPT}(i,u)$ | $\times B$ |
+| **com'è finita** la soluzione (colore, blocco, flag) | aggiungi un indice a **dominio fisso**: $\text{OPT}(i,s)$ | $\times |S|$, costante |
+| una proprietà dell'elemento **scelto prima** (valore, posizione, identità) | **vincoli** la cella: «che termina esattamente in $i$» | cella $O(n)$, $+\max$ finale |
+
+> [!warning] Se lo stato ha un numero esponenziale di valori, la definizione è sbagliata
+> Un sottoinsieme, una permutazione, «quali ho già preso» non sono stati: sono la resa. Cerca la **quantità aggregata** che riassume il passato — un contatore, un'etichetta, un residuo.
+#### Polinomiale o pseudo-polinomiale — la frase che il prof testa
+$\Theta(nB)$ **non** è automaticamente pseudo-polinomiale. Decide da cosa è limitato il secondo indice.
+
+> [!quote] La regola
+> - $B$ è un **valore numerico dell'input**, libero di crescere indipendentemente da $n$ (capacità $W$, batteria $\Delta$, target $N$) $\Rightarrow$ **pseudo-polinomiale**: $W$ si scrive con $O(\log W)$ bit ma compare linearmente nel costo; con $W=2^k$ l'algoritmo fa $\Theta(n2^k)$ passi.
+> - $B$ **conta elementi** e non può superarne il numero (case rosse, comizi, job, cambi di colore, salti) $\Rightarrow$ si tronca a $\min(B,n)$ e resta **polinomiale**, $O(n^2)$.
 >
-> Il passo difficile è **sempre il primo**. Priorità se il tempo stringe: sottoproblemi → ricorrenza → complessità. **Lo pseudocodice non è mai richiesto** dalla traccia (0 su 24).
+> Il gemello opposto: **Sequence Alignment $\Theta(mn)$ è genuinamente polinomiale**, perché $m,n$ sono *lunghezze*, cioè la dimensione vera dell'istanza. La coppia Knapsack / Sequence Alignment è chiesta apposta.
+#### Dove si legge la risposta — quasi mai «l'ultima cella»
+Non si risponde guardando la tabella, si risponde **rileggendo il Passo 1**: quali celle sono soluzioni *complete e ammissibili*?
 
-> [!warning] Dove si legge la risposta — quasi mai «l'ultima cella»
-> Non si risponde guardando la tabella, si risponde **rileggendo il passo 1**: quali celle sono soluzioni *complete e ammissibili*? Se la definizione contiene un vincolo («che termina con $i$», «con esattamente $r$ rosse», «con $v_i$ non ancora dominato»), va **sciolto** con un min/max finale. Quattro motivi: stato vincolato · insieme di arrivi più grande di un punto · stati finali inammissibili da escludere · aritmetica in più alla lettura.
+> [!warning] Se la definizione contiene un vincolo, va sciolto
+> «che termina esattamente in $i$» · «con esattamente $b$ usati» · «con $v_i$ non ancora dominato»: la risposta è un $\max$ (o $\min$) **finale su tutte le celle**, non $\text{OPT}(n)$. È il prezzo di aver vincolato la cella, ed è un buon affare: senza il vincolo la ricorrenza non si scriveva.
+#### La rete di sicurezza — 11 punti non sono tutto-o-niente
+I cinque passi si valutano separatamente. Anche se non risolvi, **scrivi**: la definizione del sottoproblema a parole e quanti sono · i casi che vedi, anche incompleti · il caso base · la complessità *di quello che hai proposto tu*.
 
-> [!warning] Quando un indice non basta
-> *«Per decidere sull'elemento $i$, cosa avrei bisogno di sapere sul passato che $\text{OPT}[i-1]$ non mi dice?»* — capacità residua (Knapsack), colore precedente (House Coloring), quanti contigui ho preso, quanto budget ho speso. Quella grandezza diventa un **indice**, non una condizione booleana. Se lo stato ha un numero **esponenziale** di valori, la definizione è sbagliata.
+> [!info] Il fallback quando non parte proprio
+> Scrivi il sottoproblema più povero, $\text{OPT}(i)$ sul prefisso, prova la ricorrenza, e **scrivi dove si rompe**. Una frase come «un solo indice non basta, perché per sapere se posso prendere $i$ devo conoscere la capacità residua, che non è deducibile dalla posizione» **è il ragionamento giusto** e vale punti anche senza soluzione.
+> Priorità se il tempo stringe: **sottoproblema $\to$ ricorrenza $\to$ complessità**. Lo pseudocodice **non è mai richiesto** dalla traccia (0 su 24 tracce lette): è il primo da tagliare, dopo la ricostruzione.
+### Le sei forme — riconoscere e scrivere
+Ogni Esercizio 3 del campione cade in una di queste. Il travestimento cambia il primo paragrafo, non la struttura della pagina.
 
-> [!info] Caso base — quando esce da solo
-> Esce dalla ricorrenza **solo se l'insieme vuoto dei predecessori ha senso** (LIS: $1 + \max(0,\ldots) = 1$; somma su $d=0$ figli $=0$). Va scritto a mano quando «nessun predecessore» non è una configurazione (cammini su griglia, colorazioni): lì la formula darebbe $\pm\infty$. **Controllo**: sostituisci il valore degenere; se non ritrovi i casi base, o vanno dichiarati, o lo stato ha un buco.
+| Segnale nella traccia | Tabella | Ricorrenza | Risposta | Costo |
+|---|---|---|---|---|
+| fila; «non due consecutivi», «almeno $k$ di pausa», «occupa $d$ posizioni» | $\text{OPT}(i)$ | $\max\{\text{OPT}(i{-}1),\ v_i + \text{OPT}(i{-}k{-}1)\}$ | $\text{OPT}(n)$ | $\Theta(n)$ |
+| intervalli che **si sovrappongono** nel tempo | $\text{OPT}(j)$ | $\max\{\text{OPT}(j{-}1),\ w_j + \text{OPT}(p(j))\}$ | $\text{OPT}(n)$ | $O(n\log n)$ |
+| «al più $k$», capacità, batteria, budget, contatore | $\text{OPT}(i,u)$ | $\max\{\text{OPT}(i{-}1,u),\ v_i + \text{OPT}(i{-}1,u{-}w_i)\}$ | $\text{OPT}(n,W)$ | $\Theta(nW)$ |
+| il guadagno di $i$ dipende da **quale** elemento hai scelto prima | $\text{OPT}(i)$ **vincolato** | $f(i) + \max_{j<i\ \text{ammiss.}} \text{OPT}(j)$ | $\max_i \text{OPT}(i)$ | $O(n^2)$ |
+| matrice con mosse monotone, oppure **due** collezioni che si consumano | $\text{OPT}(i,j)$ | $v_{ij} + \max\{\text{OPT}(i{-}1,j),\ \text{OPT}(i,j{-}1)\}$ | $\text{OPT}(n,m)$ | $\Theta(nm)$ |
+| vincolo fra vicini con **poche** configurazioni (colore, blocco, flag) | $\text{OPT}(i,s)$ | $c(i,s) + \min_{s'\to s}\text{OPT}(i{-}1,s')$ | $\min_s \text{OPT}(n,s)$ | $\Theta(n)$ |
+#### Forma 1 · catena lineare a salto fisso
+**Segnale**: un numero **costante** che dice quante posizioni si bruciano. **Casella libera**, rami «prendo / non prendo».
+Il salto **non è mai $i-2$ per default**: «almeno $k$ di pausa» $\Rightarrow$ $i-k-1$ (il WIS classico è il caso $k=1$); «l'oggetto occupa $d$ posizioni» $\Rightarrow$ $i+d$ a suffisso. **Controllo obbligatorio**: conta con il dito le caselle fra $i$ e dove atterri.
+Caso base con il **$\le$**: $\text{OPT}(i)=0$ per ogni $i\le 0$; genera da solo tutti i casi piccoli.
 
-**Costo** $=$ *numero di celle* $\times$ *costo per cella*, fattori indipendenti. Decisione **binaria** («prendo $j$ o no») → cella $O(1)$; **multipla** («l'ultimo blocco parte da $i$») → cella $O(j)$.
+> [!warning] Copertura ≠ selezione
+> Se il vincolo è «non lasciare buchi» invece di «non sovrapporre», la sovrapposizione è **ammessa** e lo stato non è «il primo punto scoperto» ma «dove installo il **prossimo** oggetto»: l'oggetto che copre il primo buco può partire **prima** del buco. Un'ipotesi sui costi enunciata nel testo (es. $H_i \ge L_i$) è ciò che autorizza a potare rami; senza ipotesi, si tengono tutti.
+#### Forma 2 · predecessore univoco — $p(j)$
+**Segnale**: ogni elemento **occupa** un intervallo di tempo o di spazio.
+Si **ordina per tempo di fine** — unico motivo: così i compatibili con $j$ diventano un **blocco iniziale** $1..p(j)$, e «il resto» è una cella che hai già. $p(j)$ è l'**ultimo compatibile**, quindi **si salta a $p(j)$, non a $p(j)-1$**: $p(j)$ stesso si può prendere.
+Se il predecessore ha una **formula chiusa** (calendario: $p(i)=i-g_i-1$) scrivila direttamente, niente nome, e il costo torna $\Theta(n)$ — **dirlo vale un punto**. Se va **cercato**, dagli il nome e dichiara il precalcolo $O(n\log n)$.
+**Guardia**: se la mossa richiede spazio che potrebbe non esistere ($g_i > i-1$), il ramo va eliminato con una condizione, non lasciato al caso base.
+#### Forma 3 · prefisso più risorsa numerica
+**Segnale**: la prova del nove è *due strategie arrivano allo stesso elemento $i$ avendo speso quantità diverse, e la differenza cambia cosa posso fare dopo*.
+Un indice solo **degenera**: entrambi i rami atterrano sulla stessa cella e «prendo» vince sempre, dando $\sum_i v_i$. Dichiara se il secondo indice è capacità **residua** o **consumata**: decide il verso del riempimento.
+Varianti: obiettivo **booleano** ($\max \to \lor$, nessuna ottimizzazione); **costo fisso** che dipende dal totale (il contatore sta in tabella, il termine costante si aggiunge **fuori**, nel $\min$ finale su $b$).
+#### Forma 4 · cella vincolata — predecessore libero
+**Segnale**: per calcolare il guadagno di $i$ devi **nominare l'elemento scelto prima** — il suo valore («strettamente crescente»), la sua posizione («da quando hai sparato l'ultima volta»), la sua identità («lo sconto è $\min\{p_j,c_i\}$ con $i$ l'ultima visita»).
+Il vincolo nella definizione **rende legale il filtro**: sapendo che la cella $j$ finisce con $S[j]$, puoi scrivere $\max_{j<i,\ S[j]<S[i]}$. Senza vincolo non sai con cosa finisce la cella $j$, quindi non puoi filtrare — e **non esiste** alcuna ricorrenza corretta.
 
-> [!info] Riconoscere il sottoproblema in un problema mai visto
-> | Segnale nella traccia | Forma della tabella |
-> |---|---|
-> | oggetti in fila, prenderne uno esclude i vicini | $\text{OPT}[j]$ |
-> | **budget** / capacità / tempo da non superare | $\text{OPT}[i][w]$, 2° indice = risorsa residua |
-> | **due** sequenze da allineare | $\text{OPT}[i][j]$, un indice per sequenza |
-> | serve sapere *con che cosa finisce* la soluzione parziale | $\text{OPT}[i]$ **vincolato** + $\max$ finale |
-> | condizione locale con **poche** configurazioni (colore, energia, contigui) | $\text{OPT}[i][\text{stato}]$ |
->
-> Pattern delle tracce recenti: **problema noto + un parametro di budget $k$ che diventa una dimensione della tabella**.
+> [!warning] Cambiano i rami, non solo la risposta
+> Con la cella vincolata «$i$ c'è per forza»: i rami **non sono più** «prendo / non prendo» ma «**chi era il predecessore**», e il caso «non prendo $i$» vive in un'altra cella. Da qui il $\max$ finale su tutte le celle. Le due cose vanno insieme: se ne vedi una sola nella tua soluzione, hai sbagliato.
+#### Forma 5 · griglia o due collezioni
+**Segnale**: «matrice $n\times m$, solo destra o basso», oppure due liste/pile/stringhe che si consumano **entrambe**.
+La casella della tabella **è** la casella della griglia: il Passo 1 è gratis. I rami sono «da dove sono arrivato», e le mosse monotone garantiscono che i casi siano esaustivi per costruzione. Sui bordi il termine inesistente si **omette** dal $\min$/$\max$, non si sostituisce con zero.
+Caselle proibite: $\pm\infty$, che è un **divieto**, non un valore da sommare. Con una risorsa globale in più si innesta la Forma 3: $\text{OPT}(i,j,s)$, $\Theta(nmk)$. Con mosse di lunghezza arbitraria la cella costa $O(n+m)$ e torna $O(1)$ precalcolando i massimi di prefisso per riga e colonna.
+**Polinomiale senza discussione**: $n,m$ sono lunghezze, non valori.
+#### Forma 6 · stato a dominio fisso
+**Segnale**: vincolo **locale** fra vicini che non si riduce a una distanza — «non due case adiacenti dello stesso colore», «sconto se fai parte di un blocco contiguo lungo almeno 3», «ogni nodo fuori da $S$ dev'essere adiacente a $S$», «hai una sola pillola».
+Domanda diagnostica: *quante configurazioni del bordo destro devo distinguere per decidere sull'elemento successivo?* Se è un numero piccolo e fisso, sei qui. Definisci $S$ per **estensione**, con una tabella stato $\to$ significato: se gli stati sono ben scelti la ricorrenza si scrive da sola.
+Lo **stato composito** è il prodotto delle risposte necessarie, potato delle combinazioni impossibili — e il numero di stati esce dalla **soglia dichiarata nel testo** (blocco $\ge 3$ $\Rightarrow$ stati «lungo 1», «lungo 2», «lungo $\ge 3$»). Transizioni inammissibili: $\pm\infty$, mai omesse.
+**Resta polinomiale** perché $|S|$ non dipende dai valori dell'input: è l'opposto della Forma 3.
+### Il repertorio — i problemi del corso
+Non si studiano per essere chiesti: allo scritto la DP compare **solo** come progettazione. Servono come **telai da riconoscere sotto il travestimento** — e all'orale per nome.
 
-> [!warning] Pseudo-polinomiale, e quando invece non lo è
-> Knapsack $\Theta(nW)$ è polinomiale nel **valore** $W$, non nella sua **dimensione in bit** ($O(n\log W + n\log v_{\max})$): con $W = 2^k$ fa $\Theta(n2^k)$ passi. L'integrità dei **pesi** è essenziale, quella dei valori no.
-> Se invece il budget è limitato da una quantità legata a $n$ (quanti salti, quante case rosse, quanti cambi), si tronca a $k' = \min(k,\cdot)$ e resta **polinomiale**.
-> **Lower bound gratis**: se l'input ha già dimensione $X$ e cambiarne un elemento cambia l'ottimo, allora $\Omega(X)$ — per House Coloring $\Omega(nk)$, quindi $\Theta(nk)$ è **ottimo**.
-
-## 05 · I problemi DP — definizioni e ricorrenze
 > [!quote] Definizioni dei problemi (forma d'esame)
 > - **Insieme indipendente**: $S \subseteq V$ tale che nessuna coppia di nodi di $S$ è unita da un arco. **WIS su cammino**: cammino $v_1,\ldots,v_n$ con pesi $w_i \geq 0$, si massimizza $w(S) = \sum_{v_i \in S} w_i$ su $S$ indipendente.
 > - **Weighted Interval Scheduling**: $n$ job, job $j$ con $(s_j, f_j)$ e **peso** $w_j > 0$; si massimizza il peso totale di un sottoinsieme di job mutualmente compatibili.
@@ -277,7 +337,7 @@ La procedura **è** Kruskal fermato a $k$ componenti; eseguito fino in fondo dà
 > - **House Coloring**: $n$ case in fila, $k$ colori, costo $\text{cost}(i,c)$; nessuna coppia adiacente dello stesso colore, si minimizza il costo totale.
 
 > [!quote] Definizione — Predecessore $p(j)$
-> Job ordinati per tempo di fine. $p(j)$ è il **più grande** indice $i < j$ con $f_i \leq s_j$, e $0$ se nessuno è compatibile. **Non è $j-1$**: il salto da $j$ a $p(j)$ scarta in un colpo *tutti* i job incompatibili con $j$.
+> Job ordinati per tempo di fine. $p(j)$ è il **più grande** indice $i < j$ con $f_i \leq s_j$, e $0$ se nessuno è compatibile. **Non è $j-1$**: il salto da $j$ a $p(j)$ scarta in un colpo *tutti* i job incompatibili con $j$. Esempio delle slide: $p(8)=1$, $p(7)=3$, $p(2)=0$.
 
 | Problema | Sottoproblema | Ricorrenza | Risposta | Tempo |
 |---|---|---|---|---|
@@ -288,32 +348,32 @@ La procedura **è** Kruskal fermato a $k$ componenti; eseguito fino in fondo dà
 | Knapsack 0/1 | $\text{OPT}(i,w)$: primi $i$ oggetti, capacità $w$ | $\max\{\text{OPT}(i-1,w),\,v_i+\text{OPT}(i-1,w-w_i)\}$; solo il 1° se $w_i > w$; $\text{OPT}(0,w)=0$ | $\text{OPT}(n,W)$ | $\Theta(nW)$ |
 | LIS | $\text{OPT}[i]$: LIS **che termina con** $S[i]$ | $1 + \max\bigl(0,\ \max_{j<i,\ S[j]<S[i]} \text{OPT}[j]\bigr)$ | $\max_i \text{OPT}[i]$ | $O(n^2)$ |
 | House Coloring | $C_i[c]$: case $1..i$, la $i$-esima di colore $c$ | $\text{cost}(i,c) + \min_{c' \neq c} C_{i-1}[c']$; $C_1[c]=\text{cost}(1,c)$ | $\min_c C_n[c]$ | $\Theta(nk)$ |
-| Sequence Alignment | $\text{OPT}(i,j)$ sui prefissi | §06 | $\text{OPT}(m,n)$ | $\Theta(mn)$ |
-| Bellman-Ford | $\text{OPT}(i,v)$: $\leq i$ archi da $v$ a $t$ | §06 | $\text{OPT}(n-1,v)$ | $\Theta(mn)$ |
+| Sequence Alignment | $\text{OPT}(i,j)$ sui prefissi | vedi sotto | $\text{OPT}(m,n)$ | $\Theta(mn)$ |
+| Bellman-Ford | $\text{OPT}(i,v)$: $\leq i$ archi da $v$ a $t$ | vedi sotto | $\text{OPT}(n-1,v)$ | $\Theta(mn)$ |
 
 **WIS su cammino** — il Caso 2 rimuove **due** nodi: con uno solo il residuo ottimo potrebbe contenere $v_{n-1}$ e riunirlo a $v_n$ darebbe un insieme non indipendente. Ricostruzione $\Theta(n)$: $v_j$ entra **sse** $w_j + \text{OPT}[j-2] > \text{OPT}[j-1]$ (sui pareggi si esclude).
-**WIS su albero** — $A[v]$ è «la risposta senza vincoli», $B[v]$ «la risposta se $v$ è proibito», non «prendo / non prendo»: servono due perché il figlio deve rispondere a due domande diverse. Casi base gratis con $d=0$. Ordine **post-ordine** bottom-up: sul cammino l'ordine degli indici è già quello delle dipendenze, su un albero va procurato.
-**Segmented Least Squares** — pre-calcolo degli $e_{ij}$: $O(n^3)$ naïf, $O(n^2)$ con le somme cumulative $\Sigma x, \Sigma y, \Sigma x^2, \Sigma xy$; spazio $O(n^2)$.
-**House Coloring con $k$ colori** — pre-calcolando i **due** minimi della riga precedente ogni cella torna $O(1)$: $\Theta(nk)$ invece di $O(nk^2)$.
-
-## 06 · Sequence Alignment, Hirschberg e Bellman-Ford
-### Distanza di edit
+**WIS su albero** — $A[v]$ è «la risposta senza vincoli», $B[v]$ «la risposta se $v$ è proibito»: servono due perché il figlio deve rispondere a due domande diverse. Casi base gratis con $d=0$. Ordine **post-ordine** bottom-up.
+**Segmented Least Squares** — è **multiway choice**: cella $O(j)$, non $O(1)$. Pre-calcolo degli $e_{ij}$: $O(n^3)$ naïf, $O(n^2)$ con le somme cumulative $\Sigma x, \Sigma y, \Sigma x^2, \Sigma xy$.
+**Knapsack** — dipende criticamente dall'**interezza dei pesi**, mai da quella dei valori. Ricostruzione: oggetto $i$ incluso sse $M[i,w]>M[i-1,w]$.
+**LIS** — il primo tentativo **senza** il vincolo «termina in $i$» non permette di scrivere alcuna ricorrenza: la slide lascia la riga vuota apposta. Citazione: *«sometimes adding constraints to subproblems can help!»*
+**House Coloring** — pre-calcolando i **due** minimi della riga precedente ogni cella torna $O(1)$: $\Theta(nk)$ invece di $O(nk^2)$.
+#### Sequence Alignment
 > [!quote] Definizione — Allineamento e costo
 > Con **gap penalty** $\delta \geq 0$ e **mismatch penalty** $\alpha_{pq} \geq 0$ ($\alpha_{pp}=0$), un **allineamento** $M$ fra $X = x_1\ldots x_m$ e $Y = y_1\ldots y_n$ è un insieme di coppie $(x_i,y_j)$ tale che (1) ogni carattere compare in **al più una** coppia e (2) non ci sono **incroci**: se $(x_i,y_j),(x_{i'},y_{j'}) \in M$ con $i<i'$ allora $j<j'$.
 > $$\text{cost}(M) = \sum_{(x_i,y_j)\in M} \alpha_{x_i y_j} + \delta\,|\{i : x_i \notin M\}| + \delta\,|\{j : y_j \notin M\}|$$
-> La **distanza di edit** è il costo minimo di un allineamento.
+> La **distanza di edit** è il costo minimo di un allineamento. $\delta$ e $\alpha_{pq}$ sono **dati dell'input**, non si calcolano.
 
 > [!quote] Equazione di Bellman — Sequence Alignment
 > $$\text{OPT}(i,j) = \begin{cases} j\,\delta & i = 0 \\ i\,\delta & j = 0 \\ \min\bigl\{\alpha_{x_i y_j} + \text{OPT}(i-1,j-1),\; \delta + \text{OPT}(i-1,j),\; \delta + \text{OPT}(i,j-1)\bigr\} & \text{altrimenti}\end{cases}$$
-> I tre casi sono esaustivi per la condizione di **non incrocio**: se $x_i$ e $y_j$ non sono accoppiati fra loro, almeno uno dei due non è accoppiato affatto. Sulla matrice: **diagonale** = consumo da entrambe, **sopra** = gap su $Y$, **sinistra** = gap su $X$.
+> I tre casi sono esaustivi per la condizione di **non incrocio**: se $x_i$ e $y_j$ non sono accoppiati fra loro, almeno uno dei due non è accoppiato affatto. Sulla matrice: **diagonale** = accoppio $x_i$ con $y_j$, **sopra** = $x_i$ con un gap, **sinistra** = $y_j$ con un gap. **Il cammino sulla griglia è l'allineamento**, e il traceback lo ricostruisce.
 
 Tempo $\Theta(mn)$, spazio $\Theta(mn)$. **Lo spazio quadratico lo chiede il traceback, non il valore**: per la sola distanza bastano due colonne adiacenti, $O(m+n)$.
-
+#### Hirschberg *(materia d'orale)*
 > [!quote] Teorema — Hirschberg
 > Allineamento ottimo in tempo $O(mn)$ e spazio $\Theta(m+n)$.
 > **Osservazione 2**: sia $q^*$ il minimo di $f(q,n/2) + g(q,n/2)$, con $f$ costo minimo da $(0,0)$ a $(q,n/2)$ e $g$ da $(q,n/2)$ a $(m,n)$; allora un allineamento ottimo passa per $(q^*, n/2)$.
-> **Divide**: si calcolano $f$ e $g$ sulla colonna centrale in spazio lineare. **Conquer**: ricorsione sui due rettangoli. $T(m,n) \leq T(q^*,n/2) + T(m-q^*,n/2) + O(mn) \Rightarrow T(m,n) \leq 2cmn = O(mn)$.
-### Bellman-Ford-Moore
+> **Divide**: si calcolano $f$ e $g$ sulla colonna centrale in spazio lineare. **Conquer**: ricorsione sui due rettangoli. $T(m,n) \leq T(q^*,n/2) + T(m-q^*,n/2) + O(mn) \Rightarrow T(m,n) \leq 2cmn = O(mn)$ — il termine in $q$ si **cancella**, indipendentemente da dove cade il taglio.
+#### Bellman-Ford-Moore *(materia d'orale)*
 > [!quote] Definizione e lemmi — cicli negativi
 > Un **ciclo negativo** è un ciclo diretto $W$ con $\ell(W) = \sum_{e\in W}\ell_e < 0$.
 > **Lemma 1**: se un cammino $v \leadsto t$ contiene un ciclo negativo, **non esiste** un cammino minimo da $v$ a $t$ (ogni giro abbassa il costo, $\to -\infty$).
@@ -345,23 +405,44 @@ Dijkstra fallisce con pesi negativi perché **fissa definitivamente** un nodo qu
 
 In pratica BFM termina prima: l'arco $(v,w)$ si riesamina alla passata $i+1$ solo se $d[w]$ è cambiato alla passata $i$, quindi se il cammino minimo ha $k$ archi bastano $\leq k$ passate.
 
-## 07 · Flussi di Rete (Max-Flow e Min-Cut)
+## Flussi di Rete (Max-Flow e Min-Cut)
 ### Definizioni
-> [!quote] Definizione — Massimo flusso (forma d'esame)
-> **Dati**: rete $G=(V,E,s,t,c)$ con $(V,E)$ **orientato**, sorgente $s$, pozzo $t$, capacità $c: E \to \mathbb{R}_{\geq 0}$.
-> **Flusso st**: $f: E \to \mathbb{R}$ con **vincolo di capacità** $0 \leq f(e) \leq c(e)$ per ogni arco e **conservazione** — per ogni $v \neq s,t$ il flusso entrante eguaglia l'uscente.
-> **Valore**: $\operatorname{val}(f) = \sum_{e \text{ esce da } s} f(e) - \sum_{e \text{ entra in } s} f(e)$.
-> **Obiettivo**: trovare $f^*$ di valore massimo.
+> [!quote] Definizione — Rete di flusso
+> Una **rete di flusso** è una tupla $G=(V,E,s,t,c)$ dove $(V,E)$ è un grafo **orientato**, $s \in V$ è la **sorgente** e $t \in V$ il **pozzo** (con $s \neq t$), e $c: E \to \mathbb{R}_{\geq 0}$ è la **funzione di capacità**. Si assume che ogni nodo sia raggiungibile da $s$.
 
-> [!quote] Definizione — Taglio st e capacità
-> Un **taglio st** è una partizione $(A,B)$ di $V$ con $s \in A$, $t \in B$; la sua **capacità** somma i soli archi **da $A$ a $B$**:
-> $$\operatorname{cap}(A,B) = \sum_{e=(u,v),\; u \in A,\; v \in B} c(e)$$
-> Gli archi da $B$ ad $A$ **non contano**. **Min-Cut**: taglio di capacità minima.
+> [!quote] Definizione — Flusso st e massimo flusso *(forma d'esame)*
+> Sia $G=(V,E,s,t,c)$ una rete di flusso. Un **flusso st** è una funzione $f: E \to \mathbb{R}_{\geq 0}$ tale che:
+> 1. $0 \leq f(e) \leq c(e)$ **per ogni** $e \in E$ — *vincolo di capacità*;
+> 2. $\displaystyle\sum_{e \text{ entra in } v} f(e) = \sum_{e \text{ esce da } v} f(e)$ **per ogni** $v \in V \setminus \{s,t\}$ — *conservazione*.
+>
+> Il **valore** di $f$ è $\operatorname{val}(f) = \sum_{e \text{ esce da } s} f(e) - \sum_{e \text{ entra in } s} f(e)$.
+> **Problema del massimo flusso**: data $G$, trovare un flusso di valore massimo.
 
-> [!quote] Definizione — Grafo residuo, cammino aumentante, bottleneck
-> Per ogni $e=(u,v) \in E$: arco **diretto** $(u,v)$ con capacità $c(e)-f(e)$ se $f(e) < c(e)$, arco **inverso** $(v,u)$ con capacità $f(e)$ se $f(e) > 0$ — è il meccanismo di *undo* che manca al greedy.
-> $$E_f = \{e \in E : f(e) < c(e)\} \;\cup\; \{e^{\text{rev}} : f(e) > 0\}$$
-> Un **cammino aumentante** è un cammino semplice $s \leadsto t$ in $G_f$; il suo **bottleneck** è $\min_{e \in P} c_f(e)$, e aumentando lungo $P$ si ha $\operatorname{val}(f') = \operatorname{val}(f) + \operatorname{bottleneck}(G_f,P)$.
+> [!quote] Definizione — Taglio st e minimo taglio *(forma d'esame)*
+> Sia $G=(V,E,s,t,c)$. Un **taglio st** è una **partizione** $(A,B)$ di $V$ — cioè $A \cup B = V$ e $A \cap B = \emptyset$ — con $s \in A$ e $t \in B$. La sua **capacità** è
+> $$\operatorname{cap}(A,B) = \sum_{e=(u,v)\, \in\, E \;:\; u \in A,\; v \in B} c(e)$$
+> cioè la somma sui **soli archi orientati da $A$ verso $B$**; quelli da $B$ ad $A$ **non contano**.
+> **Problema del minimo taglio**: trovare un taglio st di capacità minima.
+
+> [!quote] Definizione — Rete residua *(forma d'esame)*
+> Siano $G=(V,E,s,t,c)$ e $f$ un flusso in $G$. La **rete residua** è $G_f = (V,E_f,s,t,c_f)$ con
+> $$E_f = \{\, e \in E : f(e) < c(e) \,\} \;\cup\; \{\, e^{\text{rev}} = (v,u) : e=(u,v) \in E,\; f(e) > 0 \,\}$$
+> e **capacità residue** $c_f(e) = c(e) - f(e)$ sugli archi **diretti**, $c_f(e^{\text{rev}}) = f(e)$ sugli **inversi**.
+> **Proprietà chiave**: $f'$ è un flusso in $G_f$ **se e solo se** $f + f'$ è un flusso in $G$.
+> Le due condizioni **non sono alternative**: un arco con $0 < f(e) < c(e)$ mette in $E_f$ **entrambi** gli archi.
+
+> [!quote] Definizione — Cammino aumentante e bottleneck
+> Un **cammino aumentante** rispetto a $f$ è un cammino **semplice** $s \leadsto t$ **nella rete residua $G_f$** (non in $G$). Il suo **bottleneck** è
+> $$\operatorname{bottleneck}(G_f,P) = \min_{e \in P} c_f(e)$$
+> minimo sulle capacità **residue** di **tutti** gli archi di $P$ — non su quelle originali, non su un arco scelto.
+> Dopo $f' \gets \operatorname{AUGMENT}(f,c,P)$: $f'$ è un flusso e $\operatorname{val}(f') = \operatorname{val}(f) + \operatorname{bottleneck}(G_f,P)$.
+
+> [!info] Budget delle 5 righe — cosa scrivere, cosa tagliare
+> **Massimo flusso** (5 righe): tupla · vincolo (1) · vincolo (2) · $\operatorname{val}(f)$ · obiettivo. Comprimi la tupla, **mai** la conservazione: senza quella la definizione è *sbagliata*, non corta.
+> **Minimo taglio** (4 righe): partizione · formula di $\operatorname{cap}$ · «solo archi da $A$ a $B$» · obiettivo. La terza riga sembra ridondante ed è invece quella su cui ti valutano.
+> **Rete residua** (5 righe): $G_f$ · arco diretto · arco inverso · formula di $E_f$ · proprietà chiave. Se devi tagliare salta la formula, che ripete le due righe sopra; le condizioni restano.
+>
+> Ciò che rende una definizione «da compito»: **quantificatori scritti** ($\forall e \in E$, $\forall v \in V \setminus \{s,t\}$), **tipo** degli oggetti ($f: E \to \mathbb{R}_{\geq 0}$), vincoli **numerati**.
 ### Teoremi
 > [!quote] Lemma — Valore del flusso su un taglio
 > Per ogni $f$ e ogni taglio $(A,B)$:
@@ -383,7 +464,7 @@ In pratica BFM termina prima: l'arco $(v,w)$ si riesamina alla passata $i+1$ sol
 > I due passaggi che non possono mancare in $[3 \Rightarrow 1]$: **archi uscenti saturi** e **archi entranti a flusso nullo**.
 
 > [!quote] Teorema — Integralità
-> Con capacità **intere**, ogni $f(e)$ e $c_f(e)$ restano interi durante Ford-Fulkerson, quindi esiste sempre un flusso massimo **intero**. È la proprietà su cui poggiano tutte le riduzioni di §08.
+> Con capacità **intere**, ogni $f(e)$ e $c_f(e)$ restano interi durante Ford-Fulkerson, quindi esiste sempre un flusso massimo **intero**. È la proprietà su cui poggiano tutte le riduzioni di [[#Applicazioni dei Flussi di Rete|Applicazioni dei flussi di rete]].
 
 **Min-cut da un flusso massimo**: una BFS/DFS da $s$ in $G_{f^*}$ dà $A$ in **$O(m)$**, e $B = V \setminus A$.
 ### Algoritmi
@@ -399,7 +480,7 @@ In pratica BFM termina prima: l'arco $(v,w)$ si riesamina alla passata $i+1$ sol
 
 **Edmonds-Karp**: la distanza BFS da $s$ a $t$ in $G_f$ è **monotona non decrescente**, e ogni arco può essere critico $O(n)$ volte. **Capacity Scaling**: $1 + \lfloor\log_2 C\rfloor$ fasi, $\leq 2m$ aumenti per fase.
 
-## 08 · Applicazioni dei flussi di rete
+## Applicazioni dei Flussi di Rete
 > [!info] Riduzione al Max-Flow in quattro passi
 > **Costruire** la rete che codifica l'istanza · **calcolare** il massimo flusso (o il taglio minimo) · **interpretare** il risultato come soluzione · **dimostrare** la corrispondenza biunivoca. La correttezza poggia sempre sul **teorema di integralità**.
 
@@ -423,7 +504,7 @@ In pratica BFM termina prima: l'arco $(v,w)$ si riesamina alla passata $i+1$ sol
 > - **Hall (1935)** — $G=(L\cup R,E)$ ha un matching che satura $L$ **sse** $|N(S)| \geq |S|$ per ogni $S \subseteq L$.
 > - **Menger (1927)** — massimo numero di cammini $s \leadsto t$ arco-disgiunti $=$ minimo numero di archi la cui rimozione disconnette $s$ da $t$.
 
-## 09 · NP-completezza, riduzioni e approssimazione
+## NP-Completezza, Riduzioni e Approssimazione
 ### Riduzioni e classi
 > [!quote] Definizione — Riduzione polinomiale
 > $X \leq_P Y$ se ogni istanza di $X$ si risolve con un numero **polinomiale** di passi standard più un numero polinomiale di chiamate a un **oracolo** per $Y$, su istanze di dimensione polinomiale.

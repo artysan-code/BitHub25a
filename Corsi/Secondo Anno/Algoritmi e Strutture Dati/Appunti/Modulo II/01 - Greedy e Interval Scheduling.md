@@ -65,7 +65,7 @@ Le tre configurazioni della slide p. 5, in grigio scuro il job che il criterio s
 > [!info] Regola — Earliest finish time contro earliest start time
 > Ordinare per **tempo di inizio** lascia che un job lunghissimo (es. $[0,100]$) occupi la risorsa e blocchi tutti i job successivi, anche quando fra loro sarebbero compatibili. Ordinare per **tempo di fine** libera la risorsa il prima possibile, e massimizza le opportunità che restano: è la ragione strutturale per cui dei quattro criteri candidati funziona solo questo.
 
-→ **Palestra**: [[Esercizi 01 - Greedy e Interval Scheduling#L'ordine per tempo di inizio non è ottimo per IS|l'ordine per inizio non è ottimo — 20/07/2026, max 5 righe]]
+→ **Palestra**: [[Esercizi 01 - Greedy e Interval Scheduling#Ordine per tempo di inizio in Interval Scheduling|l'ordine per inizio non è ottimo — 20/07/2026, max 5 righe]]
 ### Algoritmo earliest-finish-time-first
 L'unico ordine che garantisce l'ottimalità è **earliest finish time**: si processa ogni job in ordine crescente di tempo di fine e lo si aggiunge alla soluzione se compatibile con l'ultimo job selezionato.
 
@@ -224,7 +224,7 @@ Per Interval Partitioning il template greedy è: *considera le lezioni in un cer
 ![[ip_controesempi_ordini.png]]
 I tre controesempi della slide p. 34: in ciascuno il greedy con l'ordine sbagliato apre **3 aule** (le righe numerate 1, 2, 3) su un'istanza che ne richiede solo 2. In grigio scuro la lezione corta che, processata al momento sbagliato, occupa un'aula già "sprecata" e costringe ad aprirne una terza.
 
-→ **Palestra**: [[Esercizi 01 - Greedy e Interval Scheduling#Perché l'ordine per finish time non funziona per IP|controesempio all'ordine per finish time — 09/09/2025, 30/06/2026]]
+→ **Palestra**: [[Esercizi 01 - Greedy e Interval Scheduling#Ordine per finish time in Interval Partitioning|controesempio all'ordine per finish time — 09/09/2025, 30/06/2026]]
 ### Algoritmo earliest-start-time-first
 ```pseudo
 \begin{algorithm}
@@ -288,7 +288,7 @@ L'algoritmo alloca esattamente tante aule quanta è la profondità dell'istanza 
 
 *Conclusione.* Da A e B segue $d = \text{depth}$: l'algoritmo usa esattamente il numero minimo di classi, quindi è **ottimale**. $\square$
 
-→ **Palestra**: [[Esercizi 01 - Greedy e Interval Scheduling#Correttezza dell'ordine per tempo di inizio|correttezza dell'ordine per inizio — 30/06/2026, max 10 righe]]
+→ **Palestra**: [[Esercizi 01 - Greedy e Interval Scheduling#Ordine per tempo di inizio in Interval Partitioning|correttezza dell'ordine per inizio — 30/06/2026, max 10 righe]]
 ### Complessità
 | Fase | Costo |
 |---|---|

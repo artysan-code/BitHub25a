@@ -63,7 +63,7 @@ Il Teorema di Cayley mostra che il numero di spanning tree cresce esponenzialmen
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Bound sul costo con pesi in {1, 2}|bound sul costo con pesi in {1, 2} — 23/09/2025]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi in {1,2}: molti archi leggeri non bastano|pesi in {1,2}: molti archi leggeri non bastano — 08/09/2026, motiva in 5 righe]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi in {1,2}: molti archi di peso 1|pesi in {1,2}: molti archi leggeri non bastano — 08/09/2026, motiva in 5 righe]]
 ### Unicità dell'MST
 L'MST **non è unico** in generale: se esistono archi con lo stesso peso, possono esistere più MST di costo uguale.
 
@@ -185,7 +185,7 @@ Come leggerla: le due macchie grigie sono $S$ e $V\setminus S$; i segmenti pieni
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Arco più leggero incidente a un nodo|arco più leggero incidente a un nodo — 18/07/2025]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#L'arco di peso massimo può essere obbligato|l'arco di peso massimo può essere obbligato — 28/09/2022]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Arco di peso massimo e appartenenza all'MST|l'arco di peso massimo può essere obbligato — 28/09/2022]]
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Sensitivity: alzare il peso di un arco fuori dall'MST|sensitivity: alzare il peso di un arco fuori dall'MST — 09/09/2025, motiva in 5 righe]]
 
@@ -193,7 +193,7 @@ Come leggerla: le due macchie grigie sono $S$ e $V\setminus S$; i segmenti pieni
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Perturbazione uniforme: $+1$ su ogni arco|perturbazione uniforme: $+1$ su ogni arco — 20/07/2026, motiva in 5 righe]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Non esiste un duale della cut property per gli archi fuori T|non esiste un duale della cut property per gli archi fuori T — 23/09/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Esiste un duale della cut property per gli archi fuori T?|non esiste un duale della cut property per gli archi fuori T — 23/09/2025]]
 ### Cycle property
 > [!quote] Proprietà — Cycle property (proprietà del ciclo)
 > Sia $C$ un qualsiasi ciclo in $G$, e sia $f$ **un** arco di **costo massimo** appartenente a $C$. Allora esiste un MST che **non contiene** $f$.
@@ -241,23 +241,23 @@ Le due proprietà sono **enunciati esistenziali su un singolo arco**: «esiste *
 > [!warning] Il dettaglio che rende valida l'induzione
 > Il passo cruciale è $f \notin F$: senza di esso lo scambio potrebbe **rimuovere un arco già scelto**, e $F \cup \{e\}$ non sarebbe più contenuto in $T'$. È garantito dal fatto che il taglio usato non è arbitrario — è scelto in modo che nessun arco già selezionato lo attraversi. Chi risponde «basta applicare la cut property $n-1$ volte» sta assumendo implicitamente proprio questo, e all'orale è la domanda di approfondimento naturale.
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Arco più leggero di un ciclo non è garantito|arco più leggero di un ciclo non è garantito — 28/09/2022]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Arco più leggero di un ciclo e appartenenza all'MST|arco più leggero di un ciclo non è garantito — 28/09/2022]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Un arco fuori da $T$ non è più pesante di *tutti* gli archi di $T$|un arco fuori da $T$ non è più pesante di *tutti* gli archi di $T$ — 20/07/2026]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Peso di un arco fuori da $T$ rispetto agli archi di $T$|un arco fuori da $T$ non è più pesante di *tutti* gli archi di $T$ — 20/07/2026]]
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Caratterizzazione degli alberi non ottimi|caratterizzazione degli alberi non ottimi — 13/06/2024]]
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Massimo di un ciclo vs massimo di tutti i cicli|massimo di un ciclo vs massimo di tutti i cicli — 18/07/2025]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Un arco dell'MST non è per forza il minimo di un ciclo|un arco dell'MST non è per forza il minimo di un ciclo — 09/09/2025, 27/09/2023]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Arco dell'MST e minimo del proprio ciclo|un arco dell'MST non è per forza il minimo di un ciclo — 09/09/2025, 27/09/2023]]
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Cut property e archi non minimi|cut property e archi non minimi — 13/06/2024, max 5 righe]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi in {1, 2}: un arco fuori T non deve avere per forza peso 2|pesi in {1, 2}: un arco fuori T non deve avere per forza peso 2 — 09/09/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi in {1, 2}: peso di un arco fuori da T|pesi in {1, 2}: un arco fuori T non deve avere per forza peso 2 — 09/09/2025]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Tutti gli archi del ciclo fondamentale sono ≤ w(f)|tutti gli archi del ciclo fondamentale sono ≤ w(f) — 09/09/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Archi del ciclo fondamentale rispetto a w(f)|tutti gli archi del ciclo fondamentale sono ≤ w(f) — 09/09/2025]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Variante: f non è il più pesante di ogni ciclo che lo contiene|variante: f non è il più pesante di ogni ciclo che lo contiene — 23/09/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Variante: f e i cicli di G che lo contengono|variante: f non è il più pesante di ogni ciclo che lo contiene — 23/09/2025]]
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Unicità e pesi ripetuti|unicità e pesi ripetuti — 18/07/2022, 20/07/2026]]
 ## Algoritmo di Kruskal
@@ -315,10 +315,10 @@ MST finale: {(C,E),(F,G),(E,F),(A,B),(C,D),(A,C)}
 ![[mst_kruskal_risultato.png]]
 Il risultato sulle slide: in **blu** i 6 archi accettati, in **rosso** i 3 scartati perché chiudevano un ciclo. Confronto utile: $E\text{-}G\ (9)$ viene rifiutato pur essendo più leggero di $A\text{-}C\ (14)$, che invece è accettato. Non è una contraddizione — Kruskal non sceglie «gli archi più leggeri», sceglie **il più leggero fra quelli che non chiudono un ciclo**, e quando tocca a $E\text{-}G$ i nodi $E$ e $G$ sono già connessi via $E\text{-}F\text{-}G$.
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Il numero di componenti dopo k archi non è garantito n−k|il numero di componenti dopo k archi non è garantito n−k — 19/02/2024]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Numero di componenti dopo k archi accettati|il numero di componenti dopo k archi non è garantito n−k — 19/02/2024]]
 ### Correttezza
 La correttezza di Kruskal segue direttamente dalla **cut property** e dalla **cycle property**; la slide dedica una figura a ciascuno dei due casi.
-- Quando l'algoritmo **aggiunge** l'arco $(x, y)$: le componenti di $x$ e $y$ sono distinte. Sia $S$ l'insieme dei vertici appartenenti alla **componente connessa di $y$** nella soluzione corrente. L'arco $(x,y)$ attraversa il taglio $(S, V\setminus S)$; ogni altro arco che lo attraversa non è ancora stato esaminato, e poiché l'algoritmo scandisce gli archi in **ordine crescente di costo**, ha costo $\geq c_{xy}$. Dunque $(x, y)$ è un arco di costo minimo che attraversa quel taglio: per la **cut property** esiste un MST che lo contiene. Si noti che **nessun arco già selezionato attraversa questo taglio** — gli archi di $F$ incidenti a $S$ sono interni alla componente di $y$ — il che è esattamente l'ipotesi che rende applicabile l'[[#Dalla proprietà locale alla correttezza globale|invariante di estendibilità]].
+- Quando l'algoritmo **aggiunge** l'arco $(x, y)$: le componenti di $x$ e $y$ sono distinte. Sia $S$ l'insieme dei vertici appartenenti alla **componente connessa di $y$** nella soluzione corrente. L'arco $(x,y)$ attraversa il taglio $(S, V\setminus S)$; ogni altro arco che lo attraversa non è ancora stato esaminato, e poiché l'algoritmo scandisce gli archi in **ordine crescente di costo**, ha costo $\geq c_{xy}$. Dunque $(x, y)$ è un arco di costo minimo che attraversa quel taglio: per la **cut property** esiste un MST che lo contiene. Si noti che **nessun arco già selezionato attraversa questo taglio** — gli archi di $F$ incidenti a $S$ sono interni alla componente di $y$ — il che è esattamente l'ipotesi che rende applicabile l'[[#Dalla proprietà locale alla correttezza globale *(extra, non da slide)*|invariante di estendibilità]].
 - Quando l'algoritmo **rifiuta** l'arco $(x, y)$: $x$ e $y$ sono già connessi nella soluzione corrente, quindi $(x, y)$ chiude un ciclo con il cammino già presente. Tutti gli archi di quel cammino sono stati aggiunti **prima**, dunque hanno costo $\leq c_{xy}$: $(x, y)$ è un arco di costo massimo in quel ciclo, e per la **cycle property** esiste un MST che **non** lo contiene.
 
 > [!warning] «Esiste un MST senza $f$», non «$f$ non sta in nessun MST»
@@ -328,27 +328,27 @@ La correttezza di Kruskal segue direttamente dalla **cut property** e dalla **cy
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Perché un arco viene accettato|perché un arco viene accettato — 20/07/2026]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Kruskal non finisce dopo $n-1$ archi *guardati*|kruskal non finisce dopo $n-1$ archi *guardati* — 20/07/2026]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Kruskal: archi guardati e condizione di arresto|kruskal non finisce dopo $n-1$ archi *guardati* — 20/07/2026]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#L'MST può contenere l'arco più pesante di G|l'MST può contenere l'arco più pesante di G — 24/09/2024]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#MST e arco più pesante di G|l'MST può contenere l'arco più pesante di G — 24/09/2024]]
 ### Complessità
-| Operazione | Costo |
-|---|---|
-| Ordinamento degli archi | $O(m \log m) = O(m \log n)$ |
-| $n$ `makeset` | $O(n)$ |
-| $n-1$ `union` | dipende da UF |
-| $2m$ `find` | dipende da UF |
-| **Totale con QuickFind + union by size** | $O(m \log n + m + n \log n) = O(m \log n)$ |
-| **Totale con QuickUnion + union by size** | $O(m \log n + m \log n + n) = O(m \log n)$ |
-| **Totale complessivo** | $\mathbf{O(m \log n)}$ |
+| Operazione                                | Costo                                      |     |
+| ----------------------------------------- | ------------------------------------------ | --- |
+| Ordinamento degli archi                   | $O(m \log m) = O(m \log n)$                |     |
+| $n$ `makeset`                             | $O(n)$                                     |     |
+| $n-1$ `union`                             | dipende da UF                              |     |
+| $2m$ `find`                               | dipende da UF                              |     |
+| **Totale con QuickFind + union by size**  | $O(m \log n + m + n \log n) = O(m \log n)$ |     |
+| **Totale con QuickUnion + union by size** | $O(m \log n + m \log n + n) = O(m \log n)$ |     |
+| **Totale complessivo**                    | $\mathbf{O(m \log n)}$                     |     |
 
 Nota: $\log m = O(\log n^2) = O(\log n)$ poiché $m \leq \binom{n}{2}$, quindi $O(m \log m) = O(m \log n)$. Per i dettagli sulle implementazioni di Union-Find e le loro complessità, si veda [[02 - Union-Find]].
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Il numero di archi non basta per la complessità|il numero di archi non basta per la complessità — 18/07/2022]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Numero di archi e complessità di Kruskal|il numero di archi non basta per la complessità — 18/07/2022]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Θ(n√n) archi non rende Kruskal lineare|θ(n√n) archi non rende Kruskal lineare — 09/09/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Kruskal con Θ(n√n) archi|θ(n√n) archi non rende Kruskal lineare — 09/09/2025]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Su grafi densi l'euristica union-by-size è ininfluente|su grafi densi l'euristica union-by-size è ininfluente — 18/07/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Union-by-size su grafi densi|su grafi densi l'euristica union-by-size è ininfluente — 18/07/2025]]
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#MST di una griglia N×N con pesi orizzontali 1 e verticali i+j|mST di una griglia N×N con pesi orizzontali 1 e verticali i+j — 23/09/2025, motiva in 5 righe]]
 ## Algoritmo di Prim
@@ -356,7 +356,7 @@ L'algoritmo di **Prim** (Jarník 1930, Dijkstra 1957, Prim 1959) costruisce l'MS
 ### Idea e correttezza
 Ad ogni passo si ha un insieme $S$ di nodi già esplorati (inizialmente $S = \{s\}$). Si aggiunge il **nodo più economico** raggiungibile da $S$, cioè il nodo $v \notin S$ per cui esiste un arco $(u, v)$ con $u \in S$ e $c_{uv}$ minimo tra tutti gli archi del cutset.
 
-**Correttezza:** la slide liquida il punto con *«immediate consequence of the cut property, used exactly $n-1$ times»*. In forma rigorosa: a ogni passo $S$ è l'insieme dei nodi già raggiunti e nessun arco già selezionato attraversa il taglio $(S, V\setminus S)$ — sono tutti interni a $S$ — quindi si applica l'[[#Dalla proprietà locale alla correttezza globale|invariante di estendibilità]]. L'arco scelto è il minimo di quel cutset, l'invariante si conserva, e dopo $n-1$ passi la soluzione parziale è uno spanning tree contenuto in un MST: coincide con esso.
+**Correttezza:** la slide liquida il punto con *«immediate consequence of the cut property, used exactly $n-1$ times»*. In forma rigorosa: a ogni passo $S$ è l'insieme dei nodi già raggiunti e nessun arco già selezionato attraversa il taglio $(S, V\setminus S)$ — sono tutti interni a $S$ — quindi si applica l'[[#Dalla proprietà locale alla correttezza globale *(extra, non da slide)*|invariante di estendibilità]]. L'arco scelto è il minimo di quel cutset, l'invariante si conserva, e dopo $n-1$ passi la soluzione parziale è uno spanning tree contenuto in un MST: coincide con esso.
 
 ![[mst_prim_taglio_iniziale.png]]
 Il primo passo di Prim sul grafo campione: $s = A$ (cerchiato in blu) e la **curva rossa** è il taglio $(\{A\}, V\setminus\{A\})$. Gli archi che lo attraversano sono $A\text{-}B\ (7)$, $A\text{-}C\ (14)$, $A\text{-}D\ (30)$: il minimo è $A\text{-}B$, ed è quello che Prim aggiunge. A ogni iterazione la curva si allarga per inglobare il nodo appena preso — è la lettura visiva del «taglio unico che cresce».
@@ -431,15 +431,15 @@ Stesso albero e stesso costo di Kruskal, come dev'essere: i pesi sono tutti dist
 > [!warning] Chiave vs distanza: non confondere Prim con Dijkstra
 > In Prim la chiave $a[v]$ rappresenta il costo del **miglior arco singolo** che connette $v$ all'albero — non il costo cumulativo del cammino da $s$ a $v$. Usare la distanza cumulativa al posto della chiave dell'arco produce Dijkstra (cammini minimi), non Prim (MST).
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Prim su grafo non pesato non è BFS|prim su grafo non pesato non è BFS — 13/06/2024]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Prim su grafo non pesato|prim su grafo non pesato non è BFS — 13/06/2024]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#MST e albero dei cammini minimi restano problemi diversi|mST e albero dei cammini minimi restano problemi diversi — 24/09/2024]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#MST e albero dei cammini minimi|mST e albero dei cammini minimi restano problemi diversi — 24/09/2024]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi tutti uguali: ogni SPT è anche un MST|pesi tutti uguali: ogni SPT è anche un MST — 18/07/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi tutti uguali: SPT e MST|pesi tutti uguali: ogni SPT è anche un MST — 18/07/2025]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi in {1, 2}: Prim non dà per forza un albero dei cammini minimi|pesi in {1, 2}: Prim non dà per forza un albero dei cammini minimi — 18/07/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi in {1, 2}: Prim e albero dei cammini minimi|pesi in {1, 2}: Prim non dà per forza un albero dei cammini minimi — 18/07/2025]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Variante: pesi tutti unitari, Prim non dà per forza un SPT|variante: pesi tutti unitari, Prim non dà per forza un SPT — 09/09/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Variante: pesi tutti unitari, Prim e SPT|variante: pesi tutti unitari, Prim non dà per forza un SPT — 09/09/2025]]
 ### Complessità
 Le operazioni sulla coda con priorità determinano la complessità totale. Si eseguono $n$ insert, $n$ deleteMin, e al più $m$ decreaseKey:
 
@@ -479,7 +479,7 @@ Il calcolo con heap di Fibonacci: $n \cdot O(1) + n \cdot O(\log n) + m \cdot O(
 
 → **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Differenza tra Prim e Dijkstra|differenza tra Prim e Dijkstra — domanda costruita]]
 
-→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi distinti: Kruskal e Prim coincidono sempre|pesi distinti: Kruskal e Prim coincidono sempre — 23/09/2025]]
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi distinti: Kruskal e Prim a confronto|pesi distinti: Kruskal e Prim coincidono sempre — 23/09/2025]]
 ## Applicazione: Clustering di massima spaziatura
 Un'applicazione diretta di Kruskal è il **clustering gerarchico per single-linkage**.
 

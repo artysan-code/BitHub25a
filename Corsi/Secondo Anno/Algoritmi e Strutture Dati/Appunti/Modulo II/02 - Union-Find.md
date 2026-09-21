@@ -28,7 +28,7 @@ L'obiettivo è progettare una struttura dati che sia efficiente su **sequenze ar
 
 Il bound spiega perché **tutte** le implementazioni viste più sotto hanno un termine additivo $n$ o $m$ nella complessità totale: nessuna scende sotto $\Omega(m+n)$, e le migliori vi si avvicinano aggiungendo solo un fattore $\alpha(m,n)$ praticamente costante.
 
-→ **Palestra**: [[Esercizi 02 - Union-Find#Lower bound Ω(m+n) per qualunque struttura dati|lower bound $\Omega(m+n)$ — 16/07/2024, 18/02/2025]]
+→ **Palestra**: [[Esercizi 02 - Union-Find#Lower bound per qualunque struttura Union-Find|lower bound $\Omega(m+n)$ — 16/07/2024, 18/02/2025]]
 ## QuickFind
 **Struttura**: una foresta di alberi di **altezza 1**. In ogni albero:
 - la **radice** contiene il nome dell'insieme;
@@ -163,11 +163,11 @@ Il costo di una singola `union`, dalla slide: due insiemi da $n/2$ elementi, e r
 | `union` | $O(n)$ | $O(\log n)$ |
 | Sequenza intera | — | $O(m + n \log n)$ |
 
-→ **Palestra**: [[Esercizi 02 - Union-Find#L'altezza resta 1 anche con union by size|l'altezza resta 1 — 16/07/2024]]
+→ **Palestra**: [[Esercizi 02 - Union-Find#QuickFind + union by size: altezza degli alberi|l'altezza resta 1 — 16/07/2024]]
 
 → **Palestra**: [[Esercizi 02 - Union-Find#Cambi di padre e raddoppio della size|cambi di padre e raddoppio della size — 16/07/2024]]
 
-→ **Palestra**: [[Esercizi 02 - Union-Find#Il bound O(m + n log n)|il bound $O(m+n\log n)$ — 16/07/2024, 18/02/2025]]
+→ **Palestra**: [[Esercizi 02 - Union-Find#QuickFind + union by size: costo della sequenza completa|il bound $O(m+n\log n)$ — 16/07/2024, 18/02/2025]]
 
 → **Palestra**: [[Esercizi 02 - Union-Find#Enunciare le prestazioni della struttura|enunciato delle prestazioni — 18/07/2022, max 5 righe]]
 ## QuickUnion
@@ -339,12 +339,12 @@ Sulla slide il lemma è enunciato e lasciato come esercizio («dim: provate a di
 | `find` | $O(\log n)$ |
 | Sequenza ($n$ makeSet, $n-1$ union, $m$ find) | $O(n + m \log n)$ |
 
-→ **Palestra**: [[Esercizi 02 - Union-Find#L'altezza NON è 1|l'altezza non è 1 — 18/02/2025]]
+→ **Palestra**: [[Esercizi 02 - Union-Find#QuickUnion + union by size: altezza degli alberi|l'altezza non è 1 — 18/02/2025]]
 
 > [!warning] È un bound sul caso peggiore, non ammortizzato
 > Il lemma $s \geq 2^h$ vincola l'altezza di **ogni** albero, in **ogni** momento: con la sola union by size la `find` costa $O(\log n)$ nel **caso peggiore**, non «in media» o «ammortizzato». Una singola `find` non può mai costare $\Theta(n)$ finché l'euristica è attiva — quel caso appartiene a QuickUnion **senza** euristiche, dove la sequenza $\text{union}(2,1), \text{union}(3,2), \ldots$ produce una lista. La distinzione fra *caso peggiore* e *ammortizzato* è la coppia di affermazioni su cui le tracce insistono di più.
 
-→ **Palestra**: [[Esercizi 02 - Union-Find#find è O(log n) nel caso peggiore, non solo ammortizzato|caso peggiore contro ammortizzato — 18/02/2025]]
+→ **Palestra**: [[Esercizi 02 - Union-Find#QuickUnion + union by size: find ammortizzato e caso peggiore|caso peggiore contro ammortizzato — 18/02/2025]]
 
 → **Palestra**: [[Esercizi 02 - Union-Find#Costruire un albero di altezza Θ(log n)|costruire un albero di altezza $\Theta(\log n)$ — 16/07/2024, max 5 righe]]
 

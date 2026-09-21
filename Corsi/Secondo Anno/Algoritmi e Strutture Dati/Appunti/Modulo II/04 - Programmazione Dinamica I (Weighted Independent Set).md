@@ -6,7 +6,7 @@ slide: ["04"]
 capitolo: "Kleinberg-Tardos cap. 6"
 ---
 # Programmazione Dinamica I — Principi e Weighted Independent Set
-La **programmazione dinamica** risolve un problema definendo una famiglia piccola di sottoproblemi, esprimendo la soluzione di ciascuno in funzione di sottoproblemi più piccoli e riempiendo una tabella nell'ordine giusto. Questa nota introduce la tecnica sul caso di studio del **Weighted Independent Set su cammino** e ne ricava i quattro passi generali, che sono il telaio di ogni Esercizio 3. Gli Esercizio 3 di progettazione delle tracce recenti stanno nella palestra [[Esercizi 04 - Programmazione Dinamica]]; i problemi di DP successivi sono in [[05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)]] e [[06 - Programmazione Dinamica III (Sequence Alignment e Bellman-Ford)]].
+La **programmazione dinamica** risolve un problema definendo una famiglia piccola di sottoproblemi, esprimendo la soluzione di ciascuno in funzione di sottoproblemi più piccoli e riempiendo una tabella nell'ordine giusto. Questa nota introduce la tecnica sul caso di studio del **Weighted Independent Set su cammino** e ne ricava i quattro passi generali, che sono il telaio di ogni Esercizio 3. Gli Esercizio 3 di progettazione delle tracce recenti stanno nella palestra [[Palestra - Programmazione Dinamica]]; i problemi di DP successivi sono in [[05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)]] e [[06 - Programmazione Dinamica III (Sequence Alignment e Bellman-Ford)]].
 ## L'idea, prima della tecnica
 Prima di qualunque definizione, guardiamo **il fenomeno** che la programmazione dinamica sfrutta. Prendiamo un problema qualunque risolto per ricorsione — diciamo il calcolo di $F(6)$, il sesto numero di Fibonacci, con la ricorsione diretta $F(j) = F(j-1) + F(j-2)$. Disegniamo l'albero delle chiamate:
 ```
@@ -193,7 +193,7 @@ Non sappiamo in quale dei due casi ci si trovi, ma sappiamo calcolarli entrambi:
 
 Il massimo è $19$, e la soluzione ottima è $\{v_1, v_3, v_6\}$. Si noti che questa è la ricorrenza $\text{OPT}[j] = \max\{\text{OPT}[j-1],\; w_j + \text{OPT}[j-2]\}$ già in forma definitiva: il termine $\text{OPT}[j-1]$ è il Caso 1, il termine $w_j + \text{OPT}[j-2]$ è il Caso 2, e l'indice $j-2$ è precisamente $v_{j-1}$ che si è stati costretti a escludere.
 
-→ **Palestra**: [[Esercizi 04 - Programmazione Dinamica#Sottostruttura ottima del WIS|sottostruttura ottima del WIS — domanda costruita]]
+→ **Palestra**: [[Palestra - Programmazione Dinamica#Sottostruttura ottima del WIS|sottostruttura ottima del WIS — domanda costruita]]
 ## Dall'idea ricorsiva all'algoritmo efficiente
 ### Prima idea (ingenua): ricorsione diretta
 Dalla proprietà di sottostruttura ottima viene naturale un algoritmo ricorsivo che calcola entrambi i casi e restituisce il migliore:
@@ -370,7 +370,7 @@ S* = {v1, v3, v6}   w(S*) = 1 + 8 + 10 = 19  ✓
 
 **Complessità di WIS-Ricostruisci**: $T(n) = \Theta(n)$ — ogni iterazione decrementa $j$ di almeno 1, quindi il ciclo esegue al più $n$ passi.
 
-→ **Palestra**: [[Esercizi 04 - Programmazione Dinamica#Ricostruzione senza traccia delle scelte|ricostruzione senza traccia delle scelte — domanda costruita]]
+→ **Palestra**: [[Palestra - Programmazione Dinamica#Ricostruzione senza traccia delle scelte|ricostruzione senza traccia delle scelte — domanda costruita]]
 ## Principi generali della programmazione dinamica
 Il WIS su cammino è il caso di studio introduttivo che illustra i principi generali della tecnica. Ogni algoritmo di programmazione dinamica ben costruito segue questa struttura:
 
@@ -456,7 +456,7 @@ Le quattro proprietà che i sottoproblemi devono avere, dalla slide successiva. 
 > [!warning] Il pattern che ricorre nelle tracce recenti
 > **Problema noto + un parametro di budget $k$ che diventa una dimensione della tabella.** Le tre tracce più recenti sono tutte così: un dominating set con uno sconto legato alla lunghezza del blocco, un cammino su griglia con $k$ salti a disposizione, una LIS con al più $k$ cambi di colore. La mossa da allenare è **riconoscere il problema noto sotto il travestimento** e chiedersi *quale grandezza va portata nello stato perché la ricorrenza si chiuda*.
 
-→ **Palestra**: gli otto Esercizio 3 reali su cui allenare tutto questo stanno in [[Esercizi 04 - Programmazione Dinamica]].
+→ **Palestra**: gli otto Esercizio 3 reali su cui allenare tutto questo stanno in [[Palestra - Programmazione Dinamica]].
 ### Schema della tecnica: top-down con memoization vs bottom-up
 > [!info] Top-down (memoization) vs Bottom-up
 > **Top-down con memoization**: si usa la ricorsione naturale, ma prima di calcolare $\text{OPT}[j]$ si controlla se è già memorizzato nella tabella. Se sì, si restituisce il valore salvato; altrimenti si calcola ricorsivamente e si salva.
@@ -526,7 +526,7 @@ OPT = A[radice] = 15  ✓
 
 **Complessità**: $\Theta(n)$ tempo (ogni nodo viene visitato una volta), $\Theta(n)$ spazio.
 
-→ **Palestra**: [[Esercizi 04 - Programmazione Dinamica#Da cammino ad albero: perché due sottoproblemi per nodo|da cammino ad albero: perché due sottoproblemi per nodo — domanda costruita]]
+→ **Palestra**: [[Palestra - Programmazione Dinamica#Da cammino ad albero: perché due sottoproblemi per nodo|da cammino ad albero: perché due sottoproblemi per nodo — domanda costruita]]
 
 ![[dp1_wis_alberi.png]]
 La soluzione sulle slide, in inglese: per ogni nodo $v$, $A[v]$ è il peso del miglior insieme indipendente di $T_v$ e $B[v]$ quello dei soli insiemi **che non contengono $v$**. Da cui $B[v] = \sum_i A[u_i]$ sui figli, e $A[v] = \max\{B[v],\ w_v + \sum_i B[u_i]\}$. L'ordine di risoluzione è **bottom-up sull'albero**: è il passo 4 dello schema, qui non banale come sul cammino.
@@ -537,7 +537,7 @@ La soluzione sulle slide, in inglese: per ogni nodo $v$, $A[v]$ è il peso del m
 | Ricostruzione soluzione | WIS-Ricostruisci | $\Theta(n)$ | $O(1)$ aggiuntivo |
 | Totale (valore + soluzione) | — | $\Theta(n)$ | $O(n)$ |
 
-→ **Palestra**: [[Esercizi 04 - Programmazione Dinamica#Perché la ricorsione diretta è esponenziale|perché la ricorsione diretta è esponenziale — domanda costruita]]
+→ **Palestra**: [[Palestra - Programmazione Dinamica#Perché la ricorsione diretta è esponenziale|perché la ricorsione diretta è esponenziale — domanda costruita]]
 
 > [!info] Connessioni ad altri argomenti
 > - La memoization applicata a Fibonacci (fibonacci3) è la versione più semplice della programmazione dinamica: [[01 - Il Problema di Fibonacci]].

@@ -186,7 +186,7 @@ $$T(m,n) \;\leq\; 2c q^* \frac{n}{2} + 2c(m-q^*)\frac{n}{2} + cmn = cq^*n + cmn 
 | DP standard | $\Theta(mn)$ | $\Theta(mn)$ |
 | Hirschberg | $O(mn)$ | $\Theta(m+n)$ |
 
-→ **Palestra**: [[Esercizi 06 - Programmazione Dinamica III (Sequence Alignment e Bellman-Ford)#Idea e complessità di Hirschberg|idea e complessità di Hirschberg — domanda costruita]]
+→ **Palestra**: [[Palestra - Programmazione Dinamica#Idea e complessità di Hirschberg|idea e complessità di Hirschberg — domanda costruita]]
 ## Cammini minimi con pesi negativi: Bellman-Ford-Moore
 ### Perché Dijkstra non basta
 L'algoritmo di [[10 - Cammini Minimi e Dijkstra|Dijkstra]] risolve il problema SSSP in tempo $O(m + n \log n)$ con pesi **non negativi**. In presenza di pesi negativi, la strategia greedy di Dijkstra — estrarre il nodo con distanza minima e fissarla definitivamente — non è più valida: un arco negativo potrebbe abbreviare un cammino già "chiuso".

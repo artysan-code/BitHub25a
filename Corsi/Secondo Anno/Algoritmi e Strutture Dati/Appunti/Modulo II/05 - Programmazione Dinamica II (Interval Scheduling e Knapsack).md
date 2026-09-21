@@ -200,7 +200,7 @@ Complessità: $O(n)$ — al più $n$ chiamate ricorsive.
 > | Analisi complessità | Più delicata | Immediata |
 > | Codice | Più intuitivo | Più compatto e cache-efficiente |
 
-→ **Palestra**: [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#Riduzione a WIS|riduzione a WIS — 12/09/2023]]
+→ **Palestra**: [[Palestra - Programmazione Dinamica#Riduzione a WIS|riduzione a WIS — 12/09/2023]]
 ## Segmented Least Squares
 ### Il problema
 **Least Squares**: dati $n$ punti $(x_1, y_1), \ldots, (x_n, y_n)$ nel piano, trovare la retta $y = ax + b$ che minimizza la **somma degli scarti quadratici** (SSE):
@@ -299,11 +299,11 @@ Il **caso base** è $\text{OPT}(0, w) = 0$ per ogni $w$ (nessun oggetto ⇒ valo
 > Due stanno qui sotto, la terza — «K è in P?» — in coda alla sezione, dopo la pseudo-polinomialità, che le serve da premessa. Sono tutte dell'appello del **14/09/2022**, quando il Modulo II era tenuto dal prof. Clementi e l'Esercizio 1 poteva chiedere *teoria* sulla programmazione dinamica. Nella configurazione attuale la DP compare **solo** nell'Esercizio 3, e sempre come progettazione su un problema inedito.
 > Questo non le rende inutili, ma cambia come allenarle: il **contenuto** — cosa contiene la cella, perché servono due indici, pseudo-polinomialità — resta pienamente esigibile, all'orale e come controllo che la tua definizione di sottoproblema regga. È la **forma** «spiega a parole cosa rappresenta $M(j,w)$» a non essere più comparsa allo scritto.
 >
-> → **Palestra**: le tre risposte a lunghezza d'esame stanno in [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#Knapsack 0/1|Esercizi 05]].
+> → **Palestra**: le tre risposte a lunghezza d'esame stanno in [[Palestra - Programmazione Dinamica#Knapsack 0/1|Palestra DP — Teoria]].
 
-→ **Palestra**: [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#Significato di OPT(j-1, w-wj)|significato di OPT(j-1, w-wj) — 14/09/2022, al massimo quattro righe]]
+→ **Palestra**: [[Palestra - Programmazione Dinamica#Significato di OPT(j-1, w-wj)|significato di OPT(j-1, w-wj) — 14/09/2022, al massimo quattro righe]]
 
-→ **Palestra**: [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#Cosa rappresenta M(j,w)|cosa rappresenta M(j,w) — 14/09/2022, al massimo quattro righe]]
+→ **Palestra**: [[Palestra - Programmazione Dinamica#Cosa rappresenta M(j,w)|cosa rappresenta M(j,w) — 14/09/2022, al massimo quattro righe]]
 ### Algoritmo bottom-up
 ```pseudo
 \begin{algorithm}
@@ -357,7 +357,7 @@ Si risale la tabella dall'angolo in basso a destra: l'oggetto $i$ **è incluso**
 >
 > **Nota**: l'integrità dei pesi è essenziale. Con pesi reali arbitrari la tabella non è indicizzabile e l'approccio DP non funziona direttamente. L'integrità dei valori invece **non** è necessaria per la correttezza.
 
-→ **Palestra**: [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#K è in P?|k è in P? — 14/09/2022, al massimo quattro righe]]
+→ **Palestra**: [[Palestra - Programmazione Dinamica#K è in P?|k è in P? — 14/09/2022, al massimo quattro righe]]
 ## Longest Increasing Subsequence (LIS)
 ### Il problema
 **Input**: una sequenza $S[1], S[2], \ldots, S[n]$ di $n$ numeri reali. **Obiettivo**: trovare la **sottosequenza crescente più lunga** (LIS), cioè una sequenza di indici $i_1 < i_2 < \cdots < i_k$ tale che $S[i_1] < S[i_2] < \cdots < S[i_k]$, con $k$ massimo.
@@ -481,7 +481,7 @@ Il costo minimo è $\min\{R[6], G[6], B[6]\} = \min\{46, 34, 36\} = 34$, realizz
 > [!info] Regola — generalizzare a $k$ stati, e riconoscere quando sei già ottimo *(extra, non da slide)*
 > Con $k$ colori la struttura si generalizza a $k$ array, con $C_i[c] = \text{cost}(i, c) + \min_{c' \ne c} C_{i-1}[c']$.
 > **Il trucco.** Calcolare quel minimo da zero per ogni cella costa $O(k)$, cioè $O(nk^2)$ in totale. Basta invece pre-calcolare i **due** valori più piccoli della riga precedente, in $O(k)$ per riga: se il minimo assoluto cade proprio sul colore $c$ che va escluso, si usa il secondo. Ogni cella torna a $O(1)$ e il totale è $\Theta(nk)$.
-> **Non è teoria.** L'Esercizio 3 del **23/09/2025** è esattamente questo problema con un indice in più: «non hai molta vernice rossa, puoi colorare di rosso al più $k$ case». Un esempio che il prof presenta a lezione è tornato allo scritto con un budget appiccicato sopra — vedi [[Esercizi 04 - Programmazione Dinamica#Colorazione di case con budget]] e il [!warning] «Il segnale più importante» in coda alla nota.
+> **Non è teoria.** L'Esercizio 3 del **23/09/2025** è esattamente questo problema con un indice in più: «non hai molta vernice rossa, puoi colorare di rosso al più $k$ case». Un esempio che il prof presenta a lezione è tornato allo scritto con un budget appiccicato sopra — vedi [[Palestra - Programmazione Dinamica#Colorazione di case con budget]] e il [!warning] «Il segnale più importante» in coda alla nota.
 >
 > **Il lower bound — è questa la parte riutilizzabile.** $\Theta(nk)$ **non è migliorabile**: l'input contiene $nk$ costi $\text{cost}(i,c)$, e cambiarne anche uno solo può cambiare l'ottimo, quindi un algoritmo corretto deve leggerli tutti — da cui $\Omega(nk)$. L'argomento in sé («l'input ha già dimensione $X$, quindi $\Omega(X)$») vale su qualunque problema, e all'Esercizio 3 è il modo più rapido per chiudere il punto 6 dicendo non solo *quanto costa* ma *che è ottimo*.
 ## Riepilogo dei problemi trattati *(extra, non da slide)*

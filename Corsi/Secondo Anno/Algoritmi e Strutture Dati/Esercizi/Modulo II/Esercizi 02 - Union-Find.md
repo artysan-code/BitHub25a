@@ -19,8 +19,8 @@ Nel campione Union-Find allo scritto è **sempre analisi di costi e proprietà**
 >
 > Cosa farne: il **contenuto** resta pienamente valido, ed è esattamente quello su cui vertono i vero/falso di oggi — la sequenza costosa e i costi ammortizzati sono le due cose che l'esame chiede comunque. Cambia il **formato in cui aspettarselo**: allenali come materiale da Esercizio 1 e da orale, non come un'esercitazione di teoria da 11 punti.
 ## Lower bound
-### Lower bound Ω(m+n) per qualunque struttura dati
-> [!question] Domanda d'esame — Lower bound Ω(m+n) per qualunque struttura dati
+### Lower bound per qualunque struttura Union-Find
+> [!question] Domanda d'esame — Lower bound per qualunque struttura Union-Find
 > **D:** *(Vero o Falso)* «Ogni struttura dati, per eseguire una sequenza di $n$ makeSet, $n-1$ union e $m$ find, deve impiegare nel caso peggiore tempo $\Omega(m+n)$.» *(traccia 16/07/2024 · Es. 1.1 n. 4 · anche 18/02/2025 Es. 1.1 n. 4)*
 
 > [!info]- Risposta modello
@@ -42,8 +42,8 @@ Nel campione Union-Find allo scritto è **sempre analisi di costi e proprietà**
 > **Verifica.** $k$, $k$ e $2k$ sono tutte $\Theta(n)$: ciascuna delle tre union costa $\Theta(n)$.
 >
 > ⏱️ **In 5 righe**: i quattro insiemi da $k=n/4$ e le tre chiamate (2 righe), poi perché ognuna costa $\Theta(n)$ (1 riga) — **non va mai omesso** il motivo per cui basta passare l'insieme grande come secondo argomento: è il fatto strutturale su cui si regge il controesempio.
-### L'altezza resta 1 anche con union by size
-> [!question] Domanda d'esame — QuickFind + union by size: l'altezza resta 1
+### QuickFind + union by size: altezza degli alberi
+> [!question] Domanda d'esame — QuickFind + union by size: altezza degli alberi
 > **D:** *(Vero o Falso)* «Nella QuickFind con euristica union by size ogni insieme è rappresentato con un albero di altezza $\Theta(\log n)$, dove $n$ è il numero di makeSet, in modo che l'operazione di find richieda tempo logaritmico.» *(traccia 16/07/2024 · Es. 1.1 n. 1)*
 
 > [!info]- Risposta modello
@@ -62,8 +62,8 @@ Nel campione Union-Find allo scritto è **sempre analisi di costi e proprietà**
 > **Perché.** Per induzione su $k$: alla nascita l'elemento è in un insieme di dimensione $1 = 2^0$; a ogni cambio di padre, per l'euristica finisce in un insieme di cardinalità **almeno doppia** rispetto a quello di provenienza. Dopo $k$ cambi è quindi in un insieme di dimensione $\geq 2^k$.
 >
 > **A cosa serve.** È l'argomento che limita i cambi di padre: da $2^k \leq n$ segue $k \leq \log_2 n$, ed è da lì che nasce il bound $O(n \log n)$ sul totale delle union.
-### Il bound O(m + n log n)
-> [!question] Domanda d'esame — QuickFind + union by size: il bound O(m + n log n)
+### QuickFind + union by size: costo della sequenza completa
+> [!question] Domanda d'esame — QuickFind + union by size: costo della sequenza completa
 > **D:** *(Vero o Falso)* «Usando la struttura dati QuickFind con euristica union by size, ogni sequenza di $n$ makeSet, $n-1$ union e $m$ find richiede nel caso peggiore tempo $O(m + n\log n)$.» *(traccia 16/07/2024 · Es. 1.1 n. 2 · anche 18/02/2025 Es. 1.1 n. 3)*
 
 > [!info]- Risposta modello
@@ -85,8 +85,8 @@ Nel campione Union-Find allo scritto è **sempre analisi di costi e proprietà**
 >
 > ⏱️ **In 5 righe**: i tre costi singoli (1 riga), il motivo dell'ammortamento (1-2 righe), il bound sulla sequenza (1 riga) — **non va mai omesso** che l'$O(\log n)$ della union è *ammortizzato sulla sequenza*: la singola union resta $O(n)$.
 ## QuickUnion
-### L'altezza NON è 1
-> [!question] Domanda d'esame — QuickUnion + union by size: l'altezza non è 1
+### QuickUnion + union by size: altezza degli alberi
+> [!question] Domanda d'esame — QuickUnion + union by size: altezza degli alberi
 > **D:** *(Vero o Falso)* «Nella QuickUnion con euristica union by size ogni insieme è rappresentato con un albero di altezza 1, in modo che sia l'operazione di find che di union richiedano tempo logaritmico.» *(traccia 18/02/2025 · Es. 1.1 n. 1)*
 
 > [!info]- Risposta modello
@@ -95,8 +95,8 @@ Nel campione Union-Find allo scritto è **sempre analisi di costi e proprietà**
 > **Primo errore.** L'altezza 1 è di **QuickFind**, non di QuickUnion: qui il lemma $s \geq 2^h$ garantisce altezza $O(\log n)$, non costante.
 >
 > **Secondo errore.** La `union` in QuickUnion resta $O(1)$ (ricollega due radici): è la `find` a costare $O(\log n)$, non entrambe.
-### find è O(log n) nel caso peggiore, non solo ammortizzato
-> [!question] Domanda d'esame — find O(log n) nel caso peggiore, non ammortizzato
+### QuickUnion + union by size: find ammortizzato e caso peggiore
+> [!question] Domanda d'esame — QuickUnion + union by size: find ammortizzato e caso peggiore
 > **D:** *(Vero o Falso)* «Usando la struttura dati QuickUnion con euristica union by size, ogni operazione di find ha costo ammortizzato $O(\log n)$, dove $n$ è il numero di makeSet. Eppure una singola operazione di find nel caso peggiore può costare anche $\Theta(n)$.» *(traccia 18/02/2025 · Es. 1.1 n. 2)*
 
 > [!info]- Risposta modello

@@ -69,8 +69,8 @@ Nel campione il Greedy sta **sempre in Esercizio 2** (teoria pura), nella tripla
 > **Perché è la proprietà chiave.** Applicata all'ultimo passo, impedisce che l'ottimo abbia un job in più: se fosse $m > k$, il job $j_{k+1}$ inizierebbe dopo $f(j_k) \geq f(i_k)$ e sarebbe compatibile con tutta la soluzione greedy, che quindi lo avrebbe preso.
 >
 > ⏱️ **In 5 righe**: l'enunciato con la disuguaglianza $f(i_r) \leq f(j_r)$ e la definizione delle due sequenze (2-3 righe), poi in una riga perché chiude la dimostrazione — **la disuguaglianza scritta in formula non va mai omessa**: è quella «la proprietà», il resto è contorno.
-### L'ordine per tempo di inizio non è ottimo per IS
-> [!question] Domanda d'esame — L'ordine per tempo di inizio non è ottimo per IS
+### Ordine per tempo di inizio in Interval Scheduling
+> [!question] Domanda d'esame — Ordine per tempo di inizio in Interval Scheduling
 > **D:** «Si mostri che l'algoritmo greedy che ordina gli intervalli per tempo di inizio non trova sempre la soluzione ottima. (Max 5 righe.)» *(traccia 20/07/2026 · Es. 2.2 · «Max 5 righe»)*
 
 > [!info]- Risposta modello
@@ -108,8 +108,8 @@ Nel campione il Greedy sta **sempre in Esercizio 2** (teoria pura), nella tripla
 > **Perché rende l'algoritmo ottimo.** L'algoritmo earliest-start-time-first alloca **esattamente** $\text{depth}$ classi: quando apre la $d$-esima esibisce $d$ intervalli attivi insieme in $s(j)+\epsilon$, quindi $\text{depth} \geq d$. Combinando, $d = \text{depth}$ è il minimo possibile.
 >
 > ⏱️ **In 5 righe**: definizione, lower bound e chiusura «il greedy usa esattamente depth classi → ottimo», una riga ciascuna — **il collegamento fra lower bound e uguaglianza raggiunta dal greedy non va mai omesso**: è quello che trasforma la depth da definizione in argomento di ottimalità.
-### Perché l'ordine per finish time non funziona per IP
-> [!question] Domanda d'esame — Perché l'ordine per finish time non funziona per IP
+### Ordine per finish time in Interval Partitioning
+> [!question] Domanda d'esame — Ordine per finish time in Interval Partitioning
 > **D:** «2. Si motivi perché un algoritmo greedy che ordina gli intervalli per finish time non trova la soluzione ottima. (Max 5 righe.)» *(traccia 09/09/2025 · Es. 2.2 · «Max 5 righe» · anche 30/06/2026 Es. 2.2)*
 
 > [!info]- Risposta modello
@@ -122,8 +122,8 @@ Nel campione il Greedy sta **sempre in Esercizio 2** (teoria pura), nella tripla
 > **Conclusione.** 3 classi contro le 2 ottime: il criterio non è corretto per IP.
 >
 > ⏱️ **In 5 righe**: istanza numerica con la profondità (1 riga), conteggio delle classi aperte senza il dettaglio passo-passo (1-2 righe), causa e conclusione (1 riga) — **l'istanza concreta e il conteggio 3 vs 2 non vanno mai omessi**, il passo-passo si taglia per primo.
-### Correttezza dell'ordine per tempo di inizio
-> [!question] Domanda d'esame — Correttezza dell'ordine per tempo di inizio
+### Ordine per tempo di inizio in Interval Partitioning
+> [!question] Domanda d'esame — Ordine per tempo di inizio in Interval Partitioning
 > **D:** «3. Si argomenti sulla correttezza dell'algoritmo greedy che ordina gli intervalli per tempo di inizio. (Max 10 righe.)» *(traccia 30/06/2026 · Es. 2.3 · «Max 10 righe»)*
 
 > [!info]- Risposta modello

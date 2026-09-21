@@ -246,6 +246,7 @@ Poiché 3-SAT è NP-completo (Teorema di Cook-Levin), per transitività tutti i 
 > La radice comune è sempre 3-SAT, il problema NP-completo "progenitore" da cui si dipartono tutte le catene.
 ## Problemi decisionali, di ricerca e di ottimizzazione
 I problemi possono essere formulati in tre modi diversi ma equivalenti:
+
 > [!quote] Definizione — Varianti di un problema
 > - **Decisionale**: esiste una soluzione con valore $\leq k$ (o $\geq k$)?
 > - **Di ricerca**: trova una soluzione con valore $\leq k$.
@@ -278,6 +279,7 @@ Quando si dimostra che un problema è NP-completo, le opzioni per la progettazio
 > La NP-completezza presuppone istanze **nel caso peggiore**. Un problema NP-completo può avere istanze pratiche risolvibili velocemente (es. SAT su formule reali è spesso facile per i SAT solver moderni). La difficoltà teorica non esclude la trattabilità pratica su distribuzioni di input ristrette.
 ## Algoritmi di approssimazione (cenni)
 Quando un problema di ottimizzazione è NP-hard, gli **algoritmi di approssimazione** offrono un compromesso: tempo polinomiale, ma con garanzia di qualità sulla soluzione.
+
 > [!quote] Definizione — $\alpha$-approssimazione
 > Un algoritmo polinomiale $\mathcal{A}$ è una **$\alpha$-approssimazione** per un problema di minimizzazione se per ogni istanza restituisce una soluzione di costo $C$ tale che:
 > $$C \leq \alpha \cdot \text{OPT}$$

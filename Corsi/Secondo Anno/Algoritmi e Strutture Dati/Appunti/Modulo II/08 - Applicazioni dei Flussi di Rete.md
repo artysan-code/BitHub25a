@@ -59,6 +59,7 @@ Con Ford-Fulkerson ogni aumentazione incrementa il flusso di 1 (le capacità son
 > In un grafo bipartito, la **cardinalità del matching massimo** è uguale alla **dimensione del vertex cover minimo** (minimo insieme di nodi che copre tutti gli archi).
 
 Questo risultato è una conseguenza diretta del teorema Max-Flow Min-Cut: il taglio minimo nella rete $G'$ ha capacità pari alla dimensione del vertex cover minimo, e il flusso massimo vale il matching massimo. Le due quantità coincidono per la dualità flusso-taglio.
+
 > [!quote] Teorema — Hall (condizione di matrimonio, 1935)
 > Un grafo bipartito $G = (L \cup R, E)$ ammette un **matching perfetto** che satura tutti i nodi di $L$ se e solo se, per ogni sottoinsieme $S \subseteq L$, il vicinato $N(S) \subseteq R$ soddisfa $|N(S)| \geq |S|$.
 
@@ -109,6 +110,7 @@ Nel grafo sopra esistono 2 cammini arco-disgiunti: ad esempio $s \to 2 \to 5 \to
 
 **Dimostrazione ($\Rightarrow$):** Siano $P_1, \ldots, P_k$ cammini arco-disgiunti. Si pone $f(e) = 1$ se $e$ appartiene ad almeno un $P_i$, altrimenti $f(e) = 0$. Poiché i cammini sono arco-disgiunti, ogni arco è usato al più una volta: le capacità unitarie sono rispettate. La conservazione del flusso vale per ogni nodo intermedio (ogni $P_i$ entra ed esce da ogni nodo interno). Il flusso totale è $k$.
 **Dimostrazione ($\Leftarrow$):** Sia $f$ un flusso intero di valore $k$. Si consideri ogni arco $(s, u)$ con $f(s,u) = 1$: per la conservazione esiste un arco $(u, v)$ con $f(u,v) = 1$; continuando si arriva sempre a $t$ (scegliendo sempre un arco inutilizzato). Si ottengono $k$ cammini, non necessariamente semplici — i cicli si possono eliminare in $O(mn)$ con la *flow decomposition*.
+
 > [!quote] Teorema — Menger (1927)
 > Il massimo numero di cammini arco-disgiunti $s \leadsto t$ in $G$ è uguale alla **cardinalità del minimo taglio archi** (minimum edge cut): il minimo numero di archi la cui rimozione disconnette $s$ da $t$.
 

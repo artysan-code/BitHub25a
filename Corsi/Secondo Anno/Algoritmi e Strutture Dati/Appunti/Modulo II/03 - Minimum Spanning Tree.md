@@ -2,11 +2,14 @@
 tags:
   - algoritmi
   - mst
-slide: "3"
+slide: ["03"]
 capitolo: "Kleinberg-Tardos cap. 4"
 ---
 # Minimum Spanning Tree
 Il **Minimum Spanning Tree** (MST), o **albero ricoprente minimo**, è uno dei problemi fondamentali su grafi pesati: dato un grafo connesso non orientato con pesi reali sugli archi, si cerca l'insieme di archi che connette tutti i nodi con costo totale minimo. Questa nota tratta le definizioni fondamentali, le due proprietà strutturali con le relative dimostrazioni, l'algoritmo di Kruskal (basato su [[02 - Union-Find]]) e l'algoritmo di Prim (basato su [[07 - Code con Priorità e Heap]]). Un'applicazione al clustering gerarchico conclude la nota.
+
+> [!info] Le domande d'esame su MST stanno in palestra
+> Questa nota è la **trattazione**; le 44 domande d'esame — 41 reali, con data, esercizio e sotto-punto — stanno in [[Esercizi 03 - Minimum Spanning Tree]], insieme alla legenda di come si leggono le citazioni. Nel corpo della nota trovi un link → **Palestra** alla fine di ogni argomento, che porta all'item corrispondente.
 ## L'idea: perché qui il greedy funziona
 Conviene aprire con la domanda che collega questa nota alle precedenti. Nel [[04 - Programmazione Dinamica I (Weighted Independent Set)#Approccio greedy|Weighted Independent Set]] il greedy **fallisce**, e abbiamo visto che il difetto è strutturale: prendere un nodo pesante ne esclude altri di valore complessivamente maggiore, e nessun criterio locale può accorgersene. Nell'MST, invece, il greedy **funziona** — e non per fortuna: ne esistono addirittura *tre* varianti diverse, tutte corrette.
 
@@ -28,45 +31,48 @@ Le due proprietà che formalizzano lo scambio sono il cuore di tutta la nota:
 > Dato un grafo connesso non orientato $G = (V, E)$ con pesi reali $c_e$ sugli archi, un **albero ricoprente** (*spanning tree*) è un sottoinsieme $T \subseteq E$ tale che $T$ è un albero che connette tutti i vertici di $G$. Essendo un albero su $n$ vertici, ha **esattamente $|T| = n-1$ archi**. Un **albero ricoprente minimo** (MST) è uno spanning tree che minimizza il costo totale:
 > $$c(T) = \sum_{e \in T} c_e$$
 
-Il prof formalizza il problema nella terna standard **input / soluzione ammissibile / misura**, la stessa usata per tutti i problemi di ottimizzazione del modulo. È il formato da riprodurre quando la traccia chiede «si definisca formalmente il problema».
+Questa è la frase con cui la slide *introduce* il problema (p. 3). La sua **formalizzazione** è invece la terna **input / soluzione ammissibile / misura** di p. 4, ed è il formato da riprodurre quando la traccia chiede «si definisca formalmente il problema». La terna compare in due sole slide del modulo — questa e `01_Interval_scheduling` — cioè proprio i problemi che ruotano nell'Esercizio 2: si impara una volta e si riusa su MST, IS e IP.
 
 > [!quote] Definizione — Il problema MST come problema di ottimizzazione
 > - **Input**: un grafo non orientato, connesso e pesato $G = (V, E)$ con pesi reali $c_e$ sugli archi.
 > - **Soluzione ammissibile**: uno spanning tree $T$ di $G$, cioè un albero $T = (V, F)$ con $F \subseteq E$ che raggiunge tutti i vertici di $G$.
-> - **Misura (da minimizzare)**: il peso (o costo) di $T$, cioè $c(T) = \sum_{e \in T} c_e$.
+> - **Misura (da minimizzare)**: il peso (o costo) di $T$, cioè $c(T) = \sum_{e \in F} c_e$.
 
-> [!question] Domanda tipica d'esame — Definizione formale del problema
-> **D:** «1. Si definisca formalmente il problema.» *(Es. 2, prima domanda aperta — 26/06/2025; Es. 2, punto 1 — 02/02/2026)*
-> **R:**
-> **Definizione (formato del prof: input / soluzione ammissibile / misura).**
-> - *Input*: un grafo non orientato, connesso e pesato $G = (V,E)$ con pesi reali $c_e$ sugli archi.
-> - *Soluzione ammissibile*: uno spanning tree $T = (V,F)$ di $G$, con $F \subseteq E$, che raggiunge tutti i vertici di $G$.
-> - *Misura da minimizzare*: $c(T) = \sum_{e \in T} c_e$.
->
-> **Elementi della definizione.** Tre condizioni congiunte: (1) $T$ deve essere un albero (connesso, aciclico, esattamente $n-1$ archi); (2) $T$ deve coprire tutti i vertici di $G$ (spanning); (3) tra tutti gli spanning tree di $G$, $T$ minimizza $c(T)$.
->
-> **Osservazione.** La minimalità è **relativa**: si confronta $T$ con tutti gli altri spanning tree di $G$, non con sottografi arbitrari — un sottoinsieme con meno archi non è ammissibile se non copre tutti i vertici.
+Le proprietà elencate riguardano **due oggetti distinti**: *non orientato, [[08 - Grafi e Visite#Cammini, cicli e connessione|connesso]], pesato* sono ipotesi su $G$, il grafo di input; *[[08 - Grafi e Visite#Alberi come grafi|albero]], quindi connesso e aciclico* sono requisiti su $T$, la soluzione. La parola «connesso» compare in entrambi con ruoli diversi: su $G$ garantisce che una soluzione **esista** — su un grafo sconnesso nessun insieme di archi raggiunge tutti i vertici, e il problema diventa quello della *spanning forest* — mentre su $T$ è parte della definizione di albero. $T$ non ha orientamento né pesi propri: li eredita da $G$, di cui è un sottografo.
 
-> [!question] Domanda tipica d'esame — Bound sul costo con pesi in {1, 2}
-> **D:** *(Vero o Falso)* «Si assuma che per ogni arco e vale w(e) ∈ {1, 2}, e sia T un MST di G. Allora ogni MST di G costa almeno n − 1 e al più 2n − 2.» *(Es. 1, V/F n. 2 — 23/09/2025)*
-> **R:**
-> **Risposta.** Vera.
->
-> **Perché.** Ogni albero ricoprente di un grafo connesso a $n$ nodi ha esattamente $n-1$ archi — pura combinatoria, non serve ottimalità. Con pesi in $\{1,2\}$, la somma di $n-1$ termini soddisfa $(n-1)\cdot 1 \leq \text{costo} \leq (n-1)\cdot 2 = 2n-2$, bound raggiunti se tutti gli archi pesano rispettivamente 1 o 2.
->
-> **Osservazione.** L'ipotesi "$T$ è un MST" è ridondante: il bound vale per qualunque spanning tree.
+Su $n$ vertici le proprietà *connesso*, *aciclico* e *$n-1$ archi* sono legate — **due qualsiasi implicano la terza** — ed è per questo che $|F| = n-1$ si cita come conseguenza e non come requisito; il [[08 - Grafi e Visite#Alberi come grafi|teorema sugli archi di un albero]] è dimostrato per induzione nel Modulo I. La minimalità, infine, è **relativa agli altri spanning tree** e non a sottografi arbitrari: un insieme di archi più leggero che non raggiunge tutti i vertici non è una soluzione migliore, è una soluzione non ammissibile.
+
+> [!warning] Due dettagli che fanno la differenza nella definizione
+> - **I pesi sono reali, quindi anche negativi.** Per l'MST non è un problema, a differenza dei cammini minimi — ed è il motivo per cui l'affermazione «con pesi negativi serve Bellman-Ford per l'MST» è falsa.
+> - **Convenzione sul simbolo $T$, valida per tutta la nota.** Nella **definizione del problema** l'albero si scrive $T=(V,F)$ con $F \subseteq E$, e la misura è $c(T)=\sum_{e \in F} c_e$: così «$T$ è un albero» si dice senza giri di parole. Nel **resto della nota** — dimostrazioni comprese — si scrive $e \in T$, $f \notin T$, $T' = T^* \cup \{e\} \setminus \{f\}$, **identificando $T$ con il suo insieme di archi**. Non sono due notazioni in conflitto: è un'identificazione dichiarata qui una volta per tutte, la stessa che usano la slide e Kleinberg-Tardos, e serve perché gli scambi di archi si scrivono in modo leggibile solo così.
+
+Nello scrivere la terna si perdono di solito due cose: **connesso** nell'input, e la **misura**, che è lo slot che salta quando si va di fretta.
+### Conseguenze dirette del conteggio degli archi
+Dal solo fatto che ogni spanning tree ha $n-1$ archi discendono i **bound sul costo**. Se tutti i pesi stanno in $\{1,2\}$, il costo è una somma di $n-1$ termini ciascuno pari a 1 o 2: al minimo $(n-1)\cdot 1 = n-1$, al massimo $(n-1)\cdot 2 = 2n-2$, e ogni altra combinazione cade in mezzo. È pura combinatoria: non serve che l'albero sia ottimo, e infatti il bound vale per **qualunque** spanning tree.
+
+Diverso è affermare che il costo sia **esattamente** $n-1$: questo richiede che esista uno spanning tree fatto di **soli** archi di peso 1, cioè che il sottografo dei soli archi leggeri sia connesso e ricoprente. È la differenza fra un vincolo di **cardinalità** (quanti archi leggeri ci sono) e uno di **connettività** (dove stanno): gli archi di peso 1 possono essere moltissimi e concentrati in una sola zona, lasciando un nodo raggiungibile solo con archi di peso 2.
+
+Per confutare un'affermazione di questo tipo serve un'istanza che **rispetti l'ipotesi**: se la claim parte da «gli archi di peso 1 sono almeno $2n$», il controesempio deve averne davvero almeno $2n$. Concentrandoli in una clique su $n-1$ nodi se ne ottengono $\binom{n-1}{2} = \frac{(n-1)(n-2)}{2}$ — il conteggio standard degli archi di un grafo completo, un arco per ogni coppia di nodi — e la condizione $\frac{(n-1)(n-2)}{2} \geq 2n$ vale da $n \geq 7$ in poi. È la stessa costruzione del callout [[08 - Grafi e Visite#Alberi come grafi|«$m \geq n-1$ non implica connessione»]] del Modulo I: molti archi, concentrati dove non servono.
 
 > [!quote] Teorema — Numero di spanning tree (Cayley)
 > Il grafo completo $K_n$ ha esattamente $n^{n-2}$ spanning tree distinti.
 
 Il Teorema di Cayley mostra che il numero di spanning tree cresce esponenzialmente in $n$: la ricerca per forza bruta è impraticabile anche per grafi piccoli.
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Definizione formale del problema|definizione formale del problema — 26/06/2025, 02/02/2026 +1, Max 5 righe]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Bound sul costo con pesi in {1, 2}|bound sul costo con pesi in {1, 2} — 23/09/2025]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi in {1,2}: molti archi leggeri non bastano|pesi in {1,2}: molti archi leggeri non bastano — 08/09/2026, motiva in 5 righe]]
 ### Unicità dell'MST
 L'MST **non è unico** in generale: se esistono archi con lo stesso peso, possono esistere più MST di costo uguale.
 
 > [!quote] Proprietà — Unicità dell'MST
 > Se tutti i pesi degli archi di $G$ sono **distinti**, allora l'MST è **unico**.
 
-Sulla slide questa proprietà è lasciata come **«exercise: prove it»**. La dimostrazione è un argomento di scambio sulla differenza simmetrica, ed è bene saperla produrre: è il lemma che giustifica tutte le domande del tipo «Kruskal e Prim calcolano lo stesso albero?».
+Sulla slide questa proprietà è lasciata come **«exercise: prove it»**, e in effetti nelle 24 tracce d'esame la sua dimostrazione non è mai stata richiesta: l'unicità compare sempre come **affermazione da giudicare** (per esempio «se tutti gli archi hanno peso intero positivo, l'MST è unico», Es. 1.1 n. 3 — 20/07/2026, falsa). Saperla dimostrare resta però utile all'orale ed è il lemma che giustifica tutte le domande del tipo «Kruskal e Prim calcolano lo stesso albero?». La dimostrazione è un argomento di scambio sulla differenza simmetrica.
+
+La dimostrazione usa la **differenza simmetrica** di due insiemi, $A \triangle B = (A \setminus B) \cup (B \setminus A)$: gli elementi che stanno in uno solo dei due, esclusi quelli comuni. Applicata a due alberi, $T_1 \triangle T_2$ è l'insieme degli archi **su cui i due differiscono**, ed è vuota se e solo se $T_1 = T_2$. Serve per poter parlare del «più leggero fra gli archi in cui i due alberi differiscono», che è il punto di partenza dello scambio.
 
 **Dimostrazione (per assurdo).** Si supponga che esistano due MST distinti $T_1 \neq T_2$.
 1. La differenza simmetrica $T_1 \triangle T_2$ è non vuota. Sia $e$ l'arco di peso **minimo** in $T_1 \triangle T_2$: essendo i pesi distinti, $e$ è univocamente determinato. Senza perdita di generalità $e \in T_1 \setminus T_2$.
@@ -80,21 +86,10 @@ Sulla slide questa proprietà è lasciata come **«exercise: prove it»**. La di
 
 Pesi distinti è condizione **sufficiente ma non necessaria**: esistono grafi con pesi ripetuti e MST comunque unico (il caso limite è $G$ già albero). La caratterizzazione esatta si ottiene guardando i **massimi dei cicli**, non i pesi in sé.
 
-> [!quote] Criterio — Caratterizzazione dell'unicità
+> [!quote] Criterio — Caratterizzazione dell'unicità *(extra, non da slide)*
 > Sia $T$ un MST di $G$. Allora $T$ è l'**unico** MST di $G$ se e solo se ogni arco $f \notin T$ è l'arco di peso **strettamente** massimo del proprio ciclo fondamentale (il ciclo che $f$ forma con $T$).
 
 **Dimostrazione.** Se qualche $f \notin T$ pareggia con un arco $e$ del suo ciclo fondamentale, lo scambio $T \cup \{f\} \setminus \{e\}$ produce un secondo MST di pari costo, quindi $T$ non è unico. Viceversa, se ogni $f \notin T$ è massimo stretto del proprio ciclo, ogni scambio possibile aumenta strettamente il costo, e per l'argomento sulla differenza simmetrica visto sopra nessun altro MST può esistere. Questo criterio si applica anche quando i pesi si ripetono — è quello che serve, ad esempio, nella domanda sulla **griglia $N \times N$** più avanti, dove gli archi orizzontali sono tutti di peso $1$ eppure l'MST è unico.
-
-> [!question] Domanda tipica d'esame — Unicità e pesi ripetuti
-> **D:** *(Vero o Falso)* «Se i pesi degli archi di G non sono distinti, sicuramente esistono due MST (distinti) di G.» *(chiesto il 18/07/2022)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Perché.** Pesi ripetuti sono condizione **necessaria ma non sufficiente** per avere più MST distinti. Per il criterio di unicità (cfr. box **Criterio — Caratterizzazione dell'unicità**), servono due archi di pari peso che si trovino **sullo stesso ciclo** e che siano entrambi massimi di quel ciclo: solo allora lo scambio produce un secondo MST. Due archi di peso uguale in punti scorrelati del grafo non generano alcuna alternativa.
->
-> **Controesempio.** Se $G$ non contiene cicli — cioè $G$ è già un albero — esiste un'unica soluzione ricoprente (l'intero $G$), indipendentemente da quanti pesi si ripetono: non ci sono cicli in cui operare uno scambio di archi.
->
-> **Osservazione.** Il criterio corretto (cfr. box **Proprietà — Unicità dell'MST**) è: pesi tutti distinti $\Rightarrow$ MST unico. Ma la contronominale «pesi non distinti $\Rightarrow$ MST non unico» è **falsa**, perché l'implicazione originale non è un se-e-solo-se.
 
 ![[mst_unicita_tre_alberi.png]]
 Il triangolo $A$-$B$-$C$ con tutti gli archi di peso 1 è l'esempio minimo: ognuno dei tre spanning tree possibili (evidenziati in blu) costa 2, quindi sono **tutti e tre MST**. È anche il controesempio da citare quando serve mostrare che l'MST non è unico.
@@ -112,12 +107,16 @@ Prima di dimostrare la correttezza degli algoritmi, introduciamo i concetti fond
 > [!quote] Definizione — Ciclo
 > Un **ciclo** è un insieme di archi della forma $a$-$b$, $b$-$c$, $\ldots$, $y$-$z$, $z$-$a$.
 
+La formulazione è quella letterale della slide, ed è volutamente informale; la definizione generale di [[08 - Grafi e Visite#Cammini, cicli e connessione|ciclo come cammino chiuso]] sta nel Modulo I. Se la traccia chiede la definizione di ciclo come oggetto formale, va aggiunto ciò che la slide lascia implicito: i nodi $a, b, \ldots, z$ sono **a due a due distinti** (il ciclo si chiude solo sull'ultimo arco $z$-$a$). Senza quel vincolo la scrittura descriverebbe un qualsiasi cammino chiuso, che può ripassare su nodi e archi già visitati — e l'intersezione ciclo-cutset, che si dimostra contando gli attraversamenti del confine, vale comunque, ma la nozione non sarebbe più quella usata nelle due property.
+
 ![[mst_ciclo.png]]
 Il ciclo $C$ è evidenziato in **rosso**. Nota che il grafo è lo stesso delle due figure che seguono: prima ci si mette sopra un ciclo, poi un taglio, poi si sovrappongono i due per vedere l'intersezione. Tenere lo stesso grafo campione per tutti e tre i passaggi è il motivo per cui questa sequenza di slide funziona — leggile in fila.
 ### Taglio e cutset
 > [!quote] Definizione — Taglio e cutset
-> Un **taglio** (*cut*) è un sottoinsieme di nodi $S \subseteq V$ (equivalentemente, una partizione di $V$ in $S$ e $V \setminus S$). Il **cutset** $D$ associato al taglio $S$ è il sottoinsieme di archi con **esattamente un** estremo in $S$:
-> $$D = \{(u,v) \in E : u \in S,\ v \notin S\}$$
+> Un **taglio** (*cut*) è un sottoinsieme di nodi $S \subseteq V$; la slide aggiunge tra parentesi la formulazione equivalente «*a volte definito come una partizione di $V$ in $S$ e $V \setminus S$*». Il **cutset** $D$ corrispondente al taglio $S$ è il sottoinsieme degli archi con **esattamente un** estremo in $S$:
+> $$D = \{\, e = \{u,v\} \in E \;:\; |e \cap S| = 1 \,\}$$
+
+Due dettagli che la slide lascia impliciti. Il grafo è **non orientato**, quindi l'arco è la coppia *non ordinata* $\{u,v\}$: la condizione va scritta come $|e \cap S| = 1$, mentre la forma $\{(u,v) : u \in S, v \notin S\}$ con la coppia ordinata suggerisce un orientamento che qui non esiste. E il taglio è significativo solo per $\emptyset \neq S \subset V$: con $S = \emptyset$ o $S = V$ il cutset è vuoto e la cut property non ha archi a cui applicarsi.
 
 ![[mst_taglio_cutset.png]]
 Convenzione grafica delle slide, la stessa in tutte le figure di questa sezione: i **nodi neri** sono quelli in $S$ (qui $S=\{4,5,8\}$), i **nodi grigi** stanno in $V\setminus S$, e gli **archi blu** sono il cutset $D=\{5\text{-}6,\ 5\text{-}7,\ 3\text{-}4,\ 3\text{-}5,\ 7\text{-}8\}$. Nota che $S$ **non deve essere connesso**: qui il nodo 8 è staccato da 4 e 5, e il taglio resta perfettamente legittimo — è un punto su cui si sbaglia leggendo la definizione di fretta.
@@ -138,6 +137,11 @@ Sulla slide questa proprietà è enunciata come *Claim* e dimostrata **«Pf. (by
 ![[mst_intersezione_ciclo_cutset.png]]
 Stesso grafo delle due figure precedenti, con **ciclo in rosso** e **cutset in blu** sovrapposti: gli archi che appartengono a entrambi sono $3\text{-}4$ e $5\text{-}6$, cioè **due** — pari, come vuole la proprietà. Tieni a mente questa figura quando applichi le due property: l'arco $f$ da scambiare è sempre «l'altro arco rosso-e-blu».
 
+> [!warning] «Pari» non vuol dire «due»
+> La figura mostra un'intersezione di 2 archi, ed è facile memorizzare la proprietà come «si intersecano in due archi». È falso: il numero è **pari**, e può essere 0, 2, 4, … Sullo stesso grafo, con lo stesso taglio $S=\{4,5,8\}$, il ciclo $1\text{-}6\text{-}5\text{-}3\text{-}4\text{-}8\text{-}7\text{-}1$ interseca il cutset in **quattro** archi: $6\text{-}5$ (entro in $S$), $5\text{-}3$ (esco), $3\text{-}4$ (entro), $8\text{-}7$ (esco) — due ingressi e due uscite. Un ciclo interamente contenuto in $S$ o interamente fuori, come $6\text{-}7\text{-}1\text{-}6$, dà invece intersezione **0**.
+>
+> Si noti anche che **il cutset non ha un verso**: un arco vi appartiene se ha esattamente un estremo in $S$, indipendentemente dal fatto che percorrendo il ciclo lo si attraversi entrando o uscendo. Invertendo il senso di percorrenza, ingressi e uscite si scambiano ma $C \cap D$ resta lo stesso insieme; il conteggio degli attraversamenti serve solo a *dimostrare* la parità.
+
 > [!warning] Perché questa proprietà viene prima di tutto il resto
 > Sembra un tecnicismo, ma è **il perno delle dimostrazioni di entrambe le proprietà**: è ciò che garantisce l'esistenza del *secondo* arco da usare nello scambio. Senza di essa, aggiungendo $e$ a $T^*$ si otterrebbe un ciclo, ma non si potrebbe affermare che in quel ciclo esiste un altro arco che attraversa lo stesso taglio — e lo scambio non si potrebbe fare. All'esame è quindi il lemma da citare, non da saltare.
 ## Cut property e Cycle property
@@ -146,16 +150,11 @@ Queste due proprietà sono il **cuore della correttezza** degli algoritmi greedy
 > [!quote] Proprietà — Cut property (proprietà del taglio)
 > Sia $S$ un qualsiasi sottoinsieme di nodi, e sia $e$ **un** arco di **costo minimo** con esattamente un estremo in $S$ (un arco di costo minimo del cutset di $S$). Allora esiste un MST che **contiene** $e$.
 
-L'enunciato della slide dice *«let $e$ be a min cost edge»*, non *«the»*: se più archi del cutset condividono il peso minimo, la proprietà vale per **ciascuno** di essi preso singolarmente — ma su MST possibilmente diversi. Riprodurre l'articolo indeterminato è ciò che rende l'enunciato corretto anche in presenza di pareggi.
+L'enunciato della slide dice *«let $e$ be a min cost edge»*, non *«the»*: se più archi del cutset condividono il peso minimo, la proprietà vale per **ciascuno** di essi preso singolarmente — ma su MST possibilmente diversi. Riprodurre l'articolo indeterminato è ciò che rende l'enunciato corretto anche in presenza di pareggi, e vale in entrambi i punti: *un* arco di costo minimo, ed *esiste un* MST. Con l'articolo determinativo l'enunciato diventa falso, ed è la variante gemella che ricorre nelle tracce.
 
-> [!question] Domanda tipica d'esame — Enunciato della cut property
-> **D:** «2. Si enunci formalmente la proprietà del taglio (cut property).» *(Es. 2, seconda domanda aperta — 26/06/2025; Es. 2, punto 2 — 02/02/2026)*
-> **R:**
-> **Enunciato.** Dato un taglio $(S, V\setminus S)$ con $\emptyset \neq S \subset V$ (cfr. box **Definizione — Taglio e cutset**), sia $e$ **un** arco di costo minimo tra quelli con esattamente un estremo in $S$ (un minimo del cutset $D$). Allora esiste sempre almeno un MST di $G$ che contiene $e$.
->
-> **Caso del minimo non stretto.** Se più archi del cutset condividono il peso minimo, la proprietà garantisce l'esistenza di *un* MST che contiene $e$, ma non che $e$ sia in *tutti* gli MST.
->
-> **Caso del minimo stretto.** Se $e$ è l'**unico** arco di peso minimo del taglio, allora $e$ appartiene a *ogni* MST di $G$: nessun altro arco del cutset può sostituirlo senza aumentare il costo.
+Allo stesso modo va riprodotto **«esattamente un** estremo in $S$»: scrivere «un estremo in $S$» renderebbe l'enunciato vero anche per gli archi interni al taglio, che non appartengono al cutset.
+
+Il caso del **minimo stretto** è un corollario utile ma distinto: se $e$ è l'**unico** arco di peso minimo del taglio, allora appartiene a *ogni* MST di $G$, perché nessun altro arco del cutset potrebbe sostituirlo senza aumentare il costo. Va detto solo se la traccia lo chiede.
 
 **Dimostrazione (argomento di scambio).**
 Sia $T^*$ un MST qualsiasi. Se $e \in T^*$ non c'è nulla da dimostrare; supponiamo dunque che $e = (u,v)$, con $u \in S$ e $v \notin S$, **non** appartenga a $T^*$.
@@ -165,71 +164,36 @@ Sia $T^*$ un MST qualsiasi. Se $e \in T^*$ non c'è nulla da dimostrare; supponi
 4. $f$ appartiene al cutset $D$ ed $e$ è un arco di costo minimo di $D$: dunque $c_e \leq c_f$, da cui $c(T') = c(T^*) + c_e - c_f \leq c(T^*)$.
 5. $T^*$ è un MST, quindi nessuno spanning tree costa meno: vale $c(T') = c(T^*)$. Perciò $T'$ è un MST e contiene $e$. $\square$
 
+La struttura è di **cinque mosse in quest'ordine**: si suppone che $T^*$ non contenga $e$ → si crea il ciclo → si ricava l'esistenza di $f$ dalla parità → si esegue lo scambio → si confrontano i costi. Quando la traccia concede 10 righe le mosse si distendono, quando ne concede 5 si comprimono, ma l'ordine non cambia. I due passaggi che **non possono mancare** sono la **parità dell'intersezione ciclo-cutset**, che è ciò che garantisce l'esistenza dell'arco $f$ da scambiare, e la **chiusura** $c(T')=c(T^*)$: dalla sola disuguaglianza $c(T') \leq c(T^*)$ non segue che $T'$ sia ottimo, serve invocare la minimalità di $T^*$.
+
 > [!warning] Non è una dimostrazione per assurdo
 > La slide la etichetta *«Pf. (exchange argument)»*: si **costruisce** esplicitamente un MST che contiene $e$, partendo da uno qualsiasi che non lo contiene. Non si assume una tesi falsa per derivarne una contraddizione. Scriverla come prova per assurdo è un errore di impostazione che il prof segna, perché tradisce il punto: la cut property è un enunciato **esistenziale** ($\exists$ un MST con $e$) e lo scambio è precisamente il testimone che lo realizza.
 
 ![[mst_exchange_argument.png]]
 Come leggerla: le due macchie grigie sono $S$ e $V\setminus S$; i segmenti pieni sono gli archi di $T^*$, l'MST di partenza. L'arco **tratteggiato $e$** è quello che la cut property vuole dentro, e non c'è. Aggiungendolo si chiude un ciclo, che riattraversa il taglio in **$f$**: lo scambio $T' = T^* \cup \{e\} \setminus \{f\}$ toglie $f$ e mette $e$. Le due macchie restano collegate — è il punto che rende $T'$ ancora uno spanning tree.
 
-> [!question] Domanda tipica d'esame — Dimostrazione della cut property
-> **D:** «3. Si fornisca una dimostrazione della proprietà del taglio.» *(Es. 2, punto 3 — 02/02/2026)*
-> **R:**
-> **Impostazione.** *Argomento di scambio* (non per assurdo — cfr. box **Non è una dimostrazione per assurdo**): sia $T^*$ un MST qualsiasi. Se $e \in T^*$ la tesi è già verificata; si supponga quindi che $T^*$ **non** contenga $e=(u,v)$, arco di costo minimo del cutset $D$ di $S$, con $u \in S$ e $v \notin S$.
+> [!warning] La coppia gemella «+1 su ogni arco»: MST vero, min-cut falso
+> Il prof ha chiesto la stessa perturbazione in due appelli consecutivi, su oggetti diversi e con **risposte opposte**:
+> - su **MST** (20/07/2026): $T$ resta MST — tutti gli spanning tree hanno $n-1$ archi, l'aumento è uniforme;
+> - su **min-cut** (30/06/2026, cfr. [[07 - Flussi di Rete (Max-Flow e Min-Cut)]]): il taglio minimo **può cambiare** — i tagli hanno cardinalità diverse, quindi $+1$ per arco penalizza di più i tagli con molti archi, e un taglio prima più costoso può diventare il minimo.
 >
-> **Esistenza dell'arco da scambiare.** $T^*$ contiene un cammino da $u$ a $v$, quindi aggiungendo $e$ si crea un ciclo $C$. L'arco $e$ sta sia in $C$ sia in $D$, dunque $C \cap D \neq \emptyset$; per la proprietà di intersezione ciclo-cutset $|C \cap D|$ è pari, quindi $\geq 2$, e **esiste** $f \in C \cap D$ con $f \neq e$ (e $f \in T^*$).
->
-> **Scambio.** Si costruisce $T' = T^* \cup \{e\} \setminus \{f\}$: rimuovere un arco dal ciclo appena creato non disconnette e lascia $n-1$ archi, quindi $T'$ è ancora uno spanning tree.
->
-> **Confronto dei costi.** $f$ attraversa il taglio ed $e$ è il minimo del cutset, quindi $c_e \leq c_f$ e $c(T') = c(T^*) + c_e - c_f \leq c(T^*)$.
->
-> **Conclusione.** Essendo $T^*$ un MST, non può esistere uno spanning tree di costo strettamente minore: deve valere $c(T') = c(T^*)$. $T'$ è quindi un MST che contiene $e$, il che dimostra la proprietà. $\square$
+> Il discrimine da dire in una riga: **gli spanning tree hanno tutti lo stesso numero di archi, i tagli no.**
 
-> [!question] Domanda tipica d'esame — Arco più leggero incidente a un nodo
-> **D:** *(Vero o Falso)* «Sia v un nodo qualsiasi. L'arco più leggero incidente a v fa parte sempre di un qualche MST di G.» *(Es. 1, V/F n. 2 — 18/07/2025)*
-> **R:**
-> **Risposta.** Vero.
->
-> **Perché.** È un corollario diretto della cut property applicata al taglio banale $S = \{v\}$: il cutset di $S$ è esattamente l'insieme degli archi incidenti a $v$, quindi il suo arco di costo minimo — l'arco più leggero incidente a $v$ — appartiene ad almeno un MST di $G$.
->
-> **Osservazione.** Vale per **ogni** nodo $v$ preso singolarmente: applicando l'argomento a ciascun nodo si ottiene che l'arco più leggero incidente a ogni vertice è "salvabile" in un MST, non necessariamente nello stesso MST per tutti i nodi insieme.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Enunciato della cut property|enunciato della cut property — 26/06/2025, 02/02/2026 +1, Max 5 righe]]
 
-> [!question] Domanda tipica d'esame — L'arco di peso massimo può essere obbligato
-> **D:** *(Vero o Falso)* «Se i pesi degli archi di G sono distinti, l'arco di peso minimo appartiene sempre all'MST T di G mentre l'arco di peso massimo non appartiene mai a T.» *(chiesto il 28/09/2022)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Prima parte (corretta).** L'arco di peso minimo assoluto è il minimo di ogni taglio che attraversa, quindi per cut property appartiene a ogni MST, essendo i pesi distinti (minimo stretto in ogni taglio che lo contiene).
->
-> **Controesempio alla seconda parte.** L'arco di peso massimo **può** appartenere all'MST: se è un **ponte** (l'unico collegamento tra due componenti del grafo), è obbligato in ogni spanning tree, MST incluso, indipendentemente dal suo peso.
->
-> **Osservazione.** L'affermazione mischia due proprietà diverse: essere il minimo assoluto forza l'appartenenza (cut property), ma essere il massimo assoluto non forza l'**esclusione** — l'unica cosa che la garantirebbe è la cycle property applicata a un ciclo di cui l'arco è il massimo, e un ponte non appartiene a nessun ciclo.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Dimostrazione della cut property|dimostrazione della cut property — 02/02/2026, 08/09/2026, max 5 righe]]
 
-> [!question] Domanda tipica d'esame — Sensitivity: alzare il peso di un arco fuori dall'MST
-> **D:** *(Vero o Falso)* «Sia G = (V, E, w) un grafo non orientato e pesato. Sia T un MST di G e sia f un arco non in T. Si consideri il grafo G′ = (V, E, w′) ottenuto da G alzando il peso dell'arco f a un valore w′(f) > w(f). Allora T è un MST anche di G′.» *(Es. 1, punto 2 — 09/09/2025)*
-> **R:**
-> **Risposta.** Vera.
->
-> **Perché.** $w'(T)=w(T)$ perché $f\notin T$. Per ogni spanning tree $S$: se $f\notin S$, $w'(S)=w(S)$; se $f\in S$, $w'(S)=w(S)+(w'(f)-w(f))>w(S)$. Quindi $w'(S)\geq w(S)$ sempre. Se $T$ non fosse più MST di $G'$, esisterebbe $S$ con $w'(S)<w'(T)=w(T)$; ma allora $w(S)\leq w'(S)<w(T)$, cioè $S$ batterebbe $T$ già in $G$: assurdo.
->
-> **Osservazione.** È il duale della domanda qui sotto, «abbassare il peso di un arco dentro l'MST»: le due si risolvono con lo stesso schema.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Arco più leggero incidente a un nodo|arco più leggero incidente a un nodo — 18/07/2025]]
 
-> [!question] Domanda tipica d'esame — Sensitivity: abbassare il peso di un arco dentro l'MST
-> **D:** «Claim: Sia G = (V, E, w) un grafo non orientato e pesato. Sia T un MST di G e sia e un arco di T. Si consideri il grafo G′ = (V, E, w′) ottenuto da G abbassando il peso dell'arco e a un valore w′(e) < w(e). Allora T è un MST anche di G′.» *(Es. 1, prima domanda aperta — 18/07/2025)*
-> **R:**
-> $T$ resta un MST di $G'$: abbassare il peso di un arco già scelto non può renderlo svantaggioso.
->
-> **Perché.** Sia $\Delta = w(e)-w'(e)>0$. Per assurdo, se $T$ non fosse più MST di $G'$ esisterebbe uno spanning tree $T'$ con $w'(T')<w'(T)$. Se $e\in T'$: entrambi i pesi calano di $\Delta$, quindi $w(T')<w(T)$. Se $e\notin T'$: $w'(T')=w(T')$ e $w'(T)=w(T)-\Delta<w(T)$, quindi ancora $w(T')<w(T)$. In entrambi i casi $T'$ batterebbe $T$ già in $G$: assurdo.
->
-> **Osservazione.** Vale per pesi reali qualsiasi. Schema comune alle due domande di sensitivity: si confronta $T$ con un ipotetico $S$ migliore in $G'$, si osserva come cambia il peso di ciascuno passando da $w$ a $w'$, e si riporta la contraddizione **su $G$**, dove $T$ era ottimo per ipotesi.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#L'arco di peso massimo può essere obbligato|l'arco di peso massimo può essere obbligato — 28/09/2022]]
 
-> [!question] Domanda tipica d'esame — Non esiste un duale della cut property per gli archi fuori T
-> **D:** *(Vero o Falso)* «Sia T un MST di G e sia f un arco che non appartiene a T, allora l'arco f è l'arco più pesante di almeno un taglio di G.» *(Es. 1, V/F n. 4 — 23/09/2025)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Perché.** La cut property riguarda solo gli archi **dentro** $T$ (ciascuno è il minimo di un taglio indotto dalla propria rimozione). Il vero duale per gli archi **fuori** $T$ è la cycle property, che parla di **cicli**, non di tagli: l'enunciato confonde le due nozioni.
->
-> **Controesempio.** $A,B,C,D$ con $AB{=}1,\ BC{=}1,\ AC{=}2,\ AD{=}5,\ DC{=}5$; MST $T=\{AB,BC,AD\}$. Preso $f=AC\ (2)\notin T$: in ogni taglio che $f$ attraversa, l'arco più pesante è sempre $AD$ o $DC$ (peso 5), mai $f$.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Sensitivity: alzare il peso di un arco fuori dall'MST|sensitivity: alzare il peso di un arco fuori dall'MST — 09/09/2025, motiva in 5 righe]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Sensitivity: abbassare il peso di un arco dentro l'MST|sensitivity: abbassare il peso di un arco dentro l'MST — 18/07/2025, motiva in 5 righe]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Perturbazione uniforme: $+1$ su ogni arco|perturbazione uniforme: $+1$ su ogni arco — 20/07/2026, motiva in 5 righe]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Non esiste un duale della cut property per gli archi fuori T|non esiste un duale della cut property per gli archi fuori T — 23/09/2025]]
 ### Cycle property
 > [!quote] Proprietà — Cycle property (proprietà del ciclo)
 > Sia $C$ un qualsiasi ciclo in $G$, e sia $f$ **un** arco di **costo massimo** appartenente a $C$. Allora esiste un MST che **non contiene** $f$.
@@ -260,7 +224,7 @@ Anche qui la slide riporta *«Pf. (exchange argument)»*: l'unica differenza ris
 > | Conclusione | esiste un MST **con** $e$ | esiste un MST **senza** $f$ |
 >
 > Lo scambio è letteralmente identico: cambia solo **da dove viene la disuguaglianza** $c_e \leq c_f$. In entrambi i casi il passo che fa funzionare tutto è la **proprietà di intersezione ciclo-cutset**, che garantisce l'esistenza del secondo arco da scambiare — ed è per questo che va dimostrata *prima* delle due proprietà.
-### Dalla proprietà locale alla correttezza globale
+### Dalla proprietà locale alla correttezza globale *(extra, non da slide)*
 Le due proprietà sono **enunciati esistenziali su un singolo arco**: «esiste *un* MST che contiene $e$». Da sole non bastano a concludere che un algoritmo che le applica ripetutamente produca un MST, perché **ogni applicazione potrebbe testimoniare un MST diverso**. Le slide sorvolano su questo passaggio (per Prim scrivono soltanto *«immediate consequence of the cut property, used exactly $n-1$ times»*), ma il ponte va reso esplicito, ed è un **invariante di ciclo** dimostrato per induzione.
 
 > [!quote] Invariante — Estendibilità della soluzione parziale
@@ -277,79 +241,25 @@ Le due proprietà sono **enunciati esistenziali su un singolo arco**: «esiste *
 > [!warning] Il dettaglio che rende valida l'induzione
 > Il passo cruciale è $f \notin F$: senza di esso lo scambio potrebbe **rimuovere un arco già scelto**, e $F \cup \{e\}$ non sarebbe più contenuto in $T'$. È garantito dal fatto che il taglio usato non è arbitrario — è scelto in modo che nessun arco già selezionato lo attraversi. Chi risponde «basta applicare la cut property $n-1$ volte» sta assumendo implicitamente proprio questo, e all'orale è la domanda di approfondimento naturale.
 
-> [!question] Domanda tipica d'esame — Arco più leggero di un ciclo non è garantito
-> **D:** *(Vero o Falso)* «Sia C un ciclo di G ed e l'arco più leggero di C. Allora esiste sempre un MST di G che contiene e.» *(chiesto il 28/09/2022)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Perché.** A differenza della cut property (che garantisce l'inclusione del minimo di un taglio), non esiste una proprietà simmetrica per il minimo di un ciclo: la cycle property parla solo del **massimo** del ciclo, non del minimo.
->
-> **Come può essere escluso.** Un arco leggero interno a un ciclo può comunque essere escluso da ogni MST se, per il taglio che separa i suoi estremi, esiste un percorso alternativo esterno al ciclo di costo complessivo ancora minore: è la cut property applicata a *quel* taglio a decidere l'esclusione, non la cycle property.
->
-> **Osservazione.** Le due proprietà non sono simmetriche: la cut property vincola i minimi dei tagli, la cycle property vincola i massimi dei cicli; non esiste un analogo che vincoli i minimi dei cicli.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Arco più leggero di un ciclo non è garantito|arco più leggero di un ciclo non è garantito — 28/09/2022]]
 
-> [!question] Domanda tipica d'esame — Caratterizzazione degli alberi non ottimi
-> **D:** *(Vero o Falso)* «Se T non è un MST di G allora esiste un arco e ∈ T e un arco f ∉ T tale che e è l'arco più pesante del ciclo che si forma quando si aggiunge f a T.» *(chiesto il 13/06/2024)*
-> **R:**
-> **Risposta.** Vera.
->
-> **Perché.** È (nella sostanza) la contronominale della cycle property applicata a $T$: se $T$ non è minimo, esiste un arco $e \in T$ scambiabile con un arco $f \notin T$ per ottenere un albero di costo minore o uguale. Aggiungendo $f$ a $T$ si crea un ciclo, e $e$ ne deve essere l'arco di peso **massimo** — altrimenti lo scambio $T \cup \{f\} \setminus \{e\}$ non ridurrebbe (o pareggerebbe) il costo.
->
-> **Osservazione.** È lo stesso argomento di scambio alla base della dimostrazione di ottimalità di Kruskal e Prim: ogni volta che un albero non è ottimo, esiste una coppia $(e, f)$ di questo tipo che permette di migliorarlo.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Un arco fuori da $T$ non è più pesante di *tutti* gli archi di $T$|un arco fuori da $T$ non è più pesante di *tutti* gli archi di $T$ — 20/07/2026]]
 
-> [!question] Domanda tipica d'esame — Massimo di un ciclo vs massimo di tutti i cicli
-> **D:** *(Vero o Falso)* «Sia T un MST di G e sia f un arco non di T. Allora f è l'arco di peso massimo in tutti i cicli che lo contengono.» *(Es. 1, V/F n. 1 — 18/07/2025)*
-> **R:**
-> **Risposta.** Falso.
->
-> **Perché.** La cycle property garantisce solo che $f$ sia il massimo di **almeno un** ciclo — il ciclo fondamentale che si forma aggiungendo $f$ a $T$ — non di **ogni** ciclo di $G$ che contiene $f$.
->
-> **Osservazione.** In un grafo con più cicli passanti per $f$, l'arco può non essere il più pesante in un ciclo diverso da quello fondamentale rispetto a $T$: la proprietà è legata alla scelta di $T$, non è una caratteristica assoluta di $f$.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Caratterizzazione degli alberi non ottimi|caratterizzazione degli alberi non ottimi — 13/06/2024]]
 
-> [!question] Domanda tipica d'esame — Un arco dell'MST non è per forza il minimo di un ciclo
-> **D:** *(Vero o Falso)* «Sia T un MST di G e sia e un arco di T, allora l'arco e è l'arco più leggero di almeno un ciclo in G.» *(Es. 1, V/F n. 4 — 09/09/2025)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Controesempio.** Se $e$ è un **ponte** (bridge) di $G$ — cioè la sua rimozione disconnette il grafo — allora $e$ non appartiene ad alcun ciclo di $G$, quindi non può essere l'arco più leggero di nessun ciclo, pur essendo necessariamente parte di ogni spanning tree, MST incluso.
->
-> **Osservazione.** L'affermazione varrebbe se si aggiungesse l'ipotesi che $e$ appartenga ad almeno un ciclo: in quel caso $e$ è comunque il più leggero solo del ciclo fondamentale indotto da un particolare $T$, non necessariamente di ogni ciclo che lo contiene (cfr. domanda precedente).
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Massimo di un ciclo vs massimo di tutti i cicli|massimo di un ciclo vs massimo di tutti i cicli — 18/07/2025]]
 
-> [!question] Domanda tipica d'esame — Cut property e archi non minimi
-> **D:** Enuncia la cut property e spiega come si usa per mostrare che un albero ricoprente $T$ non è minimo.
-> **R:**
-> **Idea.** La cut property afferma che l'arco di costo minimo che attraversa un qualsiasi taglio appartiene ad *almeno* un MST; per usarla "al contrario" e mostrare che $T$ non è minimo serve trovare **il taglio giusto**.
->
-> **Procedura.** Sia $T$ un albero ricoprente e $f \in T$. Rimuovendo $f$ da $T$, l'albero si spezza in due componenti, che definiscono un taglio $(S, V\setminus S)$ di cui $f$ è l'**unico** arco di $T$ che lo attraversa. Se esiste un arco $e \notin T$ che attraversa *quello stesso* taglio con $c_e < c_f$, allora $T$ non è minimo: $T' = T \cup \{e\} \setminus \{f\}$ è ancora un albero ricoprente e costa strettamente meno.
->
-> **Attenzione al verso dell'implicazione.** Non vale che «se $f$ non è il minimo di un taglio *qualsiasi*, allora esiste un MST senza $f$».
->
-> **Controesempio.** $A$-$B = 5$ come unico arco incidente ad $A$, più il triangolo $B$-$C=1$, $C$-$D=1$, $B$-$D=1$. Nel taglio $S=\{A,D\}$ il cutset è $\{A\text-B=5,\ C\text-D=1,\ B\text-D=1\}$ e $A\text-B$ non è il minimo, eppure è un **ponte**: sta in ogni albero ricoprente, quindi in ogni MST. Il taglio va scelto come sopra, **indotto da $T$**, non arbitrariamente.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Un arco dell'MST non è per forza il minimo di un ciclo|un arco dell'MST non è per forza il minimo di un ciclo — 09/09/2025, 27/09/2023]]
 
-> [!question] Domanda tipica d'esame — Pesi in {1, 2}: un arco fuori T non deve avere per forza peso 2
-> **D:** *(Vero o Falso)* «Si assuma che per ogni arco e vale w(e) ∈ {1, 2}, e sia T un MST di G. Allora ogni arco del grafo che non appartiene a T deve avere peso 2.» *(Es. 1, V/F n. 2 — 09/09/2025)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Perché.** La cycle property esclude solo l'arco **strettamente** massimo di un ciclo. Se un ciclo è formato interamente da archi di peso uguale (es. tutti 1), uno qualunque resta escluso da un dato MST per non chiudere il ciclo, pur non essendo affatto il più pesante.
->
-> **Controesempio.** Triangolo con i tre archi di peso 1 (rispetta $w(e)\in\{1,2\}$): ogni MST ne sceglie due, il terzo — escluso — pesa comunque 1, non 2.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Cut property e archi non minimi|cut property e archi non minimi — 13/06/2024, max 5 righe]]
 
-> [!question] Domanda tipica d'esame — Tutti gli archi del ciclo fondamentale sono ≤ w(f)
-> **D:** *(Vero o Falso)* «Sia T un MST di G e sia f un arco che non appartiene a T, allora l'aggiunta di f a T forma un ciclo e tutti gli archi del ciclo hanno un peso che è minore o uguale a quello di f.» *(Es. 1, V/F n. 3 — 09/09/2025)*
-> **R:**
-> **Risposta.** Vera.
->
-> **Perché.** È la cycle property in forma non stretta. Se esistesse un arco $e$ del ciclo con $w(e)>w(f)$, allora $T'=(T\setminus\{e\})\cup\{f\}$ sarebbe uno spanning tree con $w(T')<w(T)$, contro la minimalità di $T$.
->
-> **Osservazione.** La disuguaglianza è $\leq$, non $<$: con pesi ripetuti sul ciclo, $f$ può pareggiare (ma mai superare) il massimo.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi in {1, 2}: un arco fuori T non deve avere per forza peso 2|pesi in {1, 2}: un arco fuori T non deve avere per forza peso 2 — 09/09/2025]]
 
-> [!question] Domanda tipica d'esame — Variante: f non è il più pesante di ogni ciclo che lo contiene
-> **D:** *(Vero o Falso)* «Sia T un MST di G e sia f un arco che non appartiene a T, allora f è l'arco più pesante di ogni ciclo di G che lo contiene.» *(Es. 1, V/F n. 3 — 23/09/2025)*
-> **R:**
-> **Risposta.** Falsa — stessa argomentazione della domanda «Massimo di un ciclo vs massimo di tutti i cicli» del 18/07/2025 qui sopra: la cycle property garantisce che $f$ sia massimo solo nel ciclo **fondamentale** indotto da $T$, non in ogni ciclo di $G$ che lo contiene.
->
-> **Controesempio.** $A,B,C,D$ con $AB{=}1,BC{=}1,AC{=}2,AD{=}5,DC{=}5$: nel ciclo fondamentale $A\text-B\text-C\text-A$, $f=AC$ è il massimo; nel ciclo $A\text-D\text-C\text-A$ (pesi 5,5,2), $f$ è invece il più leggero.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Tutti gli archi del ciclo fondamentale sono ≤ w(f)|tutti gli archi del ciclo fondamentale sono ≤ w(f) — 09/09/2025]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Variante: f non è il più pesante di ogni ciclo che lo contiene|variante: f non è il più pesante di ogni ciclo che lo contiene — 23/09/2025]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Unicità e pesi ripetuti|unicità e pesi ripetuti — 18/07/2022, 20/07/2026]]
 ## Algoritmo di Kruskal
 L'algoritmo di **Kruskal** (1956) parte da $T = \emptyset$ e aggiunge gli archi uno alla volta in ordine crescente di costo, saltando quelli che formerebbero un ciclo.
 ### Pseudocodice
@@ -375,7 +285,7 @@ L'algoritmo di **Kruskal** (1956) parte da $T = \emptyset$ e aggiunge gli archi 
 \end{algorithm}
 ```
 
-La struttura dati [[02 - Union-Find]] mantiene le **[[08 - Grafi e Visite|componenti connesse]]** di $T$ durante l'esecuzione:
+La struttura dati [[02 - Union-Find]] mantiene le **[[08 - Grafi e Visite#Cammini, cicli e connessione|componenti connesse]]** di $T$ durante l'esecuzione:
 - `makeset(v)`: inizializza la componente $\{v\}$.
 - `find(x)`: restituisce il rappresentante della componente di $x$.
 - `union(Tx, Ty)`: fonde le due componenti.
@@ -405,16 +315,7 @@ MST finale: {(C,E),(F,G),(E,F),(A,B),(C,D),(A,C)}
 ![[mst_kruskal_risultato.png]]
 Il risultato sulle slide: in **blu** i 6 archi accettati, in **rosso** i 3 scartati perché chiudevano un ciclo. Confronto utile: $E\text{-}G\ (9)$ viene rifiutato pur essendo più leggero di $A\text{-}C\ (14)$, che invece è accettato. Non è una contraddizione — Kruskal non sceglie «gli archi più leggeri», sceglie **il più leggero fra quelli che non chiudono un ciclo**, e quando tocca a $E\text{-}G$ i nodi $E$ e $G$ sono già connessi via $E\text{-}F\text{-}G$.
 
-> [!question] Domanda tipica d'esame — Il numero di componenti dopo k archi non è garantito n−k
-> **D:** *(Vero o Falso)* «Dopo aver processato il terzo arco di peso minimo di G, l'algoritmo ha calcolato una soluzione parziale che è una foresta di esattamente n − 3 componenti connesse;» *(chiesto il 19/02/2024)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Perché.** Il numero di componenti diminuisce di uno solo quando l'arco **processato** viene effettivamente **aggiunto** a $T$ (cioè collega due componenti distinte), non a ogni arco processato in assoluto.
->
-> **Controesempio.** Se il terzo arco in ordine di peso chiude un ciclo — perché i suoi estremi sono già nella stessa componente dopo i primi due — viene scartato: il numero di componenti resta $n-2$, non $n-3$.
->
-> **Osservazione.** L'uguaglianza $n-k$ dopo $k$ archi **processati** vale solo se tutti e $k$ sono stati effettivamente **accettati**; in generale, dopo $k$ archi processati il numero di componenti è $n$ meno il numero di archi effettivamente accettati tra i primi $k$.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Il numero di componenti dopo k archi non è garantito n−k|il numero di componenti dopo k archi non è garantito n−k — 19/02/2024]]
 ### Correttezza
 La correttezza di Kruskal segue direttamente dalla **cut property** e dalla **cycle property**; la slide dedica una figura a ciascuno dei due casi.
 - Quando l'algoritmo **aggiunge** l'arco $(x, y)$: le componenti di $x$ e $y$ sono distinte. Sia $S$ l'insieme dei vertici appartenenti alla **componente connessa di $y$** nella soluzione corrente. L'arco $(x,y)$ attraversa il taglio $(S, V\setminus S)$; ogni altro arco che lo attraversa non è ancora stato esaminato, e poiché l'algoritmo scandisce gli archi in **ordine crescente di costo**, ha costo $\geq c_{xy}$. Dunque $(x, y)$ è un arco di costo minimo che attraversa quel taglio: per la **cut property** esiste un MST che lo contiene. Si noti che **nessun arco già selezionato attraversa questo taglio** — gli archi di $F$ incidenti a $S$ sono interni alla componente di $y$ — il che è esattamente l'ipotesi che rende applicabile l'[[#Dalla proprietà locale alla correttezza globale|invariante di estendibilità]].
@@ -423,23 +324,13 @@ La correttezza di Kruskal segue direttamente dalla **cut property** e dalla **cy
 > [!warning] «Esiste un MST senza $f$», non «$f$ non sta in nessun MST»
 > Entrambe le proprietà sono enunciati **esistenziali**, e vanno riportate così. La cycle property non dice che l'arco massimo di un ciclo è escluso da *ogni* MST: se il massimo non è stretto (pesi ripetuti sul ciclo), quell'arco può benissimo comparire in qualche altro MST di pari costo. La forma «non appartiene ad alcun MST» vale solo aggiungendo l'ipotesi di **massimo stretto**, e simmetricamente per la cut property con il minimo stretto. È una delle imprecisioni più penalizzate all'orale.
 
-> [!question] Domanda tipica d'esame — Perché un arco viene scartato
-> **D:** *(Vero o Falso)* «Quando l'algoritmo processa un generico arco e e decide di non aggiungerlo alla soluzione, vuol dire non solo che l'arco e forma un ciclo con gli archi già aggiunti, ma che è anche l'arco più pesante di quel ciclo;» *(chiesto il 19/02/2024)*
-> **R:**
-> **Risposta.** Vera.
->
-> **Perché.** È esattamente l'argomento della sezione Correttezza qui sopra. Esaminando gli archi in ordine crescente di peso, quando si scarta $e=(x,y)$ perché $x$ e $y$ sono già connessi in $T$, l'arco chiude un ciclo con il cammino già presente; poiché tutti gli archi già aggiunti (quindi anche quelli del ciclo) hanno peso $\leq c_e$, $e$ è necessariamente l'arco di peso **massimo** di quel ciclo.
->
-> **Osservazione.** Per la cycle property, l'arco di peso massimo di un ciclo può sempre essere escluso da un MST: è questo che garantisce che scartare $e$ non comprometta l'ottimalità.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Perché un arco viene scartato|perché un arco viene scartato — 19/02/2024]]
 
-> [!question] Domanda tipica d'esame — L'MST può contenere l'arco più pesante di G
-> **D:** *(Vero o Falso)* «L'albero restituito dall'algoritmo di Kruskal non contiene mai l'arco di peso massimo di G.» *(chiesto il 24/09/2024)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Controesempio.** Se $G$ è già un albero (connesso con esattamente $n-1$ archi), l'unico spanning tree possibile è $G$ stesso, che è quindi anche l'MST e contiene necessariamente anche l'arco di peso massimo.
->
-> **Osservazione.** Più in generale, se l'arco di peso massimo è un **ponte**, deve comparire in ogni spanning tree, MST incluso, indipendentemente da quanto sia costoso: nessuno scambio può eliminarlo perché non esiste un ciclo alternativo che lo contenga.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Perché un arco viene accettato|perché un arco viene accettato — 20/07/2026]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Kruskal non finisce dopo $n-1$ archi *guardati*|kruskal non finisce dopo $n-1$ archi *guardati* — 20/07/2026]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#L'MST può contenere l'arco più pesante di G|l'MST può contenere l'arco più pesante di G — 24/09/2024]]
 ### Complessità
 | Operazione | Costo |
 |---|---|
@@ -453,41 +344,13 @@ La correttezza di Kruskal segue direttamente dalla **cut property** e dalla **cy
 
 Nota: $\log m = O(\log n^2) = O(\log n)$ poiché $m \leq \binom{n}{2}$, quindi $O(m \log m) = O(m \log n)$. Per i dettagli sulle implementazioni di Union-Find e le loro complessità, si veda [[02 - Union-Find]].
 
-> [!question] Domanda tipica d'esame — Il numero di archi non basta per la complessità
-> **D:** *(Vero o Falso)* «Se il numero di archi in G è Θ(n), allora l'algoritmo di Kruskal ha complessità O(n).» *(chiesto il 18/07/2022)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Perché.** Come mostrato nella tabella qui sopra, il costo totale di Kruskal è dominato dall'**ordinamento** degli archi, $O(m \log m) = O(m \log n)$.
->
-> **Calcolo.** Con $m = \Theta(n)$ si ottiene $O(n \log n)$, non $O(n)$: il fattore logaritmico dell'ordinamento non scompare, indipendentemente da quanto sia piccolo $m$ rispetto a $n^2$.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Il numero di archi non basta per la complessità|il numero di archi non basta per la complessità — 18/07/2022]]
 
-> [!question] Domanda tipica d'esame — Θ(n√n) archi non rende Kruskal lineare
-> **D:** *(Vero o Falso)* «Se G ha Θ(n√n) archi, allora l'algoritmo di Kruskal che implementa la Union-Find con la QuickFind con euristica union by size ha complessità lineare, ovvero Θ(n√n).» *(Es. 1, V/F n. 5 — 09/09/2025)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Calcolo.** Con $m = \Theta(n\sqrt{n})$, la complessità di Kruskal resta $O(m \log n) = \Theta(n \sqrt{n} \log n)$, dominata dall'ordinamento degli archi, non $\Theta(n\sqrt n)$ come richiesto dall'enunciato.
->
-> **Osservazione.** Il fattore $\log n$ non si elimina indipendentemente dall'euristica scelta per la Union-Find (QuickFind con o senza union by size), perché quell'euristica riguarda solo il costo delle operazioni `union`/`find`, non quello dell'ordinamento — che resta il termine dominante.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Θ(n√n) archi non rende Kruskal lineare|θ(n√n) archi non rende Kruskal lineare — 09/09/2025]]
 
-> [!question] Domanda tipica d'esame — Su grafi densi l'euristica union-by-size è ininfluente
-> **D:** *(Vero o Falso)* «Se G è completo allora l'algoritmo di Kruskal ha la stessa complessità asintotica sia se usa per la struttura Union-Find la QuickFind con o senza euristica union by size.» *(Es. 1, V/F n. 5 — 18/07/2025)*
-> **R:**
-> **Risposta.** Vero.
->
-> **Perché.** Se $G$ è completo, $m = \Theta(n^2)$, quindi il costo dell'ordinamento $O(m \log n) = O(n^2 \log n)$ domina già asintoticamente il costo delle operazioni di Union-Find.
->
-> **Calcolo.** Senza euristica il costo di Union-Find è al più $O(m) = O(n^2)$; con union by size è $O(m + n\log n)$. In entrambi i casi il totale resta $\Theta(n^2 \log n)$, dominato dall'ordinamento: l'euristica non cambia la complessità asintotica complessiva su grafi densi.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Su grafi densi l'euristica union-by-size è ininfluente|su grafi densi l'euristica union-by-size è ininfluente — 18/07/2025]]
 
-> [!question] Domanda tipica d'esame — MST di una griglia N×N con pesi orizzontali 1 e verticali i+j
-> **D:** «Sia N > 2 un intero. Si consideri il grafo non orientato di n = N² nodi disposti su un piano a formare una griglia N × N, dove ogni nodo è collegato ai suoi (al più) quattro nodi vicini orizzontalmente e verticalmente. In particolare il nodo in posizione (i, j), con i, j ∈ {1, . . . , N}, ha un arco verso il nodo (i, j − 1) (se esiste) e verso il nodo (i, j + 1) (se esiste) di peso 1, e ha un arco verso il nodo (i − 1, j) (se esiste) di peso i − 1 + j e un arco verso il nodo (i + 1, j) (se esiste) di peso i + j. Si descriva come è fatto un MST del grafo e si derivi una formula chiusa per il suo peso. (Max 5 righe.)» *(Es. 1, punto 2 — 23/09/2025)*
-> **R:**
-> L'MST è formato da tutti gli archi orizzontali (peso 1) più, per ogni coppia di righe adiacenti, l'unico arco verticale in colonna $j=1$.
->
-> **Calcolo.** Gli $N(N-1)$ archi orizzontali (peso 1, minimo assoluto) non creano cicli: ogni riga resta un cammino. Restano $N-1$ archi verticali, uno per coppia di righe adiacenti $(i,i+1)$: tra i candidati di peso $i+j$ ($j=1,\dots,N$), il minimo stretto è in colonna $j=1$ (peso $i+1$) — per la cut property, appartiene a ogni MST. Peso totale: $N(N-1) + \sum_{i=1}^{N-1}(i+1) = \dfrac{(3N+2)(N-1)}{2}$.
->
-> **Unicità.** L'MST è unico, ma **non** perché i minimi coinvolti siano stretti: gli archi orizzontali pesano tutti $1$, quindi ci sono pareggi in abbondanza. Il criterio corretto è sui **massimi dei cicli**: ogni arco fuori dall'albero è un verticale in colonna $j \geq 2$, di peso $i+j$, e il suo ciclo fondamentale è formato da orizzontali (peso $1$) più il verticale in colonna $1$ (peso $i+1$). Essendo $j \geq 2$, vale $i+j > i+1$: l'arco escluso è il massimo **stretto** del proprio ciclo fondamentale, quindi nessuno scambio a costo invariato è possibile e l'MST è unico. I pareggi tra orizzontali sono innocui perché quegli archi stanno **tutti** nell'albero.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#MST di una griglia N×N con pesi orizzontali 1 e verticali i+j|mST di una griglia N×N con pesi orizzontali 1 e verticali i+j — 23/09/2025, motiva in 5 righe]]
 ## Algoritmo di Prim
 L'algoritmo di **Prim** (Jarník 1930, Dijkstra 1957, Prim 1959) costruisce l'MST partendo da un nodo sorgente $s$ e crescendo l'albero un arco alla volta, scegliendo sempre l'arco di costo minimo che ha esattamente un estremo nell'albero corrente.
 ### Idea e correttezza
@@ -505,16 +368,9 @@ Il primo passo di Prim sul grafo campione: $s = A$ (cerchiato in blu) e la **cur
 >
 > In entrambi i casi l'arco scelto è il minimo del proprio cutset, quindi la cut property si applica identica; cambia solo *quale* taglio si sta considerando a ogni passo.
 
-> [!question] Domanda tipica d'esame — Cut property e correttezza di Prim
-> **D:** «3. Si discuta in modo conciso e preciso come è possibile usare la proprietà del taglio per dimostrare la correttezza dell'algoritmo di Prim.» *(Es. 2, terza domanda aperta — 26/06/2025)*
-> **R:**
-> **Idea.** Ad ogni passo, l'insieme $S$ dei nodi già esplorati definisce un taglio $(S, V \setminus S)$; Prim seleziona sempre l'arco di costo minimo del cutset di $S$ (l'arco che collega $S$ al resto del grafo a minor costo).
->
-> **Applicazione a ogni passo.** Per la cut property, l'arco scelto appartiene sempre ad almeno un MST di $G$ che estende le scelte già fatte in $T$. L'argomento vale identicamente per ciascuno degli $n-1$ archi aggiunti, perché a ogni passo il taglio $(S, V\setminus S)$ cambia ma la proprietà si applica allo stesso modo.
->
-> **Conclusione.** L'albero finale ha $n-1$ archi, ognuno giustificato dalla cut property al momento della sua aggiunta: è quindi esso stesso un MST.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Cut property e correttezza di Prim|cut property e correttezza di Prim — 26/06/2025, max 5 righe]]
 ### Implementazione con coda con priorità
-L'implementazione naïve (per $n-1$ volte, scansione lineare di tutti gli archi) costa $O(nm)$. L'implementazione efficiente usa una [[07 - Code con Priorità e Heap|coda con priorità]] (**min-heap**):
+L'implementazione naïve (per $n-1$ volte, scansione lineare di tutti gli archi) costa $O(nm)$. L'implementazione efficiente usa una [[07 - Code con Priorità e Heap#ADT CodaPriorità|coda con priorità]] (**min-heap**):
 
 Per ogni nodo non ancora esplorato $v$, si mantiene la chiave $a[v]$ = costo del **miglior arco** che collega $v$ a un nodo già in $S$ ($+\infty$ se nessun tale arco esiste).
 ### Pseudocodice
@@ -549,7 +405,7 @@ Per ogni nodo non ancora esplorato $v$, si mantiene la chiave $a[v]$ = costo del
 ```
 
 > [!info] Analogia con Dijkstra
-> La struttura di Prim è molto simile a quella di [[10 - Cammini Minimi e Dijkstra]]: entrambi usano una coda con priorità e un'operazione `decreaseKey`. La differenza chiave è la **chiave usata**. In Dijkstra la chiave di $v$ è la **distanza totale** da $s$ (costo del cammino da $s$ a $v$); in Prim la chiave di $v$ è il **costo del singolo arco** che collega $v$ all'albero corrente. Prim non cerca il cammino più corto da $s$, ma l'arco di attacco più economico.
+> La struttura di Prim è molto simile a quella di [[10 - Cammini Minimi e Dijkstra#Algoritmo di Dijkstra|Dijkstra]]: entrambi usano una coda con priorità e un'operazione `decreaseKey`. La differenza chiave è la **chiave usata**. In Dijkstra la chiave di $v$ è la **distanza totale** da $s$ (costo del cammino da $s$ a $v$); in Prim la chiave di $v$ è il **costo del singolo arco** che collega $v$ all'albero corrente. Prim non cerca il cammino più corto da $s$, ma l'arco di attacco più economico.
 ### Esempio di esecuzione
 Stesso grafo di Kruskal (figura sopra), sorgente $s = A$. A ogni passo i **candidati** sono gli archi del cutset di $S$, cioè quelli con esattamente un estremo in $S$.
 ```
@@ -575,48 +431,15 @@ Stesso albero e stesso costo di Kruskal, come dev'essere: i pesi sono tutti dist
 > [!warning] Chiave vs distanza: non confondere Prim con Dijkstra
 > In Prim la chiave $a[v]$ rappresenta il costo del **miglior arco singolo** che connette $v$ all'albero — non il costo cumulativo del cammino da $s$ a $v$. Usare la distanza cumulativa al posto della chiave dell'arco produce Dijkstra (cammini minimi), non Prim (MST).
 
-> [!question] Domanda tipica d'esame — Prim su grafo non pesato non è BFS
-> **D:** *(Vero o Falso)* «Quando il grafo è non pesato, l'algoritmo di Prim restituisce un albero dei cammini minimi radicato sul nodo sorgente su cui è chiamato.» *(chiesto il 13/06/2024)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Perché.** Come chiarito nel box qui sopra, Prim usa come chiave il costo del singolo arco di attacco, non la distanza cumulativa dalla sorgente. Con pesi tutti uguali a 1 ogni spanning tree è già un MST (i costi sono tutti uguali), ma le scelte di Prim tra archi di pari peso sono **arbitrarie** e non seguono necessariamente l'ordine per livelli di una BFS.
->
-> **Osservazione.** L'albero prodotto può quindi non coincidere con l'albero dei cammini minimi da $s$, anche se entrambi hanno lo stesso costo totale come spanning tree.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Prim su grafo non pesato non è BFS|prim su grafo non pesato non è BFS — 13/06/2024]]
 
-> [!question] Domanda tipica d'esame — MST e albero dei cammini minimi restano problemi diversi
-> **D:** *(Vero o Falso)* «L'albero restituito dall'algoritmo di Prim invocato su una sorgente s è anche un albero dei cammini minimi di G rispetto alla stessa sorgente s.» *(chiesto il 24/09/2024)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Perché.** In generale i due problemi ottimizzano criteri diversi — costo totale dell'albero per Prim, distanza dalla sorgente per l'albero dei cammini minimi — e producono alberi diversi.
->
-> **Controesempio (concettuale).** Un nodo lontano da $s$ ma raggiungibile con un arco di attacco molto economico viene incluso presto da Prim, anche se il suo cammino minimo dalla sorgente lungo l'albero di Prim è più lungo del cammino minimo reale: Prim minimizza il costo del singolo arco di attacco, non la distanza cumulativa.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#MST e albero dei cammini minimi restano problemi diversi|mST e albero dei cammini minimi restano problemi diversi — 24/09/2024]]
 
-> [!question] Domanda tipica d'esame — Pesi tutti uguali: ogni SPT è anche un MST
-> **D:** *(Vero o Falso)* «Se tutti i pesi di G sono uguali, allora ogni albero dei cammini minimi di G rispetto a una qualsiasi sorgente s è anche un MST di G.» *(Es. 1, V/F n. 3 — 18/07/2025)*
-> **R:**
-> **Risposta.** Vera.
->
-> **Perché.** Se tutti i pesi valgono una costante $c$, ogni spanning tree ha $n-1$ archi e quindi costo $(n-1)c$: sono tutti di pari peso, dunque tutti MST. Un albero dei cammini minimi è per definizione uno spanning tree, quindi rientra in questo insieme indipendentemente dalla sorgente $s$.
->
-> **Osservazione.** Argomento diretto per conteggio, non serve cut/cycle property; è il fatto usato più sotto per «con pesi uguali basta BFS/DFS, $O(n+m)$».
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi tutti uguali: ogni SPT è anche un MST|pesi tutti uguali: ogni SPT è anche un MST — 18/07/2025]]
 
-> [!question] Domanda tipica d'esame — Pesi in {1, 2}: Prim non dà per forza un albero dei cammini minimi
-> **D:** *(Vero o Falso)* «Se per ogni arco e vale w(e) ∈ {1, 2}, allora l'algoritmo di Prim applicato su un nodo iniziale s calcola un MST che è anche un albero dei cammini minimi con sorgente s.» *(Es. 1, V/F n. 4 — 18/07/2025)*
-> **R:**
-> **Risposta.** Falsa.
->
-> **Controesempio.** Ciclo $s\text-a\text-b\text-c\text-d\text-s$ con i quattro archi della catena di peso 1 e l'arco diretto $s\text-d$ di peso 2. Per la cycle property l'unico MST è la catena $s,a,b,c,d$ (esclude l'arco di peso 2, unico massimo del ciclo), e Prim la calcola senza ambiguità di pareggio.
->
-> **Perché.** Nell'albero calcolato la distanza $s\to d$ è $4$, ma nel grafo il vero cammino minimo è l'arco diretto, costo $2$: Prim minimizza il costo dell'arco di attacco, non la distanza cumulativa da $s$.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi in {1, 2}: Prim non dà per forza un albero dei cammini minimi|pesi in {1, 2}: Prim non dà per forza un albero dei cammini minimi — 18/07/2025]]
 
-> [!question] Domanda tipica d'esame — Variante: pesi tutti unitari, Prim non dà per forza un SPT
-> **D:** *(Vero o Falso)* «Se tutti gli archi hanno peso 1, allora l'algoritmo di Prim applicato su un nodo iniziale s calcola un MST che è necessariamente anche un albero dei cammini minimi con sorgente s.» *(Es. 1, V/F n. 1 — 09/09/2025)*
-> **R:**
-> **Risposta.** Falsa — stessa argomentazione della domanda «Prim su grafo non pesato non è BFS» del 13/06/2024 qui sopra: con pesi unitari ogni spanning tree è un MST, ma le scelte di Prim tra archi a pari peso sono arbitrarie e non seguono l'ordine per livelli di una BFS.
->
-> **Controesempio.** Triangolo $s,a,b$ con i tre archi di peso 1: Prim può scegliere $(s,a)$ poi $(a,b)$, dando $T=\{sa,ab\}$; la distanza $s\to b$ in $T$ è $2$, ma nel grafo è $1$ tramite l'arco diretto $(s,b)$.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Variante: pesi tutti unitari, Prim non dà per forza un SPT|variante: pesi tutti unitari, Prim non dà per forza un SPT — 09/09/2025]]
 ### Complessità
 Le operazioni sulla coda con priorità determinano la complessità totale. Si eseguono $n$ insert, $n$ deleteMin, e al più $m$ decreaseKey:
 
@@ -625,28 +448,16 @@ Le operazioni sulla coda con priorità determinano la complessità totale. Si es
 | Scansione lineare naïve (senza PQ) | — | $O(m)$ per step | — | $O(mn)$ |
 | **Array non ordinato** | $O(1)$ | $O(n)$ | $O(1)$ | $O(n^2)$ |
 | **Heap binario** | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ | $O(m \log n)$ |
-| **[[07 - Code con Priorità e Heap\|Heap di Fibonacci]]** | $O(1)$ | $O(\log n)$ | $O(1)$ ammort. | $O(m + n \log n)$ |
+| **[[07 - Code con Priorità e Heap#Heap di Fibonacci (cenni)|heap di Fibonacci]]** | $O(1)$ | $O(\log n)$ | $O(1)$ ammort. | $O(m + n \log n)$ |
 
 Il calcolo con heap binario: $n \cdot O(\log n) + n \cdot O(\log n) + m \cdot O(\log n) = O(m \log n)$.
 Il calcolo con heap di Fibonacci: $n \cdot O(1) + n \cdot O(\log n) + m \cdot O(1) = O(m + n \log n)$.
 
-> [!question] Domanda tipica d'esame — Θ(n√n) archi e heap di Fibonacci
-> **D:** *(Vero o Falso)* «Se G ha Θ(n√n) archi, allora l'algoritmo di Prim che implementa la coda con priorità attraverso un heap di Fibonacci ha complessità lineare, ovvero Θ(n√n).» *(Es. 1, V/F n. 5 — 23/09/2025)*
-> **R:**
-> **Risposta.** Vero.
->
-> **Calcolo.** Con l'heap di Fibonacci, Prim costa $O(m + n\log n)$. Con $m = \Theta(n\sqrt n)$ si ha $n\log n = o(n\sqrt n)$ (il fattore $\sqrt n$ domina $\log n$), quindi il totale è $\Theta(n\sqrt n + n \log n) = \Theta(n\sqrt n) = \Theta(m)$: la complessità è effettivamente lineare nel numero di archi.
->
-> **Osservazione.** È l'opposto dello scenario analogo per Kruskal (cfr. la domanda «Θ(n√n) archi non rende Kruskal lineare»): lì il fattore $\log n$ dell'ordinamento non si elimina mai, qui invece l'heap di Fibonacci lo rende asintoticamente irrilevante.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Θ(n√n) archi e heap di Fibonacci|θ(n√n) archi e heap di Fibonacci — 23/09/2025]]
 
-> [!question] Domanda tipica d'esame — Bound in funzione del grado massimo
-> **D:** *(Vero o Falso)* «Se il grado massimo in G è δ allora l'algoritmo di Prim implementato con heap binario ha complessità O(δ n log(n)) nel caso peggiore» *(chiesto il 27/09/2023)*
-> **R:**
-> **Risposta.** Vera.
->
-> **Calcolo.** Con heap binario, Prim costa $O(m \log n)$. Se il grado massimo è $\delta$, allora $m \leq \delta n / 2 = O(\delta n)$ — ogni nodo contribuisce al più $\delta$ archi, ognuno contato due volte — quindi $O(m \log n) = O(\delta n \log n)$.
->
-> **Osservazione.** È un bound più fine di $O(m \log n)$ generico, utile su grafi con grado massimo limitato: se $\delta = O(1)$ si ottiene $O(n \log n)$ anche senza conoscere $m$ esplicitamente.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Prim con array non ordinato|prim con array non ordinato — 20/07/2026]]
+
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Bound in funzione del grado massimo|bound in funzione del grado massimo — 27/09/2023]]
 ## Riepilogo e confronto degli algoritmi
 | Algoritmo | Struttura dati | Complessità | Note |
 |---|---|---|---|
@@ -654,7 +465,7 @@ Il calcolo con heap di Fibonacci: $n \cdot O(1) + n \cdot O(\log n) + m \cdot O(
 | Prim (naïve) | Scansione lineare, senza PQ | $O(mn)$ | Semplice ma inefficiente |
 | Prim (array) | Array non ordinato | $O(n^2)$ | Buono su grafi densi ($m=\Theta(n^2)$) |
 | Prim (heap binario) | Min-heap binario | $O(m \log n)$ | Bilanciato; buono su grafi sparsi |
-| Prim (Fibonacci) | [[07 - Code con Priorità e Heap\|Heap di Fibonacci]] | $O(m + n \log n)$ | Bound migliore in assoluto; su grafi densi pareggia l'array ($O(n^2)$) |
+| Prim (Fibonacci) | [[07 - Code con Priorità e Heap#Heap di Fibonacci (cenni)|heap di Fibonacci]] | $O(m + n \log n)$ | Bound migliore in assoluto; su grafi densi pareggia l'array ($O(n^2)$) |
 
 > [!info] Confronto Kruskal vs Prim
 > Su grafi **sparsi** ($m = O(n)$) sia Kruskal che Prim con heap binario danno $O(n \log n)$; la scelta è indifferente. Su grafi **densi** ($m = \Theta(n^2)$), Kruskal richiede $O(n^2 \log n)$ (dominato dall'ordinamento), mentre Prim con array non ordinato dà $O(n^2)$ e Prim con heap di Fibonacci dà $O(n^2)$: in questo caso Prim è preferibile.
@@ -662,41 +473,13 @@ Il calcolo con heap di Fibonacci: $n \cdot O(1) + n \cdot O(\log n) + m \cdot O(
 > **Dove serve davvero l'heap di Fibonacci.** Non sui grafi densi: lì $O(m + n\log n) = O(n^2)$, esattamente quanto il banale array non ordinato, che è molto più semplice da implementare. Il bound $O(m + n\log n)$ domina (in senso debole) sia l'array — $O(m + n\log n) \leq O(n^2)$, con uguaglianza solo a densità massima — sia l'heap binario — $O(m + n\log n) \leq O(m\log n)$, con uguaglianza solo sui grafi sparsi. Il vantaggio **stretto** su entrambe le alternative si materializza quindi nella **fascia intermedia** di densità, ad esempio $m = \Theta(n\sqrt n)$: lì Fibonacci dà $\Theta(n\sqrt n)$ contro $\Theta(n\sqrt n \log n)$ dell'heap binario e $\Theta(n^2)$ dell'array. È lo scenario della domanda d'esame del 23/09/2025 qui sopra.
 > Nota teorica: esistono algoritmi asintoticamente migliori — $O(m \log \log n)$ (Cheriton-Tarjan 1976, Yao 1975), $O(m \cdot \alpha(m,n))$ (Fredman-Tarjan 1987), $O(m)$ randomizzato (Karger-Klein-Tarjan 1995) — ma Kruskal e Prim rimangono gli algoritmi standard per il corso.
 
-> [!question] Domanda tipica d'esame — Caso speciale: pesi tutti uguali
-> **D:** «Quale algoritmo useresti per calcolare un MST di G e qual è la sua complessità asintotica nel caso peggiore se G ha tutti gli archi dello stesso peso? [risposta in 1 riga]» *(chiesto il 27/09/2023)*
-> **R:**
-> **Idea.** Basta una BFS o una DFS a partire da un vertice qualsiasi, con complessità $O(n+m)$: nessun algoritmo greedy basato sui pesi è necessario.
->
-> **Perché funziona.** Se tutti gli archi hanno lo stesso peso, ogni spanning tree ha lo stesso costo totale ($n-1$ volte il peso comune): ogni spanning tree è quindi automaticamente un MST, e la scelta greedy di Kruskal o Prim diventa superflua.
->
-> ⏱️ **Se la traccia dà 1 riga**: scrivi solo «BFS/DFS, $O(n+m)$: con pesi tutti uguali ogni spanning tree è un MST». Non omettere mai la complessità $O(n+m)$ — è esplicitamente richiesta insieme all'algoritmo.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Caso speciale: pesi tutti uguali|caso speciale: pesi tutti uguali — 27/09/2023]]
 
-> [!question] Domanda tipica d'esame — Kruskal: descrizione e correttezza
-> **D:** Descrivi l'algoritmo di Kruskal, spiega perché è corretto e calcolane la complessità.
-> **R:**
-> **Idea.** Kruskal ordina gli archi in senso crescente di costo e li aggiunge a $T$ uno a uno, saltando quelli che formerebbero un ciclo (rilevato tramite Union-Find).
->
-> **Correttezza.** Si basa sulla cut property: quando si aggiunge $(x,y)$, la componente di $x$ in $T$ forma il taglio $S$; poiché gli archi sono esaminati in ordine crescente, $(x,y)$ è l'arco di costo minimo che attraversa quel taglio, quindi appartiene a un MST. Quando invece un arco viene scartato, chiude un ciclo di cui è il massimo, ed è escludibile per la cycle property.
->
-> **Complessità.** $O(m \log n)$: l'ordinamento degli archi domina ($O(m \log m) = O(m \log n)$), e le operazioni Union-Find con union by size costano complessivamente $O(m \log n)$ nel totale — nessuno dei due termini elimina l'altro.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Kruskal: descrizione e correttezza|kruskal: descrizione e correttezza — domanda costruita]]
 
-> [!question] Domanda tipica d'esame — Differenza tra Prim e Dijkstra
-> **D:** Qual è la differenza tra l'algoritmo di Prim e l'algoritmo di Dijkstra?
-> **R:**
-> **Analogia strutturale.** Entrambi usano una coda con priorità e l'operazione `decreaseKey`, con la stessa struttura generale a passi.
->
-> **Differenza (la chiave).** Dijkstra usa come chiave la **distanza cumulativa** da $s$ (il costo del cammino da $s$ al nodo), per trovare i cammini minimi. Prim usa come chiave il **costo del singolo arco** di attacco all'albero corrente, per trovare l'MST.
->
-> **Conseguenza.** Prim non produce un albero dei cammini minimi: un nodo distante da $s$ ma connesso all'albero tramite un arco di attacco molto economico viene incluso prima di nodi vicini ma raggiungibili solo con archi costosi.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Differenza tra Prim e Dijkstra|differenza tra Prim e Dijkstra — domanda costruita]]
 
-> [!question] Domanda tipica d'esame — Pesi distinti: Kruskal e Prim coincidono sempre
-> **D:** *(Vero o Falso)* «Se i pesi sono distinti allora l'algoritmo di Kruskal e quello di Prim calcolano lo stesso identico albero indipendentemente dal nodo s di partenza (sorgente) scelto dall'algoritmo di Prim.» *(Es. 1, V/F n. 1 — 23/09/2025)*
-> **R:**
-> **Risposta.** Vera.
->
-> **Perché.** Con pesi distinti l'MST è **unico**: la dimostrazione completa (argomento di scambio sulla differenza simmetrica $T_1 \triangle T_2$) è nel box [[#Unicità dell'MST]], ed è la parte da esporre per prima se la domanda è aperta.
->
-> **Osservazione.** Kruskal e Prim sono **entrambi corretti**, cioè restituiscono un MST. Se l'MST è unico, «un MST» e «l'MST» coincidono: qualunque loro esecuzione dà lo stesso albero, a prescindere dall'ordine di scansione degli archi e dalla sorgente scelta per Prim.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#Pesi distinti: Kruskal e Prim coincidono sempre|pesi distinti: Kruskal e Prim coincidono sempre — 23/09/2025]]
 ## Applicazione: Clustering di massima spaziatura
 Un'applicazione diretta di Kruskal è il **clustering gerarchico per single-linkage**.
 
@@ -731,11 +514,39 @@ Perciò nessun $k$-clustering ha spaziatura superiore a $d^*$, che è la spaziat
 > [!info] Clustering gerarchico
 > Eseguendo Kruskal fino alla fine (senza fermarsi a $k$ componenti) si ottiene implicitamente un **clustering gerarchico**: per ogni $k = n, n-1, \ldots, 1$, i cluster sono le componenti connesse dopo aver eliminato i $k-1$ archi più costosi dall'MST. Questo produce un **dendrogramma** — una struttura ad albero che mostra come i cluster si fondono al crescere di $k$.
 
-> [!question] Domanda tipica d'esame — MST e clustering di massima spaziatura
-> **D:** Come si usa l'MST per trovare il clustering di massima spaziatura? Perché funziona?
-> **R:**
-> **Procedura.** Si calcola l'MST del grafo completo sugli oggetti (con pesi $=$ distanze) e si eliminano i $k-1$ archi più costosi. Le $k$ componenti connesse risultanti sono il clustering di massima spaziatura.
->
-> **Perché funziona.** La spaziatura del clustering ottenuto è la lunghezza del $(k-1)$-esimo arco più costoso dell'MST. Qualsiasi altro $k$-clustering deve avere due oggetti nello stesso cluster dell'MST ma in cluster diversi tra loro; il cammino tra questi due oggetti nell'MST ha tutti gli archi di lunghezza $\leq$ quella spaziatura, quindi la spaziatura di qualsiasi altro clustering non può superare quella del clustering ottenuto dall'MST.
->
-> **Complessità.** Dominata dal calcolo dell'MST su un grafo completo: $O(n^2 \log n)$ con Kruskal, oppure $O(n^2)$ con Prim su array non ordinato (adatto perché il grafo è denso); l'eliminazione dei $k-1$ archi più costosi costa poi solo $O(k)$.
+→ **Palestra**: [[Esercizi 03 - Minimum Spanning Tree#MST e clustering di massima spaziatura|mST e clustering di massima spaziatura — domanda costruita]]
+## Mappa nota ↔ slide
+Riferimenti a `Materiale Didattico/Modulo II/Slide/03_mst_2025.pdf` (58 pagine), per studiare sulla slide tenendo la nota come riscontro.
+
+| Sezione della nota | Slide |
+|---|---|
+| *(apertura)* | pp. 1-2 (copertina, «4.5 Minimum Spanning Tree») |
+| L'idea: perché qui il greedy funziona | p. 7 (i tre algoritmi greedy) — il resto è *extra* |
+| Definizioni | p. 3 (frase introduttiva) · **p. 4** (terna input / soluzione ammissibile / misura) |
+| — Conseguenze dirette del conteggio degli archi | p. 3 (Teorema di Cayley) — i bound con pesi in $\{1,2\}$ sono *extra* |
+| — Unicità dell'MST | **p. 6** (i tre triangoli e «exercise: prove it») |
+| — Ciclo | p. 8 (prima metà) |
+| — Taglio e cutset | p. 8 (seconda metà) |
+| — Intersezione ciclo-cutset | **p. 9** (Claim + «Pf. by picture») |
+| Cut property e Cycle property | **p. 10** (entrambi gli enunciati, con le due figure) |
+| — Cut property | p. 10 (enunciato) · **p. 11** (Pf. exchange argument) |
+| — Cycle property | p. 10 (enunciato) · **p. 12** (Pf. exchange argument) |
+| — Dalla proprietà locale alla correttezza globale | *(nessuna slide: è il ponte che il deck salta)* |
+| Algoritmo di Kruskal | p. 13 (titolo) · p. 14 (idea + remark sulla Union-Find) |
+| — Pseudocodice | **p. 15** |
+| — Esempio di esecuzione | **pp. 16-26** (demo passo-passo) |
+| — Correttezza | **p. 27** (arco accettato) · **p. 28** (arco scartato) |
+| — Complessità | **p. 29** |
+| Algoritmo di Prim | p. 30 (titolo) · **p. 33** (algoritmo, Jarník-Dijkstra-Prim) |
+| — Idea e correttezza | p. 33 · p. 32 (cut property richiamata) |
+| — Implementazione con coda con priorità | p. 43 (seconda metà) |
+| — Pseudocodice | **pp. 44-45** |
+| — Esempio di esecuzione | **pp. 35-42** (demo con $s=A$) |
+| — Complessità | p. 43 (prima metà, «running time») |
+| Riepilogo e confronto degli algoritmi | p. 58 (bound teorici) — la tabella per implementazione è *extra* |
+| Applicazione: Clustering di massima spaziatura | p. 46-47 · **p. 48** ($k$-clustering e spacing) · **p. 49** (single-linkage) · pp. 50-55 (dendrogramma) · **p. 56** (teorema di ottimalità) |
+
+> [!info] Come si legge — tre cose utili quando ripassi sulla slide
+> - **Le pagine 30-45 si autocontengono**: il deck ripete la terna formale di p. 4 a p. 31 e le due property di p. 10 a p. 32. Se vuoi ripassare solo Prim, quel blocco ti ridà definizione, cut property e algoritmo senza tornare indietro.
+> - **Su Prim l'ordine diverge**: la nota va idea → implementazione → pseudocodice → esempio → complessità, la slide va idea (33) → esempio (35-42) → complessità *e* implementazione insieme (43) → pseudocodice (44-45). La p. 43 copre due sezioni che la nota tiene distanti.
+> - **Quattro pagine non coperte**: p. 5 (applicazioni: network design, approssimazione per TSP e Steiner tree, bottleneck paths, cluster analysis), p. 34 (grafo euclideo completo), p. 57 (divisore «Extra Slides»), p. 59 (vuota). Solo la p. 5 ha contenuto: mai chiesta nelle tracce, ma è il tipo di inquadramento che all'orale apre una domanda.

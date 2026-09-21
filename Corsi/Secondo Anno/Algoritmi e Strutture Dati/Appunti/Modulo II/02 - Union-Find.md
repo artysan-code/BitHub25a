@@ -2,31 +2,33 @@
 tags:
   - algoritmi
   - union-find
-slide: "2"
-capitolo: "Kleinberg-Tardos cap. 4"
+slide: ["02"]
+capitolo: "Demetrescu cap. 9"
 ---
 # Union-Find
-Il **tipo di dato Union-Find** (o *gestione degli insiemi disgiunti*) mantiene una collezione di insiemi disgiunti su cui è possibile eseguire efficientemente tre operazioni: creazione di un insieme, fusione di due insiemi e ricerca dell'insieme di appartenenza di un elemento. Strutture di questo tipo sono fondamentali nell'algoritmo di [[03 - Minimum Spanning Tree|Kruskal]] e nel calcolo degli antenati comuni minimi.
+Il **tipo di dato Union-Find** (o *gestione degli insiemi disgiunti*) mantiene una collezione di insiemi disgiunti su cui è possibile eseguire efficientemente tre operazioni: creazione di un insieme, fusione di due insiemi e ricerca dell'insieme di appartenenza di un elemento. Strutture di questo tipo sono fondamentali nell'algoritmo di [[03 - Minimum Spanning Tree|Kruskal]] e nel calcolo degli antenati comuni minimi. Gli item d'esame su questa struttura stanno nella palestra [[Esercizi 02 - Union-Find]], richiamata sezione per sezione.
 ## Il problema Union-Find
 Si vuole mantenere una collezione di insiemi disgiunti contenenti elementi distinti (ad esempio interi in $1 \ldots n$) durante l'esecuzione di una sequenza arbitraria delle seguenti operazioni:
+
 > [!quote] Definizione — Operazioni Union-Find
 > - **`makeSet(x)`**: crea il nuovo insieme $\{x\}$ di nome $x$ (l'elemento è anche il nome/rappresentante dell'insieme).
 > - **`union(A, B)`**: unisce gli insiemi $A$ e $B$ in un unico insieme di nome $A$; distrugge i vecchi insiemi $A$ e $B$. Si suppone di accedere direttamente ai due insiemi.
 > - **`find(x)`**: restituisce il nome dell'insieme contenente l'elemento $x$. Si suppone di accedere direttamente all'elemento $x$.
+>
+> Le firme distinguono **due tipi diversi**: `union` prende **nomi di insiemi**, `find` prende un **elemento** e restituisce un **nome**. Alla creazione i due coincidono — `makeSet(x)` fa di $x$ sia l'elemento sia il nome — ma **dopo una union possono divergere**, e in QuickUnion il nome può finire su una radice che è un nodo con un'altra lettera.
 
-> [!info] Quante union sono possibili?
+> [!info] Regola — quante union sono possibili
 > Con $n$ elementi si possono eseguire al più $n-1$ operazioni `union`, poiché ogni `union` riduce di uno il numero di insiemi e si parte da $n$ insiemi singoletto.
 
 L'obiettivo è progettare una struttura dati che sia efficiente su **sequenze arbitrarie** di operazioni. L'idea generale è rappresentare gli insiemi disgiunti con una **foresta di alberi radicati**: ogni albero corrisponde a un insieme, la radice contiene il nome (elemento rappresentativo) dell'insieme.
 
-> [!question] Domanda tipica d'esame — Limite inferiore Ω(m+n) per qualunque struttura dati
-> **D:** *(Vero o Falso)* «Ogni struttura dati, per eseguire una sequenza di n makeSet, n − 1 union e m find, deve impiegare nel caso peggiore tempo Ω(m + n).» *(chiesto il 16/07/2024 e 18/02/2025)*
-> **R:**
-> **Risposta.** Vero.
->
-> **Perché.** È un limite inferiore banale ma inevitabile: le $n$ `makeSet` devono creare $n$ nuovi insiemi (tempo $\Omega(n)$ solo per allocarli/inizializzarli) e le $m$ `find` devono restituire una risposta ciascuna (tempo $\Omega(1)$ per query, quindi $\Omega(m)$ in totale). Nessuna struttura dati, per quanto sofisticata, può evitare di "toccare" ogni elemento creato e ogni interrogazione ricevuta: da qui $\Omega(m+n)$.
->
-> **Osservazione.** Il bound è coerente con tutte le implementazioni viste (QuickFind, QuickUnion, con o senza euristiche), che infatti presentano sempre un termine additivo $n$ o $m$ nella complessità totale — nessuna riesce a scendere sotto $\Omega(m+n)$, e le migliori (rank + path compression) vi si avvicinano quanto possibile aggiungendo solo un fattore $\alpha(m,n)$ praticamente costante.
+> [!quote] Proprietà — Lower bound $\Omega(m+n)$ *(non enunciato sulle slide; chiesto all'esame il 16/07/2024 e il 18/02/2025)*
+> Qualunque struttura dati, per eseguire una sequenza di $n$ `makeSet`, $n-1$ `union` e $m$ `find`, richiede nel caso peggiore tempo $\Omega(m+n)$.
+> **Dimostrazione (diretta).** Le $n$ `makeSet` devono creare $n$ insiemi distinti, e questo richiede $\Omega(n)$ solo per allocarli; le $m$ `find` devono restituire una risposta ciascuna, quindi $\Omega(m)$. Nessuna struttura può evitare di toccare ogni elemento creato e ogni interrogazione ricevuta. $\square$
+
+Il bound spiega perché **tutte** le implementazioni viste più sotto hanno un termine additivo $n$ o $m$ nella complessità totale: nessuna scende sotto $\Omega(m+n)$, e le migliori vi si avvicinano aggiungendo solo un fattore $\alpha(m,n)$ praticamente costante.
+
+→ **Palestra**: [[Esercizi 02 - Union-Find#Lower bound Ω(m+n) per qualunque struttura dati|lower bound $\Omega(m+n)$ — 16/07/2024, 18/02/2025]]
 ## QuickFind
 **Struttura**: una foresta di alberi di **altezza 1**. In ogni albero:
 - la **radice** contiene il nome dell'insieme;
@@ -44,7 +46,7 @@ L'obiettivo è progettare una struttura dati che sia efficiente su **sequenze ar
 
 ```pseudo
 \begin{algorithm}
-\caption{union($A, B$)}
+\caption{union(nome $A$, nome $B$)}
 \begin{algorithmic}
 \State considera l'albero $A$ (insieme di nome $A$) e l'albero $B$ (insieme di nome $B$)
 \ForAll{foglia di $B$}
@@ -57,7 +59,7 @@ L'obiettivo è progettare una struttura dati che sia efficiente su **sequenze ar
 
 ```pseudo
 \begin{algorithm}
-\caption{find($e$)}
+\caption{find(elemento $e$) $\to$ nome}
 \begin{algorithmic}
 \State accedi alla foglia corrispondente all'elemento $e$
 \State segui il puntatore al padre (la radice)
@@ -80,14 +82,18 @@ union(2,3): le foglie di {3} passano a puntare alla radice di {2}
     |          / \          |
     1         2   3         4
 
-union(4,2): le foglie di {4} passano a puntare alla radice di {2}
+union(4,2): le foglie di {2} passano a puntare alla radice di {4}
+            (il nome del risultato è il primo argomento: A = 4)
 
-   [1]         [2]
+   [1]         [4]
     |         / | \
     1        2  3  4
 
-find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
+find(2) -> segue foglia 2 -> radice [4] -> restituisce "4"
 ```
+
+![[uf_quickfind_esempio.png]]
+Stato finale dell'esempio, dalla slide: i cerchi verdi sono gli elementi, il nodo in cima a ogni albero porta il **nome dell'insieme**. Due cose da guardare: dopo `union(4,2)` l'insieme si chiama **4** e non 2 — il nome è sempre il primo argomento — e ogni albero ha **altezza 1**, che è ciò che rende la `find` $O(1)$.
 
 **Complessità**
 
@@ -102,25 +108,22 @@ find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
 > $$\text{union}(2,1),\ \text{union}(3,2),\ \ldots,\ \text{union}(n, n-1)$$
 > la prima costa $1$ cambio di puntatore, la seconda $2$, ..., la $(k)$-esima costa $k$. Il costo totale è $1 + 2 + \cdots + (n-1) = \Theta(n^2)$.
 
-> [!question] Domanda tipica d'esame — Tre union, ciascuna di costo Θ(n) in QuickFind
-> **D:** «Si fornisca un esempio di una sequenza di 3 operazioni di union in cui ogni singola operazione di union ha costo Θ(n). (Max 5 righe.)» *(chiesto il 18/07/2022)*
-> **R:**
-> **Idea.** Sfruttare che in QuickFind base (senza union by size) `union($X,Y$)` rietichetta **sempre e solo** le foglie del secondo argomento $Y$, qualunque sia la sua dimensione: basta passare come secondo argomento un insieme già grande per pagare $\Theta(n)$ ad ogni chiamata.
->
-> **Costruzione.** Si considerino $n=4k$ elementi ripartiti (con `makeSet` e unioni preliminari non conteggiate) in quattro insiemi $A,B,C,D$ di $k=n/4$ elementi ciascuno. Si eseguano tre `union`:
-> - `union($A,B$)` rietichetta $B$ ($k$ elementi);
-> - `union($C,D$)` rietichetta $D$ ($k$ elementi);
-> - `union($A,C$)` rietichetta $C$, che a questo punto contiene $C\cup D$, cioè $2k$ elementi.
->
-> **Verifica.** Ogni singola chiamata rietichetta $\Theta(n)$ foglie ($k$, $k$ e $2k$ sono tutte $\Theta(n)$ per $k=n/4$ fissato), quindi ciascuna delle tre `union` costa $\Theta(n)$, come richiesto.
->
-> ⏱️ **Se la traccia dà 5 righe**: definisci direttamente i quattro insiemi da $k=n/4$ elementi e le tre chiamate `union($A,B$)`, `union($C,D$)`, `union($A,C$)` (2 righe), spiega in una riga perché ognuna costa $\Theta(n)$ (rietichetta sempre il secondo argomento, che ha $\Theta(n)$ elementi). **Non va mai omesso** il motivo per cui basta passare l'insieme grande come secondo argomento: è il fatto strutturale su cui si regge l'intero controesempio.
+![[uf_union_costo_lineare.png]]
+La stessa sequenza sulla slide, con il conteggio dei cambi di puntatore affiancato a ciascuna union: 1, 2, 3, … fino a $n-1$. Il punto che il testo da solo non rende è che **il costo non è di una singola union** — ognuna presa da sola è $O(n)$ e sembra innocua — ma della **somma sull'intera sequenza**, che è $\Theta(n^2)$.
+
+> [!info] Regola — il costo di una union lo paga il secondo argomento
+> In QuickFind base `union($A,B$)` rietichetta **sempre e solo** le foglie del **secondo** argomento, qualunque siano le dimensioni relative dei due insiemi. È il fatto strutturale da cui discendono sia le sequenze costose sia i controesempi richiesti all'esame: basta passare come secondo argomento un insieme già grande per pagare $\Theta(n)$ a ogni chiamata. Con la union by size questo non vale più — a essere rietichettato è sempre il più piccolo dei due, indipendentemente dall'ordine degli argomenti.
+
+→ **Palestra**: [[Esercizi 02 - Union-Find#Tre union ciascuna di costo Θ(n)|tre union da $\Theta(n)$ — 18/07/2022, max 5 righe]]
 ### Euristica union by size (QuickFind)
 **Idea**: evitare che un nodo cambi padre troppo spesso. Nell'unione di $A$ e $B$, si attaccano gli elementi dell'insieme di **cardinalità minore** a quello di cardinalità maggiore; se necessario si aggiorna la radice per mantenere il nome corretto. Ogni insieme mantiene esplicitamente la propria **size** (numero di elementi).
 
+![[uf_union_by_size_quickfind.png]]
+La regola sulla slide: `union(A,B)` con $\text{size}(A) < \text{size}(B)$ sposta gli elementi di $A$ sotto la radice di $B$, non il contrario. Il dettaglio che sfugge è in basso a sinistra nella figura: la radice di arrivo viene **rinominata** $A$ (il tratteggio), perché il nome del risultato resta il **primo argomento** anche quando è l'insieme piccolo. Senza quel passaggio l'euristica cambierebbe il nome dell'insieme, che è un effetto collaterale non ammesso.
+
 ```pseudo
 \begin{algorithm}
-\caption{union($A, B$) — con union by size}
+\caption{union(nome $A$, nome $B$) — con union by size}
 \begin{algorithmic}
 \State considera l'albero $A$ e l'albero $B$
 \If{$\text{size}(A) \geq \text{size}(B)$}
@@ -134,6 +137,9 @@ find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
 \end{algorithmic}
 \end{algorithm}
 ```
+
+![[uf_union_costo.png]]
+Il costo di una singola `union`, dalla slide: due insiemi da $n/2$ elementi, e rietichettarne uno costa $\Theta(n)$. Le due domande in fondo alla slide sono l'ossatura dell'analisi ammortizzata — cambiare padre a **un** nodo costa tempo costante, ma **quante volte** un nodo può cambiare padre è al più $\log n$. È da lì che esce il bound $O(m + n\log n)$ sull'intera sequenza, non sulla singola operazione.
 
 > [!quote] Teorema — Analisi ammortizzata QuickFind con union by size
 > Se si eseguono $m$ `find`, $n$ `makeSet` e al più $n-1$ `union`, il tempo richiesto dall'intera sequenza è $O(m + n \log n)$.
@@ -157,56 +163,13 @@ find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
 | `union` | $O(n)$ | $O(\log n)$ |
 | Sequenza intera | — | $O(m + n \log n)$ |
 
-> [!question] Domanda tipica d'esame — QuickFind + union by size: l'altezza resta 1
-> **D:** *(Vero o Falso)* «Nella QuickFind con euristica union by size ogni insieme è rappresentato con un albero di altezza Θ(log n), dove n è il numero di makeSet, in modo che l'operazione di find richieda tempo logaritmico.» *(chiesto il 16/07/2024)*
-> **R:**
-> **Risposta.** Falso.
->
-> **Perché.** La union by size cambia **chi viene attaccato a chi** (l'insieme più piccolo viene rietichettato per unirsi a quello più grande), ma non cambia la forma degli alberi: in QuickFind ogni albero resta **sempre di altezza 1** (radice + foglie), con o senza euristica. È proprio questo che garantisce alla `find` un costo $O(1)$ costante, non logaritmico: si segue un unico puntatore dalla foglia alla radice.
->
-> **Osservazione.** La union by size migliora invece il costo **ammortizzato** della `union` (da $O(n)$ nel caso peggiore a $O(\log n)$ ammortizzato), non la struttura né il costo della `find`: è un errore tipico confondere l'euristica che riduce l'altezza (valida solo in QuickUnion) con quella che bilancia le dimensioni (valida qui, ma senza effetto sull'altezza perché in QuickFind l'altezza è già fissa a 1).
+→ **Palestra**: [[Esercizi 02 - Union-Find#L'altezza resta 1 anche con union by size|l'altezza resta 1 — 16/07/2024]]
 
-> [!question] Domanda tipica d'esame — Union by size: limite al numero di cambi di padre
-> **D:** Perché con union by size in QuickFind ogni nodo cambia padre al più $O(\log n)$ volte?
-> **R:**
-> **Idea.** Limitare il numero di cambi di padre di un singolo nodo mostrando che ogni cambio fa (almeno) raddoppiare la dimensione dell'insieme in cui il nodo finisce.
->
-> **Argomento.** Per l'euristica, quando un nodo $x$ cambia padre, l'insieme a cui appartiene dopo la `union` ha cardinalità **almeno doppia** rispetto a quella dell'insieme da cui proveniva (si attacca sempre il più piccolo al più grande). Per induzione sul numero di cambi:
-> - **caso base**: al momento della creazione $x$ è in un insieme di dimensione $1 = 2^0$;
-> - **passo induttivo**: al primo cambio di padre è in un insieme di dimensione $\geq 2 = 2^1$; all'$i$-esimo cambio è in un insieme di dimensione $\geq 2^i$.
->
-> **Conclusione.** La dimensione massima possibile di un insieme è $n$, quindi $2^i \leq n$ implica $i \leq \log_2 n$: ogni nodo cambia padre al più $\log_2 n$ volte. Sommando su tutti gli $n$ nodi, il costo totale delle union sull'intera sequenza è $O(n \log n)$.
+→ **Palestra**: [[Esercizi 02 - Union-Find#Cambi di padre e raddoppio della size|cambi di padre e raddoppio della size — 16/07/2024]]
 
-> [!question] Domanda tipica d'esame — QuickFind + union by size: cambio etichetta e raddoppio della size
-> **D:** *(Vero o Falso)* «Usando la struttura dati QuickFind con euristica union by size, se in una sequenza di operazioni un elemento ha cambiato padre k volte allora appartiene ad un insieme che è grande almeno 2^k.» *(chiesto il 16/07/2024)*
-> **R:**
-> **Risposta.** Vero.
->
-> **Perché.** È la stessa proprietà della domanda precedente, qui enunciata come implicazione diretta anziché come limite superiore. Per induzione sul numero $k$ di cambi di padre:
-> - **caso base** ($k=0$): alla nascita l'elemento è in un insieme di dimensione $1=2^0$;
-> - **passo induttivo**: ogni volta che l'elemento cambia etichetta/radice, per l'euristica l'insieme in cui finisce ha cardinalità **almeno doppia** rispetto a quello da cui proveniva; dopo il $k$-esimo cambio è quindi in un insieme di dimensione $\geq 2^k$.
->
-> **Osservazione.** È esattamente questo argomento a limitare a $O(\log n)$ il numero massimo di cambi per elemento, dato che la dimensione massima possibile di un insieme è $n$: da $2^k \leq n$ segue $k \leq \log_2 n$.
+→ **Palestra**: [[Esercizi 02 - Union-Find#Il bound O(m + n log n)|il bound $O(m+n\log n)$ — 16/07/2024, 18/02/2025]]
 
-> [!question] Domanda tipica d'esame — QuickFind + union by size: bound O(m + n log n)
-> **D:** *(Vero o Falso)* «Usando la struttura dati QuickFind con euristica union by size, ogni sequenza di n makeSet, n − 1 union e m find, richiede nel caso peggiore tempo O(m + n log n).» *(chiesto il 16/07/2024 e 18/02/2025)*
-> **R:**
-> **Risposta.** Vero.
->
-> **Perché.** È l'enunciato del teorema di analisi ammortizzata per QuickFind con union by size: gli $n$ `makeSet` e gli $m$ `find` costano $O(1)$ ciascuno, quindi $O(m+n)$ in totale; per le $n-1$ `union`, anche se una singola union può costare $O(n)$ nel caso peggiore, l'argomento del raddoppio della size (vedi domande precedenti) mostra che ogni elemento cambia etichetta al più $O(\log n)$ volte, quindi il costo complessivo di tutte le union sull'intera sequenza è $O(n \log n)$. Sommando: $O(m+n+n\log n)=O(m+n\log n)$.
->
-> **Osservazione.** È un bound sul **caso peggiore dell'intera sequenza** (non della singola operazione), valido per qualunque sequenza di quella forma: una singola union può ancora costare $\Theta(n)$, ma non tutte insieme.
-
-> [!question] Domanda tipica d'esame — QuickFind + union by size: enunciato delle prestazioni
-> **D:** «Si enunci in modo preciso le prestazioni della struttura dati, in termini di costi delle operazioni della struttura dati. (Max 5 righe.)» *(chiesto il 18/07/2022)*
-> **R:**
-> **Costo per operazione singola.** `makeSet` e `find` costano $O(1)$ ciascuna (creazione/lettura di un'etichetta). Una singola `union` costa $O(\text{dimensione dell'insieme più piccolo dei due unificati})$, quindi $O(n)$ nel caso pessimo.
->
-> **Costo ammortizzato delle union.** Grazie alla union by size, ogni elemento cambia etichetta al più $O(\log n)$ volte (ogni volta che viene rietichettato la dimensione del suo insieme almeno raddoppia), quindi la sequenza delle (al più $n-1$) operazioni di `union` costa complessivamente $O(n \log n)$.
->
-> **Sequenza intera.** Con $n$ `makeSet`, al più $n-1$ `union` e $m$ `find`, il costo totale è $O(m + n \log n)$.
->
-> ⏱️ **Se la traccia dà 5 righe**: dai i tre costi singoli — `makeSet`/`find` $O(1)$, `union` $O(n)$ caso pessimo (1 riga) — poi il motivo dell'ammortamento: ogni elemento rietichettato al più $O(\log n)$ volte perché la size raddoppia (1-2 righe) — chiudi con il bound $O(m+n\log n)$ sull'intera sequenza (1 riga). **Non va mai omesso** che il costo $O(\log n)$ della union è *ammortizzato sull'intera sequenza*, non della singola operazione: la singola union resta $O(n)$ nel caso pessimo.
+→ **Palestra**: [[Esercizi 02 - Union-Find#Enunciare le prestazioni della struttura|enunciato delle prestazioni — 18/07/2022, max 5 righe]]
 ## QuickUnion
 **Struttura**: una foresta di alberi di **altezza anche maggiore di 1**. In ogni albero:
 - la **radice** è l'elemento rappresentativo dell'insieme (il suo nome);
@@ -223,7 +186,7 @@ find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
 
 ```pseudo
 \begin{algorithm}
-\caption{union($A, B$)}
+\caption{union(nome $A$, nome $B$)}
 \begin{algorithmic}
 \State imposta un puntatore dalla radice dell'albero $B$ alla radice dell'albero $A$
 \end{algorithmic}
@@ -232,7 +195,7 @@ find(2) -> segue foglia 2 -> radice [2] -> restituisce "2"
 
 ```pseudo
 \begin{algorithm}
-\caption{find($e$)}
+\caption{find(elemento $e$) $\to$ nome}
 \begin{algorithmic}
 \State a partire dal nodo $e$, risali i puntatori padre fino alla radice
 \State \Return il nome memorizzato nella radice
@@ -252,27 +215,35 @@ union(2,3):  radice di {3} punta a radice di {2}
         |
         3
 
-union(4,2):  radice di {4} punta a radice di {2}
+union(4,2):  radice di {2} punta a radice di {4}   (nome del risultato: A = 4)
 
-   1    2
-       / \
-      3   4
+   1    4
+        |
+        2
+        |
+        3
 
 union(4,1):  union(A=4, B=1) -> radice di {1} punta a radice di {4}
 
         4
        / \
       2   1
-      |\ 
-      3  ...  (3 era figlio di 2)
+      |
+      3
 
 find(3): 3 -> 2 -> 4 -> (radice) = "4"
 ```
+
+![[uf_quickunion_esempio.png]]
+Lo stesso esempio in QuickUnion, dalla slide: qui gli alberi possono avere **altezza maggiore di 1**, e infatti 3 sta sotto 2 che sta sotto 4. È la differenza che ribalta i costi rispetto a QuickFind — `union` diventa $O(1)$, `find` diventa proporzionale all'altezza.
 
 > [!warning] Sequenze di union che degenerano in lista in QuickUnion
 > Le union:
 > $$\text{union}(2,1),\ \text{union}(3,2),\ \ldots,\ \text{union}(n, n-1)$$
 > producono un albero di altezza $n-1$ (una lista). Se si eseguono poi $m$ `find`, il costo totale è $O(n + (n-1) + mn) = O(mn)$, che può essere $O(n^2)$ se $m = \Theta(n)$.
+
+![[uf_find_costo_lineare.png]]
+La catena che ne risulta, dalla slide. Da notare: è **la stessa sequenza di union** della figura in QuickFind qualche sezione più su — cambia solo dove si paga il conto. Lì ogni union rietichettava le foglie e il costo era $\Theta(n^2)$ sulle union; qui ogni union costa $O(1)$ e il prezzo si sposta interamente sulle $m$ `find`, che risalgono una lista lunga $n-1$.
 
 **Complessità**
 
@@ -284,9 +255,12 @@ find(3): 3 -> 2 -> 4 -> (radice) = "4"
 ### Euristica union by size (QuickUnion)
 **Idea**: mantenere gli alberi di altezza piccola. Nell'unione di $A$ e $B$, la radice dell'albero con **meno nodi** diventa figlia della radice dell'albero con **più nodi**.
 
+![[uf_bilanciamento_quickunion.png]]
+I tre pannelli della slide: **(a)** `makeSet(x)` crea un nodo isolato; **(b)** `union(A,B)` con $\text{size}(A) < \text{size}(B)$ appende la radice di $A$ sotto quella di $B$; **(c)** `find(x)` risale il cammino. Il riquadro giallo in **(b)** è la cosa da fissare: **il nome di quel nodo diventa $A$** — la radice resta fisicamente quella di $B$, ma l'insieme si chiama $A$. È esattamente ciò che rende `union(a,e)` diverso da `union(a,b)` nell'esempio qui sotto: gli argomenti sono **nomi di insiemi**, non radici di alberi.
+
 ```pseudo
 \begin{algorithm}
-\caption{union($A, B$) — con union by size}
+\caption{union(nome $A$, nome $B$) — con union by size}
 \begin{algorithmic}
 \If{$\text{size}(A) \geq \text{size}(B)$}
   \State rendi la radice di $B$ figlia della radice di $A$
@@ -298,6 +272,15 @@ find(3): 3 -> 2 -> 4 -> (radice) = "4"
 \end{algorithmic}
 \end{algorithm}
 ```
+
+> [!warning] Nodo, radice e nome dell'insieme sono tre cose diverse
+> In QuickUnion il nome di un insieme è memorizzato **nella radice**, ma dopo una union-by-size la radice può essere un nodo la cui lettera è diversa dal nome. Nell'esempio qui sotto, dopo `union(e,b)` esiste un insieme **di nome `e`** la cui **radice è il nodo `b`**, e il nodo `e` sta in fondo come figlia.
+>
+> Da qui due conseguenze che l'esempio rende facili da sbagliare:
+> - **gli argomenti della `union` sono nomi di insiemi**, cioè quello che restituirebbe una `find` — non radici di alberi. Per questo l'ultima operazione si scrive `union(a,e)` e non `union(a,b)`: un insieme di nome `b` in quel momento non esiste;
+> - in `union(a,e)` le due decisioni sono **indipendenti**: chi scende sotto chi lo decide la *size* (il nodo `a` scende sotto `b` perché $2 < 3$), come si chiama il risultato lo decide la regola del **primo argomento** (il nome `a` sale sulla radice `b`). Nodo e nome si muovono in direzioni opposte.
+>
+> **Nessun elemento viene mai eliminato** da una union: il nodo `a` perde solo il ruolo di radice e resta nell'albero come nodo interno, con `c` ancora appesa sotto di sé.
 
 **Esempio con union by size**
 ```
@@ -318,23 +301,30 @@ union(a,c):  size uguale, a assorbe c
    c    d
 
 union(e,b):  size(b)=2 > size(e)=1, b assorbe e
+             l'insieme ora si chiama "e", ma la sua radice è il nodo b
 
-   a    b
-   |   /|\
-   c  d  e
+   a    b   <- nome "e"
+   |   / \
+   c  d   e
 
-union(a,b):  size(a)=2 < size(b)=3, b assorbe a; il nome dell'insieme diventa a
+union(a,e):  size(a)=2 < size(e)=3, la radice di {a} scende sotto la radice di {e}
+             il nome del risultato è il primo argomento: "a"
 
-        b        <- nome "a" (aggiornato nella radice)
+        b   <- nome "a"
        /|\
       a  d  e
       |
       c
 ```
 
+![[uf_ubs_quickunion_sequenza.png]]
+Le quattro tappe della stessa sequenza, dalle slide pp. 58-63 *(composizione di quattro ritagli)*. L'intestazione di ogni riquadro elenca le operazioni già eseguite, quindi si legge da sinistra a destra e dall'alto in basso. Il dettaglio che sfugge è la **scritta rossa sopra la radice**: è il **nome dell'insieme**, che dopo una union puo' essere diverso dal nodo che sta in cima. Nel terzo riquadro la radice e' $b$ ma l'insieme si chiama $e$; nel quarto la radice e' ancora $b$ e l'insieme si chiama $a$. È per questo che l'ultima operazione si scrive `union(a,e)` e non `union(a,b)`: gli argomenti della union sono **nomi di insiemi**, non radici di alberi.
+
 > [!quote] Lemma — Altezza in QuickUnion con union by size
 > Con la **union by size**, dato un albero QuickUnion con $s$ nodi (size) e altezza $h$, vale che $s \geq 2^h$.
 > **Corollario**: la `find` richiede tempo $O(\log n)$, e l'intera sequenza di operazioni costa $O(n + m \log n)$.
+
+Sulla slide il lemma è enunciato e lasciato come esercizio («dim: provate a dimostrarlo voi»); la dimostrazione che segue è quella da saper produrre.
 
 **Dimostrazione** (per induzione sulla sequenza di union): un albero nasce con $s=1, h=0$, e $1 \geq 2^0$. Quando un albero di altezza $h_1$ e size $s_1$ assorbe uno di altezza $h_2$ e size $s_2$ (con $s_1 \geq s_2$ per l'euristica):
 - se $h_2 < h_1$: l'altezza non cresce, la size aumenta; la proprietà è preservata;
@@ -349,42 +339,23 @@ union(a,b):  size(a)=2 < size(b)=3, b assorbe a; il nome dell'insieme diventa a
 | `find` | $O(\log n)$ |
 | Sequenza ($n$ makeSet, $n-1$ union, $m$ find) | $O(n + m \log n)$ |
 
-> [!question] Domanda tipica d'esame — QuickUnion + union by size: l'altezza NON è 1
-> **D:** *(Vero o Falso)* «Nella QuickUnion con euristica union by size ogni insieme è rappresentato con un albero di altezza 1, in modo che sia l'operazione di find che di union richiedano tempo logaritmico.» *(chiesto il 18/02/2025)*
-> **R:**
-> **Risposta.** Falso, ed è sbagliata su due fronti.
->
-> **Primo errore.** L'altezza 1 è una caratteristica di **QuickFind**, non di QuickUnion: in QuickUnion gli alberi possono avere altezza maggiore di 1 (con union by size il lemma $s\geq 2^h$ garantisce solo altezza $O(\log n)$, non altezza costante).
->
-> **Secondo errore.** Anche con altezza $O(\log n)$, la `union` in QuickUnion resta $O(1)$ (si limita a ricollegare due radici): è la `find` a costare $O(\log n)$, risalendo i puntatori padre fino alla radice, non entrambe le operazioni.
+→ **Palestra**: [[Esercizi 02 - Union-Find#L'altezza NON è 1|l'altezza non è 1 — 18/02/2025]]
 
-> [!question] Domanda tipica d'esame — QuickUnion + union by size: find è O(log n) nel caso peggiore, non solo ammortizzato
-> **D:** *(Vero o Falso)* «Usando la struttura dati QuickUnion con euristica union by size, ogni operazione di find ha costo ammortizzato O(log n), dove n è il numero di makeSet. Eppure una singola operazione di find nel caso peggiore può costare anche Θ(n).» *(chiesto il 18/02/2025)*
-> **R:**
-> **Risposta.** Falso.
->
-> **Perché.** Con la sola union by size (senza compressione dei cammini), il lemma $s\geq 2^h$ garantisce che **ogni** albero con $n$ nodi ha altezza al più $O(\log n)$: è un bound **deterministico sul caso peggiore**, non solo ammortizzato. Di conseguenza anche la **singola** `find` costa $O(\log n)$ nel caso peggiore — non può mai costare $\Theta(n)$ con questa euristica attiva.
->
-> **Osservazione.** La confusione nasce forse pensando a QuickUnion **senza** alcuna euristica, dove sì una singola `find` può costare $\Theta(n)$ su una sequenza degenere che produce una lista (vedi la union sequenziale $\text{union}(2,1), \text{union}(3,2), \ldots$).
+> [!warning] È un bound sul caso peggiore, non ammortizzato
+> Il lemma $s \geq 2^h$ vincola l'altezza di **ogni** albero, in **ogni** momento: con la sola union by size la `find` costa $O(\log n)$ nel **caso peggiore**, non «in media» o «ammortizzato». Una singola `find` non può mai costare $\Theta(n)$ finché l'euristica è attiva — quel caso appartiene a QuickUnion **senza** euristiche, dove la sequenza $\text{union}(2,1), \text{union}(3,2), \ldots$ produce una lista. La distinzione fra *caso peggiore* e *ammortizzato* è la coppia di affermazioni su cui le tracce insistono di più.
 
-> [!question] Domanda tipica d'esame — QuickUnion + union by size: costruire un albero di altezza Θ(log n)
-> **D:** «Si consideri la struttura dati QuickUnion con euristica union by size. Si mostri una sequenza di operazioni di n makeSet e n − 1 union in cui l'albero ottenuto abbia altezza Θ(log n) . (Max 5 righe.)» *(chiesto il 16/07/2024)*
-> **R:**
-> **Idea.** Sfruttare il caso peggiore ammesso dal lemma $s\geq 2^h$: l'altezza cresce di 1 solo quando si uniscono due alberi di size (e quindi altezza) uguale — un torneo "a eliminazione" fra alberi di pari dimensione realizza sistematicamente questo caso.
->
-> **Costruzione.** Con $n=2^k$ elementi, si eseguano gli $n$ `makeSet` e poi si uniscano gli alberi a torneo, per round successivi: nel primo round si eseguono $n/2$ `union` tra coppie di singoletti (size 1 ciascuno), ottenendo $n/2$ alberi di altezza $1$; nel secondo round si uniscono a coppie i $n/2$ alberi di altezza $1$ (size uguale, quindi per il lemma l'altezza cresce di 1), ottenendo $n/4$ alberi di altezza $2$; e così via.
->
-> **Verifica.** Dopo $k=\log_2 n$ round (un totale di $n-1$ union) resta un unico albero di altezza esattamente $k=\Theta(\log n)$.
->
-> **Osservazione.** *(La stessa domanda, numerata «2.», è stata riproposta identica anche il 18/02/2025.)*
->
-> ⏱️ **Se la traccia dà 5 righe**: descrivi il torneo per round fra alberi di size uguale (2 righe), spiega che ogni round raddoppia la size e incrementa l'altezza di 1 per il lemma $s\geq 2^h$ (1-2 righe), concludi che dopo $\log_2 n$ round l'altezza è $\Theta(\log n)$ (1 riga). **Non va mai omesso** il perché l'altezza cresce solo quando le size unite sono uguali: è la condizione che rende il caso peggiore.
+→ **Palestra**: [[Esercizi 02 - Union-Find#find è O(log n) nel caso peggiore, non solo ammortizzato|caso peggiore contro ammortizzato — 18/02/2025]]
+
+→ **Palestra**: [[Esercizi 02 - Union-Find#Costruire un albero di altezza Θ(log n)|costruire un albero di altezza $\Theta(\log n)$ — 16/07/2024, max 5 righe]]
+
+![[uf_union_by_size_quickunion.png]]
+Union by size in QuickUnion, dalla slide: la radice dell'albero con **meno nodi** diventa figlia della radice dell'altro. È l'euristica che tiene l'altezza a $O(\log n)$ — e si noti che agisce sulla *forma* dell'albero, al contrario di quanto fa in QuickFind, dove l'altezza resta 1 comunque.
 ### Euristica compressione dei cammini (path compression)
 **Idea**: durante l'esecuzione di `find(x)`, mentre si risale il cammino da $x$ alla radice, si **comprimono tutti i nodi del cammino rendendoli figli diretti della radice**. La prima `find(x)` ha lo stesso costo (lineare nella lunghezza del cammino), ma le `find` successive su quegli stessi nodi costeranno $O(1)$.
 
 ```pseudo
 \begin{algorithm}
-\caption{find($x$) — con compressione dei cammini}
+\caption{find(elemento $x$) $\to$ nome — con compressione dei cammini}
 \begin{algorithmic}
 \If{$x$ è la radice}
   \State \Return $x$
@@ -396,27 +367,33 @@ union(a,b):  size(a)=2 < size(b)=3, b assorbe a; il nome dell'insieme diventa a
 \end{algorithm}
 ```
 
-**Esempio**
-```
-Prima di find(x):             Dopo find(x):
+![[uf_path_compression.png]]
+La compressione dei cammini, dalla slide: a sinistra il cammino da $x$ alla radice $D$ prima della `find`, a destra dopo. **Tutti** i nodi attraversati diventano figli diretti della radice, non solo $x$; i triangoli sono i sottoalberi che restano appesi dove sono. La `find` che comprime costa comunque quanto il cammino percorso: il guadagno è sulle `find` successive.
+### Euristica union by rank *(extra, non da slide)*
+Le slide nominano la **union by rank** solo dentro l'enunciato del teorema di Tarjan & van Leeuwen, senza definirla. Questa sezione la sviluppa: non serve allo scritto, ma è la domanda che segue naturalmente all'orale.
 
-      D                           D
-      |                        /  |  \  \
-      C                       A   B   C   x
-      |
-      B
-      |
-      A
-      |
-      x
+> [!quote] Definizione — Rank e union by rank
+> Il **rank** è un intero associato a ogni **radice**, che vale come **limite superiore all'altezza** del suo albero.
+> - `makeSet(x)` pone $\text{rank}(x) = 0$;
+> - `union(A,B)` attacca la radice di **rank minore** sotto quella di **rank maggiore**; se i due rank sono **uguali**, se ne sceglie una arbitrariamente come nuova radice e **le si incrementa il rank di 1**.
+>
+> Unire due alberi di rank uguale è l'**unico** caso in cui il rank cresce: è l'unico in cui l'altezza può aumentare.
 
-Tutti i nodi sul cammino (x, A, B, C) diventano figli diretti di D
-```
+> [!quote] Lemma — Rank e numero di nodi *(extra, non da slide)*
+> Un albero la cui radice ha rank $r$ contiene almeno $2^r$ nodi.
+> **Corollario.** Da $2^r \leq n$ segue $r \leq \log_2 n$: l'altezza è $O(\log n)$ e la `find` costa $O(\log n)$ — la stessa garanzia della union by size.
 
-> [!info] Perché usare union by rank invece di union by size con path compression
-> Con la compressione dei cammini la **size** degli alberi può risultare fuorviante (i nodi vengono spostati). Si preferisce usare il **rank** (un limite superiore all'altezza dell'albero, che non decresce mai). Con union by rank: nell'unione si attacca la radice di rank minore alla radice di rank maggiore; se i rank sono uguali si sceglie arbitrariamente e si incrementa il rank della nuova radice di 1.
+> [!info] Regola — perché il rank e non la size, quando c'è la compressione
+> Senza compressione dei cammini le due euristiche sono **equivalenti**: entrambe danno altezza $O(\log n)$.
+>
+> Con la compressione la size non diventa *sbagliata* — il numero di elementi resta esatto — ma diventa un **cattivo indicatore dell'altezza**, che è l'uso che se ne fa. La compressione appiattisce l'albero senza togliergli un solo elemento: ci si ritrova un albero da $1000$ nodi ormai piatto e uno da $900$ ancora alto, e la union by size attaccherebbe il piatto sotto l'alto, cioè la mossa sbagliata.
+>
+> Il rank regge perché **la compressione può solo ridurre l'altezza vera, mai aumentarla**: un rank che era un limite superiore prima resta un limite superiore dopo, anche se diventa più lasco. Non lo si tiene aggiornato e stretto — serve solo che sia **monotono e valido**, e tanto basta perché l'analisi ammortizzata funzioni.
+>
+> In una riga: **la size misura quanti elementi ci sono, il rank stima quanto è alto l'albero — e la compressione cambia la seconda cosa senza toccare la prima.**
 ## Analisi ottimale: la funzione inversa di Ackermann
 Combinando **union by rank (o by size)** e **compressione dei cammini** si ottiene il risultato ottimale, dimostrato da Tarjan e van Leeuwen:
+
 > [!quote] Teorema — Tarjan & van Leeuwen
 > Usando in QuickUnion le euristiche di **union by rank** (o by size) e **compressione dei cammini**, una qualsiasi sequenza di $n$ `makeSet`, $n-1$ `union` e $m$ `find` ha un costo di
 > $$O\bigl(n + m \cdot \alpha(m+n,\ n)\bigr)$$
@@ -428,19 +405,23 @@ Combinando **union by rank (o by size)** e **compressione dei cammini** si ottie
 |---|---|---|---|---|
 | $i=1$ | $2$ | $2^2=4$ | $2^3=8$ | $2^4=16$ |
 | $i=2$ | $2^2=4$ | $2^4=16$ | $2^{16}=65536$ | $2^{65536}$ |
-| $i=3$ | $16$ | torre di 4 esponenti $2$ | torre di 65536 esponenti $2$ | ancora più alta |
-| $i=4$ | già astronomico | ... | ... | $> 10^{80}$ (atomi universo) |
+| $i=3$ | $16$ | torre di **16** esponenti $2$ | torre alta $A(3,2)$, cioè quanto la cella precedente | torre alta $A(3,3)$ |
 
-> [!info] Come leggere la tabella
-> La riga $i=2$ segue la ricorrenza $A(2,j)=A(1,A(2,j-1))=2^{A(2,j-1)}$: ogni valore è $2$ elevato al valore precedente. Così $A(2,1)=4$, $A(2,2)=2^4=16$, $A(2,3)=2^{16}=65536$, $A(2,4)=2^{65536}$ (un numero con circa $2\times 10^{19727}$ cifre). La riga $i=3$ cresce ancora più rapidamente: ogni valore è una torre esponenziale di altezza $A(2, \cdot)$.
+> [!info] Come si legge — la tabella di $A(i,j)$
+> **Convenzione**, dichiarata dalla slide prima della tabella: $a^{b^c}$ significa $a^{(b^c)}$, non $(a^b)^c$. Senza questa lettura le torri non hanno senso.
+>
+> La riga $i=2$ segue $A(2,j)=A(1,A(2,j-1))=2^{A(2,j-1)}$: ogni valore è $2$ elevato al precedente — $A(2,1)=4$, $A(2,2)=16$, $A(2,3)=65536$, $A(2,4)=2^{65536}$ (circa $2\times 10^{19727}$ cifre). In breve: **$A(2,k)$ è una torre di $k$ due**.
+>
+> La riga $i=3$ segue $A(3,j)=A(2,A(3,j-1))$: ogni cella è una **torre di due la cui altezza è la cella precedente**. Da $A(3,1)=16$ segue $A(3,2)=A(2,16)$, una torre di **16** due; poi $A(3,3)=A(2,A(3,2))$, alta quanto quel numero. Non è «più rapida» in senso quantitativo: cambia livello di operazione a ogni riga.
 
 La **funzione inversa** $\alpha(m, n)$ è definita come:
 $$\alpha(m, n) = \min\!\left\{i > 0 : A\!\left(i,\, \left\lfloor m/n \right\rfloor\right) > \log_2 n\right\}$$
+
 > [!quote] Proprietà — $\alpha(m,n)$
 > 1. Per $n$ fissato, $\alpha(m,n)$ è **monotonicamente decrescente** al crescere di $m$.
 > 2. $\alpha(n,n) \to \infty$ per $n \to \infty$, ma con crescita **estremamente lenta**.
 
-> [!info] $\alpha(m,n) \leq 4$ per ogni scopo pratico
+> [!info] Come si legge — perché $\alpha$ si tratta come una costante
 > $A(4, 1) = A(3, 2)$, che è già una torre di esponenti $2$ di altezza 16, ben oltre $10^{80}$ (stima del numero di atomi nell'universo). Quindi $\alpha(m,n) \leq 4$ per tutti gli $n < 2^{10^{80}}$: in pratica, $\alpha(m,n)$ si può considerare una **costante**.
 
 La variante $\log^*$ (logaritmo iterato) permette di raffinare il bound. Si definisce:
@@ -461,14 +442,12 @@ Per esempio, $\log^* 2^{65536} = 5$. Si può dimostrare che:
 
 *(p.p. = caso peggiore; amm. = ammortizzato)*
 
-> [!question] Domanda tipica d'esame — Differenza tra QuickFind e QuickUnion
-> **D:** Qual è la differenza tra QuickFind e QuickUnion? Quali euristiche li migliorano e con che costo ammortizzato?
-> **R:**
-> **QuickFind.** Usa alberi di altezza 1: `find` è $O(1)$, `union` è $O(n)$ nel caso peggiore ($\Theta(n^2)$ per sequenze degeneri, vedi sopra). L'euristica **union by size** porta il costo ammortizzato di `union` a $O(\log n)$, con costo totale $O(m + n \log n)$ per $m$ find e $n$ union.
+> [!info] Regola — dove si paga il costo: QuickFind contro QuickUnion
+> Le due strutture rappresentano lo stesso insieme in due modi opposti, e ciascuna sposta il costo su un'operazione diversa.
+> - **QuickFind** tiene alberi di **altezza 1**: la `find` segue un solo puntatore ed è $O(1)$, ma la `union` deve rietichettare tutte le foglie di un insieme, quindi $O(n)$ nel caso peggiore. L'euristica **union by size** porta la union a $O(\log n)$ **ammortizzato**, lasciando l'altezza a 1 e la find a $O(1)$.
+> - **QuickUnion** tiene alberi di **altezza variabile**: la `union` ricollega due radici ed è $O(1)$, ma la `find` risale un cammino, quindi $O(n)$ nel caso peggiore. L'euristica **union by size** porta la find a $O(\log n)$ nel caso peggiore, grazie al lemma $s \geq 2^h$; aggiungendo la **compressione dei cammini** si scende a $O(\alpha(m,n))$ ammortizzato.
 >
-> **QuickUnion.** Usa alberi di altezza variabile: `union` è $O(1)$, `find` è $O(n)$ nel caso peggiore ($O(mn)$ per sequenze degeneri). L'euristica **union by size/rank** porta la `find` a $O(\log n)$ — grazie al lemma $s \geq 2^h$ — con costo totale $O(n + m \log n)$. Aggiungendo la **compressione dei cammini** a union by rank, il costo ammortizzato di `find` diventa $O(\alpha(m,n))$, praticamente costante, con costo totale $O(n + m \cdot \alpha(m+n,n))$ (Tarjan & van Leeuwen).
->
-> **Confronto.** La differenza di fondo è dove si paga il costo: in QuickFind è la `union` a essere lenta (bilanciata dalla size), in QuickUnion è la `find` a esserlo (bilanciata da size/rank e path compression). Nessuna delle due domina l'altra in assoluto: la scelta dipende dal rapporto fra numero di `union` e numero di `find` nella sequenza.
+> Nessuna delle due domina l'altra: la scelta dipende dal rapporto fra numero di `union` e numero di `find` nella sequenza.
 ## Applicazione: algoritmo di Kruskal
 Il caso d'uso principale della struttura Union-Find è l'[[03 - Minimum Spanning Tree|algoritmo di Kruskal]] per il **Minimum Spanning Tree**. L'algoritmo ordina gli archi per peso crescente e aggiunge un arco $(u, v)$ all'albero solo se $u$ e $v$ appartengono a componenti connesse distinte — verifica realizzata tramite `find(u) != find(v)` — e poi esegue `union` per fondere le due componenti.
 
@@ -478,67 +457,42 @@ Con $n$ nodi e $m$ archi, Kruskal esegue:
 - al più $n-1$ `union`.
 
 Con Union-Find ottimale (rank + path compression), il costo totale della gestione degli insiemi è $O(m \cdot \alpha(m, n))$, praticamente lineare.
-> [!info] Collegamento con il Modulo I
+
+> [!info] Collegamento — Modulo I
 > La struttura Union-Find è un esempio avanzato di [[05 - Strutture Dati Elementari e Dizionari|struttura dati]] progettata per operazioni specifiche. L'analisi ammortizzata su sequenze di operazioni riprende il tipo di ragionamento visto per le [[07 - Code con Priorità e Heap|code con priorità]].
 
-> [!question] Domanda tipica d'esame — Union-Find in Kruskal: quale struttura, quali operazioni
-> **D:** «B. Si dica quale struttura dati viene utilizzata nell'implementazione efficiente dell'algoritmo di Kruskal, quali operazioni mette a disposizione la struttura dati e come queste vengono usate nell'algoritmo. (Max 10 righe.)» *(chiesto il 19/02/2024)*
-> **R:**
-> **Struttura dati.** Si utilizza **Union-Find** (gestione di insiemi disgiunti).
+> [!info] Regola — la complessità di Kruskal si somma su tre voci, non su una
+> Ogni domanda d'esame su «Kruskal implementato con \<struttura\>» si risolve sommando **tre** addendi e guardando quale domina:
+> 1. **ordinamento** degli archi, $O(m\log m) = O(m\log n)$ — sparisce **solo** se la traccia dice che gli archi sono già ordinati;
+> 2. **$O(m)$ find**, al costo della struttura scelta;
+> 3. **$n-1$ union**, al costo della struttura scelta.
 >
-> **Operazioni.** Mette a disposizione tre operazioni: `makeSet(x)` (crea un nuovo insieme singoletto $\{x\}$), `union(A,B)` (fonde due insiemi in uno) e `find(x)` (restituisce il nome dell'insieme che contiene $x$).
->
-> **Uso in Kruskal.** Ogni insieme rappresenta una componente connessa dell'albero in costruzione: si esegue una `makeSet` per ciascuno degli $n$ nodi (ogni nodo parte come componente a sé), poi si scandiscono gli $m$ archi in ordine di peso crescente e per ciascun arco $(u,v)$ si esegue `find(u)` e `find(v)` per verificare se $u$ e $v$ appartengono già alla stessa componente; se le componenti sono distinte, l'arco viene aggiunto all'MST e si esegue `union` per fondere le due componenti, altrimenti l'arco viene scartato (chiuderebbe un ciclo).
->
-> **Complessità.** Con l'implementazione ottimale (union by rank/size + compressione dei cammini) il costo delle $O(m)$ `find` e delle $n-1$ `union` è $O(m\cdot\alpha(m,n))$, praticamente lineare.
->
-> ⏱️ **Se la traccia dà 10 righe**: nomina la struttura e le tre operazioni con una riga di definizione ciascuna (3-4 righe), spiega l'uso in Kruskal — un insieme per componente connessa, `find` per il test di ciclo, `union` per fondere (3-4 righe), chiudi con la complessità ottimale $O(m\cdot\alpha(m,n))$ (1-2 righe). **Non va mai omesso** il collegamento fra `find(u) != find(v)` e il test "l'arco chiuderebbe un ciclo?": è il punto in cui la struttura dati entra davvero nella logica di Kruskal.
+> L'errore che le tracce cercano è dimenticare il primo addendo: senza euristiche si risponde $O(n^2)$ guardando solo le union, mentre su grafo denso è l'ordinamento a dominare. Il secondo errore è credere che velocizzare la struttura velocizzi Kruskal: finché gli archi vanno ordinati, il costo resta $\Omega(m\log m)$ comunque.
 
-> [!question] Domanda tipica d'esame — Kruskal con QuickFind senza euristica: non è (solo) O(n²)
-> **D:** *(Vero o Falso)* «Se si implementa l'algoritmo di Kruskal con la struttura dati Quick-Find senza euristica di bilanciamento union-by-size, la complessità dell'algoritmo nel caso peggiore è O(n^2).» *(chiesto il 13/06/2024)*
-> **R:**
-> **Risposta.** Falso.
->
-> **Costo di union e find.** Con QuickFind senza union by size, le $n-1$ `union` costano $O(n)$ nel caso peggiore ciascuna, quindi $O(n^2)$ in totale; le $O(m)$ `find` costano $O(1)$ ciascuna, quindi $O(m)$ in totale.
->
-> **Costo dimenticato.** Kruskal deve anche **ordinare gli $m$ archi**, operazione che costa $O(m\log m)$. La complessità corretta nel caso peggiore è quindi $O(m\log m + n^2)$, non semplicemente $O(n^2)$.
->
-> **Controesempio.** Se il grafo è denso (ad esempio $m=\Theta(n^2)$), il termine $m\log m = \Theta(n^2\log n)$ domina su $n^2$: la complessità reale è $\Theta(n^2 \log n)$, diversa da $O(n^2)$, il che rende l'affermazione falsa.
+→ **Palestra**: [[Esercizi 02 - Union-Find#Quale struttura, quali operazioni, come si usano|struttura, operazioni e uso in Kruskal — 19/02/2024, max 10 righe]]
 
-> [!question] Domanda tipica d'esame — Kruskal senza union by size con |E| = O(n^{3/2})
-> **D:** «Qual è la complessità nel caso peggiore dell'algoritmo di Kruskal implementato con la struttura dati Union-Find senza l'uso dell'euristica union by size se il numero di archi |E| = O(n^{3/2})? [risposta in 1 riga]» *(chiesto il 27/09/2023)*
-> **R:**
-> **Risposta.** $O(n^{5/2})$.
->
-> **Giustificazione.** Senza union by size il `find` costa $O(n)$ nel caso peggiore (l'albero può degenerare in una lista), quindi il costo delle $O(|E|)$ `find` è $O(|E|\cdot n)=O(n^{3/2}\cdot n)=O(n^{5/2})$. Questo termine domina sia il costo di ordinamento $O(|E|\log|E|)=O(n^{3/2}\log n)$ sia quello delle $n-1$ `union` (ciascuna $O(n)$ nel caso peggiore, quindi $O(n^2)$ in totale, con $n^2 = o(n^{5/2})$): la complessità totale è dunque $O(n^{5/2})$.
->
-> ⏱️ **Se la traccia chiede risposta in una riga**: scrivi solo $O(n^{5/2})$, ottenuto da $O(|E|)$ find a costo $O(n)$ ciascuna. **Non va mai omesso** il valore numerico finale $O(n^{5/2})$: è quello l'oggetto della domanda, la giustificazione è a discrezione se lo spazio manca.
+→ **Palestra**: [[Esercizi 02 - Union-Find#Kruskal con QuickFind senza euristica|QuickFind senza euristica — 13/06/2024]]
 
-> [!question] Domanda tipica d'esame — Kruskal con QuickFind + union by size, archi già ordinati
-> **D:** *(Vero o Falso)* «Si assuma di implementare l'algoritmo di Kruskal usando una struttura dati QuickFind con euristica union by size. Si assuma inoltre di avere già gli archi del grafo ordinati in ordine non decrescente rispetto al loro peso. Allora l'esecuzione dell'algoritmo di Kruskal ha complessità temporale O(m + n log n).» *(chiesto il 18/02/2025)*
-> **R:**
-> **Risposta.** Vero.
->
-> **Perché.** Se gli archi sono già ordinati, Kruskal non deve più pagare il costo di ordinamento $O(m\log m)$: restano solo le $O(m)$ `find` (costo $O(1)$ ciascuna in QuickFind, quindi $O(m)$ in totale) e le $n-1$ `union`, il cui costo complessivo con union by size è $O(n\log n)$ (per l'argomento del raddoppio della size). Sommando si ottiene esattamente $O(m+n\log n)$, in linea con il bound generale della QuickFind con union by size.
+→ **Palestra**: [[Esercizi 02 - Union-Find#Kruskal senza union by size con O(n^{3/2}) archi|$O(n^{3/2})$ archi — 27/09/2023, 1 riga]]
 
-> [!question] Domanda tipica d'esame — Kruskal con QuickUnion + union by size, archi già ordinati
-> **D:** *(Vero o Falso)* «Si assuma di implementare l'algoritmo di Kruskal usando una struttura dati QuickUnion con euristica union by size. Si assuma inoltre di avere già gli archi del grafo ordinati in ordine non decrescente rispetto al loro peso. Allora l'esecuzione dell'algoritmo di Kruskal ha comunque complessità temporale O(m log n).» *(chiesto il 16/07/2024)*
-> **R:**
-> **Risposta.** Vero.
->
-> **Perché.** Con gli archi già ordinati si evita il costo di ordinamento; restano le $n$ `makeSet` ($O(n)$), le $n-1$ `union` (costo $O(1)$ ciascuna in QuickUnion, quindi $O(n)$ in totale) e le $O(m)$ `find`, ciascuna $O(\log n)$ grazie al lemma $s\geq 2^h$ della union by size. Il costo delle `find` domina: $O(m\log n)$.
->
-> **Osservazione.** Complessivamente $O(n+m\log n)=O(m\log n)$, sfruttando che $m\geq n-1$ per la connessione del grafo (altrimenti non esisterebbe uno spanning tree): è questa disuguaglianza a far assorbire il termine $O(n)$ in $O(m\log n)$.
+→ **Palestra**: [[Esercizi 02 - Union-Find#Kruskal con QuickFind + union by size, archi già ordinati|QuickFind + ubs, archi ordinati — 18/02/2025]]
 
-> [!question] Domanda tipica d'esame — Kruskal con una Union-Find ipotetica: makeSet/union O(1), find O(log log n)
-> **D:** «2. Immaginate di implementare l'algoritmo di Kruskal con un'altra struttura dati Union-Find i cui costi delle operazioni sono: la MakeSet e l'operazione di Union hanno costo costante, mentre la Find costa O(log log n). Quale sarebbe la complessità dell'algoritmo di Kruskal? Giustificate la risposta. (Max 5 righe.)» *(chiesto il 28/09/2022)*
-> **R:**
-> **Risposta.** $O(m\log m)$ (equivalentemente $O(m\log n)$, dato che $m<n^2$ implica $\log m=O(\log n)$).
->
-> **Costo della gestione degli insiemi.** Con $n$ `makeSet` e $n-1$ `union` a costo costante si spende $O(n)$; con $O(m)$ `find` a costo $O(\log\log n)$ si spende $O(m\log\log n)$.
->
-> **Costo dominante.** Kruskal deve comunque ordinare gli $m$ archi, costo $O(m\log m)$, che domina asintoticamente sia $O(n)$ sia $O(m\log\log n)$ (essendo $\log\log n = o(\log m)$).
->
-> **Conclusione.** La complessità della gestione degli insiemi diventa irrilevante: è **l'ordinamento** a determinare il costo totale dell'algoritmo.
->
-> ⏱️ **Se la traccia dà 5 righe**: dai il risultato $O(m\log m)$ subito (1 riga), il costo della gestione insiemi $O(n+m\log\log n)$ (1-2 righe), il motivo per cui l'ordinamento domina — $\log\log n = o(\log m)$ (1-2 righe). **Non va mai omesso** il fatto che è l'ordinamento a dominare: è il punto concettuale della domanda, non il valore di per sé costoso della gestione degli insiemi.
+→ **Palestra**: [[Esercizi 02 - Union-Find#Kruskal con QuickUnion + union by size, archi già ordinati|QuickUnion + ubs, archi ordinati — 16/07/2024]]
+
+→ **Palestra**: [[Esercizi 02 - Union-Find#Kruskal con una Union-Find ipotetica|find $O(\log\log n)$ — 28/09/2022, max 5 righe]]
+## Mappa nota ↔ slide
+Riferimenti a `Materiale Didattico/Modulo II/Slide/02_Union_find_2025.pdf` (72 pagine), per studiare sulla slide tenendo la nota come riscontro. Il deck è **in italiano** e segue il Demetrescu, non Kleinberg-Tardos.
+
+| Sezione della nota | Slide |
+|---|---|
+| Il problema Union-Find | **p. 2** (le tre operazioni) · p. 3 (esempio con $n=6$) · p. 4 (obiettivo) · **p. 5** (foresta di alberi radicati) · p. 6 (le due strategie) |
+| QuickFind | **p. 7** (struttura: altezza 1) · **pp. 8-9** (realizzazione) · pp. 10-20 (demo passo-passo) · **p. 21** (complessità) · **p. 22** (union di costo lineare, $\Theta(n^2)$) |
+| — Euristica union by size (QuickFind) | p. 23 (idea) · **p. 24** (union by size) · pp. 25-34 (demo) · **pp. 35-37** (realizzazione e tempo ammortizzato) · **p. 38** (complessità) · **p. 39** (la union che costa $\Theta(n)$) · **pp. 40-41** (analisi ammortizzata) |
+| QuickUnion | p. 42 · **p. 43** (struttura: altezza $>1$) · **p. 44** (implementazioni) · pp. 45-51 (demo) · **p. 52** (complessità) · **p. 53** (find di costo lineare) |
+| — Euristica union by size (QuickUnion) | p. 54 (idea) · **p. 55** (bilanciamento) · pp. 56-63 (demo) · **p. 64** (Lemma $s \geq 2^h$, lasciato come esercizio sulla slide) |
+| — Euristica compressione dei cammini | **p. 65** (figura prima/dopo) |
+| Analisi ottimale: la funzione inversa di Ackermann | **p. 66** (Tarjan & van Leeuwen) · **pp. 67-68** ($A(i,j)$ e la sua tabella) · **pp. 69-70** ($\alpha(m,n)$ e le sue proprietà) · **p. 71** ($\alpha \leq 4$) · **p. 72** (densità $m/n$ e $\log^*$) |
+| Applicazione: algoritmo di Kruskal | — *(non in questo deck: le slide di Kruskal sono in `03_mst_2025.pdf`, pp. 13-15 e 29)* |
+
+> [!info] Come si legge — metà del deck è animazione
+> 35 pagine su 72 sono demo passo-passo delle stesse quattro sequenze (pp. 11-20, 25-34, 45-51, 56-63): scorrile in fila guardando come si trasformano gli alberi, non fermarti a leggerle una per una. Le pagine che contano davvero sono le nove in grassetto qui sopra.

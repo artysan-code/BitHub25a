@@ -2,10 +2,11 @@
 tags:
   - algoritmi
   - dp
-slide: "4"
+slide: ["04"]
 capitolo: "Kleinberg-Tardos cap. 6"
 ---
 # Programmazione Dinamica I — Principi e Weighted Independent Set
+La **programmazione dinamica** risolve un problema definendo una famiglia piccola di sottoproblemi, esprimendo la soluzione di ciascuno in funzione di sottoproblemi più piccoli e riempiendo una tabella nell'ordine giusto. Questa nota introduce la tecnica sul caso di studio del **Weighted Independent Set su cammino** e ne ricava i quattro passi generali, che sono il telaio di ogni Esercizio 3. Gli Esercizio 3 di progettazione delle tracce recenti stanno nella palestra [[Esercizi 04 - Programmazione Dinamica]]; i problemi di DP successivi sono in [[05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)]] e [[06 - Programmazione Dinamica III (Sequence Alignment e Bellman-Ford)]].
 ## L'idea, prima della tecnica
 Prima di qualunque definizione, guardiamo **il fenomeno** che la programmazione dinamica sfrutta. Prendiamo un problema qualunque risolto per ricorsione — diciamo il calcolo di $F(6)$, il sesto numero di Fibonacci, con la ricorsione diretta $F(j) = F(j-1) + F(j-2)$. Disegniamo l'albero delle chiamate:
 ```
@@ -68,7 +69,7 @@ Il problema che analizziamo in questa nota è una variante pesata su **grafi a c
 **Esempio di riferimento** (usato in tutta la nota):
 
 ![[dp1_insieme_ind_migliore.png]]
-*Il cammino di riferimento, pesi $1, 4, 8, 4, 3, 10$, con in rosso l'insieme ottimo $\{v_1, v_3, v_6\}$ di peso $19$. Nota che l'ottimo **non** prende semplicemente i nodi in posizione pari o dispari, e nemmeno tutti i più pesanti: salta $v_4$ e $v_5$ per poter tenere insieme $v_3$ e $v_6$. (slide 8)*
+Il cammino di riferimento, pesi $1, 4, 8, 4, 3, 10$, con in rosso l'insieme ottimo $\{v_1, v_3, v_6\}$ di peso $19$. Nota che l'ottimo **non** prende semplicemente i nodi in posizione pari o dispari, e nemmeno tutti i più pesanti: salta $v_4$ e $v_5$ per poter tenere insieme $v_3$ e $v_6$. (slide 8)
 
 Alcuni insiemi indipendenti e i loro pesi:
 
@@ -95,7 +96,7 @@ Ora l'istanza a quattro nodi di pesi $1, 4, 5, 4$. L'ordine diventa $v_3(5), v_2
 Risultato $\{v_1, v_3\}$, peso $6$; l'ottimo è $\{v_2, v_4\}$, peso $8$. Il greedy **fallisce**.
 
 ![[dp1-controesempio-greedy.png]]
-*In rosso i nodi scelti. A sinistra la soluzione greedy ($1 + 5 = 6$), a destra l'ottima ($4 + 4 = 8$): prendere il nodo più pesante al centro brucia entrambi i 4 che gli stanno accanto. (slide 15)*
+In rosso i nodi scelti. A sinistra la soluzione greedy ($1 + 5 = 6$), a destra l'ottima ($4 + 4 = 8$): prendere il nodo più pesante al centro brucia entrambi i 4 che gli stanno accanto. (slide 15)
 
 **Perché sbaglia.** Il difetto non è il criterio scelto, è la **grandezza che il criterio confronta**. Ordinando per peso, l'algoritmo mette a confronto *un nodo contro un altro nodo*: $5 > 4$, quindi prende il 5. Ma prendere $v_3$ non costa «rinunciare a $v_2$», costa **rinunciare a $v_2$ e a $v_4$ insieme**, perché entrambi gli sono adiacenti. Il confronto che deciderebbe correttamente è quindi
 $$w_3 = 5 \quad\text{contro}\quad w_2 + w_4 = 8$$
@@ -141,7 +142,7 @@ Consideriamo $G' = G - \{v_n\}$ (il sottocammino sui primi $n-1$ nodi).
 6. L'assurdo nasce dall'ipotesi al passo 2: dunque $S^*$ è ottima per $G'$. $\square$
 
 ![[dp1_caso_1.png]]
-*Caso 1: il riquadro $G'$ racchiude $v_1, \ldots, v_{n-1}$, mentre $v_n$ resta fuori. Il sottoproblema è tutto ciò che sta dentro il riquadro. (slide 20)*
+Caso 1: il riquadro $G'$ racchiude $v_1, \ldots, v_{n-1}$, mentre $v_n$ resta fuori. Il sottoproblema è tutto ciò che sta dentro il riquadro. (slide 20)
 
 **Caso 2** — $v_n \in S^*$
 
@@ -163,7 +164,7 @@ $$w(S \cup \{v_n\}) = w(S) + w_n > w(S^* \setminus \{v_n\}) + w_n = w(S^*)$$
 6. L'assurdo nasce dall'ipotesi al passo 2: dunque $S^* \setminus \{v_n\}$ è ottima per $G''$. $\square$
 
 ![[dp1_caso_2.png]]
-*Caso 2: $v_n$ è in rosso perché è nella soluzione; $v_{n-1}$ è forzatamente escluso (freccia in basso) perché adiacente a $v_n$. Il riquadro $G''$ si ferma a $v_{n-2}$ — il salto di **due** posizioni che diventerà $\text{OPT}[j-2]$ nella ricorrenza. (slide 21)*
+Caso 2: $v_n$ è in rosso perché è nella soluzione; $v_{n-1}$ è forzatamente escluso (freccia in basso) perché adiacente a $v_n$. Il riquadro $G''$ si ferma a $v_{n-2}$ — il salto di **due** posizioni che diventerà $\text{OPT}[j-2]$ nella ricorrenza. (slide 21)
 ### Il cuore dell'argomento: perché il residuo deve essere ottimo
 Entrambe le dimostrazioni sopra hanno la stessa forma, ed è la forma ricorrente di tutta la programmazione dinamica — è nota come **argomento di taglia-e-incolla** (*cut and paste*). Conviene vederla su numeri concreti prima di fidarsi della versione formale.
 
@@ -192,22 +193,7 @@ Non sappiamo in quale dei due casi ci si trovi, ma sappiamo calcolarli entrambi:
 
 Il massimo è $19$, e la soluzione ottima è $\{v_1, v_3, v_6\}$. Si noti che questa è la ricorrenza $\text{OPT}[j] = \max\{\text{OPT}[j-1],\; w_j + \text{OPT}[j-2]\}$ già in forma definitiva: il termine $\text{OPT}[j-1]$ è il Caso 1, il termine $w_j + \text{OPT}[j-2]$ è il Caso 2, e l'indice $j-2$ è precisamente $v_{j-1}$ che si è stati costretti a escludere.
 
-> [!question] Domanda tipica d'esame — Sottostruttura ottima del WIS
-> **D:** Qual è la sottostruttura ottima del problema WIS su cammino, e come si dimostra che l'insieme ottimo $S^*$ deve rispettarla?
-> **R:**
-> **Impostazione.** Sia $S^*$ una soluzione ottima e sia $n \geq 2$. Si interroga l'**ultimo nodo**: i casi $v_n \notin S^*$ e $v_n \in S^*$ sono esaustivi e mutuamente esclusivi.
->
-> **Caso 1 — $v_n \notin S^*$.** Tesi: $S^*$ è ottima anche per $G' = G - \{v_n\}$.
-> *Per assurdo*: sia $S$ indipendente in $G'$ con $w(S) > w(S^*)$. Poiché $v_n \notin S$, $S$ è indipendente anche in $G$ (i soli archi in più di $G$ sono quelli incidenti a $v_n$). Allora $S$ è indipendente in $G$ e pesa più di $S^*$ — contro l'ottimalità di $S^*$.
->
-> **Caso 2 — $v_n \in S^*$.** Per indipendenza $v_{n-1} \notin S^*$. Tesi: $S^* \setminus \{v_n\}$ è ottima per $G'' = G - \{v_{n-1}, v_n\}$.
-> *Per assurdo*: sia $S$ indipendente in $G''$ con $w(S) > w(S^* \setminus \{v_n\})$. Allora $S \cup \{v_n\}$ è indipendente in $G$: le coppie interne a $S$ lo sono perché $S \subseteq \{v_1, \ldots, v_{n-2}\}$, e $v_n$ non confligge con nessuno perché il suo unico vicino $v_{n-1}$ non sta in $G''$. Il peso è $w(S) + w_n > w(S^* \setminus \{v_n\}) + w_n = w(S^*)$ — contro l'ottimalità di $S^*$.
->
-> **Conclusione.** Ogni soluzione ottima ha una delle due forme, quindi il valore ottimo è il massimo fra i due candidati, da cui l'equazione di Bellman
-> $$\text{OPT}[j] = \max\{\text{OPT}[j-1],\; w_j + \text{OPT}[j-2]\}$$
-> con casi base $\text{OPT}[1] = w_1$ e $\text{OPT}[2] = \max\{w_1, w_2\}$. Senza questa dimostrazione la ricorrenza sarebbe solo plausibile, non giustificata.
->
-> ⏱️ **Se la traccia dà 5 righe**: enuncia i due casi con i rispettivi sottografi $G'$ e $G''$ (2 righe), dai i due argomenti per assurdo in forma sintetica «$S$ resterebbe indipendente in $G$ e peserebbe di più» (2 righe), chiudi con la ricorrenza (1 riga). Le verifiche di indipendenza dettagliate si omettono, ma **i due casi e il fatto che siano esaustivi non si omettono mai**: è quello il cuore della risposta.
+→ **Palestra**: [[Esercizi 04 - Programmazione Dinamica#Sottostruttura ottima del WIS|sottostruttura ottima del WIS — domanda costruita]]
 ## Dall'idea ricorsiva all'algoritmo efficiente
 ### Prima idea (ingenua): ricorsione diretta
 Dalla proprietà di sottostruttura ottima viene naturale un algoritmo ricorsivo che calcola entrambi i casi e restituisce il migliore:
@@ -256,7 +242,10 @@ Il conteggio è impietoso:
 | $\text{OPT}(1)$ | 3 |
 | **totale chiamate** | **15** |
 
-**15 chiamate per 6 sottoproblemi diversi.** E $\text{OPT}(2)$ — che vale sempre e comunque $\max\{1, 4\} = 4$ — viene ricalcolato da capo cinque volte. Con $n = 30$ le chiamate sarebbero $1\,664\,079$; i sottoproblemi distinti, sempre 30.
+**15 chiamate per 6 sottoproblemi diversi.**
+
+![[dp1_ricorsione_esponenziale.png]]
+La slide che chiude il ragionamento: la proprietà di sottostruttura nei due casi, e sotto il costo dell'«idea forse folle» di calcolarli entrambi ricorsivamente. La ricorrenza è $T(n) = T(n-1) + T(n-2) + O(1)$ — **quella di Fibonacci** — quindi $T(n) = \Theta(\phi^n)$, esponenziale. Il punto da portarsi dietro: la ricorrenza è giusta, è il *modo di calcolarla* a essere sbagliato. E $\text{OPT}(2)$ — che vale sempre e comunque $\max\{1, 4\} = 4$ — viene ricalcolato da capo cinque volte. Con $n = 30$ le chiamate sarebbero $1\,664\,079$; i sottoproblemi distinti, sempre 30.
 ### Osservazione chiave: quanti sottoproblemi distinti esistono?
 > [!info] Numero di sottoproblemi distinti
 > L'algoritmo ricorsivo risolve solo sottoproblemi della forma "WIS sul prefisso $G_j$" per $j = 1, \ldots, n$. Esistono quindi **esattamente $n$ sottoproblemi distinti** — uno per ogni prefisso di $G$. Sono $\Theta(n)$: pochi!
@@ -314,7 +303,7 @@ In particolare $\text{OPT}[n]$ è il peso ottimo di $G_n = G$, che è quanto l'a
 A tabella finita, i valori si leggono meglio incolonnati sopra il grafo:
 
 ![[dp1_opt_values.png]]
-*Ogni $\text{OPT}[j]$ sta sopra il proprio nodo $v_j$. Si legge la ricorrenza a occhio: sotto $v_5$ (peso 3) il valore resta 12 perché $3 + \text{OPT}[3] = 12$ batte di poco $\text{OPT}[4] = 9$; sotto $v_6$ (peso 10) si arriva a $10 + \text{OPT}[4] = 19$. (slide 24)*
+Ogni $\text{OPT}[j]$ sta sopra il proprio nodo $v_j$. Si legge la ricorrenza a occhio: sotto $v_5$ (peso 3) il valore resta 12 perché $3 + \text{OPT}[3] = 12$ batte di poco $\text{OPT}[4] = 9$; sotto $v_6$ (peso 10) si arriva a $10 + \text{OPT}[4] = 19$. (slide 24)
 
 Il valore ottimo è $\text{OPT}[6] = 19$, corrispondente all'insieme $\{v_1, v_3, v_6\}$ (lo verificheremo con la ricostruzione).
 ### Complessità di WIS-BottomUp
@@ -323,10 +312,16 @@ Il valore ottimo è $\text{OPT}[6] = 19$, corrispondente all'insieme $\{v_1, v_3
 | Tempo | $T(n) = \Theta(n)$ — un'operazione per cella della tabella |
 | Spazio | $O(n)$ — il vettore $\text{OPT}$ di $n$ elementi |
 
+![[dp1_algoritmo_bottomup.png]]
+L'algoritmo come sta sulla slide, con il $T(n)=\Theta(n)$ incorniciato: due casi base, un ciclo da $3$ a $n$, una riga di ricorrenza. In fondo l'osservazione che apre la sezione successiva — **calcola il valore dell'ottimo, non l'ottimo**.
+
 > [!info] Ottimizzazione spaziale
 > Poiché la ricorrenza dipende solo da $\text{OPT}[j-1]$ e $\text{OPT}[j-2]$, è sufficiente mantenere le ultime due celle, riducendo lo spazio a $O(1)$. Tuttavia, per ricostruire la soluzione (non solo il valore) serve l'intero vettore.
 ## Ricostruzione della soluzione
 WIS-BottomUp calcola il **valore** dell'ottimo, ma non l'insieme $S^*$ stesso. Come recuperare i nodi scelti?
+
+![[dp1_ricostruzione.png]]
+La procedura di ricostruzione sulla slide, con sotto il risultato sull'istanza di riferimento: in rosso i nodi che finiscono in $S^*$ — $v_1, v_3, v_6$ — letti a ritroso dal vettore $\text{OPT}$ già calcolato. Si scorre da $j=n$ verso il basso confrontando $\text{OPT}[j-1]$ con $w_j + \text{OPT}[j-2]$: nessuna informazione aggiuntiva va memorizzata durante il riempimento.
 
 > [!quote] Proprietà chiave — Criterio di appartenenza
 > Nella ricostruzione qui descritta, il nodo $v_j$ viene **incluso** in $S^*$ **se e solo se**
@@ -375,23 +370,7 @@ S* = {v1, v3, v6}   w(S*) = 1 + 8 + 10 = 19  ✓
 
 **Complessità di WIS-Ricostruisci**: $T(n) = \Theta(n)$ — ogni iterazione decrementa $j$ di almeno 1, quindi il ciclo esegue al più $n$ passi.
 
-> [!question] Domanda tipica d'esame — Ricostruzione senza traccia delle scelte
-> **D:** Come si ricostruisce la soluzione ottima del WIS senza salvare le scelte durante il calcolo bottom-up?
-> **R:**
-> **Idea.** Le scelte non vanno memorizzate perché sono **ricalcolabili** dai soli valori $\text{OPT}[1..n]$: confrontando i due termini della ricorrenza in posizione $j$ si capisce quale dei due l'ha vinta.
->
-> **Criterio.** $v_j$ appartiene alla soluzione ottima ricostruita se e solo se
-> $$w_j + \text{OPT}[j-2] \;>\; \text{OPT}[j-1]$$
->
-> **Procedura.** Si parte da $j = n$ e si scorre verso sinistra:
-> - se la disuguaglianza **stretta** vale, si **include** $v_j$ e si salta a $j - 2$ (il vicino $v_{j-1}$ è escluso per forza);
-> - altrimenti (compreso il pareggio) si **esclude** $v_j$ e si passa a $j - 1$.
->
-> Si termina quando $j \leq 0$.
->
-> **Complessità.** $\Theta(n)$ aggiuntivo, con $O(1)$ spazio in più: ogni iterazione decrementa $j$ di almeno 1, quindi le iterazioni sono al più $n$.
->
-> **Osservazione da aggiungere se c'è spazio.** Sui pareggi ($w_j + \text{OPT}[j-2] = \text{OPT}[j-1]$) lo pseudocodice qui presentato **esclude** $v_j$: il test `OPT[j-1] ≥ w_j+OPT[j-2]` cattura anche l'uguaglianza e manda a $j-1$. È una scelta arbitraria ma legittima — a parità di somma entrambe le ricostruzioni (includere o escludere $v_j$) danno insiemi ottimi, coerente col fatto che la soluzione ottima non è unica mentre il valore lo è.
+→ **Palestra**: [[Esercizi 04 - Programmazione Dinamica#Ricostruzione senza traccia delle scelte|ricostruzione senza traccia delle scelte — domanda costruita]]
 ## Principi generali della programmazione dinamica
 Il WIS su cammino è il caso di studio introduttivo che illustra i principi generali della tecnica. Ogni algoritmo di programmazione dinamica ben costruito segue questa struttura:
 
@@ -404,16 +383,80 @@ Il WIS su cammino è il caso di studio introduttivo che illustra i principi gene
 >    Ogni sottoproblema viene risolto esattamente una volta; il risultato è disponibile in $O(1)$ per tutti i sottoproblemi successivi che ne hanno bisogno.
 > 4. **Avanzare sulla tabella nell'ordine giusto**, calcolando ogni cella in funzione di celle già riempite.
 
+![[dp1_quattro_passi.png]]
+I quattro passi come li enuncia il prof, con accanto a ciascuno l'istanza su WIS. È lo schema da riprodurre su ogni Esercizio 3: **sottoproblemi → ricorrenza → tabella → ordine di riempimento**.
+
 **Proprietà che i sottoproblemi devono soddisfare**:
 - Essere **pochi** (tipicamente $O(n)$, $O(n^2)$, $O(n \cdot W)$, …).
 - Avere **casi base** risolvibili direttamente.
 - Avere un **ordine di risoluzione**: la dipendenza tra sottoproblemi deve essere aciclica.
 - Risolti tutti, permettere di **ricavare rapidamente** la soluzione del problema originale.
 
+![[dp1_proprieta_sottoproblemi.png]]
+Le quattro proprietà che i sottoproblemi devono avere, dalla slide successiva. La seconda è quella che si dimentica: **risolti tutti i sottoproblemi si deve poter ricavare in fretta la soluzione cercata** — e spesso quella cercata è semplicemente il sottoproblema più grande.
+
 > [!warning] La chiave è definire i sottoproblemi giusti
 > La parte più difficile della programmazione dinamica non è scrivere il codice, ma **identificare i sottoproblemi corretti**. Essi sono un *punto di arrivo*, non di partenza: si trovano ragionando sulla struttura della soluzione ottima. Solo dopo aver definito i sottoproblemi si può verificare la correttezza dell'algoritmo e scrivere la ricorrenza.
 >
 > Errore tipico: scrivere una formula del tipo $\text{OPT}[j] = \text{OPT}[j-3] + j^2$ senza specificare cosa rappresenti $\text{OPT}[j]$. La formula senza la definizione del sottoproblema non ha significato.
+### Come si scrive un Esercizio 3
+*(extra, non da slide)* I quattro passi qui sopra descrivono la **tecnica**. Quello che segue è come si mette per iscritto sotto esame: la traccia dell'Esercizio 3 dice sempre «*progettate un algoritmo di programmazione dinamica che calcoli …*» — su 24 tracce, 17 hanno un Esercizio 3, tutte e 17 in questa forma, e 9 aggiungono «*si discuta la complessità temporale*».
+
+> [!info] Regola — il protocollo dell'Esercizio 3: cinque passi, sempre gli stessi
+> **1. Sottoproblema** — che cosa indicizza la tabella e cosa significa *esattamente* una sua cella, a parole prima che in formula: «$\text{OPT}[i][k]$ = il massimo … considerando i primi $i$ elementi e avendo usato $k$ …». Dichiara anche **quanti** sono.
+> **2. Ricorrenza** — la formula che lega una cella a celle più piccole, con i casi che la compongono, e una riga di **giustificazione**: si elencano i casi possibili per l'ultimo elemento, si dice che sono **esaustivi** e che in ciascuno il residuo è a sua volta un sottoproblema ottimo (è il *cut-and-paste*, e in una riga si liquida).
+> **3. Caso base** — le celle che si riempiono direttamente.
+> **4. Ordine di riempimento e dove si legge la risposta** — in che ordine si scorrono gli indici perché ogni cella trovi pronte quelle da cui dipende, e quale cella (o quale min/max) contiene il risultato. Se la traccia chiede anche la **soluzione** e non solo il suo valore, la ricostruzione sta qui.
+> **5. Complessità** — numero di celle $\times$ costo per cella, con la giustificazione, per tempo e spazio.
+>
+> Il passo difficile è **sempre il primo**, e gli altri quattro seguono quasi da soli. Se sei bloccato, il problema è la definizione dello stato, non la formula.
+
+> [!warning] Dove si perdono davvero i punti
+> Non nello pseudocodice: nel **passo 1**. Una definizione di sottoproblema sbagliata o vaga fa crollare tutto ciò che segue, mentre una definizione giusta con pseudocodice assente vale quasi tutto il punteggio. Se il tempo stringe, l'ordine di priorità è **sottoproblemi → ricorrenza → complessità → pseudocodice**.
+> **Lo pseudocodice la traccia non lo chiede mai**: la parola non compare in nessuna delle 24 tracce del campione, e il compito non ha un preambolo di istruzioni che lo imponga — la richiesta è sempre e solo «*progettate* un algoritmo di programmazione dinamica che calcoli X». Progettare significa **comunicare** l'algoritmo, e i cinque passi lo comunicano già per intero. Lo pseudocodice è *una* forma possibile per il passo 4, comoda quando l'ordine di riempimento è intricato, inutile quando lo sai dire in una riga di prosa.
+> Attenzione infine a **cosa** calcola la tabella: quasi sempre un **valore numerico**, non l'insieme soluzione. Ricostruire la soluzione è un lavoro a parte (dentro il passo 4) e va fatto solo se la traccia lo chiede.
+
+> [!info] La domanda da farsi quando non si trova la ricorrenza
+> *«Su quale singola decisione posso spezzare il problema, in modo che ciò che resta sia un'istanza più piccola dello stesso problema?»* Nel Weighted Interval Scheduling la decisione è «prendo il job $j$ oppure no»; nel Knapsack «metto l'oggetto $i$ nello zaino oppure no»; nel WIS su cammino «includo l'ultimo nodo oppure no» (vedi [[04 - Programmazione Dinamica I (Weighted Independent Set)#Il metodo: interrogare la soluzione ottima invece di costruirla|il metodo]]).
+> Se la risposta richiede di ricordare **più di una** informazione — come nel Knapsack, dove serve sapere anche quanta capacità resta — allora i sottoproblemi hanno **due indici** invece di uno, e la tabella diventa bidimensionale. È il segnale che distingue $\text{OPT}[j]$ da $\text{OPT}[i][w]$.
+
+> [!warning] Regola — il passo 4 quasi mai è «l'ultima cella», e i motivi sono quattro
+> Su questi otto problemi la risposta coincide con l'ultima cella della tabella **una volta sola**. Vale la pena vedere il conto, perché è il punto in cui si buttano via tutti gli altri quattro passi fatti bene.
+>
+> | problema | dove si legge la risposta |
+> |---|---|
+> | Comizi con budget | $\text{OPT}[n][B]$ — cella singola (stato «al più $B$») |
+> | LIS quasi monocromatica | $\max_i \text{OPT}[i][k]$ — massimo su una riga |
+> | Canguro | $\text{OPT}[n][m][k]$ — **cella singola** |
+> | Dominating set con sconti | minimo su **quattro dei cinque** stati finali |
+> | Metro D | minimo sull'**ultima colonna** |
+> | Case con $k$ rosse | minimo sul colore (e su $r$, se lo stato è «esattamente») |
+> | Job su due macchine | $\min_h\bigl(\text{OPT}[n][h] + c_h\bigr)$ — con un **termine aggiunto** |
+> | Tube Invaders | $\max_i \text{OPT}[i]$, oppure cella singola a seconda dello stato |
+>
+> I motivi per cui non è l'ultima cella sono **quattro diversi**, e riconoscere quale hai davanti è metà del lavoro:
+> 1. lo **stato è vincolato** e l'oggetto ottimo può finire ovunque (LIS, Tube Invaders);
+> 2. l'**insieme degli arrivi ammessi** è più grande di un punto (Metro D: tutta la colonna $m$);
+> 3. alcuni **stati finali sono inammissibili** e vanno esclusi (Dominating set: un nodo mai dominato);
+> 4. alla lettura serve **aritmetica in più**, non solo un min o un max (Job: il costo fisso $c_h$).
+>
+> **La regola pratica: il punto 4 non si risponde guardando la tabella, si risponde rileggendo il punto 1.** La domanda è «quali celle corrispondono a soluzioni *complete e ammissibili* del problema originale?». Se la definizione del sottoproblema contiene un vincolo — «che termina con $i$», «con esattamente $r$ rosse», «con $v_i$ non ancora dominato» — quel vincolo va **sciolto** alla lettura finale, e scioglierlo significa un min/max su tutte le celle che lo soddisfano *in modo ammissibile*.
+
+> [!info] Regola — quando il caso base esce da solo e quando va scritto a mano
+> La diagnostica utile non è «quante posizioni indietro guarda la ricorrenza», ma questa: **il caso base esce dalla ricorrenza solo quando l'insieme vuoto dei predecessori ha un'interpretazione valida.**
+> - *Esce da solo*: nella LIS il massimo su un insieme vuoto di predecessori rappresenta legittimamente la sottosequenza di un elemento solo, quindi $\text{OPT}[1][t] = 1 + \max(0,\ldots) = 1$ viene fuori gratis. Nei job su due macchine «zero job costano zero» è il prefisso vuoto in purezza.
+> - *Va scritto a mano*: nel Canguro, nella Metro D, nel Dominating set e nella colorazione, «nessun predecessore» **non è una configurazione** — il cammino o la colorazione devono pur venire da qualche parte. Lì la formula darebbe $\pm\infty$, che è sbagliato, e il caso base va dichiarato.
+>
+> **Controllo che vale sempre**: sostituisci il valore degenere (zero figli, budget zero, prefisso vuoto) nella ricorrenza. Se ottieni i casi base che avevi scritto, la definizione del sottoproblema è solida; se non li ottieni, o hai un caso base da dichiarare, oppure — più spesso — lo stato ha un buco.
+
+> [!info] Regola — un budget limitato da $n$ non ti porta nella pseudo-polinomialità
+> Tre di questi problemi hanno un secondo indice che è un budget: $k$ salti, $k$ case rosse, $k$ cambi di colore. In tutti e tre il budget è **limitato da una quantità legata a $n$** — non si fanno più di $n+m$ salti, non si dipingono più di $n$ case, una sottosequenza lunga $L$ ha al più $L-1$ cambi — quindi si può sempre troncare a $k' = \min(k, \cdot)$ e la complessità resta **polinomiale nella dimensione dell'istanza**.
+> È il contrasto esatto con il Knapsack, dove $W$ *non* è limitato da $n$ e $\Theta(nW)$ resta pseudo-polinomiale. Dirlo in una riga chiude il punto 5 con un argomento in più invece che con un numero solo.
+
+> [!warning] Il pattern che ricorre nelle tracce recenti
+> **Problema noto + un parametro di budget $k$ che diventa una dimensione della tabella.** Le tre tracce più recenti sono tutte così: un dominating set con uno sconto legato alla lunghezza del blocco, un cammino su griglia con $k$ salti a disposizione, una LIS con al più $k$ cambi di colore. La mossa da allenare è **riconoscere il problema noto sotto il travestimento** e chiedersi *quale grandezza va portata nello stato perché la ricorrenza si chiuda*.
+
+→ **Palestra**: gli otto Esercizio 3 reali su cui allenare tutto questo stanno in [[Esercizi 04 - Programmazione Dinamica]].
 ### Schema della tecnica: top-down con memoization vs bottom-up
 > [!info] Top-down (memoization) vs Bottom-up
 > **Top-down con memoization**: si usa la ricorsione naturale, ma prima di calcolare $\text{OPT}[j]$ si controlla se è già memorizzato nella tabella. Se sì, si restituisce il valore salvato; altrimenti si calcola ricorsivamente e si salva.
@@ -436,13 +479,8 @@ Le slide del corso propongono come estensione il WIS su **alberi** (non solo su 
 
 **Esempio delle slide** (pesi sui nodi):
 
-```
-              2          ← radice
-           /     \
-          7       6
-        /   \   / | \
-       3     1 2  3  3
-```
+![[dp1_wis_alberi_istanza.png]]
+L'istanza della festa aziendale. I numeri dentro i cerchi sono i **pesi** dei nodi, non i nomi: la radice pesa 2, i suoi due figli 7 e 6, le foglie 3, 1 sotto il 7 e 2, 3, 3 sotto il 6. I cerchi **rossi** sono la soluzione ottima, $\{7, 2, 3, 3\}$ di peso 15 — puoi usarla per controllare da solo il calcolo bottom-up qui sotto. Nota che l'ottimo **scarta la radice**, che pure è l'unico nodo da cui si vede tutto l'albero: prenderla costerebbe sia il 7 sia il 6. (slide 43)
 
 L'ottimo ha peso **OPT = 15**: si selezionano il nodo $7$ (figlio sinistro della radice) e i tre figli di $6$ (pesi $2, 3, 3$), escludendo la radice, il nodo $6$ e i due figli di $7$. In simboli l'insieme è $\{7, 2, 3, 3\}$, di peso $7 + 2 + 3 + 3 = 15$.
 
@@ -453,9 +491,14 @@ L'ottimo ha peso **OPT = 15**: si selezionano il nodo $7$ (figlio sinistro della
 **Casi base** (nodi foglia):
 $$A[v] = w_v \qquad B[v] = 0$$
 
-**Ricorrenza** per un nodo interno con figli $u_1, \ldots, u_d$:
+**Ricorrenza** per un nodo interno. Prima la notazione, che le slide danno per scontata: si chiamano $u_1, \ldots, u_d$ i **figli** di $v$, e $d$ è **quanti sono** — il grado di $v$ verso il basso. Attenzione che $d$ **non è una costante del problema**: cambia da nodo a nodo. Nell'esempio qui sopra la radice ha $d = 2$ (i nodi 7 e 6), il nodo 6 ha $d = 3$ (le tre foglie 2, 3, 3), ogni foglia ha $d = 0$.
+È questa variabilità a imporre la **sommatoria**: sul cammino ogni nodo aveva esattamente un vicino e si poteva scrivere un termine fisso, $\text{OPT}(j-2)$; su un albero il numero di figli non è noto in anticipo, quindi si scrive «sommali tutti» — e per sommarli tutti bisogna poterli nominare uno a uno.
 $$B[v] = \sum_{i=1}^{d} A[u_i]$$
 $$A[v] = \max\!\left\{B[v],\; w_v + \sum_{i=1}^{d} B[u_i]\right\}$$
+
+> [!info] Regola — i casi base escono gratis dalla formula generale
+> Su una foglia $d = 0$, e una sommatoria su **zero** termini vale $0$. Sostituendo: $B[v] = 0$ e $A[v] = \max\{0,\ w_v + 0\} = w_v$ — che sono esattamente i casi base enunciati sopra. Non sono una regola a parte: sono la ricorrenza generale letta con $d = 0$. Le slide li scrivono separati solo per chiarezza.
+> Vale la pena controllarlo ogni volta che progetti una ricorrenza con una sommatoria: se i casi base **non** escono da soli sostituendo il valore degenere, di solito è il segnale che la definizione del sottoproblema ha un buco.
 
 La logica: se $v$ non è incluso ($B[v]$), per ciascun figlio si prende il meglio senza vincoli ($A[u_i]$); se $v$ è incluso, nessun figlio può esserlo, quindi per ciascun figlio si prende il meglio senza $u_i$ ($B[u_i]$).
 
@@ -483,25 +526,10 @@ OPT = A[radice] = 15  ✓
 
 **Complessità**: $\Theta(n)$ tempo (ogni nodo viene visitato una volta), $\Theta(n)$ spazio.
 
-> [!question] Domanda tipica d'esame — Da cammino ad albero: perché due sottoproblemi per nodo
-> **D:** Come si estende l'algoritmo di programmazione dinamica per il WIS dai cammini agli alberi, e perché serve una coppia di sottoproblemi per ogni nodo invece di uno solo come nel caso del cammino?
-> **R:**
-> **Il problema del passaggio.** Sul cammino un solo valore per nodo basta, perché ogni nodo ha **un solo predecessore** e la condizione «$v_{j-1}$ escluso» si esprime saltando a $j-2$. Su un albero un nodo $v$ ha **più figli**, e per sapere se $v$ è includibile serve sapere se ciascun figlio è incluso nella *propria* soluzione ottima: un unico valore per sottoalbero non porta con sé questa informazione.
->
-> **Definizione dei due sottoproblemi.** Per ogni nodo $v$:
-> - $A[v]$ = peso massimo nel sottoalbero radicato in $v$, **senza vincoli** su $v$;
-> - $B[v]$ = peso massimo nello stesso sottoalbero, **con $v$ escluso**.
->
-> **Ricorrenza.** Detti $u_1, \ldots, u_k$ i figli di $v$:
-> $$B[v] = \sum_i A[u_i] \qquad\qquad A[v] = \max\Bigl\{\,B[v],\;\; w_v + \sum_i B[u_i]\,\Bigr\}$$
->
-> **Lettura della ricorrenza** — è qui che si vede perché servono due valori:
-> - se $v$ **è preso**, tutti i figli devono essere esclusi, quindi si sommano i $B[u_i]$;
-> - se $v$ **non è preso**, ogni figlio è libero di fare il meglio, quindi si sommano gli $A[u_i]$.
->
-> **Casi base e ordine di calcolo.** Per una foglia $v$: $B[v] = 0$ e $A[v] = w_v$. Si procede **bottom-up dalle foglie alla radice** (equivalentemente, con una visita post-order), così che i valori dei figli siano pronti quando serve il padre.
->
-> **Risultato e complessità.** La risposta è $A[r]$ con $r$ radice. Il costo è $\Theta(n)$ in tempo e spazio: ogni coppia $(A[v], B[v])$ si calcola una sola volta, e la somma dei gradi su tutti i nodi è $\Theta(n)$ perché un albero ha $n-1$ archi.
+→ **Palestra**: [[Esercizi 04 - Programmazione Dinamica#Da cammino ad albero: perché due sottoproblemi per nodo|da cammino ad albero: perché due sottoproblemi per nodo — domanda costruita]]
+
+![[dp1_wis_alberi.png]]
+La soluzione sulle slide, in inglese: per ogni nodo $v$, $A[v]$ è il peso del miglior insieme indipendente di $T_v$ e $B[v]$ quello dei soli insiemi **che non contengono $v$**. Da cui $B[v] = \sum_i A[u_i]$ sui figli, e $A[v] = \max\{B[v],\ w_v + \sum_i B[u_i]\}$. L'ordine di risoluzione è **bottom-up sull'albero**: è il passo 4 dello schema, qui non banale come sul cammino.
 ## Riepilogo complessità
 | Fase | Algoritmo | Tempo | Spazio |
 |---|---|---|---|
@@ -509,18 +537,7 @@ OPT = A[radice] = 15  ✓
 | Ricostruzione soluzione | WIS-Ricostruisci | $\Theta(n)$ | $O(1)$ aggiuntivo |
 | Totale (valore + soluzione) | — | $\Theta(n)$ | $O(n)$ |
 
-> [!question] Domanda tipica d'esame — Perché la ricorsione diretta è esponenziale
-> **D:** Perché l'approccio ricorsivo diretto per il WIS su cammino ha complessità esponenziale, mentre l'algoritmo bottom-up è lineare?
-> **R:**
-> **Costo della ricorsione diretta.** Ogni chiamata su $j$ ne genera due, su $j-1$ e $j-2$, con $O(1)$ di lavoro proprio:
-> $$T(n) = T(n-1) + T(n-2) + O(1)$$
-> È la ricorrenza di Fibonacci (vedi [[01 - Il Problema di Fibonacci]]), la cui soluzione è $T(n) = \Theta(\phi^n)$ con $\phi = \frac{1+\sqrt 5}{2} \approx 1{,}618$: **esponenziale**.
->
-> **Causa del costo.** Non è che i sottoproblemi siano tanti — è che vengono **ricalcolati**. I sottoproblemi *distinti* sono solo i prefissi $G_1, \ldots, G_n$, cioè $n$; l'albero di ricorsione però ne visita un numero esponenziale, perché lo stesso $\text{OPT}(j)$ viene raggiunto da molti rami diversi e ogni volta ricalcolato da zero. Su $n = 6$ le chiamate sono 15 per 6 sottoproblemi; su $n = 30$ sono $1\,664\,079$ per 30 sottoproblemi.
->
-> **Perché il bottom-up è lineare.** Risolve ciascuno degli $n$ sottoproblemi **una volta sola**, in ordine crescente di $j$, così che $\text{OPT}[j-1]$ e $\text{OPT}[j-2]$ siano già disponibili quando servono. Ogni cella costa $O(1)$, quindi il totale è $\Theta(n)$.
->
-> **La frase che chiude la risposta.** Il costo passa da «numero di nodi dell'albero di ricorsione» a «numero di sottoproblemi distinti $\times$ costo di uno» — ed è esattamente ciò che fa la programmazione dinamica. La memoization top-down ottiene lo stesso $\Theta(n)$ per la stessa ragione, tenendo l'albero di ricorsione ma visitandolo una volta sola per sottoproblema.
+→ **Palestra**: [[Esercizi 04 - Programmazione Dinamica#Perché la ricorsione diretta è esponenziale|perché la ricorsione diretta è esponenziale — domanda costruita]]
 
 > [!info] Connessioni ad altri argomenti
 > - La memoization applicata a Fibonacci (fibonacci3) è la versione più semplice della programmazione dinamica: [[01 - Il Problema di Fibonacci]].
@@ -528,3 +545,21 @@ OPT = A[radice] = 15  ✓
 > - Il **Weighted Interval Scheduling** e il problema **Knapsack** — altri classici della programmazione dinamica — sono trattati nella nota successiva: [[05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)]].
 > - **Sequence Alignment** (distanza di edit) e **Bellman-Ford** (cammini minimi con archi negativi) come applicazioni avanzate della programmazione dinamica: [[06 - Programmazione Dinamica III (Sequence Alignment e Bellman-Ford)]].
 > - Per il WIS su grafi generali (non cammini) il problema diventa NP-difficile: [[09 - NP-Completezza e Riduzioni]].
+## Mappa nota ↔ slide
+Riferimenti a `Materiale Didattico/Modulo II/Slide/04_DP_I_2025.pdf` (44 pagine).
+
+| Sezione della nota | Slide |
+|---|---|
+| L'idea, prima della tecnica | pp. 2-3 (inquadramento e sommario) |
+| Il problema: WIS su cammino | **p. 4** (definizione) · **pp. 5-8** (istanza $1,4,8,4,3,10$ e tre insiemi indipendenti, $w=12$, $18$, $19$) |
+| Perché le tecniche classiche non funzionano | p. 9 · **p. 10** (forza bruta) · **pp. 11-15** (greedy, demo) · **pp. 16-17** (divide et impera) · **p. 18** (diagnosi) |
+| Struttura della soluzione ottima | **p. 19** (il passaggio critico) · **pp. 20-21** (ragionare sulla struttura) · **p. 22** (la proprietà nei due casi e la ricorrenza di Fibonacci) |
+| Dall'idea ricorsiva all'algoritmo efficiente | **p. 23** (quanti sottoproblemi distinti) · **p. 24** (i sottoproblemi $G_j$ e il vettore OPT) |
+| L'algoritmo bottom-up | **p. 25** (algoritmo e $T(n)=\Theta(n)$) |
+| Ricostruzione della soluzione | p. 26 · **p. 27** (l'idea) · **pp. 28-33** (procedura e demo) |
+| Principi generali | **p. 34** (i quattro passi) · **p. 35** (proprietà dei sottoproblemi) |
+| La chiave è definire i sottoproblemi giusti | pp. 36-41 (i dialoghi con gli avvertimenti) |
+| Esercizio: WIS su alberi | **pp. 42-43** (il problema della festa aziendale) · **p. 44** (la soluzione: $A[v]$, $B[v]$) |
+
+> [!info] Come si legge — metà del deck è demo
+> Delle 44 pagine, una ventina sono animazioni della stessa istanza (pp. 5-8, 11-15, 28-33): scorrile in fila. Le pagine che contano davvero sono le nove in grassetto, e fra queste **p. 22** (perché la ricorsione diretta è esponenziale) e **p. 34** (i quattro passi) sono quelle da avere in testa martedì.

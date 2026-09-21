@@ -2,7 +2,7 @@
 tags:
   - algoritmi
   - dp
-slide: "6"
+slide: ["06"]
 capitolo: "Kleinberg-Tardos cap. 6"
 ---
 # Programmazione Dinamica III: Sequence Alignment e Bellman-Ford
@@ -15,7 +15,12 @@ Dati due testi — ad esempio le parole `ocurrance` e `occurrence`, oppure due s
 > Siano $X = x_1 x_2 \ldots x_m$ e $Y = y_1 y_2 \ldots y_n$ due stringhe. Il modello dei costi è:
 > - **Gap penalty** $\delta \geq 0$: costo per lasciare un carattere senza corrispondenza (gap).
 > - **Mismatch penalty** $\alpha_{pq} \geq 0$: costo per accoppiare il carattere $p$ con il carattere $q$; convenzionalmente $\alpha_{pp} = 0$.
+>
+> **Perché una matrice e non un numero solo.** Negli esempi si usa un unico $\alpha_{\text{mismatch}}$ per semplicità, ma la definizione è volutamente a **coppie**: il costo di scambiare due caratteri dipende da *quali* caratteri sono. Le slide 5–6 mostrano i due casi reali — la *confusion matrix* dell'inglese, dove confondere `e` con `a` è molto più frequente che confonderla con `q`, e la matrice **BLOSUM** per le proteine, dove i costi sono un dato biologico sulla sostituibilità degli amminoacidi. La ricorrenza non cambia di una virgola: cambia solo da dove si legge $\alpha_{x_i y_j}$.
 > La **distanza di edit** tra $X$ e $Y$ è il costo minimo di un allineamento tra le due stringhe.
+
+![[dp3_edit_distance.png]]
+Come si legge un allineamento: le due stringhe sono incolonnate carattere per carattere, le celle scure segnano dove si paga. La terza colonna è un **gap** (`–` sopra, `G` sotto: costo $\delta$), la settima e l'ottava sono **mismatch** (`CT` contro `GA`: costo $\alpha_{CG} + \alpha_{TA}$). Tutto il resto è match e non costa nulla, per la convenzione $\alpha_{pp} = 0$ che la slide dichiara a lato. (slide 4, che nel deck 06 coincide con la pagina 4 del PDF: lo sfasamento comincia da pagina 9)
 
 > [!quote] Definizione — Allineamento
 > Un **allineamento** $M$ è un insieme di coppie ordinate $(x_i, y_j)$ tale che:
@@ -104,8 +109,13 @@ un solo gap, sulla `G` che $Y$ non ha: costo $\delta = 2$. Il **traceback** è p
 
 | Risorsa | Costo |
 |---|---|
-| Tempo | $\Theta(mn)$ — $mn$ celle, ciascuna in $O(1)$ |
+| Tempo | $\Theta(mn)$ — $mn$ celle, ciascuna in $O(1)$ perché dipende da al più tre celle già calcolate |
 | Spazio | $\Theta(mn)$ — intera matrice $M$ |
+
+> [!info] Regola — lo spazio quadratico lo chiede il traceback, non il valore
+> Se serve **solo la distanza di edit**, bastano due colonne adiacenti alla volta: ogni cella dipende dalla colonna corrente e dalla precedente, quindi $O(m+n)$ di spazio è sufficiente.
+> È il **traceback** a costare: ripercorrere le scelte vincenti da $(m,n)$ fino a $(0,0)$ richiede di aver conservato tutte le celle, da cui $\Theta(mn)$.
+> Questa è esattamente la tensione da cui nasce l'algoritmo di Hirschberg: tenere lo spazio lineare **e** recuperare comunque l'allineamento. Vale la pena saperla enunciare in una riga, perché è il ponte fra le due metà di questa sezione.
 ### Traceback per ricostruire l'allineamento
 Dopo aver riempito la matrice, si ripercorre a ritroso da $M[m, n]$ a $M[0, 0]$: in ogni cella $(i, j)$ si identifica quale dei tre casi ha determinato il minimo e si segue la freccia corrispondente (diagonale, su, sinistra). I caratteri accoppiati generano match/mismatch; i movimenti orizzontali o verticali generano gap.
 
@@ -125,18 +135,7 @@ Dopo aver riempito la matrice, si ripercorre a ritroso da $M[m, n]$ a $M[0, 0]$:
 > Il traceback da $M[7,6]=3$ dà l'allineamento `PALETTE` / `PAL–ATE`: 1 gap + 1 mismatch, costo $2+1=3$.
 
 ![[dp3_palette_palate.png]]
-*Le frecce sono il traceback sulla stessa matrice: si parte dal 3 cerchiato in basso a destra e si risale fino a $(0,0)$. Ogni **diagonale** accoppia due caratteri (`P`-`P`, `A`-`A`, `L`-`L`, `T`-`T`, `E`-`E`), ogni freccia **verticale** è un gap. Il cammino tocca una verticale sola — la `E` di `PALETTE` senza corrispondenza — più il mismatch `T`/`A`: costo $2 + 1 = 3$. (slide numerata «12», pagina 11 del PDF)*
-
-> [!question] Domanda tipica d'esame — Complessità Sequence Alignment
-> **D:** Qual è la complessità del Sequence Alignment e da dove deriva il vincolo sullo spazio?
-> **R:**
-> **Tempo.** $\Theta(mn)$: si calcolano $mn$ sotto-problemi (le celle di $\text{OPT}(i,j)$), ciascuno in $O(1)$ perché dipende da al più tre celle già calcolate.
->
-> **Spazio.** $\Theta(mn)$: si mantiene l'intera matrice $M$, non solo l'ultima riga o colonna.
->
-> **Perché il vincolo.** Il traceback deve ripercorrere le scelte vincenti dall'angolo $(m,n)$ fino a $(0,0)$, quindi servono tutte le celle già calcolate — non basta l'ultima riga/colonna.
->
-> **Alternativa.** Se serve solo il valore della distanza, senza l'allineamento esplicito, bastano due colonne (o righe) adiacenti alla volta, riducendo lo spazio a $O(m+n)$: è esattamente l'osservazione da cui parte poi l'algoritmo di Hirschberg per recuperare anche il traceback in spazio lineare.
+Le frecce sono il traceback sulla stessa matrice: si parte dal 3 cerchiato in basso a destra e si risale fino a $(0,0)$. Ogni **diagonale** accoppia due caratteri (`P`-`P`, `A`-`A`, `L`-`L`, `T`-`T`, `E`-`E`), ogni freccia **verticale** è un gap. Il cammino tocca una verticale sola — la `E` di `PALETTE` senza corrispondenza — più il mismatch `T`/`A`: costo $2 + 1 = 3$. (slide numerata «12», pagina 11 del PDF)
 ## Algoritmo di Hirschberg (spazio lineare)
 La matrice $\Theta(mn)$ può essere proibitiva per stringhe lunghe. Hirschberg (1975) ha dimostrato che si può ottenere sia l'allineamento che il valore ottimo in spazio $O(m + n)$, mantenendo il tempo $O(mn)$, combinando divide-et-impera con la DP.
 
@@ -151,6 +150,9 @@ Per calcolare la colonna $j$ della matrice basta la colonna $j-1$: si mantengono
 - un arco verticale verso $(i-1, j)$ di peso $\delta$,
 - un arco orizzontale verso $(i, j-1)$ di peso $\delta$.
 
+![[dp3_grafo_edit_distance.png]]
+Il cambio di punto di vista che rende possibile Hirschberg: la matrice DP diventa un **grafo**, e allineare due stringhe diventa cercare un cammino minimo da $(0,0)$ a $(m,n)$. Sulla figura si vedono i tre archi uscenti da un nodo con i rispettivi pesi — diagonale $\alpha_{x_i y_j}$, verticale e orizzontale $\delta$ — e un cammino evidenziato in blu. Il lemma scritto in alto, $f(i,j) = \text{OPT}(i,j)$, è ciò che autorizza a leggere la tabella come distanze. (slide numerata «17», pagina 16 del PDF)
+
 Sia $f(i,j)$ la lunghezza del cammino minimo da $(0,0)$ a $(i,j)$ e $g(i,j)$ quella da $(i,j)$ a $(m,n)$ (calcolata invertendo gli archi e i ruoli dei due estremi). Si ha:
 - $f(i,j) = \text{OPT}(i,j)$ per tutti $i,j$ (dim. per induzione forte su $i+j$);
 - **(Osservazione 1)** la lunghezza del cammino minimo che passa per $(i,j)$ è $f(i,j) + g(i,j)$;
@@ -163,13 +165,8 @@ Sia $f(i,j)$ la lunghezza del cammino minimo da $(0,0)$ a $(i,j)$ e $g(i,j)$ que
 
 **Conquer.** Si richiama ricorsivamente l'algoritmo su $(x_1\ldots x_{q^*},\; y_1\ldots y_{n/2})$ e su $(x_{q^*+1}\ldots x_m,\; y_{n/2+1}\ldots y_n)$.
 
-```text
-       (0,0) ─────── colonna n/2 ──────── (m,n)
-                          │
-                     (q*,n/2)  ← nodo dell'allineamento ottimo
-                        /    \
-            ricorsione sx    ricorsione dx
-```
+![[dp3_hirschberg_divide.png]]
+Il passo **divide**. La banda rossa verticale è la colonna $n/2$, fissata una volta per tutte; il nodo scuro su quella banda è $q^*$, l'indice che minimizza $f(q, n/2) + g(q, n/2)$. L'Osservazione 2 garantisce che **esiste** un cammino minimo che lo attraversa — quindi il problema si spezza in due metà indipendenti, in alto a sinistra e in basso a destra, su cui si ricorre. Nota che non serve conoscere tutto il cammino: basta un suo punto, e il resto lo trova la ricorsione. (slide numerata «24», pagina 23 del PDF)
 
 > [!quote] Teorema — Analisi di Hirschberg (tempo)
 > Sia $T(m, n)$ il tempo di esecuzione massimo dell'algoritmo di Hirschberg su stringhe di lunghezze al più $m$ e $n$. Allora $T(m, n) = O(mn)$.
@@ -189,18 +186,7 @@ $$T(m,n) \;\leq\; 2c q^* \frac{n}{2} + 2c(m-q^*)\frac{n}{2} + cmn = cq^*n + cmn 
 | DP standard | $\Theta(mn)$ | $\Theta(mn)$ |
 | Hirschberg | $O(mn)$ | $\Theta(m+n)$ |
 
-> [!question] Domanda tipica d'esame — Idea e complessità di Hirschberg
-> **D:** Qual è l'idea alla base dell'algoritmo di Hirschberg per il sequence alignment, e quali sono tempo e spazio risultanti rispetto alla DP standard?
-> **R:**
-> **Idea.** Il valore $\text{OPT}(i,j)$ si può calcolare mantenendo solo due colonne della matrice (quella corrente e la precedente), in spazio $O(m+n)$ — ma così si perde la possibilità di fare il traceback. Hirschberg recupera l'allineamento sfruttando il grafo di edit: si calcola $f(i,j)$ (cammino minimo da $(0,0)$ a $(i,j)$, che coincide con $\text{OPT}(i,j)$) e $g(i,j)$ (cammino minimo da $(i,j)$ a $(m,n)$), ciascuno in tempo $O(mn)$ e spazio $O(m+n)$.
->
-> **Divide.** Sulla colonna centrale $n/2$ si trova l'indice $q^*$ che minimizza $f(q,n/2)+g(q,n/2)$: per l'Osservazione 2, il nodo $(q^*,n/2)$ appartiene a un cammino minimo, quindi fa parte di un allineamento ottimo.
->
-> **Conquer.** Si applica ricorsivamente lo stesso procedimento ai due sotto-problemi $(x_1\ldots x_{q^*}, y_1\ldots y_{n/2})$ e $(x_{q^*+1}\ldots x_m, y_{n/2+1}\ldots y_n)$, dimezzando ogni volta l'intervallo di colonne.
->
-> **Complessità.** Tempo: $T(m,n) \leq T(q^*,n/2)+T(m-q^*,n/2)+O(mn)$, che per induzione forte su $m+n$ dà $T(m,n) \leq 2cmn = O(mn)$ — stesso ordine della DP standard. Spazio: $\Theta(m+n)$, perché ogni chiamata ricorsiva usa $\Theta(m)$ spazio per calcolare $f(\cdot,n/2)$ e $g(\cdot,n/2)$, e il numero di chiamate ricorsive attive è limitato.
->
-> **Confronto.** Rispetto alla DP standard ($\Theta(mn)$ tempo e spazio), Hirschberg mantiene lo stesso ordine di tempo ma riduce lo spazio da quadratico a lineare — il vantaggio è puramente sullo spazio.
+→ **Palestra**: [[Esercizi 06 - Programmazione Dinamica III (Sequence Alignment e Bellman-Ford)#Idea e complessità di Hirschberg|idea e complessità di Hirschberg — domanda costruita]]
 ## Cammini minimi con pesi negativi: Bellman-Ford-Moore
 ### Perché Dijkstra non basta
 L'algoritmo di [[10 - Cammini Minimi e Dijkstra|Dijkstra]] risolve il problema SSSP in tempo $O(m + n \log n)$ con pesi **non negativi**. In presenza di pesi negativi, la strategia greedy di Dijkstra — estrarre il nodo con distanza minima e fissarla definitivamente — non è più valida: un arco negativo potrebbe abbreviare un cammino già "chiuso".
@@ -219,20 +205,14 @@ L'algoritmo di [[10 - Cammini Minimi e Dijkstra|Dijkstra]] risolve il problema S
 > **Reweighting**: sommando $8$ a ogni peso i valori diventano $s\to t = 10$, $s \to v = 14$, $s \to w = 12$, $v \to w = 0$, $w \to t = 11$. Ora $s \to v \to w \to t$ costa $14 + 0 + 11 = 25$, mentre $s \to t$ ne costa $10$: il cammino minimo è **cambiato**. Il motivo è che un cammino di $k$ archi viene penalizzato di $8k$, quindi i cammini lunghi — proprio quelli che gli archi negativi rendevano convenienti — sono i più danneggiati.
 
 ![[dp3_dijkstra_reweight.png]]
-*I due tentativi falliti, come li presenta il prof. **In alto** il grafo originale: la nota a lato («Dijkstra selects the vertices in the order $s, t, w, v$») è la chiave di lettura — $t$ viene chiuso per primo, a 2, e non verrà più aggiornato. **In basso** lo stesso grafo con $+8$ su ogni arco: il cammino minimo passa da $s\to v\to w\to t$ a $s \to t$, cioè il reweighting ha cambiato la risposta. Attenzione a copiare i pesi esattamente da qui: invertire $s\to t$ e $s\to v$ distrugge il controesempio, perché Dijkstra tornerebbe a dare il risultato corretto. (slide numerata «30», pagina 29 del PDF)*
-
-> [!question] Domanda tipica d'esame — Perché Dijkstra fallisce con pesi negativi
-> **D:** Perché l'algoritmo di Dijkstra non funziona in presenza di archi con peso negativo, e perché non basta sommare una costante positiva a tutti i pesi per aggirare il problema?
-> **R:**
-> **Causa del fallimento.** Dijkstra è greedy: ad ogni passo estrae il nodo con distanza stimata minima e la fissa come definitiva, assumendo implicitamente che nessun cammino scoperto in seguito possa essere più corto. Questa assunzione vale solo se tutti i pesi sono non negativi, perché solo allora estendere un cammino con un arco in più non può mai diminuirne la lunghezza.
->
-> **Controesempio.** Con pesi negativi l'assunzione cade: un arco negativo scoperto più tardi può abbreviare un cammino che termina in un nodo già "chiuso". Nell'esempio sopra Dijkstra fissa subito $t$ a 2 tramite l'arco diretto $s \to t$, e solo dopo scopre $s \to v \to w \to t$ di lunghezza $6 + (-8) + 3 = 1$: la risposta corretta è 1, ma $t$ è ormai chiuso e l'algoritmo restituisce 2.
->
-> **Perché il reweighting ingenuo non basta.** Sommare una costante $c>0$ a ogni peso non preserva l'ordine dei cammini per lunghezza, perché la penalità totale su un cammino è proporzionale al numero di archi che contiene: un cammino con $k$ archi vede il proprio costo aumentare di $kc$. Un cammino con più archi — magari proprio quello reso minimo dai pesi negativi — viene quindi penalizzato più di un cammino con meno archi ma costo originario maggiore, alterando quale cammino risulta minimo.
+I due tentativi falliti, come li presenta il prof. **In alto** il grafo originale: la nota a lato («Dijkstra selects the vertices in the order $s, t, w, v$») è la chiave di lettura — $t$ viene chiuso per primo, a 2, e non verrà più aggiornato. **In basso** lo stesso grafo con $+8$ su ogni arco: il cammino minimo passa da $s\to v\to w\to t$ a $s \to t$, cioè il reweighting ha cambiato la risposta. Attenzione a copiare i pesi esattamente da qui: invertire $s\to t$ e $s\to v$ distrugge il controesempio, perché Dijkstra tornerebbe a dare il risultato corretto. (slide numerata «30», pagina 29 del PDF)
 ### Cicli negativi
 > [!quote] Definizione — Ciclo negativo
 > Un **ciclo negativo** è un ciclo diretto $W = v_1 \to v_2 \to \ldots \to v_k \to v_1$ per cui
 > $$\ell(W) = \sum_{e \in W} \ell_e < 0$$
+
+![[dp3_ciclo_negativo.png]]
+Il ciclo in nero ha pesi $5,\; -3,\; 4,\; -4,\; -3$: la somma è $-1 < 0$, quindi è un ciclo negativo. Gli archi grigi appartengono al grafo ma non al ciclo. Serve avere in mente questa figura quando si legge il Lemma 1: girare su quel ciclo abbassa il costo di 1 ad ogni giro, e nulla impedisce di girare all'infinito. (slide numerata «31», pagina 30 del PDF)
 
 > [!quote] Lemma 1 — Ciclo negativo e inesistenza del minimo
 > Se un qualsiasi cammino da $v$ a $t$ contiene un ciclo negativo, allora **non esiste** un cammino minimo da $v$ a $t$.
@@ -389,18 +369,12 @@ Per rilevare cicli negativi raggiungibili da $t$, si esegue una **passata aggiun
 > [!quote] Lemma — Correttezza del rilevamento
 > Se esiste un ciclo negativo raggiungibile da $t$, la passata $n$ lo rileva.
 
+> [!warning] Le slide chiamano «Lemma 6» due enunciati diversi
+> Sulla pagina 46 del PDF il Lemma 6 dice che *ogni ciclo diretto nel grafo dei successori è negativo*; sulla pagina 50 lo stesso numero è riusato per *la passata $n$ rileva il ciclo negativo*. Sono risultati distinti. Questa nota numera il primo e lascia il secondo senza numero, chiamandolo per esteso: se incroci nota e slide, non cercare una corrispondenza fra i numeri.
+
 **Dimostrazione (per assurdo).** Se non ci fosse nessun ciclo negativo, la passata $n$ non cambierebbe nulla (le distanze sono già ottime dopo $n-1$ passate, per il Teorema 2). Se invece esiste un ciclo negativo $W = v_1 \to \ldots \to v_k \to v_1$, si assuma per assurdo che il test $d[v] > d[w] + \ell_{vw}$ della passata aggiuntiva sia sempre falso. Allora $d[v_i] \leq d[v_{i+1}] + \ell(v_i, v_{i+1})$ per ogni $i$ (indici ciclici, $v_{k+1} = v_1$). Sommando lungo $W$ e semplificando i $d[\cdot]$ si ottiene $\ell(W) \geq 0$, che contraddice $\ell(W) < 0$. $\square$
 
-> [!question] Domanda tipica d'esame — Rilevamento cicli negativi
-> **D:** Come rileva Bellman-Ford-Moore un ciclo negativo?
-> **R:**
-> **Idea.** Dopo le $n-1$ passate normali — sufficienti a calcolare le distanze ottime in assenza di cicli negativi, perché per il Lemma 2 esiste sempre un cammino minimo semplice con al più $n-1$ archi — si esegue una passata aggiuntiva $n$-esima.
->
-> **Criterio.** Se in questa passata esiste ancora un arco $(v,w)$ con $d[v] > d[w] + \ell_{vw}$, significa che $d[v]$ potrebbe ancora diminuire, cioè esiste un cammino che beneficia di più di $n-1$ archi — possibile solo in presenza di un ciclo negativo raggiungibile da $t$.
->
-> **Perché funziona.** Se non ci fossero cicli negativi, la passata $n$ non cambierebbe nulla, perché le distanze sono già ottime dopo $n-1$ passate. Se invece esiste un ciclo negativo $W = v_1 \to \ldots \to v_k \to v_1$ e, per assurdo, nessun arco soddisfacesse la condizione, varrebbe $d[v_i] \leq d[v_{i+1}] + \ell(v_i,v_{i+1})$ per ogni $i$ (indici ciclici); sommando lungo $W$ si otterrebbe $\ell(W) \geq 0$, contraddizione.
->
-> **Complessità.** La passata aggiuntiva esamina ogni arco una volta, quindi costa $O(m)$ — lo stesso ordine di una singola passata normale — e non cambia la complessità asintotica $O(mn)$ dell'algoritmo.
+La passata aggiuntiva esamina ogni arco una volta sola, quindi costa $O(m)$ — lo stesso di una passata normale — e **non cambia** la complessità asintotica $O(mn)$ dell'algoritmo.
 ### Esempio di esecuzione
 Le slide propongono un grafo su cui provare l'algoritmo. I nodi sono $t, B, C, D, E$ (sulla slide il pozzo $t$ è disegnato come nodo $A$); l'ordine con cui vengono processati è $t, D, C, B, E$. Gli archi, orientati come li usa l'algoritmo *single-destination* (verso $t$), con i relativi pesi:
 ```
@@ -414,8 +388,33 @@ D ──(−3)──> E
 E ───2───> B
 ```
 
+![[dp3_bfm_esempio_grafo.png]]
+Il grafo come lo disegna la slide. Il pozzo è il nodo etichettato **A**, ma nell'ordine di visita è chiamato $t$: sono lo stesso nodo. I due archi curvi fra $B$ e $D$ vanno letti con attenzione — sono **due archi distinti in versi opposti**, $B \to D$ di peso 1 e $D \to B$ di peso 2 — ed è lì che si sbaglia a copiare. (slide numerata «40», pagina 39 del PDF)
+
+**Esecuzione.** L'algoritmo è *single-destination*: $d[v]$ è la stima corrente della distanza da $v$ **verso** $t$, e processare il nodo $v$ significa rilassare i suoi archi **uscenti**, cioè $d[v] \gets \min_{(v,w) \in E}\{\ell_{vw} + d[w]\}$. Gli aggiornamenti sono in-place: un nodo processato più tardi nella stessa passata vede già i valori freschi di quelli processati prima.
+
+| passata | $d[t]$ | $d[D]$ | $d[C]$ | $d[B]$ | $d[E]$ |
+|---|---|---|---|---|---|
+| init | $0$ | $+\infty$ | $+\infty$ | $+\infty$ | $+\infty$ |
+| 1 | $0$ | $+\infty$ | $4$ | $-1$ | $1$ |
+| 2 | $0$ | $\mathbf{-2}$ | $\mathbf{2}$ | $-1$ | $1$ |
+| 3 | $0$ | $-2$ | $2$ | $-1$ | $1$ |
+
+**Passata 1**, nell'ordine $t, D, C, B, E$:
+- $t$ è il pozzo, $d[t] = 0$ e non ha archi uscenti;
+- $D$: i suoi archi portano a $E$ e $B$, entrambi ancora a $+\infty$, quindi $d[D]$ non cambia — **è la conseguenza dell'ordine di visita**, $D$ viene processato prima di chi gli sta a valle;
+- $C$: $\min\{4 + d[t],\, 3 + d[B],\, 5 + d[D]\} = \min\{4, +\infty, +\infty\} = 4$;
+- $B$: $\min\{-1 + d[t],\, 1 + d[D]\} = -1$;
+- $E$: $2 + d[B] = 2 - 1 = 1$, e qui si vede l'aggiornamento in-place — $E$ usa il valore di $B$ appena calcolato, nella stessa passata.
+
+**Passata 2**: ora $D$ trova $E$ a 1 e chiude a $d[D] = -3 + 1 = -2$; di conseguenza $C$ scende da 4 a $\min\{4,\, 3 - 1,\, 5 - 2\} = 2$, passando per $B$ invece che per l'arco diretto. $B$ ed $E$ restano invariati.
+
+**Passata 3**: nessun valore cambia, l'algoritmo si ferma. Il bound del Lemma 2 concederebbe $n - 1 = 4$ passate: ne sono bastate **due** produttive più una di conferma.
+
+I cammini minimi corrispondenti, leggibili dai puntatori `successor`, sono $B \to t$ ($-1$), $E \to B \to t$ ($1$), $D \to E \to B \to t$ ($-2$) e $C \to B \to t$ ($2$): per $C$ l'arco diretto $C \to t$ di peso 4 **non** è la scelta ottima, nonostante sia l'unico disponibile alla prima passata.
+
 > [!info] Nota sull'esempio
-> Il grafo non ha cicli negativi: gli unici cicli diretti sono $B \to D \to B$ (peso $1 + 2 = 3$) e $D \to E \to B \to D$ (peso $-3 + 2 + 1 = 0$), entrambi $\geq 0$; il problema è quindi ben posto. Eseguendo Bellman-Ford-Moore con l'ordine di visita $t, D, C, B, E$, dopo poche passate nessun $d[\cdot]$ cambia più e l'algoritmo termina **prima** delle $n-1$ iterazioni (terminazione anticipata): è la conferma pratica che Bellman-Ford-Moore è spesso molto più veloce del worst-case $O(mn)$.
+> Il grafo non ha cicli negativi: gli unici cicli diretti sono $B \to D \to B$ (peso $1 + 2 = 3$) e $D \to E \to B \to D$ (peso $-3 + 2 + 1 = 0$), entrambi $\geq 0$; il problema è quindi ben posto. Eseguendo Bellman-Ford-Moore con l'ordine di visita $t, D, C, B, E$, come mostra la tabella qui sopra nessun $d[\cdot]$ cambia più già alla terza passata, e l'algoritmo termina **prima** delle $n-1$ iterazioni (terminazione anticipata): è la conferma pratica che Bellman-Ford-Moore è spesso molto più veloce del worst-case $O(mn)$.
 ## Confronto Dijkstra vs Bellman-Ford-Moore
 | Proprietà | [[10 - Cammini Minimi e Dijkstra\|Dijkstra]] | Bellman-Ford-Moore |
 |---|---|---|
@@ -430,3 +429,24 @@ E ───2───> B
 > - La tecnica DP di questa nota si innesta direttamente su [[04 - Programmazione Dinamica I (Weighted Independent Set)]] e [[05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)]]: stessa metodologia (sotto-struttura ottima, ricorrenza, bottom-up).
 > - La visita del grafo e la nozione di cammino minimo rimandano a [[08 - Grafi e Visite]] e [[10 - Cammini Minimi e Dijkstra]].
 > - Bellman-Ford-Moore è il fondamento teorico del protocollo di routing **RIP** (Routing Information Protocol) nelle reti di calcolatori. *(extra, non da slide)*
+## Mappa nota ↔ slide
+Il deck `06_DP_III_2025.pdf` ha 50 pagine. **Attenzione alla numerazione**: fino a pagina 8 il numero stampato coincide con la pagina del PDF, da pagina 9 in poi il numero stampato è **pagina + 1** (manca la slide 9). La tabella riporta entrambi.
+
+| Sezione della nota | Pagine PDF | Slide numerate |
+|---|---|---|
+| Sequence Alignment — motivazione, edit distance, modello dei costi | 3–8 | 3–8 |
+| Struttura della sotto-soluzione ottima | 9 | 10 |
+| Algoritmo bottom-up | 10 | 11 |
+| Traceback per ricostruire l'allineamento | 11 | 12 |
+| Complessità del Sequence Alignment | 12 | 13 |
+| Algoritmo di Hirschberg (spazio lineare) | 14–26 | 15–27 |
+| Perché Dijkstra non basta | 28–29 | 29–30 |
+| Cicli negativi, Lemma 1 e Lemma 2 | 30–33 | 31–34 |
+| Formulazione DP dei cammini minimi | 34–36 | 35–37 |
+| Bellman-Ford-Moore: implementazione efficiente | 37–38 | 38–39 |
+| Esempio di esecuzione | 39 | 40 |
+| Correttezza, analisi, grafo dei successori | 40–47 | 41–48 |
+| Rilevamento di cicli negativi | 48–50 | 49–51 |
+| Confronto Dijkstra vs Bellman-Ford-Moore | — | *(extra, non da slide)* |
+
+Le pagine 5–6 (confusion matrix per l'inglese, matrice BLOSUM per le proteine) sono materiale di contesto sulle applicazioni: la nota le usa dentro «Motivazione e modello dei costi» per spiegare perché $\alpha_{pq}$ è una matrice e non un numero. Le pagine 1, 2, 13 e 27 sono divisori di sezione senza contenuto.

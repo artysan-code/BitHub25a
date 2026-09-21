@@ -2,30 +2,13 @@
 tags:
   - algoritmi
   - dp
-slide: "5"
+slide: ["05"]
 capitolo: "Kleinberg-Tardos cap. 6"
 ---
 # Programmazione Dinamica II: Weighted Interval Scheduling, Segmented Least Squares, Knapsack e LIS
 La programmazione dinamica consiste nello spezzare un problema in una serie di **sottoproblemi sovrapposti**, risolverli una volta sola e memorizzarne i risultati in una tabella per evitare il ricalcolo. Rispetto al greedy (confronto in [[01 - Greedy e Interval Scheduling]]) non impone scelte irrevocabili: esplora tutte le alternative possibili con costo polinomiale sfruttando la **sottostruttura ottima**. Questa nota copre quattro problemi classici — Weighted Interval Scheduling, Segmented Least Squares, Knapsack 0/1 e Longest Increasing Subsequence — più l'esercizio House Coloring. Per i fondamenti della tecnica si rimanda a [[04 - Programmazione Dinamica I (Weighted Independent Set)]].
-## Schema generale della programmazione dinamica
-Tutti i problemi di questa nota seguono lo stesso schema. Vale la pena impararlo come **procedura**, perché è esattamente ciò che l'Esercizio 3 dello scritto chiede di produrre: la traccia dice sempre «*progettate un algoritmo di programmazione dinamica che calcoli …*», e talvolta aggiunge «*si discuta la complessità temporale*».
-
-> [!info] I sei punti di una risposta completa all'Es3
-> 1. **Definizione dei sottoproblemi** — a parole e senza ambiguità: *«$\text{OPT}[\ldots]$ è il valore ottimo del problema ristretto a …»*. Vanno dichiarati anche **quanti** sono.
-> 2. **Equazione di Bellman** — la ricorrenza, con i **casi base** espliciti.
-> 3. **Giustificazione della ricorrenza** — si elencano i casi possibili per l'ultimo elemento, si mostra che sono **esaustivi**, e che in ciascuno il residuo è a sua volta un sottoproblema ottimo.
-> 4. **Ordine di calcolo** — in che ordine si riempie la tabella, così che ogni cella trovi già pronte quelle da cui dipende.
-> 5. **Dove si legge la risposta** — quale cella contiene il risultato (e, se richiesta, come si ricostruisce la soluzione e non solo il suo valore).
-> 6. **Complessità** — tempo e spazio, giustificati come «numero di celle $\times$ costo per cella».
-
-> [!warning] Dove si perdono davvero i punti
-> Non nello pseudocodice: nel **punto 1**. Una definizione di sottoproblema sbagliata o vaga fa crollare tutto ciò che segue, mentre una definizione giusta con pseudocodice assente vale quasi tutto il punteggio. Se il tempo stringe, l'ordine di priorità è **sottoproblemi → ricorrenza → complessità → pseudocodice**.
-> Lo pseudocodice conviene comunque scriverlo — una volta fissati i punti 1 e 2 è meccanico (due cicli annidati e la riga della ricorrenza), costa poco e toglie ogni ambiguità su *quale* algoritmo hai progettato.
-> Attenzione infine a **cosa** calcola la tabella: quasi sempre un **valore numerico**, non l'insieme soluzione. Ricostruire la soluzione è un passo separato (punto 5) e va fatto solo se la traccia lo chiede.
-
-> [!info] La domanda da farsi quando non si trova la ricorrenza
-> *«Su quale singola decisione posso spezzare il problema, in modo che ciò che resta sia un'istanza più piccola dello stesso problema?»* Nel Weighted Interval Scheduling la decisione è «prendo il job $j$ oppure no»; nel Knapsack «metto l'oggetto $i$ nello zaino oppure no»; nel WIS su cammino «includo l'ultimo nodo oppure no» (vedi [[04 - Programmazione Dinamica I (Weighted Independent Set)#Il metodo: interrogare la soluzione ottima invece di costruirla|il metodo]]).
-> Se la risposta richiede di ricordare **più di una** informazione — come nel Knapsack, dove serve sapere anche quanta capacità resta — allora i sottoproblemi hanno **due indici** invece di uno, e la tabella diventa bidimensionale. È il segnale che distingue $\text{OPT}[j]$ da $\text{OPT}[i][w]$.
+## Schema generale della programmazione dinamica *(extra, non da slide)*
+Tutti i problemi di questa nota seguono lo stesso schema, ed è quello che l'Esercizio 3 dello scritto chiede di produrre: il metodo per esteso — i cinque passi, dove si perdono i punti, dove si legge la risposta — sta in [[04 - Programmazione Dinamica I (Weighted Independent Set)#Come si scrive un Esercizio 3]].
 ## Weighted Interval Scheduling
 ### Il problema
 **Input**: $n$ job; il job $j$ inizia in $s_j$, termina in $f_j$ e ha **peso** $w_j > 0$.
@@ -35,14 +18,14 @@ Due job sono **compatibili** se non si sovrappongono. L'obiettivo è trovare il 
 > La versione con pesi unitari ($w_j = 1$ per ogni $j$) si risolve in modo ottimo con l'algoritmo greedy *earliest-finish-time first* (vedi [[01 - Greedy e Interval Scheduling]]). Con pesi arbitrari il greedy può fallire drasticamente: un singolo job di peso $999$ viene ignorato a favore di due job di peso $1$ ciascuno.
 
 ![[dp2_greedy_pesato_che_fallisce.png]]
-*Il caso estremo: earliest-finish-time-first prende $a$ e $h$ perché finiscono presto, e totalizza $1 + 1 = 2$; il job $b$, che da solo vale **999**, viene scartato perché finisce tardi. Il criterio greedy guarda i tempi e ignora i pesi — ed è la ragione per cui qui serve la DP. (slide 8)*
+Il caso estremo: earliest-finish-time-first prende $a$ e $h$ perché finiscono presto, e totalizza $1 + 1 = 2$; il job $b$, che da solo vale **999**, viene scartato perché finisce tardi. Il criterio greedy guarda i tempi e ignora i pesi — ed è la ragione per cui qui serve la DP. (slide 8)
 ### Struttura della soluzione ottima
 **Convenzione**: i job sono ordinati in ordine crescente di finish time, $f_1 \le f_2 \le \cdots \le f_n$.
 
 > [!quote] Definizione — Predecessore $p(j)$
 > $p(j)$ è il più grande indice $i < j$ tale che il job $i$ è **compatibile** con il job $j$ (cioè $f_i \le s_j$). Se nessun job è compatibile con $j$, allora $p(j) = 0$.
 
-**Istanza di riferimento** (usata in tutta la sezione). Sei job, già ordinati per tempo di fine:
+**Istanza di riferimento** *(extra, non da slide)*, usata in tutta la sezione. Le slide mostrano solo l'istanza a 8 job della slide 9, senza pesi e senza esecuzione: questa è costruita apposta per poter riempire la tabella a mano. Sei job, già ordinati per tempo di fine:
 
 | $j$ | $s_j$ | $f_j$ | $w_j$ | $p(j)$ |
 |---|---|---|---|---|
@@ -58,10 +41,10 @@ Sull'asse dei tempi (il peso è tra parentesi):
     0   1   2   3   4   5   6   7   8   9   <- tempo
 1   |===========|                               (2)
 2       |===========|                           (4)
-3   |===============|                           (4)
+3   |===================|                       (4)
 4               |===========|                   (7)
 5                   |===========|               (2)
-6               |===========================|   (1)
+6               |=======================|       (1)
 ```
 **Come si legge $p(j)$**: $p(4) = 1$ perché il job 4 inizia in $s_4 = 3$, e il job compatibile con indice più alto è il job 1 (finisce esattamente in $f_1 = 3 \le 3$); i job 2 e 3 finiscono dopo e si sovrappongono. $p(5) = 2$ perché $s_5 = 4$ e il job 2 finisce in $f_2 = 4$. $p(2) = 0$ perché nulla finisce entro $s_2 = 1$: nessun job è compatibile, e la ricorsione riparte da zero.
 
@@ -69,7 +52,7 @@ Sull'asse dei tempi (il peso è tra parentesi):
 > È l'errore più comune. $p(j)$ **non** è «il job precedente», è **l'ultimo job compatibile**: saltare da $j$ a $p(j)$ scarta in un colpo solo *tutti* i job incompatibili con $j$. Nel WIS su cammino il salto era sempre di due posizioni ($j \to j-2$) perché ogni nodo confligge solo col vicino; qui la lunghezza del salto dipende dall'istanza. È esattamente la stessa idea, generalizzata.
 
 ![[dp2_istanza_8jobs.png]]
-*L'istanza a 8 job usata dal prof a lezione (la stessa che ricorre nei compiti d'esame). Verifica i tre valori sulla figura: $p(8) = 1$ perché il job 8 parte in 4 e solo il job 1 finisce entro quel punto; $p(7) = 3$ perché il job 7 parte in 6 e il job 3 finisce in 6; $p(2) = 0$ perché prima del job 2 non finisce nulla. (slide 9)*
+L'istanza a 8 job usata dal prof a lezione (la stessa che ricorre nei compiti d'esame). Verifica i tre valori sulla figura: $p(8) = 1$ perché il job 8 parte in 4 e solo il job 1 finisce entro quel punto; $p(7) = 3$ perché il job 7 parte in 6 e il job 3 finisce in 6; $p(2) = 0$ perché nessun job di indice minore finisce entro $s_2 = 3$ (il job 1 finisce in 4, cioè *dopo*). (slide 9)
 
 > [!quote] Definizione — $\text{OPT}(j)$
 > $\text{OPT}(j)$ è il peso massimo di qualunque sottoinsieme di job mutualmente compatibili scelto tra i job $1, 2, \ldots, j$.
@@ -80,6 +63,9 @@ Sull'asse dei tempi (il peso è tra parentesi):
 
 > [!quote] Equazione di Bellman — Weighted Interval Scheduling
 > $$\text{OPT}(j) = \begin{cases} 0 & j = 0 \\ \max\bigl\{\text{OPT}(j-1),\; w_j + \text{OPT}(p(j))\bigr\} & j \ge 1 \end{cases}$$
+
+![[dp2_bellman_wis.png]]
+La slide da cui viene tutto il paragrafo. I due casi sono scritti nella forma in cui il prof li vuole sentire: «$\text{OPT}(j)$ **does not select** job $j$» e «$\text{OPT}(j)$ **selects** job $j$ → collect profit $w_j$, can't use $\{p(j)+1, \ldots, j-1\}$, must include optimal solution on $1,\ldots,p(j)$». L'annotazione rossa a lato — *optimal substructure property (proof via exchange argument)* — è la dimostrazione che la slide **non** svolge e che trovi qui sotto per esteso. (slide 10)
 
 La slide etichetta i due casi come *optimal substructure property (proof via exchange argument)* senza svolgere la dimostrazione: la si rende qui esplicita, perché è esattamente il «ponte» che l'Es3 richiede fra la struttura della soluzione e la ricorrenza.
 
@@ -136,6 +122,9 @@ Vale la pena leggere due righe di questa tabella per capire il meccanismo:
 > Un greedy che prende sempre il job più pesante disponibile sceglierebbe il job 4 (peso 7) — e in questo caso ci azzecca. Ma basta alzare a 5 il peso dei job 2 e 5, che sono fra loro compatibili: il greedy prenderebbe ancora il job 4 fermandosi a 9, mentre $\{2, 5\}$ vale $10$. Nessun criterio locale sa quando conviene rinunciare a un job pesante per due leggeri che stanno insieme: serve confrontare *tutte* le alternative, ed è ciò che fa la riga $\max$ della ricorrenza.
 ### Algoritmo con memoization (top-down)
 Il calcolo ricorsivo senza memoization ha $T(n) = T(n-1) + T(n-2) + O(1)$, che cresce come la sequenza di Fibonacci: **esponenziale**. La memoization elimina i ricalcoli.
+
+![[dp2_ricorsione_esponenziale.png]]
+Perché è esattamente Fibonacci. A sinistra l'istanza «a strati» che realizza il caso peggiore: è costruita in modo che $p(j) = j-2$ per ogni $j$, quindi i due rami della ricorsione sono $j-1$ e $j-2$. A destra l'albero di ricorsione che ne risulta, con i sottoproblemi ripetuti ben visibili — il 3 compare due volte, il 2 tre volte, l'1 cinque volte. È la stessa figura del WIS su cammino in [[04 - Programmazione Dinamica I (Weighted Independent Set)]]: **sovrapposizione dei sottoproblemi**, che è la condizione che rende utile memorizzare. (slide 13)
 
 ```pseudo
 \begin{algorithm}
@@ -211,32 +200,14 @@ Complessità: $O(n)$ — al più $n$ chiamate ricorsive.
 > | Analisi complessità | Più delicata | Immediata |
 > | Codice | Più intuitivo | Più compatto e cache-efficiente |
 
-> [!question] Domanda tipica d'esame — Perché il greedy fallisce
-> **D:** Perché l'algoritmo greedy *earliest-finish-time first* non funziona per il Weighted Interval Scheduling? Come si risolve correttamente?
-> **R:**
-> **Comportamento del greedy.** *Earliest-finish-time first* seleziona sempre il job che termina prima, **senza guardare il peso**: è lo stesso criterio ottimo per il problema non pesato (vedi [[01 - Greedy e Interval Scheduling]]), ma qui ignora l'informazione che conta di più.
->
-> **Controesempio.** È l'istanza della slide 8 (gli stessi job $a$, $h$, $b$ della figura sopra): il job pesante $b = [0, 10]$ ha peso $999$; due job di peso $1$ coprono $a = [0, 3]$ e $h = [8, 11]$ e sono fra loro compatibili. Il greedy prende $a$ e $h$, perché finiscono prima, e totalizza $2$, scartando il job da $999$.
->
-> **Causa.** Il criterio è **locale**: guarda solo i tempi di fine, mai il peso, quindi non può accorgersi che rinunciare a due job leggeri per uno pesante conviene. Nessuna regola greedy basata su un solo parametro (tempo, peso, densità) è ottima in generale per il WIS.
->
-> **Soluzione corretta.** Si usa la programmazione dinamica, con equazione di Bellman $\text{OPT}(j) = \max\{\text{OPT}(j-1),\, w_j + \text{OPT}(p(j))\}$ e caso base $\text{OPT}(0) = 0$: confrontando *entrambe* le alternative a ogni job si garantisce l'ottimo, in $O(n \log n)$ (dominato dall'ordinamento e dal calcolo di $p(j)$ con ricerca binaria).
-
-> [!question] Domanda tipica d'esame — Riduzione a WIS
-> **D:** *(Vero o Falso)* «Trasformando opportunamente l'istanza I, è possibile darla in input all'algoritmo di Programmazione Dinamica per il Weighted Interval Scheduling ed ottenere la soluzione ottima per I.» *(chiesto il 12/09/2023)*
-> **R:**
-> **Risposta.** Vero.
->
-> **Perché.** La tecnica è la **riduzione**: si trasforma l'istanza $I$ in un'istanza equivalente di WIS (job con intervalli $[s_j, f_j]$ e pesi $w_j$) tale che la soluzione ottima calcolata dall'algoritmo PD di WIS sull'istanza trasformata corrisponda esattamente alla soluzione ottima di $I$.
->
-> **Esempio.** L'Interval Scheduling **non pesato** (vedi il confronto a inizio sezione): ponendo $w_j = 1$ per ogni job, l'equazione di Bellman $\text{OPT}(j) = \max\{\text{OPT}(j-1),\, w_j + \text{OPT}(p(j))\}$ diventa $\text{OPT}(j) = \max\{\text{OPT}(j-1),\, 1 + \text{OPT}(p(j))\}$, che calcola la cardinalità massima di un sottoinsieme di job compatibili — esattamente l'ottimo del problema non pesato.
->
-> **Osservazione.** In generale, per mostrare che un problema $P$ si risolve con l'algoritmo PD di WIS basta esibire una **trasformazione polinomiale** dell'istanza di $P$ in un'istanza di intervalli pesati che preservi il valore ottimo: è lo schema di riduzione che estende un algoritmo esistente a problemi apparentemente diversi.
+→ **Palestra**: [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#Riduzione a WIS|riduzione a WIS — 12/09/2023]]
 ## Segmented Least Squares
 ### Il problema
 **Least Squares**: dati $n$ punti $(x_1, y_1), \ldots, (x_n, y_n)$ nel piano, trovare la retta $y = ax + b$ che minimizza la **somma degli scarti quadratici** (SSE):
 $$\text{SSE} = \sum_{i=1}^{n} (y_i - ax_i - b)^2$$
-La soluzione in forma chiusa si ricava dal calcolo, con complessità $O(n)$ per fissato insieme di punti.
+La soluzione in forma chiusa si ricava dal calcolo (slide 36):
+$$a = \frac{n\sum_i x_i y_i - \bigl(\sum_i x_i\bigr)\bigl(\sum_i y_i\bigr)}{n\sum_i x_i^2 - \bigl(\sum_i x_i\bigr)^2}, \qquad b = \frac{\sum_i y_i - a\sum_i x_i}{n}$$
+Una volta noti i quattro accumulatori $\sum x_i$, $\sum y_i$, $\sum x_i^2$, $\sum x_i y_i$, il calcolo costa $O(1)$; leggerli dai punti costa $O(n)$. È questa osservazione che più avanti permette di scendere da $O(n^3)$ a $O(n^2)$.
 **Segmented Least Squares**: i punti **non** sono approssimabili bene da un'unica retta, ma da una **sequenza di segmenti lineari**. Si vuole minimizzare:
 $$f = E + c \cdot L$$
 dove $E$ è la somma degli SSE di ciascun segmento, $L$ è il numero di rette usate, e $c > 0$ è una costante di penalità per la parsimonia.
@@ -255,6 +226,9 @@ dove $E$ è la somma degli SSE di ciascun segmento, $L$ è il numero di rette us
 > $$\text{OPT}(j) = \begin{cases} 0 & j = 0 \\ \displaystyle\min_{1 \le i \le j}\bigl\{e_{ij} + c + \text{OPT}(i-1)\bigr\} & j \ge 1 \end{cases}$$
 
 La **scelta multipla** (multiway choice) distingue questo problema da Weighted Interval Scheduling, dove la scelta era binaria.
+
+![[dp2_sls_multiway.png]]
+Il titolo della slide è il nome della categoria: *dynamic programming: **multiway choice***, in contrapposizione a *binary choice* della slide 10. Il segnale visivo è il $\min_{1 \le i \le j}$ sotto il segno di minimo: dove WIS confronta due quantità, qui se ne confrontano $j$. Anche qui l'annotazione rossa rimanda all'*exchange argument* senza svolgerlo. (slide 39)
 ### Algoritmo bottom-up
 ```pseudo
 \begin{algorithm}
@@ -290,14 +264,13 @@ La ricostruzione risale la tabella $M$: partendo da $j = n$, si trova l'indice $
 > [!quote] Teorema — Complessità Segmented Least Squares (Bellman 1961)
 > L'algoritmo DP risolve il problema Segmented Least Squares in $O(n^3)$ tempo e $O(n^2)$ spazio (versione base), o in $O(n^2)$ tempo con pre-calcolo delle somme cumulative.
 
-> [!question] Domanda tipica d'esame — Scelta binaria vs multipla
-> **D:** Qual è la differenza strutturale tra l'equazione di Bellman per il Weighted Interval Scheduling e quella per il Segmented Least Squares?
-> **R:**
-> **WIS — scelta binaria.** Si include o si esclude il job $j$: un'unica alternativa per ciascuno dei due casi, quindi il $\max$ della ricorrenza confronta solo **due** valori, $\text{OPT}(j-1)$ e $w_j + \text{OPT}(p(j))$.
+> [!info] Regola — binaria o multipla: si legge dalla decisione, non dal problema
+> Guarda la decisione su cui spezzi il problema e conta **quante alternative apre**.
+> - **Binaria** — «prendo l'elemento $j$ oppure no». Il $\max$ confronta **due** valori: ogni cella costa $O(1)$. Weighted Interval Scheduling, Knapsack, WIS su cammino.
+> - **Multipla** — «l'ultimo segmento parte da $i$, e $i$ può essere qualunque indice fra 1 e $j$». Il $\min$ confronta fino a $j$ valori: ogni cella costa $O(j)$. Segmented Least Squares, LIS.
 >
-> **SLS — scelta multipla.** L'ultimo segmento può coprire qualunque prefisso finale $[i, j]$ con $1 \le i \le j$: il $\min$ della ricorrenza confronta fino a $j$ alternative, una per ogni possibile inizio $i$ dell'ultimo segmento.
->
-> **Conseguenza sulla complessità.** Entrambe sfruttano la sottostruttura ottima (il sottoproblema residuo è a sua volta ottimo), ma il ciclo interno necessario per esaminare le $j$ alternative di SLS porta il riempimento della tabella a $O(n^2)$ invece del $O(n)$ di WIS, dove ogni cella si calcola in $O(1)$ noto $p(j)$.
+> **Il costo totale è il prodotto di due cose indipendenti**: *numero di celle* × *costo per cella*. La scelta binaria/multipla fissa **solo il secondo fattore**; il primo dipende da quanti indici ha il sottoproblema. WIS ha $n$ celle da $O(1)$ → $O(n)$; LIS e Segmented Least Squares hanno $n$ celle da $O(j)$ → $O(n^2)$; Knapsack ha $nW$ celle da $O(1)$ → $\Theta(nW)$, **binario ma bidimensionale**.
+> All'Esercizio 3 è la differenza fra scrivere due cicli annidati e scriverne tre: sbagliare uno dei due fattori costa sul punto 6 anche quando i punti 1 e 2 sono giusti.
 ## Knapsack 0/1
 ### Il problema
 **Input**: $n$ oggetti; l'oggetto $i$ ha **valore** $v_i > 0$ e **peso** $w_i > 0$ (interi). Uno zaino ha capacità $W$ (intero). **Obiettivo**: selezionare un sottoinsieme di oggetti di valore totale massimo senza superare il peso $W$.
@@ -322,28 +295,15 @@ Anche qui la slide indica *optimal substructure property (proof via exchange arg
 
 Il **caso base** è $\text{OPT}(0, w) = 0$ per ogni $w$ (nessun oggetto ⇒ valore nullo, qualunque sia la capacità). L'**ordine di riempimento** segue la ricorrenza: ogni cella $(i, w)$ dipende solo dalla **riga precedente** $i-1$ (nelle colonne $w$ e $w - w_i \le w$), quindi si riempie la tabella per $i$ crescente da $0$ a $n$, e per ciascuna riga si scorre $w$ da $0$ a $W$.
 
-> [!question] Domanda tipica d'esame — Significato di OPT(j-1, w-wj)
-> **D:** «B) Prefissato un qualsiasi ordinamento degli items {Ij : j= 1,...,n}, la funzione OPT(j-1,w-wj) calcolata da PD è uguale al valore ottimo relativo alla sottoistanza \<I1,...,Ij-1; w- wj \> ? Se SI, in che modo viene utilizzato questo valore nell'algoritmo PD? Se NO, quale/i valore/i della funzione OPT(j,w) vengono utilizzati da PD al generico passo ricorsivo?» *(chiesto il 14/09/2022)*
-> **R:**
-> **Risposta.** Sì.
+> [!warning] Le tre domande di questa sezione vengono da un Esercizio 1 in formato Clementi
+> Due stanno qui sotto, la terza — «K è in P?» — in coda alla sezione, dopo la pseudo-polinomialità, che le serve da premessa. Sono tutte dell'appello del **14/09/2022**, quando il Modulo II era tenuto dal prof. Clementi e l'Esercizio 1 poteva chiedere *teoria* sulla programmazione dinamica. Nella configurazione attuale la DP compare **solo** nell'Esercizio 3, e sempre come progettazione su un problema inedito.
+> Questo non le rende inutili, ma cambia come allenarle: il **contenuto** — cosa contiene la cella, perché servono due indici, pseudo-polinomialità — resta pienamente esigibile, all'orale e come controllo che la tua definizione di sottoproblema regga. È la **forma** «spiega a parole cosa rappresenta $M(j,w)$» a non essere più comparsa allo scritto.
 >
-> **Perché.** Per definizione $\text{OPT}(j,w)$ è il valore ottimo della sottoistanza formata dai primi $j$ item con capacità $w$ (vedi la definizione data in questa sezione); sostituendo $j \to j-1$ e $w \to w-w_j$, $\text{OPT}(j-1, w-w_j)$ è — sempre per definizione — il valore ottimo della sottoistanza $\langle I_1,\ldots,I_{j-1}; w-w_j \rangle$.
->
-> **Uso nell'algoritmo.** Questo valore compare nel passo ricorsivo dell'equazione di Bellman $\text{OPT}(j,w) = \max\{\text{OPT}(j-1,w),\, v_j + \text{OPT}(j-1, w-w_j)\}$, e corrisponde al **Caso 2**: il ramo in cui l'item $I_j$ **viene incluso** nella soluzione ottima, per cui si somma $v_j$ al valore ottimo ottenibile dai primi $j-1$ item con la capacità residua $w-w_j$ rimasta dopo aver "pagato" il peso $w_j$.
->
-> **Condizione.** Il termine è valido solo se $w_j \le w$; altrimenti l'item non entra e $\text{OPT}(j,w) = \text{OPT}(j-1,w)$.
+> → **Palestra**: le tre risposte a lunghezza d'esame stanno in [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#Knapsack 0/1|Esercizi 05]].
 
-> [!question] Domanda tipica d'esame — Cosa rappresenta M(j,w)
-> **D:** «C) Nella versione iterativa dell'algoritmo PD, l'entrata della matrice M(j,w) contiene la soluzione ottima formata da un qualsiasi sottoinsieme S di {I1=(w1,v1), ..., Ij=(wj,vj) , ..., In=(wn,vn) } tale che: |S| <= j e Σ_(k∉S) vk = w ?» *(chiesto il 14/09/2022)*
-> **R:**
-> **Risposta.** No.
->
-> **Errore 1 — l'insieme di partenza.** $M(j,w)$ è definita sui **primi $j$ item** $\{I_1,\ldots,I_j\}$, non su un sottoinsieme $S$ qualunque estratto da **tutta** la lista $\{I_1,\ldots,I_n\}$ con $|S|\le j$: un sottoinsieme di $j$ item presi da posizioni arbitrarie (es. $\{I_2, I_7\}$ con $j=5$) non è ammissibile per $M(j,w)$, che considera solo $S \subseteq \{I_1,\ldots,I_j\}$.
->
-> **Errore 2 — il vincolo di capacità.** La formulazione è sbagliata: deve valere $\sum_{k \in S} w_k \le w$ (il **peso totale degli item selezionati** non supera la capacità residua $w$), non $\sum_{k \notin S} v_k = w$ (somma dei *valori* degli item *esclusi*, priva di significato per il problema).
->
-> **Definizione corretta.** Coerente con quella data in questa nota:
-> $$M(j,w) = \max\Bigl\{\sum_{k\in S} v_k \;:\; S \subseteq \{I_1,\ldots,I_j\},\; \sum_{k \in S} w_k \le w\Bigr\}$$
+→ **Palestra**: [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#Significato di OPT(j-1, w-wj)|significato di OPT(j-1, w-wj) — 14/09/2022, al massimo quattro righe]]
+
+→ **Palestra**: [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#Cosa rappresenta M(j,w)|cosa rappresenta M(j,w) — 14/09/2022, al massimo quattro righe]]
 ### Algoritmo bottom-up
 ```pseudo
 \begin{algorithm}
@@ -381,7 +341,7 @@ Con gli oggetti $\{(v_1=1,w_1=1),\,(v_2=6,w_2=2),\,(v_3=18,w_3=5),\,(v_4=22,w_4=
 La soluzione ottima è $\text{OPT}(5, 11) = 40$ (sottoinsieme $\{3, 4\}$, peso $5+6=11$, valore $18+22=40$).
 
 ![[dp2_knapsack_problem.png]]
-*La stessa tabella dalle slide. Tienila accanto quando ti alleni a riempirla a mano: l'errore tipico non è la formula ma la **colonna** da cui si pesca, cioè $w - w_i$ invece di $w$. Esempio da verificare sulla figura: la cella $(\{1,2,3,4\},\ 11) = 40$ nasce da $v_4 + \text{OPT}(3,\ 11-6) = 22 + \text{OPT}(3,5) = 22 + 18$, non da $\text{OPT}(3,11) = 25$. (slide 47)*
+La stessa tabella dalle slide. Tienila accanto quando ti alleni a riempirla a mano: l'errore tipico non è la formula ma la **colonna** da cui si pesca, cioè $w - w_i$ invece di $w$. Esempio da verificare sulla figura: la cella $(\{1,2,3,4\},\ 11) = 40$ nasce da $v_4 + \text{OPT}(3,\ 11-6) = 22 + \text{OPT}(3,5) = 22 + 18$, non da $\text{OPT}(3,11) = 25$. (slide 47)
 ### Ricostruzione della soluzione
 Si risale la tabella dall'angolo in basso a destra: l'oggetto $i$ **è incluso** nella soluzione ottima per $(i, w)$ se e solo se $M[i][w] > M[i-1][w]$ (cioè la selezione ha effettivamente aumentato il valore). In caso affermativo si ricorre su $(i-1, w - w_i)$, altrimenti su $(i-1, w)$.
 ### Complessità e pseudo-polinomialità
@@ -397,38 +357,7 @@ Si risale la tabella dall'angolo in basso a destra: l'oggetto $i$ **è incluso**
 >
 > **Nota**: l'integrità dei pesi è essenziale. Con pesi reali arbitrari la tabella non è indicizzabile e l'approccio DP non funziona direttamente. L'integrità dei valori invece **non** è necessaria per la correttezza.
 
-> [!question] Domanda tipica d'esame — Perché due variabili
-> **D:** Perché per il Knapsack 0/1 è necessario definire il sottoproblema con due variabili $\text{OPT}(i, w)$ invece di una sola $\text{OPT}(i)$?
-> **R:**
-> **Il problema con una sola variabile.** Con $\text{OPT}(i)$ = valore ottimo usando i primi $i$ oggetti, si fissa il prefisso ma non la **capacità residua**: quando si decide se aggiungere l'oggetto $i$, non si sa quanto spazio è ancora disponibile nello zaino, e senza questa informazione non si può scrivere una ricorrenza corretta.
->
-> **La seconda variabile.** $w$ rappresenta esattamente la **capacità residua**: fissando sia il prefisso $i$ sia la capacità $w$ disponibile, il sottoproblema $\text{OPT}(i,w)$ è ben definito e ammette una ricorrenza.
->
-> **Ricorrenza.** Se $w_i > w$ l'oggetto non entra e $\text{OPT}(i,w) = \text{OPT}(i-1,w)$; altrimenti si massimizza tra escluderlo (costo $\text{OPT}(i-1,w)$) e includerlo (costo $v_i + \text{OPT}(i-1, w-w_i)$).
->
-> **Caso base.** $\text{OPT}(0,w) = 0$ per ogni $w$: senza oggetti disponibili il valore selezionabile è nullo, qualunque sia la capacità.
-
-> [!question] Domanda tipica d'esame — Pseudo-polinomialità
-> **D:** L'algoritmo DP per il Knapsack è polinomiale?
-> **R:**
-> **Risposta.** No.
->
-> **Perché.** La complessità $\Theta(nW)$ è **pseudo-polinomiale**: è polinomiale nei *valori* dell'input, non nella sua *dimensione in bit*. Se $W$ è rappresentato con $k$ bit allora $W = O(2^k)$, e l'algoritmo esegue $\Theta(n \cdot 2^k)$ operazioni — esponenziale in $k$, cioè nella dimensione reale dell'input.
->
-> **Osservazione.** Knapsack è un problema **NP-hard** (vedi [[09 - NP-Completezza e Riduzioni]]) e non si conosce alcun algoritmo polinomiale nella dimensione dell'input: l'esistenza della DP pseudo-polinomiale non contraddice questo fatto, perché "pseudo-polinomiale" e "polinomiale" sono nozioni diverse (vedi la domanda successiva).
-
-> [!question] Domanda tipica d'esame — K è in P?
-> **D:** «ESERCIZIO 1. Si consideri il problema Knapsack (K) e si consideri l'algoritmo ottimale PD per K basato sulla Programmazione Dinamica. Si consideri una generica istanza X = \<I1=(w1,v1), ..., Ij=(wj,vj) , ..., In=(wn,vn) ; W\> di K, dove M = max{wj, vj, W : j=1,...,n}. Si risponda alle seguenti domande con al massimo quattro righe negli spazi appropriati, dando delle brevi spiegazioni. A) L'esistenza di un qualsiasi algoritmo che impiega tempo Θ(n^2 log^24(M)) mostrerebbe che il problema K è nella classe P?» *(chiesto il 14/09/2022)*
-> **R:**
-> **Risposta.** Sì.
->
-> **Perché.** $\Theta(n^2 \log^{24} M)$ è polinomiale nella **dimensione dell'input**, che è $O(n \log M)$ bit (peso, valore e capacità sono codificati in binario, quindi ciascuno occupa $O(\log M)$ bit). Un tempo $\Theta(n^2 \log^{24} M)$ è polinomiale sia in $n$ sia in $\log M$, cioè nella lunghezza della codifica dell'istanza: un tale algoritmo classificherebbe $K$ in P.
->
-> **Confronto con la DP standard.** L'algoritmo PD di questa nota ha complessità $\Theta(nW)$: è polinomiale nel *valore* $W$ (quindi in $M$), non nella sua *dimensione in bit* $\log W$ — è **pseudo-polinomiale**, non polinomiale (vedi il riquadro sulla pseudo-polinomialità qui sopra).
->
-> **Distinzione.** È esattamente quella tra $\text{poly}(M)$ (pseudo-polinomiale, come $\Theta(nW)$) e $\text{poly}(\log M)$ (polinomiale in senso proprio, come l'ipotetico $\Theta(n^2 \log^{24} M)$).
->
-> ⏱️ **Se la traccia dà 4 righe**: rispondi Sì e giustifica in una riga che $\Theta(n^2\log^{24}M)$ è polinomiale in $n$ e $\log M$ — cioè nella dimensione in bit dell'istanza, $O(n\log M)$ — quindi metterebbe $K$ in P (1-2 righe); chiudi con il confronto secco «a differenza della PD standard, che è $\Theta(nW)$ e quindi solo pseudo-polinomiale» (1-2 righe). **Non va mai omessa** la distinzione fra dimensione in bit dell'istanza e valore numerico dei dati: è il concetto su cui verte l'intera domanda.
+→ **Palestra**: [[Esercizi 05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)#K è in P?|k è in P? — 14/09/2022, al massimo quattro righe]]
 ## Longest Increasing Subsequence (LIS)
 ### Il problema
 **Input**: una sequenza $S[1], S[2], \ldots, S[n]$ di $n$ numeri reali. **Obiettivo**: trovare la **sottosequenza crescente più lunga** (LIS), cioè una sequenza di indici $i_1 < i_2 < \cdots < i_k$ tale che $S[i_1] < S[i_2] < \cdots < S[i_k]$, con $k$ massimo.
@@ -437,11 +366,17 @@ Si risale la tabella dall'angolo in basso a destra: l'oggetto $i$ **è incluso**
 > Sequenza: $S = [4, 1, 8, 3, 4, 8, 2, 7, 5, 6, 9, 8]$
 >
 > La lunghezza della LIS ottima è $6$. Un esempio di LIS di lunghezza 6: $1, 3, 4, 5, 6, 9$ (indici $2, 4, 5, 9, 10, 11$).
+
+![[dp2_lis_istanza.png]]
+La stessa istanza sulle slide, con la sottosequenza evidenziata. Attenzione: la slide evidenzia $1, 3, 4, 5, 6, \mathbf{8}$ (indici $2,4,5,9,10,12$), questa nota usa $1,3,4,5,6,\mathbf{9}$ (indici $2,4,5,9,10,11$). **Non è una discrepanza**: la LIS non è unica, entrambe hanno lunghezza 6, ed è per questo che la ricorrenza calcola una lunghezza e non un insieme. (slide 21)
 ### Primo tentativo fallito
 Se si definisce $\text{OPT}[i]$ = lunghezza della LIS di $S[1], \ldots, S[i]$, non si riesce a scrivere una ricorrenza semplice: non si sa con quale valore termina la LIS di $S[1..i]$, e quindi non si può decidere se $S[i+1]$ può essere aggiunto.
 
-> [!info] Tecnica: aggiungere un vincolo al sottoproblema
-> Una soluzione classica consiste nel **restringere** la definizione del sottoproblema, aggiungendo il vincolo che la sottosequenza **termini obbligatoriamente con $S[i]$**. Questo abilita la ricorrenza.
+> [!info] Regola — quando il primo tentativo non chiude, vincola il sottoproblema
+> Il primo tentativo fallisce per un motivo preciso: $\text{OPT}[i]$ = «lunghezza della LIS di $S[1..i]$» non dice **con quale valore finisce** quella LIS, e senza quel dato non si può decidere se $S[i+1]$ la prolunga.
+> La mossa è **restringere** la definizione aggiungendo un vincolo che fissi proprio l'informazione mancante: «… **che termina con $S[i]$**». Il sottoproblema diventa più rigido, ma la ricorrenza si chiude, perché ora il confronto $S[j] < S[i]$ è sempre possibile.
+> **Il prezzo si paga alla fine.** Il vincolo fissa dove termina *una* sottosequenza, non dove termina l'intera LIS: la risposta globale è $\max_{i} \text{OPT}[i]$, **non** $\text{OPT}[n]$. Ogni volta che vincoli un sottoproblema, ricontrolla dove si legge la risposta — è l'errore che segue sempre questa mossa.
+> Le slide la chiamano per nome: *«sometimes adding constraints to subproblems can help!»* (slide 23).
 ### Struttura della soluzione ottima
 > [!quote] Definizione — $\text{OPT}[i]$
 > $\text{OPT}[i]$ è la lunghezza della sottosequenza crescente più lunga di $S[1], \ldots, S[i]$ **che termina con $S[i]$**.
@@ -486,24 +421,14 @@ Per ricostruire la LIS, si mantiene un array `prev[i]` che memorizza l'indice $j
 
 **Spazio**: $O(n)$ per l'array $\text{OPT}$ (e $O(n)$ per `prev` in caso di ricostruzione).
 
-> [!info] Esiste un algoritmo $O(n \log n)$ per LIS
+> [!info] Esiste un algoritmo $O(n \log n)$ per LIS *(extra, non da slide)*
 > Con una struttura dati ausiliaria (patience sorting o albero di ricerca) è possibile risolvere LIS in $O(n \log n)$, ma l'approccio DP $O(n^2)$ è quello trattato in questo corso.
-
-> [!question] Domanda tipica d'esame — Vincolo sull'ultimo elemento
-> **D:** Perché per LIS è necessario aggiungere il vincolo che la sottosequenza termini con $S[i]$? Come cambia la ricorrenza?
-> **R:**
-> **Il problema senza vincolo.** Definendo $\text{OPT}[i]$ = lunghezza della LIS di $S[1..i]$ senza altri vincoli, non si sa con quale valore termina la LIS ottima di $S[1..i]$: non è quindi possibile decidere se $S[i+1]$ può prolungarla, e la ricorrenza non si scrive (è il tentativo fallito discusso in questa sezione).
->
-> **Il vincolo che sblocca la ricorrenza.** Restringendo la definizione a «la LIS di $S[1..i]$ che **termina obbligatoriamente con $S[i]$**», il valore finale della sottosequenza è fissato per costruzione, e diventa possibile confrontarlo con $S[i]$ per ogni $i$ successivo.
->
-> **Ricorrenza.**
-> $$\text{OPT}[i] = 1 + \max\Bigl(0,\; \max_{\substack{j<i \\ S[j]<S[i]}} \text{OPT}[j]\Bigr)$$
-> con caso base $\text{OPT}[1] = 1$ (una sequenza di un solo elemento è sempre crescente).
->
-> **Soluzione globale.** Il vincolo fissa dove finisce *una* sottosequenza, non dove finisce l'intera LIS: bisogna quindi prendere il massimo su tutti i possibili ultimi elementi, $\max_{i=1,\ldots,n} \text{OPT}[i]$.
 ## House Coloring (esercizio)
 ### Il problema
 **Input**: $n$ case in fila, ognuna va dipinta di rosso (R), verde (G) o blu (B). Il costo di dipingere la casa $i$ del colore $c$ è $\text{cost}(i, c)$. **Vincolo**: nessuna casa adiacente ha lo stesso colore. **Obiettivo**: minimizzare il costo totale.
+
+![[dp2_house_coloring.png]]
+La matrice dei costi è quella usata nell'esempio più sotto: le righe sono rosso, verde, blu nell'ordine dei quadretti colorati a sinistra. Dettaglio che vale una verifica gratis: le sei casette disegnate sopra la tabella sono già colorate **verde, rosso, blu, rosso, blu, verde** — cioè il prof ha disegnato la soluzione ottima. Quando avrai riempito le tre righe $R$, $G$, $B$ a mano, il traceback deve restituire esattamente quella sequenza. (slide 33)
 ### Struttura della soluzione ottima
 > [!quote] Definizione — $R[i]$, $G[i]$, $B[i]$
 > - $R[i]$ = costo minimo per dipingere le case $1, \ldots, i$ con la casa $i$ **rossa**.
@@ -553,20 +478,13 @@ Riempiendo le tre righe da sinistra a destra con la ricorrenza (caso base = cost
 ```
 Il costo minimo è $\min\{R[6], G[6], B[6]\} = \min\{46, 34, 36\} = 34$, realizzato risalendo le scelte a ritroso dalla cella $G[6]$: la colorazione $A$ verde, $B$ rosso, $C$ blu, $D$ rosso, $E$ blu, $F$ verde, di costo $3+6+4+8+5+8 = 34$ (e senza due case adiacenti dello stesso colore).
 
-> [!info] Generalizzazione a $k$ colori
-> Con $k$ colori la stessa struttura si generalizza a $k$ array, con equazione $C_i[c] = \text{cost}(i, c) + \min_{c' \ne c} C_{i-1}[c']$. Pre-calcolando i due minimi globali della riga precedente in $O(k)$, ogni cella costa $O(1)$ e la complessità è $\Theta(nk)$ — che è già ottima, perché i costi in input sono $nk$ e vanno comunque letti tutti.
-
-> [!question] Domanda tipica d'esame — Generalizzazione a k colori
-> **D:** Qual è la complessità dell'algoritmo DP per House Coloring con 3 colori? Come si generalizza a $k$ colori?
-> **R:**
-> **Caso a 3 colori.** Complessità $O(n)$: si scorrono le $n$ case, e per ogni casa si calcolano i 3 valori $R[i], G[i], B[i]$, ciascuno in tempo $O(1)$ (il minimo fra due valori già calcolati).
+> [!info] Regola — generalizzare a $k$ stati, e riconoscere quando sei già ottimo *(extra, non da slide)*
+> Con $k$ colori la struttura si generalizza a $k$ array, con $C_i[c] = \text{cost}(i, c) + \min_{c' \ne c} C_{i-1}[c']$.
+> **Il trucco.** Calcolare quel minimo da zero per ogni cella costa $O(k)$, cioè $O(nk^2)$ in totale. Basta invece pre-calcolare i **due** valori più piccoli della riga precedente, in $O(k)$ per riga: se il minimo assoluto cade proprio sul colore $c$ che va escluso, si usa il secondo. Ogni cella torna a $O(1)$ e il totale è $\Theta(nk)$.
+> **Non è teoria.** L'Esercizio 3 del **23/09/2025** è esattamente questo problema con un indice in più: «non hai molta vernice rossa, puoi colorare di rosso al più $k$ case». Un esempio che il prof presenta a lezione è tornato allo scritto con un budget appiccicato sopra — vedi [[Esercizi 04 - Programmazione Dinamica#Colorazione di case con budget]] e il [!warning] «Il segnale più importante» in coda alla nota.
 >
-> **Generalizzazione naïve a $k$ colori.** Si mantengono $k$ array; per ogni casa serve il minimo tra i $k-1$ colori alternativi al colore corrente. Calcolarlo da zero per ogni cella costa $O(k)$, per un totale di $O(nk^2)$.
->
-> **Ottimizzazione.** Si pre-calcolano i **due** valori minimi della riga precedente in $O(k)$ per riga (il secondo minimo serve per il caso in cui il minimo assoluto cada proprio sul colore $c$ escluso). Con questi due valori ogni cella si calcola in $O(1)$, quindi $O(k)$ per riga e $\Theta(nk)$ in totale su $n$ righe.
->
-> **Complessità e lower bound.** $\Theta(nk)$ **non è migliorabile**: l'input contiene $nk$ costi $\text{cost}(i,c)$ e un algoritmo corretto deve leggerli tutti, perché cambiare anche un solo costo può cambiare l'ottimo. Quindi $\Omega(nk)$ è un lower bound, e la DP ottimizzata è **asintoticamente ottima**.
-## Riepilogo dei problemi trattati
+> **Il lower bound — è questa la parte riutilizzabile.** $\Theta(nk)$ **non è migliorabile**: l'input contiene $nk$ costi $\text{cost}(i,c)$, e cambiarne anche uno solo può cambiare l'ottimo, quindi un algoritmo corretto deve leggerli tutti — da cui $\Omega(nk)$. L'argomento in sé («l'input ha già dimensione $X$, quindi $\Omega(X)$») vale su qualunque problema, e all'Esercizio 3 è il modo più rapido per chiudere il punto 6 dicendo non solo *quanto costa* ma *che è ottimo*.
+## Riepilogo dei problemi trattati *(extra, non da slide)*
 | Problema | Sottoproblemi | Scelta | Equazione di Bellman | Complessità |
 |---|---|---|---|---|
 | Weighted Interval Scheduling | $O(n)$ | Binaria (includo/escludo job $j$) | $\max\{\text{OPT}(j-1),\, w_j + \text{OPT}(p(j))\}$ | $O(n \log n)$ |
@@ -576,7 +494,7 @@ Il costo minimo è $\min\{R[6], G[6], B[6]\} = \min\{46, 34, 36\} = 34$, realizz
 | House Coloring | $O(n)$ | Multipla (3 colori) | $\text{cost}(i,c) + \min_{c' \ne c} C[i-1][c']$ | $O(n)$ |
 
 Per i problemi di sequenza alignment e Bellman-Ford, che usano la stessa tecnica DP con una seconda variabile, si veda [[06 - Programmazione Dinamica III (Sequence Alignment e Bellman-Ford)]].
-## Riconoscere il sottoproblema in un problema mai visto
+## Riconoscere il sottoproblema in un problema mai visto *(extra, non da slide)*
 All'Esercizio 3 il problema è **sempre nuovo** — una «storiella» inventata per l'occasione. Non si può averlo già studiato: si può però riconoscere a quale **pattern** appartiene. I problemi di questa nota e della successiva coprono cinque schemi, e quasi ogni traccia ricade in uno di essi.
 
 | Pattern | Segnale nella traccia | Forma della tabella | Esempio visto |
@@ -591,9 +509,31 @@ All'Esercizio 3 il problema è **sempre nuovo** — una «storiella» inventata 
 > Se scrivendo la ricorrenza ti accorgi che **non sai rispondere** con la sola informazione «ho considerato i primi $i$ elementi», allora manca un indice. La domanda diagnostica è: *«per decidere sull'elemento $i$, cosa avrei bisogno di sapere sul passato che $\text{OPT}[i-1]$ non mi dice?»*
 > - «quanta capacità mi resta» $\Rightarrow$ secondo indice = capacità residua (Knapsack);
 > - «di che colore ho dipinto la casa precedente» $\Rightarrow$ secondo indice = colore (House Coloring);
-> - «quanti nodi contigui ho già preso» $\Rightarrow$ secondo indice = lunghezza del blocco corrente.
+> - «quanti nodi contigui ho già preso» $\Rightarrow$ secondo indice = lunghezza del blocco corrente;
+> - «quante case rosse ho già usato» $\Rightarrow$ secondo indice = budget consumato.
 >
 > Quest'ultimo caso è precisamente l'Es3 del **30/06/2026** (*minimum dominating set with discounts*), dove lo sconto del 10% si applica ai nodi che stanno in un blocco contiguo lungo almeno 3: per saperlo bisogna ricordare **quanti consecutivi** si sono presi finora, e questo diventa il secondo indice della tabella.
 
 > [!info] Se la tabella cresce troppo
 > Il numero di sottoproblemi deve restare **polinomiale**. Se il secondo indice può assumere un numero esponenziale di valori — per esempio «quale sottoinsieme ho già scelto» — la definizione è sbagliata e va ripensata: quasi sempre esiste un riassunto più compatto dello stato (un contatore, un colore, una capacità) che basta per decidere. Il Knapsack è al limite: $\Theta(nW)$ è polinomiale nel *valore* $W$ ma **non** nella sua dimensione in bit, ed è per questo che si dice pseudo-polinomiale.
+## Mappa nota ↔ slide
+Il deck `05_DP_II_2025.pdf` ha 49 pagine e la numerazione stampata coincide con la pagina del PDF. La nota **riordina** gli argomenti rispetto al deck: il prof presenta WIS → LIS → House Coloring → Segmented Least Squares → Knapsack, qui i due problemi con dimostrazione di sottostruttura stanno vicini.
+
+| Sezione della nota | Slide |
+|---|---|
+| Schema generale della programmazione dinamica | — *(extra, non da slide)* |
+| Weighted Interval Scheduling — problema e greedy che fallisce | 7–8 |
+| Convenzione, $p(j)$, struttura della soluzione ottima | 9–10 |
+| Algoritmo bottom-up | 11 |
+| Ricorsione diretta esponenziale e memoization | 12–15 |
+| Ricostruzione della soluzione | 16 |
+| Bottom-up vs memoization | 17 |
+| Segmented Least Squares | 35–41 |
+| Knapsack 0/1 — problema, false start, due variabili | 42–45 |
+| Knapsack — bottom-up, demo, complessità, pseudo-polinomialità | 46–49 |
+| Longest Increasing Subsequence | 18–32 |
+| House Coloring | 33–34 |
+| Riepilogo dei problemi trattati | — *(extra, non da slide)* |
+| Riconoscere il sottoproblema in un problema mai visto | — *(extra, non da slide)* |
+
+Le slide 1–5 sono introduttive (paradigmi algoritmici, storia della DP di Bellman, aree applicative) e non hanno una sezione dedicata nella nota; le slide 6, 18, 35 e 42 sono divisori di sezione.

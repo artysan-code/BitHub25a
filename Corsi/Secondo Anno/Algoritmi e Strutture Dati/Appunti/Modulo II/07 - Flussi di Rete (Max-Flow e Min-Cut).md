@@ -28,6 +28,7 @@ L'intuizione è quella di una rete di trasporto: il materiale parte da $s$, scor
 > $$\operatorname{val}(f) = \sum_{e \text{ esce da } s} f(e) \;-\; \sum_{e \text{ entra in } s} f(e)$$
 
 Il valore misura la quantità netta di materiale che lascia la sorgente (e arriva al pozzo, per conservazione).
+
 > [!quote] Definizione — Problema del massimo flusso (Max-Flow)
 > Dato $G = (V, E, s, t, c)$, trovare un flusso $f^*$ di **valore massimo**.
 
@@ -94,6 +95,7 @@ Nell'esempio, $\operatorname{val}(f) = 5$: dalla sorgente $s$ escono 5 unità ch
 > ⏱️ **Se la traccia dà 5 righe**: definisci taglio st, la formula della capacità con l'osservazione che conta solo il verso $A\to B$, e l'obiettivo di minimizzazione. **Non omettere mai** la direzionalità della capacità — è l'errore più comune (sommare anche gli archi da $B$ ad $A$).
 ## Verso l'algoritmo: l'approccio greedy fallisce
 Un approccio greedy naturale è: partire da $f(e) = 0$, trovare un cammino $s \leadsto t$ con capacità residua positiva su ogni arco, aumentare il flusso lungo quel cammino, ripetere. Questo approccio **non è corretto**.
+
 > [!warning] Perché il greedy fallisce
 > Una volta che il greedy aumenta il flusso su un arco, non lo diminuisce mai. Considerare la rete:
 >
@@ -112,6 +114,7 @@ Un approccio greedy naturale è: partire da $f(e) = 0$, trovare un cammino $s \l
 > **Conclusione**: serve un meccanismo di *undo* per le decisioni sbagliate.
 ## Grafo residuo
 Il **grafo residuo** è la struttura che permette di "annullare" flusso già inviato, fornendo il meccanismo di correzione necessario.
+
 > [!quote] Definizione — Grafo residuo
 > Dato $G = (V, E, s, t, c)$ e un flusso $f$, il **grafo residuo** $G_f = (V, E_f, s, t, c_f)$ è definito come segue.
 >
@@ -404,6 +407,7 @@ Per la conservazione del flusso, ogni termine con $v \neq s$ vale 0. Gli archi i
 $$\operatorname{val}(f) = \sum_{e \text{ esce da } A} f(e) - \sum_{e \text{ entra in } A} f(e) \leq \sum_{e \text{ esce da } A} f(e) \leq \sum_{e \text{ esce da } A} c(e) = \operatorname{cap}(A, B) \qquad \square$$
 
 La dualità debole dice che il valore di qualsiasi flusso è limitato superiormente dalla capacità di qualsiasi taglio: un taglio costituisce un **certificato di ottimalità superiore** per il flusso.
+
 > [!quote] Lemma — Corollario (certificato di ottimalità)
 > Sia $f$ un flusso e $(A, B)$ un taglio. Se $\operatorname{val}(f) = \operatorname{cap}(A, B)$, allora $f$ è un **flusso massimo** e $(A, B)$ è un **taglio minimo**.
 

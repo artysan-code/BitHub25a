@@ -106,15 +106,30 @@ Criterio corretto: **earliest start time** (gli altri tre hanno controesempi).
 **Union by rank** *(extra, non da slide)* — intero sulla radice, limite superiore all'altezza: $0$ alla creazione, si attacca il rank minore sotto il maggiore, e **solo** a parità si incrementa di 1. Un albero di rank $r$ ha $\geq 2^r$ nodi. Si preferisce alla size **quando c'è la compressione**: questa abbassa l'altezza senza cambiare il numero di elementi, quindi la size smette di indicare l'altezza mentre il rank resta un limite superiore valido.
 
 > [!quote] Teorema — Tarjan & van Leeuwen
-> Con union by rank (o by size) **e** compressione dei cammini, $n$ `makeSet`, $n-1$ `union` e $m$ `find` costano $O\bigl(n + m\,\alpha(m+n, n)\bigr)$, con $\alpha$ inversa di Ackermann. Poiché $\alpha(m,n) \leq 4$ per ogni $n < 2^{10^{80}}$, è **praticamente lineare**.
+> Con union by rank (o by size) **e** compressione dei cammini, una qualsiasi sequenza di $n$ `makeSet`, $n-1$ `union` e $m$ `find` costa
+> $$O\bigl(n + m\,\alpha(n+m,\,n)\bigr)$$
+> con $\alpha$ inversa della funzione di Ackermann. La slide (p. 66) enuncia **solo il costo della sequenza**, non un costo per operazione.
+
+> [!quote] Definizione — $\alpha(m,n)$ e l'osservazione $\alpha \leq 4$
+> Per interi $m \geq n \geq 0$:
+> $$\alpha(m,n) = \min\bigl\{\,i > 0 \;:\; A\bigl(i,\ \lfloor m/n \rfloor\bigr) > \log_2 n \,\bigr\}$$
+> **Proprietà**: (1) a $n$ fissato è monotonicamente **decrescente** al crescere di $m$; (2) $\alpha(n,n) \to \infty$ per $n \to \infty$.
+> **Osservazione**: $A(4, \lfloor m/n \rfloor) \geq A(4,1) = A(3,2)$, torre di $2$ alta 16, $\gg 10^{80}$ → $\alpha(m,n) \leq 4$ per ogni $n < 2^{10^{80}}$.
+> **Densità** (slide p. 72): $\alpha \leq 1$ se $m/n > \log_2\log_2 n$; $\alpha \leq 2$ se $m/n > \log^*\log_2 n$.
+
+> [!warning] Due affermazioni false che suonano giuste
+> - **«la `find` costa $O(\alpha)$ nel caso peggiore»** → falso. Il bound $\alpha$ è **ammortizzato sulla sequenza**; una **singola** `find` può ancora costare $\Theta(\log n)$, perché union by rank garantisce soltanto altezza $\leq \log_2 n$ (un albero di rank $r$ ha $\geq 2^r$ nodi, e la compressione non alza mai il rank).
+> - **«$\alpha$ è $O(1)$, quindi la sequenza è lineare»** → falso. $\alpha(n,n) \to \infty$: è costante *per ogni scopo pratico*, non costante. La sequenza è **quasi lineare**, non lineare.
+>
+> Il costo ammortizzato per `find` è $O(\alpha(n+m,n))$ addebitando l'addendo $O(n)$ alle $n$ `makeSet` e alle $n-1$ `union`: è una **derivazione**, non l'enunciato della slide.
 
 | Implementazione | `makeSet` | `union` | `find` | Sequenza completa |
 |---|---|---|---|---|
 | QuickFind | $O(1)$ | $O(n)$ p.p. | $O(1)$ | $O(m + n^2)$ p.p. |
 | QuickFind + union by size | $O(1)$ | $O(n)$ p.p., $O(\log n)$ amm. | $O(1)$ | $O(m + n\log n)$ |
 | QuickUnion | $O(1)$ | $O(1)$ | $O(n)$ p.p. | $O(mn)$ p.p. |
-| QuickUnion + union by size | $O(1)$ | $O(1)$ | $O(\log n)$ | $O(n + m\log n)$ |
-| QuickUnion + rank + compressione | $O(1)$ | $O(1)$ | $O(\alpha(m,n))$ amm. | $O(n + m\,\alpha(m+n,n))$ |
+| QuickUnion + union by size | $O(1)$ | $O(1)$ | $O(\log n)$ p.p. | $O(n + m\log n)$ |
+| QuickUnion + rank + compressione | $O(1)$ | $O(1)$ | $O(\log n)$ p.p., $O(\alpha(n+m,n))$ amm. | $O(n + m\,\alpha(n+m,n))$ |
 
 *(p.p. = caso peggiore · amm. = ammortizzato)*
 

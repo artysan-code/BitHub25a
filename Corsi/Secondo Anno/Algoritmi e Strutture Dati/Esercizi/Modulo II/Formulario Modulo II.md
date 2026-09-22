@@ -24,41 +24,64 @@ Solo ciò che si scrive sul compito: **definizioni** in forma d'esame, **enuncia
 Per Greedy, Union-Find, MST, Flussi e NP (Esercizi 1 e 2) il taglio è **teoria**; per la Programmazione Dinamica (Esercizio 3) il taglio è **procedura** — cosa scrivere sul foglio, e in che ordine. Notazione: $n = |V|$, $m = |E|$; $T$ è identificato col suo insieme di archi; $\text{OPT}$ è sempre il **valore** ottimo, non l'insieme che lo realizza.
 
 ## Greedy e Interval Scheduling
+### Il paradigma e le due tecniche di dimostrazione
+**Schema di un greedy**: (1) si fissa un **criterio d'ordine**; (2) si scorrono gli elementi in quell'ordine e si aggiunge il corrente se **ammissibile** (compatibile con le scelte già fatte); (3) non si ripensa **mai** a una scelta passata. Costo tipico $O(n\log n)$: ordinamento più scansione lineare. Il criterio **non è mai ovviamente corretto** — lo stesso problema ne ammette molti plausibili e in generale solo alcuni portano all'ottimo, quindi l'ottimalità va *dimostrata*.
+
+> [!quote] Proprietà — Greedy stays ahead *(nome extra, non da slide — Kleinberg-Tardos §4.1)*
+> Si esibisce una misura quantitativa $\phi(r)$ sulla soluzione parziale al passo $r$ tale che $\phi_{\text{greedy}}(r) \leq \phi_{\text{OPT}}(r)$ (o $\geq$, secondo la misura), e la si prova per **induzione su $r$**. L'ottimalità globale segue applicando il lemma all'ultimo passo.
+
+> [!quote] Proprietà — Exchange argument *(nome extra, non da slide — Kleinberg-Tardos §4.1)*
+> Si prende una soluzione ottima $\text{OPT}$ qualunque e la si trasforma nella soluzione greedy $G$ tramite una sequenza di **scambi**, ciascuno dei quali sostituisce un elemento di $\text{OPT}$ col corrispondente elemento scelto dal greedy senza far decrescere il valore. Al termine $\text{cost}(G) \geq \text{cost}(\text{OPT})$.
+
+Quale delle due: *stays ahead* quando la soluzione cresce per aggiunta incrementale (IS); *exchange* quando si confrontano due soluzioni complete (minimize lateness, proprietà di taglio dei MST).
 ### Interval Scheduling
 > [!quote] Definizione — Interval Scheduling (forma d'esame)
 > - **Input**: $n$ intervalli $I_1,\ldots,I_n$, con $I_i$ di inizio $s_i$ e fine $f_i$.
-> - **Ammissibile**: un sottoinsieme $S$ di intervalli a due a due **compatibili** ($f_i \leq s_j$ oppure $f_j \leq s_i$).
-> - **Misura (max)**: $|S|$.
+> - **Ammissibile**: un sottoinsieme $S$ di intervalli a due a due **compatibili**: per ogni $I_i, I_j \in S$, $i \neq j$, vale $f_i \leq s_j$ **oppure** $f_j \leq s_i$.
+> - **Misura (max)**: la cardinalità $|S|$.
+>
+> La disgiunzione va scritta per esteso: è il punto verificabile della definizione. Due intervalli che si **toccano** ($f_i = s_j$) sono compatibili.
 
 Criteri: earliest start ✗ · **earliest finish ✓** · shortest interval ✗ · fewest conflicts ✗.
-**EFT-first**: ordina per $f(j)$ crescente, prendi $j$ se $s(j) \geq f(j^*)$ con $j^*$ ultimo selezionato (test $O(1)$). Costo **$O(n\log n)$**, dominato dall'ordinamento.
+**EFT-first**: ordina per $f(j)$ crescente, prendi $j$ se $s(j) \geq f(j^*)$ con $j^*$ ultimo selezionato. Il test è $O(1)$ perché, processando per fine crescente, $j^*$ ha il **finish massimo** in $S$: compatibile con $j^*$ ⇒ compatibile con tutti. Costo **$O(n\log n)$**, dominato dall'ordinamento.
 
-> [!quote] Lemma — Greedy stays ahead
-> Greedy $i_1,\ldots,i_k$ e ottimo $j_1,\ldots,j_m$, ordinati per tempo di fine: $f(i_r) \leq f(j_r)$ per ogni $r$.
-> **Dim. (induzione su $r$).** *Base*: il greedy prende il finish time minimo assoluto. *Passo*: $s(j_r) \geq f(j_{r-1}) \geq f(i_{r-1})$ per ip. induttiva, quindi $j_r$ era disponibile al greedy al passo $r$, che sceglie il finish minimo. $\square$
+> [!warning] Controesempi ai tre criteri sbagliati (IS)
+> Un controesempio si scrive sempre come **istanza numerica + confronto dei due esiti**.
+> - **Earliest start**: $[0,100]$ contro $[1,2],[3,4],[5,6],[7,8]$ → greedy **1** job, ottimo **4**.
+> - **Shortest interval**: $[0,3], [2,4], [3,6]$ → il corto $[2,4]$ si sovrappone a entrambi i lunghi: greedy **1**; l'ottimo prende $[0,3]$ e $[3,6]$, compatibili ($f=3 \leq s=3$) → **2**.
+> - **Fewest conflicts**: quattro job disgiunti $B_1=[0,2], B_2=[3,5], B_3=[6,8], B_4=[9,11]$; sopra di essi **3** copie di $[1,4]$, **1 sola** copia di $[4,7]$, **3** copie di $[7,10]$. Conflitti: $[4,7]$ ne ha **2**, $B_1$ e $B_4$ **3**, tutti gli altri **4** → il greedy parte da $[4,7]$, elimina $B_2$ e $B_3$ e chiude con $\{[4,7], B_1, B_4\}$ → **3**; l'ottimo $\{B_1,B_2,B_3,B_4\}$ → **4**.
+
+> [!quote] Lemma — Greedy stays ahead per Interval Scheduling
+> Greedy $i_1,\ldots,i_k$ e ottimo $j_1,\ldots,j_m$, **entrambi ordinati per tempo di fine**: $f(i_r) \leq f(j_r)$ per ogni $r = 1,\ldots,k$.
+> **Dim. (induzione su $r$).** *Base ($r=1$)*: il greedy sceglie il job di finish time minimo **in assoluto**, e $j_1$ è un job qualunque, quindi $f(i_1) \leq f(j_1)$. *Passo ($r>1$)*: nell'ottimo $j_r$ è compatibile con $j_{r-1}$, quindi $s(j_r) \geq f(j_{r-1})$; per ip. induttiva $f(j_{r-1}) \geq f(i_{r-1})$, dunque $s(j_r) \geq f(i_{r-1})$. Allora $j_r$ è compatibile con **tutti** gli $i_1,\ldots,i_{r-1}$ (che finiscono non dopo $i_{r-1}$), cioè era **fra i candidati disponibili** al greedy al passo $r$; il greedy prende il candidato di finish minimo, perciò $f(i_r) \leq f(j_r)$. $\square$
 
 > [!quote] Teorema — Ottimalità di EFT-first
-> EFT-first restituisce un insieme compatibile di cardinalità massima.
-> **Dim. (per assurdo).** Sia $m > k$. Per il lemma $f(i_k) \leq f(j_k)$; l'ottimo ha $j_{k+1}$ con $s(j_{k+1}) \geq f(j_k) \geq f(i_k)$, dunque compatibile con **tutti** i job del greedy, che allora non si sarebbe fermato a $k$. $\square$
+> EFT-first restituisce un insieme di job compatibili di cardinalità massima.
+> **Dim. (per assurdo).** Sia $m > k$. Per il lemma con $r=k$, $f(i_k) \leq f(j_k)$; l'ottimo contiene $j_{k+1}$, compatibile con $j_k$, quindi $s(j_{k+1}) \geq f(j_k) \geq f(i_k)$: $j_{k+1}$ è compatibile con **tutti** i job del greedy. Proseguendo la scansione il greedy lo avrebbe trovato compatibile e aggiunto a $S$, invece di fermarsi a $k$ job. Contraddizione, dunque $m = k$. $\square$
 ### Interval Partitioning
 > [!quote] Definizione — Interval Partitioning (forma d'esame)
-> - **Input**: $n$ intervalli $I_i = [s_i, f_i)$.
-> - **Ammissibile**: partizione in classi $C_1,\ldots,C_d$ con intervalli a due a due compatibili dentro ogni classe (equivalentemente: due intervalli sovrapposti hanno etichette diverse).
+> - **Input**: $n$ intervalli $I_1,\ldots,I_n$, con $I_i$ di inizio $s_i$ e fine $f_i$.
+> - **Ammissibile**: una partizione degli intervalli in classi (aule) $C_1,\ldots,C_d$ tali che ogni $C_k$ contenga solo intervalli a due a due **compatibili** ($f_i \leq s_j$ oppure $f_j \leq s_i$) — equivalentemente: due intervalli sovrapposti ricevono etichette diverse.
 > - **Misura (min)**: il numero di classi $d$.
 
-> [!quote] Definizione — Profondità (depth) e lower bound
+> [!quote] Definizione — Profondità (depth)
 > $$\text{depth} = \max_{t}\bigl|\{I_i : s_i < t < f_i\}\bigr|$$
-> È il **picco di contemporaneità**, non il numero di conflitti. Ogni soluzione ammissibile usa $\geq \text{depth}$ classi: nell'istante di picco quegli intervalli stanno in classi distinte.
+> Gli intervalli si contano **aperti** (equivalentemente semiaperti $[s_i, f_i)$): due intervalli con $f_i = s_j$ si toccano in un punto ma non contribuiscono mai insieme al conteggio, coerentemente con la compatibilità. È un **picco di contemporaneità in un singolo istante**, non il numero di coppie in conflitto.
+
+> [!quote] Proprietà — Doppio ruolo della depth
+> **(lower bound)** Ogni soluzione ammissibile usa $\geq \text{depth}$ classi: nell'istante di picco quei $\text{depth}$ intervalli sono tutti attivi e devono stare in classi distinte — vale per *ogni* soluzione, indipendentemente dall'algoritmo. **(raggiungibilità)** EST-first ne alloca esattamente $\text{depth}$. È l'unione dei due a dare l'ottimalità.
 
 Criterio corretto: **earliest start time** (gli altri tre hanno controesempi).
 **EST-first**: ordina per $s(j)$, assegna a una classe compatibile se esiste, altrimenti aprine una nuova. Implementazione: **min-heap** di classi con chiave = finish dell'ultima lezione (`FIND-MIN`, poi `INCREASE-KEY` o `INSERT`); basta il min-heap perché se la classe più favorevole non accoglie $j$, nessuna lo fa. Costo **$O(n\log n)$**.
 
+> [!warning] Controesempi agli ordini sbagliati (IP)
+> Slide p. 34: *earliest finish*, *shortest interval* e *fewest conflicts* aprono ciascuno **3 aule** su un'istanza che ne richiede **2** — la lezione corta, processata al momento sbagliato, occupa un'aula già impegnata e ne forza una terza.
+
 > [!quote] Teorema — Ottimalità di EST-first
 > EST-first alloca esattamente $\text{depth}$ classi.
-> **Dim. (doppia disuguaglianza).** *($d \geq \text{depth}$)* La soluzione è ammissibile e ogni ammissibile usa $\geq \text{depth}$ classi. *($\text{depth} \geq d$)* Quando si apre la $d$-esima classe per $j$, $j$ è incompatibile con l'ultima lezione di ciascuna delle $d-1$ classi aperte, che quindi finiscono dopo $s(j)$; processando per inizio crescente iniziano anche $\leq s(j)$. Quelle $d-1$ più $j$ sono attive in $s(j)+\epsilon$. $\square$
+> **Dim. (doppia disuguaglianza).** *Passo 0 — ammissibilità*: una lezione entra in una classe solo se il suo inizio è $\geq$ del finish dell'ultima lezione già assegnata a quella classe, quindi la soluzione prodotta è valida. *($d \geq \text{depth}$)* La soluzione è ammissibile e ogni ammissibile usa $\geq \text{depth}$ classi. *($\text{depth} \geq d$)* Quando si apre la $d$-esima classe per la lezione $j$, $j$ è incompatibile con l'ultima lezione di **ciascuna** delle $d-1$ classi già aperte, che quindi **finiscono dopo** $s(j)$; processando per inizio crescente quelle lezioni **iniziano** anche $\leq s(j)$, dunque sono ancora in corso in $s(j)$. Quelle $d-1$ più $j$ sono tutte attive nell'istante $s(j)+\epsilon$ (l'$\epsilon$ serve perché gli intervalli si contano aperti), da cui $\text{depth} \geq d$. $\square$
 
 **Perché ordini diversi**: IS ha una risorsa sola e massimizza i job → conviene liberarla presto, *finish time*. IP serve tutte le lezioni e minimizza le risorse → conta quante devono coesistere, *start time*, e il picco è la depth.
-Due tecniche di dimostrazione *(nome extra, contenuto da slide — Kleinberg-Tardos §4.1)*: **greedy stays ahead** (una misura $\phi(r)$ in cui il greedy non è mai indietro) ed **exchange argument** (si trasforma un ottimo nella soluzione greedy con scambi che non peggiorano).
 
 ## Union-Find
 > [!quote] Definizione — Le tre operazioni

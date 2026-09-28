@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="it">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Box Base</title>
+		<style>
+			* {
+				border: 1px solid #000;
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				font-family: Arial, sans-serif;
+				background: #f3f6fb;
+				color: #1f2937;
+				padding: 2rem;
+			}
+
+			.card {
+				width: 360px;
+				border: 2px solid #355c9a;
+				background: white;
+				padding: 1.25rem;
+				margin: 2rem auto;
+				border-radius: 14px;
+			}
+
+			.card h1 {
+				margin-bottom: 0.75rem;
+				font-size: 1.5rem;
+			}
+
+			.card p {
+				margin-bottom: 1rem;
+				line-height: 1.5;
+			}
+
+			.card a {
+				display: inline-block;
+				padding: 0.65rem 1rem;
+				border-radius: 8px;
+				background: #355c9a;
+				color: white;
+				text-decoration: none;
+			}
+		</style>
+	</head>
+	<body>
+		<section class="card">
+			<h1>Weekend in montagna</h1>
+			<p>Un box semplice per esercitarsi con width, border, padding e margin.</p>
+			<a href="#">Scopri di più</a>
+		</section>
+	</body>
+</html>

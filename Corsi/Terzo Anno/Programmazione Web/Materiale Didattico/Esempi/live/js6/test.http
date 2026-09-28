@@ -1,0 +1,28 @@
+http://localhost:3000/
+
+###
+http://localhost:3000/api/v1/corsi
+
+
+###
+http://localhost:3000/api/v1/corsi/1
+
+
+###
+http://localhost:3000/api/v1/corsi/10
+
+###
+POST http://localhost:3000/api/v1/corsi
+Content-Type: application/json
+
+{
+  "nome": "Corso di Java",
+  "descrizione": "Un corso completo su Java"
+} 
+
+###
+DELETE http://localhost:3000/api/v1/corsi/5
+
+
+###
+DELETE http://localhost:3000/api/v1/corsi/pappagallo

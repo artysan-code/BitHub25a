@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "name": "Corso di JavaScript",
+    "description": "Un corso completo per imparare JavaScript"
+  },
+  {
+    "id": 2,
+    "name": "Corso di Node.js",
+    "description": "Un corso completo per imparare Node.js"
+  },
+  {
+    "id": 3,
+    "name": "Corso di Express",
+    "description": "Un corso completo per imparare Express"
+  },
+  {
+    "id": 4,
+    "name": "Corso di React",
+    "description": "Un corso completo per imparare React"
+  }
+]

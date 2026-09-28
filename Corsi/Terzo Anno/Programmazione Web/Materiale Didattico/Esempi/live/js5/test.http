@@ -1,0 +1,28 @@
+http://localhost:8080
+
+###
+http://localhost:8080/about
+
+
+###
+http://localhost:8080/about/pierpaolo
+
+
+###
+http://localhost:8080/api
+
+
+###
+POST http://localhost:8080
+Content-Type: application/json  
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com"
+}
+
+###
+http://localhost:8080/users/login
+
+###
+http://localhost:8080/users/logout

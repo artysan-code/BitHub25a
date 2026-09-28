@@ -1,0 +1,31 @@
+h1{
+    color: salmon;
+}
+
+
+p{
+    font-size: 18px;
+    color: blue;
+}
+
+p.verde{
+    color: green;
+}
+
+
+#menu a, #menu a:visited{
+    color: green;
+    text-decoration: none;
+}
+
+#menu a:hover{
+    color: red;
+}
+
+
+
+
+#Menu{
+    background-color: red;
+    color: white;
+}

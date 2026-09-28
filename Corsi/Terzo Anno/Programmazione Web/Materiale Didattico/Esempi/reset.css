@@ -1,0 +1,124 @@
+/* -----------------------
+   RESET GENERALE
+----------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* -----------------------
+   HTML / BODY
+----------------------- */
+
+html {
+  font-size: 16px;
+}
+
+body {
+  line-height: 1;
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -----------------------
+   HEADINGS E TESTO
+----------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: normal;
+}
+
+p {
+  margin: 0;
+}
+
+/* -----------------------
+   LISTE
+----------------------- */
+
+ul, ol {
+  list-style: none;
+}
+
+/* -----------------------
+   LINK
+----------------------- */
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* -----------------------
+   MEDIA
+----------------------- */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* -----------------------
+   FORM
+----------------------- */
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  border: none;
+  background: none;
+}
+
+/* -----------------------
+   TABELLE
+----------------------- */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* -----------------------
+   CITAZIONI
+----------------------- */
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: "";
+}
+
+/* -----------------------
+   ELEMENTI SEMANTICI HTML5
+----------------------- */
+
+header,
+nav,
+main,
+section,
+article,
+aside,
+footer,
+figure,
+figcaption,
+details,
+summary {
+  display: block;
+}

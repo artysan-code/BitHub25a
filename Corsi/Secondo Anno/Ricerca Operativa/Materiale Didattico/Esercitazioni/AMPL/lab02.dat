@@ -1,0 +1,47 @@
+set J1 := x1, x2, x4, y6, x7, x8;
+set J2 := x5;
+set J := x1, x2, x3, x4, x5, x6, x7, x8;
+set I1 := r1, r2;
+set I2 := r3, r5;
+set I3 := r4;
+
+param b1 :=
+r1 80
+r2 60;
+
+param b2 := 
+r3 60
+r5 20;
+
+param b3 :=
+r4 40;
+
+param c := 
+x1  2
+x2  1
+x3  0
+x4  3
+x5  -1
+x6  4
+x7  1
+x8  1;
+
+param a1:
+    x1   x2  x3  x4  x5  x6  x7  x8 =
+r1  1   -1  -1   0   0   0   0   1
+r2  0   0    0   1   1   1   -1  0;
+
+param a2: 
+    x1   x2  x3  x4  x5  x6  x7  x8 =
+r3  1    0   0   1   0   0   0   0
+r5  0    0   1   0   0   1   0   0;
+
+param a3:
+    x1   x2  x3  x4  x5  x6  x7  x8 =
+r4   0   1   0   0   1   0    0   0;  
+
+
+
+
+
+

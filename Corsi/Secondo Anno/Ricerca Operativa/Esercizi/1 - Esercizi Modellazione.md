@@ -5,8 +5,8 @@
 
 > [!info] Provenienza degli esercizi
 > Tutti gli esercizi di questo file sono presi **direttamente dai materiali ufficiali del corso**:
-> - **De Giovanni-Brentegani** → `Materiale Didattico/m01.modPL.01.modelli.pdf`
-> - **Caramia-Stecca** → `Materiale Didattico/Materiale Teams/RO_Lez02_12_marzo_2024_Formulazione_Esercizi.pdf`
+> - **De Giovanni-Brentegani** → `Materiale Didattico/Slide/m01.modPL.01.modelli.pdf`
+> - **Caramia-Stecca** → `Materiale Didattico/Esercitazioni/RO_Lez02_12_marzo_2024_Formulazione_Esercizi.pdf`
 >
 > La fonte specifica è indicata in calce a ogni traccia.
 

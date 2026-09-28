@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container{
+            display: flex;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        header{
+            background-color: grey;
+            width: 100%;
+            height: 150px;
+            order: 1;
+        }
+
+        nav{
+            background-color: green;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        nav:hover{
+            top:0;
+            right: 0;
+            width: 100%;
+            height: 200px;
+        }
+
+        main{
+            background-color: indianred;
+            width: 100%;
+            height: 600px;
+        }
+
+        aside{
+            background-color: lightsteelblue;
+            width: 100%;
+            height: 300px;
+        }
+
+        footer{
+            background-color: black;
+            width: 100%;
+            height: 200px;
+            order: 5;
+        }
+
+
+        @media (min-width: 700px) {
+            main{
+                width: 70%;
+            }
+
+            aside{
+                width: 30%;
+            }
+            
+        }
+
+        @media (min-width: 1000px) {
+            nav, nav:hover{
+                position: static;
+                width: 20%;
+                height: 400px;
+                order: 2;
+            }
+
+            main{
+                width: 60%;
+                order: 1;
+            }
+
+            aside{
+                width: 20%;
+                order: 3;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>HEADER</header>
+        <nav>NAV</nav>
+        <main>MAIN</main>
+        <aside>ASIDE</aside>
+        <footer>FOOTER</footer>
+    </div>
+</body>
+</html>

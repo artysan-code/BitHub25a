@@ -1,0 +1,33 @@
+Corso di Programmazione Web
+
+Introduzione ai tag semantici di HTML5
+
+Chi siamo
+Articoli
+Contatti
+
+Chi siamo
+
+Questa sezione presenta il contenuto principale della pagina. Usiamo section per raggruppare contenuti collegati tra loro.
+
+Articoli
+
+Perché usare i tag semantici
+
+Pubblicato il 12 marzo 2026
+
+I tag semantici descrivono il significato del contenuto: header, nav, main, article, section, aside, footer.
+
+Autore: Mario Rossi
+
+Semantica e accessibilità
+
+Anche se due pagine sembrano uguali graficamente, quella costruita con tag semantici è più chiara per le tecnologie assistive e per i software che analizzano il documento.
+
+Approfondimento
+
+Questo contenuto è collegato al tema principale, ma non è parte centrale del flusso del documento.
+
+2026 Corso di Programmazione Web
+
+Contatti: docente@example.com

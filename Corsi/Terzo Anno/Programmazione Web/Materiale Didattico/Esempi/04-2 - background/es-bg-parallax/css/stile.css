@@ -1,0 +1,103 @@
+html, body {height: 100%;}
+
+body {
+ margin: 0;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	font-size: 1em;
+	color: #000;
+	background-color:#ffffff;
+}
+
+a:link, a:visited {
+	color: #fff;
+	text-decoration: none;
+}
+a:hover {
+	color: #bde2df;
+	text-decoration: none;
+}
+
+a.current {color: red;}
+
+h1 {
+	font-size: 3.8em;
+	line-height: 1em;
+	font-weight: 700;
+	color: #000;
+}
+
+h2 {
+	font-size: 2em;
+	line-height: 1em;
+	font-weight: 400;
+	color: #000;
+}
+
+.text-white {color: #fff}
+
+.menu {
+	position: fixed;
+	top: 0px;
+	width: 100%; 
+	height: 60px; 
+	background-color: rgba(0,0,0,1.0);
+	z-index: 100;
+}
+
+nav {
+	margin: 20px 0 0 0;
+}
+.navigation {
+	list-style: none;
+	text-align: center;
+	margin: 0;
+}
+.navigation li{
+	display: inline-block;
+	padding: 0 25px 0 0;
+}
+
+.slide{
+	width:100%;
+	position: relative;
+	padding: 150px 0;
+	text-align: center;
+}
+
+
+#slide1 {
+ height: 100%;
+	background-image:url('../images/1.jpg');
+	background-color:#fff;
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+#slide3 {
+	background-image:url('../images/2.jpg');
+	background-color:#fff;
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+#slide5 {
+	background-image:url('../images/3.jpg');
+	background-color:#fff;
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+#slide2, #slide4, #slide6 {
+	background-color:#ffffff;
+	box-shadow: 0 18px 14px -14px rgba(0,0,0,0.6), 0 -18px 14px -14px rgba(0,0,0,0.6);
+	z-index: 10;
+}
+
+

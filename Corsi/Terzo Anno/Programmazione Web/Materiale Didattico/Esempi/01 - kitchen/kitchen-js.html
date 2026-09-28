@@ -1,0 +1,42 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>Jen's Kitchen</title> 
+<link rel="stylesheet" href="kitchen.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function startMoving(img) {
+        var img$ = $(img);
+        var imgWidth = img$.width();
+        var screenWidth = $(window).width();
+        var amount = screenWidth - (parseInt(img$.css("left"), 10) || 0);
+        // if already past right edge, reset to 
+        // just left of left edge
+        if (amount <=0 ) {
+            img$.css("left", -imgWidth);
+            amount = screenWidth + imgWidth;
+        }
+        var moveRate = 100;   // pixels per second to move
+        var time = amount * 1000 / moveRate;
+        img$.stop(true)
+            .animate({left: "+=" + amount}, time, "linear", function() {
+                // when animation finishes, start over
+                startMoving(this);
+            })
+    }
+</script>
+</head> 
+
+<body> 
+<h1><img src="foods.gif" alt="food illustration"> Jen&rsquo;s Kitchen</h1>
+
+<p>If you love to read about <strong>cooking and eating</strong>, would like to find out about of some of the best restaurants in the world, or just want a few choice recipes to add to your collection, <em>this is the site for you!</em></p> 
+
+<p><img class="mover" src="spoon.gif" onload="startMoving(this)" alt="spoon illustration"> Your pal, Jen at Jen's Kitchen</p>
+
+<hr> 
+
+<small>Copyright 2011, Jennifer Robbins</small> 
+
+</body> 
+</html> 

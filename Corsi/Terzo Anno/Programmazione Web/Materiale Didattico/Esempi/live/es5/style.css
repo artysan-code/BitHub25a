@@ -1,0 +1,58 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+#sec1{
+    height: 100%;
+    width: 100%;
+    background-color: lightcoral;
+    background-image: url('bg-cani.jpg');
+    background-position: center center;
+    background-size: cover;
+    display: flex;
+    background-attachment: fixed;
+}
+
+p{
+    margin: auto;
+    font-size: 4em;
+    background-color: white;
+    opacity: 0.6;
+    text-align: center;
+    padding: 40px;
+}
+
+#sec2{
+    height: 100%;
+    width: 100%;
+    background-color: lightcoral;
+    background-image: url('bg-gatti.jpg');
+    background-position: center center;
+    background-size: cover;
+    display: flex;
+    background-attachment: fixed;
+}
+
+#sec3{
+    height: 100%;
+    width: 100%;
+    background-color: lightcoral;
+    background-image: url('bg-cangat.jpg');
+    background-position: center center;
+    background-size: cover;
+    display: flex;
+    background-attachment: fixed;
+}
+
+.mid{
+    height: 20%;
+    width: 100%;
+    background-color: tan;
+}

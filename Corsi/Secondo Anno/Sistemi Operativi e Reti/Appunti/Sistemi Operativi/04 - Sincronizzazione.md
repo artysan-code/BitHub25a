@@ -132,7 +132,7 @@ Introdotti da **E. W. Dijkstra (1965)** per contare e gestire i wakeup. Un semaf
 >         up(&empty);
 >         consume_item(item); } }
 > ```
-> `mutex` **serializza** l'accesso al buffer; `empty` blocca il produttore quando il buffer è pieno, `full` blocca il consumatore quando è vuoto. Codice in `code/6_thread_e_sincronizzazione/6.2_producer_consumer_semaphore.c`.
+> `mutex` **serializza** l'accesso al buffer; `empty` blocca il produttore quando il buffer è pieno, `full` blocca il consumatore quando è vuoto. Codice in `Esempi/6_thread_e_sincronizzazione/6.2_producer_consumer_semaphore.c`.
 
 > [!example] Deadlock da inversione dei down — errore classico da esame
 > Nel produttore-consumatore con semafori l'ordine corretto nel produttore è:
@@ -217,7 +217,7 @@ void writer(void){
 ```
 
 > [!warning] Starvation degli scrittori
-> Se nuovi lettori continuano ad arrivare mentre uno scrittore attende, lo scrittore potrebbe **non ottenere mai** l'accesso (blocco perpetuo). Una soluzione mette i nuovi lettori **in coda dietro** gli scrittori in attesa: riduce la concorrenza ma evita la starvation. Codice in `code/6_thread_e_sincronizzazione/6.3_reader_writer_semaphore.c`.
+> Se nuovi lettori continuano ad arrivare mentre uno scrittore attende, lo scrittore potrebbe **non ottenere mai** l'accesso (blocco perpetuo). Una soluzione mette i nuovi lettori **in coda dietro** gli scrittori in attesa: riduce la concorrenza ma evita la starvation. Codice in `Esempi/6_thread_e_sincronizzazione/6.3_reader_writer_semaphore.c`.
 
 > [!info] Mettiti alla prova
 > - **Teorico:** traccia dei valori di un semaforo → [[04 - Sincronizzazione (Esercizi)#Es. 2 — Valori di un semaforo e coda dei bloccati|Es. 2]]; deadlock da inversione dei `down` → [[04 - Sincronizzazione (Esercizi)#Es. 3 — Deadlock da inversione dei `down`|Es. 3]]; traccia produttore–consumatore → [[04 - Sincronizzazione (Esercizi)#Es. 4 — Produttore–consumatore: traccia dei semafori|Es. 4]]; lettori–scrittori → [[04 - Sincronizzazione (Esercizi)#Es. 5 — Lettori e scrittori: il contatore `rc`|Es. 5]].
@@ -296,7 +296,7 @@ pthread_mutex_unlock(&mutex);
 > [!warning] while, non if — risvegli spuri
 > La condizione va sempre verificata in un ciclo `while`, **mai con un semplice `if`**. Il motivo: i **risvegli spuri** (*spurious wakeup*). Su alcune implementazioni POSIX `pthread_cond_wait` può tornare anche senza che nessuno abbia chiamato `signal`. Se si usa `if`, il thread procede erroneamente anche quando la condizione non è ancora vera. Il ciclo `while` ricontrolla la condizione a ogni risveglio, proteggendo da questo scenario.
 
-Esempio completo nel codice del corso: `code/6_thread_e_sincronizzazione/6.4_producer_consumer_pthread.c`.
+Esempio completo nel codice del corso: `Esempi/6_thread_e_sincronizzazione/6.4_producer_consumer_pthread.c`.
 
 > [!info] Mettiti alla prova
 > - **C:** [[Indice degli Esercizi#Thread e Sincronizzazione|pari_dispari_insert_mutex.c]] — pattern `wait`/`signal` con `pthread_cond_wait` e somma progressiva.

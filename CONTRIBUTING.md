@@ -7,9 +7,8 @@ Grazie per voler contribuire! Questa repository è una raccolta di appunti unive
 ## Prima di iniziare
 
 1. Clona la repository e apri la cartella come **vault Obsidian** (File → Open vault → Open folder as vault).
-2. Obsidian userà la configurazione versionata: stesso tema (**Encore** — installalo da Settings → Appearance al primo avvio) e stessi plugin core abilitati.
-3. Installa i **community plugin** elencati (`obsidian-latex-suite`, `pseudocode-in-obs`) da *Settings → Community plugins → Browse*: i binari non sono versionati per mantenere la history pulita.
-4. **Opzionale ma consigliato**: abilita lo snippet CSS condiviso in `Settings → Appearance → CSS snippets → bithub-readability`.
+2. Installa i **community plugin** elencati (`obsidian-latex-suite`, `pseudocode-in-obs`) da *Settings → Community plugins → Browse*.
+3. La cartella `.obsidian/` **non è versionata** (è nel `.gitignore`): tema, plugin e impostazioni del vault sono personali e non vanno mai committati.
 
 ### Plugin opzionali
 
@@ -108,7 +107,7 @@ slide: "<file.pdf>"  # opzionale, se la nota deriva da una slide specifica
 ### Formato Markdown
 
 - **Obsidian Flavored Markdown**: callout (`> [!info]`), wikilink (`[[Nota]]`), embed (`![[assets/foo.png]]`).
-- **LaTeX**: inline `$...$`, block `$$...$$`. Il plugin Latex Suite è già configurato.
+- **LaTeX**: inline `$...$`, block `$$...$$`. Serve il plugin Latex Suite.
 - **Pseudocodice**: blocchi ` ```pseudo ` (plugin Pseudocode), sintassi LaTeX *algorithmic* (nome nel `\caption`, niente `\Procedure`); vedi gli appunti di Algoritmi e Strutture Dati per il modello.
 - Evita HTML grezzo quando esiste l'equivalente Markdown/Obsidian.
 - Link interni: preferisci **wikilink** (`[[...]]`) ai link relativi — restano validi anche se si rinomina una cartella.
@@ -143,7 +142,7 @@ chore(asd): normalizzazione pseudocodici a blocchi pseudo
 docs(repo): aggiornamento indice corsi
 ```
 
-**Non committare mai**: file `.zip` di materiali pesanti, file binari personali, file di stato Obsidian (`workspace.json`, `data.json` dei plugin) — già gestiti dal `.gitignore`.
+**Non committare mai**: file `.zip` di materiali pesanti, file binari personali, la cartella `.obsidian/` — già gestiti dal `.gitignore`.
 
 ### Pull Request
 
@@ -169,7 +168,7 @@ Usa **Issues** con il template appropriato:
 - Non riorganizzare cartelle o rinominare file esistenti senza discuterne prima — rompe i wikilink e i link esterni.
 - Non aggiungere `README.md`, indici o file di metadata a ogni materia se non utili.
 - Non modificare le note altrui per ragioni puramente stilistiche (grassetti/corsivi diversi).
-- Non committare la cartella `.obsidian/workspace*.json` o `.obsidian/plugins/*/data.json`: sono stato personale.
+- Non committare la cartella `.obsidian/`: è la configurazione personale del tuo vault.
 
 ---
 

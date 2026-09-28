@@ -1,0 +1,12 @@
+option solver cplexamp;
+model lab01.mod;
+data lab01.dat;
+
+for{i in 1..10}{
+   solve;
+   let alfa := i;
+   display z;
+   display x;
+   display v1;
+   display v1.slack;
+};

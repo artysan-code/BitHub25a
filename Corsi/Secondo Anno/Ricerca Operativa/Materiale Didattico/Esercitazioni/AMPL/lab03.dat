@@ -1,0 +1,17 @@
+set PROD:= STD HIQ;
+set RES:= ASM TST MAT;
+
+param b := 
+ASM 80
+TST 60
+MAT 70;
+
+param p := 
+STD 10
+HIQ 15;
+
+param a :
+    STD HIQ = 
+ASM  3   2
+TST  2   4
+MAT  4   4;

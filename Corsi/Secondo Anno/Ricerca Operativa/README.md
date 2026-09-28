@@ -42,10 +42,11 @@ Sulla base del materiale didattico aggiornato e delle dispense del corso, il pro
 * **`/Appunti/`**: Appunti testuali completi in Markdown, riscritti come **spiegazione pedagogica partendo da zero**. Ogni file include: introduzione motivazionale, definizioni precise, intuizione geometrica/economica, esempi numerici, errori frequenti, callout per i punti chiave, riferimenti puntuali alle dispense.
 * **`/Esercizi/`**: Svolgimenti passo-passo. Per ogni argomento c'è almeno un esempio completo; gli errori frequenti sono evidenziati con callout `[!warning]`.
 * **`/Materiale Didattico/`**: 
-  * `m01.modPL.01.modelli.pdf`: Dispensa fondamentale sulla Modellazione (De Giovanni-Brentegani — inclusi vincoli logici e Big-M).
-  * `Appunti Aggiuntivi/`: Slide su Branch&Bound, PLI e appunti su Dualità / Basi.
-  * `Esami/`: Raccolta di testi d'esame (2019-2020).
-  * `Materiale Teams/`: Ultime slide (Teoria Simplesso, Esercizi, AMPL) e testi d'esame più recenti, inclusa la nota d'esame.
+  * `Slide/`: slide del docente (Teoria Simplesso, PLI, Dualità, riepilogo) e la dispensa fondamentale sulla Modellazione `m01.modPL.01.modelli.pdf` (De Giovanni-Brentegani — inclusi vincoli logici e Big-M).
+  * `Esercitazioni/`: esercizi del docente con soluzioni (formulazione, simplesso, primale-duale) e i laboratori `AMPL/`.
+  * `Esami/`: testi d'esame 2019-2020 ed `Esercizi d'esame/` più recenti, inclusa la nota d'esame.
+  * `Libri/`: dispensa sulla dualità.
+  * `Risorse Studenti/`: appunti scansionati su Branch&Bound, PLI, primale-duale e simplesso a due fasi, con esercizi svolti.
 
 ## 📖 Come usare questi Appunti
 Ogni file `Appunti/` è autosufficiente: si può leggere da zero, anche senza aver mai visto la materia. La progressione consigliata:

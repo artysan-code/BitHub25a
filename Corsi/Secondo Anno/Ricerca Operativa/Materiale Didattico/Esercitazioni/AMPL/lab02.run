@@ -1,0 +1,7 @@
+option solver cplex; # provare ad usare altri solver
+model lab02.mod;
+data lab02.dat;
+expand > lab02.lp;
+solve;
+display z;
+display x;

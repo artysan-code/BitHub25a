@@ -14,7 +14,7 @@ propedeuticita:
 # Algoritmi e Strutture Dati
 Corso annuale del prof. **Luciano Gualà**, in due moduli (A = Modulo I, B = Modulo II): analisi e progettazione di **algoritmi efficienti** — strumenti teorici (notazioni asintotiche, ricorrenze) e tecniche di progettazione (greedy, divide-et-impera, programmazione dinamica). Propedeuticità: Programmazione dei Calcolatori con Laboratorio; consigliata Matematica Discreta.
 ## Modalità d'esame
-**6 appelli** all'anno (2 a giugno-luglio, 2 a settembre, 2 a febbraio). In ogni appello si può sostenere **Modulo 1, Modulo 2 o entrambi**; ogni modulo prevede una **prova scritta e un orale**. I voti parziali sono mantenuti per tutto l'anno accademico (fino a febbraio 2027 incluso). Sono previsti **1-2 Problem Set opzionali** che valgono **fino a 3 punti in più** sul voto del modulo (consegne in LaTeX, in `Materiale Didattico/Slides/Modulo I/Problem Set/`). Tracce d'esame 2021-2026 in `Materiale Didattico/Esami/`. Per le regole aggiornate fa fede **Didattica Web**.
+**6 appelli** all'anno (2 a giugno-luglio, 2 a settembre, 2 a febbraio). In ogni appello si può sostenere **Modulo 1, Modulo 2 o entrambi**; ogni modulo prevede una **prova scritta e un orale**. I voti parziali sono mantenuti per tutto l'anno accademico (fino a febbraio 2027 incluso). Sono previsti **1-2 Problem Set opzionali** che valgono **fino a 3 punti in più** sul voto del modulo (consegne in LaTeX, in `Materiale Didattico/Modulo I/Esercitazioni/Problem Set/`). Tracce d'esame 2021-2026 in `Materiale Didattico/Esami/`. Per le regole aggiornate fa fede **Didattica Web**.
 ## Programma e Appunti
 Le note seguono l'ordine del corso e coprono le slide del prof; lo slide e il capitolo di riferimento di ciascuna stanno nel suo frontmatter.
 ### Modulo I — `Appunti/Modulo I/`
@@ -41,7 +41,7 @@ Le note seguono l'ordine del corso e coprono le slide del prof; lo slide e il ca
 ## Materiale di riferimento
 - **Modulo I**: C. Demetrescu, I. Finocchi, G. F. Italiano — *Algoritmi e strutture dati*, McGraw-Hill (le slide ne seguono i capitoli). Integrazione per la DFS avanzata: S. Dasgupta, C. Papadimitriou, U. Vazirani — *Algorithms*, McGraw-Hill, cap. 3.
 - **Modulo II**: J. Kleinberg, É. Tardos — *Algorithm Design*, Pearson-Addison Wesley (slide del prof a partire da quelle di **Kevin Wayne**, Princeton); Union-Find anche da Demetrescu-Finocchi-Italiano.
-- **Slide ufficiali** del corso (prof. Gualà) in `Materiale Didattico/Slides/`.
+- **Slide ufficiali** del corso (prof. Gualà) in `Materiale Didattico/Modulo I/Slide/` e `Materiale Didattico/Modulo II/Slide/`.
 ## Crediti e fonti integrate
 La fonte primaria e autorevole sono le **slide del prof. Gualà**: in caso di conflitto su definizioni, notazioni o complessità prevalgono sempre. Le risorse seguenti sono state usate come traccia di prosa e riscontro, sempre verificate e **rielaborate** (non copiate):
 - **Ionut Zbir** ([github.com/IonutZbir/University](https://github.com/IonutZbir/University)): traccia per la prosa di Modulo I e II; soluzioni delle prove d'esame del Modulo I; dispense su Limiti e Ricorrenze; (Modulo II) raccolte di esercizi di DP e una soluzione d'esercitazione discussa dal prof (tutto in `Esercizi/`). Esclusa la nota Hash Table: fuori dal programma del corso.

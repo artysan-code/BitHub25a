@@ -15,7 +15,7 @@ Appunti sui **modelli continui** del corso (lezioni 15-21), organizzati nelle se
 13. [[04 - Modelli continui#Speranza matematica per variabili aleatorie continue|Speranza matematica per variabili aleatorie continue]] — $\mathbb{E}[X]$, momenti e varianza, media/varianza delle notevoli e la formula $\mathbb{E}[g(X)]$ (materia di **Es5**).
 14. [[04 - Modelli continui#Combinazioni lineari di normali indipendenti|Combinazioni lineari di normali indipendenti]] — ogni combinazione lineare di Normali indipendenti è Normale (materia di **Es6**).
 ## Nota sulla struttura
-Il prof tratta questi argomenti come un unico capitolo (Capitolo 4, lezioni 15-21). I marcatori `--- Fine lezione NN ---` all'interno delle sezioni conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Lezioni/6 CFU/`. Blocco successivo a [[02 - Modelli discreti]] e a [[03 - Speranza matematica e momenti]]; prosegue in [[05 - Convergenze e approssimazioni]] (legge dei grandi numeri e teorema del limite centrale).
+Il prof tratta questi argomenti come un unico capitolo (Capitolo 4, lezioni 15-21). I marcatori `--- Fine lezione NN ---` all'interno delle sezioni conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Slide/6 CFU/`. Blocco successivo a [[02 - Modelli discreti]] e a [[03 - Speranza matematica e momenti]]; prosegue in [[05 - Convergenze e approssimazioni]] (legge dei grandi numeri e teorema del limite centrale).
 
 ## Variabili aleatorie continue
 Definizione di v.a. continua tramite la densità, relazione $F_{X}'=f_{X}$ quasi ovunque e confronto sistematico con il caso discreto.

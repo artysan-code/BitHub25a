@@ -4,7 +4,7 @@ Appunti sul **Capitolo 5** del corso (lezione 22): il comportamento della somma/
 2. [[05 - Convergenze e approssimazioni#Teorema del limite centrale|Teorema del limite centrale]] — la somma standardizzata di v.a. i.i.d. tende a $N(0,1)$ (materia di **Es6**).
 3. [[05 - Convergenze e approssimazioni#Approssimazione Normale e correzione di continuità|Approssimazione Normale e correzione di continuità]] — uso pratico del TLC, con la correzione per v.a. a valori interi.
 ## Nota sulla struttura
-Blocco successivo a [[04 - Modelli continui]]. È il **Capitolo 5** del corso. I marcatori `--- Fine lezione NN ---` conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Lezioni/6 CFU/`.
+Blocco successivo a [[04 - Modelli continui]]. È il **Capitolo 5** del corso. I marcatori `--- Fine lezione NN ---` conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Slide/6 CFU/`.
 
 ## Legge dei grandi numeri
 Per una successione di v.a. i.i.d., la media aritmetica delle prime $n$ variabili si concentra sulla media comune $\mu$.

@@ -10,7 +10,7 @@ Appunti sui **modelli discreti** del corso (lezioni 05-12), organizzati nelle se
 8. [[02 - Modelli discreti#Trasformazioni e somme di variabili aleatorie discrete|Trasformazioni e somme di variabili aleatorie discrete]] — densità di $f(\underline{X})$, somme di binomiali e di poissoniane.
 9. [[02 - Modelli discreti#Massimi e minimi di variabili aleatorie discrete|Massimi e minimi di variabili aleatorie discrete]] — densità di $\max$ e $\min$ tra v.a. indipendenti.
 ## Nota sulla struttura
-Il prof tratta questi argomenti come un unico capitolo (Capitolo 3). I marcatori `--- Fine lezione NN ---` all'interno delle sezioni conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Lezioni/6 CFU/`.
+Il prof tratta questi argomenti come un unico capitolo (Capitolo 3). I marcatori `--- Fine lezione NN ---` all'interno delle sezioni conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Slide/6 CFU/`.
 
 ## Variabili aleatorie discrete
 Nozioni generali sulle variabili aleatorie: definizione, funzione di distribuzione, densità discreta.

@@ -9,7 +9,7 @@ Appunti sul secondo blocco del corso (lezioni 12-14) — valore medio, momenti, 
 7. [[03 - Speranza matematica e momenti#Coefficiente di correlazione|Coefficiente di correlazione]] — covarianza normalizzata $\rho\in[-1,1]$, disuguaglianza di Cauchy-Schwarz e caratterizzazione di $\rho=\pm 1$.
 8. [[03 - Speranza matematica e momenti#Retta di regressione|Retta di regressione]] — metodo dei minimi quadrati, formule per le due rette di regressione, passaggio per $(\mathbb{E}[X_{1}],\mathbb{E}[X_{2}])$ ed esercizio completo.
 ## Nota sulla struttura
-Blocco successivo a [[02 - Modelli discreti]], che raccoglie i modelli discreti. I marcatori `--- Fine lezione NN ---` conservano la corrispondenza con i PDF in `Materiale Didattico/Lezioni/6 CFU/`.
+Blocco successivo a [[02 - Modelli discreti]], che raccoglie i modelli discreti. I marcatori `--- Fine lezione NN ---` conservano la corrispondenza con i PDF in `Materiale Didattico/Slide/6 CFU/`.
 
 ## Speranza matematica di una variabile aleatoria discreta
 Definizione di $\mathbb{E}[X]$, condizione di esistenza, proprietà (linearità, monotonia) e formula per la speranza di una trasformazione.

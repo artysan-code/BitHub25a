@@ -37,15 +37,12 @@ Gli appunti sono forniti "così come sono" senza garanzie di correttezza o compl
 ## Come usare questa repository
 La repo è un **vault [Obsidian](https://obsidian.md/)**: Markdown con wikilink, grafo, formule LaTeX e callout. Per leggerla al meglio:
 1. Clona la repo e aprila come vault: *File → Open vault → Open folder as vault*.
-2. Installa i **community plugin** necessari (*Settings → Community plugins → Browse*): i binari non sono versionati, Obsidian li reinstalla dal manifest.
-3. Abilita lo **snippet CSS** condiviso: *Settings → Appearance → CSS snippets → bithub-readability*.
+2. Installa i **community plugin** necessari (*Settings → Community plugins → Browse*). La configurazione di Obsidian (`.obsidian/`) non è versionata: tema e impostazioni restano personali.
 
 Puoi anche sfogliare i `.md` direttamente su GitHub, ma wikilink, alcuni callout e gli pseudocodici non rendono come in Obsidian.
 ### Plugin necessari
 - **LaTeX Suite** (`obsidian-latex-suite`) — scrittura e resa di formule LaTeX.
 - **Pseudocode** (`pseudocode-in-obs`) — resa degli pseudocodici in blocchi ` ```pseudo ` (stile LaTeX *algorithmic*); usato ad es. negli appunti di *Algoritmi e Strutture Dati*.
-### Snippet CSS
-- **bithub-readability** — tipografia formule, margini callout, wrap dei code block, bordi immagini e resa dei blocchi pseudocodice. Da abilitare manualmente.
 
 ---
 ## Contribuire

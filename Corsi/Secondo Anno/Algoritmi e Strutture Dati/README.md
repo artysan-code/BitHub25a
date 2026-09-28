@@ -4,7 +4,7 @@ materia: Algoritmi e Strutture Dati
 codice: ASD
 anno: 2
 semestre: "1-2"
-cfu: 9
+cfu: 12
 ssd: INF/01
 docenti:
   - Luciano Gualà

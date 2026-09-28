@@ -20,13 +20,13 @@ L'esame si compone di **tre prove in sequenza**, da superare nell'ordine indicat
    - Si accede al progetto **solo dopo aver superato la prova scritta** e seguendo le linee guida fornite dal docente.
 3. **Prova orale.** Accessibile **solo se la prova scritta è superata e il progetto è approvato**. Consiste nella discussione del progetto e di domande sulla parte teorica.
 
-> Materiale ufficiale per il progetto in `Materiale Didattico/Materiale Progetto/` (linee guida e template, anno 2025-26).
+> Materiale ufficiale per il progetto in `Materiale Didattico/Progetto/` (linee guida e template, anno 2025-26).
 
 ## Materiale di riferimento
 
 - **Libro di testo** (prima parte del corso): Atzeni, Ceri, Fraternali, Paraboschi, Torlone — *Basi di dati. Modelli e linguaggi di interrogazione*, McGraw-Hill, 6ª edizione.
 - **SQL**: manuali in linea indicati dal docente (sintassi MySQL).
-- **Slide del corso**: in `Materiale Didattico/Slide Lezione/`.
+- **Slide del corso**: in `Materiale Didattico/Slide/`.
 - **Esercitazioni** (con soluzioni) in `Materiale Didattico/Esercitazioni/`: dipendenze funzionali, forme normali, normalizzazione e progettazione fisica, progettazione concettuale-logica.
 
 ## Programma e indice degli appunti
@@ -69,7 +69,7 @@ Basi di Dati e di Conoscenza/
 ├── README.md                 # questo file
 ├── Appunti/                  # note .md (01–14) + assets/
 └── Materiale Didattico/
-    ├── Slide Lezione/        # slide ufficiali del docente
+    ├── Slide/                # slide ufficiali del docente
     ├── Esercitazioni/        # tracce ed esercizi svolti con soluzioni
-    └── Materiale Progetto/   # linee guida e template del progetto d'esame
+    └── Progetto/             # linee guida e template del progetto d'esame
 ```

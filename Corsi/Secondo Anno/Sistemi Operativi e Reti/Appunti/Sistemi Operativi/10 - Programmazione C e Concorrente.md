@@ -2,7 +2,7 @@
 Questa nota copre gli **elementi di programmazione in C** strumentali al laboratorio (slide 5): come un programma scritto in C usa concretamente i servizi del SO — system call, creazione di processi, segnali, comunicazione tra processi. È il complemento "a livello di codice" dei concetti teorici di [[02 - Concetti di Base e Strutture]] (system call), [[03 - Processi e Thread]] (processi e segnali) e [[04 - Sincronizzazione]] (IPC).
 
 > [!info] Inquadramento
-> Il C fu creato da **Dennis Ritchie (1972)** per scrivere UNIX, e molte scelte di UNIX traspaiono ancora nel linguaggio. Materiale strumentale: gli esempi (`5.x_*.c`) sono in `Materiale Didattico/.../code/`. Non serve impararlo a memoria, ma capire *come* il codice arriva al kernel.
+> Il C fu creato da **Dennis Ritchie (1972)** per scrivere UNIX, e molte scelte di UNIX traspaiono ancora nel linguaggio. Materiale strumentale: gli esempi (`5.x_*.c`) sono in `Materiale Didattico/Sistemi Operativi/Esempi/`. Non serve impararlo a memoria, ma capire *come* il codice arriva al kernel.
 ## Everything is a file
 La filosofia UNIX **"everything is a file"** ([[09 - Linux e BASH|già vista]]) si riflette nel C: socket, device, dischi, stampanti, modem, pipe sono trattati come file, cioè acceduti tramite **file descriptor**. Ogni processo nasce con tre file già aperti (vedi [[09 - Linux e BASH#I tre stream standard]] e [[02 - Concetti di Base e Strutture#Protezione e shell]]):
 
@@ -285,7 +285,7 @@ Le `close` sulle estremità non usate **non** sono opzionali:
 > - **dup/dup2 + pipe bidirezionale:** [[Indice degli Esercizi#Processi|fork_pipe_bidirezionale_quadrato.c]] (traccia [[Tracce d'Esame Pratiche#Processi|P7]]).
 > - **Tracce d'esame:** [[Tracce d'Esame Pratiche#Processi|P1]], [[Tracce d'Esame Pratiche#Processi|P8]], [[Tracce d'Esame Pratiche#Processi|P9]].
 ## File di esempio del laboratorio
-*(Sezione di riferimento rapido — inventario del codice, non argomento d'esame.)* Gli esempi del corso (in `Materiale Didattico/.../code/`):
+*(Sezione di riferimento rapido — inventario del codice, non argomento d'esame.)* Gli esempi del corso (in `Materiale Didattico/Sistemi Operativi/Esempi/`):
 - `5.1_hello_world_1/2/3.c` — le tre versioni di Hello World.
 - `5.2_my_first_fork_1/2.c` — creazione di processi con `fork`.
 - `5.3_my_signal_1/2.c` — gestione di segnali e allarmi.

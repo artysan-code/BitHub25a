@@ -46,7 +46,7 @@ Quattro condizioni tipiche:
 | `kill`            | Invia un **segnale** a un processo (o a un gruppo). Può causare la terminazione **involontaria**.                                                                                                                |
 
 > [!info] Codice di laboratorio
-> Esempi C su `fork`, `exec`, segnali e pipe in `Materiale Didattico/.../code/5_elementi_di_programmazione_concorrente_code/`. Il pattern `fork` + `exec` + `waitpid` è quello della shell visto in [[02 - Concetti di Base e Strutture]]. La trattazione in C di `fork`/`exec`/`wait`, dei segnali (`signal`/`alarm`/`kill`) e delle pipe (`pipe`/`dup2`) è in [[10 - Programmazione C e Concorrente]].
+> Esempi C su `fork`, `exec`, segnali e pipe in `Materiale Didattico/Sistemi Operativi/Esempi/5_elementi_di_programmazione_concorrente_code/`. Il pattern `fork` + `exec` + `waitpid` è quello della shell visto in [[02 - Concetti di Base e Strutture]]. La trattazione in C di `fork`/`exec`/`wait`, dei segnali (`signal`/`alarm`/`kill`) e delle pipe (`pipe`/`dup2`) è in [[10 - Programmazione C e Concorrente]].
 
 > [!question] Domanda tipica d'esame
 > **D:** Cosa fa `fork()` e in che modo è usata con `exec`? **R:** `fork()` crea un nuovo processo figlio come clone "privato" del genitore: condividono il segmento di codice e le variabili d'ambiente ereditate, ma hanno spazi di indirizzi separati. Il valore di ritorno distingue padre (PID del figlio) da figlio (0). `exec` (nella forma `execve`) sostituisce poi l'immagine del processo figlio con un nuovo programma: il pattern `fork` + `exec` + `wait` è quello usato dalla shell per lanciare comandi.
@@ -247,7 +247,7 @@ int main(int argc, char *argv[]) {
 > Il `main` **non chiama `pthread_join`**: termina (con `return 0`) senza attendere il completamento dei thread figli. L'ordine in cui i 10 thread eseguono `printf` dipende dallo **scheduler**, che non offre garanzie di tempistica né di ordine (cfr. [[#Processi concorrenti]]). L'output osservabile può essere qualsiasi permutazione dei messaggi, o addirittura incompleto se il processo termina prima che tutti i thread abbiano stampato. *"What will the output be?"* — la risposta corretta è: **non si può sapere a priori**.
 
 > [!info] Codice di laboratorio
-> Esempi su thread, producer-consumer e reader-writer in `Materiale Didattico/.../code/6_thread_e_sincronizzazione/`.
+> Esempi su thread, producer-consumer e reader-writer in `Materiale Didattico/Sistemi Operativi/Esempi/6_thread_e_sincronizzazione/`.
 
 > [!info] Mettiti alla prova
 > - **C — pthreads:** [[Indice degli Esercizi#Thread e Sincronizzazione|pos_neg_one_thread_mutex.c]], [[Indice degli Esercizi#Thread e Sincronizzazione|pari_dispari_insert_mutex.c]], [[Indice degli Esercizi#Thread e Sincronizzazione|init_max_min_mutex.c]] — `pthread_create`/`join`/`exit`.

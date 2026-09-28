@@ -37,7 +37,7 @@ Gli anni sono `Primo Anno/`, `Secondo Anno/`, `Terzo Anno/`.
 ### Principi
 
 1. **`README.md` è l'unica fonte d'informazione sul corso.** Niente `Informazioni-Corso.md`, `ARGOMENTI.md`, `GUIDA_STUDIO.md` o simili. Tutto quello che va detto sul corso — esame, docenti, libri, argomenti, metodo di studio, note organizzative — sta nel README.
-2. **Contenuto libero.** Dentro `Appunti/`, `Esercizi/`, `Materiale Didattico/` ognuno organizza come vuole (per lezione, per argomento, per libro). Non esistono template per materia.
+2. **Contenuto libero negli appunti.** Dentro `Appunti/` ed `Esercizi/` ognuno organizza come vuole (per lezione, per argomento, per libro). Non esistono template per materia. `Materiale Didattico/` segue invece i nomi standard descritti sotto.
 3. **Rispetta lo stile del corso** su cui lavori: se un corso ha già un pattern, non inventarne uno nuovo.
 
 ### Nomi cartelle canonici
@@ -51,6 +51,25 @@ Gli anni sono `Primo Anno/`, `Secondo Anno/`, `Terzo Anno/`.
 | Info corso | `README.md` alla radice materia | file separati |
 
 Cartelle extra solo se servono (es. `Modulo-I/` e `Modulo-II/` per corsi divisi, `Progetti/` per lavori integrati).
+
+### Dentro `Materiale Didattico/`
+
+Si usano solo le sottocartelle seguenti, create quando arriva il primo file:
+
+| Cartella | Contenuto |
+|---|---|
+| `Slide/` | slide e dispense delle lezioni |
+| `Esercitazioni/` | esercizi ed esercitazioni del docente (eventuale `Problem Set/` dentro) |
+| `Esami/` | tracce passate, simulazioni, regole e programma d'esame (eventualmente per anno: `Esami/2024-2025/`) |
+| `Libri/` | libri di testo e dispense estese |
+| `Esempi/` | codice mostrato dal docente (corsi di programmazione) |
+| `Progetto/` | specifiche, linee guida e template del progetto d'esame |
+| `Risorse Studenti/` | materiale di altri studenti (appunti scansionati, foto di test) |
+
+- **Niente file sciolti** alla radice di `Materiale Didattico/`: ogni file sta in una delle cartelle sopra.
+- **Moduli**: se un corso ha moduli con materiale separato su più tipi, il modulo è un livello sopra (`Modulo I/Slide/`, `Sistemi Operativi/Esempi/`). Se cambia un solo tipo, il modulo è una sottocartella di quel tipo (`Slide/Modulo 12 CFU/`).
+- **Niente archivi, binari compilati o dipendenze** (`.zip`, eseguibili, `node_modules/`): si estraggono e si versionano solo i file utili.
+- **Niente dati personali di altri** (esiti con matricole, nomi, voti).
 
 ---
 

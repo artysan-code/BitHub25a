@@ -14,7 +14,7 @@ propedeuticita: []
 # Programmazione Web
 Corso dei proff. **Pierpaolo Loreti** e **Lorenzo Bracciale** sulle **applicazioni web full stack** (Browser ⇔ Server web ⇔ Storage): come un'applicazione web viene costruita e come funziona, imparando facendo. Le lezioni puntano più sui principi che sulle istruzioni per scrivere codice, e l'esame premia soprattutto la **comprensione teorica**.
 ## Modalità d'esame
-L'esame (regole A.A. 2025/26, in `Materiale Didattico/Esame/PW-Esame-2026.pdf`) ha due parti:
+L'esame (regole A.A. 2025/26, in `Materiale Didattico/Esami/PW-Esame-2026.pdf`) ha due parti:
 1. **Test a risposta multipla** sugli argomenti del corso. Foto di un test reale in `Materiale Didattico/Risorse Studenti/`.
 2. **Presentazione del progetto e discussione orale.**
 

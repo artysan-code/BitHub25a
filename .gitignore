@@ -43,6 +43,9 @@ a.out
 *.class
 *.exe
 
+# Dipendenze npm (rigenerabili con npm install dal package.json)
+node_modules/
+
 # Build front-end (es. esperimenti hackathon fuori dalla cartella Oracle)
 dist/
 build/

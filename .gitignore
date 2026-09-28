@@ -1,14 +1,5 @@
-# Obsidian — versiona solo la config condivisibile, ignora stato personale
-.obsidian/*
-!.obsidian/app.json
-!.obsidian/appearance.json
-!.obsidian/core-plugins.json
-!.obsidian/community-plugins.json
-!.obsidian/hotkeys.json
-!.obsidian/snippets/
-.obsidian/plugins/
-.obsidian/workspace*.json
-.obsidian/*.sync-conflict-*
+# Obsidian — la config del vault è personale di ciascuno: non versionata
+.obsidian/
 .trash/
 
 # File temporanei e backup

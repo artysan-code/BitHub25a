@@ -46,6 +46,12 @@ a.out
 # Dipendenze npm (rigenerabili con npm install dal package.json)
 node_modules/
 
+# Librerie e template front-end di terzi copiati negli esempi
+# (si riscaricano dal sito o si caricano da CDN: non sono materiale del corso)
+bootstrap-*/
+startbootstrap-*/
+*.map
+
 # Build front-end (es. esperimenti hackathon fuori dalla cartella Oracle)
 dist/
 build/

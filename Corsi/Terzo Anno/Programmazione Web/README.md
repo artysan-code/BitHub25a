@@ -40,15 +40,17 @@ Applicazione web completa **a tema libero** (catalogo, lista attività, prenotaz
 > [!warning] Uso dell'AI
 > Strumenti come ChatGPT, Claude e Copilot sono **consentiti e incoraggiati**, ma bisogna saper capire, spiegare e modificare ogni parte del codice. Presentare codice che non si sa spiegare equivale a copiare.
 ## Programma e Appunti
-Argomenti che il docente verifica all'esame, sia sul codice del progetto sia con le domande. Le slide di `Materiale Didattico/Slide/` sono il riferimento per tutti.
-- **Git e GitHub**: repository, commit con messaggi chiari, storia di sviluppo, branch, README come documentazione.
-- **Internet, Web e HTTP**: client/server, struttura di una URL, ciclo richiesta/risposta, metodi, status code, header, JSON, CORS.
-- **HTML**: struttura semantica, organizzazione dei contenuti, form e input, attributi, accessibilità di base.
-- **CSS**: selettori e specificità, box model, Flexbox e Grid, design responsive, organizzazione dei fogli di stile.
-- **JavaScript**: DOM, eventi, Promise, `fetch`, `async`/`await`, gestione degli errori e degli stati dell'interfaccia.
-- **Node.js**: npm e `package.json`, sistema dei moduli, avvio del server, log dal terminale.
-- **Express**: routing, middleware, parametri di rotta e query, parsing del body, file statici.
-- **REST**: rotte progettate attorno alle risorse, scelta di metodi e status code, risposte JSON coerenti.
+Le note seguono l'ordine del corso; le slide da cui deriva ciascuna stanno nel suo frontmatter. Coprono tutti gli argomenti che il docente verifica all'esame, sia sul codice del progetto sia con le domande.
+1. [[01 - Internet, Web e HTTP]]: web app e architettura full stack, client-server, URI e URL, DNS, ciclo richiesta/risposta HTTP, metodi, status code, header, JSON.
+2. [[02 - HTML semantico e form]]: struttura del documento, tag semantici, link e percorsi, tabelle, form, tipi di input, validazione nativa.
+3. [[03 - CSS - selettori, specificità e box model]]: inclusione, selettori, cascata, ereditarietà, specificità, unità, font e testo, box model, background, reset.
+4. [[04 - CSS - layout, Flexbox, Grid e responsive]]: display, liste, position, float, Flexbox, Grid, layout responsive, variabili CSS, Bootstrap.
+5. [[05 - Git e GitHub]]: le tre aree, commit, remote, push/fetch/pull, branch e merge, GitHub Classroom e Git nel progetto d'esame.
+6. [[06 - JavaScript e DOM]]: il linguaggio (tipi, funzioni, closure, oggetti, prototipi, array), il DOM e gli eventi.
+7. [[07 - JavaScript asincrono, Promise, fetch e CORS]]: event loop, callback, Promise, async/await, fetch, stati dell'interfaccia, CORS.
+8. [[08 - Node.js e npm]]: siti statici, dinamici e API based, runtime Node, moduli, server HTTP nativo, npm e `package.json`.
+9. [[09 - Express e API REST]]: routing, middleware, file statici, gestione degli errori, REST, status code, JSend, form lato server, mini API d'esempio.
+10. [[10 - Server side rendering con EJS e autenticazione]]: SSR vs CSR, EJS, sessioni e cookie, token e JWT, middleware di protezione (extra facoltativi del progetto).
 ## Materiale di riferimento
 - **Slide ufficiali** in `Materiale Didattico/Slide/`: `PW00`–`PW11` (Internet, HTML, Git, web server e URL, CSS), `javascript_2026.pdf`, `PW31`–`PW48` (JS asincrono, Fetch e CORS, Node.js, Express, REST, EJS, form, autenticazione con token).
 - **Esempi del docente** in `Materiale Didattico/Esempi/`: pagine HTML/CSS (box model, background, grid, Bootstrap), esercizi sul DOM e sulle Promise, esercizi svolti in aula (`live/`). Il codice mostrato a lezione viene pubblicato dai docenti dopo la lezione.

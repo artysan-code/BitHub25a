@@ -29,7 +29,6 @@ Da queste considerazioni deriva quindi la seguente definizione completa:
 > - **Costrutti sintattici** per definire i dati
 > - **Regole semantiche** per interpretarli
 > - **Linguaggi** per manipolarli
-
 ### Tipologie di modelli nei DBMS
 Nei DBMS esistono due principali tipologie di modelli:
 - **Modello logico**
@@ -44,14 +43,12 @@ I modelli concettuali hanno l'obiettivo di descrivere i **concetti** del mondo r
 - **Entity-Relationship (ER)**
 - **Modello Classi Associazioni** (UML)
 ### Esempio: organizzazione dei dati in un RDBMS
-
 > [!example] Tabella studenti
 > | Nome  | Cognome | Matricola | Voto medio |
 > |-------|---------|-----------|------------|
 > | Mario | Rossi   | 1         | 24         |
 > | Luigi | Bianchi | 2         | 28         |
 > | Rosa  | Rossa   | 3         | 26         |
-
 ## Schemi ed Istanze
 In ogni base di dati esistono due concetti fondamentali:
 - Lo **schema**, sostanzialmente invariante nel tempo, che descrive la struttura della base di dati (**aspetto intensionale**). Nell'esempio della tabella, corrisponde alle intestazioni delle colonne (Nome, Cognome, Matricola, Voto medio).
@@ -77,7 +74,6 @@ I tre schemi fondamentali sono:
 ### Esempio: le Viste
 > [!example] Viste — CorsiSedi
 > Dati due schemi base **Corsi** (Corso, Docente, Aula) e **Aule** (Nome, Edificio, Piano), è possibile definire uno schema esterno **CorsiSedi** (Corso, Aula, Edificio, Piano) che combina le informazioni delle due tabelle, senza modificare lo schema logico sottostante.
-
 ### Analogia con la programmazione (matrici)
 > [!example] Analogia — Livelli e matrici
 > | Livello | Esempio |
@@ -85,7 +81,6 @@ I tre schemi fondamentali sono:
 > | **Concettuale/logico** | `int a[n][m];` — dichiarazione della struttura |
 > | **Fisico** | `a[i][j]` si trova alla locazione $a_0 + 4(m(i-1)+j-1)$ |
 > | **Esterno (vista)** | $f(i) = \sum_{j=1}^{m} a[i][j]$ — somma riga i-esima |
-
 ## Indipendenza dei dati
 L'indipendenza dei dati è una conseguenza dell'articolazione in livelli. L'accesso avviene solo tramite il livello esterno (che può coincidere con quello logico) e si presenta in due forme:
 - **Indipendenza fisica**: si parla di indipendenza fisica quando il livello logico e quello esterno sono indipendenti da quello fisico. Una relazione è utilizzata nello stesso modo qualunque sia la sua realizzazione fisica; la **realizzazione fisica** può cambiare senza che debbano essere modificati i programmi.
@@ -128,7 +123,6 @@ A livello professionale le figure applicate alle Basi di Dati sono le seguenti:
 
 > [!quote] Definizione — Transazione
 > Attività eseguita periodicamente e di cui vengono calcolate e previste le eccezioni. In senso più specifico, una transazione è una sequenza indivisibile di operazioni: o vengono eseguite tutte o nessuna.
-
 ## Pro e contro dei DBMS
 - **Pro**
 	- dati come risorsa comune, base di dati come modello della realtà

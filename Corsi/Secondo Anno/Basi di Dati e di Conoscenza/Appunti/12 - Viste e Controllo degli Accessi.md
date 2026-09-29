@@ -1,12 +1,9 @@
 ## Viste
-
 > [!quote] Definizione — Vista
 > Una **vista** (o *view*) è una **tabella virtuale** ricavata da informazioni contenute in altre tabelle (o in altre viste). Non contiene dati propri: è definita da una query SQL che viene eseguita ogni volta che la vista viene interrogata.
 
 Nella definizione di una vista possono comparire anche altre viste, a patto che non vi siano **dipendenze ricorsive** (dirette, immediate o transitive): una vista non può dipendere da se stessa.
-
 ### Sintassi: CREATE VIEW
-
 ```sql
 CREATE VIEW NomeVista [(ListaAttributi)] AS SelectSQL
 [WITH [LOCAL | CASCADED] CHECK OPTION]
@@ -24,9 +21,7 @@ Due vincoli strutturali:
 >     WHERE Dipart = 'Amministrazione' AND Stipendio > 10;
 > ```
 > La vista `ImpiegatiAmmin` mostra solo le righe degli impiegati del dipartimento Amministrazione con stipendio superiore a 10, esposta come se fosse una tabella indipendente.
-
 ### Vantaggi e svantaggi
-
 **Vantaggi:**
 1. **Non occupano memoria**: le viste virtuali non memorizzano dati — il costo di storage è zero.
 2. **Sicurezza e riservatezza**: si possono nascondere colonne o righe sensibili, mostrando solo il sottoinsieme di dati autorizzato.
@@ -35,9 +30,7 @@ Due vincoli strutturali:
 **Svantaggi:**
 1. `UPDATE` e `DELETE` sulle viste diventano azioni potenzialmente pericolose per le tabelle sottostanti.
 2. Possibilità di **inconsistenza** tra le tabelle di base e il database.
-
 ## Interrogazioni sulle viste
-
 Una vista si interroga esattamente come se fosse una relazione di base: il DBMS riscrive internamente la query espandendo la definizione della vista.
 
 > [!example] Espansione di una query su vista
@@ -51,9 +44,7 @@ Una vista si interroga esattamente come se fosse una relazione di base: il DBMS 
 > FROM Impiegato
 > WHERE Dipart = 'Amministrazione' AND Stipendio > 10;
 > ```
-
 ### Viste per interrogazioni altrimenti impossibili
-
 Le viste permettono di strutturare interrogazioni che SQL non consente di esprimere direttamente in un'unica query (ad esempio, aggregazioni annidate).
 
 > [!example] Dipartimento con la massima somma degli stipendi
@@ -97,9 +88,7 @@ Le viste permettono di strutturare interrogazioni che SQL non consente di esprim
 >     GROUP BY Dipart
 > );
 > ```
-
 ## Aggiornabilità delle viste
-
 Su certe viste è possibile eseguire operazioni di modifica (`INSERT`, `UPDATE`, `DELETE`) che si propagano alle tabelle di base sottostanti. Esistono però forti limitazioni.
 
 > [!info] Condizioni per l'aggiornabilità
@@ -109,9 +98,7 @@ Su certe viste è possibile eseguire operazioni di modifica (`INSERT`, `UPDATE`,
 > - la vista contiene almeno la **chiave primaria** della tabella di base.
 >
 > Viste con `GROUP BY`, `DISTINCT`, funzioni aggregate, join o sottoquery nella `SELECT` non sono aggiornabili.
-
 ### WITH CHECK OPTION
-
 La clausola `WITH CHECK OPTION` aggiunge un **vincolo di integrità sugli aggiornamenti**: qualsiasi modifica tramite la vista viene accettata solo se la riga modificata (o inserita) continua a soddisfare il predicato `WHERE` che definisce la vista. In altri termini, la riga deve rimanere visibile attraverso la vista dopo la modifica.
 
 > [!example] Vista con CHECK OPTION
@@ -133,14 +120,10 @@ La clausola `WITH CHECK OPTION` aggiunge un **vincolo di integrità sugli aggior
 La clausola `WITH CHECK OPTION` può essere qualificata:
 - `WITH LOCAL CHECK OPTION`: il vincolo si applica solo alla definizione della vista corrente.
 - `WITH CASCADED CHECK OPTION` (default): il vincolo si applica a cascata anche alle viste su cui quella corrente è definita.
-
 ## Ricorsione nelle viste
-
 > [!warning] Dipendenze ricorsive vietate nelle viste ordinarie
 > Le viste create con `CREATE VIEW` **non** possono fare riferimento a se stesse, né direttamente né transitivamente: una vista non può dipendere da se stessa. Le interrogazioni intrinsecamente ricorsive (es. la chiusura transitiva di una relazione padre-figlio) non sono quindi esprimibili con una vista standard.
-
 ## Funzioni scalari e condizionali
-
 Le **funzioni scalari** operano a livello di singola ennupla e restituiscono un singolo valore. MySQL ne mette a disposizione diverse categorie:
 
 | Categoria | Esempi |
@@ -149,9 +132,7 @@ Le **funzioni scalari** operano a livello di singola ennupla e restituiscono un 
 | Manipolazione stringhe | `CHAR_LENGTH`, `LOWER` |
 | Conversione di tipo | `CAST` |
 | Condizionali | `NULLIF`, `COALESCE`, `CASE` |
-
 ### NULLIF
-
 > [!quote] Definizione — NULLIF
 > `NULLIF(expr1, expr2)` confronta le due espressioni: restituisce `NULL` se sono uguali, altrimenti restituisce `expr1`.
 
@@ -159,9 +140,7 @@ Le **funzioni scalari** operano a livello di singola ennupla e restituiscono un 
 SELECT NULLIF(25, 26);  -- risultato: 25
 SELECT NULLIF(25, 25);  -- risultato: NULL
 ```
-
 ### COALESCE
-
 > [!quote] Definizione — COALESCE
 > `COALESCE(val1, val2, ..., valN)` restituisce il **primo valore non nullo** nella lista degli argomenti.
 
@@ -170,9 +149,7 @@ SELECT Nome, Cognome, COALESCE(Dipart, 'Ignoto')
 FROM Impiegato;
 ```
 Per ogni impiegato senza dipartimento (`Dipart = NULL`), la funzione restituisce la stringa `'Ignoto'` al posto del valore nullo.
-
 ### CASE
-
 > [!quote] Definizione — CASE
 > L'espressione `CASE` valuta una sequenza di condizioni in ordine e restituisce il valore della prima condizione verificata (semantica IF-THEN-ELSE). Se nessuna condizione è vera, viene restituito il valore della clausola `ELSE` (o `NULL` se `ELSE` è assente).
 
@@ -187,9 +164,7 @@ FROM Veicolo
 WHERE Anno > 1975;
 ```
 A seconda del tipo di veicolo, la tassa viene calcolata con formule diverse; i veicoli di tipo diverso da `'Auto'` e `'Moto'` ricevono `NULL`.
-
 ## Controllo degli Accessi
-
 Il **controllo degli accessi** è il meccanismo con cui un DBMS garantisce che ogni utente possa eseguire solo le operazioni per cui è autorizzato.
 
 > [!quote] Definizione — Privilegio
@@ -201,9 +176,7 @@ Il **controllo degli accessi** è il meccanismo con cui un DBMS garantisce che o
 > - la **possibilità di trasmettere** o meno il privilegio ad altri utenti.
 
 SQL prevede la definizione di **utenti e ruoli** cui assegnare diversi privilegi. Gli utenti possono coincidere con gli utenti del sistema operativo su cui è attivo il server SQL, oppure essere indipendenti da esso. Ogni componente del sistema è proteggibile; di solito si proteggono le tabelle.
-
 ### Tipi di privilegio
-
 | Privilegio | Applicabile a | Significato |
 |---|---|---|
 | `SELECT` | tabelle, viste, attributi | permette di leggere la risorsa |
@@ -216,11 +189,8 @@ SQL prevede la definizione di **utenti e ruoli** cui assegnare diversi privilegi
 
 > [!info] Utente di sistema
 > Il creatore di una risorsa ha automaticamente **tutti i privilegi** su di essa al momento della creazione. Esiste inoltre un utente speciale `_system` che dispone di tutti i privilegi su tutte le risorse in qualsiasi momento.
-
 ## GRANT e REVOKE
-
 ### Concessione di privilegi: GRANT
-
 ```sql
 GRANT tipo_privilegio
 ON oggetto(DB, tabella)
@@ -244,9 +214,7 @@ GRANT ALL PRIVILEGES ON Impiegato TO Mario WITH GRANT OPTION;
 -- Concede solo la lettura su colonne specifiche
 GRANT SELECT (Nome, Cognome, Stipendio) ON Impiegato TO Lucia;
 ```
-
 ### Revoca di privilegi: REVOKE
-
 ```sql
 REVOKE tipo_privilegio
 ON oggetto
@@ -261,9 +229,7 @@ FROM nome_utente;
 
 > [!warning] Effetti della revoca con GRANT OPTION
 > Se un utente aveva ricevuto un privilegio `WITH GRANT OPTION` e lo aveva propagato ad altri, la revoca del privilegio all'utente originale può causare la revoca a cascata anche sui destinatari secondari, a seconda delle opzioni del DBMS (`REVOKE ... CASCADE` vs `REVOKE ... RESTRICT`).
-
 ## Ruoli
-
 > [!quote] Definizione — Ruolo
 > Un **ruolo** è un insieme denominato di privilegi che può essere assegnato a uno o più utenti (o a interi gruppi). Semplifica la gestione delle autorizzazioni: invece di assegnare singolarmente i privilegi a ciascun utente, si assegnano a un ruolo e il ruolo agli utenti.
 
@@ -282,9 +248,7 @@ DROP ROLE responsabile_hr;
 ```
 
 Con molti ruoli il responsabile può gestire facilmente i privilegi di accesso: modificare i permessi del ruolo si riflette automaticamente su tutti gli utenti che lo possiedono.
-
 ## Viste e Controllo degli Accessi
-
 Le viste sono uno strumento fondamentale per la **sicurezza e la riservatezza** dei dati. Anziché concedere l'accesso diretto alle tabelle di base (con tutti i loro attributi e righe), si può:
 
 1. creare una vista che espone solo le colonne e le righe autorizzate;

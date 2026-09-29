@@ -11,7 +11,6 @@ Il modello concettuale è una rappresentazione **astratta** della realtà: defin
 > 3. Quanti tra loro?
 > 4. Cosa identifica gli "oggetti"?
 > 5. Quali informazioni utili non principali?
-
 ## Il Modello Entità-Relazione (ER)
 Il modello Entità-Relazione (ER = Entity/Relationship) è uno strumento per analizzare le caratteristiche di una realtà in modo indipendente dagli eventi che in essa accadono, cioè per costruire un modello concettuale dei dati indipendente dalle applicazioni.
 Sono stati sviluppati modelli più moderni:
@@ -19,7 +18,6 @@ Sono stati sviluppati modelli più moderni:
 - **UML**: linguaggio unificato per la progettazione dei dati e delle funzioni.
 ### Costrutti principali
 #### Entità
-
 > [!quote] Definizione — Entità
 > È un oggetto, concreto o astratto, che ha un significato anche quando viene considerato in modo isolato ed è di interesse per la realtà che si vuole modellare.
 
@@ -30,9 +28,7 @@ Entità che non hanno una chiave primaria e devono essere associate ad un'altra 
 
 > [!example] Entità deboli — Movimento/Conto/Cliente
 > `Movimento` ha senso solo in relazione a `Conto` → `Movimento` è un'entità debole. `Cliente` e `Conto` sono entità forti. Per risolvere la debolezza spesso si introduce una *chiave artificiale* (id autoincrementale).
-
 #### Relazione (Associazione)
-
 > [!quote] Definizione — Relazione (Associazione)
 > È un legame logico che stabilisce un'interazione tra due o più entità.
 
@@ -42,7 +38,6 @@ Entità che non hanno una chiave primaria e devono essere associate ad un'altra 
 
 > [!example] Relazione ternaria — Chirurgo/Opera/Sala operatoria
 > La relazione `Opera` coinvolge tre entità: `Chirurgo`, `Sala operatoria` e `Intervento`. Una relazione ternaria si scompone in diverse relazioni binarie.
-
 #### Attributi e Chiavi
 Le proprietà delle entità e delle relazioni sono descritte dagli **attributi**. Alcune caratteristiche che descrivono il **dominio** di un attributo:
 - **Formato**: tipo di valore che assume (carattere, numerico, data/ora, …)
@@ -71,7 +66,6 @@ Anche le relazioni possono avere attributi propri.
 
 > [!example] Attributi di una relazione — Acquistare
 > La relazione `acquistare` tra `Automobile` e `Persona` può avere attributi propri: `targa`, `prezzo acquisto`, `data acquisto`. Questi attributi non appartengono né all'automobile né alla persona, ma all'atto dell'acquisto.
-
 ### Molteplicità (Cardinalità)
 La **molteplicità** di una relazione è il numero di possibili istanze di un'entità che sono messe in corrispondenza con un'istanza dell'altra entità.
 Definisce il numero minimo e massimo di associazioni a cui un'istanza può (o deve) partecipare: `(min, max)`.

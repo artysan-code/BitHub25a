@@ -1,9 +1,6 @@
 ## Introduzione
-
 Questa lezione riprende e approfondisce i temi già trattati in [[19 - Database NoSQL]] (rationale del NoSQL, proprietà BASE, teorema CAP, categorie di database NoSQL), aggiungendo un confronto più dettagliato con i sistemi RDBMS tradizionali e, soprattutto, una trattazione pratica e approfondita di **MongoDB**: installazione, shell, operazioni CRUD, modellazione dei documenti, indicizzazione, replica, sharding, sicurezza e linguaggio di interrogazione.
-
 ## Big Data Storage e limiti dei RDBMS tradizionali
-
 I RDBMS tradizionali sono progettati attorno alle proprietà **ACID**:
 
 - **Atomicity**: una transazione viene eseguita per intero o per niente
@@ -12,18 +9,14 @@ I RDBMS tradizionali sono progettati attorno alle proprietà **ACID**:
 - **Durability**: una volta confermata (commit), una transazione rimane persistente anche in caso di guasti
 
 > [!info] Per il dettaglio completo di ACID (log, WAL, undo/redo, concorrenza) si veda [[18 - Gestione delle Transazioni]]
-
 ### Pro e contro dei RDBMS
-
 | Pro | Contro |
 |---|---|
 | Forte consistenza dei dati | Difficoltà di scalabilità orizzontale |
 | Schema rigido e ben definito | Schema rigido: poco adatto a dati semi-strutturati/non strutturati |
 | Query language standard (SQL) e potente (join, transazioni) | Costo elevato di licenze/hardware per scalare verticalmente |
 | Maturità, strumenti, garanzie di integrità | Prestazioni degradate su volumi di dati molto grandi (Big Data) |
-
 ### Le sfide di scalabilità dei RDBMS
-
 Quando il carico di dati o di richieste cresce, i RDBMS tradizionali affrontano due strategie di scalabilità, entrambe con limiti:
 
 - **Replicazione (master/worker)**: un nodo *master* gestisce le scritture e propaga i dati a nodi *worker* (repliche) che gestiscono le letture. Migliora la disponibilità in lettura, ma il master resta un collo di bottiglia per le scritture ed è un singolo punto di guasto per esse.
@@ -31,9 +24,7 @@ Quando il carico di dati o di richieste cresce, i RDBMS tradizionali affrontano 
 
 > [!warning] Costo della scalabilità verticale
 > Scalare verticalmente un RDBMS (hardware più potente su un unico nodo) ha un costo che cresce in modo non lineare (super-lineare) rispetto alla capacità ottenuta, mentre scalare orizzontalmente con molte macchine economiche (tipico dei sistemi NoSQL) ha un costo complessivo molto più contenuto per la stessa capacità.
-
 ## NoSQL: perché e caratteristiche principali
-
 > [!info] Rimando
 > Per la definizione di NoSQL, il confronto con RDBMS e il quadro generale, si veda [[19 - Database NoSQL]] — qui si riportano solo le caratteristiche principali con taglio più pratico.
 
@@ -45,9 +36,7 @@ Caratteristiche principali dei sistemi NoSQL:
 - **Architettura shared-nothing**: ogni nodo è indipendente e non condivide memoria/disco con gli altri (eccezione parziale: i database a grafo, spesso più difficili da distribuire per la natura delle relazioni)
 - **Evitare la complessità dei join**: i dati correlati vengono spesso denormalizzati/embedded per evitare join costosi in un sistema distribuito
 - **Consistenza BASE** invece di ACID
-
 ### ACID vs BASE
-
 | | ACID | BASE |
 |---|---|---|
 | Filosofia | Approccio precauzionale: previene i conflitti prima che accadano | Approccio ottimistico: lascia che i conflitti accadano e li risolve dopo |
@@ -55,15 +44,11 @@ Caratteristiche principali dei sistemi NoSQL:
 | Punti deboli | Degrado delle prestazioni e deadlock su grandi volumi; non scala bene su petabyte di dati (latenza) | Stato "soft" (persistenza a carico dell'utente/applicazione), consistenza solo eventuale |
 
 **BASE** = **B**asically **A**vailable (il sistema è disponibile quasi sempre, anche se un sottosistema può essere temporaneamente irraggiungibile), **S**oft state (i dati non sono garantiti come durevoli in modo automatico), **E**ventually consistent (il sistema converge nel tempo verso uno stato consistente).
-
 ### NoSQL e consistenza (CAP)
-
 I RDBMS tradizionali privilegiano la consistenza forte e sono tipicamente sistemi **CA** o **CP** (a seconda della configurazione). La maggior parte dei sistemi NoSQL sceglie invece la disponibilità, risultando **AP** (consistenza eventuale). Alcuni sistemi NoSQL, come **Cassandra** e **MongoDB**, offrono però una consistenza *tunable* (configurabile), avvicinandosi a garanzie più forti quando richiesto.
 
 > [!info] Per la formulazione completa del teorema CAP ("pick two" tra Consistency, Availability, Partition tolerance) si veda [[19 - Database NoSQL]]
-
 ### Pro e contro del NoSQL
-
 | Pro | Contro |
 |---|---|
 | Facile da scalare orizzontalmente | Molti sistemi non supportano ACID: meno adatti a carichi OLTP |
@@ -73,9 +58,7 @@ I RDBMS tradizionali privilegiano la consistenza forte e sono tipicamente sistem
 | Spesso open-source o più economico | Assenza di un modello di riferimento comune → rischio di lock-in sulla soluzione scelta |
 | Supporta strutture dati complesse e schema flessibile | |
 | Recupero rapido dei dati, adatto ad applicazioni real-time | |
-
 ## Modelli di dati NoSQL
-
 Un **data model** è l'insieme di costrutti usati per rappresentare l'informazione (es. il modello relazionale usa tabelle, colonne e righe). Un **storage model** è invece il modo in cui il sistema memorizza e manipola i dati internamente: i due modelli sono in genere indipendenti tra loro.
 
 Le quattro categorie principali di database NoSQL, ciascuna basata su una specifica organizzazione dei dati:
@@ -88,9 +71,7 @@ Le quattro categorie principali di database NoSQL, ciascuna basata su una specif
 | **Graph Database** | Nodi, archi e proprietà: le relazioni (archi) sono importanti quanto le entità (nodi) | Social network, motori di raccomandazione, fraud detection | Neo4j, Amazon Neptune |
 
 > [!info] Per il dettaglio di BigTable/HBase (SSTable, column family/qualifier, namespace/table/row/cell) si veda [[19 - Database NoSQL]]
-
 ### Differenze chiave tra le categorie NoSQL
-
 - **Modello dei dati**: key-value (semplice), document (JSON-like semi-strutturato), column-family (wide-column, schema-agnostic), graph (nodi/archi)
 - **Flessibilità delle query**: key-value ha capacità di query limitata; document supporta query ricche sul contenuto; column-family è efficiente su letture/scritture wide-column; graph è ottimizzato per l'attraversamento di relazioni
 - **Scalabilità**: key-value, document e column-family scalano tipicamente in orizzontale (aggiunta di server); i database a grafo possono scalare sia verticalmente sia orizzontalmente, ma sono generalmente più difficili da distribuire
@@ -100,9 +81,7 @@ Le quattro categorie principali di database NoSQL, ciascuna basata su una specif
 > - **Document**: quando si lavora con dati semi-strutturati e serve uno schema flessibile
 > - **Column-Family**: quando servono volumi elevati di lettura/scrittura distribuiti su larga scala
 > - **Graph**: quando le relazioni tra i dati sono l'aspetto centrale (es. social network, raccomandazioni)
-
 ## Introduzione a MongoDB
-
 > [!quote] Definizione — MongoDB
 > MongoDB è un database NoSQL **document-oriented**, usato per la memorizzazione di grandi volumi di dati.
 
@@ -111,16 +90,12 @@ Caratteristiche principali:
 - Modello dati **schema-less** e flessibile
 - Documenti in formato **JSON-like** (concretamente **BSON**, Binary JSON)
 - Architettura distribuita e scalabile
-
 ### Perché MongoDB
-
 - **Schema flessibile**: non richiede una struttura fissa per i documenti di una collezione
 - **Scalabilità orizzontale** per dataset di grandi dimensioni
 - **Alte prestazioni** in lettura/scrittura
 - **Replica e sharding nativi**, per tolleranza ai guasti e scalabilità
-
 ### Concetti chiave
-
 | Concetto MongoDB | Descrizione | Analogo relazionale |
 |---|---|---|
 | **Document** | Formato BSON, contiene coppie chiave-valore | Riga (tupla) |
@@ -128,22 +103,16 @@ Caratteristiche principali:
 | **Database** | Contiene le collezioni | Database/schema |
 | **Shard** | Partizione di dati per lo storage distribuito | — |
 | **Replica Set** | Gruppo di server MongoDB che mantengono la stessa copia dei dati per ridondanza e alta disponibilità | — |
-
 ### MongoDB vs RDBMS tradizionale
-
 | MongoDB | RDBMS relazionale (es. MySQL) |
 |---|---|
 | Document-oriented | Table-based |
 | Nessuno schema fisso | Schema fisso |
 | Supporta strutture annidate (nested) | Tabelle piatte (flat) |
 | Scalabilità orizzontale | Scalabilità verticale |
-
 ### Casi d'uso tipici
-
 Content management system (CMS), cataloghi di e-commerce, analytics in tempo reale, applicazioni IoT, social network.
-
 ## Installazione di MongoDB
-
 L'installazione varia per sistema operativo, ma segue sempre uno schema simile: aggiunta della fonte del pacchetto, installazione, avvio del servizio.
 
 ```bash
@@ -162,9 +131,7 @@ wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add 
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
 sudo apt-get install -y mongodb-org
 ```
-
 ### Comandi base della shell
-
 ```bash
 # connessione alla shell
 mongo
@@ -174,9 +141,7 @@ show dbs               # elenca i database
 use <db_name>          # seleziona/crea un database
 show collections       # elenca le collezioni del database corrente
 ```
-
 ## Operazioni CRUD in MongoDB
-
 ```js
 // Create — inserisce un nuovo documento
 db.collection.insertOne({name: "John", age: 25})
@@ -190,9 +155,7 @@ db.collection.updateOne({name: "John"}, {$set: {age: 26}})
 // Delete — rimuove i documenti
 db.collection.deleteOne({name: "John"})
 ```
-
 ### Modello dei dati: schema flessibile e documenti annidati
-
 MongoDB consente design dinamici, senza schema fisso. È possibile annidare documenti all'interno di altri documenti:
 
 ```json
@@ -207,25 +170,19 @@ MongoDB consente design dinamici, senza schema fisso. È possibile annidare docu
 
 > [!info] Rimando
 > Le strategie di modellazione dei dati in MongoDB (denormalizzata/embedded, referenced, normalizzata) con relativa analisi dei trade-off sono trattate in [[19 - Database NoSQL]].
-
 ## Indicizzazione in MongoDB
-
 Gli indici migliorano la velocità di recupero dei dati (concetto analogo agli indici nei RDBMS: si veda [[15 - Indici e Progettazione Fisica]]).
 
 ```js
 db.collection.createIndex({name: 1})
 ```
-
 ### Tipi di indice
-
 | Tipo | Descrizione | Esempio | Quando usarlo |
 |---|---|---|---|
 | **Single Field Index** | Indice sul singolo campo di una collezione | `db.users.createIndex({ age: 1 })` (ascendente) | Query o ordinamenti frequenti su quel campo; efficace per query di uguaglianza e per intervalli |
 | **Compound Index** | Indice su più campi contemporaneamente | `db.users.createIndex({ name: 1, age: -1 })` (name ascendente, age discendente) | Query che coinvolgono più campi contemporaneamente; supporta anche query sui soli campi "prefisso" dell'indice (es. il solo `name` se l'indice è su `{name, age}`) |
 | **Multikey Index** | Creato automaticamente quando il campo indicizzato contiene un array; ogni elemento dell'array viene indicizzato separatamente | `db.posts.createIndex({ tags: 1 })` | Ricerca/filtro su singoli elementi di un array |
-
 ## Replica in MongoDB
-
 > [!quote] Definizione — Replica
 > La **replica** è il processo di sincronizzazione dei dati fra più server. In MongoDB fornisce **ridondanza dei dati** e **maggiore disponibilità**.
 
@@ -233,15 +190,11 @@ Un **Replica Set** è un gruppo di server MongoDB che mantengono gli stessi dati
 
 - **1 nodo Primary**: gestisce tutte le operazioni di scrittura
 - **N nodi Secondary**: replicano i dati del primary
-
 ### Perché usare la replica
-
 - **Alta disponibilità**: se il nodo primary si guasta, un secondary può automaticamente assumerne il ruolo
 - **Tolleranza ai guasti**: i dati sono copiati su più server, riducendo il rischio di perdita
 - **Scalabilità**: le operazioni di lettura possono essere distribuite sui nodi secondary, migliorando le prestazioni
-
 ### Come funziona
-
 - Il **Primary** gestisce tutte le scritture e replica i dati verso i secondary
 - I **Secondary** ricevono i dati dal primary tramite l'**oplog** (operation log), e possono essere usati per operazioni di lettura in carichi read-heavy (tramite le *read preference*)
 - **Failover automatico**: se il primary si guasta, viene indetta un'**elezione** e un secondary diventa il nuovo primary
@@ -257,14 +210,10 @@ rs.initiate()
 // Aggiungere un nodo secondary
 rs.add("secondary_host:port")
 ```
-
 ## Sharding in MongoDB
-
 > [!quote] Definizione — Sharding
 > Lo **sharding** è un metodo per distribuire i dati su più macchine, usato per scalare orizzontalmente un database MongoDB e gestire dataset molto grandi con throughput elevato. Si usa quando il dataset è troppo grande per un singolo server.
-
 ### Concetti chiave
-
 | Concetto | Descrizione |
 |---|---|
 | **Shard** | Un'istanza MongoDB che contiene un sottoinsieme dei dati |
@@ -272,15 +221,11 @@ rs.add("secondary_host:port")
 | **Config Servers** | Memorizzano i metadati e la configurazione del cluster (tracciano la posizione dei chunk) |
 | **Query Router (mongos)** | Instrada le richieste dei client verso lo shard appropriato |
 | **Shard Key** | Il campo che determina come i dati vengono distribuiti tra gli shard |
-
 ### Perché usare lo sharding
-
 - **Scalabilità**: si possono aggiungere altri shard per scalare orizzontalmente al crescere dei dati
 - **Prestazioni**: distribuisce le operazioni di lettura/scrittura su più server
 - **Capacità**: consente di gestire dataset che eccedono la capacità di una singola macchina
-
 ### Tipi di shard key
-
 - **Range-based sharding**: i dati sono divisi in base a un intervallo di valori della shard key (es. `{"order_id": 1}` fino a `{"order_id": 1000}`)
 - **Hash-based sharding**: i dati sono distribuiti applicando una funzione di hash alla shard key, garantendo una distribuzione più uniforme (es. hash di `user_id`)
 
@@ -291,22 +236,16 @@ sh.enableSharding("myDatabase")
 // Shardare una collezione
 sh.shardCollection("myDatabase.myCollection", { "shardKeyField": 1 })
 ```
-
 ## Sicurezza in MongoDB
-
 - **Autenticazione**: si abilita avviando il server con `mongod --auth`
 - **Role-Based Access Control (RBAC)**: si assegnano ruoli agli utenti
 
 ```js
 db.createUser({user: "admin", pwd: "password", roles: ["root"]})
 ```
-
 ## Interrogazioni in MongoDB
-
 MongoDB usa un linguaggio di query flessibile, in stile JSON. I metodi principali per interrogare sono `find()` (recupera più documenti) e `findOne()` (recupera un singolo documento).
-
 ### Query di base
-
 ```js
 // sintassi generale
 db.collection.find({<field>: <value>})
@@ -317,9 +256,7 @@ db.students.find({name: "John"})
 // più condizioni (implicito AND): name = "John" AND age = 25
 db.students.find({name: "John", age: 25})
 ```
-
 ### Operatori di confronto
-
 | Operatore | Significato |
 |---|---|
 | `$gt` | maggiore di |
@@ -332,17 +269,13 @@ db.students.find({name: "John", age: 25})
 // studenti con età maggiore di 20
 db.students.find({age: {$gt: 20}})
 ```
-
 ### Operatori logici
-
 | Operatore | Significato |
 |---|---|
 | `$and` | soddisfa tutte le condizioni |
 | `$or` | soddisfa almeno una condizione |
 | `$not` | nega una condizione |
-
 ### Proiezione
-
 La proiezione permette di specificare quali campi restituire nel risultato:
 
 ```js
@@ -351,9 +284,7 @@ db.collection.find({<query>}, {<field1>: 1, <field2>: 1})
 // solo name e age, per gli studenti con età > 20
 db.students.find({age: {$gt: 20}}, {name: 1, age: 1})
 ```
-
 ### Query su array e documenti annidati
-
 ```js
 // documenti in cui "subjects" contiene "Math"
 db.students.find({subjects: "Math"})
@@ -364,9 +295,7 @@ db.students.find({subjects: {$all: ["Math", "Science"]}})
 // query su campo annidato, tramite dot notation
 db.students.find({"address.city": "New York"})
 ```
-
 ### Ordinamento e paginazione
-
 ```js
 // ordinamento: 1 ascendente, -1 discendente
 db.collection.find().sort({<field>: 1})
@@ -380,9 +309,7 @@ db.students.find().limit(5)
 db.collection.find().skip(<numero>).limit(<numero>)
 db.students.find().skip(10).limit(5)
 ```
-
 ### Ricerca full-text
-
 ```js
 // step 1: creare un indice testuale sul campo bio
 db.students.createIndex({bio: "text"})
@@ -390,17 +317,13 @@ db.students.createIndex({bio: "text"})
 // step 2: interrogare l'indice testuale
 db.students.find({$text: {$search: "data science"}})
 ```
-
 ### Query su date
-
 ```js
 db.students.find({
   joinDate: {$gt: new ISODate("2022-01-01T00:00:00Z")}
 })
 ```
-
 ## Aggregation Framework
-
 L'**aggregazione** viene usata per elaborare i dati e restituire risultati calcolati (statistiche, raggruppamenti, ecc.), attraverso una **pipeline** di *stage* successivi. Gli stage principali sono `$match`, `$group`, `$project`, `$sort`.
 
 ```js
@@ -419,9 +342,7 @@ db.students.aggregate([
 
 > [!info] Analogia con SQL
 > `$match` corrisponde a `WHERE`, `$group` a `GROUP BY` (con funzioni di aggregazione come `$avg`, `$sum`), `$project` alla proiezione delle colonne (`SELECT`), `$sort` a `ORDER BY`. Si veda [[11 - SQL Interrogazioni]] per il confronto con le clausole SQL corrispondenti.
-
 ## Esercizi
-
 > [!example] Esercizio 1 — CRUD di base
 > Obiettivo: eseguire le operazioni CRUD di base in MongoDB.
 > ```js
@@ -455,7 +376,5 @@ db.students.aggregate([
 > - trovare tutti i libri pubblicati dopo il 2010
 > - trovare i libri di un autore specifico
 > - ordinare i risultati per anno in ordine decrescente
-
 ## Conclusione
-
 MongoDB è un database NoSQL document-oriented, potente e flessibile, adatto a un'ampia varietà di applicazioni. Consente facile scalabilità orizzontale e alte prestazioni. Padroneggiare le operazioni CRUD di base, l'aggregazione, l'indicizzazione e la sicurezza fornisce una solida base per il suo utilizzo pratico.

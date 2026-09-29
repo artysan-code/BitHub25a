@@ -27,7 +27,7 @@ Esempio: `read(fd, buffer, nbytes)`. Il diagramma del corso (figura di Tanenbaum
 > Se il dato richiesto non è disponibile, la system call **blocca** il processo: il SO ne esegue altri e riprende il chiamato quando la condizione è soddisfatta. Lo stato di blocco è gestito dallo [[05 - Scheduling|scheduler]].
 
 > [!info] Approfondimento — Architettura dei Sistemi di Elaborazione
-> L'istruzione TRAP, il cambio di modalità e la gestione di interrupt sono il punto di contatto con l'hardware: vedi il livello ISA in [[5 - Livello di architettura dell'insieme d'istruzioni]].
+> L'istruzione TRAP, il cambio di modalità e la gestione di interrupt sono il punto di contatto con l'hardware: vedi il livello ISA in [[05 - Livello di architettura dell'insieme d'istruzioni]].
 
 > [!info] Approfondimento — dalla libc al kernel
 > La catena completa da `read()` (user space) fino a `ksys_read()` (kernel) — `glibc` → istruzione `syscall` → `entry_SYSCALL_64` → `do_syscall_64` → `__x64_sys_read` — è ricostruita passo-passo in [[10 - Programmazione C e Concorrente#Dalla libreria alla system call]].

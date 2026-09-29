@@ -6,7 +6,7 @@ Oltre a fornire astrazioni come [[03 - Processi e Thread|processi e thread]], [[
 > 2. **Interfaccia uniforme**: offrire ai programmi un'interfaccia *semplice e uniforme*, idealmente identica per tutti i dispositivi (**indipendenza dal dispositivo**, vedi [[#^device-independence]]).
 
 > [!info] Approfondimento — Architettura dei Sistemi di Elaborazione
-> Questo intero argomento è trattato, dalla prospettiva architetturale e con lo stesso testo (Tanenbaum), nel corso del primo anno: [[5 - Input & Output]]. La struttura della **CPU**, dei registri, del **bus** e della gerarchia di memoria è in [[2 - Organizzazione dei sistemi di calcolo]].
+> Questo intero argomento è trattato, dalla prospettiva architetturale e con lo stesso testo (Tanenbaum), nel corso del primo anno: [[05 - Input & Output]]. La struttura della **CPU**, dei registri, del **bus** e della gerarchia di memoria è in [[02 - Organizzazione dei sistemi di calcolo]].
 ## Principi dell'hardware di I/O
 L'hardware di I/O si guarda da prospettive diverse: gli **ingegneri elettronici** lo vedono come componenti fisici (chip, cavi, alimentatori, motori); i **programmatori** sono interessati all'**interfaccia software** (comandi accettati, funzioni eseguibili, errori possibili). Il corso si concentra sulla **programmazione** dei dispositivi, non sulla loro progettazione o costruzione.
 ### Dispositivi a blocchi e a caratteri
@@ -271,4 +271,4 @@ Mappa dei rimandi di questa nota.
 - **Dispositivi a blocchi astratti, `/dev`, VFS** → [[07 - File System]]
 - **Chiamate di sistema, kernel space vs user space** → [[02 - Concetti di Base e Strutture]]
 - **Sistemi embedded** → [[01 - Introduzione ai Sistemi Operativi#^embedded]]
-- **Prospettiva architetturale completa** (CPU, bus, disco) → [[5 - Input & Output]], [[2 - Organizzazione dei sistemi di calcolo]]
+- **Prospettiva architetturale completa** (CPU, bus, disco) → [[05 - Input & Output]], [[02 - Organizzazione dei sistemi di calcolo]]

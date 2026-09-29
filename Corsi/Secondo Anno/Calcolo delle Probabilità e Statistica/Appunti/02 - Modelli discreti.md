@@ -498,7 +498,7 @@ Si ha $P_{Y}(k)\approx P_{Z}(k)$ (per ogni $k\geq 0$ intero) dove $Z\sim POISSON
 
 --- Fine lezione 07 ---
 #### Esercizio teorico: un numero aleatorio di lanci (Poisson "assottigliata")
-> [!question] Esercizio segnalato dal prof come "teorico, un po' difficile"
+> [!info] Esercizio segnalato dal prof come "teorico, un po' difficile"
 > È un risultato notevole: se il **numero di prove** è a sua volta aleatorio con [[02 - Modelli discreti#Distribuzione di Poisson|distribuzione di Poisson]], il numero di successi resta di Poisson, con parametro riscalato da $p$.
 
 Sia $N\sim POISSON(\lambda)$ per qualche $\lambda>0$. Si lancia una moneta $N$ volte: per ogni lancio esce testa con probabilità $p\in(0,1)$ ed esce croce con probabilità $1-p$. Sia $X$ la v.a. che conta il numero di teste ottenute.
@@ -851,7 +851,7 @@ X_{m}\sim BIN(n_{m},p)
 \end{cases}\text{indip.}\quad\implies\quad X_{1}+\dots+X_{m}\sim BIN(n_{1}+\dots+n_{m},p)$$Il risultato non sorprende: ognuna delle v.a. $X_{i}$ (per $i\in\{1,\dots,m\}$) conta il numero di successi su $n_{i}$ prove indipendenti, tutte con probabilità di successo $p$; quindi, se consideriamo la somma (e gli addendi sono indipendenti), è come se contassimo il numero di successi su $n_{1}+\dots+n_{m}$ prove tutte con probabilità di successo $p$.
 Quindi è importante che **il parametro $p$ sia sempre lo stesso**; e senza l'ipotesi di indipendenza il risultato non è vero.
 ##### Altri commenti (2ª parte): controesempio senza indipendenza
-> [!question] Segnalato dal prof come "un po' difficile"
+> [!info] Segnalato dal prof come "un po' difficile"
 
 Sia $p\in(0,1)$, cioè $p\neq 0$ e $p\neq 1$; siano $m=2$, $X_{1}\sim BIN(n,p)$ e $X_{2}=X_{1}$. Quindi in particolare $X_{2}\sim BIN(n,p)$. Allora si ha $$\begin{cases}
 P(\{X_{1}=0\}\cap\{X_{2}=0\})=P(X_{1}=0)=(1-p)^{n} \\

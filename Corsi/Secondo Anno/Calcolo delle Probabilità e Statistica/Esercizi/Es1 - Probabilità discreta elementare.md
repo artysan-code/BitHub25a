@@ -89,7 +89,7 @@ $$\sum_{k\ge h}r^{k}=\frac{r^{h}}{1-r}\qquad(|r|<1),$$
 cioè "ragione elevata al primo indice, diviso $1-r$". Con $r=\frac{1}{4}$ e primo indice $h=2$:
 $$\sum_{k\ge2}\left(\frac{1}{4}\right)^{k}=\frac{(1/4)^{2}}{1-1/4}=\frac{1/16}{3/4}=\frac{1}{16}\cdot\frac{4}{3}=\frac{1}{12}.$$
 
-> [!question] Dove si sbaglia
+> [!warning] Dove si sbaglia
 > Il punto delicato è **da dove parte l'indice** ($h$). Facendo partire la somma da $k=1$ si include $2k=2$, cioè il secondo lancio, che la traccia esclude: verrebbe $\sum_{k\ge1}\left(\frac{1}{4}\right)^{k}=\frac{1/4}{3/4}=\frac{1}{3}$. Tutta la difficoltà dell'esercizio sta in quel «diverso dal secondo»: la densità e la serie sono identiche, cambia **solo** l'indice di partenza $h$.
 
 ### Esercizi svolti — varianti dagli appelli precedenti

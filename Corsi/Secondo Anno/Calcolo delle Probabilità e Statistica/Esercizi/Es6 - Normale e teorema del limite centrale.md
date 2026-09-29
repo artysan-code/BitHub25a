@@ -102,7 +102,7 @@ $$\Phi\!\left(-\frac{1}{3}\right)-\Phi\!\left(-\frac{2}{3}\right)=\left(1-\Phi\!
 I due $1$ si cancellano e i due termini si **scambiano di posto**: chi era sottratto, $\frac23$, passa davanti, e chi era davanti, $\frac13$, passa dietro. Il risultato resta un'approssimazione del teorema del limite centrale, non un'uguaglianza esatta:
 $$P(700<X_1+\cdots+X_{900}<800)\approx\Phi\!\left(\frac{2}{3}\right)-\Phi\!\left(\frac{1}{3}\right)$$
 
-> [!question] Attenzione all'ordine dopo il ribaltamento
+> [!warning] Attenzione all'ordine dopo il ribaltamento
 > Passando agli argomenti positivi i due termini si **scambiano**: si parte da $\Phi(-1/3)-\Phi(-2/3)$ e si arriva a $\Phi(2/3)-\Phi(1/3)$. Il risultato deve restare positivo, essendo una probabilità: è il controllo immediato per sapere se hai sbagliato il verso.
 
 #### Coda destra con media nulla — appello del 19 Giugno 2026

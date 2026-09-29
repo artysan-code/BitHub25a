@@ -59,7 +59,7 @@ $$E[X^{2}]=2\left(\frac{1}{3}-\frac{1}{4}\right)=2\cdot\frac{1}{12}=\frac{1}{6}$
 $$E[X]=\int_{0}^{1}x\cdot2(1-x)\,dx=2\int_{0}^{1}\left(x-x^{2}\right)dx=2\left[\frac{x^{2}}{2}-\frac{x^{3}}{3}\right]_{0}^{1}=2\left(\frac12-\frac13\right)=\frac13$$
 Se si elevasse al quadrato questo valore si otterrebbe $(E[X])^{2}=\left(\frac13\right)^{2}=\frac19$, un numero **diverso** da $\frac16$: la differenza fra i due, come richiamato nelle [[#Formule di appoggio|formule di appoggio]] di questa nota, è esattamente $\text{Var}[X]$.
 
-> [!question] Questo esercizio è caduto due volte, identico
+> [!info] Questo esercizio è caduto due volte, identico
 > Stessa densità, stessa richiesta, stesso risultato negli appelli di **febbraio e giugno 2026**. Non è una coincidenza isolata: è il motivo per cui il drill sugli appelli rende più della teoria. Vedi [[Es1 - Probabilità discreta elementare|Es1]] per altri esempi di ripetizione.
 
 #### $E[1/X^2]$ con uniforme — appello del 20 Febbraio 2026

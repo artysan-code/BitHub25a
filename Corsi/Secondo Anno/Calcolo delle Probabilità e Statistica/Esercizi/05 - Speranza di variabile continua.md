@@ -1,8 +1,8 @@
 ## Es5 — Speranza di variabile continua
-Quinto esercizio dello scritto: data una densità continua $f_X$ (spesso la stessa di [[Es4 - Trasformazione di variabile continua|Es4]]), si chiede una speranza matematica, tipicamente $E[X^2]$ oppure $E\!\left[\frac{1}{X^2}\right]$.
+Quinto esercizio dello scritto: data una densità continua $f_X$ (spesso la stessa di [[04 - Trasformazione di variabile continua|Es4]]), si chiede una speranza matematica, tipicamente $E[X^2]$ oppure $E\!\left[\frac{1}{X^2}\right]$.
 ### Prima di tutto: cos'è la speranza
 La **speranza** $E[X]$ (o "valore atteso") è la **media pesata** dei valori di $X$, dove ogni valore conta quanto è probabile. Due cose da fissare in testa:
-- **È un numero, non una funzione.** L'operazione $E[\,\cdot\,]$ prende *tutta* la variabile e restituisce **un solo numero**: dentro l'integrale la $x$ viene "sommata via" e sparisce. Al contrario di $F_Y(y)$ in [[Es4 - Trasformazione di variabile continua|Es4]], che resta una funzione di $y$.
+- **È un numero, non una funzione.** L'operazione $E[\,\cdot\,]$ prende *tutta* la variabile e restituisce **un solo numero**: dentro l'integrale la $x$ viene "sommata via" e sparisce. Al contrario di $F_Y(y)$ in [[04 - Trasformazione di variabile continua|Es4]], che resta una funzione di $y$.
 - **Tre modi di leggerla**: la *media a lungo termine* (ripeti l'esperimento tante volte e fai la media dei risultati); il *baricentro* della densità (il punto in cui il profilo di massa sta in equilibrio); il *valore che ti aspetti*.
 Nel discreto $E[X]=\sum_x x\,p_X(x)$; nel continuo la somma diventa l'integrale della prossima sezione.
 ### Come leggere $g$ dalla traccia
@@ -22,7 +22,7 @@ La funzione $g$ **non si sceglie**: è scritta dentro le parentesi di $E[\cdots]
 $$E[g(X)]=\int_{-\infty}^{+\infty}g(x)f_X(x)\,dx$$
 
 > [!info] Non serve passare per $f_Y$
-> Per calcolare $E[g(X)]$ **non** occorre prima trovare la densità di $Y=g(X)$ come si fa in [[Es4 - Trasformazione di variabile continua|Es4]]: si integra direttamente $g(x)f_X(x)$.
+> Per calcolare $E[g(X)]$ **non** occorre prima trovare la densità di $Y=g(X)$ come si fa in [[04 - Trasformazione di variabile continua|Es4]]: si integra direttamente $g(x)f_X(x)$.
 >
 > Le due strade danno lo stesso risultato, ma la seconda è molto più lunga. Se una traccia chiede prima $F_Y$ e poi $E[Y]$, la seconda parte si può comunque fare per la via breve, ignorando quanto trovato prima.
 
@@ -43,7 +43,7 @@ Sia $f_X(x)=2(1-x)\mathbb{1}_{(0,1)}(x)$. Calcolare $E[X^2]$.
 **Svolgimento**
 **Passo 1 — riconoscere la formula e restringerla al supporto.** La speranza di una funzione di $X$ si calcola sempre con l'unica formula di apertura di questa nota:
 $$E[g(X)]=\int_{-\infty}^{+\infty}g(x)f_X(x)\,dx$$
-qui $g(x)=x^2$. A differenza di [[Es4 - Trasformazione di variabile continua|Es4]], non serve prima trovare la densità di $Y=X^2$: si integra direttamente il prodotto $g(x)f_X(x)$. La traccia dà $f_X(x)=2(1-x)\mathbb{1}_{(0,1)}(x)$: fuori dall'intervallo $(0,1)$ la densità vale $0$, quindi quella parte di dominio non contribuisce affatto all'integrale, e resta solo
+qui $g(x)=x^2$. A differenza di [[04 - Trasformazione di variabile continua|Es4]], non serve prima trovare la densità di $Y=X^2$: si integra direttamente il prodotto $g(x)f_X(x)$. La traccia dà $f_X(x)=2(1-x)\mathbb{1}_{(0,1)}(x)$: fuori dall'intervallo $(0,1)$ la densità vale $0$, quindi quella parte di dominio non contribuisce affatto all'integrale, e resta solo
 $$E[X^{2}]=\int_{0}^{1}x^{2}\cdot2(1-x)\,dx$$
 
 **Passo 2 — impostare il prodotto $g(x)f_X(x)$, senza perdere la costante di normalizzazione.** Il fattore $2$ davanti a $(1-x)$ non è un dettaglio decorativo: è la costante di normalizzazione che rende $f_X$ una densità vera, cioè quella che garantisce $\int_{0}^{1}2(1-x)\,dx=2\left[x-\frac{x^{2}}{2}\right]_{0}^{1}=2\left(1-\frac12\right)=1$. Dimenticarla per strada è uno degli errori più comuni: va portata dentro il prodotto esattamente come farebbe qualunque altro fattore. Prima di integrare conviene quindi scrivere per esteso il prodotto fra la funzione richiesta e la densità, invece di lanciarsi subito nel calcolo: $g(x)=x^2$ moltiplicato per $f_X(x)=2(1-x)$ dà
@@ -60,7 +60,7 @@ $$E[X]=\int_{0}^{1}x\cdot2(1-x)\,dx=2\int_{0}^{1}\left(x-x^{2}\right)dx=2\left[\
 Se si elevasse al quadrato questo valore si otterrebbe $(E[X])^{2}=\left(\frac13\right)^{2}=\frac19$, un numero **diverso** da $\frac16$: la differenza fra i due, come richiamato nelle [[#Formule di appoggio|formule di appoggio]] di questa nota, è esattamente $\text{Var}[X]$.
 
 > [!info] Questo esercizio è caduto due volte, identico
-> Stessa densità, stessa richiesta, stesso risultato negli appelli di **febbraio e giugno 2026**. Non è una coincidenza isolata: è il motivo per cui il drill sugli appelli rende più della teoria. Vedi [[Es1 - Probabilità discreta elementare|Es1]] per altri esempi di ripetizione.
+> Stessa densità, stessa richiesta, stesso risultato negli appelli di **febbraio e giugno 2026**. Non è una coincidenza isolata: è il motivo per cui il drill sugli appelli rende più della teoria. Vedi [[01 - Probabilità discreta elementare|Es1]] per altri esempi di ripetizione.
 
 #### $E[1/X^2]$ con uniforme — appello del 20 Febbraio 2026
 Sia $X\sim U(1,5)$. Calcolare $E\!\left[\frac{1}{X^{2}}\right]$.
@@ -156,6 +156,6 @@ $$E[X^{\alpha r}]=\frac{1}{r+1}$$
 - **Uniforme**: la densità è $\frac{1}{b-a}$, non 1. Con $U(1,5)$ vale $\frac{1}{4}$.
 - **Semplificazioni mancate**: se il prodotto $g(x)f_X(x)$ non diventa un integrale elementare, ricontrollare l'impostazione prima di lanciarsi in tecniche di integrazione.
 ### Collegamenti
-- Stessa densità, richiesta diversa: [[Es4 - Trasformazione di variabile continua]].
-- Media e varianza nel discreto: [[Es1 - Probabilità discreta elementare]], che ha la tabella delle distribuzioni notevoli.
-- [[Es6 - Normale e teorema del limite centrale]] usa media e varianza come **input** per standardizzare: se sbagli qui, sbagli anche lì.
+- Stessa densità, richiesta diversa: [[04 - Trasformazione di variabile continua]].
+- Media e varianza nel discreto: [[01 - Probabilità discreta elementare]], che ha la tabella delle distribuzioni notevoli.
+- [[06 - Normale e teorema del limite centrale]] usa media e varianza come **input** per standardizzare: se sbagli qui, sbagli anche lì.

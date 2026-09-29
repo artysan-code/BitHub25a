@@ -26,12 +26,12 @@ Le note seguono l'ordine del corso e coprono la parte iniziale del programma.
 5. [[05 - Convergenze e approssimazioni]] — legge dei grandi numeri, teorema del limite centrale, approssimazione Normale e correzione di continuità.
 ### Esercizi
 Una nota per ciascuno dei sei esercizi dello scritto, con il metodo, gli esercizi svolti del formato 2025-26 e le varianti degli appelli precedenti.
-- [[Es1 - Probabilità discreta elementare]]
-- [[Es2 - Probabilità condizionata]]
-- [[Es3 - Densità congiunta discreta]]
-- [[Es4 - Trasformazione di variabile continua]]
-- [[Es5 - Speranza di variabile continua]]
-- [[Es6 - Normale e teorema del limite centrale]]
+- [[01 - Probabilità discreta elementare]]
+- [[02 - Probabilità condizionata]]
+- [[03 - Densità congiunta discreta]]
+- [[04 - Trasformazione di variabile continua]]
+- [[05 - Speranza di variabile continua]]
+- [[06 - Normale e teorema del limite centrale]]
 - [[Formulario]] — raccolta delle formule per ciascun esercizio.
 ## Materiale di riferimento
 - **Slide e lezioni** in `Materiale Didattico/Slide/` (`6 CFU/` e `8 CFU - Catene di Markov/`) ed estratti delle lezioni originali in `Materiale Didattico/Estratti/`.

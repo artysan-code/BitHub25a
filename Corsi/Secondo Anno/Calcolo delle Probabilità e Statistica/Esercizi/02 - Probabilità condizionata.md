@@ -26,7 +26,7 @@ $$P(H_j|E)=\frac{P(E|H_j)P(H_j)}{\sum_{k=1}^{n}P(E|H_k)P(H_k)}$$
 ### Il metodo operativo, sempre uguale
 1. **Dare un nome agli scenari** e all'evento osservato. Macci scrive *«con notazioni ovvie»* e usa $U_1,U_2$ per le urne, $M_1,M_2$ per le monete, $E$ o $T$ o $V$ per l'evento. Fare lo stesso è già metà del lavoro.
 2. **Scrivere le probabilità a priori** $P(H_k)$: quasi sempre uniformi, $\frac{1}{2}$ con due urne, $\frac{1}{3}$ con tre.
-3. **Calcolare le condizionate** $P(E|H_k)$, cioè: *dentro* quello scenario, qual è la probabilità dell'evento? Questo passaggio è un mini-[[Es1 - Probabilità discreta elementare|Es1]] — estrazioni in blocco, conteggi, sequenze.
+3. **Calcolare le condizionate** $P(E|H_k)$, cioè: *dentro* quello scenario, qual è la probabilità dell'evento? Questo passaggio è un mini-[[01 - Probabilità discreta elementare|Es1]] — estrazioni in blocco, conteggi, sequenze.
 4. **Applicare la formula** e semplificare.
 
 Il [[01 - Introduzione alla probabilità#Diagramma ad albero associato alla formula delle Prob. Totali|diagramma ad albero]] è il modo più sicuro di non perdersi: primo livello gli scenari, secondo livello l'evento, e ogni percorso è il prodotto delle probabilità lungo i rami.
@@ -38,7 +38,7 @@ Due urne: la prima con due palline bianche e due nere, la seconda con tre bianch
 
 **Passo 2 — definire gli scenari e le probabilità a priori.** La prima fase dell'esperimento è la scelta dell'urna: gli scenari sono $U_1$ = "si sceglie la prima urna" e $U_2$ = "si sceglie la seconda", con $P(U_1)=P(U_2)=\frac{1}{2}$ perché la scelta è a caso fra le due. L'evento osservato nella seconda fase è $E$ = "le due palline estratte hanno colori diversi".
 
-**Passo 3 — calcolare le condizionate.** $P(E|U_k)$ si calcola guardando *dentro* una sola urna alla volta ed è un conteggio **in blocco** preso di peso da [[Es1 - Probabilità discreta elementare|Es1]]. "Colori diversi" fra due palline estratte senza ordine significa **una bianca e una nera**: è la densità **ipergeometrica** valutata in $k=1$ (una bianca sulle due estratte). Con $N$ = palline totali nell'urna, $K$ = bianche, $N-K$ = nere e $n=2$ estratte, la formula generale è
+**Passo 3 — calcolare le condizionate.** $P(E|U_k)$ si calcola guardando *dentro* una sola urna alla volta ed è un conteggio **in blocco** preso di peso da [[01 - Probabilità discreta elementare|Es1]]. "Colori diversi" fra due palline estratte senza ordine significa **una bianca e una nera**: è la densità **ipergeometrica** valutata in $k=1$ (una bianca sulle due estratte). Con $N$ = palline totali nell'urna, $K$ = bianche, $N-K$ = nere e $n=2$ estratte, la formula generale è
 $$P(E|U_k)=\frac{\binom{K}{1}\binom{N-K}{1}}{\binom{N}{2}},$$
 dove al **denominatore** $\binom{N}{2}$ sono tutti i modi di scegliere 2 palline su $N$ senza ordine, e al **numeratore** si sceglie 1 bianca fra le $K$ **e** 1 nera fra le $N-K$. La prima urna ha 2 bianche e 2 nere ($N=4$, $K=2$), la seconda 3 e 3 ($N=6$, $K=3$):
 $$P(E|U_1)=\frac{\binom{2}{1}\binom{2}{1}}{\binom{4}{2}}=\frac{2\cdot2}{6}=\frac{4}{6}\qquad P(E|U_2)=\frac{\binom{3}{1}\binom{3}{1}}{\binom{6}{2}}=\frac{3\cdot3}{15}=\frac{9}{15}$$
@@ -47,7 +47,7 @@ $$P(E|U_1)=\frac{\binom{2}{1}\binom{2}{1}}{\binom{4}{2}}=\frac{2\cdot2}{6}=\frac
 $$P(E)=\sum_{k=1}^{n}P(E|H_k)P(H_k)$$
 e si legge così: la probabilità complessiva dell'evento è la media delle probabilità condizionate nei vari scenari, pesata con le rispettive probabilità a priori. Con i due scenari $U_1,U_2$ e i valori dei Passi 2 e 3:
 $$P(E)=\frac{4}{6}\cdot\frac{1}{2}+\frac{9}{15}\cdot\frac{1}{2}=\frac{1}{3}+\frac{3}{10}=\frac{10+9}{30}=\frac{19}{30}$$
-Nota che le due urne hanno la **stessa proporzione** di bianche e nere, ma danno probabilità condizionate diverse: senza reinserimento la numerosità conta, non solo la proporzione. È lo stesso fenomeno della correzione per popolazione finita vista in [[Es1 - Probabilità discreta elementare|Es1]].
+Nota che le due urne hanno la **stessa proporzione** di bianche e nere, ma danno probabilità condizionate diverse: senza reinserimento la numerosità conta, non solo la proporzione. È lo stesso fenomeno della correzione per popolazione finita vista in [[01 - Probabilità discreta elementare|Es1]].
 #### Bayes con tre urne — appello del 20 Febbraio 2026
 Tre urne: la prima con quattro bianche e due nere, la seconda con tre e tre, la terza con due bianche e quattro nere. Si sceglie un'urna a caso e si estrae una pallina. Calcolare la probabilità di aver scelto la **seconda** urna sapendo di aver estratto una bianca.
 **Svolgimento**
@@ -111,7 +111,7 @@ Si lancia un dado: se esce 1 o 2 si lanciano due dadi e si vince se la somma è 
 
 **Passo 2 — definire gli scenari.** Il primo lancio del dado sceglie fra due scenari, ma **raggruppati** e non sui sei singoli valori: $H_1=\{X\le2\}$ (esce 1 o 2) e $H_2=\{X>2\}$ (esce 3, 4, 5 o 6), dove $X$ è il numero uscito al primo lancio, con $P(H_1)=\frac{2}{6}$ e $P(H_2)=\frac{4}{6}$ — come per la partizione raggruppata già vista con le monete truccate, $H_1$ e $H_2$ restano disgiunti e coprono tutto lo spazio. Sia $V$ = "si vince" l'evento osservato.
 
-**Passo 3 — calcolare le condizionate.** Dentro ciascuno scenario si lanciano due dadi: è un mini-[[Es1 - Probabilità discreta elementare|Es1]] di conteggio su **spazio uniforme**, un solo scenario alla volta. I due dadi danno $6\times6=36$ coppie ordinate — ordinate perché i dadi sono distinguibili, quindi $(1,6)$ e $(6,1)$ contano come esiti diversi — tutte equiprobabili perché i dadi sono equi; ogni probabilità è (coppie favorevoli)/36.
+**Passo 3 — calcolare le condizionate.** Dentro ciascuno scenario si lanciano due dadi: è un mini-[[01 - Probabilità discreta elementare|Es1]] di conteggio su **spazio uniforme**, un solo scenario alla volta. I due dadi danno $6\times6=36$ coppie ordinate — ordinate perché i dadi sono distinguibili, quindi $(1,6)$ e $(6,1)$ contano come esiti diversi — tutte equiprobabili perché i dadi sono equi; ogni probabilità è (coppie favorevoli)/36.
 Dentro $H_1$ si vince se la somma è 7: elencando le coppie favorevoli sono $(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)$, cioè 6. Dentro $H_2$ si vince se **entrambi** i numeri sono minori di 4, cioè ciascun dado deve stare in $\{1,2,3\}$: ci sono 3 valori possibili per il primo dado e, indipendentemente, 3 per il secondo, quindi per il principio di moltiplicazione $3\times3=9$ coppie favorevoli:
 $$P(V|H_1)=\frac{6}{36}\qquad P(V|H_2)=\frac{9}{36}$$
 
@@ -148,4 +148,4 @@ che è esattamente il risultato che la traccia chiedeva di verificare.
 - **Risultati "troppo puliti"** ($\frac{1}{2}$, oppure $P(H|E)=P(H)$): quasi sempre sono corretti e segnalano una simmetria o un'indipendenza. Vale la pena commentarlo, come fa il prof.
 ### Collegamenti
 - Teoria: [[01 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|probabilità condizionate]], [[01 - Introduzione alla probabilità#Regola del Prodotto|regola del prodotto]], [[01 - Introduzione alla probabilità#Formula delle Probabilità Totali|probabilità totali]], [[01 - Introduzione alla probabilità#Formula di Bayes|Bayes]], [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenza]].
-- Slot vicini: [[Es1 - Probabilità discreta elementare]] fornisce i conteggi che servono dentro ogni scenario; [[Es3 - Densità congiunta discreta]] usa le condizionate su variabili aleatorie invece che su eventi.
+- Slot vicini: [[01 - Probabilità discreta elementare]] fornisce i conteggi che servono dentro ogni scenario; [[03 - Densità congiunta discreta]] usa le condizionate su variabili aleatorie invece che su eventi.

@@ -1,4 +1,4 @@
-[[2 - Cinematica e moto rettilineo|Lezione Precedente]]
+[[02 - Cinematica e moto rettilineo|Lezione Precedente]]
 # Concetti Base sui Vettori
 Un **vettore** è una grandezza fisica che, a differenza di uno scalare, non può essere descritta da un solo numero. 
 Per definirlo completamente, sono necessarie tre proprietà:
@@ -31,4 +31,4 @@ I versori tipici sono $\hat{i}$ per l'asse x e $\hat{j}$ per l'asse y.
 Usando i versori, un vettore può essere espresso come la somma delle sue componenti:$$\vec{v} = V_x\hat{i} + V_y\hat{j}$$Questa notazione rende le operazioni vettoriali molto più semplici. 
 Ad esempio, la somma di due vettori diventa la somma delle loro componenti corrispondenti:$$\vec{w} = \vec{v}_1 + \vec{v}_2 = (V_{1x} + V_{2x})\hat{i} + (V_{1y} + V_{2y})\hat{j}$$
 
-[[4 -Moto Bidimensionale|Lezione Successiva]]
+[[04 - Moto Bidimensionale|Lezione Successiva]]

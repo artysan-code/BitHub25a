@@ -1,4 +1,4 @@
-[[7A - Equazioni differenziali attrito viscoso|Lezione Precedente]]
+[[07A - Equazioni differenziali attrito viscoso|Lezione Precedente]]
 # Lavoro di una Forza Costante
 Il **lavoro** $(W)$ compiuto da una forza costante $F$ su un corpo che subisce uno spostamento $\Delta r$ è una grandezza scalare definita come il prodotto scalare tra la forza e lo spostamento:$$W=F\Delta r=|F||\Delta r|cos\theta$$
 dove $\theta$ è l'angolo tra la direzione della forza e quella dello spostamento. 
@@ -27,5 +27,5 @@ La **potenza** $(P)$ è la grandezza che misura la rapidità con cui viene compi
 La potenza media è definita come il lavoro totale diviso per l'intervallo di tempo: $$P_{med} = \frac{\Delta W}{\Delta t}$$La **potenza istantanea** è il limite della potenza media per un intervallo di tempo che tende a zero ed è data dal prodotto scalare della forza e della velocità:$$P(t)=F(t)\cdot v(t)$$
 L'unità di misura della potenza nel Sistema Internazionale è il **Watt** $(W)$, che equivale a un Joule al secondo $(J/s)$.
 
-[[9 - Energia potenziale e forze conservatrici|Lezione Successiva]]
+[[09 - Energia potenziale e forze conservatrici|Lezione Successiva]]
 [[Eserciziario#^de2908|Esercizi svolti sul capitolo]]

@@ -1,4 +1,4 @@
-[[4 -Moto Bidimensionale|Lezione Precedente]]
+[[04 - Moto Bidimensionale|Lezione Precedente]]
 # Concetti Fondamentali sul Moto Relativo
 In fisica, un **sistema di riferimento** è un sistema di coordinate in cui un osservatore si considera in quiete rispetto all'origine. 
 Il **moto relativo** si occupa di come le misurazioni di un punto materiale, come posizione, velocità e accelerazione, cambiano quando vengono effettuate da diversi osservatori che sono in movimento l'uno rispetto all'altro.
@@ -24,4 +24,4 @@ In questo caso, le accelerazioni misurate nei due sistemi sono uguali $(a(t)=a'(
 Ciò significa che se $O$ è un sistema di riferimento inerziale (dove le leggi di Newton valgono), anche $O'$ lo sarà. 
 Questo principio è alla base della relatività galileiana.
 
-[[6 - Leggi del moto|Lezione Successiva]]
+[[06 - Leggi del moto|Lezione Successiva]]

@@ -85,4 +85,4 @@ Se la misura è indiretta, cioè se le grandezze derivano da una legge matematic
 Per questa ragione è importante in molti casi operare un **arrotondamento** del valore fino alla cifra più a destra che è possibile scrivere.
 Il numero di **cifre significative** di un dato valore è dato dal numero di cifre di tale valore, contato dalla prima cifra non nulla da sinistra fino alla prima cifra affetta da incertezza.
 
-[[2 - Moto Unidimensionale|Prossima lezione]]
+[[02 - Moto Unidimensionale|Prossima lezione]]

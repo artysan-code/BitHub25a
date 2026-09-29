@@ -1,3 +1,38 @@
+---
+tipo: corso
+materia: Intelligenza Artificiale
+codice: IA
+anno: 3
+semestre: "1"
+cfu: 9
+ssd: INF/01
+docenti:
+  - Roberto Basili
+propedeuticita:
+  - Programmazione dei Calcolatori con Laboratorio
+---
+# Intelligenza Artificiale
+Corso del terzo anno sui fondamenti dell'IA: agenti razionali, ricerca, conoscenza, ragionamento logico, apprendimento automatico e linguaggio naturale.
+## Modalità d'esame
+- Esonero intorno a inizio/fine novembre.
+- Secondo esonero verso gennaio insieme allo **Scritto Finale**. 
+- Si fa un orale anche se per solo 10 minuti a testa.
+- Secondo scritto finale invece verso febbraio.
+
+- Progetto *facoltativo* da presentare allo scritto
+	- Progetto (es. Interfacce Robotiche)
+		- Sistemi di addestramento su Open Data
+		- Neural Nets o Reinforcement Learning
+	- Approfondimento Bibliografico
+		- Assegnamento di un tema e relativa bibliografia
+		- Ricevimento dedicato
+		- Produzione di una relazione finale, stile tesi
+		- Esame: presentazione finale della tesina
+## Programma e Appunti
+Il programma del corso è nella sezione «Obiettivi del corso» qui sotto. Le note seguono le lezioni:
+- [[Intelligenza Artificiale]]: introduzione all'IA (approccio forte e debole, definizioni, test di Turing), problem solving e sentiment analysis, agenti intelligenti secondo AIMA, agente razionale e autonomo, ambienti e codifica PEAS con le loro proprietà.
+## Materiale di riferimento
+- **Slide ufficiali** in `Materiale Didattico/Slide/` (`000_From_Intro_AI_Short_For_Lab_25_26_v1.0.pdf`).
 ## Obiettivi del corso
 - Introduzione all'AI
 	- Scopi, Fenomeni e Processi Computazionali
@@ -28,7 +63,6 @@
 			- Agent Design in Python
 			- Machine Learning in Python, PyTorch
 			- Prompt Engineering
- 
 ## Corsi correlati
 - Machine Learning (Gambosi)
 - Deep Learning (RB)
@@ -36,18 +70,3 @@
 - NLP (Zanzotto)
 - Knowledge Engineering (A. Stellato)
 - AI and security (MT, RB)
-## Esame
-- Esonero intorno a inizio/fine novembre.
-- Secondo esonero verso gennaio insieme allo **Scritto Finale**. 
-- Si fa un orale anche se per solo 10 minuti a testa.
-- Secondo scritto finale invece verso febbraio.
-
-- Progetto *facoltativo* da presentare allo scritto
-	- Progetto (es. Interfacce Robotiche)
-		- Sistemi di addestramento su Open Data
-		- Neural Nets o Reinforcement Learning
-	- Approfondimento Bibliografico
-		- Assegnamento di un tema e relativa bibliografia
-		- Ricevimento dedicato
-		- Produzione di una relazione finale, stile tesi
-		- Esame: presentazione finale della tesina-

@@ -17,6 +17,6 @@ Corso del terzo anno sui metodi e le tecnologie per inquadrare la produzione del
 <!-- Da completare -->
 ## Programma e Appunti
 Programma del corso ancora da completare. Le note seguono le lezioni:
-1. [[01 - Introduzione]]: software engineering, aspetti accidentali ed essenziali, ciclo di vita del software, ruolo del testing, definizioni fondamentali, affidabilità, difetti, guasti ed errori, confronto tra affidabilità hardware e software, disponibilità e sistemi critici.
+1. [[Ingegneria del Software/Appunti/01 - Introduzione|01 - Introduzione]]: software engineering, aspetti accidentali ed essenziali, ciclo di vita del software, ruolo del testing, definizioni fondamentali, affidabilità, difetti, guasti ed errori, confronto tra affidabilità hardware e software, disponibilità e sistemi critici.
 ## Materiale di riferimento
 <!-- Da completare -->

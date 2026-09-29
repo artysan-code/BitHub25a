@@ -131,7 +131,7 @@ capitolo: <N>        # opzionale, se il corso segue un libro
 - **LaTeX**: inline `$...$`, block `$$...$$`. Serve il plugin Latex Suite.
 - **Pseudocodice**: blocchi ` ```pseudo ` (plugin Pseudocode), sintassi LaTeX *algorithmic* (nome nel `\caption`, niente `\Procedure`); vedi gli appunti di Algoritmi e Strutture Dati per il modello.
 - Evita HTML grezzo quando esiste l'equivalente Markdown/Obsidian.
-- Link interni: preferisci **wikilink** (`[[...]]`) ai link relativi — restano validi anche se si rinomina una cartella. Collega generosamente: un termine che può generare un dubbio va linkato alla nota o alla sezione che lo spiega (`[[Nota#Sezione]]`, `[[#Sezione]]`).
+- Link interni: preferisci **wikilink** (`[[...]]`) ai link relativi — restano validi anche se si rinomina una cartella. Collega generosamente: un termine che può generare un dubbio va linkato alla nota o alla sezione che lo spiega (`[[Nota#Sezione]]`, `[[#Sezione]]`). Se il nome della nota non è unico nel vault (es. `01 - Introduzione` esiste in più materie) e la nota di destinazione non sta nella stessa cartella, usa il percorso: `[[Reti di Calcolatori/01 - Introduzione]]`.
 ## Git e Pull Request
 ### Branch
 - Branch principale: `release`.

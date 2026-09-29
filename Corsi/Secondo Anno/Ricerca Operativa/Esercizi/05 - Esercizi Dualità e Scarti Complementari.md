@@ -1,12 +1,9 @@
 # Esercizi — Dualità e Scarti Complementari
-
 > [!info] Come usare questo file
 > Ogni esercizio ha **Traccia** seguita immediatamente da **Svolgimento**. Per esercitarti a libro chiuso, copri lo Svolgimento con la mano mentre leggi la Traccia.
 
 ---
-
 # Richiamo — Tabella di Tucker
-
 Per costruire il duale serve memorizzare la corrispondenza tra **tipo di vincolo** e **segno della variabile associata**. La tabella vale così com'è se il primale è di $\min$; si legge specularmente se è di $\max$.
 
 | Primale $\min$ | Duale $\max$ |
@@ -22,9 +19,7 @@ Per costruire il duale serve memorizzare la corrispondenza tra **tipo di vincolo
 > "Libera di segno" **non** significa "uguale a zero". Vuol dire che la variabile può assumere qualunque valore in $\mathbb{R}$; nel duale corrisponde a un vincolo di **uguaglianza**, non a una variabile assente.
 
 ---
-
 # Esercizio 1 — Dualizzazione generica (primale $\min$)
-
 ## Traccia
 Sia il primale:
 
@@ -37,7 +32,6 @@ $$\begin{array}{rl}
 \end{array}$$
 
 Scrivere il problema **duale**.
-
 ## Svolgimento
 **Passo 1 — assegno una variabile duale a ogni vincolo:**
 - $Ax \leq a \implies u_1$ (vincolo $\le$ in problema $\min$ $\implies u_1 \le 0$)
@@ -64,9 +58,7 @@ $$\begin{array}{rl}
 > Per ogni **variabile** del primale c'è un **vincolo** del duale; per ogni **vincolo** del primale c'è una **variabile** del duale. Il numero di righe della matrice si trasforma nel numero di colonne (e viceversa) — la matrice si traspone.
 
 ---
-
 # Esercizio 2 — Dualizzazione generica (primale $\max$)
-
 ## Traccia
 Stesso problema dell'Esercizio 1 ma in **massimizzazione**:
 
@@ -79,7 +71,6 @@ $$\begin{array}{rl}
 \end{array}$$
 
 Scrivere il problema **duale**.
-
 ## Svolgimento
 Le regole di Tucker si leggono specularmente.
 
@@ -100,9 +91,7 @@ $$\begin{array}{rl}
 \end{array}$$
 
 ---
-
 # Esercizio 3 — Dualizzazione numerica
-
 ## Traccia
 $$\begin{array}{rl}
 \max & 4x_1 + 3x_2 + 2x_3 \\
@@ -114,9 +103,7 @@ $$\begin{array}{rl}
 \end{array}$$
 
 Scrivere il problema **duale**.
-
 ## Svolgimento
-
 > [!warning] Lettura del testo
 > Il vincolo di segno è specificato **solo** per $x_2$. Le altre variabili ($x_1, x_3$) si intendono **libere di segno**: possono valere qualunque numero reale.
 
@@ -152,9 +139,7 @@ $$\begin{array}{rl}
 \end{array}$$
 
 ---
-
 # Esercizio 4 — Verifica ottimalità con Scarti Complementari
-
 ## Traccia
 Verificare se $\bar{x} = (12, 9)$ è ottima per il problema dei profumi (Esercizio 1 di [[04 - Esercizi Simplesso e Due Fasi]]) usando le **Condizioni degli Scarti Complementari** (CSC).
 
@@ -166,7 +151,6 @@ $$\begin{array}{rl}
  & 0.3x_1 + 0.5x_2 \leq 9 \\
  & x_1, x_2 \geq 0
 \end{array}$$
-
 ## Svolgimento
 **Duale associato (MIN)** — vincoli $\leq$ del MAX danno $u_i \geq 0$; $x_j \geq 0$ danno vincoli duali $\geq c_j$:
 $$\begin{array}{rl}

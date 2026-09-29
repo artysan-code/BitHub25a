@@ -1,10 +1,7 @@
 # 5. Programmazione Lineare Intera e Branch & Bound
-
 > [!info] Cosa impariamo qui
 > La PLI aggiunge il vincolo "$x \in \mathbb{Z}$" alla PL. La regione ammissibile non è più un poliedro continuo ma un *reticolo* di punti interi: non si può più applicare direttamente il Simplesso. Vediamo come affrontarla con **rilassamenti** (per stimare l'ottimo) e con il **Branch & Bound** (per trovarlo davvero).
-
 ## 5.1 Cos'è la Programmazione Lineare Intera
-
 > [!quote] Definizione — PLI
 > Un problema di **Programmazione Lineare Intera** (PLI) è un PL con il vincolo aggiuntivo che alcune (PLI Mista, PLIM) o tutte (PLI pura) le variabili siano intere:
 > $$\begin{array}{rl} \min & c^T x \\ \text{s.t.} & A x \le b \\ & x \in \mathbb{Z}^n_+ \quad (\text{oppure } x \in \{0,1\}^n) \end{array}$$
@@ -13,9 +10,7 @@ I problemi PLI sono ovunque: localizzazione di impianti (quanti aprire?), turni 
 
 > [!warning] La PLI non è "PL con arrotondamento"
 > Una tentazione naïve è risolvere il PL rilassato e poi arrotondare. **NON funziona** in generale: l'arrotondamento può violare i vincoli o portare lontano dall'ottimo. L'ottimo intero può essere *significativamente diverso* da quello frazionario, e in casi rari l'arrotondamento può portare a soluzioni inammissibili.
-
 ## 5.2 Geometria della PLI
-
 Tre regioni ammissibili da distinguere:
 
 1. **Politopo esterno**: regione ammissibile del **rilassamento lineare** (PL ottenuta ignorando $x \in \mathbb{Z}$). È un poliedro continuo.
@@ -24,13 +19,9 @@ Tre regioni ammissibili da distinguere:
 
 > [!quote] Proprietà fondamentale
 > Se si potesse lavorare direttamente sul **guscio convesso**, basterebbe il Simplesso: i suoi vertici sono interi e l'ottimo PLI si troverebbe in uno di essi. Purtroppo, costruire il guscio convesso è *generalmente più difficile* del problema originale (può richiedere infiniti vincoli).
-
 ## 5.3 Rilassamenti e Bound
-
 Per non costruire il guscio convesso, si calcolano **stime** (bound) dell'ottimo $z^*$ usando problemi più facili.
-
 ### 5.3.1 Lower Bound (per problema di MIN)
-
 Un **lower bound** $LB \le z^*$ si può ottenere in vari modi:
 
 - **a) Rilassamento Lineare** (il più usato): elimino il vincolo di interezza e risolvo il PL ottenuto col Simplesso. Il valore $z_{RL}$ è un lower bound (perché la regione ammissibile è più grande $\implies$ il minimo può solo scendere).
@@ -38,9 +29,7 @@ Un **lower bound** $LB \le z^*$ si può ottenere in vari modi:
 - **c) Rilassamento lagrangiano**: come (b), ma i vincoli rimossi vengono "penalizzati" e portati nella F.O. con dei moltiplicatori.
 - **d) Tagli (cutting planes)**: aggiungo vincoli che tagliano via parti del politopo esterno **senza eliminare punti interi ammissibili**. Si ottiene un bound più stretto.
 - **e) Rilassamento surrogato**: combino linearmente più vincoli in uno solo (es. trasformando in un problema di Knapsack).
-
 ### 5.3.2 Upper Bound (per problema di MIN)
-
 Un **upper bound** $UB \ge z^*$ si ottiene **valutando una qualsiasi soluzione ammissibile intera** (anche euristica). Banalmente: $UB = +\infty$ se non si ha nulla, oppure $UB = c^T \bar{x}$ con $\bar{x}$ ammissibile intera.
 
 > [!info] Logica dei bound in una minimizzazione
@@ -48,9 +37,7 @@ Un **upper bound** $UB \ge z^*$ si ottiene **valutando una qualsiasi soluzione a
 
 > [!warning] In un problema di MAX i ruoli si invertono
 > Per la **massimizzazione**: il rilassamento lineare dà un **upper bound** (la regione più grande spinge $z$ in alto); una soluzione intera ammissibile dà un **lower bound** (è almeno raggiungibile).
-
 ## 5.4 Matrici Totalmente Unimodulari (TUM)
-
 C'è una classe di PLI per cui il rilassamento lineare dà **direttamente l'ottimo intero**, senza B&B.
 
 > [!quote] Definizione — TUM
@@ -74,19 +61,13 @@ C'è una classe di PLI per cui il rilassamento lineare dà **direttamente l'otti
 - Problema dello **spanning tree**.
 
 In questi casi: dimentica il B&B, risolvi col Simplesso e basta.
-
 ## 5.5 Il Metodo del Branch & Bound
-
 Per la PLI generale, l'algoritmo principe è il **Branch & Bound** (B&B): un'enumerazione *implicita* dei punti interi, che usa i bound per **scartare interi rami** dell'albero senza esplorarli.
-
 ### 5.5.1 Idea generale
-
 - **Branch** (Ramificazione): partizionare il problema $P$ in sottoproblemi $P_1, P_2, \dots$ più piccoli.
 - **Bound** (Stima): calcolare un lower bound per ciascun sottoproblema.
 - **Pruning** (Taglio): se il LB di un sottoproblema è $\ge$ del miglior UB intero trovato finora, allora **nessuna** soluzione intera in quel sottoproblema può essere migliore $\implies$ scarto il ramo.
-
 ### 5.5.2 Branch corretto: regole
-
 I sottoproblemi $P_1, \dots, P_q$ generati da $P$ devono soddisfare:
 1. **Esaustivi**: $\Omega(P_1) \cup \dots \cup \Omega(P_q) = \Omega(P)$ — non perdere soluzioni.
 2. **Disgiunti**: $\Omega(P_i) \cap \Omega(P_j) = \emptyset$ per $i \ne j$ — non duplicare.
@@ -97,9 +78,7 @@ I sottoproblemi $P_1, \dots, P_q$ generati da $P$ devono soddisfare:
 
 > [!info] Perché questa regola garantisce esaustivi e disgiunti
 > Un intero non può valere strettamente $3 < x_h < 4$, quindi i due rami coprono *tutti* gli interi possibili senza sovrapporsi. Il valore $3.4$ è il solo valore frazionario "saltato" — ma non era ammissibile per la PLI comunque.
-
 ### 5.5.3 Regole di chiusura (pruning) di un nodo
-
 Un nodo si può **chiudere** (terminare l'esplorazione di quel ramo) per:
 
 | Causa | Condizione | Significato |
@@ -107,17 +86,13 @@ Un nodo si può **chiudere** (terminare l'esplorazione di quel ramo) per:
 | **Infattibilità** | Il rilassamento lineare del sottoproblema è infattibile | Il sottoproblema PLI è inammissibile, nessuna soluzione qui |
 | **Ottimalità** | L'ottimo del rilassamento è già intero | Candidato ottimo! Confronta col UB globale e aggiorna se migliora |
 | **Bound** | $LB_i \ge UB$ globale | Anche se proseguissi, nessuna soluzione intera batterà l'UB attuale |
-
 ### 5.5.4 Strategie di esplorazione dell'albero
-
 L'ordine con cui si esplorano i nodi aperti influisce sull'efficienza:
 
 - **Depth-first** (profondità): scegli sempre il figlio appena generato. Vantaggio: trova rapidamente una soluzione intera (utile per avere subito un UB). Implementazione: pila/stack.
 - **Breadth-first** (larghezza): esplora tutti i nodi a un livello prima di passare al successivo. Implementazione: coda/queue. Memoria onerosa.
 - **Best-bound-first**: scegli il nodo aperto con LB più piccolo (più "promettente"). Garantisce di esplorare meno nodi nel caso peggiore.
-
 ### 5.5.5 Algoritmo B&B (versione minimizzazione)
-
 ```
 INPUT: PLI (P) min{c^T x : Ax ≤ b, x ∈ Z^n_+}
 
@@ -152,9 +127,7 @@ LOOP finché L ≠ ∅:
 
 FINE: x_best è l'ottimo, con valore UB
 ```
-
 ### 5.5.6 Esempio minimale di esecuzione
-
 > [!example] Mini B&B su $\max\ x_1 + x_2$, $2x_1 + 5x_2 \le 16$, $6x_1 + 5x_2 \le 30$, $x \in \mathbb{Z}_+$
 > **Nodo 0 (radice)**: ottimo RL $x_1 = 3.5, x_2 = 1.8, z_{RL} = 5.3$. Frazionario, $UB_{glob} = -\infty$.
 > **Branch su $x_1$**: figli $x_1 \le 3$ e $x_1 \ge 4$.
@@ -165,45 +138,29 @@ FINE: x_best è l'ottimo, con valore UB
 > Albero esaurito $\implies$ ottimo PLI: $x^* = (3, 2), z^* = 5$.
 
 (Svolgimento completo: [[06 - Esercizi Branch & Bound]])
-
 ## 5.6 Modelli PLI ricorrenti
-
 Alcuni problemi riconducibili a PLI si incontrano spesso negli esami:
-
 ### 5.6.1 Costi di avviamento (setup costs)
-
 Costo di produzione: $0$ se $x_j = 0$, altrimenti $F_j + c_j x_j$. Linearizzazione:
 $$\min\ \sum_j c_j x_j + F_j y_j \quad \text{s.t.} \quad x_j \le M y_j,\ x_j \ge 0,\ y_j \in \{0,1\}$$
-
 ### 5.6.2 Lotti di produzione minimi
-
 Se si produce, almeno $L_j$ unità: "$x_j = 0$ oppure $x_j \ge L_j$":
 $$x_j \le M y_j, \quad x_j \ge L_j y_j, \quad y_j \in \{0,1\}$$
-
 ### 5.6.3 Problema dello zaino (Knapsack)
-
 Riempire uno zaino di volume $V$ con oggetti $j = 1, \dots, n$, ciascuno di volume $v_j$ e valore $c_j$, massimizzando il valore:
 $$\max\ \sum_j c_j x_j \quad \text{s.t.} \quad \sum_j v_j x_j \le V,\ x_j \in \mathbb{Z}_+ \text{ (o } \{0,1\})$$
-
 ### 5.6.4 Set Covering
-
 Coprire ogni elemento $i$ con almeno un sottoinsieme scelto:
 $$\min\ \sum_j c_j x_j \quad \text{s.t.} \quad \sum_j a_{ij} x_j \ge 1 \ \forall i,\ x_j \in \{0,1\}$$
-
 ### 5.6.5 Set Partitioning
-
 Come Set Covering, ma con uguaglianze: ogni elemento coperto da **esattamente uno**:
 $$\min\ \sum_j c_j x_j \quad \text{s.t.} \quad \sum_j a_{ij} x_j = 1 \ \forall i,\ x_j \in \{0,1\}$$
-
 ## 5.7 Scelta del Big-M nei modelli PLI
-
 Nei modelli con vincoli del tipo $x_j \le M y_j$:
 - $M$ troppo piccolo $\implies$ taglia soluzioni ammissibili (modello errato).
 - $M$ troppo grande $\implies$ rilassamento lineare debole $\implies$ B&B lento.
 - **Regola pratica**: $M$ = upper bound naturale di $x_j$ (es. capacità massima, disponibilità totale).
-
 ## 5.8 Riepilogo strategico
-
 ```
 DAVANTI A UN PROBLEMA PLI:
 

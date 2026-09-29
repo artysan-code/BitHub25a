@@ -1,12 +1,9 @@
 # Esercizi — Simplesso e Due Fasi
-
 > [!info] Come usare questo file
 > Ogni esercizio ha **Traccia** seguita immediatamente da **Svolgimento**. Per esercitarti a libro chiuso, copri lo Svolgimento con la mano mentre leggi la Traccia.
 
 ---
-
 # Esercizio 1 — Simplesso primale (problema dei profumi)
-
 ## Traccia
 Una ditta di profumi realizza due nuove fragranze a partire da 3 essenze: rosa, mughetto e viola.
 
@@ -17,7 +14,6 @@ La disponibilità in magazzino per le tre essenze è di 27, 21 e 9 litri per ros
 Sapendo che l'azienda realizza un profitto di 130 e 100 euro per ogni decalitro venduto di fragranza 1 e 2 rispettivamente, determinare le quantità ottimali delle due fragranze da produrre.
 
 Risolvere con il **metodo del simplesso** completo (forma standard + tableau + iterazioni fino all'ottimo).
-
 ## Svolgimento
 Il problema sarà quindi:
 $$\begin{array}{}
@@ -108,9 +104,7 @@ z=2460 (\text{ valore ottimo del problema iniziale})
 \end{array}$$
 
 ---
-
 # Esercizio 2 — Metodo delle Due Fasi
-
 ## Traccia
 $$\begin{array}{}
 \min \quad x_1 + 2x_2 \\
@@ -120,7 +114,6 @@ x_1, x_2 \geq 0
 \end{array}$$
 
 Il primo vincolo ($\geq$) non fornisce una variabile slack positiva utilizzabile come base iniziale. Risolvere con il **Metodo delle Due Fasi**.
-
 ## Svolgimento
 **Forma standard** (surplus $s_1$, slack $s_2$):
 $$x_1 + x_2 - s_1 = 4, \quad x_1 - x_2 + s_2 = 2$$
@@ -189,9 +182,7 @@ $$x_1^* = 3,\quad x_2^* = 1,\quad z^* = 5$$
 Verifica vincoli: $3+1=4\geq 4$ ✓ (saturo, $s_1=0$), $\;3-1=2\leq 2$ ✓ (saturo, $s_2=0$).
 
 ---
-
 # Esercizio 3 — Simplesso "stile 2026" (riga $z$ in alto)
-
 ## Traccia
 $$\begin{array}{rl}
 \min & z = -2x_1 - 3x_2 \\
@@ -201,9 +192,7 @@ $$\begin{array}{rl}
 \end{array}$$
 
 Risolvere col simplesso secondo la convenzione 2026 (riga $z$ in **prima posizione** nel tableau), prestando attenzione alla lettura del valore ottimo (il valore in alto a destra è $-z$, non $z$).
-
 ## Svolgimento
-
 > [!info] Convenzione tableau (Caramia 2026)
 > - La riga $z$ sta in **prima posizione** (in alto).
 > - In quella riga, sotto la colonna $b$, c'è il valore **$-z$** (cioè per leggere il vero $z^*$ alla fine bisogna cambiarlo di segno).
@@ -223,7 +212,6 @@ z & 0 & -2 & -3 & 0 & 0 \\
 x_3 & 4 & 1 & 2 & 1 & 0 \\
 x_4 & 5 & 2 & 1 & 0 & 1 \\
 \end{array}$$
-
 ### Iterazione 1
 **Entrante:** $\bar c_2 = -3$ è il più negativo $\implies$ $x_2$ entra.
 **Test del minimo rapporto** (solo righe con $\bar a_{i2} > 0$): $\min\{4/2,\, 5/1\} = 2$ sulla riga $x_3$ $\implies$ $x_3$ esce. **Pivot** $a_{12} = 2$.
@@ -242,7 +230,6 @@ z & 6 & -\tfrac{1}{2} & 0 & \tfrac{3}{2} & 0 \\
 x_2 & 2 & \tfrac{1}{2} & 1 & \tfrac{1}{2} & 0 \\
 x_4 & 3 & \tfrac{3}{2} & 0 & -\tfrac{1}{2} & 1 \\
 \end{array}$$
-
 ### Iterazione 2
 **Entrante:** $\bar c_1 = -\tfrac{1}{2} < 0$ $\implies$ $x_1$ entra.
 **Rapporti** (righe con $\bar a_{i1} > 0$): $\min\{2/(1/2),\, 3/(3/2)\} = \min\{4,\,2\} = 2$ sulla riga $x_4$ $\implies$ $x_4$ esce. **Pivot** $a_{21} = \tfrac{3}{2}$.
@@ -268,9 +255,7 @@ x_1 & 2 & 1 & 0 & -\tfrac{1}{3} & \tfrac{2}{3} \\
 > Verifica diretta: $z^* = -2(2) - 3(1) = -7$ ✓
 
 ---
-
 # Esercizio 4 — Caso illimitato
-
 ## Traccia
 $$\begin{array}{rl}
 \min & z = -x_1 - 2x_2 \\
@@ -280,7 +265,6 @@ $$\begin{array}{rl}
 \end{array}$$
 
 Applicare il simplesso e riconoscere il caso speciale di **illimitatezza**.
-
 ## Svolgimento
 La regione è **illimitata** ($x_1 + x_2$ può crescere indefinitamente lungo la direzione $(1,1)$); vediamo come il simplesso lo rivela.
 
@@ -294,7 +278,6 @@ z & 0 & -1 & -2 & 0 & 0 \\
 x_3 & 2 & 1 & -1 & 1 & 0 \\
 x_4 & 1 & -1 & 1 & 0 & 1 \\
 \end{array}$$
-
 ### Iterazione 1
 **Entrante:** $\bar c_2 = -2$ è il più negativo $\implies$ $x_2$ entra.
 **Rapporti** ($\bar a_{i2} > 0$): solo la riga $x_4$ ha $\bar a_{22} = 1 > 0$. $\min\{1/1\} = 1$ $\implies$ $x_4$ esce. **Pivot** $a_{22} = 1$.
@@ -309,7 +292,6 @@ z & 2 & -3 & 0 & 0 & 2 \\
 x_3 & 3 & 0 & 0 & 1 & 1 \\
 x_2 & 1 & -1 & 1 & 0 & 1 \\
 \end{array}$$
-
 ### Iterazione 2 — STOP per illimitatezza
 **Entrante:** $\bar c_1 = -3 < 0$ $\implies$ $x_1$ entrerebbe.
 **Esamino la colonna $x_1$:**

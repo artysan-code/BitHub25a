@@ -467,4 +467,4 @@ Fino all'x86-64, Intel x86 rifletteva il modello MULTICS combinando segmentazion
 Opzioni utili: `-h` (formato leggibile MB/GB); `-b`, `--kilo`, `--mega`, `--giga` (unità di misura); `-t` (mostra i totali); `-s N` (aggiornamento continuo ogni N secondi, simile a `watch`).
 
 > [!info] Collegamenti con Architettura
-> La struttura della **CPU**, dei registri e della gerarchia di cache è approfondita nel corso di Architettura dei Sistemi di Elaborazione del primo anno: vedi [[2 - Organizzazione dei sistemi di calcolo]] e la nota dedicata [[3 - Gestione della Memoria]], che copre lo stesso materiale di Tanenbaum (paginazione, MMU, sostituzione delle pagine) da una prospettiva architetturale.
+> La struttura della **CPU**, dei registri e della gerarchia di cache è approfondita nel corso di Architettura dei Sistemi di Elaborazione del primo anno: vedi [[02 - Organizzazione dei sistemi di calcolo]] e la nota dedicata [[03 - Gestione della Memoria]], che copre lo stesso materiale di Tanenbaum (paginazione, MMU, sostituzione delle pagine) da una prospettiva architetturale.

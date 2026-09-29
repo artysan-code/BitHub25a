@@ -139,7 +139,7 @@ L'**interrupt vector** è associato a ciascun dispositivo di I/O e linea di inte
 > A ogni interruzione lo scheduler ottiene il controllo: **un processo non può cedere la CPU a un altro (context switch) senza passare attraverso lo scheduler**.
 
 > [!info] Approfondimento — Architettura dei Sistemi di Elaborazione
-> Il salvataggio dei registri e la commutazione a livello assembly sono trattati in [[7 - Livello del linguaggio Assemblativo]]; gli interrupt come dispositivo hardware sono ripresi in [[08 - Input Output]].
+> Il salvataggio dei registri e la commutazione a livello assembly sono trattati in [[07 - Livello del linguaggio Assemblativo]]; gli interrupt come dispositivo hardware sono ripresi in [[08 - Input Output]].
 ### I segnali
 - **Tipi**: indotti da hardware (es. `SIGKILL`) o da software (es. `SIGQUIT`, `SIGPIPE`).
 - **Azioni** possibili: `Term`, `Ign`, `Core`, `Stop`, `Cont`. Ogni segnale ha un'azione di **default**, tipicamente **sovrascrivibile**; i segnali possono essere **bloccati** e le azioni ritardate.

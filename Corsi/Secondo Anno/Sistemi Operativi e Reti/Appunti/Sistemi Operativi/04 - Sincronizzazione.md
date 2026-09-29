@@ -229,7 +229,7 @@ Un **mutex** è una versione **esplicita e semplificata** del semaforo, usata pe
 Quando un thread vuole entrare nella regione critica chiama `mutex_lock`: se il mutex è *unlocked* entra; se è *locked* attende **senza busy waiting**, cedendo la CPU con `thread_yield`. Al termine chiama `mutex_unlock`.
 
 > [!info] Dettagli
-> I mutex possono essere implementati in user space con istruzioni atomiche come **TSL** o **XCHG** (vedi [[5 - Livello di architettura dell'insieme d'istruzioni]]). Alcune librerie offrono `mutex_trylock`, che tenta il lock o restituisce errore **senza bloccare**. I mutex sono efficaci quando i thread condividono lo spazio di indirizzi.
+> I mutex possono essere implementati in user space con istruzioni atomiche come **TSL** o **XCHG** (vedi [[05 - Livello di architettura dell'insieme d'istruzioni]]). Alcune librerie offrono `mutex_trylock`, che tenta il lock o restituisce errore **senza bloccare**. I mutex sono efficaci quando i thread condividono lo spazio di indirizzi.
 ### Mutex in Pthreads
 | Chiamata | Descrizione |
 |---|---|

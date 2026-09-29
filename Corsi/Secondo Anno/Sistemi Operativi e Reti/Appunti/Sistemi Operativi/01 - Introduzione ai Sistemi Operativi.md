@@ -103,7 +103,7 @@ Il **cambio di contesto** ([[03 - Processi e Thread|context switch]]) salva i re
 - **Multiprocessori**: più CPU fisiche nello stesso sistema. Tre vantaggi principali: **throughput** (più lavoro svolto in parallelo), **economia di scala** (le CPU condividono alimentazione, contenitore e periferiche, costando meno di tante macchine separate) e **affidabilità** (il guasto di una CPU degrada le prestazioni ma non ferma il sistema).
 
 > [!info] Approfondimento — Architettura dei Sistemi di Elaborazione
-> Il funzionamento dettagliato della CPU (ciclo fetch-decode-execute, registri, microarchitettura, pipeline) è trattato nel corso del primo anno: [[2 - Organizzazione dei sistemi di calcolo]] e [[4 - Livello di microarchitettura]].
+> Il funzionamento dettagliato della CPU (ciclo fetch-decode-execute, registri, microarchitettura, pipeline) è trattato nel corso del primo anno: [[02 - Organizzazione dei sistemi di calcolo]] e [[04 - Livello di microarchitettura]].
 ### Memoria
 La memoria è organizzata in una **gerarchia**, con trade-off tra velocità, capacità e costo:
 

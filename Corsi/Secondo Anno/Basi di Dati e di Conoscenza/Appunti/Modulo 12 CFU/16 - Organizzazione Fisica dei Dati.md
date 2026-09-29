@@ -308,7 +308,7 @@ drop index IndexName
 
 ## Esecuzione e ottimizzazione delle interrogazioni
 
-> Per il dettaglio completo del processo di ottimizzazione (analisi lessicale/sintattica/semantica, ottimizzazione algebrica con "push selections/projections down", procedura euristica, profili delle relazioni e ottimizzazione basata sui costi) si veda [[16 - Indici e Progettazione Fisica]], che tratta lo stesso argomento in dettaglio.
+> Per il dettaglio completo del processo di ottimizzazione (analisi lessicale/sintattica/semantica, ottimizzazione algebrica con "push selections/projections down", procedura euristica, profili delle relazioni e ottimizzazione basata sui costi) si veda [[15 - Indici e Progettazione Fisica]], che tratta lo stesso argomento in dettaglio.
 
 Qui si aggiungono alcuni approfondimenti sull'esecuzione fisica delle operazioni.
 

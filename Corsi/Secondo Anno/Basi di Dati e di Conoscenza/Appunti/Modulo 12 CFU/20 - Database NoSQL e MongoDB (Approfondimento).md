@@ -210,7 +210,7 @@ MongoDB consente design dinamici, senza schema fisso. È possibile annidare docu
 
 ## Indicizzazione in MongoDB
 
-Gli indici migliorano la velocità di recupero dei dati (concetto analogo agli indici nei RDBMS: si veda [[16 - Indici e Progettazione Fisica]]).
+Gli indici migliorano la velocità di recupero dei dati (concetto analogo agli indici nei RDBMS: si veda [[15 - Indici e Progettazione Fisica]]).
 
 ```js
 db.collection.createIndex({name: 1})

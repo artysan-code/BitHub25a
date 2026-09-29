@@ -10,9 +10,7 @@ Parti da un punto noto della retta ($P_{0}$), e muoviti lungo la direzione del v
 
 Piano: $$P(s,t)=P_{0}+s\cdot v+t\cdot w$$
 Parti da un punto $P_{0}$ e sei libero di muoverti lungo due direzioni indipendenti ($v$ e $w$)
-
 ### Forma Cartesiana
-
 Retta in $\mathbb{R}^{2}$: $$ax + by + c = 0$$
 Piano in $\mathbb{R}^{3}$: $$ax + by + cz + d = 0$$
 L'insieme di tutti i punti $(x, y, z)$  le cui coordinate soddisfano questa singola equazione. Il vettore $n = (a, b, c)$ è il **vettore normale** (perpendicolare) al piano
@@ -22,7 +20,6 @@ Rappresentano due filosofie opposte per descrivere un oggetto.
 - **Parametrica (generativa):** Ti do gli ingredienti $(P_{0}, v, w)$ e le istruzioni per _costruire_ tutti i punti. È una visione dall'interno.
 - **Cartesiana (restrittiva):** Ti do una regola $(ax + ... + d = 0)$ e verifico se un punto appartiene all'insieme o no. È una visione dall'esterno.
 - **Connessione Profonda:** L'equazione cartesiana di un piano $a(x-x₀) + b(y-y₀) + c(z-z₀) = 0$ è equivalente a dire che il prodotto scalare tra il vettore normale $n = (a, b, c)$ e un qualsiasi vettore $(P - P₀)$ che giace sul piano è zero: $n ⋅ (P - P₀) = 0$. Questo significa che sono perpendicolari.
-
 # 2 - Spazi vettoriali
 L'obiettivo qui è generalizzare le regole che abbiamo visto in $\mathrm{R}^{2}$ e $\mathrm{R}^{3}$ a contesti molto più ampi.
 ## Spazio e sottospazio
@@ -48,7 +45,6 @@ L'obiettivo qui è generalizzare le regole che abbiamo visto in $\mathrm{R}^{2}$
   $(k⋅h)⋅v=k⋅(h⋅v)$
 - Esistenza dell'Elemento Neutro della Moltiplicazione:
   Lo scalare 1 agisce come elemento neutro: $1⋅v=v$.
-
 ### Sottospazio vettoriale
 È un sottoinsieme $W$ di uno spazio vettoriale $V$ che è a sua volta uno spazio vettoriale. Per verificarlo, non devi controllare tutti gli 8 assiomi. Bastano 3 condizioni:
 - Contiene il vettore nullo:
@@ -57,7 +53,6 @@ L'obiettivo qui è generalizzare le regole che abbiamo visto in $\mathrm{R}^{2}$
   Se $w_{1},w_{2}\in W$, allora $w_{1}+w_{2}\in W$.
 - Chiuso rispetto al prodotto per scalare:
   Se $w\in W$ e $k$ è uno scalare, allora $k\cdot w\in W$.
-
 ## Combinazioni lineari e sottospazio generato
 ### Combinazione lineare
 È una somma pesata di vettori. Dati i vettori $v_{1},v_{2},\dots,v_{k}$ e gli scalari $c_{1},c_{2},\dots,c_{k}$, una loro combinazione lineare è:$$w=c_{1}v_{1}+c_{2}v_{2}+\dots+c_{k}v_{k}$$
@@ -69,7 +64,6 @@ Lo Span di due vettori non paralleli è il **piano** passante per l'origine che 
 
 >**Teorema chiave:** 
 >Lo $Span(v_{1},\dots,v_{k})$ è sempre un **sottospazio vettoriale**.
-
 # 3 - Il Cuore degli Spazi Vettoriali
 Capire quando un insieme di vettori è linearmente dipendente o indipendente è la chiave per comprendere la struttura di uno spazio vettoriale.
 ## Dipendenza e Indipendenza Lineare
@@ -84,7 +78,6 @@ Immagina di avere un insieme di vettori in uno spazio vettoriale $V$. La domanda
 - **Ipotesi Comune**: Se ho tanti vettori, è più probabile che siano dipendenti.
 - **Analisi**: Questa intuizione è corretta. In uno spazio di dimensione $n$, qualsiasi insieme di $n+1$ o più vettori è necessariamente linearmente dipendente. Pensa a $\mathbb{R}^{2}$ (il piano): se prendi tre vettori, uno sarà sempre "superfluo", esprimibile come combinazione degli altri due.
 - **Contro argomentazione** :"Ma allora l'indipendenza è una proprietà rara?" No, è una proprietà *fondamentale*. I vettori linearmente indipendenti sono i "mattoni" essenziali e non ridondanti dello spazio. La dipendenza lineare indica semplicemente una ridondanza nell'insieme di vettori che stai considerando.
-
 ### Geometricamente parlando
 **Due vettori:** Sono linearmente dipendenti se e solo se sono paralleli (uno è un multiplo scalare dell'altro). Giacciono sulla stessa retta passante per l'origine.
 
@@ -105,7 +98,6 @@ Una base è l'insieme "perfetto" di vettori per descrivere uno spazio vettoriale
 	**Esempio:** In $\mathbb{R}^{2}$, la base più comune è la *base canonica* $E=\{(1,0),(0,1)\}$. Ma anche $B_{1}=\{(1,1),(1,-1)\}$ è una base valida. E così anche $B_{2}=\{(2,3),(1,0)\}$.
 **Contro argomentazione**: "Se ci sono infinite basi, a cosa serve il concetto? Sembra arbitrario." 
 Il punto cruciale non è _quale_ base scegli, ma il fatto che, una volta scelta una base, ogni vettore dello spazio ha una *rappresentazione unica* come combinazione lineare dei vettori di quella base. Quei coefficienti unici sono chiamati le *coordinate* del vettore rispetto a quella base.
-
 # 3.1 - Dimensione e Teoremi sulle Basi
 Questi teoremi sono il collante che tiene insieme la teoria. Non sono solo risultati astratti, ma strumenti operativi potentissimi.
 ## Teorema della Dimensione (o di Grassmann)
@@ -118,22 +110,18 @@ Sebbene uno spazio vettoriale abbia infinite basi, tutte le basi di un dato spaz
 
 La costanza del numero di vettori in una base è una conseguenza diretta del **Teorema di Steinitz (o del Rimpiazzamento)**, che è il vero motore tecnico dietro a questi risultati. 
 Esso afferma, in sostanza, che se hai un insieme di generatori e un insieme di vettori linearmente indipendenti, il numero di vettori indipendenti non può superare il numero di generatori.
-
 ## Teorema di Esistenza e di Completamento della Base
 Questi due teoremi garantiscono che le basi non sono oggetti rari o difficili da trovare.
-
 ### Teorema di Esistenza della Base (o di Estrazione)
 Da ogni insieme di generatori di uno spazio vettoriale $V$ è sempre possibile **estrarre** una base di $V$.
 
 *Implicazione pratica*: Se hai un insieme di vettori che generano il tuo spazio, potresti avere della ridondanza. Questo teorema ti dice che puoi "buttare via" i vettori superflui (quelli linearmente dipendenti dagli altri) fino a rimanere con un insieme linearmente indipendente che genera ancora lo stesso spazio: una base.
-
 ### Teorema del Completamento a Base
 Ogni insieme di vettori linearmente indipendenti in uno spazio vettoriale $V$ di dimensione finita può essere **esteso (o completato)** a una base di $V$.
 
 *Implicazione pratica*: Se hai un insieme di vettori "buoni" ma non sufficienti a generare tutto lo spazio, questo teorema ti garantisce che puoi "pescare" altri vettori da V per completare il tuo set fino a formare una base.
 
 **Contro argomentazione**: "Questi teoremi sembrano ovvi. Se ho dei generatori, tolgo quelli inutili. Se ho pochi vettori indipendenti, ne aggiungo altri. Dov'è la difficoltà?" La potenza di questi teoremi sta nel garantire che queste procedure *funzionano sempre* e *terminano* in un numero finito di passi (in spazi di dimensione finita). Non è scontato a priori che, eliminando un vettore dipendente, i rimanenti generino ancora lo stesso spazio, o che sia sempre possibile trovare un vettore "nuovo" da aggiungere che sia indipendente dai precedenti.
-
 # 4 - Applicazioni Lineari e Matrici
 L'idea centrale che unisce tutto è questa: le *applicazioni lineari* sono le funzioni "ben educate" degli spazi vettoriali, e le *matrici* sono lo strumento numerico con cui le descriviamo e le manipoliamo.
 ## Matrici e operazioni
@@ -194,7 +182,6 @@ Abbiamo trovato una soluzione non banale (con coefficienti non tutti nulli).
 **Conclusione:** 
 I vettori sono **linearmente dipendenti**. 
 Geometricamente, questo significa che i due vettori giacciono sulla stessa retta passante per l'origine.
-
 #### Esercizio 2: Verifica di Indipendenza Lineare in $\mathbb{R}^{3}$ 
 Determinare se i vettori $u=(1,2,3)$, $v=(0,1,2)$ e $w=(2,0,1)$ in $\mathbb{R}^{3}$ sono linearmente indipendenti.
 **Soluzione Spiegata:** 
@@ -228,7 +215,6 @@ det(A)=1⋅(−1)−1⋅(−1)=−1+1=0
 **Conclusione:** 
 I vettori **non formano una base** per $\mathbb{R}^{3}$. 
 Infatti, esiste una relazione di dipendenza lineare tra loro: si può notare che $v_3 ​=v_1 ​−v_2$ ​.
-
 #### Esercizio 4: Trovare le Coordinate di un Vettore rispetto a una Base
 Data la base $B={b_{1}​=(1,1),b_{2}​=(1,−1)}$ di $\mathbb{R}^{2}$, trovare le coordinate del vettore $v=(3,5)$ rispetto a questa base.
 **Soluzione Spiegata:** 
@@ -264,7 +250,6 @@ Le colonne che conterranno i **pivot** corrisponderanno ai vettori linearmente i
 **Conclusione:** 
 Una base per $W$ è $\mathcal{B}_{W}​={(1,0,1),(0,1,1)}$. 
 La dimensione di $W$ è il numero di vettori nella sua base, quindi $dim(W)=2$.
-
 #### Esercizio 6: Completamento a Base
 Dato il vettore $v_1 ​=(1,2,0)$ in $\mathbb{R}^{3}$, completarlo a una base di $\mathbb{R}^{3}$.
 **Soluzione Spiegata:** 
@@ -347,7 +332,6 @@ b\_2 \\
 \vdots \\
 b\_m \end{pmatrix}$$
 Questa formulazione non è solo una notazione più comoda, ma è fondamentale perché permette di applicare tutta la potenza dell'algebra delle matrici per studiare e risolvere i sistemi.
-
 ### Teorema di Struttura per le Soluzioni
 Questo teorema descrive come è fatto l'insieme di tutte le soluzioni di un sistema lineare $A\mathbf{x}=\mathbf{b}$.
 Il teorema afferma che: 
@@ -359,7 +343,6 @@ Dove:
 - $\mathbf{x}_0$ è l'insieme di tutte le soluzioni del **sistema omogeneo associato** $A\mathbf{x}=\mathbf{0}$. L'insieme di queste soluzioni forma uno spazio vettoriale, chiamato **spazio nullo** o **kernel** della matrice $A$.
 #### In pratica, cosa significa?
 Significa che se trovi anche solo *una* soluzione al tuo sistema, puoi trovare tutte le altre aggiungendo a quella le soluzioni del sistema omogeneo associato. Questo "sposta" geometricamente lo spazio nullo (che passa sempre per l'origine) facendolo passare per il punto rappresentato dalla soluzione particolare.
-
 ### Teorema di Rouché-Capelli
 Questo è il teorema più importante per determinare se un sistema ammette soluzioni e, in caso affermativo, quante.
 Per enunciarlo, abbiamo bisogno di due matrici:
@@ -375,7 +358,6 @@ a\_{m1} & \dots & a\_{mn} & | & b\_m \end{pmatrix}$$Il teorema afferma che:
     - Se il rango $r$ è minore del numero di incognite $n$ ($r<n$), il sistema ha **infinite soluzioni**. (Sistema *indeterminato*) 
       Le infinite soluzioni dipendono da $n−r$ parametri liberi. 
       Si dice che il sistema ha $\infty^{n-r}$ soluzioni.
-
 ## Sistemi Lineari - Pratica (Gauss)
 ### Algoritmo di Eliminazione di Gauss
 L'algoritmo di Gauss (o metodo di eliminazione gaussiana) è una procedura sistematica per risolvere i sistemi lineari. L'idea è quella di trasformare, tramite operazioni elementari sulle righe, la matrice completa del sistema in una **matrice a scala** (o a gradini), dalla quale le soluzioni si possono ricavare facilmente.
@@ -412,7 +394,6 @@ $$\begin{pmatrix} 1 & 2 & 1 & | & 2 \\ 3 & 8 & 1 & | & 12 \\ 0 & 4 & 1 & | & 2 \
     - Sostituiamo z nella seconda: $2y-2(-2)=6\implies2y+4=6\implies2y=2\implies\mathbf{y}=1$  
     - Sostituiamo y e z nella prima: $x+2(1)+(-2)=2\implies x+2-2=2\implies\mathbf{x}=2$
     La soluzione è $(2,1,−2)$.
-
 ## Esercizi
 #### 1. Sistema $2\times2$ Determinato
 $$\begin{cases} 2x - 3y = 7 \\ x + 4y = -2 \end{cases} $$**Passaggi:** 
@@ -453,7 +434,6 @@ $$\begin{cases} x + 2y - z = 4 \\ 2x + y + 3z = 5 \\ x - y + 4z = 1 \end{cases} 
    $−3y+5t=−3implies3y=5t+3impliesy=frac53t+1$
    $x+2\left( \frac{5}{3}t+1 \right)-t=4\implies x+ \frac{10}{3}t+2−t=4\implies x=2-\frac{7}{3}t$ 
 - **Soluzione:** ($2-\frac{7}{3}t,1+\frac{5}{3}t,t$) per ogni $t\in\mathbb{R}$.
-
 #### 4. Sistema $3\times3$ Impossibile
 $$\begin{cases} x - y + 2z = 1 \\ x + y + z = 2 \\ 2x + 4z = 5 \end{cases} $$**Passaggi:**
 1. Matrice completa: $$\begin{pmatrix} 1 & -1 & 2 & | & 1 \\ 1 & 1 & 1 & | & 2 \\ 2 & 0 & 4 & | & 5 \end{pmatrix}$$ 
@@ -476,9 +456,7 @@ $$\begin{cases} x - y + 2z = 1 \\ x + y + z = 2 \\ 2x + 4z = 5 \end{cases} $$**P
     - $2y−z=1\implies 2y−2=1\implies2y=3\implies y=3/2$  
     - $x−y+2z=1\implies x−3/2+4=1\implies x=1−4+3/2=−3+3/2=−3/2$ 
     **Soluzione:** $\left( -\frac{3}{2}, \frac{3}{2},2 \right)$  
-
 #### 5. Sistema $2\times3$
-
 $$\begin{cases} x + y - 2z = 5 \\ 2x - y - z = 1 \end{cases}$$ **Passaggi:** 
 1. Matrice completa: $$\begin{pmatrix} 1 & 1 & -2 & | & 5 \\ 2 & -1 & -1 & | & 1 \end{pmatrix}$$ 
 2. Applichiamo $R\_2 \to R\_2 - 2R\_1$:$ $$\begin{pmatrix} 1 & 1 & -2 & | & 5 \\ 0 & -3 & 3 & | & -9 \end{pmatrix}$$ 
@@ -506,7 +484,6 @@ $$\begin{cases} x + 3y - 2z = 0 \\ 2x - y + 4z = 0 \\ x - 11y + 14z = 0 \end{cas
 - $−7y+8t=0\implies7y=8t\implies y=\frac{8}{7}t$  
 - $x+3\left( \frac{8}{7}t \right)−2t=0\implies x+ \frac{24}{7}t− \frac{14}{7}t=0\implies x=−\frac{10}{7}t$
 **Soluzione:** ($-\frac{10}{7}t, \frac{8}{7}t,t$) per ogni $t\in\mathbb{R}$.
-
 #### 8. Sistema $4\times4$
 $$\begin{cases} x + y + w = 4 \ y + z = 3 \ x - z - w = -1 \ y + w = 3 \end{cases} $$**Passaggi:**
 1. Matrice completa (ordine incognite $x,y,z,w$): $$\begin{pmatrix} 1 & 1 & 0 & 1 & | & 4 \\ 0 & 1 & 1 & 0 & | & 3 \\ 1 & 0 & -1 & -1 & | & -1 \\ 0 & 1 & 0 & 1 & | & 3 \end{pmatrix}$$  
@@ -522,7 +499,6 @@ $$\begin{cases} x + y + w = 4 \ y + z = 3 \ x - z - w = -1 \ y + w = 3 \end{case
     - $y+z=3\implies y+1=3\implies y=2$  
     - $x+y+w=4\implies x+2+1=4\implies x=1$ 
     **Soluzione:** $(1,2,1,1)$
-
 #### 9. Sistema con parametro (k)
 Discutere le soluzioni al variare di $k\in\mathbb{R}$:$$\begin{cases} x + y + kz = 1 \\ x + ky + z = 1 \\ kx + y + z = 1 \end{cases} $$**Passaggi:** 
 1. Matrice completa: $$\begin{pmatrix}
@@ -550,7 +526,6 @@ k & 1 & 1 & | & 1
 - Se $k=1$: **Infinite soluzioni** date da $x=1−y−z$.
 - Se $k=−2$: **Nessuna soluzione**.
 #### 10. Sistema con parametro (a)
-
 Discutere le soluzioni al variare di $a\in\mathbb{R}$:$$\begin{cases} x + y - z = 1 \\ 2x + 3y + az = 3 \\ x + ay + 3z = 2 \end{cases} $$**Passaggi:** 
 1. Matrice completa: $$\begin{pmatrix}
 1 & 1 & -1 & | & 1 \\
@@ -578,8 +553,6 @@ Discutere le soluzioni al variare di $a\in\mathbb{R}$:$$\begin{cases} x + y - z 
 - Se $a\neq2$ e $a\neq−3$: **Soluzione unica**.
 - Se $a=2$: **Infinite soluzioni**.
 - Se $a=−3$: **Nessuna soluzione**.
-
-
 # 6 - Determinanti e Invertibilità
 Il **determinante** è un numero scalare associato a ogni matrice quadrata che ne descrive importanti proprietà algebriche e geometriche. Si indica con $det(A)$ o $|A|$.
 ## Proprietà Fondamentali del Determinante

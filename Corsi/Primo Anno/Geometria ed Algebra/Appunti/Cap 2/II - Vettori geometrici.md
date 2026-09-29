@@ -1,5 +1,4 @@
 # 2.1 Vettori applicati
-
 Definiamo con $A^1,A^2,A^3$ rispettivamente retta, piano e spazio euclidei. Scegliendo un punto $O$ e un'unità di misura $\overline{OA}$ su $A^1$, stabiliamo una corrispondenza biunivoca tra i punti della retta e i numeri reali. In altre parole, possiamo associare la retta $A^1$ all'insieme dei numeri reali $\textsf{I\kern-0.1ex R}$. Questo introduce su $A^1$ le due operazioni fondamentali di somma e prodotto che lo rendono a tutti gli effetti un **campo**. 
 
 Supponendo di voler estendere questo concetto al piano o allo spazio, partiamo scegliendo un punto $O \in A^2\ o\ A^3$. Da questo momento in poi, ogni punto nel piano o nello spazio può essere considerato non solo individualmente, ma anche in relazione al punto fisso $O$.
@@ -61,9 +60,7 @@ Il caso $\lambda<0$ è analogo. $\Box$
 
 Vi è ancora un altro modo di considerare le operazioni appena introdotte. Fissiamo un vettore $\overrightarrow{OA}\in V_{O}^{2}$. Tramite la somma con $\overrightarrow{OA}$ possiamo definire un'applicazione$$\tau_{\overrightarrow{OA}}(B)=\Phi_{O}^{-1}(\overrightarrow{OA}+\Phi_{O}(B))$$$\tau_{\overrightarrow{OA}}$ non è altro che una traslazione: la somma di un vettore corrispondente a una traslazione del piano.
 Interpretiamo in modo analogo il prodotto per uno scalare. Fissato $\lambda\in\textsf{I\kern-0.1ex R}$, possiamo definire un'applicazione $\sigma_{\lambda}:A^2\rightarrow A^2$ associando al punto $A\in A^2$ il punto $B=\sigma_{\lambda}(A)\in A^2$ tale che $\overrightarrow{OB}=\lambda\overrightarrow{OA}$. In formule $$\sigma_{\lambda}(A)=\Phi_{O}^{-1}(\lambda\Phi_{O}(A))$$Questa volta $\sigma_{\lambda}$ è un omotetia (similitudine) di un centro $O$ e scala $|\lambda|$, seguita eventualmente da una simmetria rispetto a $O$ se $\lambda$ è negativo: il prodotto per un numero reale corrisponde a una omotetia del piano.
-
 # 2.2 Coordinate
-
 Prendiamo un singolo vettore $\overrightarrow{i}=\overrightarrow{OA_{1}}\in V_{O}^{2}$ e consideriamo la retta $r_1$ passante per  $O$ e $A_1$. 
 Tutti i vettori di questa retta sono della forma $t*\overrightarrow{i} = t*\overrightarrow{OA_{1}}$ per un appropriato $t\in \textsf{I\kern-0.1ex R}$ (multipli di $\overrightarrow{i}$). Fissando un'origine $O$ e un vettore unitario (  $\overrightarrow{i}$  ) a ogni punto $P$ della retta possiamo associare uno e un solo numero reale $t$ tale che $$\overrightarrow{OP}=t*\overrightarrow{i}$$il numero reale $t$ è la coordinata di $\overrightarrow{OP}$ rispetto a $\overrightarrow{i}$.
 Ci troviamo sul piano, quindi non tutti i vettori di $V_{O}^{2}$  stanno sulla retta $r$. 

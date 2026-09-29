@@ -36,9 +36,9 @@ $$p_Y(y)=\sum_{(x_1,x_2)\,:\,g(x_1,x_2)=y}p_{X_1,X_2}(x_1,x_2)$$
 Cioè si raggruppano le coppie che danno lo stesso valore di $Y$.
 ### Le serie che devi riconoscere a vista
 Quando il supporto è infinito, la somma diventa una serie, e Macci ne usa sempre le stesse due.
-**Serie esponenziale** — è quella della [[Distribuzioni uniforme discreta e di Poisson#Distribuzione di Poisson|Poisson]]:
+**Serie esponenziale** — è quella della [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]]:
 $$\sum_{h\ge0}\frac{\lambda^{h}}{h!}=e^{\lambda}$$
-**Serie geometrica** — dimostrata in [[Distribuzione geometrica#Formula della serie geometrica|serie geometrica]]:
+**Serie geometrica** — dimostrata in [[02 - Modelli discreti#Formula della serie geometrica|serie geometrica]]:
 $$\sum_{k\ge h}r^{k}=\frac{r^{h}}{1-r}\qquad(|r|<1)$$
 
 > [!info] Il trucco del cambio di indice
@@ -66,7 +66,7 @@ $$P(\{X_1=X_2\}\cap\{X_2=0\})=p_{X_1,X_2}(0,0)=q\frac{2^{0}}{0!}e^{-2}=qe^{-2}$$
 **Passo 4 — individuare le coppie del denominatore, $\{X_2=0\}$.** Qui basta la sola condizione $x_2=0$, senza vincoli su $x_1$: dal Passo 2 questa riga raccoglie $(0,0)$ dal ramo diagonale **più** tutte le $(h,0)$ con $h\ge1$ dal ramo di riga — due famiglie distinte, che si sommano:
 $$P(X_2=0)=\underbrace{p_{X_1,X_2}(0,0)}_{\text{ramo diagonale}}+\sum_{h\ge1}\underbrace{p_{X_1,X_2}(h,0)}_{\text{ramo di riga}}=qe^{-2}+(1-q)\sum_{h\ge1}\frac{3^{h-1}}{(h-1)!}e^{-3}$$
 
-**Passo 5 — riconoscere e risolvere la serie di [[Distribuzioni uniforme discreta e di Poisson#Distribuzione di Poisson|Poisson]].** Il fattore $e^{-3}$ non dipende dall'indice $h$ e si porta fuori dalla somma:
+**Passo 5 — riconoscere e risolvere la serie di [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]].** Il fattore $e^{-3}$ non dipende dall'indice $h$ e si porta fuori dalla somma:
 $$\sum_{h\ge1}\frac{3^{h-1}}{(h-1)!}e^{-3}=e^{-3}\sum_{h\ge1}\frac{3^{h-1}}{(h-1)!}$$
 La somma superstite ha la stessa forma della serie esponenziale della Poisson, ma non parte da $h=0$: la forma generale è
 $$\sum_{h\ge0}\frac{\lambda^{h}}{h!}=e^{\lambda}$$
@@ -139,7 +139,7 @@ Si riconosce la serie geometrica generale
 $$\sum_{j\ge h}r^{j}=\frac{r^{h}}{1-r}\qquad(|r|<1),$$
 che si legge "ragione elevata al primo indice della somma, diviso $1-r$". Qui la ragione è $r=1-q^2$ (che sta in $(0,1)$ perché $q\in(0,1)$) e il primo indice è $h=k$:
 $$P(X_1\ge k)=q^2\cdot\frac{(1-q^2)^{k}}{1-(1-q^2)}=q^2\cdot\frac{(1-q^2)^{k}}{q^2}=(1-q^2)^{k}.$$
-Stesso risultato che si otterrebbe applicando direttamente la [[Distribuzione geometrica#Formula per la "coda" di una v.a. geometrica (e per la traslata)|formula della coda]] della geometrica non traslata con $p=q^2$: una volta riconosciuta al Passo 5 la distribuzione della marginale, la coda è immediata.
+Stesso risultato che si otterrebbe applicando direttamente la [[02 - Modelli discreti#Formula per la "coda" di una v.a. geometrica (e per la traslata)|formula della coda]] della geometrica non traslata con $p=q^2$: una volta riconosciuta al Passo 5 la distribuzione della marginale, la coda è immediata.
 ### Esercizi svolti — varianti dagli appelli precedenti
 #### Densità che si fattorizza: variabili indipendenti — appello del 20 Febbraio 2025
 Densità congiunta:
@@ -148,9 +148,9 @@ $$p_{X_1,X_2}(x_1,x_2)=\frac{2^{x_1}}{x_1!}e^{-2}\cdot\frac{\binom{3}{x_2}\binom
 **Svolgimento**
 **Passo 1 — riconoscere che la densità si fattorizza.** Il criterio generale è: se la densità congiunta si scrive come **prodotto** di una funzione della sola $x_1$ per una funzione della sola $x_2$, su un supporto rettangolare (senza vincoli incrociati fra le due variabili),
 $$p_{X_1,X_2}(x_1,x_2)=f(x_1)\,g(x_2)\qquad\text{per }(x_1,x_2)\in S_1\times S_2,$$
-allora $X_1$ e $X_2$ sono [[Cap 2 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenti]]. Qui la densità è scritta esattamente in questa forma:
+allora $X_1$ e $X_2$ sono [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenti]]. Qui la densità è scritta esattamente in questa forma:
 $$p_{X_1,X_2}(x_1,x_2)=\underbrace{\frac{2^{x_1}}{x_1!}e^{-2}}_{f(x_1)}\cdot\underbrace{\frac{\binom{3}{x_2}\binom{3}{2-x_2}}{\binom{6}{2}}}_{g(x_2)}\qquad x_1\ge0,\ x_2\in\{0,1,2\},$$
-e il supporto è davvero un rettangolo: $x_1$ varia su tutti i naturali e $x_2$ su $\{0,1,2\}$, l'uno indipendentemente dall'altro — a differenza, per esempio, del supporto $x_2\ge x_1$ di un altro esercizio di questa sezione, dove le due variabili si vincolano a vicenda. Il fattore $f(x_1)$ è la densità **Poisson**$(2)$ nota da [[Distribuzioni uniforme discreta e di Poisson#Distribuzione di Poisson|Poisson]]; il fattore $g(x_2)$ è la densità **ipergeometrica** — [[Distribuzioni binomiale e ipergeometrica#Caso 2): distribuzione ipergeometrica|caso ipergeometrico]] — con i parametri di quella stessa nota: un'urna con $n_1=3$ oggetti di "tipo 1" e $n_2=3$ di "tipo 2", da cui si estraggono senza reinserimento $n=2$ oggetti, e $x_2$ conta i successi di tipo 1. Riconoscere l'indipendenza è ciò che rende gestibili D5 e D6: si può ragionare separatamente su $X_1$ e su $X_2$ invece che sempre sulla coppia.
+e il supporto è davvero un rettangolo: $x_1$ varia su tutti i naturali e $x_2$ su $\{0,1,2\}$, l'uno indipendentemente dall'altro — a differenza, per esempio, del supporto $x_2\ge x_1$ di un altro esercizio di questa sezione, dove le due variabili si vincolano a vicenda. Il fattore $f(x_1)$ è la densità **Poisson**$(2)$ nota da [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]]; il fattore $g(x_2)$ è la densità **ipergeometrica** — [[02 - Modelli discreti#Caso 2): distribuzione ipergeometrica|caso ipergeometrico]] — con i parametri di quella stessa nota: un'urna con $n_1=3$ oggetti di "tipo 1" e $n_2=3$ di "tipo 2", da cui si estraggono senza reinserimento $n=2$ oggetti, e $x_2$ conta i successi di tipo 1. Riconoscere l'indipendenza è ciò che rende gestibili D5 e D6: si può ragionare separatamente su $X_1$ e su $X_2$ invece che sempre sulla coppia.
 
 **Passo 2 — leggere le marginali direttamente dai fattori.** In generale la marginale di $X_1$ si ottiene sommando la densità congiunta su tutti gli $x_2$,
 $$p_{X_1}(x_1)=\sum_{x_2}p_{X_1,X_2}(x_1,x_2)=f(x_1)\sum_{x_2}g(x_2)=f(x_1)\cdot1=f(x_1),$$
@@ -244,6 +244,6 @@ Con una densità simbolica non c'è nessun conto numerico da fare: tutta la diff
 
 ### Collegamenti
 
-- Serie e distribuzioni: [[Distribuzione geometrica#Formula della serie geometrica|serie geometrica]], [[Distribuzioni uniforme discreta e di Poisson#Distribuzione di Poisson|Poisson]], [[Variabili aleatorie discrete]].
-- Teoria delle condizionate: [[Cap 2 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|Cap 2]], e [[Cap 2 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenza]] per il criterio di fattorizzazione.
+- Serie e distribuzioni: [[02 - Modelli discreti#Formula della serie geometrica|serie geometrica]], [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]], [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]].
+- Teoria delle condizionate: [[01 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|probabilità condizionate]], e [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenza]] per il criterio di fattorizzazione.
 - Slot vicini: [[Es1 - Probabilità discreta elementare|Es1]] fa la modellizzazione che qui è già data dalla traccia; [[Es2 - Probabilità condizionata]] usa le stesse condizionate su eventi anziché su variabili; [[Es4 - Trasformazione di variabile continua]] fa la stessa operazione di trasformazione, ma nel continuo.

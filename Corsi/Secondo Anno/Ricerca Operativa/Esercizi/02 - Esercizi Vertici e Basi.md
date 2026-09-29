@@ -1,12 +1,9 @@
 # Esercizi — Vertici e Basi
-
 > [!info] Come usare questo file
 > Ogni esercizio ha **Traccia** seguita immediatamente da **Svolgimento**. Per esercitarti a libro chiuso, copri lo Svolgimento con la mano mentre leggi la Traccia.
 
 ---
-
 # Esercizio 1 — Verifica vertice
-
 ## Traccia
 Dato il poliedro descritto da:
 
@@ -17,14 +14,10 @@ x_1, x_2, x_3 \geq 0
 \end{array}$$
 
 verificare se $x^{\prime} = [1,\ 1,\ 0]^T$ è un **vertice**.
-
 ## Svolgimento
-
 > [!info] Criterio per vertice (algebrico)
 > Un punto $x^{\prime}$ di un poliedro in $\mathbb{R}^n$ è un **vertice** se e solo se i vincoli **attivi** in $x^{\prime}$ contengono $n$ righe linearmente indipendenti. "Attivo" significa che il vincolo vale con il segno di **uguaglianza** in $x^{\prime}$.
-
 ### Passo 1 — Riscrivo tutti i vincoli in forma $\le$
-
 Per uniformare la lettura, riscrivo tutto come $Ax \le b$:
 
 $$\begin{array}{ll}
@@ -47,9 +40,7 @@ $$A = \begin{bmatrix}
 b = \begin{bmatrix}
 2 \\ -1 \\ 0 \\ 0 \\ 0
 \end{bmatrix}$$
-
 ### Passo 2 — Identifico i vincoli attivi in $x^{\prime} = [1, 1, 0]^T$
-
 Sostituisco e controllo se vale $a_i^T x^{\prime} = b_i$:
 
 | # | Vincolo | Calcolo | Risultato | Attivo? |
@@ -61,9 +52,7 @@ Sostituisco e controllo se vale $a_i^T x^{\prime} = b_i$:
 | 5 | $-x_3$ | $0$ | $= 0$ | ✓ |
 
 Vincoli attivi: $\{1, 2, 5\}$. Sono $3 = n$, il minimo necessario.
-
 ### Passo 3 — Verifica indipendenza lineare
-
 Estraggo dalla matrice $A$ le righe $1, 2, 5$:
 
 $$A_{\text{att}} = \begin{bmatrix}
@@ -87,9 +76,7 @@ $\det(A_{\text{att}}) = 11 \neq 0$ $\implies$ righe indipendenti.
 > Bisogna **sempre** riscrivere i vincoli $\ge$ come $\le$ e includere anche i vincoli di non-negatività $x_j \ge 0$ riscritti come $-x_j \le 0$.
 
 ---
-
 # Esercizio 2 — Verifica SBA in forma standard
-
 ## Traccia
 Dato il problema in **forma standard**
 
@@ -101,9 +88,7 @@ $$\begin{array}{rl}
 \end{array}$$
 
 verificare se $\bar x = (2,\,1,\,0,\,0)$ è una **Soluzione di Base Ammissibile**, e in tal caso dire se è degenere.
-
 ## Svolgimento
-
 > [!info] Criterio SBA (forma standard $Ax=b$, $x\ge 0$, $n$ var, $m$ vincoli)
 > 1. **Ammissibile**: $A\bar x = b$ e $\bar x \ge 0$.
 > 2. Ha (almeno) $n - m$ componenti **nulle**.
@@ -112,17 +97,14 @@ verificare se $\bar x = (2,\,1,\,0,\,0)$ è una **Soluzione di Base Ammissibile*
 > Se in base c'è almeno una variabile pari a $0$ $\implies$ SBA **degenere**.
 
 Qui $n=4$, $m=2$, quindi servono $n-m=2$ componenti nulle.
-
 ### Passo 1 — Ammissibilità
 Sostituisco $\bar x$ nei vincoli:
 
 $$2 + 2(1) + 0 = 4 \;\checkmark \qquad 2(2) + 1 + 0 = 5 \;\checkmark$$
 
 Tutte le componenti $\ge 0$. **Ammissibile.**
-
 ### Passo 2 — Conteggio componenti nulle
 $\bar x_3 = \bar x_4 = 0$. Sono esattamente $n-m = 2$ componenti nulle. ✓
-
 ### Passo 3 — Base e indipendenza lineare
 Le componenti in base sono $\{x_1, x_2\}$. Estraggo le colonne $A_1, A_2$ di
 $A = \begin{pmatrix} 1 & 2 & 1 & 0 \\ 2 & 1 & 0 & 1 \end{pmatrix}$:
@@ -130,7 +112,6 @@ $A = \begin{pmatrix} 1 & 2 & 1 & 0 \\ 2 & 1 & 0 & 1 \end{pmatrix}$:
 $$B = (A_1\ \, A_2) = \begin{pmatrix} 1 & 2 \\ 2 & 1 \end{pmatrix}, \qquad \det(B) = 1\cdot 1 - 2\cdot 2 = -3 \ne 0$$
 
 Colonne **linearmente indipendenti**. ✓
-
 ### Passo 4 — Degenerazione?
 $\bar x_1 = 2 > 0$, $\bar x_2 = 1 > 0$: **nessuna** variabile in base è nulla.
 
@@ -138,20 +119,15 @@ $\bar x_1 = 2 > 0$, $\bar x_2 = 1 > 0$: **nessuna** variabile in base è nulla.
 > $\bar x = (2,1,0,0)$ è **SBA non degenere** del problema dato.
 
 ---
-
 # Esercizio 3 — Esistenza vertice con condizioni sulle componenti
-
 ## Traccia
 Considerando lo **stesso problema** dell'Esercizio 2:
 
 (a) Esiste un vertice con $x_1 > 0$ e $x_2 > 0$?
 (b) Esiste un vertice con $x_2 > 0$ e $x_3 > 0$?
-
 ## Svolgimento
-
 > [!info] Tecnica generale
 > Chiedere "esiste vertice con $x_i, x_j > 0$?" significa **forzare $x_i$ e $x_j$ in base** e controllare se il sistema risultante ha soluzione ammissibile (segno $\ge 0$ su tutte le componenti).
-
 ### Domanda (a): $x_1 > 0, x_2 > 0$
 Metto $x_1, x_2$ in base $\implies x_3 = x_4 = 0$. Sistema $Ax = b$:
 
@@ -160,7 +136,6 @@ $$\begin{cases} x_1 + 2x_2 = 4 \\ 2x_1 + x_2 = 5 \end{cases}$$
 Dalla 1ª: $x_1 = 4 - 2x_2$. Sostituisco nella 2ª: $2(4-2x_2) + x_2 = 5 \implies 8 - 3x_2 = 5 \implies x_2 = 1$, $x_1 = 2$.
 
 Soluzione: $\bar x = (2,1,0,0)$. Tutte componenti $\ge 0$ → **SÌ**, è un vertice.
-
 ### Domanda (b): $x_2 > 0, x_3 > 0$
 Metto $x_2, x_3$ in base $\implies x_1 = x_4 = 0$. Sistema:
 

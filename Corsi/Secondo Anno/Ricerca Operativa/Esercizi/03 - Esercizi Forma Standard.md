@@ -1,5 +1,4 @@
 # Esercizi — Forma Standard
-
 > [!info] Come usare questo file
 > Ogni esercizio ha **Traccia** seguita immediatamente da **Svolgimento**. Per esercitarti a libro chiuso, copri lo Svolgimento con la mano mentre leggi la Traccia.
 
@@ -7,9 +6,7 @@
 > $\min\ c^T x$ s.t. $Ax = b$, $b \ge 0$, $x \ge 0$. Tutti i vincoli sono uguaglianze, tutti i termini noti non-negativi, tutte le variabili non-negative, F.O. di minimizzazione.
 
 ---
-
 # Esercizio 1
-
 ## Traccia
 Portare in **forma standard** il seguente problema di Programmazione Lineare:
 
@@ -21,9 +18,7 @@ $$\begin{array}{rl}
  & x_1 \leq 0 \\
  & x_2 \geq 0
 \end{array}$$
-
 ## Svolgimento
-
 **Sostituzioni di variabile:**
 - $x_3$ è libera di segno (non dichiarata) $\implies$ pongo $x_3 = x_3^+ - x_3^-$ con $x_3^+, x_3^- \ge 0$.
 - $x_1 \le 0$ ma serve $\ge 0$ $\implies$ pongo $\hat{x}_1 = -x_1$ (cioè $x_1 = -\hat{x}_1$), con $\hat{x}_1 \ge 0$.
@@ -67,9 +62,7 @@ $$\begin{array}{rl}
 > - Confondere slack ($\le$, si **aggiunge** $+s$) e surplus ($\ge$, si **sottrae** $-s$).
 
 ---
-
 # Esercizio 2
-
 ## Traccia
 Portare in **forma standard** il seguente problema:
 
@@ -81,9 +74,7 @@ $$\begin{array}{rl}
  & x_2 + x_3 + 50x_4 \leq 3 \\
  & x_1, x_2, x_3 \geq 0
 \end{array}$$
-
 ## Svolgimento
-
 $x_4$ libera di segno: pongo $x_4 = x_4^+ - x_4^-$ con $x_4^+, x_4^- \ge 0$.
 
 **1° vincolo** ($\ge$, surplus):

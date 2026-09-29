@@ -87,7 +87,6 @@ $$\begin{array}{rl}
 dove $I$ = beni producibili, $J$ = risorse disponibili, $P_i$ = profitto unitario, $Q_j$ = disponibilità della risorsa $j$, $A_{ij}$ = quantità di risorsa $j$ usata per un'unità di bene $i$.
 
 Esempi: problema del coltivatore, assemblaggio di telecomandi.
-
 ### Schema 2 — Copertura a costo minimo (minimizzazione del costo)
 Decidere quanto acquistare di ogni risorsa per soddisfare le richieste:
 
@@ -153,16 +152,12 @@ Sia $y_1, y_2 \in \{0, 1\}$. Le relazioni logiche più comuni si esprimono così
 | Entrambi (AND) | $y_1 + y_2 = 2$ (oppure $y_1 = 1$, $y_2 = 1$) |
 | $x_1 > 0 \implies y_1 = 1$ (attivazione necessaria) | $x_1 \le M y_1$ (attivazione standard) |
 | $y_1 = 1$ implica $x_1 \ge L$ (soglia minima) | $x_1 \ge L \cdot y_1$ |
-
 ### 1.7.3 Errori frequenti con le variabili logiche
-
 > [!warning] Le tre trappole sui vincoli logici
 > 1. **Prodotto di variabili.** Scrivere $x_i \cdot y_i$ in F.O. è non lineare. Sostituire $x_i \cdot y_i$ con un **vincolo di attivazione** $x_i \le M y_i$ — così $y_i$ entra solo *moltiplicata per costanti*.
 > 2. **"Attivazione" della binaria.** Definire $y_i = 1 \text{ se } x_i > 0$ a parole **non basta**: serve un vincolo lineare ($x_i \le M y_i$) che leghi $x_i$ e $y_i$. Senza vincolo di attivazione, il modello può "barare" mettendo $y_i = 0$ anche con $x_i > 0$.
 > 3. **Valori spuri.** Il vincolo $x_i \le M y_i$ non esclude la situazione "$y_i = 1$ con $x_i = 0$": ma essendo una situazione *peggiorativa* (paga il costo fisso $F_i$ senza produrre), il modello la scarterà da solo all'ottimo. Va bene così a meno che il problema richieda *esattamente* qualcosa, nel qual caso serve un vincolo aggiuntivo $x_i \ge 1 \cdot y_i$ (per variabili intere) o equivalente.
-
 ### 1.7.4 Scelta di $M$ — non esagerare
-
 $M$ deve essere "sufficientemente grande" per non tagliare soluzioni ammissibili, ma **non troppo grande**: valori enormi rendono il rilassamento lineare debole e rallentano il Branch & Bound.
 
 **Regola pratica:** prendere $M$ = capacità massima conosciuta della variabile (es. $U_i$ se è il tetto produttivo). Se non c'è un tetto naturale, dedurlo dagli altri vincoli (es. dalla disponibilità totale di risorse).
@@ -171,9 +166,7 @@ $M$ deve essere "sufficientemente grande" per non tagliare soluzioni ammissibili
 > Localizzazione di ipermercati con dimensione massima $U_i$ e minima $L_i$ se aperti:
 > $$\begin{array}{ll} x_i \le U_i \cdot y_i & \text{(massimo se aperto, 0 se chiuso)} \\ x_i \ge L_i \cdot y_i & \text{(minimo se aperto, 0 se chiuso)} \end{array}$$
 > Se $y_i = 0$: $0 \le x_i \le 0 \implies x_i = 0$. Se $y_i = 1$: $L_i \le x_i \le U_i$.
-
 ## 1.8 Checklist per costruire un modello
-
 Quando affronti un esercizio di modellazione, segui sempre questi passi nell'ordine:
 
 1. **Leggi due volte** il testo e sottolinea: cosa si decide, cosa si massimizza/minimizza, quali sono i limiti.

@@ -1,5 +1,4 @@
 # Esercizi — Modellazione Matematica
-
 > [!info] Come usare questo file
 > Ogni esercizio è composto da **Traccia** seguita immediatamente da **Svolgimento**. Per esercitarti a libro chiuso, copri lo Svolgimento con la mano (o un foglio) mentre leggi la Traccia.
 
@@ -11,9 +10,7 @@
 > La fonte specifica è indicata in calce a ogni traccia.
 
 ---
-
 # Esercizio 1 — Gioco di assemblaggio
-
 ## Traccia
 Per l'assemblaggio di telecomandi, si hanno a disposizione **10 moduli display, 18 moduli di logica di controllo, 12 trasmettitori, 21 tastierini, 9 moduli di navigazione e 10 led**. I telecomandi sono di due tipi:
 
@@ -23,7 +20,6 @@ Per l'assemblaggio di telecomandi, si hanno a disposizione **10 moduli display, 
 Considerando che il tipo A permette un guadagno netto di 3 euro e il tipo B di 8 euro, determinare la produzione che **massimizza il guadagno**.
 
 *Fonte: De Giovanni-Brentegani §3.1.*
-
 ## Svolgimento
 **Variabili decisionali:**
 - $x_A$: quantità di telecomandi di tipo A da produrre;
@@ -46,9 +42,7 @@ $$\begin{array}{rl}
 > *Variabili* = "quanto produrre di ogni prodotto". *Vincoli* = "per ogni risorsa, consumo ≤ disponibilità". *F.O.* = profitto totale.
 
 ---
-
 # Esercizio 2 — Dieta economica
-
 ## Traccia
 Un dietologo deve preparare una dieta che garantisca un apporto giornaliero di proteine, ferro e calcio di almeno **20 mg, 30 mg e 10 mg** rispettivamente.
 
@@ -57,7 +51,6 @@ Il dietologo è orientato su cibi a base di **verdura** (5 mg/kg di proteine, 6 
 Determinare la dieta di **costo minimo**.
 
 *Fonte: De Giovanni-Brentegani §3.2.*
-
 ## Svolgimento
 **Variabili decisionali:**
 - $x_1$: kg di cibi a base di verdura nella dieta;
@@ -78,9 +71,7 @@ $$\begin{array}{rl}
 > *Variabili* = "quanto comprare di ogni alimento". *Vincoli* = "per ogni nutriente, valore $\ge$ richiesto". *F.O.* = costo totale.
 
 ---
-
 # Esercizio 3 — Indagine di mercato
-
 ## Traccia
 Un'azienda pubblicitaria deve svolgere un'indagine di mercato per lanciare un nuovo prodotto. Si deve contattare telefonicamente un campione significativo di persone: **almeno 150 donne sposate, 110 donne non sposate, 120 uomini sposati, 100 uomini non sposati**.
 
@@ -97,7 +88,6 @@ Le telefonate possono essere effettuate al mattino (al costo operativo di **1.1 
 Le telefonate serali sono più costose ma più efficaci (solo il 5% va a vuoto). Minimizzare il costo complessivo delle telefonate da effettuare in modo da raggiungere un campione significativo.
 
 *Fonte: De Giovanni-Brentegani §3.3.*
-
 ## Svolgimento
 **Variabili decisionali:**
 - $x_1$: numero di telefonate da fare al mattino;
@@ -118,9 +108,7 @@ $$\begin{array}{rl}
 > Quando il "rendimento" della variabile è una percentuale (es. il 30% di chi chiamo è una donna sposata), la percentuale entra come **coefficiente del vincolo**. Il vincolo dice: "il valore atteso di donne sposate raggiunte deve superare la soglia".
 
 ---
-
 # Esercizio 4 — Trasporto di frigoriferi
-
 ## Traccia
 Una ditta di elettrodomestici produce frigoriferi in **tre stabilimenti** ($A, B, C$) e li smista in **quattro magazzini** intermedi di vendita ($1, 2, 3, 4$).
 
@@ -134,7 +122,6 @@ Una ditta di elettrodomestici produce frigoriferi in **tre stabilimenti** ($A, B
 Determinare il piano di trasporti di **costo minimo**.
 
 *Fonte: De Giovanni-Brentegani §3.4.*
-
 ## Svolgimento
 **Insiemi.**
 - $I = \{A, B, C\}$: stabilimenti;
@@ -165,9 +152,7 @@ $$\begin{array}{rl}
 > Conta: **variabili** = $|I|\cdot|J|=3\cdot 4=12$. **Vincoli** = $|I|+|J|=3+4=7$.
 
 ---
-
 # Esercizio 5 — Turni in ospedale
-
 ## Traccia
 Si vogliono organizzare i turni degli infermieri in ospedale. Ogni infermiere lavora **5 giorni consecutivi**, indipendentemente da come sono collocati all'interno della settimana, e poi ha diritto a **due giorni consecutivi di riposo**.
 
@@ -177,7 +162,6 @@ Le esigenze di servizio per i vari giorni della settimana richiedono la presenza
 Organizzare il servizio in modo da minimizzare il **numero totale di infermieri** da impegnare.
 
 *Fonte: De Giovanni-Brentegani §3.5.*
-
 ## Svolgimento
 **Variabili decisionali** (una per giorno di inizio turno):
 - $lun$: numero di infermieri il cui turno inizia il lunedì;
@@ -204,9 +188,7 @@ $$\begin{array}{rl}
 \end{array}$$
 
 ---
-
 # Esercizio 6 — Pianificazione multiperiodo
-
 ## Traccia
 Un'azienda deve pianificare la produzione per le prossime **5 settimane** in modo da evadere senza stockout i seguenti quantitativi di domanda:
 $$d_t = \{30, 60, 40, 70, 50\}$$
@@ -219,7 +201,6 @@ Le scorte al periodo iniziale sono $0$. La capacità massima del magazzino è **
 Formulare il problema di pianificazione multiperiodo che minimizza la somma dei costi totali.
 
 *Fonte: Caramia-Stecca §1.4.*
-
 ## Svolgimento
 **Variabili decisionali:**
 - $x_t \ge 0$: unità prodotte nel periodo $t$;
@@ -250,9 +231,7 @@ $$I_t \le 30 \quad \forall t = 1,\dots,5$$
 > Due famiglie di variabili indicizzate sul tempo: una di "azione" ($x_t$) e una di "stato" ($I_t$). L'**equazione di bilancio** $I_t = I_{t-1} + x_t - d_t$ è obbligatoria: lega ogni periodo al successivo.
 
 ---
-
 # Esercizio 7 — Schedulazione just-in-time
-
 ## Traccia
 Un server computazionale deve pianificare l'esecuzione di **5 batch** su una macchina mono-processore. I batch durano rispettivamente $5, 7, 4, 7, 10$ minuti. La sequenza di esecuzione $1{-}2{-}3{-}4{-}5$ è data e non ci può essere sovrapposizione temporale tra i batch.
 
@@ -268,7 +247,6 @@ La consegna dei batch elaborati deve essere il **più puntuale possibile**: si p
 Organizzare i tempi di esecuzione (al minuto) per minimizzare la penale totale.
 
 *Fonte: De Giovanni-Brentegani §5.11.*
-
 ## Svolgimento
 > [!info] Trasformare il tempo in minuti
 > L'ora non è facilmente trattabile con somme e prodotti. Si traduce tutto in **"minuti dopo le 10:00"**: le 10:32 diventano $32$, le 10:38 diventano $38$, e così via.
@@ -300,9 +278,7 @@ $$\begin{array}{rl}
 > Ogni termine $|e|$ in F.O. di **minimizzazione** con segno $+$ si sostituisce con una variabile $y \ge 0$ in F.O. e si aggiungono **due vincoli**: $y \ge e$ e $y \ge -e$.
 
 ---
-
 # Esercizio 8 — Localizzazione con costi fissi (Big-M)
-
 ## Traccia
 Una catena della Grande Distribuzione Organizzata (GDO) dispone di un budget $W$ per l'apertura di nuovi ipermercati in Italia. Gli studi preliminari hanno individuato un insieme $I$ di possibili localizzazioni.
 
@@ -315,7 +291,6 @@ Una volta aperto e a regime, l'ipermercato in $i$ produrrà entrate per $R_i$ og
 Determinare l'insieme di localizzazioni in cui aprire gli ipermercati e dimensionare gli ipermercati stessi in modo da **massimizzare i ricavi complessivi**, rispettando il budget.
 
 *Fonte: De Giovanni-Brentegani §6.12.*
-
 ## Svolgimento
 **Insiemi.** $I$: possibili localizzazioni.
 

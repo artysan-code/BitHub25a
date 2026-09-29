@@ -5,14 +5,10 @@ tags:
   - dualità
 slide: "Lezioni_Teoria_Dualita.pdf"
 ---
-
 # 4. Teoria della Dualità e Scarti Complementari
-
 > [!info] Cosa impariamo qui
 > Ad ogni problema di PL ne è associato un altro, detto **duale**. Risolvere uno equivale a risolvere l'altro: gli ottimi sono lo stesso numero. Soprattutto: il duale fornisce uno strumento elegante per **certificare l'ottimalità** di una soluzione senza ri-eseguire il Simplesso, attraverso le **Condizioni di Ortogonalità** (alias Scarti Complementari).
-
 ## 4.1 Motivazione: stimare $z^*$ senza risolvere
-
 Sia $(P)$ un PL di minimo in forma standard:
 $$\min\ z = c^T x \quad \text{s.t.} \quad Ax = b,\ x \ge 0$$
 
@@ -21,9 +17,7 @@ Vogliamo stimare $z^*$ senza risolverlo davvero.
 **Stima per eccesso** (semplice): basta valutare $\bar{z} = c^T \bar{x}$ su una qualsiasi soluzione ammissibile $\bar{x}$: $z^* \le \bar{z}$.
 
 **Stima per difetto** (complicato): occorre dimostrare che *nessuna* soluzione ammissibile ha valore inferiore. Per questo serve il duale.
-
 ## 4.2 Costruzione del Duale (caso forma standard)
-
 > [!quote] Teorema 7.1 (Dualità Debole) — forma standard
 > Dato $(P) = \min\{c^T x : Ax = b, x \ge 0\}$, **ogni** soluzione ammissibile $\bar{x}$ di $(P)$ soddisfa:
 > $$c^T \bar{x} \ge b^T \bar{y}$$
@@ -37,9 +31,7 @@ $$c^T \bar{x} \ge (\bar{y}^T A) \bar{x} = \bar{y}^T (A \bar{x}) = \bar{y}^T b = 
 
 > [!info] Significato pratico
 > Una qualsiasi soluzione ammissibile del duale dà una **limitazione inferiore** ($b^T \bar{y}$) per il valore ottimo del primale. Una qualsiasi soluzione ammissibile del primale dà una **limitazione superiore** ($c^T \bar{x}$). Quando coincidono, sono entrambe ottime (vedi §4.4).
-
 ## 4.3 Regole di Tucker — Costruire il Duale di un PL qualsiasi
-
 Spesso il primale non è in forma standard. Si applicano le **regole di Tucker** (derivabili passando per la forma standard, ma è più rapido memorizzarle a tabella).
 
 **Caso PRIMALE di MIN:**
@@ -67,9 +59,7 @@ Spesso il primale non è in forma standard. Si applicano le **regole di Tucker**
 > $$\begin{array}{rl} \min & 5x_1 + 2x_2 - 3x_3 + 4x_4 \\ \text{s.t.} & x_1 + 2x_2 - 3x_3 - 6x_4 = 16 \\ & x_1 - x_2 + 4x_3 + 12x_4 = 18 \\ & x_{1,2,3,4} \ge 0 \end{array}$$
 > Duale (vincoli $=$ → $y_i$ libere; $x_j \ge 0$ → vincoli $\le c_j$):
 > $$\begin{array}{rl} \max & 16 y_1 + 18 y_2 \\ \text{s.t.} & y_1 + y_2 \le 5 \\ & 2y_1 - y_2 \le 2 \\ & -3 y_1 + 4 y_2 \le -3 \\ & -6 y_1 + 12 y_2 \le 4 \\ & y_1, y_2 \text{ libere} \end{array}$$
-
 ## 4.4 Dualità Forte e i quattro casi
-
 > [!quote] Teorema 7.4 (Dualità Forte)
 > $\bar{x}$ ammissibile per $(P)$ è **ottima** se e solo se esiste $\bar{y}$ ammissibile per $(D)$ tale che $c^T \bar{x} = b^T \bar{y}$. In tal caso, $\bar{y}$ è ottima per $(D)$ e $z^* = \omega^*$.
 
@@ -92,13 +82,9 @@ In altre parole: se primale e duale ammettono entrambi ottimo finito, i due valo
 >          illimitato   ✗        ✗          ✓
 >          inammissibile ✗       ✓          ✓
 > ```
-
 ## 4.5 Condizioni di Ortogonalità (Scarti Complementari)
-
 Il vero strumento operativo nei compiti d'esame.
-
 ### 4.5.1 Enunciato (caso forma standard, primale di MIN)
-
 > [!quote] Teorema 7.6 — Condizioni di Ortogonalità
 > Sia $\bar{x}$ ammissibile per $(P) = \min\{c^T x : Ax = b, x \ge 0\}$ e $\bar{y}$ ammissibile per $(D) = \max\{b^T y : A^T y \le c\}$.
 > $\bar{x}, \bar{y}$ sono **ottime per i rispettivi problemi** se e solo se:
@@ -107,9 +93,7 @@ Il vero strumento operativo nei compiti d'esame.
 In altre parole, per ogni variabile $\bar{x}_j$:
 - **o** $\bar{x}_j = 0$, **o** il corrispondente $j$-esimo vincolo duale è soddisfatto ad **uguaglianza**.
 Almeno una delle due condizioni vale (entrambe ammesse).
-
 ### 4.5.2 Forma "simmetrica" (più pratica negli esercizi)
-
 Per un primale di $\min$ con vincoli $\ge$ (forma simmetrica, non standard):
 $$\min\ c^T x \quad \text{s.t.} \quad Ax \ge b,\ x \ge 0$$
 con duale
@@ -119,9 +103,7 @@ $$\max\ b^T y \quad \text{s.t.} \quad A^T y \le c,\ y \ge 0$$
 > $\bar{x}, \bar{y}$ ottime se e solo se valgono entrambe:
 > 1. $(c_j - \sum_i a_{ij} \bar{y}_i) \cdot \bar{x}_j = 0 \quad \forall j$ — "scarto sul vincolo duale $\times$ variabile primale = 0"
 > 2. $\bar{y}_i \cdot (\sum_j a_{ij} \bar{x}_j - b_i) = 0 \quad \forall i$ — "variabile duale $\times$ scarto sul vincolo primale = 0"
-
 ### 4.5.3 Lettura operativa delle CSC
-
 | Situazione su $\bar{x}_j$, vincolo duale | Conseguenza |
 | :--- | :--- |
 | $\bar{x}_j > 0$ | Il $j$-esimo vincolo duale è **saturo** ($=$) |
@@ -134,11 +116,8 @@ $$\max\ b^T y \quad \text{s.t.} \quad A^T y \le c,\ y \ge 0$$
 
 > [!info] Intuizione economica
 > Pensa al primale come "uso risorse per produrre" e al duale come "prezzo ombra delle risorse". Se al vincolo $i$ avanza risorsa (slack $>0$), il suo prezzo è $0$ ($\bar{y}_i = 0$). Se una variabile primale è in produzione ($\bar{x}_j > 0$), il suo "costo aggregato" pareggia esattamente il margine ($j$-esimo vincolo duale saturo).
-
 ## 4.6 Uso pratico nei problemi d'esame
-
 ### 4.6.1 Verificare l'ottimalità di una $\bar{x}$ data
-
 **Schema operativo:**
 1. **Ammissibilità primale**: sostituisci $\bar{x}$ nei vincoli di $(P)$, controlla che siano rispettati.
 2. **Costruisci il duale** $(D)$ con la tabella di Tucker.
@@ -152,20 +131,14 @@ $$\max\ b^T y \quad \text{s.t.} \quad A^T y \le c,\ y \ge 0$$
 
 > [!example] Esempio applicativo
 > Vedi [[05 - Esercizi Dualità e Scarti Complementari|Esempio 4 degli Esercizi]] dove si verifica $\bar{x} = (12, 9)$ per il problema dei profumi e si ricava $\bar{y} = (60, 40, 0)$ con $z^* = w^* = 2460$.
-
 ### 4.6.2 Trovare l'ottimo del duale conoscendo quello del primale (e viceversa)
-
 Se $x^*$ è nota e non degenere, si usa il sistema $A_B^T y = c_B$ (dove $B$ è l'insieme degli indici delle variabili in base all'ottimo): è un sistema $m \times m$ con $A_B$ invertibile, quindi $y^* = (A_B^T)^{-1} c_B$, ovvero $y^{*T} = c_B^T A_B^{-1}$.
 
 **Equivalentemente** con le CSC: imponi all'uguaglianza i vincoli duali corrispondenti alle $x_j^* > 0$ e ricavi le $y_i^*$.
-
 ### 4.6.3 Soluzione "complementare" e degenerazione
-
 > [!warning] Soluzione duale unica solo se primale non degenere
 > Se la SBA ottima primale è **degenere**, esistono *più* soluzioni duali ammissibili che soddisfano le CSC: il duale ha allora *infinite* soluzioni ottime (e viceversa). Si parametrizza con $y_1 = k$ e si trova l'intervallo di $k$ ammissibile.
-
 ## 4.7 Riepilogo strategico
-
 Quando in un esercizio compare la dualità, riconosci il tipo di richiesta:
 
 | Richiesta | Strumento |

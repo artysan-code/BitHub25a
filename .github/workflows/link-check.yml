@@ -16,7 +16,7 @@ jobs:
   lychee:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Run lychee on all markdown files
         uses: lycheeverse/lychee-action@v2
@@ -28,6 +28,7 @@ jobs:
             --exclude-path .obsidian
             --exclude-path .github
             --exclude '^file://'
+            --exclude '^https://www\.npmjs\.com'
             --exclude '^[^:]+\.(png|jpg|jpeg|gif|svg|pdf)(\|.*)?$'
             './**/*.md'
           fail: true

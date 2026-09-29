@@ -1,11 +1,8 @@
 > [!info] Stato — Fase 1 (assegnazione)
 > Alla docente (Paola Vocca — `paola.vocca@uniroma2.it`) viene inviata **via email una versione ridotta** della proposta: solo dominio applicativo e funzionalità principali. Questo documento resta la visione completa del gruppo. Ciò che è stato effettivamente presentato — e che quindi va mantenuto anche se cambiamo idea nelle fasi successive — è fissato in fondo, in [[#Nucleo vincolante e margine di manovra]]. Una volta approvato si procede con la Fase 2 (progettazione concettuale).
 ## Componenti del gruppo
-
-| Nome e cognome     | Matricola | E-mail                                  |
-| ------------------ | --------- | --------------------------------------- |
-| Samuel Tagliacozzo | 0349831   | samuel.tagliacozzo@students.uniroma2.eu |
-| Marius Craciun     | 0334807   | marius.craciun@students.uniroma2.eu     |
+- Samuel Tagliacozzo
+- Marius Craciun
 ## Idea del progetto
 > [!info] Nome di lavoro
 > **QuartiereExpress** — piattaforma di consegna a domicilio per i negozi di quartiere (nome provvisorio).

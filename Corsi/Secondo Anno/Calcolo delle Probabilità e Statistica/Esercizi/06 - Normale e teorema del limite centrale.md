@@ -12,7 +12,6 @@ E il **TLC** (caso 2 qui sotto): la somma di **tante** variabili i.i.d. — qual
 
 > [!info] Come riconoscere il caso 2 a colpo d'occhio
 > Compaiono $X_1+\cdots+X_n$ con $n$ grande ($100$, $900$, $10^6$), oppure un $\lim_{n\to\infty}$. La parola chiave nella traccia è **«con l'approssimazione Normale»** o **«i.i.d.»**.
-
 ### Le formule
 La traccia apre **sempre** definendo $\Phi(y)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{y}e^{-x^{2}/2}dx$, la funzione di distribuzione della Normale standard.
 **Standardizzazione** — se $X$ ha media $\mu$ e varianza $\sigma^2$:
@@ -30,7 +29,6 @@ $$aX_1+bX_2\sim N\big(a\mu_1+b\mu_2,\ a^2\sigma_1^2+b^2\sigma_2^2\big)$$
 > La traccia dà sempre la **varianza**, mai la deviazione standard: «varianza 9» significa $\sigma=3$, «varianza 100» significa $\sigma=10$. Macci apre le sue soluzioni esattamente così — *«Osservando che $\sigma=\sqrt{100}=10$…»* — perché è lì che si sbaglia.
 >
 > E al denominatore del TLC va $\sigma\sqrt{n}$, **non** $\sigma^2\sqrt{n}$ né $\sigma n$.
-
 ### Il procedimento passo per passo
 1. **Identificare $\mu$ e $\sigma$** della singola variabile. Se la traccia dà una distribuzione invece dei momenti (esponenziale, Poisson, Bernoulli), media e varianza vanno ricavate da quella.
 2. **Scrivere media e deviazione standard della somma**: $n\mu$ e $\sigma\sqrt{n}$.
@@ -104,7 +102,6 @@ $$P(700<X_1+\cdots+X_{900}<800)\approx\Phi\!\left(\frac{2}{3}\right)-\Phi\!\left
 
 > [!warning] Attenzione all'ordine dopo il ribaltamento
 > Passando agli argomenti positivi i due termini si **scambiano**: si parte da $\Phi(-1/3)-\Phi(-2/3)$ e si arriva a $\Phi(2/3)-\Phi(1/3)$. Il risultato deve restare positivo, essendo una probabilità: è il controllo immediato per sapere se hai sbagliato il verso.
-
 #### Coda destra con media nulla — appello del 19 Giugno 2026
 Siano $X_1,\dots,X_{10^6}$ i.i.d. con media 0 e varianza 9. Calcolare $P(X_1+\cdots+X_{10^6}>10^3)$.
 **Svolgimento**
@@ -199,7 +196,6 @@ il che verifica esattamente quanto richiesto dalla traccia.
 > - **Normale**$(\mu,\sigma^2)$: già dati
 >
 > Per le discrete — Bernoulli, binomiale, Poisson, geometrica — la tabella è in [[01 - Probabilità discreta elementare|Es1]].
-
 #### Equazione con condizionata su una Normale — appello del 3 Febbraio 2025
 Sia $X$ Normale con media 2 e varianza $\sigma^2$. Trovare, se esiste, $y>2$ tale che $P(X<2\,|\,0<X<y)=\frac{1}{2}$.
 **Svolgimento**
@@ -253,7 +249,6 @@ Il valore trovato soddisfa il vincolo $y>2$ richiesto dalla traccia, quindi la s
 > Il risultato si vede anche senza conti: la Normale è **simmetrica** attorno alla media, che qui è 2, quindi la condizionata vale $\frac{1}{2}$ esattamente quando l'intervallo $(0,y)$ è centrato in 2 — cioè $\frac{0+y}{2}=2$, da cui $y=4$. Coerente col fatto che $\sigma$ sparisce dal risultato.
 >
 > Sull'elaborato conviene comunque scrivere il passaggio algebrico: l'argomento di simmetria è ottimo per verificare, meno per convincere chi corregge.
-
 ### Collegamenti
 - $\Phi$ è la funzione di distribuzione della Normale standard: stessa nozione di [[04 - Trasformazione di variabile continua|Es4]], ma tabulata una volta per tutte.
 - Media e varianza in ingresso: [[05 - Speranza di variabile continua]] per le continue, [[01 - Probabilità discreta elementare]] per le discrete.

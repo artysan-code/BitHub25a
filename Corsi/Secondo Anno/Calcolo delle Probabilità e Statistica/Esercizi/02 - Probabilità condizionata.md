@@ -10,7 +10,6 @@ Tutto Es2 si riduce a capire **in che verso** va la domanda:
 
 > [!info] Bayes contiene le probabilità totali
 > Il denominatore di Bayes **è** la formula delle probabilità totali. Quindi non sono due esercizi diversi: in Bayes fai lo stesso conto del caso 1 e poi lo metti sotto una frazione. Se sai fare il primo, il secondo è un passo in più.
-
 ### Le formule
 Sia $\{H_1,\dots,H_n\}$ una **partizione** dello spazio (gli scenari possibili: le urne, le monete) e sia $E$ l'evento osservato.
 Formula delle probabilità totali — vedi [[01 - Introduzione alla probabilità#Formula delle Probabilità Totali|prob. totali]]:
@@ -22,7 +21,6 @@ $$P(H_j|E)=\frac{P(E|H_j)P(H_j)}{\sum_{k=1}^{n}P(E|H_k)P(H_k)}$$
 > Gli $H_k$ devono essere **disgiunti** e la loro unione deve coprire tutto: ogni esito possibile deve stare in uno e uno solo scenario. È il motivo per cui negli esercizi le urne si scelgono "a caso" fra quelle elencate, e non ci sono altre possibilità.
 >
 > Se la traccia raggruppa gli esiti in modo strano — «se esce 1 o 2 …, se esce 3, 4, 5 o 6 …» — la partizione è quella, con $P(H_1)=\frac{2}{6}$ e $P(H_2)=\frac{4}{6}$: non serve tenere sei scenari separati.
-
 ### Il metodo operativo, sempre uguale
 1. **Dare un nome agli scenari** e all'evento osservato. Macci scrive *«con notazioni ovvie»* e usa $U_1,U_2$ per le urne, $M_1,M_2$ per le monete, $E$ o $T$ o $V$ per l'evento. Fare lo stesso è già metà del lavoro.
 2. **Scrivere le probabilità a priori** $P(H_k)$: quasi sempre uniformi, $\frac{1}{2}$ con due urne, $\frac{1}{3}$ con tre.
@@ -68,7 +66,6 @@ I fattori $\frac{1}{3}$ e i denominatori $6$ si semplificano tutti: resta il rap
 > $P(U_2|B)=\frac{1}{3}=P(U_2)$: sapere che è uscita una bianca **non cambia** la probabilità di aver scelto la seconda urna, quindi $U_2$ e $B$ sono [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenti]].
 >
 > Non è un caso: la seconda urna è quella "media", con la stessa proporzione di bianche della media delle tre. Se un risultato di Bayes ti restituisce esattamente la probabilità a priori, non è un errore — è indipendenza, e vale la pena scriverlo.
-
 #### Monete truccate — appello del 19 Giugno 2026
 Si lancia un dado equo. Se esce 1 si lancia una moneta con due teste, se esce 2 una moneta con due croci, se esce 3, 4, 5 o 6 una moneta equa. Calcolare la probabilità che esca testa.
 **Svolgimento**
@@ -103,7 +100,6 @@ $$P(D|T)=\frac{P(T|D)P(D)}{P(T|D)P(D)+P(T|D^c)P(D^c)}=\frac{\frac{1}{4}\cdot\fra
 
 > [!warning] Trappola dell'evento che cambia forma
 > Osservare "tutte teste" con due monete è **più difficile** che con una ($\frac{1}{4}$ contro $\frac{1}{2}$), quindi l'osservazione sposta la credenza verso lo scenario a una moneta. Il risultato $\frac{1}{2}$ è il pareggio esatto fra il vantaggio a priori dei due lanci ($\frac{4}{6}$) e il loro svantaggio a posteriori.
-
 #### Due fasi con i dadi — appello del 20 Febbraio 2025
 Si lancia un dado: se esce 1 o 2 si lanciano due dadi e si vince se la somma è 7; se esce 3, 4, 5 o 6 si lanciano due dadi e si vince se entrambi i numeri sono minori di 4. Calcolare la probabilità di vincere.
 **Svolgimento**
@@ -139,7 +135,6 @@ che è esattamente il risultato che la traccia chiedeva di verificare.
 
 > [!info] «Verificare che» non è «calcolare»
 > Quando la traccia fornisce già il risultato, il punto non è arrivarci ma **mostrare i passaggi**. Il risultato è dato apposta: serve a controllare di non aver sbagliato strada, non a saltare il lavoro. Scrivere solo l'ultima uguaglianza non vale nulla.
-
 ### Trappole ricorrenti
 - **Verso della condizionata**: $P(E|H)$ e $P(H|E)$ sono numeri diversi. Se la traccia contiene la parola **«sapendo»** o **«dato che»**, quello che segue è la condizione, cioè ciò che sta **dopo** la barra.
 - **Le condizionate si leggono dentro lo scenario**: $P(B|U_2)$ si calcola guardando *solo* la seconda urna, come se le altre non esistessero. È l'errore più comune: mescolare le palline di urne diverse in un unico conteggio.

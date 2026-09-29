@@ -212,7 +212,6 @@ $$P(B_1\cap N_2\cap B_3)=\frac{4}{8}\cdot\frac{4}{7}\cdot\frac{3}{6}=\frac{1}{7}
 - Partizione: gli scenari devono essere disgiunti e coprire tutto; controllo $\sum_k P(H_k)=1$.
 - Pesi non uniformi: se il dado seleziona lo scenario, i pesi sono $\tfrac26,\tfrac46$, non $\tfrac12,\tfrac12$.
 - Risultati «troppo puliti» ($\tfrac12$, oppure $P(H|E)=P(H)$): di solito corretti, segnalano simmetria o indipendenza.
-
 ### Es3 — Densità congiunta discreta
 La traccia regala la densità congiunta $p_{X_1,X_2}$ di due variabili discrete e chiede di ricavarne qualcosa. Tutto si riduce a **sommare la densità sulle coppie giuste**. Teoria in [[03 - Densità congiunta discreta]].
 $p_{X_1,X_2}(x_1,x_2)=P(X_1=x_1\text{ e }X_2=x_2)$ è una **tabella di pesi** (somma 1, vale 0 fuori dal supporto). **Quale richiesta?** barra $\mid$ → condizionata · "densità di $Y$" → trasformazione · "marginale" → sommi via una variabile · $P(\dots)$ senza barra → evento.

@@ -21,7 +21,6 @@ Quindi l'esercizio si scompone in **due mosse**, e la prima vale metà del voto:
 > Scrivere solo l'espressione centrale senza lo scheletro a tre casi è una risposta incompleta: $F_Y$ è definita su tutto $\mathbb{R}$, e fuori dal supporto vale 0 o 1.
 >
 > Esempi: se $X$ vive su $(0,1)$ e $Y=e^{\beta X}$, allora $Y$ vive su $(1,e^{\beta})$. Se $X\sim U(a^4,b^4)$ e $Y=\sqrt{X}$, allora $Y$ vive su $(a^2,b^2)$.
-
 ### Il passaggio centrale, in dettaglio
 $$(*)=P(Y\le y)=P\big(g(X)\le y\big)=P\big(X\in g^{-1}((-\infty,y])\big)=\int_{\{x\,:\,g(x)\le y\}}f_X(x)\,dx$$
 In pratica: si **isola $X$** dentro la disuguaglianza, e poi si integra la densità sull'insieme risultante.
@@ -38,7 +37,6 @@ In pratica: si **isola $X$** dentro la disuguaglianza, e poi si integra la densi
 > **Funzione decrescente** → la disuguaglianza si **ribalta**: da $-\log(X/b)\le y$ si arriva a $X\ge be^{-y}$, e l'integrale va da $be^{-y}$ a $b$, non da 0.
 >
 > **Funzione non monotona** ($X^2$, $\lvert X\rvert$) → la condizione diventa un intervallo **simmetrico**, non una semiretta: $P(-y\le X\le y)$. Se la densità è definita a tratti, l'integrale si spezza in più pezzi.
-
 ### Esercizi svolti — formato 2025-2026
 #### Trasformazione non monotona, densità a tratti — appello del 6 Febbraio 2026
 Sia $X$ con densità
@@ -155,7 +153,6 @@ $$F_Y(y)=\begin{cases}0 & \text{se } y\le0\\[4pt] \dfrac{e^{b}-e^{be^{-y}}}{e^{b
 
 > [!warning] Come accorgersi del ribaltamento
 > Se $g$ è **decrescente**, valori grandi di $X$ danno valori piccoli di $Y$: l'evento $\{Y\le y\}$ corrisponde alla **coda destra** di $X$. Un modo veloce per non sbagliare: chiedersi «se $X$ è grande, $Y$ è grande o piccolo?» prima di scrivere l'integrale.
-
 #### Trasformazione con radice e densità esponenziale — appello del 20 Febbraio 2025
 Sia $f_X(x)=\frac{e^{-x}}{1-e^{-b}}\mathbb{1}_{(0,b)}(x)$. Trovare la funzione di distribuzione di $Y=\sqrt{X}$.
 **Svolgimento**

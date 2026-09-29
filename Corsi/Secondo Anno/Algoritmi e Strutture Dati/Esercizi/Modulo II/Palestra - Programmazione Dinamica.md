@@ -24,7 +24,6 @@ Dentro ci sono quattro cose: il **riconoscimento** (da una traccia mai vista all
 > | Forma 4 · cella vincolata, predecessore libero | `F2` |
 > | Forma 5 · griglia o due collezioni | `F6` `F7` `F8` |
 > | Forma 6 · stato a dominio fisso | `F5` |
-
 ## Come si usa questa pagina
 Ogni item ha la **traccia integrale** e due callout richiudibili:
 - **Indizio** — la sola definizione dello stato, da aprire se non parti proprio;
@@ -740,7 +739,6 @@ Item **realmente comparsi** ai compiti, più uno costruito su Hirschberg. Non so
 > [!warning] Tutti e quattro gli item sono in formato Clementi
 > Vengono da appelli **2022–2023**, quando il Modulo II era tenuto dal prof. Clementi e l'Esercizio 1 poteva chiedere *teoria* sulla programmazione dinamica. Nella configurazione attuale la DP compare **solo** in Esercizio 3, e sempre come progettazione su un problema inedito — per quella si va in [[#Progettazione — Esercizio 3|la sezione di progettazione]].
 > Non sono quindi simulazione dello scritto. Sono però un **controllo di precisione** sulle definizioni: se sai rispondere, la tua definizione di sottoproblema regge, ed è esattamente ciò che serve al passo 1 dell'Esercizio 3. E sono pienamente esigibili **all'orale**.
-
 ### Weighted Interval Scheduling
 #### Riduzione a WIS
 > [!question] Domanda d'esame — Riduzione a WIS
@@ -800,7 +798,6 @@ Item **realmente comparsi** ai compiti, più uno costruito su Hirschberg. Non so
 > [!warning] Nel campione questa nota non ha ancora prodotto item d'esame
 > Sequence Alignment, Hirschberg e Bellman-Ford **non compaiono** nelle 24 tracce esaminate, in nessuna posizione. Sono però programma pieno e materia d'orale, e Bellman-Ford è un algoritmo con nome proprio: l'unico item qui sotto è **costruito** sulla forma che l'Esercizio 2 usa per gli algoritmi con nome proprio, cioè «enuncia idea e complessità di X».
 > Quando arriveranno item reali su questi argomenti, questo file è il posto dove metterli.
-
 ### Hirschberg
 #### Idea e complessità di Hirschberg
 > [!question] Domanda costruita — Idea e complessità di Hirschberg
@@ -816,7 +813,6 @@ Item **realmente comparsi** ai compiti, più uno costruito su Hirschberg. Non so
 > **Complessità.** Tempo: $T(m,n) \leq T(q^*,n/2)+T(m-q^*,n/2)+O(mn)$, che per induzione forte su $m+n$ dà $T(m,n) \leq 2cmn = O(mn)$ — stesso ordine della DP standard. Spazio: $\Theta(m+n)$, perché ogni chiamata ricorsiva usa $\Theta(m)$ spazio per calcolare $f(\cdot,n/2)$ e $g(\cdot,n/2)$, e il numero di chiamate ricorsive attive è limitato.
 >
 > **Confronto.** Rispetto alla DP standard ($\Theta(mn)$ tempo e spazio), Hirschberg mantiene lo stesso ordine di tempo ma riduce lo spazio da quadratico a lineare — il vantaggio è puramente sullo spazio.
-
 ## Trappole ricorrenti
 Le stesse otto ricorrono nei dodici svolgimenti. Sono raggruppate per il passo in cui scattano.
 
@@ -841,7 +837,6 @@ Le stesse otto ricorrono nei dodici svolgimenti. Sono raggruppate per il passo i
 > 3. I casi base coprono **tutti** gli indici fuori range che la ricorrenza genera, non solo il primo?
 > 4. La risposta scioglie **ogni** vincolo presente nella definizione del sottoproblema?
 > 5. La complessità è scritta come *celle $\times$ costo per cella*, con una frase esplicita su polinomiale o pseudo-polinomiale?
-
 ## Nota sul perimetro
 I primi sette item coprono gli Esercizio 3 delle tracce più recenti: sono l'allenamento vero. I problemi di DP **studiati** — weighted interval scheduling, knapsack, segmented least squares, sequence alignment, Hirschberg, Bellman-Ford, LIS — nella configurazione attuale non sono mai stati chiesti come teoria allo scritto: servono come **repertorio di telai** da riconoscere sotto il travestimento, ed è all'orale che vengono chiesti per nome.
 Le quattro domande concettuali in coda sono costruite, non sono item d'esame: stanno qui come controllo della teoria. Le domande di teoria sulla DP realmente comparse (formato Clementi) sono in [[#Teoria della DP uscita ai compiti|Teoria della DP uscita ai compiti]].

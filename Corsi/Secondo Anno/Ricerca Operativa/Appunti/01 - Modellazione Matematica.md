@@ -39,7 +39,7 @@ A seconda del dominio delle variabili distinguiamo:
 - Caso speciale: variabili **binarie** $x \in \{0,1\}$ (PLI 0-1) — modellano decisioni *sì/no*.
 
 > [!warning] Attenzione: un modello PL deve essere LINEARE
-> Le variabili possono essere solo **moltiplicate per costanti** e **sommate tra loro**. Sono vietati: prodotti tra variabili ($x_1 \cdot x_2$), divisioni per variabili ($1/x$), potenze ($x^2$), funzioni non lineari ($\sin x, \log x, |x|$ — quest'ultima si può linearizzare, [[1 - Modellazione Matematica#^44d55a|vedi 1.6]]).
+> Le variabili possono essere solo **moltiplicate per costanti** e **sommate tra loro**. Sono vietati: prodotti tra variabili ($x_1 \cdot x_2$), divisioni per variabili ($1/x$), potenze ($x^2$), funzioni non lineari ($\sin x, \log x, |x|$ — quest'ultima si può linearizzare, [[01 - Modellazione Matematica#^44d55a|vedi 1.6]]).
 ## 1.4 Costruzione di un modello — esempio guida
 Vediamo un esempio classico, passo dopo passo.
 

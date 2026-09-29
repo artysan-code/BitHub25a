@@ -156,7 +156,7 @@ $$\begin{array}{rl}
 # Esercizio 4 — Verifica ottimalità con Scarti Complementari
 
 ## Traccia
-Verificare se $\bar{x} = (12, 9)$ è ottima per il problema dei profumi (Esercizio 1 di [[4 - Esercizi Simplesso e Due Fasi]]) usando le **Condizioni degli Scarti Complementari** (CSC).
+Verificare se $\bar{x} = (12, 9)$ è ottima per il problema dei profumi (Esercizio 1 di [[04 - Esercizi Simplesso e Due Fasi]]) usando le **Condizioni degli Scarti Complementari** (CSC).
 
 **Primale (MAX):**
 $$\begin{array}{rl}
@@ -203,4 +203,4 @@ Conclusione: $\bar{x}=(12,9)$ è **OTTIMA**.
 
 ---
 
-[[6 - Esercizi Branch & Bound|Prossimo Argomento]]
+[[06 - Esercizi Branch & Bound|Prossimo Argomento]]

@@ -160,7 +160,7 @@ Una volta ottenuta una SBA ammissibile fatta di sole variabili $x$:
 4. **Applicare il Simplesso standard** fino al test di ottimalità.
 
 > [!example] Esempio sintetico — quando serve Fase I
-> $\min\ x_1 + 2x_2$ s.t. $x_1 + x_2 \ge 4$, $x_1 - x_2 \le 2$, $x_{1,2} \ge 0$. Forma standard: $x_1 + x_2 - s_1 = 4$, $x_1 - x_2 + s_2 = 2$. La $s_1$ entra con $-1$, non forma identità $\implies$ aggiungo $y_1$ al primo vincolo, Fase I minimizza $y_1$. (Lo svolgimento completo è in [[4 - Esercizi Simplesso e Due Fasi]] Esempio 2.)
+> $\min\ x_1 + 2x_2$ s.t. $x_1 + x_2 \ge 4$, $x_1 - x_2 \le 2$, $x_{1,2} \ge 0$. Forma standard: $x_1 + x_2 - s_1 = 4$, $x_1 - x_2 + s_2 = 2$. La $s_1$ entra con $-1$, non forma identità $\implies$ aggiungo $y_1$ al primo vincolo, Fase I minimizza $y_1$. (Lo svolgimento completo è in [[04 - Esercizi Simplesso e Due Fasi]] Esempio 2.)
 
 ## 3.6 Convergenza e complessità
 
@@ -205,4 +205,4 @@ LOOP:
 ```
 
 > [!info] Riferimenti
-> Dispensa `Teoria_Simplesso.pdf`, §6–15 (pp. 20–46). Per esempi numerici svolti vedere `Lez4Simplesso24_marzo_2026.pdf` e [[4 - Esercizi Simplesso e Due Fasi]].
+> Dispensa `Teoria_Simplesso.pdf`, §6–15 (pp. 20–46). Per esempi numerici svolti vedere `Lez4Simplesso24_marzo_2026.pdf` e [[04 - Esercizi Simplesso e Due Fasi]].

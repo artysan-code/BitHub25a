@@ -333,4 +333,4 @@ x_2 & 1 & -1 & 1 & 0 & 1 \\
 
 ---
 
-[[5 - Esercizi Dualità e Scarti Complementari|Prossimo Argomento]]
+[[05 - Esercizi Dualità e Scarti Complementari|Prossimo Argomento]]

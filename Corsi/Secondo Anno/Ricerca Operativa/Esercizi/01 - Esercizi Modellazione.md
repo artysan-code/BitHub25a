@@ -341,4 +341,4 @@ $$\begin{array}{rl}
 
 ---
 
-[[2 - Esercizi Vertici e Basi|Prossimo Argomento]]
+[[02 - Esercizi Vertici e Basi|Prossimo Argomento]]

@@ -178,4 +178,4 @@ La soluzione $\bar x = (0,5,-6,0)$ **non è ammissibile** (componente negativa) 
 
 ---
 
-[[3 - Esercizi Forma Standard|Prossimo Argomento]]
+[[03 - Esercizi Forma Standard|Prossimo Argomento]]

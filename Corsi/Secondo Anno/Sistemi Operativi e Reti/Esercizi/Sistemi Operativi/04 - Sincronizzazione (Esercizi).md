@@ -101,7 +101,6 @@ Schede di svolgimento dei `.c` in `Thread e Sincronizzazione/`. Consegne in [[Tr
 **Pattern:** mutex + **flag `done`** + busy-wait (senza variabile condizione). Thread1 riempie l'array e imposta `done = 1`; thread2 (max) e thread3 (min) fanno `while (done != 1) ;` e poi scandiscono. **Idea chiave:** mostra il **costo** della soluzione senza `cond` — i lettori sprecano CPU in attesa attiva; confrontare con `pari_dispari_insert_mutex.c`. → `Thread e Sincronizzazione/init_max_min_mutex.c` · [[Tracce d'Esame Pratiche#Thread — Mutex|TM3]].
 ### thread_mutex_file.c — accesso esclusivo a file
 **Pattern:** mutex per l'accesso esclusivo a un **file**. Due thread (`increment`/`decrement`) leggono+modificano+riscrivono una cella di `dati.txt`, posizionandosi con `lseek`; un mutex globale protegge l'intera sequenza. **Idea chiave:** la sezione critica non è una variabile ma un **file condiviso**: read-modify-write deve essere atomico. *Nota: versione didattica ridotta a 2 thread (il terzo thread di controllo è dichiarato ma non avviato).* → `Thread e Sincronizzazione/thread_mutex_file.c`.
-
 ## Da svolgere
 Tracce senza soluzione. Le prime sono di ragionamento, le ultime di programmazione (riusano lo [[#Soluzioni C — Thread, mutex, condizioni, semafori|scheletro pthreads]]).
 

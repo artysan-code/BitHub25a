@@ -14,7 +14,6 @@ Poiché i processi sono [[03 - Processi e Thread#Processi concorrenti|concorrent
 
 > [!question] Domanda tipica d'esame
 > **D:** Cos'è una race condition e perché è problematica? **R:** Una race condition è una situazione in cui due o più processi accedono a dati condivisi e il risultato finale dipende dall'ordine preciso di esecuzione. È problematica perché produce risultati errati e non deterministici: nell'esempio dello spooler di stampa, due processi leggono la stessa posizione libera e uno sovrascrive l'altro, causando la perdita di un lavoro di stampa.
-
 ### Regioni critiche e requisiti
 La parte di codice in cui un processo accede a una risorsa condivisa è la **regione critica** (*critical region*). Concettualmente ogni processo attraversa quattro fasi in sequenza: la **sezione di ingresso** (*entry*), in cui chiede il permesso di entrare; la **regione critica** vera e propria; la **sezione di uscita** (*exit*), che segnala l'avvenuta uscita; e la **sezione non critica** (*remainder*), tutto il resto del lavoro che non tocca risorse condivise. Il problema della mutua esclusione consiste nel progettare le sezioni di ingresso e di uscita in modo che due regioni critiche non si sovrappongano mai. Una buona soluzione deve soddisfare **quattro requisiti**:
 1. Due processi non possono trovarsi **contemporaneamente** nelle rispettive regioni critiche.
@@ -24,7 +23,6 @@ La parte di codice in cui un processo accede a una risorsa condivisa è la **reg
 
 > [!question] Domanda tipica d'esame
 > **D:** Elenca i quattro requisiti di una buona soluzione alla mutua esclusione. **R:** (1) Due processi non possono trovarsi contemporaneamente nelle rispettive regioni critiche; (2) non si possono fare ipotesi sulla velocità o sul numero di CPU; (3) nessun processo fuori dalla propria regione critica può bloccarne altri; (4) nessun processo deve aspettare all'infinito per entrare nella propria regione critica.
-
 ## Mutua esclusione con busy waiting
 Le prime soluzioni tengono la CPU occupata mentre si attende: **busy waiting**.
 ### (Non) soluzioni elementari
@@ -370,7 +368,6 @@ Le **barriere** sincronizzano processi divisi in **fasi**: quando un processo ra
 
 > [!question] Domanda tipica d'esame
 > **D:** Cos'è l'inversione delle priorità? Descrivi il caso del Mars Pathfinder e la soluzione adottata. **R:** L'inversione delle priorità si verifica quando un thread ad alta priorità attende una risorsa bloccata da un thread a bassa priorità, mentre un thread a priorità media — estraneo alla risorsa — monopolizza la CPU impedendo al thread a bassa priorità di completare e rilasciare il lock. Nel caso del rover Sojourner (Mars Pathfinder), questo causava continui riavvii del sistema real-time. La NASA risolse con il **Priority Inheritance Protocol**: il thread a bassa priorità eredita temporaneamente la priorità del thread in attesa, completa la sezione critica, rilascia il mutex e torna alla priorità originale.
-
 ### Read-Copy-Update (RCU)
 *"I migliori lock sono quelli che non si usano."* L'obiettivo è permettere **accessi concorrenti senza lock**, evitando l'inconsistenza dei dati. Principio: si **aggiorna** una struttura dati consentendo letture simultanee; i lettori vedono **o** la versione vecchia **o** la nuova, **mai un misto**.
 - **Inserimento**: il nuovo nodo è preparato e reso visibile in modo **atomico** (collegato solo quando completamente inizializzato).

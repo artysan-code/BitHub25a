@@ -1,4 +1,4 @@
-Per un riferimento teorico sugli **algoritmi di scheduling** andare[[2 - Processi e Thread#^311407| a questa pagina]].
+Per un riferimento teorico sugli **algoritmi di scheduling** andare[[02 - Processi e Thread#^311407| a questa pagina]].
 
 ## Batch
 Generalmente dobbiamo fissare i seguenti concetti, che sono:

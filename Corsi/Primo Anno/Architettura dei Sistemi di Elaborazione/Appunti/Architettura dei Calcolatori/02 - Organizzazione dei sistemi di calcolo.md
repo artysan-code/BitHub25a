@@ -78,7 +78,7 @@ Nel corso del tempo la definizione di “superscalare” si è in qualche modo e
 (pagine riassunte: 4)
 
 ### 2.1.6 - Parallelismo a livello di processore
-La richiesta di calcolatori sempre più veloci è inarrestabile. Tuttavia, poiché le CPU continuano a diventare più veloci, si incontreranno problemi legati alla velocità della luce, con un ritardo di propagazione di 20 cm/ns nei cavi di rame e nelle fibre ottiche. Inoltre, chip più veloci generano più calore, il cui smaltimento rappresenta un problema significativo. La difficoltà di dissipare il calore è la principale ragione per cui la velocità di clock delle CPU è stagnata negli ultimi dieci anni. Il parallelismo a livello d'istruzione aiuta, ma il miglioramento delle prestazioni tramite pipeline e operazioni superscalari è limitato. Per ottenere guadagni significativi, l'unica soluzione è progettare calcolatori con più CPU. Questo argomento verrà meglio trattato nel [[8 - Architettura per il calcolo parallelo|Capitolo VIII]].
+La richiesta di calcolatori sempre più veloci è inarrestabile. Tuttavia, poiché le CPU continuano a diventare più veloci, si incontreranno problemi legati alla velocità della luce, con un ritardo di propagazione di 20 cm/ns nei cavi di rame e nelle fibre ottiche. Inoltre, chip più veloci generano più calore, il cui smaltimento rappresenta un problema significativo. La difficoltà di dissipare il calore è la principale ragione per cui la velocità di clock delle CPU è stagnata negli ultimi dieci anni. Il parallelismo a livello d'istruzione aiuta, ma il miglioramento delle prestazioni tramite pipeline e operazioni superscalari è limitato. Per ottenere guadagni significativi, l'unica soluzione è progettare calcolatori con più CPU. Questo argomento verrà meglio trattato nel [[08 - Architettura per il calcolo parallelo|Capitolo VIII]].
 #### Computer con parallelismo sui dati
 
 Molti problemi computazionali, come quelli in fisica, ingegneria e computer graphic, presentano strutture regolari con cicli e array che si ripetono su diversi insiemi di dati. Questa regolarità li rende ideali per l'esecuzione parallela, migliorando le prestazioni. Due metodi principali per eseguire questi programmi rapidamente ed efficientemente sono i processori SIMD e i processori vettoriali. I processori SIMD sono considerati calcolatori paralleli, mentre i processori vettoriali sono estensioni di un singolo processore.
@@ -498,4 +498,4 @@ UTF-8 è generalmente usato per codificare i 17 piani di Unicode, anche se il su
 
 (pagine riassunte: 4.75)
 
-[[3 - Livello logico digitale|Prossimo Capitolo]] 
+[[03 - Livello logico digitale|Prossimo Capitolo]] 

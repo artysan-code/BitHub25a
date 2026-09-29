@@ -8,7 +8,6 @@ Gli appunti sono forniti "così come sono" senza garanzie di correttezza o compl
 
 ---
 ## Indice Corsi
-
 ### Primo Anno
 - [Analisi Matematica](Corsi/Primo%20Anno/Analisi%20Matematica)
 - [Architettura dei Sistemi di Elaborazione](Corsi/Primo%20Anno/Architettura%20dei%20Sistemi%20di%20Elaborazione)

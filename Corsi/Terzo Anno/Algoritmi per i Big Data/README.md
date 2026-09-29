@@ -16,7 +16,9 @@ propedeuticita:
 # Algoritmi per i Big Data
 Corso del terzo anno che estende Algoritmi e Strutture Dati ai grandi insiemi di dati: modelli e algoritmi per risolvere problemi su input massivi e complessi.
 ## Modalità d'esame
-<!-- Da completare -->
+Secondo DidatticaWEB (A.A. 2025/2026) la valutazione è scritta e orale, con insegnamento frontale e altro, senza obbligo di frequenza; ricevimento per appuntamento via email.
+- **Prerequisiti** indicati nella scheda: Algoritmi e Strutture di Dati, Calcolo delle Probabilità e Statistica, Analisi Matematica.
+- Il dettaglio di svolgimento delle due prove non è indicato nella scheda.
 ## Programma e Appunti
 Programma del corso ancora da completare. Le note seguono le lezioni:
 - [[Data Mining]]: scopo del data mining e i due step (modello formale e task computazionale), esempio dell'email di phishing, data stream, page ranking, data clustering, probabilità.

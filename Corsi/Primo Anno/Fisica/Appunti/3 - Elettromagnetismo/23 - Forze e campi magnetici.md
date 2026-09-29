@@ -11,7 +11,6 @@ La forza magnetica è sempre perpendicolare sia a $\vec{v}$ che a $\vec{B}$, il 
 
 Quando una particella carica si muove in un campo magnetico uniforme con velocità perpendicolare al campo, la sua traiettoria è una circonferenza di raggio:$$r=\frac{mv​}{|q|B}$$
 Se la velocità ha anche una componente parallela al campo, la traiettoria diventa un'elica.
-
 # Forza Magnetica su un Conduttore
 Un filo percorso da corrente, essendo un insieme di cariche in movimento, subisce una forza magnetica se immerso in un campo magnetico esterno. La forza magnetica su un tratto rettilineo di filo di lunghezza $L$ è:$$\vec{F}_{B}=I(\vec{L}\times\vec{B})$$dove $I$ è la corrente e $\vec{L}$ è un vettore con modulo pari alla lunghezza del filo e orientato nel verso della corrente.
 # Momento Magnetico e Spire

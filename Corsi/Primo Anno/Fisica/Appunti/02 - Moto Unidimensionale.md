@@ -39,14 +39,12 @@ Al tendere di $(t_{f},x_{f})$ a $(t_{i},x_{i})$ i due intervalli $\Delta t$ e $\
 
 In fisica si usano diverse notazioni per le derivate rispetto al tempo, tutte equivalenti:
 $\displaystyle x'(t)\equiv \frac{dx(t)}{dt}\equiv\overset{\bullet}{x}(t)\equiv Dx(t)$
-
 ###### Esempio 1
 Consideriamo un punto materiale che si muove di moto rettilineo con legge oraria:$$x(t)=3t^{2}\quad(m)$$
 Innanzitutto 3, essendo il coefficiente di $t^2$ non può essere adimensionale, infatti esso è una grandezza fisica avente come dimensioni $L^{1}\cdot T^{-2}$, cioè $\displaystyle3\frac{m}{s^{2}}$ 
 
 La velocità istantanea in funzione del tempo sara' quindi 
 $\displaystyle v_{x}(t)=x'(t)=3\cdot 2\ t = 6\ t \frac{m}{s}$
-
 ###### Esempio 2
 $x(t)=-4t+2t^{2}\quad(m)$
 1) determinare lo spostamento del corpo tra gli istanti $t_{i}=0$ e $t_{f}=1$ s:
@@ -61,7 +59,6 @@ e tra gli istanti $t_{i}=1\ s$ e $t_{f}=3\ s$:
 	dunque:
 	$\displaystyle v_{x}(t=2,5)=(-4+2\cdot 2,5)\ \frac{m}{s}=6\ \frac{m}{s}$
 Per come è definita, la velocità istantanea di un corpo è nulla negli istanti in cui la funzione $x(t)$ presenta un massimo relativo o un minimo relativo a un flesso orizzontale, cioè negli istanti in cui risulta $x'(t)=0$.
-
 ## Moto rettilineo uniforme
 >Nel caso in cui un corpo si muove di velocità istantanea costante lungo una linea retta, si parla di **moto rettilineo uniforme**.
 
@@ -87,14 +84,12 @@ x(t)=x_{0}+v_{x}t &  & x_{i}=x(t=0)=x_{0}
 ![[1° Anno/Fisica/Appunti I esonero/Assets/l23.png]]
 L'area del rettangolo avente per lati i due intervalli $[0,t]$ e $[0,v_{x}]$ è chiaramente uguale a $v_{x}\cdot t$.
 Ma abbiamo visto che risulta $v_{x}t=x(t)-x_{0}$ ; dunque nel piano cartesiano $(t,v_x)$ l'area delimitata tra l'asse dei tempi e il grafico di $v_{x}(t)$ tra gli istanti $0$ e $t$ è uguale allo spostamento $x(t)-x_{0}$ del corpo tra questi due istanti. Questo è ovviamente vero anche se $v_{x}<0$
-
 ###### Esempio
 Corpo che si muove di moto rettilineo uniforme $$x_{i}=0\quad\quad x_{f}=20\ m\quad\quad \Delta t=t_{f}-t_{i}=4,4\ s$$
 Poichè $t_{i}=0$ e $x_{i}=0$, quale la posizione del corpo all'istante $t= 10\ s$?$$x(t=10)=x_{i}+v_{x}\cdot(10\ s)=(4,5\cdot 10)\ m= 45\ m$$
 ##### Osservazione
 Le leggi del moto rettilineo uniforme si possono applicare, con le dovute attenzioni, anche al moto non rettilineo purchè con velocità scalare costante;
 in tal caso occorre immaginare di "rettificare" la traiettoria, e considerare $\Delta x$ la distanza percorsa lungo la traiettoria.
-
 ###### Esempio
 Traiettoria circolare con raggio $r=10\ m$, percorre con velocità scalare costante $v=5\ m/s$.
 Quanto tempo è necessario per percorrere un giro completo?
@@ -145,7 +140,6 @@ Occorre risolvere l'equazione nell'incognita $t$: $$\begin{array}{}
 \end{array}$$
 La soluzione accettabile è $\displaystyle t_{2}=\frac{3\pm \sqrt{ 17 }}{2}\ s\simeq 3,56\ s$ 
 ![[1° Anno/Fisica/Appunti I esonero/Assets/l26.png|500]]
-
 ## Moto Rettilineo Uniformemente Accelerato
 >Nel caso particolare in cui un corpo si muove con accelerazione istantanea costante, lungo una linea retta, si parla di **moto rettilineo uniformemente accelerato**.
 
@@ -193,7 +187,6 @@ Da $v_{x}(t)=v_{x,0}+a_{x}(t)$ possiamo ricavare: $$t=\frac{v_{x}(t)-v_{x,0}}{a_
 \displaystyle=x_{0}+ \frac{1}{2a_{x}} [2v_{x,0}v_{x}(t)-2v_{x,0}^{2}+(v_{x}(t)^{2})-2v_{x,0}v_{x}(t)+v_{x,0}^{2}]= \\
 \displaystyle = x_{0}+\frac{1}{2a_{x}}[(v_{x}(t))^{2}-v_{x,0}^{2}] \\
 \end{array}$$Questa relazione può anche essere scritta nella forma: $$\displaystyle(v_{x}(t))^{2}=v_{x,0}^{2}+2a_{x}[x(t)-x_{0}]$$
-
 ###### Esempio
 Un corpo ha inizialmente velocità istantanea $V_{x,0}=632\text{ miglia/h}\quad\quad(1\text{ miglio}=1609,35\ m)$, e viene portato a riposo (cioè fermato) in un intervallo di tempo $T=1,4\ s$ con accelerazione costante.
 a) Si calcoli l'accelerazione del corpo
@@ -201,7 +194,6 @@ a) Si calcoli l'accelerazione del corpo
 b) Si calcoli la distanza percorsa dal corpo tra l'istante $t=0$ e l'istante $T$:
 	Usiamo la legge oraria del moto rettilineo uniformemente accelerato: $$\displaystyle x(t)=x_{0}+V_{x,0}t+\frac{1}{2}a_{x}t^{2}\quad,$$
 	ponendo $t=T$ e $\displaystyle a_{x}=-\frac{V_{x,0}}{T}$,essendo $x_{0}=0$: $$\displaystyle x(T)=V_{x,0}T-\frac{1}{2}\frac{V_{x,0}}{\centernot T}T^{\centernot 2}=\frac{1}{2}V_{x,0}T=\frac{1}{2}\cdot 632\cdot \frac{1609,35}{3600}\cdot 1,4\ m=197,77\ m$$
-
 ###### Esempio
 Un corpo si muove di moto rettilineo uniformemente accelerato partendo da fermo all'istante $t=0$, e raggiungendo una velocità istantanea pari a $v_{f}=10,97\ km/s$ dopo aver percorso un tratto lungo $220\ m$.
 Quanto vale l'accelerazione?
@@ -210,13 +202,10 @@ Quanto vale l'accelerazione?
 \displaystyle d=\frac{1}{2}a_{x}t^{2} \\
 \displaystyle v_{f}=a_{x}t
 \end{cases}\implies \text{Ricaviamo }t\text{ dalla seconda equazione:}$$$\displaystyle t=\frac{v_{f}}{a_{x}}$ e sostituendo questa espressione alla variabile $t$ nella prima equazione: $$\displaystyle d=\frac{1}{2}\centernot{a_{x}}\frac{v_{f}^{2}}{a_{x}^{\not2}}\implies a_{x}=\frac{v_{f}^{2}}{2d}=\frac{(10,97\cdot 10^{3})^{2}}{2\cdot 220}\quad\frac{m}{s^{2}}=2,735\cdot 10^{5}\ m/s^{2}$$Possiamo anche usare la legge che collega direttamente $x$ e $v_{x}$: $$\displaystyle a_{x}=\frac{v_{f^{2}}-v_{x,0}^{2}}{2(d-x_{0})}=\frac{v_{f}^{2}}{2d}$$che è identica a quella trovata in precedenza.
-
 ## Accelerazione di gravita vicino alla superficie terrestre
-
 Un corpo in caduta libera in prossimità della superficie terrestre si muove di moto uniformemente accelerato lungo tratti di cadute brevi.
 Se vengono eliminati tutti gli attriti, si osserva che tutti i corpi, cadono con la stessa accelerazione.
 Al livello del mare questa accelerazione vale $9,81\ m/s^{2}$ e si indica con la lettera $g$.
-
 ###### Esempio
 Un corpo viene lanciato verso l'alto con velocità iniziale $v_{x,0}=6\ m/s$.
 a) quale è la massima altezza raggiunta dal corpo?
@@ -229,11 +218,8 @@ a) quale è la massima altezza raggiunta dal corpo?
 
 b) a partire dall'istante $t=0$ dopo quanto tempo il corpo torna alla quota $x=0$?
 	Dalla legge oraria $\displaystyle x(t)=v_{x,0}t-\frac{1}{2}gt^{2}$, la condizione $x(t)=0$ parte all'equazione $v_{x,0}t-\frac{1}{2}gt^{2}=0$; mettiamo $t$ in evidenza: $$t\left( v_{x,0}-\frac{1}{2}gt \right)=0$$	Si ottengono quindi 2 soluzioni: $$t_{1}=0\quad(\text{ovvia})\quad\quad t_{2}=\frac{2v_{x,0}}{g}=\frac{2\cdot 6}{9,81}\ s=1,22\ s$$	che è la soluzione cercata.
-
 ###### Problema (da fare)
-
 ## Moto rettilineo vario
-
 Nel caso più generale, la funzione $v_{x}(t)$ nel moto rettilineo potrebbe non essere costante ne avere un andamento lineare al variare del tempo. Ad esempio:
 ![[l211.png|400]]
 Tuttavia, è possibile ripetere lo stesso ragionamento fatto nel moto rettilineo uniformemente accelerato. La conclusione è la stessa: lo spostamento del corpo tra l'istante $t_i$ e l'istante $t_{f}$ è dato dall'area della regione compresa (nel piano cartesiano $(t,v_{x})$) tra l'asse dei tempi e il grafico di $v_{x}(t)$ matematicamente possiamo quindi scrivere $$\displaystyle x_{f}-x_{i}=\int_{t_{i}}^{t_{f}}v_{x}(t)dt$$nei casi $v_{x}(t)=v_{x} \text{ costante}$ e $v_{x}(t)=v_{x,0}+a_{x}t$, con $a_{x}\text{ costante}$, questa formula fornisce i risultati già ottenuti in precedenza per altre vie. 

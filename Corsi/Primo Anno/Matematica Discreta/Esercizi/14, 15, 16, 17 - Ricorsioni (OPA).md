@@ -40,7 +40,6 @@ Quindi
 $f(2)=3,f(1)=2$
 e
 $f(n)=f(n-1)+f(n-2)$ se $n\geq 3$
-
 ## Es. (Ric. lin. a coeff. cost.)
 Risolvere la ricorsione lineare a coefficienti costanti $$\begin{array}{}
 f(n)=2f(n-1)+f(n-2) & \forall\ n\geq 2 & (*) \\
@@ -72,7 +71,6 @@ b=1-a=1-\frac{1+\sqrt{2}}{2}=\frac{1-\sqrt{2}}{2}
 \end{array}$$
 concludendo
 $f(n)=\frac{1+\sqrt{2}}{2}\cdot(1+\sqrt{2})^n+\frac{1-\sqrt{2}}{2}(1-\sqrt{2})^n\quad\quad\forall\ n\in\mathbb{N}$
-
 ## Es. (Ric. lin. a coeff. cost.)
 Risolvere la ricorsione lineare a coefficienti costanti $$f(n+3)=-2f(n+2)-2f(n+1)-4f(n)\quad\quad\forall\ n\in\mathbb{N}$$con le condizioni iniziali 
 $f(0)=0, f(1)=2, f(2)=0$
@@ -136,10 +134,8 @@ a=b-c=\frac{-i}{\sqrt{2}}-\frac{i}{\sqrt{2}}=0
 \end{array}$$
 
 Concludendo $f(n)=\frac{-i}{\sqrt{2}}(i\sqrt{2})^n+\frac{i}{\sqrt{2}}(-i\sqrt{2})^n\quad\quad\forall\ n\in\mathbb{N}$
-
 ## Es. 
 $n=6$ $$f(5)=|\{(2,2,1),()\}|$$
-
 ## Es. (successione di Fibonacci)
 Trovare una formula per la successione di Fibonacci.
 Sappiamo che la successione di Fibonacci $\{f_{n}\}_{n=0,1,\dots}$ è tale che $$F_{n}=F_{n-1}+F_{n-2}\quad\quad\forall\ n\in\mathbb{N},\ n\geq 2\quad\quad(*)$$
@@ -185,7 +181,6 @@ a=\frac{1+\sqrt{5}}{2\sqrt{5}}
 b=1-\frac{1+\sqrt{5}}{2\sqrt{5}}=\frac{\sqrt{5}-1}{2\sqrt{5}}
 \end{array}$$
 concludendo $$F_{n}=\frac{1+\sqrt{5}}{2\sqrt{5}}(\frac{1+\sqrt{5}}{2})^n+\frac{\sqrt{5}-1}{2\sqrt{5}}(\frac{1-\sqrt{5}}{2})^n\quad\quad\forall\ n\in\mathbb{N}$$
-
 ## Es.
 Dieci persone  si dividono in 5 gruppi, ognuno di 2 persone. In quanti modi può avvenire questo? Le persone sono tra loro distinguibili. Quindi $$\begin{array}{}
 \{\text{Persone}\}\leftrightarrow[10] & \text{e} & \{\text{Gruppi}\}\leftrightarrow\{\text{Scatole}\}

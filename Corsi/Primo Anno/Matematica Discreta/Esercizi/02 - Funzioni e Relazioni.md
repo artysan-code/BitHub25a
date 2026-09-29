@@ -13,7 +13,6 @@ allora $f$ é suriettiva e $g$ é iniettiva, ma
 $(g\circ f)(1)=g(f(1))=g(2)=1$
 $(g\circ f)(5)=g(f(5))=g(2)=1$
 $\implies g\circ f$ non é iniettiva $\implies$ no
-
 ## Es.6
 $f:A\rightarrow B\quad X,Y\subseteq A$ é vero che 
 $f(X)\cap f(Y)=f(X\cap Y)\quad?$
@@ -33,7 +32,6 @@ Dimostriamo che $f(X\cap Y)\subseteq f(X)\cap f(Y)$
 
 Sia $a\in f(X\cap Y)\implies \exists b\in X\cap Y$ tale che $f(b)=a$;
 ma $b\in Y\implies f(b)\in f(Y)\implies a\in f(Y) \implies a\in f(X)\cap f(Y)\Box$
-
 ## Es. 8
 Chi é $(\mathbb{N}\times\mathbb{Z})\cap(\mathbb{Z}\times\mathbb{P})$ ?
 
@@ -43,7 +41,6 @@ $x\in \mathbb{N},y\in\mathbb{Z}$ e $x\in \mathbb{Z},y\in\mathbb{P}\implies x\in\
 Viceversa
 Sia $(x,y)\in \mathbb{N}\times \mathbb{P}\implies x\in\mathbb{N}$ e $y\in\mathbb{P}\implies x\in\mathbb{Z}$ e $y\in\mathbb{Z}\implies$
 $(x,y)\in \mathbb{N}\times \mathbb{P}$ e $(x,y)\in\mathbb{Z}\times \mathbb{P}\implies (x,y)\in(\mathbb{N}\times \mathbb{Z})\cap(\mathbb{Z}\times \mathbb{P})\Box$
-
 ## Es.9
 $f:A\rightarrow B,\quad X,Y\subseteq B$ dimostrare che $f^{-1}(X/Y)=f^{-1}(X)/f^{-1}(Y)$
 
@@ -52,9 +49,7 @@ Sia $a\in f^{-1}(X/Y)\implies f(a)\in X/Y\implies f(a)\in X$ e $f(a)\notin Y\imp
 
 Viceversa
 Sia $a\in f^{-1}(X)/f^{-1}(Y)\implies a\in f^{-1}(X)$ e $a\notin f^{-1}(Y)\implies f(a)\in X$ e $f(a)\notin Y\implies$$f(a)\in X/Y\implies a\in f^{-1}(X/Y)\Box$
-
 ## Es. Generale
-
 Sia $A=\mathbb{Z}$. Sia $R$ la relazione su $\mathbb{Z}$ definita $aRb\iff 3|(b-a)\quad\quad \forall a,b\in\mathbb{Z}$ 
 $R$ di equivalenza?
 
@@ -91,13 +86,11 @@ $$\begin{array}{}
 \end{array}$$
 
 Quindi $R$ ha 3 classi di equivalenza distinte
-
 ## Es. \[2-\] (da svolgere)
 Sia $R$ la relazione su $\mathbb{Z}$ ponendo 
 $aRb\iff b-a$ è pari        ($\forall\ a,b\in\mathbb{Z}$)
 
 Relazione di equivalenza?
-
 ## Es. \[2\] (da svolgere)
 Sia $P=1\quad 27\quad 2\quad 28\quad 3\quad 29\quad\dots\quad 25\quad 51\quad 26\quad 52(\implies p\in S_{52})$
 

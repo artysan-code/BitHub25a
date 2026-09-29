@@ -83,7 +83,7 @@ Le quattro proprietà ACID sono garantite da moduli distinti del DBMS:
 - **Isolamento** → **Gestore della concorrenza**
 - **Consistenza** → **Gestore dell'integrità a tempo di esecuzione** (con il supporto del compilatore del DDL)
 
-Nell'architettura complessiva del DBMS (si veda anche [[17 - Organizzazione Fisica dei Dati]]), il **Gestore delle transazioni** governa il gestore della concorrenza e il gestore dell'affidabilità, entrambi collegati al gestore dei metodi d'accesso e al gestore del buffer, che a loro volta si appoggiano al gestore della memoria secondaria.
+Nell'architettura complessiva del DBMS (si veda anche [[16 - Organizzazione Fisica dei Dati]]), il **Gestore delle transazioni** governa il gestore della concorrenza e il gestore dell'affidabilità, entrambi collegati al gestore dei metodi d'accesso e al gestore del buffer, che a loro volta si appoggiano al gestore della memoria secondaria.
 
 # Gestore dell'affidabilità
 

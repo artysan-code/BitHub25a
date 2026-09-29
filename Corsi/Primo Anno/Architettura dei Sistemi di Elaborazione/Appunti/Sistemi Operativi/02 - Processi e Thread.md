@@ -15,7 +15,6 @@ In questi casi, lo scheduler non è così fondamentale.
 Tuttavia, in sistemi come i server di rete, dove molti processi richiedono la CPU contemporaneamente, lo scheduler deve non solo organizzare tutte le richieste, ma anche sfruttare al meglio la CPU.
 
 (Pagine riassunte: 1)
-
 #### Comportamento dei processi
 Tracciando un grafico dei momenti di utilizzo della CPU e delle attese causate dall'I/O, noteremo che esistono situazioni in cui gli intervalli di carico della CPU sono più lunghi e separati da brevi intervalli di attesa I/O, e viceversa.
 
@@ -24,7 +23,6 @@ Gli intervalli lunghi di utilizzo della CPU con brevi attese I/O sono chiamati *
 Attualmente, i casi di I/O-bound sono più comuni, poiché la velocità della CPU è migliorata più rapidamente rispetto alla tecnologia di storage.
 
 (Pagine riassunte: 1)
-
 #### Quando effettuare lo scheduling
 Esistono diverse situazioni in cui ha senso eseguire lo scheduling:
 
@@ -40,7 +38,6 @@ Esistono due tipi di algoritmi di scheduling:
 
 (Pagine riassunte: 1)
 #### Categorie di algoritmi di scheduling
-
 ^311407
 
 Per ogni tipologia di ambiente abbiamo diverse soluzioni e le categorizzeremo qui sotto riassumendo tutto il possibile.
@@ -48,7 +45,6 @@ Per ogni tipologia di ambiente abbiamo diverse soluzioni e le categorizzeremo qu
 I sistemi batch sono sistemi in cui non vi è urgenza di risposta immediata e i processi non devono essere eseguiti in modo interattivo. Questi sistemi sono tipicamente utilizzati in contesti bancari o finanziari per eseguire enormi calcoli in maniera sequenziale. In tali contesti, la sequenza delle operazioni è ben definita e può essere eseguita in modo preciso senza necessità di interventi dinamici.
 
 Gli algoritmi utilizzati per elaborare i sistemi batch sono i seguenti.
-
 ###### First-come, first-served
 Si presenta come l'algoritmo più semplice. Presenta una coda di processi in stato pronto che vengono eseguiti in maniera sequenziale. Quando il job in esecuzione si blocca, viene eseguito il prossimo job in lista; quando torna pronto viene messo in coda alla lista.
 
@@ -61,16 +57,13 @@ Quando nella coda di input si trovano parecchi job di pari importanza in attesa 
 L'algoritmo shortest job first è ottimale solo quando tutti i job sono disponibili contemporaneamente. Tuttavia, se i job arrivano in momenti diversi, potrebbe non essere la scelta migliore. Ad esempio, considerando cinque job con tempi di esecuzione e tempi di arrivo differenti, l'esecuzione nell'ordine di arrivo produce una media di 4.6, mentre eseguendo nell'ordine B, C, D, E e A si ottiene una media di 4.4. Questo dimostra che in certi contesti l'ordine di arrivo può influenzare l'efficacia dell'algoritmo.
 ###### Shortest remaining time
 Una versione preemptive dell'algoritmo shortest job first è l'algoritmo **shortest remaining time next**. In questo schema, lo scheduler seleziona sempre il processo che richiederà il minor tempo per completare l'esecuzione. È necessario conoscere in anticipo il tempo di esecuzione dei processi. Quando arriva un nuovo job, il suo tempo totale viene confrontato con il tempo rimanente del processo attualmente in esecuzione. Se il nuovo job richiede meno tempo per terminare rispetto al processo attuale, quest'ultimo viene sospeso e il nuovo job viene avviato. Questo approccio consente ai lavori brevi di ottenere un servizio rapido.
-
 ##### Sistemi Interattivi
 #### Scheduling round-robin
 Ogni processo riceve un intervallo di tempo, chiamato **quanto** (quantum), durante il quale può essere eseguito. Se il processo è ancora in esecuzione al termine del quanto, la CPU viene assegnata a un altro processo. Se il processo si blocca o termina prima del quanto, la CPU viene riassegnata naturalmente. L'algoritmo round-robin è facile da implementare e richiede solo una lista dei processi eseguibili. La scelta della durata del quanto è cruciale: se è troppo breve, causa frequenti cambi di contesto, riducendo l'efficienza della CPU; se è troppo lungo, può portare a lunghi tempi di attesa per i processi interattivi. Ad esempio, un quanto di 4 ms con un cambio di contesto che richiede 1 ms comporta uno spreco del 20% del tempo CPU, mentre un quanto di 100 ms riduce questo spreco all'1%, ma può causare ritardi inaccettabili per le richieste interattive. Un compromesso ragionevole per il quanto è tra 20 e 50 ms.
-
 #### Scheduling a priorità
 Lo scheduling round-robin presume che tutti i processi abbiano la stessa importanza, ma in molti contesti, come nelle università o su PC multiutente, alcuni processi sono più importanti di altri. Questo porta allo **scheduling a priorità** (priority scheduling), dove a ogni processo viene assegnata una priorità e viene eseguito quello con la priorità più alta. Per evitare che i processi ad alta priorità monopolizzino la CPU, lo scheduler può ridurre la loro priorità a ogni scatto di clock o assegnare un quanto di tempo massimo per l'esecuzione.
 Le priorità possono essere assegnate staticamente o dinamicamente. Ad esempio, in un computer militare, i processi avviati da persone di rango superiore possono avere priorità più alta, mentre in un data center commerciale, i job a priorità alta possono essere più costosi. In UNIX, il comando nice permette agli utenti di ridurre volontariamente la priorità dei loro processi, anche se raramente viene utilizzato.
 Per migliorare l'efficienza, le priorità possono essere assegnate dinamicamente, favorendo i processi I/O bound che necessitano frequentemente della CPU per brevi periodi. Un algoritmo semplice imposta la priorità a 1/f, dove f è la frazione dell'ultimo quanto usato dal processo.
 Spesso è utile raggruppare i processi in classi di priorità e applicare lo scheduling round-robin all'interno di ciascuna classe. Se una classe di priorità più alta è vuota, si passa alla successiva. Periodicamente, è necessario rivedere le priorità per evitare che i processi a bassa priorità rimangano in attesa indefinitamente.
 ##### Sistemi Real-Time
-
 (Pagine riassunte: 10)

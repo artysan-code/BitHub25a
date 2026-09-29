@@ -1,5 +1,4 @@
 Per un riferimento teorico sugli **algoritmi di scheduling** andare[[02 - Processi e Thread#^311407| a questa pagina]].
-
 ## Batch
 Generalmente dobbiamo fissare i seguenti concetti, che sono:
 - Tempo di Turnaround $T_T$, intervallo del processo dall'ingresso in coda fino al termine dell'esecuzione.
@@ -20,7 +19,6 @@ Generalmente viene richiesto di calcolare la media di $T_{W}$ e di $T_{T}$.
 Nei sistemi batch possiamo riordinare (a seconda dell'algoritmo) i processi in arrivo. Nei sistemi interattivi no.
 
 Se non viene specificato in quanto partono i processi, possiamo scegliere noi tramite l'algoritmo quali far partire e in che ordine.
-
 ## Sistemi Interattivi
 ### Sistema Round-Robin
 Dato un sistema di n processi, troviamo definito un quantum di esecuzione, un cambio di contesto (entrambi in $u\text{s}$) e in che posizione ci troviamo nel giro. Ci viene chiesto

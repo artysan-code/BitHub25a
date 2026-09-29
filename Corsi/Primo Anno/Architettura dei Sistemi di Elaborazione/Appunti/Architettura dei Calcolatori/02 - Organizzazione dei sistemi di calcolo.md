@@ -22,7 +22,6 @@ La precedente descrizione somiglia quasi ad un programma scritto in *pseudo-codi
 L'interprete permetteva di aggiungere nuove istruzioni e funzionalità senza toccare l'hardware, quindi a livello software. Per poter mantenere una famiglia di macchine che potevano tutte eseguire le stesse istruzioni, venne creato il concetto di **architettura**, che creava un layer di compatibilità.
 
 Grazie alle architetture, si potevano inviare aggiornamenti di alcune istruzioni, risolvere errori prima dell'esecuzione dei programmi e sviluppare in modo efficiente nuove istruzioni. Un altro fattore che rese sempre più usato il principio di interpretazione fu lo sviluppo delle **memorie di controllo**, memorie molto veloci in cui veniva salvato l'interprete per rendere più veloce l'interpretazione.
-
 ### 2.1.3 RISC contro CISC
 Tradizionalmente, c'è sempre stata una tendenza a sviluppare nuove tecnologie in grado di implementare istruzioni sempre più complesse. L'ultima tendenza è stata quella di _interpretare_ le istruzioni, con l'obiettivo finale di ridurre il divario tra l'hardware progettato e il software scritto dai programmatori. Questo ha portato a una nuova tipologia di implementazione dei calcolatori e la divisione in due tipologie di esse.
 
@@ -35,7 +34,6 @@ In contrapposizione abbiamo invece i calcolatori di tipo **CISC** (Complex Instr
 Ne conseguì una vera e propria "guerra religiosa" tra i sostenitori delle metodologie di progettazione RISC e CISC. Tuttavia, nonostante i buoni propositi e le eccellenti caratteristiche, perché l'architettura RISC non ha prevalso sulla concorrenza?
 
 La risposta è sia di tipo _economico_ che di _compatibilità_. Gli investimenti in aziende come **Intel** e la necessità di mantenere la compatibilità con il software esistente rendevano poco conveniente l'adozione di una nuova tecnologia. L'unico compromesso fu offerto da Intel in alcuni processori, che integravano un nucleo RISC e uno CISC, per migliorare parzialmente le prestazioni pur mantenendo la compatibilità con l'architettura esistente.
-
 ### 2.1.4 Principi di progettazione dei calcolatori moderni
 Il progetto **RISC** continua a portare con sé principi di progettazione che sono tuttora applicati a livello generale, in quanto ottimali. I _principi di progettazione RISC_ seguiti attualmente sono i seguenti:
 - _Tutte le istruzioni sono eseguite direttamente dall'hardware_, senza l'utilizzo dell'interpretazione di microistruzioni. Eliminando questo livello di astrazione, si ottengono migliori performance nel calcolatore.
@@ -43,7 +41,6 @@ Il progetto **RISC** continua a portare con sé principi di progettazione che so
 - _Istruzioni facili da decodificare_, creando uno o pochi pattern di istruzioni per rendere la decodifica semplice. La fase di decodifica può rallentare significativamente l'esecuzione delle istruzioni se non è ben progettata.
 - _Solo le istruzioni Load e Store fanno riferimento alla memoria_, separando le operazioni in passi distinti: prelevare gli operandi e memorizzarli nei registri per l'esecuzione. Prelevare dati dalla memoria è un'operazione potenzialmente lenta e soggetta a vari problemi. La soluzione è fare riferimento solo alle istruzioni di load e store, facendo operare tutte le altre sui registri.
 - _Disponibilità di molti registri_, poiché prelevare dati dalla memoria è molto lento. È preferibile conservare i valori nei registri, in quanto sono notevolmente più veloci.
-
 ### 2.1.5 Parallelismo a livello d'istruzione
 I progettisti di calcolatori si sforzano costantemente di migliorare le prestazioni delle loro macchine. Per questo motivo molti progettisti di computer vedono nel parallelismo (compiere più azioni allo stesso tempo) un modo per ottenere prestazioni più elevate con una data velocità di clock.
 
@@ -53,7 +50,6 @@ Il parallelismo può essere presente in due forme:
 
 In questo paragrafo analizziamo il primo tipo, nel prossimo, invece, quello a livello di processore.
 #### Pipelining
-
 ^a35c22
 
 Per migliorare la velocità di esecuzione delle istruzioni, sin dagli anni '50 (come con IBM Stretch), i computer sono stati dotati di **buffer di prefetch**, registri in grado di anticipare il prelievo delle istruzioni dalla memoria. Ciò ha permesso di avere le istruzioni pronte per l'esecuzione senza dover attendere la loro lettura dalla memoria principale al momento del bisogno.
@@ -76,11 +72,9 @@ Alcune regole determinavano se due istruzioni potevano essere eseguite in parall
 Nel corso del tempo la definizione di “superscalare” si è in qualche modo evoluta; ora è utilizzata per descrivere processori che lanciano più istruzioni (spesso quattro o sei) durante un ciclo di clock. Ovviamente una CPU superscalare, per poter gestire tutte queste istruzioni, deve avere più unità funzionali.
 
 (pagine riassunte: 4)
-
 ### 2.1.6 - Parallelismo a livello di processore
 La richiesta di calcolatori sempre più veloci è inarrestabile. Tuttavia, poiché le CPU continuano a diventare più veloci, si incontreranno problemi legati alla velocità della luce, con un ritardo di propagazione di 20 cm/ns nei cavi di rame e nelle fibre ottiche. Inoltre, chip più veloci generano più calore, il cui smaltimento rappresenta un problema significativo. La difficoltà di dissipare il calore è la principale ragione per cui la velocità di clock delle CPU è stagnata negli ultimi dieci anni. Il parallelismo a livello d'istruzione aiuta, ma il miglioramento delle prestazioni tramite pipeline e operazioni superscalari è limitato. Per ottenere guadagni significativi, l'unica soluzione è progettare calcolatori con più CPU. Questo argomento verrà meglio trattato nel [[08 - Architettura per il calcolo parallelo|Capitolo VIII]].
 #### Computer con parallelismo sui dati
-
 Molti problemi computazionali, come quelli in fisica, ingegneria e computer graphic, presentano strutture regolari con cicli e array che si ripetono su diversi insiemi di dati. Questa regolarità li rende ideali per l'esecuzione parallela, migliorando le prestazioni. Due metodi principali per eseguire questi programmi rapidamente ed efficientemente sono i processori SIMD e i processori vettoriali. I processori SIMD sono considerati calcolatori paralleli, mentre i processori vettoriali sono estensioni di un singolo processore.
 
 I processori con parallelismo sui dati, come i processori SIMD, offrono una grande potenza computazionale con un uso efficiente dei transistor. Poiché eseguono la stessa istruzione su diversi insiemi di dati, necessitano solo di un singolo stadio di prelievo, decodifica e logica di controllo.
@@ -92,7 +86,6 @@ I processori vettoriali, simili ai processori SIMD agli occhi dei programmatori,
 Entrambi i processori SIMD e vettoriali lavorano su array di dati ed eseguono singole istruzioni che sommano a coppie gli elementi di due vettori. La differenza è che il processore SIMD usa tanti sommatori quanti sono gli elementi dei vettori, mentre il processore vettoriale utilizza un registro vettoriale.
 
 Le istruzioni SSE (Streaming SIMD Extension) dell'architettura Intel Core utilizzano questo modello per accelerare programmi altamente regolari, come applicazioni multimediali e software scientifico.
-
 #### Multiprocessori
 In un processore parallelo sui dati, le unità di elaborazione non sono CPU indipendenti poiché condividono un'unica unità di controllo. Il primo sistema parallelo con più CPU complete che analizziamo è il **multiprocessore**, composto da più CPU che condividono una memoria comune. Ogni CPU può leggere e scrivere in qualsiasi parte della memoria, quindi devono coordinarsi tramite software per evitare conflitti. Quando due o più CPU interagiscono così strettamente, si dice che sono *tightly coupled*.
 
@@ -292,7 +285,6 @@ Il DVD è stato appena introdotto e già il suo successore minaccia di renderlo 
 
 (pagine riassunte: 0.25)
 ## 2.4 - Input/Output
-
 ^1d8f37
 
 Come sappiamo un calcolatore è composto da tre componenti principali: la CPU, le memorie e i dispositivi di I/O. Finora abbiamo analizzato la CPU e le memorie; adesso passiamo allo studio dei dispositivi di I/O e alla loro connessione con il resto del sistema.
@@ -406,12 +398,10 @@ Sebbene la maggior parte delle stampanti laser sia monocromatica, le stampanti l
 Le immagini su monitor sono create combinando i tre colori primari additivi: rosso, verde e blu (RGB). Al contrario, le immagini su carta sono create sovrapponendo i tre colori primari sottrattivi: ciano, magenta e giallo (CMY). Tuttavia, poiché è difficile ottenere un nero puro con questi tre colori, le stampanti a colori usano anche il nero (K), risultando nel sistema CMYK.
 
 Il **gamut** o **gamma dei colori** è l'insieme completo dei colori che un dispositivo può rappresentare. Né i monitor né le stampanti possono riprodurre tutti i colori del mondo reale. I monitor utilizzano luce trasmessa e hanno un fondo nero, mentre le stampanti usano luce riflessa e hanno un fondo chiaro. Inoltre, i monitor generano 256 intensità per colore e le stampanti usano i mezzitoni, rendendo complessa la conversione accurata delle immagini dal monitor alla stampa. Le gamme di colori RGB e CMYK sono diverse, complicando ulteriormente questa conversione.
-
 #### Stampanti ad impatto a matrice
 Le stampanti a matrice di punti funzionano grazie a una testina che contiene una matrice di punzoni elettromagnetici. Questa testina si muove longitudinalmente mentre il foglio scorre sotto di essa. La qualità di stampa può essere migliorata utilizzando un maggior numero di aghi sulla testina o ripassando più volte le linee di stampa, una tecnica nota come overlapping.
 
 Le stampanti a matrice di punti sono solitamente monocromatiche, economiche, lente, rumorose e caratterizzate da una bassa qualità grafica. Tuttavia, hanno il vantaggio di avere un nastro che si usura meno rispetto alle cartucce delle stampanti a getto d'inchiostro o laser. Queste stampanti sono utilizzate principalmente per la stampa su moduli prestampati con molte colonne, su fogli di piccola dimensione come le ricevute dei registratori di cassa e delle macchine ATM, e per la stampa di ricevute multi-copia.
-
 #### Stampanti a getto d'inchiostro
 Per le stampe casalinghe a basso costo, molti preferiscono le **stampanti a getto d’inchiostro**. La testina di stampa mobile, che contiene le cartucce di inchiostro, si muove orizzontalmente lungo la carta spruzzando inchiostro attraverso piccoli ugelli. Le goccioline di inchiostro hanno un volume di circa 1 picolitro. Esistono due tipi principali di stampanti a getto d’inchiostro: *piezoelettriche* e *termiche*.
 

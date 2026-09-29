@@ -299,7 +299,6 @@ La restrizione di questo progetto è che una linea si trovi per lo più nella ca
 
 Non tratteremo però le migliorie specifiche.
 #### Il multiprocessore NUMA Sun Fire E25k (saltato)
-
 (Pagine riassunte: 9)
 ### 8.3.5 - Multiprocessori COMA
 Le macchine precedentemente analizzate presentano diversi problemi all'aumentare della grandezza del multiprocessore, come lenti accessi alla memoria distante, fallimenti di cache e colli di bottiglia, principalmente legati alla gestione della memoria e alla distanza delle chiamate.
@@ -345,10 +344,7 @@ Esistono diversi modi per creare una rete di connessione (vedi fig. 8.37):
 ### 8.4.2 - Massive Parallel Processors
 La prima categoria di multicomputer è la **MPP** (Massive Parallel Processors), enormi computer con costi di svariati milioni, successori dei mainframe. Utilizzano calcolatori standard e sono dotati di una rete di interconnessione ad alta banda e velocità, con software brevettati. Gli MPP hanno un'enorme capacità I/O e operano generalmente con trasferimenti di piccoli pacchetti. Presentano una bassa tolleranza agli errori, che possono bloccare calcoli importanti per ore, quindi sono dotati di hardware e software di controllo per mitigare questi problemi.
 #### BlueGene (Saltato)
-
 #### Red Storm (saltato)
-
-
 (Pagine riassunte: 10)
 ### 8.4.3 - Cluster
 Un'altra categoria di multicomputer è rappresentata dai **cluster di computer**, costituiti da migliaia di computer o workstation collegati tramite schede di rete. I cluster possono essere paragonati ai MPP come i PC ai mainframe, specialmente per quanto riguarda l'ambito di utilizzo. Grazie all'evoluzione dei computer e al mercato sempre più accessibile, i cluster rendono gli MPP utili solo in situazioni molto specifiche e di nicchia.

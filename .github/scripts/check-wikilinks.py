@@ -33,7 +33,7 @@ WIKILINK_RE = re.compile(r"(?<!!)\[\[([^\[\]\n]+?)\]\]")  # esclude gli embed ![
 ASSET_EXT = (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".pdf",
              ".mp4", ".mov", ".excalidraw")
 HEADING_RE = re.compile(r"^#{1,6}\s+(.*?)\s*$")
-BLOCK_RE = re.compile(r"\s\^([\w-]+)\s*$")
+BLOCK_RE = re.compile(r"(?:^|\s)\^([\w-]+)\s*$")  # anche l'id su riga a sé dopo il blocco
 
 
 def norm(text):

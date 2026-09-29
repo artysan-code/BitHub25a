@@ -29,7 +29,7 @@ L'esame si compone di **tre prove in sequenza**, da superare nell'ordine indicat
 ## Programma e Appunti
 Gli appunti seguono l'ordine logico del corso. Il numero di nota e l'argomento sono mappati alle slide ufficiali del docente.
 ### Fondamenti e modelli dei dati
-- [[01 - Introduzione]] — Dati, informazioni e sistemi informativi; basi di dati e DBMS; archivio di file vs approccio DBMS; condivisione.
+- [[Basi di Dati e di Conoscenza/Appunti/01 - Introduzione|01 - Introduzione]] — Dati, informazioni e sistemi informativi; basi di dati e DBMS; archivio di file vs approccio DBMS; condivisione.
 - [[02 - Modelli di dati]] — Modello logico e concettuale; schema e istanza; architettura ANSI/SPARC a tre livelli; indipendenza fisica e logica dei dati; DDL e DML.
 - [[03 - Modello Relazionale]] — Relazione matematica; strutture posizionali e non; modello basato sui valori; schemi e istanze; valore nullo.
 - [[04 - Vincoli di integrità]] — Vincoli di dominio, di ennupla e interrelazionali; chiavi e superchiavi; chiave primaria; integrità referenziale e azioni compensative.

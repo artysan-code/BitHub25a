@@ -73,7 +73,6 @@ Le domande pubblicate sul sito dal professore sono le seguenti:
 71) Che cosa si intende per diametro in un multicomputer? 
 72) Qual è il vantaggio di utilizzare un'architettura di multicomputer ad ipercubo? 
 73) Quali sono i vantaggi della virtualizzazione?
-
 #### Esercizi ARM
 Esercizi forniti dal professore sul sito internet di informatica. Descrivere prototipo, pre-condizioni e post-condizioni prima dell'algoritmo (preferibilmente in DNS).
 

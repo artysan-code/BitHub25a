@@ -175,7 +175,6 @@ La lunghezza delle istruzioni è un aspetto critico. Sebbene istruzioni più cor
 Un altro criterio progettuale riguarda lo spazio necessario per esprimere tutte le operazioni desiderate. È importante prevedere un numero sufficiente di codici operativi per supportare le funzionalità richieste, evitando così di rimanere vincolati dalle limitazioni del formato delle istruzioni.
 #### 5.3.1.3 Terzo criterio: Numero di bit nel campo degli indirizzi.
 Infine, il numero di bit in un campo degli indirizzi è cruciale. Maggiore risoluzione nell'accesso alla memoria può significare indirizzi più lunghi e istruzioni più complesse. Un compromesso è necessario per bilanciare la risoluzione dell'accesso alla memoria con la lunghezza delle istruzioni e le prestazioni complessive del sistema.
-
 #### 5.3.1.4 Conclusioni
 I computer moderni hanno raggiungo un compromesso... discutibile. Da un lato, si usano tanti bit quanti sono necessari per indirizzare individualmente i byte, dall'altra spesso si accede alla memoria per leggere una, due o addirittura quattro parole alla volta. 
 
@@ -272,7 +271,6 @@ L'ATmega168 AVR dispone di sei formati d'istruzioni semplici, che possono essere
 ## 5.4 - Indirizzamento 
 Molte istruzioni contengono operandi e si pone il problema di come specificarne la posizione. 
 L'**indirizzamento** è l'argomento che tratta di queste problematiche.
-
 ### 5.4.1 - Modalità d'indirizzamento
 Finora abbiamo trascurato l'interpretazione dei bit nei campi d'indirizzo per trovare gli operandi. È ora di esaminare più da vicino le modalità di indirizzamento. Vedremo che ci sono diverse modalità di implementazione. 
 ### 5.4.2 - Indirizzamento immediato
@@ -356,7 +354,6 @@ Alcune macchine dispongono della cosiddetta modalità d'**indirizzamento indiciz
  Abbiamo già sottolineato che è molto consigliabile rendere le istruzioni macchina quanto più corte possibile. Il limite alla riduzione della lunghezza degli indirizzi equivale a non averne per nulla. In questo paragrafo analizziamo più da vicino l 'indirizzamento a stack.
 #### 5.4.8.1 - Notazione polacca inversa
 La forma con l’operatore “ in” mezzo è detta notazione infissa, mentre la forma con l’operatore dopo gli operandi si chiama postfissa o anche notazione polacca inversa, dal logico polacco J. Lukasiewicz (1958) che ne studiò le proprietà. Questo tipo di notazione è molto utilizzata grazie al fatto che qualsiasi formula si può scrivere senza l'utilizzo delle parentesi.
-
 #### 5.4.8.2 -Valutazione delle formule in notazione polacca inversa
 La notazione polacca inversa è la notazione ideale per la valutazione di una formula da parte di un computer dotato di stack. Una formula è costituita da $n$ simboli, ciascuno dei quali è un operando o un operatore. L’algoritmo che si avvale di uno stack per la valutazione di una formula in notazione polacca inversa è molto semplice: scorre la stringa da sinistra verso destra e, quando incontra un operando, lo impila sullo stack. Invece quando incontra un operatore ne esegue l'istruzione corrispondente. Il numero sulla cima dello stack è l’operando destro, non quello sinistro; questa precisazione è importante perché nella divisione e nella sottrazione l’ordine degli operandi conta (a differenza dell’addizione e della moltiplicazione). In altre parole, IDIV è stata definita appositamente in modo tale che, dopo aver fatto il push del numeratore e poi quello del denominatore, la sua esecuzione produca come risultato la divisione corretta. Si noti la semplicità di generazione del codice per l’IJVM: si scorre la notazione polacca inversa della formula e si restituisce un’istruzione per ciascun simbolo. Se il simbolo è una costante o una variabile, si restituisce un’istruzione di push sullo stack; se il simbolo è un operatore, si restituisce l’istruzione che esegue l’operazione.
 
@@ -372,28 +369,20 @@ La modalità indicizzata specifica un certo offset rispetto all'indirizzo conten
 L'indirizzamento relativo al PC (program counter) consiste in un offset (con segno) contenuto nell'istruzione stessa che viene sommato al program counter per ottenere l'indirizzo di destinazione.
 (pagine riassunte:0.5)
 ### 5.4.10 - Modalità d'indirizzamento dei codici operativi e delle modalità d'indirizzamento
-
 Dal punto di vista software, le istruzioni e l'indirizzamento devono avere una struttura regolare con pochi formati d'istruzioni per facilitare il lavoro del compilatore e produrre codice di qualità. Gli opcode dovrebbero supportare tutte le modalità d'indirizzamento sensate e ogni registro (inclusi FP, SP e PC) dovrebbe essere utilizzabile in tutte le modalità a registro.
-
 ### 5.4.10.1 Esempio di Macchina a tre indirizzi
-
 Un esempio di progetto elegante è una macchina a tre indirizzi con istruzioni di 32 bit, supportando fino a 256 codici operativi. Il **formato 1** prevede due indirizzi sorgente e un indirizzo destinazione, usato per le istruzioni logico-aritmetiche. L'ultimo campo di 8 bit può essere utilizzato per distinguere ulteriormente le istruzioni, ad esempio per le operazioni in virgola mobile. Se il bit 23 è asserito, l'istruzione passa al **formato 2**, in cui il secondo operando è una costante immediata con segno di 13 bit, adatta per le istruzioni LOAD e STORE con indirizzamento indicizzato.
 
 Il **formato 3** è per i salti condizionati e altre istruzioni simili, con un proprio opcode e 24 bit per l'offset relativo al PC, coprendo un intervallo di 32 MB. Alcuni opcode potrebbero essere riservati per istruzioni LOAD e STORE con un offset lungo, limitate però a operare su un registro specifico (ad esempio, R0).
-
 ### 5.4.10.2 Esempio di Macchina a due indirizzi
-
 Una macchina a due indirizzi, può specificare parole di memoria per entrambi gli operandi. Questo progetto, semplice ed efficiente, è stato utilizzato nelle macchine PDP-11 e VAX, che hanno dominato la scena informatica per vent'anni. Gli opcode sono di 8 bit, con 12 bit per specificare la sorgente e altri 12 per la destinazione, inclusi 3 bit per la modalità, 5 per il registro e 4 per l'offset. Le modalità supportate includono immediata, diretta, a registro, a registro indiretto, indicizzata, a stack, con spazio per altre due modalità.
 
 Tutti i registri d'uso generale, inclusi il program counter, il puntatore allo stack e il puntatore alle variabili locali, sono accessibili. Tuttavia, l'indirizzamento diretto richiede più bit per gli indirizzi. La soluzione del PDP-11 e del VAX era di aggiungere una parola supplementare per ogni indirizzo di operando diretto. Un'altra modalità potrebbe essere un offset di 32 bit posposto all'istruzione.
-
 ### Compromessi e considerazioni
-
 Sommare due operandi in memoria, entrambi indirizzati direttamente o con una lunga forma indicizzata, richiederebbe 96 bit e tre cicli di bus. Inoltre, sarebbero necessari tre cicli aggiuntivi per prelevare i due operandi e scrivere il risultato. Tuttavia, molte architetture RISC richiederebbero almeno 96 bit e quattro cicli di bus per operazioni simili, a seconda della modalità di indirizzamento.
 
 Per variabili oltre la sedicesima, sono necessari offset di 32 bit. Un'altra alternativa potrebbe essere un formato con un solo offset di 8 bit, riferito alla sorgente o alla destinazione. I progettisti devono bilanciare vari fattori per ottenere un progetto efficace, giocando con numerose possibilità e compromessi.
 (pagine riassunte:2)
-
 ### 5.4.11 - Modalità d'indirizzamento del Core i7
 Le modalità d'indirizzamento del Core i7 variano a seconda che l'istruzione sia in modalità di 16, 32 o 64 bit. 
 Il Pentium prevede **modalità immediata, diretta, a registro, a registro indiretto e una speciale** per l'indirizzamento di elementi di un array, ma non tutte si applicano a tutte le istruzioni, complicando il lavoro del compilatore. 
@@ -417,7 +406,6 @@ Le istruzioni che indirizzano la memoria sono di due tipi: load (LDR) e store (S
 3. La somma del program counter e uno spiazzamento con segno di 13 bit.
 
 La terza modalità, chiamata indirizzamento relativo al program counter, è utile per caricare costanti memorizzate con il codice del programma.
-
 ### 5.4.13 - Modalità d'indirizzamento dell'ATmega168 AVR
 L'ATmega168 presenta una struttura d'indirizzamento con quattro modalità:
 
@@ -448,7 +436,6 @@ I dati possono provenire da due sorgenti, e (di media) vengono utilizzati quattr
 Le operazioni binarie sono quelle che producono un risultato dalla combinazione di due operandi. Presso a che tutti gli ISA hanno istruzioni per l'addizione, sottrazione, moltiplicazione e divisione.
 
 Oltre a questo, hanno un insieme di operazioni binarie che comprende le istruzioni booleane. Visto che esistono 16 funzioni booleane in due variabili, ben poche macchine (forse nessuna) dispongono d'istruzioni per tutte e 16. In genere sono disponibili AND, OR e NOT, qualche volta anche XOR (OR ESCLUSIVO), NOR e NAND.
-
 #### 5.5.2.1 Uso importante di AND:
 Un uso importante di AND è l'estrazione di bit da una parola.
 L'estrazione del carattere avviene facendo l'AND della parola con una costante, detta maschera. Il risultato di questa operazione è che tutti i bit indesiderati vengono posti a zero, vale a dire mascherati:
@@ -480,7 +467,6 @@ Esempio di shift e rotazione:
 | 0100 | 0000 | 0000 | 0001 | A ruotato verso destra di 2 bit <br>(i dati usciti vengono rimessi all'inizio) |
 Ora vediamo le differenze più in dettaglio
 ### Scorrimenti e rotazioni
-
 **Scorrimenti e rotazioni**: Utili in entrambe le direzioni. Ruotare una parola di n bit verso sinistra di k bit equivale a ruotarla verso destra di n-k bit. Gli scorrimenti verso destra sono spesso associati all'estensione del segno, mantenendo la natura positiva o negativa del numero.
 
 **Applicazioni**:
@@ -496,9 +482,7 @@ Ora vediamo le differenze più in dettaglio
 **Rotazioni**:
 
 - Utili per impacchettare e spacchettare sequenze di bit. Permettono di esaminare una parola bit per bit senza perdita di informazione, ripristinando la parola originale dopo la rotazione completa.
-
 ### Istruzioni unarie
-
 **Istruzioni unarie**: Alcune operazioni binarie sono così frequenti che gli ISA dispongono di istruzioni unarie per migliorarne l'efficienza. Esempi:
 
 - **CLR (clear)**: Azzera una locazione di memoria o un registro.
@@ -546,7 +530,6 @@ Le istruzioni di I/O (Input/Output) variano notevolmente tra diverse macchine e 
 1. **I/O programmato con attesa attiva**
 2. **I/O interrupt driven (innescato dagli interrupt)**
 3. **I/O con DMA (Direct Memory Access)**
-
 ### I/O Programmato
 Il metodo di I/O più semplice è l'I/O programmato, comunemente utilizzato nei microprocessori di fascia bassa, sistemi integrati e sistemi in tempo reale. Questo metodo impiega una sola istruzione di input e una sola di output, trasferendo un carattere per volta da un registro prefissato al dispositivo di I/O selezionato. Il processore esegue una sequenza di istruzioni per ogni carattere letto o scritto.
 
@@ -558,7 +541,6 @@ Esempio:
 - **Output**: La CPU legge il registro di stato dello schermo per assicurarsi che il bit PRONTO sia 1. Una volta pronto, scrive il carattere nel registro buffer dello schermo.
 
 **Svantaggi**: L'I/O programmato implica attesa attiva, dove la CPU passa gran parte del tempo in cicli serrati aspettando che il dispositivo sia pronto. Questo approccio è inefficiente se la CPU ha altri compiti da svolgere.
-
 ### I/O Interrupt Driven
 Per evitare l'attesa attiva, la CPU può avviare il dispositivo di I/O e ordinargli di generare un interrupt quando ha finito. Questo metodo permette alla CPU di svolgere altri compiti mentre aspetta la conclusione dell'operazione di I/O.
 
@@ -624,21 +606,12 @@ Il codice che si preoccupa di salvare il vecchio FP, che stabilisce il nuovo FP 
 Le istruzioni **ENTER** e **LEAVE** del Core i7 sono state progettate proprio per far funzionare i prologhi e gli epiloghi delle procedure in modo efficiente. Naturalmente queste istruzioni hanno un loro modello di gestione del puntatore al record d'attivazione, per cui se il compilatore ha un modello diverso deve fare a meno di usarle.
 (pagine riassunte: 4.5).
 ### 5.6.3 - Coroutine
-
 ### 5.6.4 - Trap
-
 ### 5.6.5 - Interrupt
-
 ## 5.8 - Architettura IA-64 e Itanium 2
 ### 5.8.1 - Il problema dell'ISA IA-32
-
 ### 5.8.2 - Modello IA-64 e calcolo che utilizza il parallelismo esplicito
-
 ### 5.8.3 - Riduzione degli accessi in memoria
-
 ### 5.8.4 - Scheduling delle istruzioni
-
 ### 5.8.5 - Riduzione dei salti condizionati: attribuzione di predicati
-
 ### 5.8.6 - Caricamenti speculativi
-

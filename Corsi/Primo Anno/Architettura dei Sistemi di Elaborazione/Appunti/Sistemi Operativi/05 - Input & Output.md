@@ -217,74 +217,39 @@ Il sistema di I/O è organizzato in vari livelli: hardware, gestori degli interr
 
 (pagine riassunte: 1.5)
 ## 5.4 - Dischi
-
 ### 5.4.1 - Hardware dei dischi
-
-
 (pagine riassunte: 6.25)
 ### 5.4.2 - Formattazione dei dischi
-
-
 (pagine riassunte: 3.5)
 ### 5.4.3 - Algoritmi di scheduling del braccio del disco
-
-
 (pagine riassunte: 3.25)
 ### 5.4.4 - Gestione degli errori
-
-
 (pagine riassunte: 2.5)
 ### 5.4.5 - Memoria stabile
-
-
 (pagine riassunte: 3)
 ## 5.5 - Clock
-
 ### 5.5.1 - Hardware del clock
-
-
 (pagine riassunte: 1.25)
 ### 5.5.2 - Software del clock
-
-
 (pagine riassunte: 2.75)
 ### 5.5.3 - Soft timer
-
-
 (pagine riassunte: 1.5)
 ## 5.6 - Interfacce utente: tastiera, mouse e monitor
-
 ### 5.6.1 - Software di input
-
-
 (pagine riassunte: 5)
 ### 5.6.2 - Software di output
-
-
 (pagine riassunte: 15.75)
 ## 5.7 - Thin client
-
-
 (pagine riassunte: 1.25)
 ## 5.8 - Gestione del risparmio energetico
-
-
 (pagine riassunte: 1)
 ### 5.8.1 - Problemi relativi all'hardware
-
-
 (pagine riassunte: 1.5)
 ### 5.8.2 - Problemi relativi al sistema operativo
-
-
 (pagine riassunte: 5.25)
 ### 5.8.3 - Questioni relative ai programmi applicativi
-
-
 (pagine riassunte: 1)
 ## 5.9 - Stato della ricerca sull'input/output
-
-
 (pagine riassunte: 1.5)
 
 [[|Prossimo Capitolo]]

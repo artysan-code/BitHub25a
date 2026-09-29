@@ -13,8 +13,9 @@ propedeuticita: []
 # Architettura dei Sistemi di Elaborazione
 Corso del prof. **Alessandro Simonetta** sugli aspetti fondamentali dell'architettura dei sistemi di elaborazione, con riferimento ai principi di funzionamento dei microprocessori moderni e al rapporto tra architettura del calcolatore e software di base; richiede conoscenze sui sistemi di numerazione (binario, ottale, esadecimale).
 ## Modalità d'esame
-Secondo DidatticaWEB (A.A. 2025/2026) la valutazione è scritta e orale.
-<!-- Da completare -->
+Secondo DidatticaWEB (A.A. 2025/2026) la valutazione è scritta e orale, con insegnamento frontale e senza obbligo di frequenza; il ricevimento è al termine delle lezioni.
+- Per l'orale il docente pubblica sul suo sito un elenco di domande teoriche, riportato con gli esercizi ARM in [[Domande ed Esercizi per Orale]].
+- Il dettaglio di svolgimento e pesi delle due prove non è indicato nella scheda.
 ## Programma e Appunti
 Riassunti del libro con integrazioni del corso, per comprendere i capitoli in minor tempo. Non sono affidabili a causa delle interpretazioni che ciascuno può avere: da usare per infarinature o per ripasso. Le note seguono la numerazione dei capitoli del libro.
 ### Architettura dei calcolatori

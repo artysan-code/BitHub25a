@@ -98,7 +98,20 @@ def main():
                 target = target.strip()
                 if target.lower().endswith(ASSET_EXT):
                     continue  # embed/link a un asset, non a una nota
-                paths = note_by_name.get(target.lower())
+                t = target.lower().removesuffix(".md")
+                if "/" in t:
+                    # percorso (anche parziale): Obsidian accetta un suffisso del path
+                    paths = [p for p in md if p.lower()[:-3] == t
+                             or p.lower()[:-3].endswith("/" + t)]
+                else:
+                    paths = note_by_name.get(t)
+                if paths and len(paths) > 1:
+                    # nome ambiguo: come Obsidian, prima la nota nella stessa cartella
+                    same = [p for p in paths if os.path.dirname(p) == os.path.dirname(f)]
+                    paths = same or paths
+                if paths and len(paths) > 1:
+                    broken.append((f, m.group(0), "nota ambigua: usare il percorso"))
+                    continue
                 if not paths:
                     if any(fnmatch(target.lower(), g) for g in PERSONAL_NOTE_GLOBS):
                         continue  # nota personale non versionata: link intenzionale

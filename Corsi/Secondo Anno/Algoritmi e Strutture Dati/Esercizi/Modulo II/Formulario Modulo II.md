@@ -22,7 +22,6 @@ nota:
 # Formulario — ASD Modulo II
 Solo ciò che si scrive sul compito: **definizioni** in forma d'esame, **enunciati**, **scheletri di dimostrazione** (i passi, non la prosa), **corollari**, **costi**. Niente esempi, niente metodo, niente esercizi. Fonte: slide del prof. Gualà; ciò che va oltre è marcato *(extra, non da slide)*.
 Per Greedy, Union-Find, MST, Flussi e NP (Esercizi 1 e 2) il taglio è **teoria**; per la Programmazione Dinamica (Esercizio 3) il taglio è **procedura** — cosa scrivere sul foglio, e in che ordine. Notazione: $n = |V|$, $m = |E|$; $T$ è identificato col suo insieme di archi; $\text{OPT}$ è sempre il **valore** ottimo, non l'insieme che lo realizza.
-
 ## Greedy e Interval Scheduling
 ### Il paradigma e le due tecniche di dimostrazione
 **Schema di un greedy**: (1) si fissa un **criterio d'ordine**; (2) si scorrono gli elementi in quell'ordine e si aggiunge il corrente se **ammissibile** (compatibile con le scelte già fatte); (3) non si ripensa **mai** a una scelta passata. Costo tipico $O(n\log n)$: ordinamento più scansione lineare. Il criterio **non è mai ovviamente corretto** — lo stesso problema ne ammette molti plausibili e in generale solo alcuni portano all'ottimo, quindi l'ottimalità va *dimostrata*.
@@ -82,7 +81,6 @@ Criterio corretto: **earliest start time** (gli altri tre hanno controesempi).
 > **Dim. (doppia disuguaglianza).** *Passo 0 — ammissibilità*: una lezione entra in una classe solo se il suo inizio è $\geq$ del finish dell'ultima lezione già assegnata a quella classe, quindi la soluzione prodotta è valida. *($d \geq \text{depth}$)* La soluzione è ammissibile e ogni ammissibile usa $\geq \text{depth}$ classi. *($\text{depth} \geq d$)* Quando si apre la $d$-esima classe per la lezione $j$, $j$ è incompatibile con l'ultima lezione di **ciascuna** delle $d-1$ classi già aperte, che quindi **finiscono dopo** $s(j)$; processando per inizio crescente quelle lezioni **iniziano** anche $\leq s(j)$, dunque sono ancora in corso in $s(j)$. Quelle $d-1$ più $j$ sono tutte attive nell'istante $s(j)+\epsilon$ (l'$\epsilon$ serve perché gli intervalli si contano aperti), da cui $\text{depth} \geq d$. $\square$
 
 **Perché ordini diversi**: IS ha una risorsa sola e massimizza i job → conviene liberarla presto, *finish time*. IP serve tutte le lezioni e minimizza le risorse → conta quante devono coesistere, *start time*, e il picco è la depth.
-
 ## Union-Find
 > [!quote] Definizione — Le tre operazioni
 > - **`makeSet(x)`**: crea l'insieme $\{x\}$ di nome $x$.
@@ -139,7 +137,6 @@ Criterio corretto: **earliest start time** (gli altri tre hanno controesempi).
 
 > [!quote] Proprietà — Lower bound $\Omega(m+n)$ *(non sulle slide; chiesto il 16/07/2024 e il 18/02/2025)*
 > Qualunque struttura dati, su $n$ `makeSet`, $n-1$ `union` e $m$ `find`, richiede $\Omega(m+n)$: le makeSet devono creare $n$ insiemi, le find devono rispondere $m$ volte.
-
 ## Minimum Spanning Tree
 ### Problema e struttura
 > [!quote] Definizione — MST (forma d'esame)
@@ -264,7 +261,6 @@ Criterio corretto: **earliest start time** (gli altri tre hanno controesempi).
 > **Dim.** Sia $\mathcal{C} \neq \mathcal{C}^*$ un altro $k$-clustering: esistono $p_i, p_j$ nello stesso cluster di $\mathcal{C}^*$ ma in cluster diversi di $\mathcal{C}$. Il cammino MST che li unisce passa da un cluster all'altro, quindi contiene un arco $(p,q)$ con estremi in cluster diversi di $\mathcal{C}$; quell'arco non è stato eliminato, dunque costa $\leq d^*$ e la spaziatura di $\mathcal{C}$ è $\leq d^*$. $\square$
 
 La procedura **è** Kruskal fermato a $k$ componenti; eseguito fino in fondo dà un clustering **gerarchico**.
-
 ## Programmazione Dinamica
 Tre blocchi: **come si fa** l'Esercizio 3, **le sei forme** di tabella in cui ricade ogni traccia, e **il repertorio** dei problemi del corso da cui quelle forme derivano.
 ### La procedura dell'Esercizio 3
@@ -442,7 +438,6 @@ Dijkstra fallisce con pesi negativi perché **fissa definitivamente** un nodo qu
 | Tecnica | greedy | programmazione dinamica |
 
 In pratica BFM termina prima: l'arco $(v,w)$ si riesamina alla passata $i+1$ solo se $d[w]$ è cambiato alla passata $i$, quindi se il cammino minimo ha $k$ archi bastano $\leq k$ passate.
-
 ## Flussi di Rete (Max-Flow e Min-Cut)
 ### Definizioni
 > [!quote] Definizione — Rete di flusso
@@ -517,7 +512,6 @@ In pratica BFM termina prima: l'arco $(v,w)$ si riesamina alla passata $i+1$ sol
 | Improved Capacity Scaling (Gabow) | $O(m\log C)$ | $O(mn\log C)$ |
 
 **Edmonds-Karp**: la distanza BFS da $s$ a $t$ in $G_f$ è **monotona non decrescente**, e ogni arco può essere critico $O(n)$ volte. **Capacity Scaling**: $1 + \lfloor\log_2 C\rfloor$ fasi, $\leq 2m$ aumenti per fase.
-
 ## Applicazioni dei Flussi di Rete
 > [!info] Riduzione al Max-Flow in quattro passi
 > **Costruire** la rete che codifica l'istanza · **calcolare** il massimo flusso (o il taglio minimo) · **interpretare** il risultato come soluzione · **dimostrare** la corrispondenza biunivoca. La correttezza poggia sempre sul **teorema di integralità**.
@@ -541,7 +535,6 @@ In pratica BFM termina prima: l'arco $(v,w)$ si riesamina alla passata $i+1$ sol
 > - **König (1931)** — in un grafo **bipartito**, matching massimo $=$ vertex cover minimo.
 > - **Hall (1935)** — $G=(L\cup R,E)$ ha un matching che satura $L$ **sse** $|N(S)| \geq |S|$ per ogni $S \subseteq L$.
 > - **Menger (1927)** — massimo numero di cammini $s \leadsto t$ arco-disgiunti $=$ minimo numero di archi la cui rimozione disconnette $s$ da $t$.
-
 ## NP-Completezza, Riduzioni e Approssimazione
 ### Riduzioni e classi
 > [!quote] Definizione — Riduzione polinomiale
@@ -598,7 +591,6 @@ La radice è sempre 3-SAT. Altre catene del deck: 3-SAT $\leq_P$ Directed Ham Cy
 
 > [!warning] Ipotesi implicita
 > La NP-completezza parla del **caso peggiore**: un problema NP-completo può avere istanze pratiche facili. E la struttura conta — Vertex Cover su grafi **bipartiti** è polinomiale per König.
-
 ## Ripasso lampo — i costi del modulo
 | Argomento | Algoritmo | Costo |
 |---|---|---|

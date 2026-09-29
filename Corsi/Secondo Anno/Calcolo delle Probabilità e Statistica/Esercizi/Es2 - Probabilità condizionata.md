@@ -64,7 +64,7 @@ si legge così: al numeratore c'è il "ramo" dello scenario che interessa — co
 $$P(U_2|B)=\frac{P(B|U_2)P(U_2)}{\sum_{k=1}^{3}P(B|U_k)P(U_k)}=\frac{\frac{3}{6}\cdot\frac{1}{3}}{\frac{4}{6}\cdot\frac{1}{3}+\frac{3}{6}\cdot\frac{1}{3}+\frac{2}{6}\cdot\frac{1}{3}}=\frac{3}{4+3+2}=\frac{3}{9}=\frac{1}{3}$$
 I fattori $\frac{1}{3}$ e i denominatori $6$ si semplificano tutti: resta il rapporto fra i **numeri di palline bianche**. Quando le urne hanno lo stesso totale e le probabilità a priori sono uniformi, Bayes si riduce a questo.
 
-> [!question] L'osservazione che fa il prof
+> [!info] L'osservazione che fa il prof
 > $P(U_2|B)=\frac{1}{3}=P(U_2)$: sapere che è uscita una bianca **non cambia** la probabilità di aver scelto la seconda urna, quindi $U_2$ e $B$ sono [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenti]].
 >
 > Non è un caso: la seconda urna è quella "media", con la stessa proporzione di bianche della media delle tre. Se un risultato di Bayes ti restituisce esattamente la probabilità a priori, non è un errore — è indipendenza, e vale la pena scriverlo.

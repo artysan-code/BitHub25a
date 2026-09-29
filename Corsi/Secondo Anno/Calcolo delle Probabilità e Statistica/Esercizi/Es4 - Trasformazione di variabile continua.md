@@ -153,7 +153,7 @@ $$(*)\longrightarrow\frac{e^{b}-1}{e^{b}-1}=1,$$
 esattamente il comportamento atteso da una funzione di distribuzione il cui supporto si estende all'infinito. In conclusione:
 $$F_Y(y)=\begin{cases}0 & \text{se } y\le0\\[4pt] \dfrac{e^{b}-e^{be^{-y}}}{e^{b}-1} & \text{se } y>0\end{cases}$$
 
-> [!question] Come accorgersi del ribaltamento
+> [!warning] Come accorgersi del ribaltamento
 > Se $g$ è **decrescente**, valori grandi di $X$ danno valori piccoli di $Y$: l'evento $\{Y\le y\}$ corrisponde alla **coda destra** di $X$. Un modo veloce per non sbagliare: chiedersi «se $X$ è grande, $Y$ è grande o piccolo?» prima di scrivere l'integrale.
 
 #### Trasformazione con radice e densità esponenziale — appello del 20 Febbraio 2025

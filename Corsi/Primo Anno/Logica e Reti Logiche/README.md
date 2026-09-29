@@ -13,8 +13,7 @@ propedeuticita: []
 # Logica e Reti Logiche
 Corso del prof. **Francesco Pasquale** che fornisce le competenze fondamentali del ragionamento logico analitico e introduce i principi di progettazione e analisi dei circuiti logici.
 ## Modalità d'esame
-Secondo DidatticaWEB (A.A. 2025/2026) la valutazione è scritta e orale.
-<!-- Da completare -->
+Secondo DidatticaWEB (A.A. 2025/2026) la valutazione è scritta e orale, senza prerequisiti e senza obbligo di frequenza.
 ## Programma e Appunti
 Gli appunti non ci sono ancora.
 ## Materiale di riferimento

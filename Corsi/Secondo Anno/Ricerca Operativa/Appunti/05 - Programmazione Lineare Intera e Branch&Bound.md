@@ -164,7 +164,7 @@ FINE: x_best è l'ottimo, con valore UB
 > **Nodo 2.2 ($x_2 \ge 2$)**: dal vincolo $6x_1 + 10 \le 30 \implies x_1 \le 3.33$, ma $x_1 \ge 4$ $\implies$ **infattibile**. Chiudo.
 > Albero esaurito $\implies$ ottimo PLI: $x^* = (3, 2), z^* = 5$.
 
-(Svolgimento completo: [[6 - Esercizi Branch & Bound]])
+(Svolgimento completo: [[06 - Esercizi Branch & Bound]])
 
 ## 5.6 Modelli PLI ricorrenti
 

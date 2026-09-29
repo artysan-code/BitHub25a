@@ -151,7 +151,7 @@ $$\max\ b^T y \quad \text{s.t.} \quad A^T y \le c,\ y \ge 0$$
    - **No** (es. una $\bar{y}_i$ doveva essere $\ge 0$ ma è negativa) → $\bar{x}$ **non** è ottima.
 
 > [!example] Esempio applicativo
-> Vedi [[5 - Esercizi Dualità e Scarti Complementari|Esempio 4 degli Esercizi]] dove si verifica $\bar{x} = (12, 9)$ per il problema dei profumi e si ricava $\bar{y} = (60, 40, 0)$ con $z^* = w^* = 2460$.
+> Vedi [[05 - Esercizi Dualità e Scarti Complementari|Esempio 4 degli Esercizi]] dove si verifica $\bar{x} = (12, 9)$ per il problema dei profumi e si ricava $\bar{y} = (60, 40, 0)$ con $z^* = w^* = 2460$.
 
 ### 4.6.2 Trovare l'ottimo del duale conoscendo quello del primale (e viceversa)
 

@@ -1,5 +1,5 @@
 ## Es1 — Probabilità discreta elementare
-Primo esercizio dello scritto: riconoscere **quale distribuzione discreta** descrive un esperimento con urne, dadi o monete, e applicarne le formule per calcolare una probabilità, una densità, una media o una varianza. La teoria di riferimento è [[Variabili aleatorie discrete]] e le distribuzioni notevoli di [[Cap 3 - Modelli Discreti]].
+Primo esercizio dello scritto: riconoscere **quale distribuzione discreta** descrive un esperimento con urne, dadi o monete, e applicarne le formule per calcolare una probabilità, una densità, una media o una varianza. La teoria di riferimento è [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]] e le distribuzioni notevoli di [[02 - Modelli discreti]].
 ### Riconoscere il modello
 Prima di scrivere una formula, tre domande in quest'ordine:
 
@@ -26,9 +26,9 @@ C'è reinserimento?  (dado / moneta = SEMPRE sì, non si consumano)
 > [!warning] Il bivio del reinserimento decide la distribuzione
 > **Con reinserimento** → l'urna non cambia, prove indipendenti, $p$ costante → **binomiale** se conti i successi, **geometrica** o **binomiale negativa** se conti quante prove servono.
 >
-> **Senza reinserimento** → ogni estrazione modifica l'urna, prove dipendenti → **ipergeometrica**, oppure catena di condizionate $P(A_1)P(A_2|A_1)P(A_3|A_1\cap A_2)$ con la [[Cap 2 - Introduzione alla probabilità#Regola del Prodotto|regola del prodotto]].
+> **Senza reinserimento** → ogni estrazione modifica l'urna, prove dipendenti → **ipergeometrica**, oppure catena di condizionate $P(A_1)P(A_2|A_1)P(A_3|A_1\cap A_2)$ con la [[01 - Introduzione alla probabilità#Regola del Prodotto|regola del prodotto]].
 >
-> **In blocco** (tutte insieme, senza ordine) → sottoinsiemi non ordinati, si conta con $\binom{n}{k}$: [[Cap 2 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
+> **In blocco** (tutte insieme, senza ordine) → sottoinsiemi non ordinati, si conta con $\binom{n}{k}$: [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
 >
 > Dadi e monete sono **sempre** con reinserimento: il dado non si consuma.
 
@@ -45,16 +45,16 @@ Da avere a memoria; costruzione e dimostrazioni nei link sotto la tabella.
 | **Multinomiale**                       | $n$ prove indipendenti con **più di due** esiti                    | $\dfrac{n!}{k_1!\cdots k_m!}p_1^{k_1}\cdots p_m^{k_m}$ | —              | —                                                       |
 | **Poisson**$(\lambda)$                 | conteggi rari                                                      | $\dfrac{\lambda^k}{k!}e^{-\lambda}$                    | $\lambda$      | $\lambda$                                               |
 
-Costruzioni: [[Distribuzioni binomiale e ipergeometrica]], [[Distribuzione geometrica]], [[Distribuzione binomiale negativa]], [[Distribuzione multinomiale]], [[Distribuzioni uniforme discreta e di Poisson]].
+Costruzioni: [[02 - Modelli discreti#Distribuzioni binomiale e ipergeometrica|Distribuzioni binomiale e ipergeometrica]], [[02 - Modelli discreti#Distribuzione geometrica|Distribuzione geometrica]], [[02 - Modelli discreti#Distribuzione binomiale negativa|Distribuzione binomiale negativa]], [[02 - Modelli discreti#Distribuzione multinomiale|Distribuzione multinomiale]], [[02 - Modelli discreti#Distribuzioni uniforme discreta e di Poisson|Distribuzioni uniforme discreta e di Poisson]].
 
 > [!warning] Traslata o no: l'errore che costa più punti
-> Le versioni **traslate** contano il **numero di prove** e partono da $k=1$ (o $k=r$); le versioni non traslate contano il **numero di insuccessi prima** del successo e partono da $k=0$. La differenza sulla media è tra $\frac{1}{p}$ e $\frac{1-p}{p}$ — esattamente una prova. Macci scrive sempre *"binomiale negativa traslata"*: [[Distribuzione binomiale negativa#Calcolo delle densità discrete di $X$ e $Y$|densità di X e Y]].
+> Le versioni **traslate** contano il **numero di prove** e partono da $k=1$ (o $k=r$); le versioni non traslate contano il **numero di insuccessi prima** del successo e partono da $k=0$. La differenza sulla media è tra $\frac{1}{p}$ e $\frac{1-p}{p}$ — esattamente una prova. Macci scrive sempre *"binomiale negativa traslata"*: [[02 - Modelli discreti#Distribuzione binomiale negativa#Calcolo delle densità discrete di $X$ e $Y$|densità di X e Y]].
 
 ### Le serie da riconoscere
 Quando l'evento coinvolge **infinite** prove, la risposta è una serie da costruire, non una formula da tabella.
-**Serie geometrica** — dimostrata in [[Distribuzione geometrica#Formula della serie geometrica|serie geometrica]]:
+**Serie geometrica** — dimostrata in [[02 - Modelli discreti#Formula della serie geometrica|serie geometrica]]:
 $$\sum_{k\ge h}r^{k}=\frac{r^{h}}{1-r}\qquad (|r|<1)$$
-Il punto delicato è **da dove parte l'indice $h$**: si scrive l'evento come unione disgiunta $\bigcup_k\{X=\dots\}$ e solo dopo si somma. Per «servono almeno $j$ prove» c'è già la formula della coda $P(Y\ge j)=(1-p)^{j-1}$: [[Distribuzione geometrica#Formula per la "coda" di una v.a. geometrica (e per la traslata)|formula della coda]].
+Il punto delicato è **da dove parte l'indice $h$**: si scrive l'evento come unione disgiunta $\bigcup_k\{X=\dots\}$ e solo dopo si somma. Per «servono almeno $j$ prove» c'è già la formula della coda $P(Y\ge j)=(1-p)^{j-1}$: [[02 - Modelli discreti#Formula per la "coda" di una v.a. geometrica (e per la traslata)|formula della coda]].
 ### Esercizi svolti — formato 2025-2026
 #### Binomiale — appello del 6 Febbraio 2026
 Si lancia tre volte un dado equo. Calcolare la probabilità che il numero 4 esca almeno due volte.
@@ -97,7 +97,7 @@ Le tracce fino al 2024-25 hanno **tre sotto-domande per esercizio**, quindi copr
 #### Ipergeometrica e varianza — appello del 19 Luglio 2025
 Un'urna ha 4 palline bianche e 4 nere. Si estraggono 3 palline, una alla volta e **senza reinserimento**. Sia $X$ il numero di bianche estratte. **D1)** Probabilità che siano tutte dello stesso colore. **D2)** $\text{Var}[X]$. **D3)** Probabilità della sequenza $(B,N,B)$.
 **Svolgimento**
-**Passo 1 — riconoscere il modello.** L'estrazione è **senza reinserimento**: ogni pallina tolta cambia la composizione dell'urna, quindi le prove *non* sono indipendenti e la binomiale è esclusa. Con due soli tipi di oggetto (bianche/nere) e un numero fisso di estratte, il modello è l'**ipergeometrica**: $X\sim\text{Ipergeometrica}$ con $N=8$ oggetti totali, $K=4$ "buoni" (le bianche), $n=3$ estratti — [[Distribuzioni binomiale e ipergeometrica#Caso 2): distribuzione ipergeometrica|caso ipergeometrico]].
+**Passo 1 — riconoscere il modello.** L'estrazione è **senza reinserimento**: ogni pallina tolta cambia la composizione dell'urna, quindi le prove *non* sono indipendenti e la binomiale è esclusa. Con due soli tipi di oggetto (bianche/nere) e un numero fisso di estratte, il modello è l'**ipergeometrica**: $X\sim\text{Ipergeometrica}$ con $N=8$ oggetti totali, $K=4$ "buoni" (le bianche), $n=3$ estratti — [[02 - Modelli discreti#Caso 2): distribuzione ipergeometrica|caso ipergeometrico]].
 
 **Passo 2 — densità generale.** La probabilità di estrarre esattamente $k$ bianche è
 $$P(X=k)=\frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}.$$
@@ -108,14 +108,14 @@ Via alternativa con le condizionate (non richiede la formula ipergeometrica): $\
 **D2) Varianza.** La varianza ipergeometrica è l'unica formula della tabella che *non* si ricostruisce al volo — va tenuta a memoria:
 $$\text{Var}[X]=n\frac{K}{N}\left(1-\frac{K}{N}\right)\frac{N-n}{N-1}=3\cdot\frac{1}{2}\cdot\frac{1}{2}\cdot\frac{5}{7}=\frac{15}{28}$$
 Il fattore $\frac{N-n}{N-1}$ è la **correzione per popolazione finita**: distingue l'ipergeometrica dalla binomiale e vale meno di 1 perché senza reinserimento la variabilità è minore.
-**D3) Sequenza $(B,N,B)$.** Qui l'ordine è **fissato**, quindi non si usano i binomiali ma si moltiplicano le probabilità passo passo con la [[Cap 2 - Introduzione alla probabilità#Regola del Prodotto|regola del prodotto]]:
+**D3) Sequenza $(B,N,B)$.** Qui l'ordine è **fissato**, quindi non si usano i binomiali ma si moltiplicano le probabilità passo passo con la [[01 - Introduzione alla probabilità#Regola del Prodotto|regola del prodotto]]:
 $$P(A_1\cap A_2\cap A_3)=P(A_1)\,P(A_2\mid A_1)\,P(A_3\mid A_1\cap A_2).$$
 A ogni estrazione il denominatore cala di 1 (una pallina in meno nell'urna) e il numeratore segue il colore richiesto — bianca (4 su 8), poi nera (4 su 7), poi bianca (3 su 6):
 $$P(B_1\cap N_2\cap B_3)=\frac{4}{8}\cdot\frac{4}{7}\cdot\frac{3}{6}=\frac{1}{7}$$
 #### Binomiale negativa — appello del 3 Febbraio 2025
 Un'urna ha 9 palline bianche e 18 nere. Si estraggono palline una alla volta **con reinserimento**. Sia $X$ il numero di palline estratte fino a quando esce per la **seconda** volta una bianca. Calcolare $E[X]$.
 **Svolgimento**
-**Passo 1 — riconoscere il modello.** Con reinserimento l'urna torna sempre uguale, quindi le prove sono **indipendenti** e $p=P(\text{bianca})=\frac{9}{27}=\frac{1}{3}$ resta costante. Non contiamo i successi su prove fisse, ma *quante prove servono* per arrivare al **secondo** successo: è la **binomiale negativa traslata** con $r=2$ (il caso $r=1$ è la geometrica: [[Distribuzione binomiale negativa#Caso $r=1$: recupero della geometrica e della geometrica traslata|con r = 1 si ricade nella geometrica]]).
+**Passo 1 — riconoscere il modello.** Con reinserimento l'urna torna sempre uguale, quindi le prove sono **indipendenti** e $p=P(\text{bianca})=\frac{9}{27}=\frac{1}{3}$ resta costante. Non contiamo i successi su prove fisse, ma *quante prove servono* per arrivare al **secondo** successo: è la **binomiale negativa traslata** con $r=2$ (il caso $r=1$ è la geometrica: [[02 - Modelli discreti#Caso $r=1$: recupero della geometrica e della geometrica traslata|con r = 1 si ricade nella geometrica]]).
 
 **Passo 2 — media generale.** La media della binomiale negativa traslata è
 $$E[X]=\frac{r}{p},$$
@@ -137,13 +137,13 @@ $$P(\text{almeno una})=1-\left(\frac{1}{2}\right)^{4}=1-\frac{1}{16}=\frac{15}{1
 #### Urna a tre colori: multinomiale — appello del 7 Febbraio 2020
 Un'urna ha 2 palline bianche, 2 gialle e 2 rosse. Si estraggono 3 palline, una alla volta e **senza reinserimento**. **D1)** Probabilità di estrarre le due gialle. **D2)** Probabilità di estrarre le due gialle e una rossa, in un qualsiasi ordine.
 **Svolgimento**
-**Passo 1 — impostare lo spazio.** Ci sono **tre** tipi di oggetto (bianche, gialle, rosse), quindi non basta una binomiale/ipergeometrica a due colori: si conta *quante prenderne da ciascun colore*. L'estrazione è in blocco, spazio uniforme, e i modi di scegliere 3 palline su 6 sono $\binom{6}{3}=20$ — [[Cap 2 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazione in blocco]].
+**Passo 1 — impostare lo spazio.** Ci sono **tre** tipi di oggetto (bianche, gialle, rosse), quindi non basta una binomiale/ipergeometrica a due colori: si conta *quante prenderne da ciascun colore*. L'estrazione è in blocco, spazio uniforme, e i modi di scegliere 3 palline su 6 sono $\binom{6}{3}=20$ — [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazione in blocco]].
 
 **Passo 2 — formula generale.** Ogni probabilità è (casi favorevoli)/(casi totali):
 $$P(A)=\frac{\text{favorevoli}}{\binom{6}{3}},$$
 e i favorevoli si contano **colore per colore**, un binomiale per ciascuno, poi moltiplicati (come nell'ipergeometrica multivariata): quante bianche fra le bianche, quante gialle fra le gialle, quante rosse fra le rosse.
 $$\textbf{D1)}\quad \frac{\binom{2}{2}\binom{4}{1}}{\binom{6}{3}}=\frac{4}{20}=\frac{1}{5}\qquad\qquad \textbf{D2)}\quad \frac{\binom{2}{2}\binom{2}{1}\binom{2}{0}}{\binom{6}{3}}=\frac{2}{20}=\frac{1}{10}$$
-In D1 il terzo posto è libero fra le 4 non gialle; in D2 è vincolato a rossa. Lo stesso esercizio **con e senza reinserimento** è in [[Distribuzione multinomiale#Esempio: urna con tre colori (con e senza reinserimento)|urna con tre colori]].
+In D1 il terzo posto è libero fra le 4 non gialle; in D2 è vincolato a rossa. Lo stesso esercizio **con e senza reinserimento** è in [[02 - Modelli discreti#Esempio: urna con tre colori (con e senza reinserimento)|urna con tre colori]].
 
 > [!info] Convenzione del corso
 > «Vengono estratte 2 rosse» sottintende sempre **esattamente** 2 e **in un qualsiasi ordine**, salvo indicazione contraria. Se la traccia elenca una sequenza fra parentesi, l'ordine è fissato.
@@ -175,6 +175,6 @@ $$P(\max=k)=\frac{k-1}{n(n-1)/2}=\frac{2(k-1)}{n(n-1)}$$
 > Verifica che $\sum_{k=1}^{n}\frac{2(k-1)}{n(n-1)}=1$ usando $\sum_{k=1}^{n-1}k=\frac{(n-1)n}{2}$. Quando la richiesta è una **densità discreta completa**, sommare e controllare che faccia 1 intercetta quasi tutti gli errori di conteggio.
 
 ### Collegamenti
-- Teoria di base: [[Variabili aleatorie discrete]], [[Cap 2 - Introduzione alla probabilità#Cenni di calcolo combinatorio|calcolo combinatorio]], [[Cap 2 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
-- Distribuzioni: [[Distribuzioni binomiale e ipergeometrica]], [[Distribuzione geometrica]], [[Distribuzione binomiale negativa]], [[Distribuzione multinomiale]], [[Distribuzioni uniforme discreta e di Poisson]].
+- Teoria di base: [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]], [[01 - Introduzione alla probabilità#Cenni di calcolo combinatorio|calcolo combinatorio]], [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
+- Distribuzioni: [[02 - Modelli discreti#Distribuzioni binomiale e ipergeometrica|Distribuzioni binomiale e ipergeometrica]], [[02 - Modelli discreti#Distribuzione geometrica|Distribuzione geometrica]], [[02 - Modelli discreti#Distribuzione binomiale negativa|Distribuzione binomiale negativa]], [[02 - Modelli discreti#Distribuzione multinomiale|Distribuzione multinomiale]], [[02 - Modelli discreti#Distribuzioni uniforme discreta e di Poisson|Distribuzioni uniforme discreta e di Poisson]].
 - Slot vicini: [[Es2 - Probabilità condizionata]] quando l'esperimento ha due fasi; [[Es3 - Densità congiunta discreta]] che riusa le stesse distribuzioni su due variabili.

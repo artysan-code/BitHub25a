@@ -5,7 +5,6 @@ Possiamo generalizzare l'analisi e la risoluzione di problemi in *step*:
 - **2° Step**, trovare il miglior algoritmo per risolvere $T_{p}$ su Z.
 
 Generalmente lo step più complesso è il primo, creata la struttura dati basta cercare un modello / algoritmo standard avanzato.
-
 #### Un problema reale: Email di Phishing 
 Proviamo a trovare una soluzione algoritmica generica per il problema del phishing:
 - **1° Step**, un utente crea e classifica le email in due sottoinsiemi principali: *Phishing* / *Non-Phishing*.
@@ -16,7 +15,6 @@ Proviamo a trovare una soluzione algoritmica generica per il problema del phishi
 Il 2° Step corrisponde al definire un **Modello Statistico** *M* adatto (Ad esempio una Distribuzione di Probabilità) sull'insieme grezzo di dati (le email) in modo che le informazioni che vogliamo escano come un evento probabile di *M*.
 
 Il 3° Step invece impone di trovare un *giusto* peso o valore per le parole, proporzionale alla probabilità che si tratti di phishing.
-
 ## Data Streams
 In questo caso diversi elementi arrivano in input ad una *rapida frequenza*, da una o più porte di input che chiamiamo *Streams*. Ciascun elemento viene generalmente fornito in t-uples.
 
@@ -30,8 +28,6 @@ Le tipologie di query che possiamo svolgere su una **Data Stream (DS)** possono 
 - *Conteggio degli elementi distinti* (numero di elementi distinti negli ultimi k elementi)
 - *Stima dei momenti* (stima della media e della deviazione standard degli ultimi k elementi)
 - *Individuazione* dei k elementi più frequenti
-
-
 ## Lezione
 #### Page ranking
 Distribuzione Probabilistica di una *Random Walk* cioè un cammino casuale su un *WEB Graph* che è un grafo diretto. Praticamente più un nodo è collegato più ha possibilità di essere scelto, se è isolato no.
@@ -39,10 +35,8 @@ Distribuzione Probabilistica di una *Random Walk* cioè un cammino casuale su un
 Questo misura l'importanza di una pagina *x* rispetto all'intero WEB.
 
 Se fosse basato così, si potrebbe cercare di aumentare gli archi con gli altri nodi per diventare "visibile", quindi quello che sarebbe un *popularity score* sarebbe erroneo.
-
 #### Data Clustering
 Masterizzare in k regioni i dati (riorganizzare i dati diciamo)
-
 ## Probabilità
 Defininiamo una variabile aleatoria r [1, 600], eseguo H(r) e G(r), se sono uguali è corretto sennò è sbagliato.
 

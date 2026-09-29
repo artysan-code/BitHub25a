@@ -256,7 +256,6 @@ $$P_{\text{somma}} = \left\{\begin{array}{ll}
 \end{array}\right\}$$
 
 > **Nota:** la macchina funziona **soltanto** se i due addendi hanno lo stesso numero di cifre. La versione per numeri di lunghezza diversa è trattata nel paragrafo 1.6 della dispensa 1 ed è proposta come esercizio (da svolgere senza consultare la soluzione).
-
 ### Lezione
 Teorema
 $\forall T_{k}=<\Sigma, Q_{k},q_{0},Q_{f},P_{k}>$ una TM a k nastri e testine indipendenti $\exists\ T_{k+1}=<\Sigma\cup[*], Q_{k+1},q_{0},Q_{f},P_{k+1}>$ TM a k+1 nastri e testine solidali tale che $\forall\ x \in \Sigma^*\ [o_{T_{k}}(x)=o_{T_{k+1}}(x)]$, dove $T_{k}$ e $T_{k+1}$ sono [[Fondamenti di Informatica#^d2437d|riconoscitori]].
@@ -289,7 +288,6 @@ $$\begin{array}{l}
 <q_{scrivi}(a,u,z),u,y,q_{ind}(q^{'},1),s> \\
 <q_{ind}(q^{'},1),a,a,q^{'},f> & \forall\ a \in \Sigma\cup \{\square\}
 \end{array}$$
-
 ### Lezione 3 temp so tante lo so
 $$T\implies P$$
 - $\text{P totale}:\forall q\in Q\ s\in \Sigma[\exists(q,s,\dots)]$

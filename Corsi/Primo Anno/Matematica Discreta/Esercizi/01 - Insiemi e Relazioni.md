@@ -7,7 +7,6 @@ Viceversa
 Sia $(x,y)\in(A\times B)\cup(A\times C)\implies$ o $(x,y)\in (A\times B)$ o $(x,y)\in(A\times C)$
 	se $(x,y)\in (A\times B)\implies x\in A$ e $y\in B\implies y\in (B\cup C)\implies(x,y)\in A\times(B\cup C)$
 	se $(x,y)\in (A\times C)\implies x\in A$ e $y\in C\implies y\in (B\cup C)\implies(x,y)\in A\times(B\cup C)\Box$
-
 ## Es. 11
 Quante $f:[3]\rightarrow[4]$ ci sono che sono iniettive?
 
@@ -16,7 +15,6 @@ quindi ci sono 3 possibilità per $f(2)$ (perché $f(1)\not=f(2)$);
 quindi ci sono 2 possibilità per $f(3)$ (perché $f(3)\not=f(1)$ e $f(3)\not=f(2)$).
 
 Pertanto in totale ci sono $4\times 3\times 2=24$ tali funzioni $f$.
-
 ## Es. 12
 Siano $A$,$B$,$C$ insiemi, $C\subseteq A$.  $$(A\cap B)\cup C=A\cap(B\cup C)\quad?$$Dimostrazione
 Sia $x\in(A\cap B)\cup C\implies$ o $x \in (A\cap B)$ o $x\in C$
@@ -29,7 +27,6 @@ Sia $x\in A\cup (B\cap C)\implies$ $x \in A$ e $x\in (B\cup C)\implies$ o $x\in 
 
 Osservazione
 Non si usa $C\subseteq A$ nel viceversa
-
 ## Es.13
 Sia $R$ una relazione su $\mathbb{Z}$ tale che $$mRn\Leftrightarrow \begin{array}{}
 m=n \\ \text{o} \\ m+n=5
@@ -60,7 +57,6 @@ $[a]_{R}=\{b\in\mathbb{Z}:aRb\}=\{b\in\mathbb{Z}:a=b \text{ o } a+b=5\}=\{a,5-a\
 quindi
 $[a]_{R}=\{a,5-a\}\quad\forall a\in \mathbb{Z}$ 
 ($\implies[14]_{R}=\{14,-9\}etc\dots$)
-
 ## Es. 14
 Sia $R$ una relazione su $\mathbb{Z}\times(\mathbb{Z}\setminus\{0\})$ definita ponendo $$(a,b)R(c,d)\Leftrightarrow a\cdot d=b\cdot c\quad\quad\forall (a,b),(c,d)\in\mathbb{Z}\times\mathbb{Z}^{*}$$é una relazione di equivalenza?
 

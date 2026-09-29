@@ -5,7 +5,6 @@ $f$ è una funzione? è suriettiva? è iniettiva?
 - è una funzione
 - è suriettiva (ogni elemento di $B$ appare almeno una volta)
 - NON è iniettiva (c'è qualche elemento di B che appare 2 volte)
-
 ###### Esercizio Svolto
 $f(1)=4\quad f(2)=2\quad f(3)=1\quad f(4)=5\quad f(5)=2\quad$
 $g(1)=4\quad g(2)=3\quad g(3)=5\quad g(4)=2\quad g(5)=1$

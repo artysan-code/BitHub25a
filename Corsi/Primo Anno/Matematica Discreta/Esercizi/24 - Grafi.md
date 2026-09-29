@@ -4,7 +4,6 @@ I grafi $G$ e $H$ sono isomorfi?
 
 No perché $G$ ha cicli di lunghezza 4, mentre $H$ no.
 Alternativamente, $G$ ha 2 cicli di lunghezza 5, $H$ ha (almeno) 7 cicli di lunghezza 5.
-
 ## Es. (colorazione a teoria)
 Sia $G=([10]^3,E)$, dove $$\{(a_{1},a_{2},a_{3}),(b_{1},b_{2},b_{3})\}\in E\iff|\{i\in[3]:a_{i}\not=b_{i}\}|=1\quad\quad\forall(a_{1},a_{2},a_{3}),(b_{1},b_{2},b_{3})\in[10]^3$$
 Quindi , per esempio, $\{(1,2,3),(3,2,3)\}\in E$, ma $\{(1,2,3),(6,2,10)\}\not\in E$.
@@ -27,7 +26,6 @@ d(v)=|\{u\in V:\{u,v\}\in E\}| \\ \\
 \end{array}$$
 Quindi $d(v)=27$. Ma $v$ è qualsiasi $\implies d(u)=27\quad\quad\forall\ u\in V$. Pertanto $$\underset{u\in V}{max}\{d(u)\}+1=27+1=28$$
 Pertanto $\chi(G)\leq 28\implies G$ è colorabile con 28 colori $\implies$con 30 colori.
-
 ## Es. (accoppiamento a teoria)
 Sia $G\in(V,E)$ un grafo bipartito, dove $V=A\uplus B$, $A$ e $B$ sono indipendenti, definito ponendo $$\begin{array}{l}
 A\overset{def}{=}\binom{[n]}{2}, & B\overset{def}{=}\binom{[n]}{3} & (n\in \mathbb{N},n\geq 5) \\

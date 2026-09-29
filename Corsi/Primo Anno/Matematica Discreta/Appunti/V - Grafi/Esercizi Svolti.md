@@ -1,5 +1,4 @@
 #### Esercizio Ricorsioni Lineari
-
 ^2bda40
 
 Risolvere la ricorrenza lineare a coefficiente costanti$$\begin{array}{}

@@ -11,7 +11,6 @@ n=p\cdot q\quad\quad\quad\Phi(n)=(p-1)(q-1) \\
 \implies q=\frac{n+1-\Phi(n)\pm\sqrt{(\Phi(n)-n-1)^2-4n}}{2} \\
 \implies p=\frac{n}{q}
 \end{array}$$
-
 ## Es. (binomiale)
 Quanti sottoinsiemi di $[7]$ ci sono di cardinalità 4?
 
@@ -25,7 +24,6 @@ $$\begin{array}{l}
 =1+6x+15x^2+20x^3+15x^4+6x^5+x^6+x+6x^2+15x^3+20x^4+15x^5+6x^6+x^7 \\
 =\underset{\binom{7}{4}}{\underset{\uparrow}{\underbrace{1+7x+21x^2+35x^3+35x^4+21x^5+7x^6+x^7}}}
 \end{array}$$
-
 ## Es. (inclusione-esclusione)
 Calcolare $|\{A\subseteq[9]:2\notin A \text{ o } 8 \notin A\}|$
 
@@ -45,7 +43,6 @@ infine
 $|X\cap Y|=|\{A\subseteq[9]:2\not\in A\text{ e } 8\not\in A\}|=|\{1,3,4,5,6,7,9\}|=2^7$
 quindi 
 $|\{A\subseteq[9]:2\not\in A\text{ e } 8\not\in A\}=|X\cup Y|=2^8+2^8-2^7=2^7(2+2-1)=3\cdot2^7$
-
 ## Es. (inclusione-esclusione)
 Calcolare $|\{f\in S_{9}:f(2)\not=2\text{ e }f(4)\not= 4\}|$
 
@@ -76,7 +73,6 @@ $|X\cup Y|=8!+8!-7!$
 
 Concludendo
 $|\{f\in S_{9}:f(2)\not=2\text{ e }f(4)\not=4\}|=9!-(|X\cup Y)=9!-8!-8!+7!=7!(9\cdot8-8-8+1)=57\cdot 7!$
-
 ## Es. (inclusione-esclusione)
 Quanti numeri di cellulare ci sono che hanno tre cifre consecutive uguali?
 

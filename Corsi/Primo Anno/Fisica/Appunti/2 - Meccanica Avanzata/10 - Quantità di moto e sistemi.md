@@ -1,4 +1,4 @@
-[[9 - Energia potenziale e forze conservatrici|Lezione Precedente]]
+[[09 - Energia potenziale e forze conservatrici|Lezione Precedente]]
 # Quantità di Moto e Conservazione
 La **quantità di moto** $\vec{p}$​ di un corpo è una grandezza vettoriale definita come il prodotto della sua massa $m$ e della sua velocità istantanea $\vec{v}$:$$\vec{p}​=m\vec{v}$$
 L'unità di misura è $kg\cdot m/s$.

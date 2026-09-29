@@ -1,4 +1,4 @@
-[[6 - Leggi del moto|Lezione Precedente]]
+[[06 - Leggi del moto|Lezione Precedente]]
 # Forze di Attrito
 L'**attrito** è una forza che si oppone al movimento relativo tra due superfici a contatto. Esistono due tipi principali di attrito:
 - *Forza di attrito statico* ($F_s$​): 
@@ -30,5 +30,5 @@ Esempi di forze apparenti includono:
 - **Forza di Coriolis**:
   Agisce su un corpo in movimento all'interno di un sistema di riferimento rotante e ne devia la traiettoria.
 
-[[7A - Equazioni differenziali attrito viscoso|Lezione Successiva]]
+[[07A - Equazioni differenziali attrito viscoso|Lezione Successiva]]
 [[Eserciziario#^4a3424|Esercizi svolti sul capitolo]]

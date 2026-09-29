@@ -1,4 +1,4 @@
-[[1 - Introduzione grandezze fisiche|Lezione Precedente]]
+[[01 - Introduzione grandezze fisiche|Lezione Precedente]]
 # Moto unidimensionale: Concetti di Base
 La **cinematica** è la branca della fisica che studia il movimento dei corpi senza considerare le cause che lo producono. 
 Nel **moto unidimensionale** (o rettilineo), un corpo si muove lungo una linea retta, e la sua posizione in ogni istante $t$ è definita da una coordinata $x(t)$ su un asse orientato.
@@ -25,4 +25,4 @@ In prossimità della superficie terrestre, un corpo in caduta libera (trascurand
 L'equazione del moto può essere utilizzata per calcolare la posizione e la velocità del corpo in ogni istante. 
 Ad esempio, per un corpo lanciato verso l'alto, la velocità diminuisce linearmente fino a zero, e poi aumenta in direzione opposta durante la caduta.
 
-[[3 - Introduzione vettori|Lezione Successiva]]
+[[03 - Introduzione vettori|Lezione Successiva]]

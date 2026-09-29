@@ -1,4 +1,4 @@
-[[5 - Moto relativo|Lezione Precedente]]
+[[05 - Moto relativo|Lezione Precedente]]
 # Le Forze
 La **dinamica** è la branca della fisica che studia le cause del moto dei corpi. 
 Una **forza** è un'interazione tra corpi che può modificare lo stato di moto di un oggetto. 
@@ -36,5 +36,5 @@ dove $T$ è la tensione misurata dal dinamometro e $a_y$​ è l'accelerazione d
 Se l'ascensore accelera verso l'alto $(a_y​>0)$, la tensione è maggiore del peso. 
 Se accelera verso il basso $(a_y​<0)$, la tensione è minore. 
 Se la velocità è costante $(a_y​=0)$, la tensione è uguale al peso.
-[[7 - Applicazioni leggi del moto|Lezione Successiva]]
+[[07 - Applicazioni leggi del moto|Lezione Successiva]]
 [[Eserciziario#^3b4ad7|Esercizi svolti sul capitolo]]

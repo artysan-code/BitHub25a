@@ -1,4 +1,4 @@
-[[7 - Applicazioni leggi del moto|Lezione Precedente]]
+[[07 - Applicazioni leggi del moto|Lezione Precedente]]
 # Attrito Viscoso e Caduta di un Corpo
 In molti problemi di dinamica, specialmente quando un corpo si muove in un fluido come l'aria o l'acqua, oltre alla forza di gravità, è presente una forza di attrito viscoso. 
 Questa forza dipende dalla velocità del corpo.
@@ -27,4 +27,4 @@ La soluzione è data da:$$v_x​(t)=\sqrt{\frac{2mg​​}{D\rho A}}\tanh\left( 
 dove $V_L​=\sqrt{ \frac{2mg}{D\rho A} }$​​ è la velocità limite per questa specifica legge di attrito. 
 Anche in questo caso, la velocità del corpo si avvicina asintoticamente alla velocità limite nel tempo.
 
-[[8 - Lavoro ed energia|Lezione Successiva]]
+[[08 - Lavoro ed energia|Lezione Successiva]]

@@ -1,4 +1,4 @@
-[[4 -Moto Bidimensionale|Lezione Precedente]]
+[[04 - Moto Bidimensionale|Lezione Precedente]]
 # Concetti Fondamentali del Moto Bidimensionale
 Il moto bidimensionale descrive il movimento di un corpo su un piano. 
 Per analizzarlo, si utilizzano le seguenti grandezze vettoriali:
@@ -51,5 +51,5 @@ Nel caso più generale di moto bidimensionale, dove sia il modulo che la direzio
   È legata alla variazione della **direzione della velocità**.$$|\vec{a}_r​|=\frac{v^2}{r}​$$
     dove $r$ è il raggio di curvatura della traiettoria nel punto considerato. L'accelerazione totale è la somma vettoriale di queste due componenti: $\vec{a}=\vec{a}_t​+\vec{a}_r$​.
 
-[[5 - Moto relativo|Lezione Successiva]]
+[[05 - Moto relativo|Lezione Successiva]]
 [[Eserciziario#^b4aa15|Esercizi svolti sul capitolo]]

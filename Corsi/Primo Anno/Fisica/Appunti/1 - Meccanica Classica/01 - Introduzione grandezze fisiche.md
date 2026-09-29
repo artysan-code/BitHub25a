@@ -39,5 +39,5 @@ L'**arrotondamento** è il processo di ridurre il numero di cifre significative.
 Se la cifra da eliminare è compresa tra 0 e 4, si lascia invariata la cifra precedente; 
 se è compresa tra 5 e 9, si aumenta di uno la cifra precedente.
 
-[[2 - Cinematica e moto rettilineo|Lezione Successiva]]
+[[02 - Cinematica e moto rettilineo|Lezione Successiva]]
 [[10 - Quantità di moto e sistemi|Macro Argomento Succesivo]]

@@ -1,4 +1,4 @@
-[[8 - Lavoro ed energia|Lezione Precedente]]
+[[08 - Lavoro ed energia|Lezione Precedente]]
 # Energia Potenziale e Forze Conservative
 Una forza è **conservativa** se il lavoro che compie su un corpo che si sposta da un punto A a un punto B è indipendente dal percorso seguito e dipende solo dai punti iniziale e finale. 
 Questo ha una conseguenza fondamentale: il lavoro compiuto da una forza conservativa su un qualsiasi percorso chiuso è nullo. 

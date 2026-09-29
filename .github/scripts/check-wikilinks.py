@@ -16,7 +16,7 @@ import sys
 from fnmatch import fnmatch
 
 SCAN_DIRS = ("Corsi", "Hackathons")
-EXCLUDE_SUBSTR = ("/.obsidian/", "/.github/", "/.trash/")
+EXCLUDE_SUBSTR = ("/.obsidian/", "/.github/", "/.trash/", "/node_modules/", "/graphify-out/")  # dipendenze e output generati, solo locali
 EXCLUDE_BASENAMES = set()  # nessun file escluso per nome
 
 # Note personali volutamente non versionate (vedi .gitignore): esistono in locale

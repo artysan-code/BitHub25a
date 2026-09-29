@@ -17,7 +17,6 @@ La funzione $g$ **non si sceglie**: è scritta dentro le parentesi di $E[\cdots]
 
 > [!warning] La trappola numero uno: $E[g(X)]\ne g(E[X])$
 > La media di una funzione **non** è la funzione della media: $E[X^2]\ne(E[X])^2$ e $E\!\left[\frac1{X^2}\right]\ne\frac1{E[X]^2}$. Devi mettere $g$ **dentro** l'integrale, non calcolare prima $E[X]$ e poi applicargli $g$. La differenza fra $E[X^2]$ e $(E[X])^2$ è esattamente la [[#Formule di appoggio|varianza]].
-
 ### L'unica formula che serve
 $$E[g(X)]=\int_{-\infty}^{+\infty}g(x)f_X(x)\,dx$$
 
@@ -61,7 +60,6 @@ Se si elevasse al quadrato questo valore si otterrebbe $(E[X])^{2}=\left(\frac13
 
 > [!info] Questo esercizio è caduto due volte, identico
 > Stessa densità, stessa richiesta, stesso risultato negli appelli di **febbraio e giugno 2026**. Non è una coincidenza isolata: è il motivo per cui il drill sugli appelli rende più della teoria. Vedi [[01 - Probabilità discreta elementare|Es1]] per altri esempi di ripetizione.
-
 #### $E[1/X^2]$ con uniforme — appello del 20 Febbraio 2026
 Sia $X\sim U(1,5)$. Calcolare $E\!\left[\frac{1}{X^{2}}\right]$.
 **Svolgimento**
@@ -124,7 +122,6 @@ che è esattamente il risultato da verificare. La costante di normalizzazione no
 
 > [!info] Guardare la coppia $g\cdot f_X$ prima di integrare
 > Le tracce sono costruite perché il prodotto $g(x)f_X(x)$ si semplifichi in qualcosa di elementare. Se l'integrale che stai per fare sembra difficile — integrazione per parti, sostituzioni — quasi certamente hai sbagliato a impostarlo.
-
 #### Risultato che non dipende dal parametro — appello del 3 Febbraio 2025
 Sia $\alpha>0$ e $f_X(x)=\alpha x^{\alpha-1}\mathbb{1}_{(0,1)}(x)$. Sia $r>0$. Calcolare $E[X^{\alpha r}]$ e verificare che non dipende da $\alpha$.
 **Svolgimento**

@@ -10,7 +10,6 @@ Appunti sul secondo blocco del corso (lezioni 12-14) — valore medio, momenti, 
 8. [[03 - Speranza matematica e momenti#Retta di regressione|Retta di regressione]] — metodo dei minimi quadrati, formule per le due rette di regressione, passaggio per $(\mathbb{E}[X_{1}],\mathbb{E}[X_{2}])$ ed esercizio completo.
 ## Nota sulla struttura
 Blocco successivo a [[02 - Modelli discreti]], che raccoglie i modelli discreti. I marcatori `--- Fine lezione NN ---` conservano la corrispondenza con i PDF in `Materiale Didattico/Slide/6 CFU/`.
-
 ## Speranza matematica di una variabile aleatoria discreta
 Definizione di $\mathbb{E}[X]$, condizione di esistenza, proprietà (linearità, monotonia) e formula per la speranza di una trasformazione.
 > [!info] Sinonimi
@@ -35,14 +34,12 @@ Al contrario esistono insiemi limitati non finiti: si pensi a intervalli limitat
 - **(Monotonia)** Supponiamo che $X(w)\geq Y(w)$ per ogni $w\in\ohm$. Allora, se $X$ e $Y$ hanno speranza matematica finita, si ha $\mathbb{E}[X]\geq \mathbb{E}[Y]$. (In realtà basta avere $P(X\geq Y)=1$.)
 > [!warning] Attenzione
 > La linearità **non** richiede l'indipendenza; la formula del prodotto **sì**.
-
 ### Proposizione (speranza di una trasformazione)
 Sia $\underline{X}$ una v.a. discreta $m$-dimensionale con [[02 - Modelli discreti#Densità congiunta e densità marginali|densità congiunta]] $P_{\underline{X}}$. Sia $f:\mathbb{R}^{m}\to \mathbb{R}$ e sia $Y=f(\underline{X})$. Allora, se $Y$ ha speranza matematica finita, si ha $$\begin{bmatrix}
 \mathbb{E}[Y]=\sum_{\underline{x}_{k}\in \delta_{\underline{X}}}f(\underline{x}_{k})P_{\underline{X}}(\underline{x}_{k})
 \end{bmatrix}$$(per $m=1$ si ha una densità discreta non congiunta, perché $\underline{X}$ è una v.a. unidimensionale).
 > [!quote] Commento
 > In altri termini **non serve conoscere esplicitamente la densità discreta $P_{Y}$ della v.a. $Y$**, ma basta fare riferimento a $P_{\underline{X}}$ (oltre che ad $f$).
-
 #### Dimostrazione
 Si ha $$\begin{array}{ll}
 \mathbb{E}[Y] & =\displaystyle\sum_{y_{h}\in \delta_{Y}}y_{h}\underset{=P(Y=y_{h})}{\underbrace{P_{Y}(y_{h})}}=\sum_{y_{h}\in \delta_{Y}}y_{h}P\left( \bigcup_{\underline{x}_{k}\in \delta_{\underline{X}}\ :\ f(\underline{x}_{k})=y_{h}}\{\underline{X}=\underline{x}_{k}\} \right) \\
@@ -87,7 +84,6 @@ Usando la proposizione possiamo **evitare di trattare con $P_{Y}(y)$** e possiam
 > Nell'elenco dei valori di $P_{\underline{X}}$ (lezione 12, ultima pagina) la coppia $(3,1)$ compare due volte: la prima delle sei deve essere $(2,1)$, come conferma il calcolo successivo, dove il primo addendo è $(2-1)\frac{2}{12}$.
 
 --- Fine lezione 12 ---
-
 ## Speranza matematica delle distribuzioni discrete notevoli
 Calcolo di $\mathbb{E}[X]$ per bernoulliana, binomiale, ipergeometrica, Poisson, geometrica (e traslata), binomiale negativa (e traslata).
 > [!quote] Tabella riassuntiva
@@ -101,12 +97,10 @@ Calcolo di $\mathbb{E}[X]$ per bernoulliana, binomiale, ipergeometrica, Poisson,
 > X\sim BIN\text{-}NEG(r,p) & \mathbb{E}[X]=r\left( \frac{1}{p}-1 \right) \\
 > Y\sim BIN\text{-}NEG\text{-}traslata(r,p) & \mathbb{E}[Y]=\frac{r}{p}
 > \end{array}$$
-
 ### 1) Distribuzione bernoulliana: $X\sim B(p)$
 $\delta_{X}=\{0,1\}$ è un insieme finito, quindi la [[03 - Speranza matematica e momenti#Definizione|condizione $(*)$]] è verificata. Con $P_{X}(0)=1-p$ e $P_{X}(1)=p$ si ha $$\mathbb{E}[X]=0\cdot P_{X}(0)+1\cdot P_{X}(1)=0\cdot(1-p)+1\cdot p=\begin{bmatrix}p\end{bmatrix}$$
 > [!quote] Conseguenza importante
 > Se $X=1_{A}$ (funzione indicatrice dell'evento $A\in\mathcal{A}$), allora $$\mathbb{E}[1_{A}]=P(A)$$
-
 ### 2) Distribuzione binomiale: $X\sim BIN(n,p)$
 $\delta_{X}=\{0,1,\dots,n\}$ è un insieme finito, quindi $(*)$ è verificata. Si ha $$\begin{array}{ll}
 \mathbb{E}[X] & =\displaystyle\sum_{k=0}^{n}k\binom{n}{k}p^{k}(1-p)^{n-k}=\sum_{k=1}^{n}\cancel{k}\frac{n!}{\cancel{k!}(n-k)!}p^{k}(1-p)^{n-k} \\
@@ -153,7 +147,6 @@ Y=\underset{GeoTraslata(p)\text{ indip.}}{\underbrace{Y_{1}+\dots+Y_{r}}} & \imp
 #### Verifica di coerenza
 I valori ottenuti $\mathbb{E}[Y]=\frac{r}{p}$ e $\mathbb{E}[X]=r\left( \frac{1}{p}-1 \right)$ sono in accordo con altre formule. Infatti si ha $Y=X+r$, da cui segue (per linearità) $\mathbb{E}[Y]=\mathbb{E}[X+r]=\mathbb{E}[X]+r$. In effetti $$\underset{=\frac{r}{p}}{\underbrace{\mathbb{E}[Y]}}=\underset{=r\left( \frac{1}{p}-1 \right)=\frac{r}{p}-\cancel{r}+\cancel{r}}{\underbrace{\mathbb{E}[X]+r}}\quad\text{ok}$$
 --- Fine parte sulle speranze notevoli (lezione 13, pp. 1-9) ---
-
 ## Varianza e momenti di una variabile aleatoria discreta
 Definizione di momento e momento centrato, varianza e scarto quadratico medio, proprietà, disuguaglianza di Chebyshev e formule di calcolo.
 > [!info] Valgono in generale
@@ -168,7 +161,6 @@ La **varianza** di $X$ è (se esiste finita) il momento centrato di ordine $2$: 
 \end{bmatrix}$$
 > [!info] Terminologia
 > Si usa il termine **scarto quadratico medio** di una v.a. $X$ per $\sqrt{\text{Var}[X]}$.
-
 ### Proprietà della varianza
 Per la [[Speranza matematica di una variabile aleatoria discreta#Alcune proprietà di $\mathbb{E}[X]$|monotonia del valore medio]], ed essendo $(X-\mathbb{E}[X])^{2}\geq 0$, si ha $$\mathbb{E}[(X-\mathbb{E}[X])^{2}]\geq \mathbb{E}[0]\quad\implies\quad \text{Var}[X]\geq 0$$In realtà si può dire di più: $$\text{Var}[X]=0\iff X\text{ è una v.a. costante}\iff X=\mathbb{E}[X]$$dove per "costante" si intende il caso in cui esiste $x_{0}\in \mathbb{R}$ tale che $P_{X}(x_{0})=1$; in corrispondenza si ha $x_{0}=\mathbb{E}[X]$.
 > [!info] Minimo ma non massimo
@@ -177,7 +169,6 @@ Per la [[Speranza matematica di una variabile aleatoria discreta#Alcune propriet
 In ogni modo possiamo dire che:
 - varianza **piccola** $\to$ distribuzione concentrata vicino alla media;
 - varianza **grande** $\to$ distribuzione non concentrata vicino alla media.
-
 ### Disuguaglianza di Chebyshev
 Per comprendere meglio il legame tra varianza e concentrazione presentiamo il seguente risultato.
 > [!quote] Disuguaglianza di Chebyshev
@@ -196,7 +187,6 @@ Per il caso generale il procedimento è simile. Partiamo dalla definizione, usan
 Valgono non solo per il caso discreto.
 > [!info] Notazione
 > Nel seguito si scrive $\mathbb{E}^{2}[X]$ anziché $(\mathbb{E}[X])^{2}$.
-
 #### 1) Formula alternativa: $\text{Var}[X]=\mathbb{E}[X^{2}]-\mathbb{E}^{2}[X]$
 $$\text{Var}[X]=\mathbb{E}[(X-\mathbb{E}[X])^{2}]=\mathbb{E}[X^{2}-2X\cdot \mathbb{E}[X]+\mathbb{E}^{2}[X]]\overset{\text{lin.}}{=}\mathbb{E}[X^{2}]-2\underset{=\mathbb{E}^{2}[X]}{\underbrace{\mathbb{E}[X]\cdot \mathbb{E}[X]}}+\mathbb{E}^{2}[X]=\begin{bmatrix}\mathbb{E}[X^{2}]-\mathbb{E}^{2}[X]\end{bmatrix}$$(si è usata la [[Speranza matematica di una variabile aleatoria discreta#Alcune proprietà di $\mathbb{E}[X]$|linearità]] e il fatto che $\mathbb{E}[X]$ è una costante).
 #### 2) $\text{Var}[aX]=a^{2}\text{Var}[X]$ (per $a\in \mathbb{R}$)
@@ -205,7 +195,6 @@ $$\text{Var}[X]=\mathbb{E}[(X-\mathbb{E}[X])^{2}]=\mathbb{E}[X^{2}-2X\cdot \math
 $$\text{Var}[X+a]=\mathbb{E}[(X+a-\underset{=\mathbb{E}[X]+a}{\underbrace{\mathbb{E}[X+a]}})^{2}]=\mathbb{E}[(X+\cancel{a}-\mathbb{E}[X]-\cancel{a})^{2}]=\mathbb{E}[(X-\mathbb{E}[X])^{2}]=\text{Var}[X]$$(anche in questo caso si può fare una dimostrazione alternativa con la formula alternativa).
 > [!quote] Interpretazione
 > Traslando la v.a. di una costante $a$, la densità si sposta rigidamente (da $x_{k}$ a $x_{k}+a$) e la media si sposta con essa (da $\mathbb{E}[X]$ a $\mathbb{E}[X]+a$). In entrambi i casi la distribuzione si "disperde" rispetto alla propria media nello stesso modo: quindi non sorprende che si abbia la stessa varianza.
-
 ## Covarianza di variabili aleatorie discrete
 Varianza di una somma, definizione di covarianza, formule di calcolo, interpretazione geometrica ed esercizio riassuntivo.
 ### Varianza di una somma e introduzione alla covarianza
@@ -239,7 +228,6 @@ $$\text{Cov}(X,X)=\mathbb{E}[(X-\mathbb{E}[X])(X-\mathbb{E}[X])]=\mathbb{E}[(X-\
 
 > [!warning] La covarianza può essere negativa
 > A differenza della varianza, la covarianza può assumere **anche valori negativi**.
-
 ### Interpretazione geometrica (caso discreto)
 Ci limitiamo al caso discreto, anche se ragionamenti simili valgono nel caso generale. Dalla [[#1) Formula alternativa: $\text{Cov}(X_{1},X_{2})=\mathbb{E}[X_{1}X_{2}]-\mathbb{E}[X_{1}]\mathbb{E}[X_{2}]$|definizione]] si ha $$\text{Cov}(X_{1},X_{2})=\sum_{x_{1},x_{2}}(x_{1}-\mathbb{E}[X_{1}])(x_{2}-\mathbb{E}[X_{2}])\underset{\geq 0}{\underbrace{P_{X_{1},X_{2}}(x_{1},x_{2})}}$$Sul piano $(x_{1},x_{2})$ le rette $x_{1}=\mathbb{E}[X_{1}]$ e $x_{2}=\mathbb{E}[X_{2}]$ individuano quattro quadranti (numerati $\text{I}^{\circ},\text{II}^{\circ},\text{III}^{\circ},\text{IV}^{\circ}$ in senso antiorario a partire da quello in alto a destra). Poiché la probabilità è $\geq 0$, il segno di ogni addendo dipende dal prodotto $(x_{1}-\mathbb{E}[X_{1}])(x_{2}-\mathbb{E}[X_{2}])$:
 - addendi **positivi** $\to$ punti $(x_{1},x_{2})$ nel $\text{I}^{\circ}$ e nel $\text{III}^{\circ}$ quadrante;
@@ -268,7 +256,6 @@ P_{X_{2}}(2)=P_{\underline{X}}(0,2)=\frac{1}{5}
 > Quando si parlerà di **rette di regressione** si potrà dire che $\text{Cov}(X_{1},X_{2})<0$ non sorprende.
 
 --- Fine lezione 13 ---
-
 ## Indipendenza e covarianza
 Legame tra indipendenza e covarianza nulla: l'implicazione vale in un verso solo, con un controesempio per il verso opposto.
 ### Proposizione (indipendenza $\implies$ covarianza nulla)
@@ -286,12 +273,10 @@ Presentiamo una classe di controesempi (ce ne sono anche altri) per cui $$\text{
 - $X$ è una v.a. **simmetrica** (cioè tale che $X$ e $-X$ sono equidistribuite; se $X$ è discreta, $X$ e $-X$ hanno la stessa densità discreta);
 - $X^{2}$ ha speranza matematica finita;
 - $X^{2}$ **non** è una v.a. costante (infatti si può dimostrare che ogni v.a. costante è indipendente da qualunque altra v.a.).
-
 #### I momenti dispari di una v.a. simmetrica sono nulli
 Se $X$ è simmetrica si ha $\mathbb{E}[X^{k}]=0$ per ogni $k$ intero **dispari**. Infatti $$\mathbb{E}[X^{k}]=\sum_{x_{h}\in \delta_{X}}x_{h}^{k}P_{X}(x_{h})=0\quad\text{perché:}$$
 - se si ha $x_{h}=0$, l'addendo $x_{h}^{k}P_{X}(x_{h})=0^{k}\cdot P_{X}(0)=0$;
 - se si ha l'addendo $x_{h}^{k}P_{X}(x_{h})$ con $x_{h}>0$, c'è anche l'addendo con il suo opposto $\underset{=-x_{h}^{k}\ (k\text{ dispari})}{\underbrace{(-x_{h})^{k}}}\underset{=P_{X}(x_{h})\ (\text{simmetria})}{\underbrace{P_{X}(-x_{h})}}=-x_{h}^{k}P_{X}(x_{h})$ e quindi si semplifica con $x_{h}^{k}P_{X}(x_{h})$.
-
 #### La covarianza è nulla
 $$\text{Cov}(X_{1},X_{2})=\text{Cov}(X,X^{2})=\underset{=\mathbb{E}[X^{3}]=0}{\underbrace{\mathbb{E}[X\cdot X^{2}]}}-\underset{=0}{\underbrace{\mathbb{E}[X]}}\ \mathbb{E}[X^{2}]=0$$dove $\mathbb{E}[X^{3}]=0$ e $\mathbb{E}[X]=0$ perché $3$ e $1$ sono dispari (momenti dispari nulli).
 #### Ma $X$ e $X^{2}$ non sono indipendenti
@@ -300,7 +285,6 @@ Basta trovare $x_{1},x_{2}$ tali che $P_{\underline{X}}(x_{1},x_{2})\neq P_{X_{1
 Sia $X$ tale che $$P_{X}(2)=P_{X}(-2)=\frac{1}{10},\quad P_{X}(1)=P_{X}(-1)=\frac{3}{10},\quad P_{X}(0)=\frac{2}{10}$$($X$ è effettivamente simmetrica). La densità di $X^{2}$ è $$P_{X^{2}}(4)=P_{X}(2)+P_{X}(-2)=\frac{2}{10}=\frac{1}{5},\quad P_{X^{2}}(1)=P_{X}(1)+P_{X}(-1)=\frac{6}{10}=\frac{3}{5},\quad P_{X^{2}}(0)=P_{X}(0)=\frac{2}{10}=\frac{1}{5}$$(la somma fa 1). In generale, per $k$ dispari, il momento $k$-esimo è nullo: $$\mathbb{E}[X^{k}]=(-2)^{k}\cdot \frac{1}{10}+(-1)^{k}\cdot \frac{3}{10}+\underset{=0}{\underbrace{0\cdot \frac{2}{10}}}+1^{k}\cdot \frac{3}{10}+2^{k}\cdot \frac{1}{10}=-2^{k}\cdot \frac{1}{10}-\frac{3}{10}+0+\frac{3}{10}+2^{k}\cdot \frac{1}{10}=0$$In particolare $\mathbb{E}[X]=0$ e $\mathbb{E}[X^{3}]=0$, mentre $\mathbb{E}[X^{2}]=0\cdot \frac{1}{5}+1\cdot \frac{3}{5}+4\cdot \frac{1}{5}=\frac{7}{5}$. Quindi $$\text{Cov}(X,X^{2})=\underset{=\mathbb{E}[X^{3}]=0}{\underbrace{\mathbb{E}[X\cdot X^{2}]}}-\underset{=0}{\underbrace{\mathbb{E}[X]}}\ \mathbb{E}[X^{2}]=0$$Verifichiamo che **non** c'è indipendenza, ad esempio con la coppia $(2,4)$: $$P_{X,X^{2}}(2,4)=P(\{X=2\}\cap\{X^{2}=4\})=P(X=2)=\frac{1}{10}$$mentre $$P_{X}(2)\cdot P_{X^{2}}(4)=\frac{1}{10}\left( \frac{1}{10}+\frac{1}{10} \right)=\frac{1}{10}\cdot \frac{2}{10}=\frac{2}{100}\neq \frac{1}{10}$$Sono diversi, e questo basta. (Si può verificare anche con una coppia diversa da $(2,4)$: ad esempio $P_{X,X^{2}}(0,0)\neq P_{X}(0)P_{X^{2}}(0)$.)
 
 --- Fine parte su indipendenza e covarianza (lezione 14, pp. 1-6) ---
-
 ## Varianza delle distribuzioni discrete notevoli
 Calcolo di $\text{Var}[X]$ per bernoulliana, binomiale, ipergeometrica, Poisson, geometrica (e traslata), binomiale negativa (e traslata), con esempio sul confronto tra estrazioni con e senza reinserimento.
 > [!quote] Tabella riassuntiva
@@ -320,7 +304,6 @@ In tutti i calcoli si usa la [[Varianza e momenti di una variabile aleatoria dis
 Con $\mathbb{E}[X]=p$ (già visto) e $\mathbb{E}[X^{2}]=1^{2}\cdot p+0^{2}\cdot(1-p)=p$ si ha $$\text{Var}[X]=\mathbb{E}[X^{2}]-\mathbb{E}^{2}[X]=p-p^{2}=\begin{bmatrix}p(1-p)\end{bmatrix}$$In particolare, se $X=1_{A}$, si ha $\text{Var}[1_{A}]=P(A)(1-P(A))$.
 > [!info] Perché $\mathbb{E}[X^{2}]=\mathbb{E}[X]$
 > Si vede che $X^{2}(w)=X(w)$ per ogni $w\in\ohm$, perché l'equazione $y^{2}=y$ ha soluzioni $y=0$ e $y=1$ (i soli valori assunti). Quindi $\mathbb{E}[X^{2}]=\mathbb{E}[X]=p$.
-
 ### 2) Distribuzione binomiale: $X\sim BIN(n,p)$
 Il calcolo diretto di $\mathbb{E}[X^{2}]=\sum_{k=0}^{n}k^{2}\binom{n}{k}p^{k}(1-p)^{n-k}$ sarebbe un po' complicato. Usiamo invece il **metodo alternativo**: come visto per la media, $X=X_{1}+\dots+X_{n}$ dove $X_{1},\dots,X_{n}$ sono **i.i.d.** (indipendenti e identicamente distribuite) e [[02 - Modelli discreti#Distribuzione Bernoulliana|bernoulliane]] di parametro $p$. Allora, per l'[[03 - Speranza matematica e momenti#Conseguenza (varianza di una somma di v.a. indipendenti)|indipendenza]], $$\text{Var}[X]=\sum_{i=1}^{n}\text{Var}[X_{i}]=\underset{n\text{ volte}}{\underbrace{p(1-p)+\dots+p(1-p)}}=\begin{bmatrix}np(1-p)\end{bmatrix}$$
 ### 3) Distribuzione ipergeometrica
@@ -328,7 +311,6 @@ Ricordiamo lo schema: $n$ estrazioni **senza** reinserimento con $2\leq n<n_{1}+
 Con il **metodo alternativo** (che non dimostriamo del tutto) si scrive $X=X_{1}+\dots+X_{n}$ con $X_{i}\sim B(p)$ ma **non** indipendenti. Allora $$\text{Var}[X]=\sum_{i=1}^{n}\underset{=p(1-p)}{\underbrace{\text{Var}[X_{i}]}}+2\underset{i<j}{\sum_{i,j=1}^{n}}\underset{\text{tutte uguali tra loro e negative}}{\underbrace{\text{Cov}(X_{i},X_{j})}}<np(1-p)$$Facendo i calcoli si dimostra che $$\begin{bmatrix}\text{Var}[X]=np(1-p)\frac{n_{1}+n_{2}-n}{n_{1}+n_{2}-1}\end{bmatrix}$$(avendo usato $1-p=\frac{n_{2}}{n_{1}+n_{2}}$).
 > [!info] Confronto con e senza reinserimento
 > Essendo $1<n<n_{1}+n_{2}$, si ha $\frac{n_{1}+n_{2}-n}{n_{1}+n_{2}-1}\in(0,1)$, in accordo con $\text{Var}[X]<np(1-p)$. Se $n_{1}+n_{2}$ è molto più grande di $n$ il rapporto è vicino a 1 ("poca differenza" con il caso con reinserimento). Quindi nel confronto tra estrazioni "con" e "senza" reinserimento si hanno **medie uguali** (valore comune $n\frac{n_{1}}{n_{1}+n_{2}}$) e **varianze diverse** (varianza più piccola nel caso senza reinserimento).
-
 ### 4) Distribuzione di Poisson: $X\sim POISSON(\lambda)$
 Con $\mathbb{E}[X]=\lambda$ (già visto) e $\mathbb{E}[X^{2}]=\sum_{k\geq 0}k^{2}\frac{\lambda^{k}}{k!}e^{-\lambda}$, il risultato si prende per buono: $$\begin{bmatrix}\text{Var}[X]=\lambda\end{bmatrix}$$(quindi per la [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]] media e varianza coincidono).
 ### 5) Distribuzione geometrica: $X\sim Geo(p)$
@@ -342,7 +324,6 @@ Y=\underset{\text{i.i.d.}\sim GeoTraslata(p)}{\underbrace{Y_{1}+\dots+Y_{r}}} & 
 \end{array}$$
 > [!info] Coerenza
 > Si è ottenuto $\text{Var}[Y]=\text{Var}[X]$, in accordo con $Y=X+r$: sommando una costante la varianza non cambia.
-
 ### Esempio (urna, con e senza reinserimento)
 Un'urna ha 3 palline bianche e 4 nere. Si estraggono 2 palline a caso, una alla volta e con/senza reinserimento. Sia $X$ la v.a. che conta il numero di palline bianche estratte. Calcolare $\mathbb{E}[X]$ e $\text{Var}[X]$.
 Qui $n_{1}=3$, $n_{2}=4$, $n=2$, $p=\frac{n_{1}}{n_{1}+n_{2}}=\frac{3}{7}$. $$\begin{array}{l|ll}
@@ -356,7 +337,6 @@ Qui $n_{1}=3$, $n_{2}=4$, $n=2$, $p=\frac{n_{1}}{n_{1}+n_{2}}=\frac{3}{7}$. $$\b
 **Caso senza reinserimento** (ipergeometrica): con $P_{X}(k)=\frac{\binom{3}{k}\binom{4}{2-k}}{\binom{7}{2}}$ si ha $P_{X}(0)=\frac{6}{21}=\frac{2}{7}$, $P_{X}(1)=\frac{12}{21}=\frac{4}{7}$, $P_{X}(2)=\frac{3}{21}=\frac{1}{7}$, da cui $$\mathbb{E}[X]=0\cdot \frac{2}{7}+1\cdot \frac{4}{7}+2\cdot \frac{1}{7}=\frac{6}{7}$$ $$\text{Var}[X]=\mathbb{E}[X^{2}]-\mathbb{E}^{2}[X]=0^{2}\cdot \frac{2}{7}+1^{2}\cdot \frac{4}{7}+2^{2}\cdot \frac{1}{7}-\left( \frac{6}{7} \right)^{2}=\frac{8}{7}-\frac{36}{49}=\frac{56-36}{49}=\frac{20}{49}\quad\text{ok}$$
 
 --- Fine parte sulle varianze notevoli (lezione 14, pp. 7-14) ---
-
 ## Coefficiente di correlazione
 Versione normalizzata della covarianza, sempre compresa tra $-1$ e $1$, che misura il grado di relazione lineare tra due variabili aleatorie.
 ### Definizione
@@ -365,13 +345,11 @@ Siano $X_{1},X_{2}$ due v.a. definite su uno stesso spazio di probabilità, con 
 \end{bmatrix}$$
 > [!info] Segno
 > Poiché il denominatore è positivo, $\rho(X_{1},X_{2})\gtrless 0\iff \text{Cov}(X_{1},X_{2})\gtrless 0$: il coefficiente di correlazione ha lo **stesso segno** della covarianza.
-
 ### Proprietà
 #### 1) $|\rho(X_{1},X_{2})|\leq 1$
 Cioè $-1\leq\rho(X_{1},X_{2})\leq 1$, perché si può dimostrare che $$|\text{Cov}(X_{1},X_{2})|\leq \sqrt{\text{Var}[X_{1}]\text{Var}[X_{2}]}$$
 > [!quote] Cauchy-Schwarz
 > Questa può essere vista come una versione della disuguaglianza di **Cauchy-Schwarz** per spazi vettoriali, $|\langle v_{1},v_{2}\rangle|\leq\|v_{1}\|\,\|v_{2}\|$, con la covarianza nel ruolo del prodotto scalare e la varianza in quello del quadrato della norma.
-
 #### 2) $\rho(X_{1},X_{2})=1\iff X_{2}=aX_{1}+b$ con $a>0$
 #### 3) $\rho(X_{1},X_{2})=-1\iff X_{2}=aX_{1}+b$ con $a<0$
 Quindi $|\rho|=1$ corrisponde al caso di **perfetta relazione affine** tra $X_{1}$ e $X_{2}$: i punti $(x_{1},x_{2})$ con densità positiva sono tutti allineati su una retta, crescente se $\rho=1$ ($a>0$) e decrescente se $\rho=-1$ ($a<0$).
@@ -381,7 +359,6 @@ Quindi $|\rho|=1$ corrisponde al caso di **perfetta relazione affine** tra $X_{1
 Quanto $\rho$ è vicino a $\pm 1$ è una misura di quanto la nube dei punti è vicina a una situazione di allineamento perfetto su una retta (crescente o decrescente); si veda [[03 - Speranza matematica e momenti#Commenti conclusivi sull'esercizio|l'esercizio sulle rette di regressione]] per un caso con $\rho$ vicino a $+1$.
 
 --- Fine parte sul coefficiente di correlazione (lezione 14, pp. 15-16) ---
-
 ## Retta di regressione
 Retta che approssima meglio il legame tra due variabili aleatorie con il metodo dei minimi quadrati, con le formule per i coefficienti ed esempi.
 ### Impostazione

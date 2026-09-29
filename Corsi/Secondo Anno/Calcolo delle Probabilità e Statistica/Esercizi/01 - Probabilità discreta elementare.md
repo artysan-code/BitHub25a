@@ -31,7 +31,6 @@ C'è reinserimento?  (dado / moneta = SEMPRE sì, non si consumano)
 > **In blocco** (tutte insieme, senza ordine) → sottoinsiemi non ordinati, si conta con $\binom{n}{k}$: [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
 >
 > Dadi e monete sono **sempre** con reinserimento: il dado non si consuma.
-
 ### Distribuzioni discrete notevoli
 Da avere a memoria; costruzione e dimostrazioni nei link sotto la tabella.
 
@@ -49,7 +48,6 @@ Costruzioni: [[02 - Modelli discreti#Distribuzioni binomiale e ipergeometrica|Di
 
 > [!warning] Traslata o no: l'errore che costa più punti
 > Le versioni **traslate** contano il **numero di prove** e partono da $k=1$ (o $k=r$); le versioni non traslate contano il **numero di insuccessi prima** del successo e partono da $k=0$. La differenza sulla media è tra $\frac{1}{p}$ e $\frac{1-p}{p}$ — esattamente una prova. Macci scrive sempre *"binomiale negativa traslata"*: [[02 - Modelli discreti#Distribuzione binomiale negativa#Calcolo delle densità discrete di $X$ e $Y$|densità di X e Y]].
-
 ### Le serie da riconoscere
 Quando l'evento coinvolge **infinite** prove, la risposta è una serie da costruire, non una formula da tabella.
 **Serie geometrica** — dimostrata in [[02 - Modelli discreti#Formula della serie geometrica|serie geometrica]]:
@@ -91,7 +89,6 @@ $$\sum_{k\ge2}\left(\frac{1}{4}\right)^{k}=\frac{(1/4)^{2}}{1-1/4}=\frac{1/16}{3
 
 > [!warning] Dove si sbaglia
 > Il punto delicato è **da dove parte l'indice** ($h$). Facendo partire la somma da $k=1$ si include $2k=2$, cioè il secondo lancio, che la traccia esclude: verrebbe $\sum_{k\ge1}\left(\frac{1}{4}\right)^{k}=\frac{1/4}{3/4}=\frac{1}{3}$. Tutta la difficoltà dell'esercizio sta in quel «diverso dal secondo»: la densità e la serie sono identiche, cambia **solo** l'indice di partenza $h$.
-
 ### Esercizi svolti — varianti dagli appelli precedenti
 Le tracce fino al 2024-25 hanno **tre sotto-domande per esercizio**, quindi coprono più casi con le stesse tecniche.
 #### Ipergeometrica e varianza — appello del 19 Luglio 2025
@@ -133,7 +130,6 @@ $$P(\text{almeno una})=1-\left(\frac{1}{2}\right)^{4}=1-\frac{1}{16}=\frac{15}{1
 
 > [!info] Regola pratica
 > Ogni volta che compare **«almeno uno»**, scrivere subito $1-P(\text{nessuno})$. Vale anche senza reinserimento, dove $P(\text{nessuno})$ diventa una catena di condizionate.
-
 #### Urna a tre colori: multinomiale — appello del 7 Febbraio 2020
 Un'urna ha 2 palline bianche, 2 gialle e 2 rosse. Si estraggono 3 palline, una alla volta e **senza reinserimento**. **D1)** Probabilità di estrarre le due gialle. **D2)** Probabilità di estrarre le due gialle e una rossa, in un qualsiasi ordine.
 **Svolgimento**
@@ -147,7 +143,6 @@ In D1 il terzo posto è libero fra le 4 non gialle; in D2 è vincolato a rossa. 
 
 > [!info] Convenzione del corso
 > «Vengono estratte 2 rosse» sottintende sempre **esattamente** 2 e **in un qualsiasi ordine**, salvo indicazione contraria. Se la traccia elenca una sequenza fra parentesi, l'ordine è fissato.
-
 #### Conteggio diretto: nessuna distribuzione — appello del 21 Febbraio 2020
 Si lancia 3 volte un dado equo. Calcolare la probabilità che la somma dei tre numeri sia uguale a 4.
 **Svolgimento**
@@ -173,7 +168,6 @@ $$P(\max=k)=\frac{k-1}{n(n-1)/2}=\frac{2(k-1)}{n(n-1)}$$
 
 > [!info] Il controllo che fa il prof
 > Verifica che $\sum_{k=1}^{n}\frac{2(k-1)}{n(n-1)}=1$ usando $\sum_{k=1}^{n-1}k=\frac{(n-1)n}{2}$. Quando la richiesta è una **densità discreta completa**, sommare e controllare che faccia 1 intercetta quasi tutti gli errori di conteggio.
-
 ### Collegamenti
 - Teoria di base: [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]], [[01 - Introduzione alla probabilità#Cenni di calcolo combinatorio|calcolo combinatorio]], [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
 - Distribuzioni: [[02 - Modelli discreti#Distribuzioni binomiale e ipergeometrica|Distribuzioni binomiale e ipergeometrica]], [[02 - Modelli discreti#Distribuzione geometrica|Distribuzione geometrica]], [[02 - Modelli discreti#Distribuzione binomiale negativa|Distribuzione binomiale negativa]], [[02 - Modelli discreti#Distribuzione multinomiale|Distribuzione multinomiale]], [[02 - Modelli discreti#Distribuzioni uniforme discreta e di Poisson|Distribuzioni uniforme discreta e di Poisson]].

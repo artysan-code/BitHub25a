@@ -5,7 +5,6 @@ Appunti sul **Capitolo 5** del corso (lezione 22): il comportamento della somma/
 3. [[05 - Convergenze e approssimazioni#Approssimazione Normale e correzione di continuità|Approssimazione Normale e correzione di continuità]] — uso pratico del TLC, con la correzione per v.a. a valori interi.
 ## Nota sulla struttura
 Blocco successivo a [[04 - Modelli continui]]. È il **Capitolo 5** del corso. I marcatori `--- Fine lezione NN ---` conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Slide/6 CFU/`.
-
 ## Legge dei grandi numeri
 Per una successione di v.a. i.i.d., la media aritmetica delle prime $n$ variabili si concentra sulla media comune $\mu$.
 ### La media campionaria
@@ -28,7 +27,6 @@ Aggiungiamo l'ipotesi di **varianza finita** $\sigma^{2}$. Allora $$\mathbb{E}[\
 > Per un [[04 - Modelli continui#Il processo di Poisson|processo di Poisson]] di intensità $\lambda$, con $T_{n}=S_{1}+\dots+S_{n}$ e $\{S_{m}\}$ i.i.d. $\sim Exp(\lambda)$: poiché $\frac{T_{n}}{n}=\overline{S}_{n}$, il $\mu$ è $\mathbb{E}[S_{m}]=\frac{1}{\lambda}$.
 
 --- Fine parte sulla legge dei grandi numeri (lezione 22) ---
-
 ## Teorema del limite centrale
 La somma standardizzata di $n$ v.a. i.i.d. tende alla Normale standard.
 ### Enunciato
@@ -39,12 +37,10 @@ La somma standardizzata di $n$ v.a. i.i.d. tende alla Normale standard.
 > - "**Centrale**" $=$ "importante". Poiché $\mathbb{E}[X_{1}+\dots+X_{n}]=n\mu$ e $\text{Var}[X_{1}+\dots+X_{n}]=n\sigma^{2}$, la quantità $\frac{X_{1}+\dots+X_{n}-n\mu}{\sigma\sqrt{n}}$ è la **somma standardizzata** (media $0$, varianza $1$).
 > - Compare **sempre** la funzione $\Phi$ (vedi [[04 - Modelli continui#Distribuzione normale|Normale]]), qualunque sia la distribuzione comune.
 > - Se le $X_{n}$ sono già $N(\mu,\sigma^{2})$, per la [[04 - Modelli continui#Combinazioni lineari di normali indipendenti|combinazione lineare di Normali]] il risultato è **esatto per ogni $n$**.
-
 ### Formulazione con le medie
 Dividendo numeratore e denominatore per $n$ si ottiene lo stesso evento con la [[05 - Convergenze e approssimazioni#La media campionaria|media campionaria]]: $$\frac{X_{1}+\dots+X_{n}-n\mu}{\sigma\sqrt{n}}=\frac{\overline{X}_{n}-\mu}{\sigma/\sqrt{n}}\qquad\Longrightarrow\qquad \lim_{n\to\infty}P\left( \frac{\overline{X}_{n}-\mu}{\sigma/\sqrt{n}}\leq x \right)=\Phi(x)$$
 > [!info] Altre formulazioni
 > $$\lim_{n\to\infty}P\left( \frac{X_{1}+\dots+X_{n}-n\mu}{\sigma\sqrt{n}}\geq x \right)=1-\Phi(x)$$ $$\lim_{n\to\infty}P\left( a\leq \frac{X_{1}+\dots+X_{n}-n\mu}{\sigma\sqrt{n}}\leq b \right)=\Phi(b)-\Phi(a)\qquad(a<b)$$ (le disuguaglianze possono essere strette; ognuna ha la versione "con le medie").
-
 ### Esercizi (forma limite)
 > [!example] $\{X_{n}\}$ i.i.d. $\sim U(0,2a)$: $\lim_{n}P(X_{1}+\dots+X_{n}>na+x\sqrt{n})$
 > $\mu=a$, $\sigma^{2}=\frac{(2a)^{2}}{12}=\frac{a^{2}}{3}$, $\sigma=\frac{a}{\sqrt{3}}$. Standardizzando: $$P(X_{1}+\dots+X_{n}>na+x\sqrt{n})\xrightarrow[n\to\infty]{}1-\Phi\left( \frac{\sqrt{3}\,x}{a} \right)$$Per averlo uguale a $1-\Phi\left( \frac{1}{2} \right)$ si impone $\frac{\sqrt{3}\,x}{a}=\frac{1}{2}$, cioè $\begin{bmatrix}x=\frac{a}{2\sqrt{3}}\end{bmatrix}$.
@@ -53,7 +49,6 @@ Dividendo numeratore e denominatore per $n$ si ottiene lo stesso evento con la [
 > $\mu=\frac{1}{4}$, $\sigma=\frac{1}{4}$. Trovare $z>0$ con $\lim_{n}P\left( \left| \frac{X_{1}+\dots+X_{n}-n/4}{\sqrt{n}} \right|\leq \frac{2}{3} \right)=2\Phi(z)-1$. Standardizzando (dividendo per $\sigma=\frac{1}{4}$) e usando $|u|\leq c\iff -c\leq u\leq c$: il limite è $\Phi\left( \frac{8}{3} \right)-\Phi\left( -\frac{8}{3} \right)=2\Phi\left( \frac{8}{3} \right)-1$. Per iniettività di $\Phi$: $\begin{bmatrix}z=\frac{8}{3}\end{bmatrix}$.
 
 --- Fine parte sul teorema del limite centrale (lezione 22) ---
-
 ## Approssimazione Normale e correzione di continuità
 Applicazione del TLC per calcolare in modo approssimato probabilità su somme di tante v.a. i.i.d.
 ### Approssimazione Normale
@@ -63,7 +58,6 @@ Applicazione del TLC per calcolare in modo approssimato probabilità su somme di
 Sono **approssimazioni**, esatte solo se le $X_{i}$ sono già Normali. In pratica si standardizza e si usa $\Phi$.
 > [!example] Somma di Gamma
 > $X_{1},\dots,X_{100}$ i.i.d. $\sim Gamma(2,4)$: $\mu=\frac{\alpha}{\beta}=\frac{1}{2}$, $\sigma^{2}=\frac{\alpha}{\beta^{2}}=\frac{1}{8}$, $\sigma=\frac{1}{2\sqrt{2}}$. Con $n=100$: $$P(X_{1}+\dots+X_{100}>60)\approx 1-\Phi(2\sqrt{2})$$ (analogamente $P(42<\dots<48)\approx\Phi(\tfrac{8}{5}\sqrt{2})-\Phi(\tfrac{2}{5}\sqrt{2})$).
-
 ### Correzione di continuità
 Quando le $X_{i}$ (con $n$ grande) assumono **valori interi**, al valore intero $k$ si associa l'intervallo $(k-0{,}5,\ k+0{,}5)$: $$\{X_{1}+\dots+X_{n}>k\}=\{\dots\geq k+1\}=\{\dots>k+0{,}5\}\qquad \{X_{1}+\dots+X_{n}\geq k\}=\{\dots>k-0{,}5\}$$(analogamente per intervalli limitati: $\{a\leq\dots\leq b\}\to\{a-0{,}5<\dots<b+0{,}5\}$).
 > [!example] De Moivre–Laplace: approssimare una Binomiale

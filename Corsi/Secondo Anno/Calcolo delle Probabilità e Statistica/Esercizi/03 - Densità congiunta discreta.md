@@ -24,7 +24,6 @@ Cioè: qualunque cosa venga chiesta, si tratta di **capire quali coppie $(x_1,x_
 > allora la densità vive **solo** sulla diagonale $x_1=x_2$ e sulla riga $x_2=0$: la coppia $(2,5)$ ha probabilità zero.
 >
 > Prima di sommare qualsiasi cosa, disegnare o immaginare dove sta il supporto. Quasi tutti gli errori di questo esercizio nascono dal sommare su coppie che non esistono, o dal dimenticarne di valide.
-
 ### Le quattro richieste possibili
 **Marginale** — si somma sull'altra variabile, facendola sparire:
 $$p_{X_1}(x_1)=\sum_{x_2}p_{X_1,X_2}(x_1,x_2)$$
@@ -45,7 +44,6 @@ $$\sum_{k\ge h}r^{k}=\frac{r^{h}}{1-r}\qquad(|r|<1)$$
 > Le densità sono scritte apposta perché la serie **non parta da zero**: compaiono $\frac{\lambda^{x_2-x_1}}{(x_2-x_1)!}$ o $\frac{3^{h-1}}{(h-1)!}$. Si pone $h=x_2-x_1$ (oppure $h=h-1$) e la somma torna nella forma standard, con risultato $e^{\lambda}$.
 >
 > Riconoscere che una somma vale **esattamente 1** perché è una densità di Poisson o geometrica su tutto il suo supporto è la mossa che chiude metà degli Es3.
-
 ### Esercizi svolti — formato 2025-2026
 #### Condizionata su un supporto sparso — appello del 6 Febbraio 2026
 Sia $q\in(0,1)$. Densità congiunta:
@@ -105,7 +103,6 @@ Il conto torna: nessuna delle sette coppie è stata dimenticata né contata due 
 
 > [!info] Il controllo che costa dieci secondi
 > $\frac{1}{2}+\frac{1}{4}+\frac{1}{4}=1$. Quando la richiesta è **la densità di $Y$**, la somma dei valori trovati deve fare 1 — se non torna, hai perso una coppia o ne hai contata una due volte.
-
 #### Marginale e coda — appello del 19 Giugno 2026
 Siano $q\in(0,1)$ e $\lambda>0$. Densità congiunta:
 $$p_{X_1,X_2}(x_1,x_2)=(1-q^2)^{x_1}q^2\frac{\lambda^{x_2-x_1}}{(x_2-x_1)!}e^{-\lambda}\qquad\text{per }x_2\ge x_1\ge0$$
@@ -212,7 +209,6 @@ $$P(X_1X_2=0)=\underbrace{q}_{\text{Passo 4}}+\underbrace{q^2}_{\text{Passo 5}}-
 
 > [!warning] Prodotto uguale a zero significa unione, non intersezione
 > $X_1X_2=0$ vale quando **almeno una** delle due è nulla. Sommare $P(X_1=0)+P(X_2=0)$ senza sottrarre l'intersezione conta due volte la coppia $(0,0)$.
-
 #### Densità simbolica a tabella — appello del 23 Febbraio 2021
 La densità è data per valori simbolici: $p_{X_1,X_2}(0,0)=q_{00}$, $p_{X_1,X_2}(0,1)=q_{01}$, $p_{X_1,X_2}(1,0)=q_{10}$, $p_{X_1,X_2}(1,2)=q_{12}$, $p_{X_1,X_2}(2,1)=q_{21}$, tutti positivi e con somma 1.
 **D5)** Trovare la densità di $Y=X_1+X_2$. **D6)** Calcolare $P(X_1>X_2|X_1+X_2>1)$.
@@ -234,16 +230,13 @@ $$P(X_1>X_2\mid X_1+X_2>1)=\frac{q_{21}}{q_{12}+q_{21}}$$
 
 Con una densità simbolica non c'è nessun conto numerico da fare: tutta la difficoltà dell'esercizio sta nell'**elencare correttamente le coppie** che soddisfano ciascuna condizione.
 ### Trappole ricorrenti
-
 - **Sommare fuori dal supporto**: la densità vale zero sulle coppie non elencate. Se il supporto è $x_2\ge x_1$, la coppia $(3,1)$ non contribuisce.
 - **Dimenticare l'intersezione dei pezzi**: quando la densità è definita a pezzi (diagonale + riga), la coppia comune — tipicamente $(0,0)$ — appartiene a entrambi. Va contata una volta sola, e con la formula giusta.
 - **Prodotto nullo = unione**: $\{X_1X_2=0\}=\{X_1=0\}\cup\{X_2=0\}$, quindi inclusione-esclusione.
 - **Valori non raggiungibili**: nella densità di $Y$ vanno indicati **solo** i valori che $Y$ assume davvero. Scrivere $p_Y(2)=0$ non è sbagliato, ma dimenticare che $p_Y(3)$ esiste sì.
 - **Cambio di indice nelle serie**: $\sum_{h\ge1}\frac{3^{h-1}}{(h-1)!}$ non è $e^3-1$, è $e^3$ — perché sostituendo $j=h-1$ la somma riparte da $j=0$. Sbagliare qui manda a monte tutto il denominatore.
 - **Fattorizzazione = indipendenza**: se la densità si scrive come prodotto di una funzione di $x_1$ per una di $x_2$ (supporto rettangolare compreso), le variabili sono indipendenti e ogni marginale si legge direttamente.
-
 ### Collegamenti
-
 - Serie e distribuzioni: [[02 - Modelli discreti#Formula della serie geometrica|serie geometrica]], [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]], [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]].
 - Teoria delle condizionate: [[01 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|probabilità condizionate]], e [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenza]] per il criterio di fattorizzazione.
 - Slot vicini: [[01 - Probabilità discreta elementare|Es1]] fa la modellizzazione che qui è già data dalla traccia; [[02 - Probabilità condizionata]] usa le stesse condizionate su eventi anziché su variabili; [[04 - Trasformazione di variabile continua]] fa la stessa operazione di trasformazione, ma nel continuo.

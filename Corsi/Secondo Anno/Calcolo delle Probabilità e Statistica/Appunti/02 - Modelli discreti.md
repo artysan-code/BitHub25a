@@ -11,7 +11,6 @@ Appunti sui **modelli discreti** del corso (lezioni 05-12), organizzati nelle se
 9. [[02 - Modelli discreti#Massimi e minimi di variabili aleatorie discrete|Massimi e minimi di variabili aleatorie discrete]] — densità di $\max$ e $\min$ tra v.a. indipendenti.
 ## Nota sulla struttura
 Il prof tratta questi argomenti come un unico capitolo (Capitolo 3). I marcatori `--- Fine lezione NN ---` all'interno delle sezioni conservano la corrispondenza con i PDF delle lezioni in `Materiale Didattico/Slide/6 CFU/`.
-
 ## Variabili aleatorie discrete
 Nozioni generali sulle variabili aleatorie: definizione, funzione di distribuzione, densità discreta.
 In questo capitolo tratteremo essenzialmente Variabili Aleatorie Discrete (spesso definite su [[01 - Introduzione alla probabilità#Fenomeni aleatori e spazio di probabilità|spazi di probabilità]] ($\ohm,\mathcal{A},P$) con $r$ discreto, cioè finito o numerabile).
@@ -111,7 +110,6 @@ Dal grafico (caso $n=3$) si vede che $$\underset{=P_{X}(x_{1})+P_{X}(x_{2})+P_{X
 Nel caso in cui $\delta_{X}$ è *infinito numerabile* la casistica è più varia e ci possono essere casi molto complicati. Qui faccio riferimento a due casi (soprattutto il primo ci interessa in vista di ciò che vedremo con le distribuzioni di Poisson e geometriche)
 1) $\delta_{X}=\{x_{e},x_{e}+1,x_{e}+2,\dots\}$
 2) $\delta_{X}=\left\{ 1,\frac{1}{2},\frac{1}{3},\dots,\frac{1}{n},\dots\right\}$
-
 ## Distribuzioni binomiale e ipergeometrica
 Schemi successo-fallimento su un numero finito di prove: distribuzione bernoulliana, binomiale e ipergeometrica.
 #### Introduzione alle distribuzioni notevoli
@@ -379,7 +377,6 @@ Se si considerasse il caso di estrazioni **con** reinserimento si avrebbe $X\sim
 > Le ultime pagine della lezione 06 (pp. 20–23) contengono due esercizi di riepilogo "con agganci con argomenti passati" (lanci ripetuti di un dado equo; lanci ripetuti di una coppia di dadi), che combinano distribuzione binomiale, indipendenza e probabilità condizionata. Sono esercizi puri e non aggiungono teoria: la loro sede è la cartella `Esercizi/`.
 
 --- Fine lezione 06 ---
-
 ## Distribuzione multinomiale
 Generalizzazione della binomiale a $r$ risultati possibili per prova, e coefficiente multinomiale.
 #### Distribuzione multinomiale
@@ -444,7 +441,6 @@ Pensiamo a 6 risultati possibili tutti con probabilità $\frac{1}{6}$. Abbiamo l
 \text{per }k=2,4,5,6\ (4\text{ casi}) & P(\text{"2 volte }\boxed{1}\text{, 1 volta }\boxed{3}\text{, 2 volte }\boxed{k}\text{"})=\frac{5!}{2!\,1!\,2!\,0!\,0!\,0!}\left( \frac{1}{6} \right)^{5}=\frac{5}{1296} \\
 \text{per }\{k,h\}\subset\{2,4,5,6\}\ \left( \binom{4}{2}=6\text{ casi} \right) & P(\text{"2 volte }\boxed{1}\text{, 1 volta }\boxed{3}\text{, 1 volta }\boxed{k}\text{, 1 volta }\boxed{h}\text{"})=\frac{5!}{2!\,1!\,1!\,1!\,0!\,0!}\left( \frac{1}{6} \right)^{5}=\frac{10}{1296}
 \end{array}$$La probabilità richiesta è $$4\cdot \frac{5}{1296}+6\cdot \frac{10}{1296}=\frac{20+60}{1296}=\frac{80}{1296}=\frac{5}{81}$$che è lo stesso risultato visto prima.
-
 ## Distribuzioni uniforme discreta e di Poisson
 Distribuzione uniforme discreta, distribuzione di Poisson e approssimazione poissoniana della [[02 - Modelli discreti#Caso 1): distribuzione binomiale|binomiale]].
 #### Prossimi argomenti (altre distribuzioni discrete notevoli)
@@ -525,7 +521,6 @@ P(N=n|X=k) & =\frac{P(X=k|N=n)P(N=n)}{P(X=k)}=\frac{\binom{n}{k}p^{k}(1-p)^{n-k}
 \frac{(\lambda(1-p))^{n-k}}{(n-k)!}e^{-\lambda(1-p)} & \text{per }n\geq k\text{ intero} \\
 0 & \text{altrimenti}
 \end{cases}$$è la densità discreta di $Z+k$, dove $Z\sim POISSON(\lambda(1-p))$.
-
 ## Distribuzione geometrica
 Distribuzione geometrica e geometrica traslata: densità, formula per la coda, mancanza di memoria.
 #### Distribuzione geometrica (e distribuzione geometrica traslata)
@@ -592,7 +587,6 @@ $$P(X=k+h|X\geq h)=\frac{P(\{X=k+h\}\cap\{X\geq h\})}{P(X\geq h)}\underset{\{X=k
 > Le pp. 13–21 della lezione 08 contengono tre esercizi sulla geometrica traslata (lanci ripetuti di un dado equo; urna con 5 palline numerate; lanci ripetuti di due dadi equi), risolti con la formula per la coda e con la somma di serie geometriche su sottoinsiemi di indici (numeri pari, dispari, multipli di 3). Sono esercizi puri: la loro sede è la cartella `Esercizi/`.
 
 --- Fine lezione 08 ---
-
 ## Distribuzione binomiale negativa
 Generalizzazione della [[02 - Modelli discreti#Distribuzione geometrica|geometrica]] al "successo $r$-simo": densità discreta, versione traslata e recupero della geometrica per $r=1$.
 ### Impostazione
@@ -610,7 +604,6 @@ Y\text{ ha distribuzione \textbf{binomiale negativa traslata} con parametri }r\t
 \end{cases}$$
 > [!warning] Attenzione ai libri
 > In altri libri le terminologie potrebbero essere scambiate (stessa avvertenza già vista per la [[02 - Modelli discreti#Terminologia|geometrica]]). Per evitare ambiguità possiamo distinguere i due casi con riferimento al fatto che **$X$ parte da zero** e **$Y$ parte da $r$**.
-
 #### Osservazioni sui casi limite
 - Il caso $p=0$ si esclude per i motivi visti nel caso della geometrica e della geometrica traslata (in generale si avrà certamente fallimento in ogni prova, e quindi non si arriverà mai al successo $r$-simo).
 - Il caso $p=1$ è consentito ma è banale. Infatti si avrà certamente successo in ogni prova, e quindi $P(X=0)=1$ e $P(Y=r)=1$: $$\underset{r\text{ volte}}{\underbrace{S,\dots,S}}\quad\quad\begin{array}{l}
@@ -623,7 +616,6 @@ Consideriamo la sequenza $(\underset{k\text{ volte}}{\underbrace{F,\dots,F}},\un
 Ci si convince che ogni altra sequenza con $k$ volte "$F$" e $r$ volte "$S$" ha la stessa probabilità. Quindi $$P_{X}(k)=\underset{b_{r,k}\text{ volte}}{\underbrace{p^{r}(1-p)^{k}+\dots+p^{r}(1-p)^{k}}}=b_{r,k}\,p^{r}(1-p)^{k}\quad\quad(\forall\ k\geq 0\text{ intero})$$dove $b_{r,k}=\#$ sequenze con $k$ volte "$F$" e $r$ volte "$S$", **e che finiscono con "$S$"**.
 > [!info] Perché "che finiscono con S"
 > L'evento $\{X=k\}$ richiede che il successo $r$-simo cada esattamente all'ultima prova: se la sequenza finisse con $F$, il successo $r$-simo si sarebbe già verificato prima e i fallimenti contati non sarebbero quelli "prima del successo $r$-simo".
-
 #### Calcolo di $b_{r,k}$
 Consideriamo la seguente corrispondenza biunivoca: $$\left\{ \begin{array}{l}
 \text{stringhe con }k\text{ volte "}F\text{" e }r\text{ volte "}S\text{"} \\
@@ -694,13 +686,11 @@ X=X_{1}+\dots+X_{r} & \text{e si può dimostrare che }X_{1},\dots,X_{r}\text{ so
 \end{array}$$
 > [!quote] In sintesi
 > Una binomiale negativa (traslata) di parametri $r$ e $p$ è la **somma di $r$ geometriche (traslate) indipendenti** di parametro $p$. È coerente con la [[02 - Modelli discreti#Proprietà della "mancanza di memoria"|mancanza di memoria]]: dopo ogni successo il conteggio "riparte da zero".
-
 #### Rivisitazione di un esercizio fatto in passato
 Avevamo dimostrato che $$P(Y_{1}=k|Y_{1}+Y_{2}=n)=\frac{1}{n-1}\quad\quad\text{per }k\in\{1,\dots,n-1\}\text{ con }n\geq 2$$Ora recuperiamo questo risultato tenendo conto di quanto detto qui: essendo $Y_{1},Y_{2}$ indipendenti $GeoTraslata(p)$, la somma $Y_{1}+Y_{2}$ è una $BIN\text{-}NEG\text{-}traslata(r=2,p)$ e quindi $P(Y_{1}+Y_{2}=n)=\binom{n-1}{2-1}p^{2}(1-p)^{n-2}=(n-1)p^{2}(1-p)^{n-2}$. Allora $$\begin{array}{ll}
 P(Y_{1}=k|Y_{1}+Y_{2}=n) & =\frac{P(\{Y_{1}=k\}\cap\{Y_{1}+Y_{2}=n\})}{P(Y_{1}+Y_{2}=n)}=\frac{P(\{Y_{1}=k\}\cap\{Y_{2}=n-k\})}{\binom{n-1}{2-1}p^{2}(1-p)^{n-2}}\underset{\text{indip.}}{=}\frac{P(Y_{1}=k)P(Y_{2}=n-k)}{(n-1)p^{2}(1-p)^{n-2}} \\
  & =\frac{(1-p)^{k-1}\cancel{p}(1-p)^{n-k-1}\cancel{p}}{(n-1)\cancel{p^{2}}(1-p)^{n-2}}=\frac{\cancel{(1-p)^{n-2}}}{(n-1)\cancel{(1-p)^{n-2}}}=\frac{1}{n-1}
 \end{array}$$in accordo con quanto già dimostrato.
-
 ## Variabili aleatorie multidimensionali discrete
 Densità congiunta e densità marginali, legame tra le due, e indipendenza tra variabili aleatorie discrete.
 > [!info] Perimetro del corso
@@ -771,7 +761,6 @@ P_{\underline{X}}(x_{1},\dots,x_{m})=P_{X_{1}}(x_{1})\cdot\dots\cdot P_{X_{m}}(x
 \end{bmatrix}$$per ogni $(x_{1},\dots,x_{m})\in \mathbb{R}^{m}$.
 > [!quote] Commento
 > **La congiunta è il prodotto delle marginali.**
-
 ##### Dimostrazione
 $(\implies)$ Consideriamo la definizione di famiglia di v.a. indipendenti scegliendo, per ogni $(x_{1},\dots,x_{m})\in \mathbb{R}^{m}$, gli insiemi $A_{1}=\{x_{1}\},\dots,A_{m}=\{x_{m}\}$. Allora, poiché si ha $$\underset{=P(\underline{X}=\underline{x})=P_{\underline{X}}(\underline{x})}{\underbrace{P(\{X_{1}\in A_{1}\}\cap\dots\cap\{X_{m}\in A_{m}\})}}=\underset{=P(X_{1}=x_{1})\cdot\dots\cdot P(X_{m}=x_{m})=P_{X_{1}}(x_{1})\cdot\dots\cdot P_{X_{m}}(x_{m})}{\underbrace{P(X_{1}\in A_{1})\cdot\dots\cdot P(X_{m}\in A_{m})}}$$abbiamo quanto desideravamo.
 $(\impliedby)$ Supponiamo che la densità congiunta sia uguale al prodotto delle densità marginali. Allora, per ogni $A_{1},\dots,A_{m}\subset \mathbb{R}$, $$\begin{array}{ll}
@@ -782,13 +771,11 @@ P(\{X_{1}\in A_{1}\}\cap\dots\cap\{X_{m}\in A_{m}\}) & =P((X_{1},\dots,X_{m})\in
 > [!warning] Come si usa in pratica
 > Per stabilire se c'è indipendenza si verifica la condizione $P_{\underline{X}}(x_{1},x_{2})=P_{X_{1}}(x_{1})P_{X_{2}}(x_{2})$ solo sui punti del supporto: in tutti gli altri casi si ha $0=0\cdot 0$ e la condizione è automaticamente verificata.
 > In generale, **se c'è una sola coppia per cui non vale l'uguaglianza richiesta, allora non c'è indipendenza**.
-
 #### Commento generale (criterio del prodotto cartesiano)
 Se l'insieme $\{(x_{1},\dots,x_{m}):P_{\underline{X}}(x_{1},\dots,x_{m})>0\}$ **non** è un prodotto cartesiano, allora **non** c'è indipendenza.
 In generale non vale il viceversa: cioè è possibile costruire esempi in cui non c'è indipendenza ma quell'insieme è un prodotto cartesiano.
 > [!info] Perché il criterio funziona
 > Se manca un "punto" per completare il prodotto cartesiano, in quel punto si ha $P_{\underline{X}}(\underline{x})=0$ mentre il prodotto delle marginali è $\neq 0$ (perché ciascun fattore è $\neq 0$): la condizione di indipendenza è quindi violata proprio lì.
-
 ##### Esempio (il viceversa non vale)
 Presi $a,b\in \mathbb{R}$ con $a<b$, sia $$P_{\underline{X}}(a,a)=P_{\underline{X}}(b,b)=\frac{1}{3}\quad\quad P_{\underline{X}}(a,b)=P_{\underline{X}}(b,a)=\frac{1}{6}$$(è ben posta). Le marginali di $X_{1}$ e $X_{2}$ sono $$\begin{array}{l|l}
 P_{X_{1}}(a)=\frac{1}{3}+\frac{1}{6}=\frac{1}{2} & P_{X_{2}}(a)=\frac{1}{3}+\frac{1}{6}=\frac{1}{2} \\
@@ -798,12 +785,10 @@ P_{X_{1}}(b)=\frac{1}{6}+\frac{1}{3}=\frac{1}{2} & P_{X_{2}}(b)=\frac{1}{6}+\fra
 > Le pp. 10-13 e 16-23 della lezione 10 contengono esercizi su densità congiunte discrete, marginali e verifica dell'indipendenza (fra cui l'urna con le palline $0,1,1,2$ e una congiunta di tipo geometrico). Sono esercizi puri: la loro sede è la cartella `Esercizi/`.
 
 --- Fine lezione 10 ---
-
 ## Trasformazioni e somme di variabili aleatorie discrete
 Come si calcola la densità discreta di $\underline{Y}=f(\underline{X})$, con il caso particolare delle **somme** di v.a. indipendenti (binomiali e poissoniane).
 > [!info] Notazione
 > In questa parte si considerano v.a. discrete multidimensionali, e quindi con le notazioni di vettore $\underline{X}=(X_{1},\dots,X_{m})$. Poi, se la dimensione è 1 (quindi $m=1$), si recupera il caso "non multidimensionale" come caso particolare.
-
 ### Proposizione (densità di una trasformazione)
 Sia $\underline{X}:\ohm\to \mathbb{R}^{m}$ una v.a. discreta $m$-dimensionale. Poi sia $f:A\subset \mathbb{R}^{m}\to \mathbb{R}^{n}$ una funzione. Allora, se $\delta_{\underline{X}}\subset A$, la funzione $\underline{Y}=f\circ \underline{X}:\ohm\to \mathbb{R}^{n}$ è una v.a. **discreta** $n$-dimensionale ($\underline{Y}$ è detta **trasformazione** della v.a. $\underline{X}$).
 Inoltre per le densità discrete di $\underline{X}$ e $\underline{Y}$ vale la seguente uguaglianza: $$\begin{bmatrix}
@@ -831,7 +816,6 @@ P_{Y}(y)=\sum_{\underline{x}\in \delta_{\underline{X}}\ :\ x_{1}+\dots+x_{m}=y}P
 \end{bmatrix}$$Vedremo ora alcuni casi specifici con $m=2$; in particolare, per alcuni casi tra questi, il passaggio da $m=2$ a $m$ generico sarà semplice procedendo per induzione.
 > [!warning] Nota sulla notazione dei parametri
 > Nei casi 2 e 3 che seguono il numero di prove delle binomiali è indicato qui con $n_{1},n_{2}$ (e $n_{1},\dots,n_{m}$ nel caso generale), per non confonderlo con la dimensione $m$ del vettore. Sulle slide manoscritte la lettera usata per questi parametri è la stessa impiegata per la dimensione.
-
 #### Caso specifico 1 (lancio di due dadi equi)
 $$P_{\underline{X}}(x_{1},x_{2})=\frac{1}{36}\quad\quad\forall\ \underline{x}=(x_{1},x_{2})\in\{1,\dots,6\}\times\{1,\dots,6\}$$Sia $Y=X_{1}+X_{2}$, con $\delta_{Y}=\{2,3,4,5,6,7,8,9,10,11,12\}$. Allora $$P_{Y}(y)=\sum_{\underline{x}\in\{1,\dots,6\}\times\{1,\dots,6\}\ :\ x_{1}+x_{2}=y}P_{\underline{X}}(\underline{x})=\frac{\#\{(x_{1},x_{2}):x_{1}+x_{2}=y\}}{36}$$e recuperiamo i risultati già visti in passato: $$\begin{array}{lll}
 P_{Y}(2)=P_{Y}(12)=\frac{1}{36}, & P_{Y}(3)=P_{Y}(11)=\frac{2}{36}, & P_{Y}(4)=P_{Y}(10)=\frac{3}{36}, \\
@@ -842,7 +826,6 @@ Siano $X_{1}\sim BIN(n_{1},p)$ e $X_{2}\sim BIN(n_{2},p)$ **indipendenti**. Allo
 Sia $Y=X_{1}+X_{2}$, con $\delta_{Y}=\{0,1,\dots,n_{1}+n_{2}\}$. Allora, per ogni $y\in \delta_{Y}$, $$P_{Y}(y)=\sum_{(x_{1},x_{2})\ :\ x_{1}+x_{2}=y}\binom{n_{1}}{x_{1}}\binom{n_{2}}{x_{2}}p^{\overset{=y}{\overbrace{x_{1}+x_{2}}}}(1-p)^{n_{1}+n_{2}-\overset{=y}{\overbrace{(x_{1}+x_{2})}}}=p^{y}(1-p)^{n_{1}+n_{2}-y}\underset{=\binom{n_{1}+n_{2}}{y}}{\underbrace{\sum_{(x_{1},x_{2})\ :\ x_{1}+x_{2}=y}\binom{n_{1}}{x_{1}}\binom{n_{2}}{x_{2}}}}=\binom{n_{1}+n_{2}}{y}p^{y}(1-p)^{n_{1}+n_{2}-y}$$dove per la somma dei prodotti di coefficienti binomiali si usano le formule viste per l'[[02 - Modelli discreti#Caso 2): distribuzione ipergeometrica|ipergeometrica]].
 > [!quote] Commento
 > $$Y=X_{1}+X_{2}\sim BIN(n_{1}+n_{2},p)$$
-
 ##### Altri commenti (1ª parte): estensione a $m$ addendi
 Il risultato si estende al caso di $m$ addendi indipendenti: $$\begin{cases}
 X_{1}\sim BIN(n_{1},p) \\
@@ -865,7 +848,6 @@ P_{Y}(y) & =\displaystyle\sum_{(x_{1},x_{2})\ :\ x_{1}+x_{2}=y}\frac{\lambda_{1}
 \end{array}$$
 > [!quote] Commento
 > $$Y=X_{1}+X_{2}\sim POISSON(\lambda_{1}+\lambda_{2})$$
-
 ##### Altri commenti
 Il risultato si estende al caso di $m$ addendi indipendenti (simile a quello per le [[02 - Modelli discreti#Caso specifico 2 (somma di 2 binomiali indipendenti con lo stesso parametro $p$)|binomiali]] visto prima): $$\begin{cases}
 X_{1}\sim POISSON(\lambda_{1}) \\
@@ -880,7 +862,6 @@ P(X_{1}=0)P(X_{2}=0)=e^{-\lambda}\cdot e^{-\lambda}=e^{-2\lambda}
 > Vale però la pena ricordare la **tecnica** usata per verificare che una congiunta a supporto "triangolare" è ben posta: si può sommare fissando $x_{1}$ e variando $x_{2}$ (sulle verticali), oppure fissando $x_{2}$ e variando $x_{1}$ (sulle orizzontali). Per usare le formule sulle [[02 - Modelli discreti#Formula della serie geometrica|serie geometriche]] conviene la seconda.
 
 --- Fine lezione 11 ---
-
 ## Massimi e minimi di variabili aleatorie discrete
 Come calcolare la densità discreta di $\max\{X_{1},X_{2}\}$ e $\min\{X_{1},X_{2}\}$ passando per le [[02 - Modelli discreti#Funzione di distribuzione di una v.a. reale|funzioni di distribuzione]].
 ### Impostazione
@@ -902,7 +883,6 @@ P_{W}(w)\overset{(**)}{=}P(W\geq w)-P(W\geq w+1) & =P(\{X_{1}\geq w\}\cap\{X_{2}
 \end{array}$$
 > [!info] L'idea
 > Per il **massimo** conviene passare dalla funzione di distribuzione $P(\cdot\leq\cdot)$, per il **minimo** dalla "coda" $P(\cdot\geq\cdot)$: in entrambi i casi l'evento si spezza in un'**intersezione**, che sotto indipendenza si fattorizza.
-
 ### Esempio di applicazione delle formule
 Si lanciano due dadi equi. Siano $X_{1}$ e $X_{2}$ le v.a. che indicano i numeri che escono, e sappiamo che sono **indipendenti**. Allora $$\begin{array}{l}
 Y=\max\{X_{1},X_{2}\}\text{ assume valori in }\delta_{Y}=\{1,2,3,4,5,6\} \\

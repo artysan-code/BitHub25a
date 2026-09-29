@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Verifica i wikilink Obsidian interni del vault.
 
-Controlla, per ogni `[[Nota]]`, `[[Nota#heading]]`, `[[#heading]]`, `[[Nota#^blocco]]`
+Controlla, per ogni `[[Nota]]`, `[[Nota#heading]]`, `[[Nota#heading#sotto-heading]]`, `[[#heading]]`, `[[Nota#^blocco]]`
 (con eventuale alias `|testo`), che la nota target, l'heading o il blocco esistano.
 lychee non parsa i wikilink: questo checker copre quel buco.
 
@@ -110,7 +110,10 @@ def main():
                 if anchor.startswith("^"):
                     if anchor[1:] not in blocks.get(target_path, set()):
                         broken.append((f, m.group(0), "blocco inesistente"))
-                elif norm(anchor) not in headings.get(target_path, set()):
+                # Obsidian ammette percorsi annidati `Nota#Sezione#Sottosezione`:
+                # ogni livello deve esistere come heading della nota
+                elif any(norm(a) not in headings.get(target_path, set())
+                         for a in anchor.split("#")):
                     broken.append((f, m.group(0), "heading inesistente"))
 
     if broken:

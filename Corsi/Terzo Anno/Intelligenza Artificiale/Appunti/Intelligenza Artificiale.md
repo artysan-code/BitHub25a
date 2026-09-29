@@ -5,7 +5,6 @@ La definizione di intelligenza è:
 - **Apprendere dall'esperienza**
 - **Adattarsi alle nuove situazioni**
 - Usare la coscienza per **agire sul proprio ambiente**
-
 ### IA come scienza
 #### Approccio della psicologia cognitiva (IA Forte)
 Ha come obiettivo la comprensione dell'intelligenza umana, tramite la costruzione di modelli computazionali *dell'agire intelligente*.
@@ -105,7 +104,6 @@ Gli agenti intelligenti:
 	- Dimensione *soggettiva* delle emozioni
 ### Percezioni e azioni
 Chiamiamo *percezione* l'input diciamo dei sensori che possiede l'agente intelligente. Una sequenza percettiva corrisponderà quindi ad una "storia completa delle percezioni"; questa ha 
-
 ### Agente razionale
 Un agente razionale interagisce con il suo ambiente in maniera *efficacie*:
 - Fa la cosa giusta.
@@ -130,7 +128,6 @@ La razionalità **non è onniscenza** e **non è onnipotenza**:
 Raramente tutta la conoscenza dell'ambiente può essere fornita. L'agente deve essere capace di cambiare il proprio comportamento in base all'esperienza (**Apprendimento**).
 ### Agente autonomo
 Un agente può essere autonomo nella misura in cui il suo comportamento dipende direttamente dalla sua esperienza *dell'ambiente* e delle *operazioni a lui richieste*.
-
 ## Ambienti e codifica PEAS (Prestazione, Ambiente, Attuatore, Sensore)
 ### Proprietà dell'ambiente e del problema
 Gli ambienti posseggono caratteristiche comuni lungo alcune dimensioni:
@@ -146,7 +143,6 @@ Gli ambienti posseggono caratteristiche comuni lungo alcune dimensioni:
 	- Seguire la linea temporale continua, dover reagire in base al tempo
 #### Osservabilità
 Un ambiente è **completamente osservabile** se l'apparato percettivo è in grado di dare una conoscenza completa di questo primo o il necessario per eseguire l'azione. Non c'è bisogno di mantenere uno stato.
-
 #### Ambiente Singolo o Multi agente
 Il mondo può anche cambiare per eventi, ma non necessariamente per azioni dell'agente.
 #### Predicibilità

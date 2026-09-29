@@ -1,5 +1,5 @@
 ## Formulario — Calcolo delle Probabilità e Statistica
-Formulario d'esame (Macci), organizzato per slot d'esercizio. Per ogni modello: quando si usa, le formule e una o più tracce d'esame svolte. Teoria in [[Es1 - Probabilità discreta elementare]] e [[Es2 - Probabilità condizionata]].
+Formulario d'esame (Macci), organizzato per slot d'esercizio. Per ogni modello: quando si usa, le formule e una o più tracce d'esame svolte. Teoria in [[01 - Probabilità discreta elementare]] e [[02 - Probabilità condizionata]].
 ### Es1 — Probabilità discreta elementare
 #### Riconoscimento del modello
 | Situazione | Modello |
@@ -162,7 +162,7 @@ $$\text{non traslata: conta gli insuccessi, parte da } 0,\quad E[X]=\frac{1-p}{p
 
 Serie — l'unico vero punto d'errore è l'indice di partenza h; e attenzione che con esponente 2k la ragione della serie diventa r², non r.
 ### Es2 — Probabilità condizionata
-Esperimento a due fasi: la prima fase sceglie lo scenario (urna, moneta, dado), la seconda produce l'evento osservato. Teoria in [[Es2 - Probabilità condizionata]].
+Esperimento a due fasi: la prima fase sceglie lo scenario (urna, moneta, dado), la seconda produce l'evento osservato. Teoria in [[02 - Probabilità condizionata]].
 #### Riconoscere il verso della domanda
 | La traccia chiede… | Verso | Formula |
 |---|---|---|
@@ -214,7 +214,7 @@ $$P(B_1\cap N_2\cap B_3)=\frac{4}{8}\cdot\frac{4}{7}\cdot\frac{3}{6}=\frac{1}{7}
 - Risultati «troppo puliti» ($\tfrac12$, oppure $P(H|E)=P(H)$): di solito corretti, segnalano simmetria o indipendenza.
 
 ### Es3 — Densità congiunta discreta
-La traccia regala la densità congiunta $p_{X_1,X_2}$ di due variabili discrete e chiede di ricavarne qualcosa. Tutto si riduce a **sommare la densità sulle coppie giuste**. Teoria in [[Es3 - Densità congiunta discreta]].
+La traccia regala la densità congiunta $p_{X_1,X_2}$ di due variabili discrete e chiede di ricavarne qualcosa. Tutto si riduce a **sommare la densità sulle coppie giuste**. Teoria in [[03 - Densità congiunta discreta]].
 $p_{X_1,X_2}(x_1,x_2)=P(X_1=x_1\text{ e }X_2=x_2)$ è una **tabella di pesi** (somma 1, vale 0 fuori dal supporto). **Quale richiesta?** barra $\mid$ → condizionata · "densità di $Y$" → trasformazione · "marginale" → sommi via una variabile · $P(\dots)$ senza barra → evento.
 #### Principio unico e quattro richieste
 Ogni domanda è un caso particolare della somma della densità sulle coppie dell'evento:
@@ -253,7 +253,7 @@ $$P(X_1\ge k)=\sum_{x_1\ge k}(1-q^2)^{x_1}q^2=q^2\cdot\frac{(1-q^2)^{k}}{q^2}=(1
 
 ---
 ### Es4 — Trasformazione di variabile continua
-Data la densità $f_X$ di $X$ continua, si chiede la funzione di distribuzione $F_Y$ di $Y=g(X)$ (metodo della funzione di ripartizione). Teoria in [[Es4 - Trasformazione di variabile continua]].
+Data la densità $f_X$ di $X$ continua, si chiede la funzione di distribuzione $F_Y$ di $Y=g(X)$ (metodo della funzione di ripartizione). Teoria in [[04 - Trasformazione di variabile continua]].
 La richiesta **è** $F_Y(y)=P(Y\le y)$ (una funzione di $y$); il ponte per calcolarla è $P(Y\le y)=P(g(X)\le y)$, che riporta tutto a $X$ (di cui hai la densità). Isolare $X$ = trovare gli estremi dell'integrale.
 #### Metodo — due mosse
 Prima mossa: applica $g$ agli estremi del supporto di $X$ per trovare il supporto $[a,b]$ di $Y$, e scrivi lo scheletro a 3 casi (F_Y è definita su tutto $\mathbb{R}$):
@@ -291,7 +291,7 @@ Controllo: $F_Y(1)=\frac{1+1}{2}=1$, coerente col fatto che $F_Y$ raggiunge 1 al
 
 ---
 ### Es5 — Speranza di variabile continua
-Data una densità continua $f_X$ (spesso la stessa di Es4), si chiede una speranza, tipicamente $E[X^{2}]$ o $E[1/X^{2}]$. Teoria in [[Es5 - Speranza di variabile continua]].
+Data una densità continua $f_X$ (spesso la stessa di Es4), si chiede una speranza, tipicamente $E[X^{2}]$ o $E[1/X^{2}]$. Teoria in [[05 - Speranza di variabile continua]].
 $E[X]$ = media pesata dalla probabilità, un **numero** (non una funzione: la $x$ sparisce nell'integrale). La $g$ non si sceglie, è ciò che sta dentro $E[\cdots]$: $E[X^{2}]\Rightarrow g(x)=x^{2}$, $E[1/X^{2}]\Rightarrow g(x)=1/x^{2}$.
 #### L'unica formula
 $$E[g(X)]=\int_{-\infty}^{+\infty}g(x)\,f_X(x)\,dx=\int_{a}^{b}g(x)\,f_X(x)\,dx$$
@@ -321,7 +321,7 @@ $$E\!\left[\frac{1}{X^{2}}\right]=\frac14\int_{1}^{5}\frac{1}{x^{2}}\,dx=\frac14
 
 ---
 ### Es6 — Normale e teorema del limite centrale
-Esprimere con $\Phi$ una probabilità sulla Normale o sulla somma standardizzata di v.a. i.i.d. (TLC). $\Phi$ è la funzione di distribuzione della Normale standard; la risposta resta in forma di $\Phi$ (niente tavole). Teoria in [[Es6 - Normale e teorema del limite centrale]].
+Esprimere con $\Phi$ una probabilità sulla Normale o sulla somma standardizzata di v.a. i.i.d. (TLC). $\Phi$ è la funzione di distribuzione della Normale standard; la risposta resta in forma di $\Phi$ (niente tavole). Teoria in [[06 - Normale e teorema del limite centrale]].
 $\Phi(z)=P(Z\le z)$ (coda sinistra della standard). **Standardizzare** = $Z=\frac{X-\mu}{\sigma}$ (centra e riscala). $\sigma=\sqrt{\text{varianza}}$: la traccia dà la varianza, a te serve $\sigma$.
 #### Due situazioni
 | Traccia | Metodo | Risultato |
@@ -339,7 +339,7 @@ La somma $S_n$ ha media $n\mu$ e deviazione standard $\sigma\sqrt{n}$ (non $\sig
 #### Momenti in ingresso (se la traccia dà la distribuzione)
 - Uniforme $(a,b)$: $\mu=\tfrac{a+b}{2}$, $\sigma^{2}=\tfrac{(b-a)^{2}}{12}$
 - Esponenziale $(\lambda)$: $\mu=\tfrac{1}{\lambda}$, $\sigma^{2}=\tfrac{1}{\lambda^{2}}$
-- Discrete (Bernoulli, binomiale, Poisson, geometrica): tabella in [[Es1 - Probabilità discreta elementare|Es1]]
+- Discrete (Bernoulli, binomiale, Poisson, geometrica): tabella in [[01 - Probabilità discreta elementare|Es1]]
 
 ---
 #### Esempio svolto — intervallo con TLC e argomenti positivi (20 Febbraio 2026)

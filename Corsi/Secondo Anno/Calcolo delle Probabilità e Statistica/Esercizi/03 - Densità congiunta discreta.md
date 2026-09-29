@@ -2,7 +2,7 @@
 Terzo esercizio dello scritto: la traccia **regala** la densità congiunta $p_{X_1,X_2}(x_1,x_2)$ di due variabili aleatorie discrete e chiede di ricavarne qualcosa — una probabilità su un evento che coinvolge entrambe, una marginale, una condizionata, o la densità di una trasformazione $Y=g(X_1,X_2)$. Tutto l'esercizio è **sommare la densità sulle coppie giuste**, e riconoscere le serie che ne escono.
 ### Prima di tutto: cos'è una densità congiunta (e il legame con Es4)
 Hai **due** variabili discrete $X_1,X_2$. La densità congiunta $p_{X_1,X_2}(x_1,x_2)=P(X_1=x_1\ \text{e}\ X_2=x_2)$ è la probabilità che le due cose accadano **insieme**: immaginala come una **tabella di pesi**, un peso per ogni coppia di valori. Due regole fisse: **tutti i pesi sommano a 1**, e la densità **vive solo su certe coppie** (il *supporto*) — su tutte le altre vale $0$.
-È il **cugino discreto di [[Es4 - Trasformazione di variabile continua|Es4]]**: là *integravi* una densità su una regione, qui **sommi** una densità su un insieme di coppie. Stessa idea — accumulare probabilità sulla zona giusta — con la somma al posto dell'integrale.
+È il **cugino discreto di [[04 - Trasformazione di variabile continua|Es4]]**: là *integravi* una densità su una regione, qui **sommi** una densità su un insieme di coppie. Stessa idea — accumulare probabilità sulla zona giusta — con la somma al posto dell'integrale.
 ### Riconoscere quale delle 4 richieste è
 La prima mossa su ogni Es3 è capire in quale delle quattro richieste cadi: il **segnale** è nel testo della traccia.
 
@@ -246,4 +246,4 @@ Con una densità simbolica non c'è nessun conto numerico da fare: tutta la diff
 
 - Serie e distribuzioni: [[02 - Modelli discreti#Formula della serie geometrica|serie geometrica]], [[02 - Modelli discreti#Distribuzione di Poisson|Poisson]], [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]].
 - Teoria delle condizionate: [[01 - Introduzione alla probabilità#Formule legate alle probabilità condizionate|probabilità condizionate]], e [[01 - Introduzione alla probabilità#Indipendenza tra Eventi|indipendenza]] per il criterio di fattorizzazione.
-- Slot vicini: [[Es1 - Probabilità discreta elementare|Es1]] fa la modellizzazione che qui è già data dalla traccia; [[Es2 - Probabilità condizionata]] usa le stesse condizionate su eventi anziché su variabili; [[Es4 - Trasformazione di variabile continua]] fa la stessa operazione di trasformazione, ma nel continuo.
+- Slot vicini: [[01 - Probabilità discreta elementare|Es1]] fa la modellizzazione che qui è già data dalla traccia; [[02 - Probabilità condizionata]] usa le stesse condizionate su eventi anziché su variabili; [[04 - Trasformazione di variabile continua]] fa la stessa operazione di trasformazione, ma nel continuo.

@@ -157,7 +157,7 @@ Quando i casi favorevoli sono pochi, elencarli è più veloce e più sicuro che 
 #### Condizionata dentro Es1 — appello del 21 Febbraio 2020, D3
 Sempre sui 3 lanci: probabilità che esca la sequenza $(2,2,2)$ **sapendo** di aver ottenuto 3 numeri pari.
 **Svolgimento**
-Anche il primo esercizio può contenere una condizionata (non è esclusiva di [[Es2 - Probabilità condizionata|Es2]]). Si parte dalla definizione
+Anche il primo esercizio può contenere una condizionata (non è esclusiva di [[02 - Probabilità condizionata|Es2]]). Si parte dalla definizione
 $$P(E\mid F)=\frac{P(E\cap F)}{P(F)}.$$
 La semplificazione chiave: l'evento $E=\{(2,2,2)\}$ è **contenuto** in $F=\{X=3\text{ pari}\}$, quindi $E\cap F=E$ e resta solo $P(E)/P(F)$:
 $$P(E|X=3)=\frac{P(E)}{P(X=3)}=\frac{(1/6)^3}{(1/2)^3}=\frac{8}{216}=\frac{1}{27}$$
@@ -177,4 +177,4 @@ $$P(\max=k)=\frac{k-1}{n(n-1)/2}=\frac{2(k-1)}{n(n-1)}$$
 ### Collegamenti
 - Teoria di base: [[02 - Modelli discreti#Variabili aleatorie discrete|Variabili aleatorie discrete]], [[01 - Introduzione alla probabilità#Cenni di calcolo combinatorio|calcolo combinatorio]], [[01 - Introduzione alla probabilità#Estrazioni casuali in blocco|estrazioni in blocco]].
 - Distribuzioni: [[02 - Modelli discreti#Distribuzioni binomiale e ipergeometrica|Distribuzioni binomiale e ipergeometrica]], [[02 - Modelli discreti#Distribuzione geometrica|Distribuzione geometrica]], [[02 - Modelli discreti#Distribuzione binomiale negativa|Distribuzione binomiale negativa]], [[02 - Modelli discreti#Distribuzione multinomiale|Distribuzione multinomiale]], [[02 - Modelli discreti#Distribuzioni uniforme discreta e di Poisson|Distribuzioni uniforme discreta e di Poisson]].
-- Slot vicini: [[Es2 - Probabilità condizionata]] quando l'esperimento ha due fasi; [[Es3 - Densità congiunta discreta]] che riusa le stesse distribuzioni su due variabili.
+- Slot vicini: [[02 - Probabilità condizionata]] quando l'esperimento ha due fasi; [[03 - Densità congiunta discreta]] che riusa le stesse distribuzioni su due variabili.

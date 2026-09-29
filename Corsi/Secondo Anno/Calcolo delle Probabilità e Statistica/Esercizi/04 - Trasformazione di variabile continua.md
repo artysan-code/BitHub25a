@@ -1,7 +1,7 @@
 ## Es4 — Trasformazione di variabile continua
 Quarto esercizio dello scritto: si dà la densità $f_X$ di una variabile aleatoria **continua** e si chiede la **funzione di distribuzione** $F_Y$ di una trasformazione $Y=g(X)$ (radice, quadrato, esponenziale, logaritmo, valore assoluto).
 ### Prima di tutto: cosa ti viene chiesto
-La **funzione di distribuzione** è, per definizione, $F_Y(y)=P(Y\le y)$: una macchina che per ogni $y$ risponde *"con che probabilità $Y$ esce $\le y$?"*. È **esattamente** ciò che l'esercizio chiede, non un oggetto diverso da calcolare a parte — e il risultato **resta una funzione di $y$** (al contrario della speranza di [[Es5 - Speranza di variabile continua|Es5]], che è un numero).
+La **funzione di distribuzione** è, per definizione, $F_Y(y)=P(Y\le y)$: una macchina che per ogni $y$ risponde *"con che probabilità $Y$ esce $\le y$?"*. È **esattamente** ciò che l'esercizio chiede, non un oggetto diverso da calcolare a parte — e il risultato **resta una funzione di $y$** (al contrario della speranza di [[05 - Speranza di variabile continua|Es5]], che è un numero).
 Il problema pratico: non conosci $Y$ direttamente, hai solo la densità di $X$. Ma $Y=g(X)$, quindi
 $$P(Y\le y)=P\big(g(X)\le y\big)$$
 e questo è il **ponte**: traduce una domanda su $Y$ (che non sai calcolare) in una su $X$ (dove hai la densità e sai integrare). **Isolare $X$** dentro la disuguaglianza serve solo a trovare gli **estremi dell'integrale**.
@@ -208,6 +208,6 @@ Nel formato 2025-2026 la richiesta è sempre la **funzione di distribuzione**, m
 $$f_Y(y)=F_Y'(y)$$
 sull'intervallo dove $F_Y$ è data da $(*)$, e $f_Y(y)=0$ fuori. Non si deriva mai la parte costante: lì la densità è nulla.
 ### Collegamenti
-- Lo stesso meccanismo nel discreto: [[Es3 - Densità congiunta discreta]], dove $Y=g(X_1,X_2)$ si ottiene raggruppando le coppie invece di integrare.
-- Slot gemello: [[Es5 - Speranza di variabile continua]], che usa la stessa $f_X$ ma chiede una media anziché una distribuzione.
-- [[Es6 - Normale e teorema del limite centrale]] usa $\Phi$, che è la funzione di distribuzione della Normale standard — stesso oggetto, calcolato una volta per tutte.
+- Lo stesso meccanismo nel discreto: [[03 - Densità congiunta discreta]], dove $Y=g(X_1,X_2)$ si ottiene raggruppando le coppie invece di integrare.
+- Slot gemello: [[05 - Speranza di variabile continua]], che usa la stessa $f_X$ ma chiede una media anziché una distribuzione.
+- [[06 - Normale e teorema del limite centrale]] usa $\Phi$, che è la funzione di distribuzione della Normale standard — stesso oggetto, calcolato una volta per tutte.

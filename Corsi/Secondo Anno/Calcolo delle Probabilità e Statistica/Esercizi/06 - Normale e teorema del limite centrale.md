@@ -198,7 +198,7 @@ il che verifica esattamente quanto richiesto dalla traccia.
 > - **Esponenziale**$(\lambda)$: $\mu=\frac{1}{\lambda}$, $\sigma^2=\frac{1}{\lambda^2}$
 > - **Normale**$(\mu,\sigma^2)$: già dati
 >
-> Per le discrete — Bernoulli, binomiale, Poisson, geometrica — la tabella è in [[Es1 - Probabilità discreta elementare|Es1]].
+> Per le discrete — Bernoulli, binomiale, Poisson, geometrica — la tabella è in [[01 - Probabilità discreta elementare|Es1]].
 
 #### Equazione con condizionata su una Normale — appello del 3 Febbraio 2025
 Sia $X$ Normale con media 2 e varianza $\sigma^2$. Trovare, se esiste, $y>2$ tale che $P(X<2\,|\,0<X<y)=\frac{1}{2}$.
@@ -255,5 +255,5 @@ Il valore trovato soddisfa il vincolo $y>2$ richiesto dalla traccia, quindi la s
 > Sull'elaborato conviene comunque scrivere il passaggio algebrico: l'argomento di simmetria è ottimo per verificare, meno per convincere chi corregge.
 
 ### Collegamenti
-- $\Phi$ è la funzione di distribuzione della Normale standard: stessa nozione di [[Es4 - Trasformazione di variabile continua|Es4]], ma tabulata una volta per tutte.
-- Media e varianza in ingresso: [[Es5 - Speranza di variabile continua]] per le continue, [[Es1 - Probabilità discreta elementare]] per le discrete.
+- $\Phi$ è la funzione di distribuzione della Normale standard: stessa nozione di [[04 - Trasformazione di variabile continua|Es4]], ma tabulata una volta per tutte.
+- Media e varianza in ingresso: [[05 - Speranza di variabile continua]] per le continue, [[01 - Probabilità discreta elementare]] per le discrete.

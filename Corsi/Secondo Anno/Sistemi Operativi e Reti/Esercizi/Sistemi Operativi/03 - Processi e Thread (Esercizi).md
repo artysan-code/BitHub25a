@@ -55,7 +55,6 @@ $$\text{processi totali} = 2^n.$$
 - il **padre** valuta la condizione come falsa → **non** rientra nell'`if`, prosegue;
 - il **figlio** valuta `0 == 0` vera → esegue la seconda `fork`, generando un nipote.
 Processi: padre $P_0$, figlio $P_1$, nipote $P_2$ → **3 processi** (verificato: 3 stampe). Il valore di ritorno di `fork()` è ciò che permette di **differenziare i rami** di esecuzione: è la chiave di tutte le soluzioni C qui sotto.
-
 ## Es. 4 — Duplicazione del buffer: `printf` prima della `fork`
 > [!quote] Consegna
 > Quante righe `A` produce il programma se l'output va su **file** (o pipe)? E se si aggiunge `fflush(stdout)` prima delle `fork`?
@@ -109,7 +108,6 @@ Schede di svolgimento ragionato dei `.c` in `Processi/`. La **consegna** di cias
 **Pattern:** `fork` + `opendir`/`readdir` (`<dirent.h>`) + `stat`/`chmod` + pipe condivisa. Due figli leggono **metà** dei file regolari di una directory, aggiungono il permesso di lettura se manca, e inviano `[PID] -> contenuto`. **Idea chiave:** scorrere la directory con `readdir`, filtrare i regolari con `stat` (`S_ISREG`), correggere i permessi con `chmod` prima di aprire. Directory e permessi in [[07 - File System#Operazioni sulle directory|07 - File System]]. → `Processi/fork_readdir_permessi.c` · [[Tracce d'Esame Pratiche#Processi|P4]].
 ### matrix_fork.c — traccia P5
 **Pattern:** calcolo **parallelo per colonne** di $M_1 \times M_2$ ($3\times3$). Figlio1 calcola la colonna 0, figlio2 la colonna 1, il padre la colonna 2; le colonne dei figli arrivano via pipe e il padre compone il risultato. **Idea chiave:** decomporre il lavoro in unità indipendenti (le colonne) e trasferire array di interi con `write`/`read` di `sizeof(int)*N`; sincronizzazione con `waitpid`. → `Processi/matrix_fork.c` · [[Tracce d'Esame Pratiche#Processi|P5]].
-
 ## Da svolgere
 Tracce senza soluzione, per esercitarsi. Riusano lo [[#Soluzioni C — Processi (fork, pipe, segnali, file)|scheletro comune]] visto sopra.
 

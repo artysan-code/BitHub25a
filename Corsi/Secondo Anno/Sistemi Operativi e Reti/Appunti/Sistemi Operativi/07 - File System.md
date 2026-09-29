@@ -514,7 +514,6 @@ Risultato: l'LFS supera UNIX di **un ordine di grandezza** sulle piccole scrittu
 > - Su dischi magnetici, sovrascrivere con zeri non basta (residui magnetici recuperabili); è consigliato inserire **sequenze di 0 e numeri casuali**, ripetendo l'operazione **almeno 3–7 volte** (attenzione: molte scritture stressano gli **SSD**).
 > - Sugli **SSD** la mappatura dei blocchi flash è gestita dalla **FTL** (Flash Translation Layer), non dal file system → sovrascrittura meno prevedibile.
 > - **Cifratura del disco**: la soluzione più efficace è cifrare l'intero disco con algoritmi robusti come **AES**. **SED (Self-Encrypting Drives)** = cifratura integrata nel dispositivo (ma con possibili vulnerabilità). Windows usa AES con la **chiave master del volume** decifrata tramite password utente, chiave di ripristino o **TPM**.
-
 # File system virtuali (VFS)
 I SO moderni gestiscono **più file system simultaneamente** (NTFS, FAT-32, FAT-16, …). Windows li distingue con lettere di unità (`C:`, `D:`, …); i sistemi **UNIX** li integrano in un'**unica struttura gerarchica**.
 

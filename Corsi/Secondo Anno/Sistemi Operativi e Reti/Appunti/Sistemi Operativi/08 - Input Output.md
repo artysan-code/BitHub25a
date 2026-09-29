@@ -18,7 +18,6 @@ La classificazione non è perfetta: alcuni dispositivi non vi rientrano (il **cl
 
 > [!question] Domanda tipica d'esame
 > **D:** Qual è la differenza tra un dispositivo a blocchi e un dispositivo a caratteri? Fai esempi per ciascuna categoria. **R:** Un [[#^blocchi|dispositivo a blocchi]] memorizza dati in blocchi di dimensione fissa (da 512 B a 32 KiB), ognuno con un proprio indirizzo leggibile/scrivibile indipendentemente (es. disco rigido, SSD). Un [[#^caratteri|dispositivo a caratteri]] gestisce un flusso non strutturato di byte, senza indirizzamento né operazione di seek (es. stampante, mouse, interfaccia di rete). La distinzione permette al SO di offrire un'astrazione uniforme per ciascuna categoria.
-
 ### Velocità dei dispositivi
 I dispositivi di I/O variano **enormemente** in velocità di trasferimento, e questo crea sfide per il software di gestione.
 | Dispositivo | Velocità di trasferimento |
@@ -83,7 +82,6 @@ Combina i due metodi: la **configurazione** iniziale del dispositivo avviene via
 
 > [!question] Domanda tipica d'esame
 > **D:** Spiega la differenza tra PMIO (port-mapped I/O) e MMIO (memory-mapped I/O), e descrivi il principale rischio del MMIO legato alla cache. **R:** Nel [[#I/O mappato sulle porte (PMIO)|PMIO]] ogni registro di controllo ha un numero di porta nello spazio degli indirizzi di I/O, accessibile solo con istruzioni speciali `IN`/`OUT`. Nel [[#I/O mappato in memoria (MMIO)|MMIO]] i registri sono mappati nello spazio di memoria normale, accessibili con normali istruzioni `LOAD`/`STORE` e scrivibili in C senza assembly. Il rischio del MMIO è che se un registro di controllo viene inserito in cache, la CPU legge sempre il valore vecchio e non rileva le modifiche del dispositivo, causando un potenziale ciclo infinito; occorre disabilitare selettivamente la cache per le pagine dedicate ai dispositivi.
-
 ### Dal modello astratto al chipset reale
 *(Approfondimento dal Tanenbaum, oltre le slide di Croce.)* Il MMIO definisce un **modello di indirizzamento** (un solo spazio di indirizzi), ma l'hardware reale deve mantenere **alte prestazioni** sulla memoria *e* supportare **molti dispositivi eterogenei**: un bus unico non scala né in banda né in latenza. La soluzione storica è il **chipset a due livelli**.
 - **Northbridge** (*Memory Controller Hub*): interposto tra **CPU e memoria**, gestisce gli accessi alla **RAM**, il collegamento agli acceleratori grafici (AGP/PCIe) e la **decodifica primaria degli indirizzi** (decide se un indirizzo è memoria reale o **I/O mappato in memoria** da inoltrare). Caratteristiche: **latenza minima**, **banda elevata**, impatto diretto sulle prestazioni.
@@ -202,7 +200,6 @@ return_from_interrupt();
 
 > [!question] Domanda tipica d'esame
 > **D:** Descrivi le tre tecniche di I/O (programmato, guidato dagli interrupt, con DMA) e indica il principale vantaggio e svantaggio di ciascuna. **R:** L'**I/O programmato** fa gestire alla CPU l'intero trasferimento tramite [[#^polling|polling]] del registro di stato: semplicissimo ma tiene la CPU occupata a vuoto. L'**I/O guidato dagli interrupt** invia il primo dato e poi cede la CPU ad altri processi; la stampante genera un interrupt a ogni carattere pronto: la CPU viene liberata ma il numero di interrupt è elevato. L'**I/O con [[#DMA|DMA]]** delega al controller DMA l'intero trasferimento, riducendo gli interrupt da uno per carattere a uno per buffer e liberando la CPU per tutta la durata; lo svantaggio è che il controller DMA è spesso più lento della CPU.
-
 ## I quattro livelli del software di I/O
 Il software di I/O è organizzato in **quattro livelli**, ciascuno con funzione e interfaccia ben definite. Dal basso verso l'alto, sopra l'**hardware**:
 
@@ -259,7 +256,6 @@ Parte del software di I/O sta **fuori dal kernel**, come **librerie** collegate 
 
 > [!question] Domanda tipica d'esame
 > **D:** Elenca e descrivi i quattro livelli del software di I/O, indicando per ciascuno la funzione principale. **R:** Dal basso verso l'alto, sopra l'hardware: (1) **[[#Gestori degli interrupt|Gestori degli interrupt]]** — si attivano al completamento dell'I/O, salvano lo stato, confermano al controller degli interrupt e sbloccano il driver; (2) **[[#Driver di dispositivo|Driver di dispositivo]]** — codice specifico per classe di dispositivo, traduce le richieste astratte in comandi sui registri del controller, gestisce errori ed è rientrante; (3) **[[#Software di I/O indipendente dal dispositivo|Software indipendente dal dispositivo]]** — offre interfaccia uniforme tra driver e applicazioni, gestisce denominazione (`/dev/sda`), protezione, buffering, segnalazione errori, spooling e dimensione blocco uniforme; (4) **[[#Software di I/O nello spazio utente|Software a livello utente]]** — librerie (es. `printf`, `scanf`) e daemon di spooling che formattano i dati e invocano le syscall, astraendo i dettagli di basso livello dal programmatore.
-
 ## Flusso completo di una richiesta di I/O
 Quando un programma utente richiede un I/O (es. **leggere un blocco** da un file): il **software indipendente dal dispositivo** controlla prima la *buffer cache*; se il dato non c'è, il **driver** inoltra la richiesta all'**hardware** e il processo utente viene **sospeso**. Completata l'operazione, l'hardware genera un **interrupt**; il **gestore** risponde, recupera lo stato del dispositivo e **risveglia** il processo utente, che completa la richiesta e prosegue. Ogni livello svolge così un ruolo preciso nel trattamento efficiente dell'I/O.
 # Collegamenti con altri argomenti

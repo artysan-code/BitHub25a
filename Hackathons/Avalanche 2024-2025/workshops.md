@@ -13,7 +13,6 @@ Il sistema Blockchain è invece sicuro, crittografato e non controllato da nessu
 (Se posseggo 0.0023 bitcoin, nessuno ha controllo su quello, a meno che non mi affido a servizi terzi di banca)
 ### Perché sono nate?
 L'intermediario nelle blockchain non è necessario in quanto si basa tutto sulla **crittografia** e sulle regole condivise nel protocollo.
-
 ### Funzioni Hash
 Prendono in input una stringa di qualsiasi lunghezza e ritornano in output una stringa di una lunghezza finita completamente casuale.
 
@@ -22,7 +21,6 @@ Un minimo cambiamento nell'input impone un cambiamento anche completo dell'outpu
 L'hash è usato in quanto:
 - Non si può risalire all'input della funzione.
 - Se due input x e y sono differenti f(x) e f(y) sono obbligatoriamente differenti. Se accade che sono uguali allora l'algoritmo è stato rotto.
-
 ### Cos'è una blockchain
 Una catena di blocchi o **nodi** che sono legati tra di loro.
 
@@ -31,7 +29,6 @@ Ciascun blocco ha:
     - Questo implica che rompere una hash nel tentativo di modificare il programma rompe la catena, tutti se ne accorgono -> immutabilità.
 
 Bitcoin usa SHA-256 per esempio.
-
 ### Funzionamento del Bitoin
 Principio della chiave privata e chiave pubblica.
 
@@ -48,7 +45,6 @@ I miner raccologono e verificano le transazioni, aggiungono l'has del blocco pre
 Il mining mantiene il sistema onesto, l'energia crea denaro (non è prettamente vero, spoiler).
 
 Se vengono trovati troppi blocchi, la difficoltà di mining aumenta (n di zeri richiesti aumenta).
-
 #### Il consenso
 Le transazioni vengono trasmette a tutti i nodi, che creano a loro volta un blocco con le nuove transazioni. Cercano di trovare la proof to work e il primo che la trova la manda agli altri e così via.
 
@@ -70,7 +66,6 @@ IL consenso **Pos** funziona così:
 - I validatori mettonoin stake i propri token
 - Il protocollo seleziona casualmente chi propone il prossimo blocco
 - Altri validatori confermano la validità.
-
 ## Avalache
 È una blockchain di terza generazione basata su Proof of Stake e usa il nuovo meccanismo **gossip-based**.
 
@@ -84,8 +79,6 @@ Non è una singola blockchain, ma un ecosistema di reti interoperabili.
 I nodi non votano tutti, si interrogano casualmente piccoli gruppi (gossip) e se una transazione riceve abbastanza consenso statistico, viene accettata.
 
 Molto veloce, in meno di due secondi. Non bisogna fare mining ma è statisticamente distribuito il reward.
-
-
 ### Creare la tua blockchain
 Una tua subnet: un insieme di validatori che raggiungono consenso su una o più blockchain.
 
@@ -102,7 +95,6 @@ Vantaggi:
 - Personalizzazione Totale, consenso, governance, fee, etc...
 - Interoperabile, connessione con la rete principale
 - Isolamento
-
 ### Perché AValanche
 !. Smart Contract sulla C-Chain (EVM Compatible che non so che cazzo vuol dire)
 Facilità di sviluppo
@@ -113,7 +105,6 @@ Facilità di sviluppo
     - Permettere di costruire una infrastruttura applicativa compelta dal layer...
 
 3. Creare la propria blockchain personalizzata
-
 ## Solidity
 Linguaggio orientato ad oggetti per gli smart contract
 - Sintassi simile Javascript e C++ (CHE CAZZO DI LINGUAGGIO È SIMLE A C++ E JAVASCRIPT)
@@ -121,9 +112,7 @@ Linguaggio orientato ad oggetti per gli smart contract
 - Tipizzato e case sensitive
 
 Sulla blockchain il codice è immutabile dopo il deploy, ogni esecuzione ha un costo in gas, i dati sono memorizzati in modo trasparente e persistente.
-
 ## Step by Step
-
 - RPC
 - Chain ID
 - Private Key su Core

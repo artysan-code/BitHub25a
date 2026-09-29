@@ -35,7 +35,7 @@ Programma ufficiale: introduzione, classificazione e modelli strutturali dei sis
 - [[09 - Linux e BASH]] — shell BASH, variabili, redirezione e pipe, permessi, processi e job control, utility di testo, espressioni regolari.
 - [[10 - Programmazione C e Concorrente]] — programmazione C per il laboratorio: build, system call, `fork`/`exec`/`wait`, segnali, pipe.
 ### Modulo 2 — Reti di Calcolatori (2° semestre)
-- [[01 - Introduzione]] — reti di calcolatori e Internet: edge e core della rete, prestazioni, livelli di protocollo, sicurezza.
+- [[Reti di Calcolatori/01 - Introduzione|01 - Introduzione]] — reti di calcolatori e Internet: edge e core della rete, prestazioni, livelli di protocollo, sicurezza.
 - [[02 - Livello di Applicazione]] — strato di applicazione: Web e HTTP, e-mail, DNS, P2P, streaming video e CDN.
 - [[03 - Livello di Trasporto]] — strato di trasporto: multiplexing, UDP, trasferimento dati affidabile, TCP, controllo della congestione, QUIC.
 - [[04 - Livello di Rete]] — strato di rete, piano dei dati e piano di controllo: router, IP, SDN, ICMP, gestione della rete.

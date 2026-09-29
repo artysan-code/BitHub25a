@@ -1,9 +1,6 @@
 # File: b-Esercizi Moto Bidimensionale
-
 ^b4aa15
-
 ### Esercizio 1 (Serway 1.73)
-
 Un cannoncino a molla si trova sul bordo di un tavolo, a un'altezza di **1,2 m** dal pavimento. Il cannoncino spara orizzontalmente una biglia di acciaio con una velocità vettoriale istantanea di modulo $v_{i}​$ e un alzo di 35°.
 **Domande:** 
 a) Si trovi, in funzione di vi​, la posizione orizzontale della pallina nell'istante in cui questa colpisce il pavimento. Si chiami $x(v_{i}​)$ questa funzione.
@@ -55,9 +52,7 @@ Prima, calcoliamo la velocità orizzontale del Coyote, $v_{x,1}$, quando raggiun
 Le componenti della velocità al tempo $t_3$ sono: 
 **Componente orizzontale:** $$v_x(t_3) = v_{x,1} + a_x t_3 = \sqrt{2la_x} + a_x \sqrt{\frac{2H}{|a_y|}}$$ $$v_x(t_3) = \sqrt{2100} + 15 \sqrt{\frac{200}{9,81}} \approx 45,83 + 67,7 = 113,53 \ m/s$$  **Componente verticale:** $$v_y(t_3) = a_y t_3 = -|a_y| \sqrt{\frac{2H}{|a_y|}} = -\sqrt{2|a_y|H}$$ $$v_y(t_3) = -\sqrt{2 \cdot 9,81 \cdot 100} = -\sqrt{1962} \approx -44,29 \ m/s$$
 # File: c-Esercizi Leggi Del Moto 
-
 ^3b4ad7
-
 ### Esercizio 1 (Serway, n. 85) 
 Un corpo di massa M è mantenuto in posizione da una forza $\vec{F}$ e da un sistema di pulegge ideali (prive di massa e attrito), come mostrato in figura. 
 **Domande:** 
@@ -68,7 +63,6 @@ c) Determinare il modulo della forza $\vec{F}$.
 ##### a) Diagrammi delle forze
 **Puleggia inferiore:** Su di essa agiscono verso l'alto le tensioni dei due tratti di corda che la sorreggono (che chiameremo $T_{corda}$), e verso il basso la tensione $T_4$ del filo che sostiene la massa M. All'equilibrio: $T_4 = 2 T_{corda}$. 
 **Puleggia superiore:** Su di essa agiscono verso il basso le tensioni dei tre tratti di corda ($T_1$, $T_2$, $T_3$) e verso l'alto la reazione del sostegno $R_5$. All'equilibrio: $R_5 = T_1 + T_2 + T_3$.
-
 ##### b) e c) Calcolo delle tensioni e della forza F 
 Dato che la corda è unica e le pulegge sono ideali, la tensione è la stessa in tutti i suoi segmenti. Chiamiamola $T$. $$T = |\vec{F}| = T_1 = T_2 = T_3$$ Analizziamo l'equilibrio della massa M e della puleggia inferiore: 
 1. **Corpo M:** La tensione $T_4$ nel filo che lo sostiene deve equilibrare il suo peso. $$T_4 = Mg$$
@@ -131,12 +125,8 @@ Se la massa $m_1$ è quasi zero, non oppone resistenza. Il blocco $m_2$ è liber
 
 **d) e e) $m_1 \to \infty$:** 
 Se la massa $m_1$ è infinita, agisce come un'ancora. Il sistema non può muoversi, quindi le accelerazioni sono nulle. La situazione diventa un problema di statica. Per l'equilibrio di $m_2$, le due tensioni $T$ verso l'alto devono bilanciare il peso $m_2 g$, da cui $2T = m_2 g$ e $T = m_2g/2$.
-
-
 # File d - Esercizi Applicazioni Leggi Del Moto
-
 ^4a3424
-
 ## Serway, pr. 5.84
 Un blocco di alluminio ($m_{1}​=2 kg$) e un blocco di rame ($m_{2}=6 kg$) sono collegati da una corda su una puleggia. Il blocco di rame è su un piano inclinato di $\theta=30°$. 
 I blocchi poggiano su una superficie di acciaio. Coefficienti d'attrito: 
@@ -173,7 +163,6 @@ L'accelerazione dell'auto è $\displaystyle a=\frac{\Delta v}{\Delta t}​=\frac
 $\displaystyle mg\sin\theta=ma\implies \sin\theta=\frac{a}{g}​=\frac{5}{9,81}​\implies\theta=30,64°$.
 #### b)
 La tensione della cordicella bilancia la componente del peso perpendicolare al piano inclinato. $T=mg\cos\theta=0,1 kg\cdot9,81 m/s^{2}\cdot\cos(30,64°)=0,844 N$.
-
 ## Serway, pr. 6.44
 Due corpi di masse $m_{1}=4 kg$ e $m_{2}​=3 kg$ sono collegati da una corda 1 di lunghezza $l=0,5 m$. L'insieme ruota in un piano verticale, sostenuto da una seconda corda (corda 2) di lunghezza $l=0,5 m$. Nel punto più alto, $m_{2}$ ha una velocità di modulo $v_{2}=4 m/s$.
 **Domande:** 
@@ -297,9 +286,7 @@ $\displaystyle r= \frac{a_{c}}{V^{2}}​= \frac{(23 m/s)^{2}}{2,629 m/s^{2}​
 #### c)
 Per la stessa curva, il raggio è costante. La nuova velocità si ottiene dalla nuova accelerazione centripeta: $\displaystyle V'=\sqrt{ a_{c}'​r​ }=\sqrt{ g\tan\theta'\cdot r​ }=\sqrt{ g\tan(9°)\cdot 201,249 m }​=17,683 m/s$.
 # File e - Esercizi Lavoro Ed Energia
-
 ^de2908
-
 ## Serway, pr. 7.61
 Due forze costanti sono applicate a un corpo avente massa $m=5 kg$, libero di muoversi nel piano $xy$. Le due forze $F_{1}$​ e $F_{2}$​ hanno modulo rispettivamente $25 N$ e $42 N$ e formano un angolo con il semiasse x positivo rispettivamente di $35°$ e $150°$. Nell'istante $t=0$ il corpo si trova nell'origine con velocità $\overset{\rightarrow}{v_{0}}​=(4\hat{i}+2,5\hat{j}) m/s$.
 **Domande:** 
@@ -351,7 +338,6 @@ W_{el}​=-\frac{1}{2}KD^{2} \\
 K_{i}=\frac{1}{2}​mv_{0}^{2}​\quad\text{ e }\quad K_{f}​=0 \\
 mg(d+D)\sin\theta- \frac{1}{2}​KD^{2}=-\frac{1}{2}​mv_{0}^{2}
 \end{array}$$ Riorganizzando si ottiene un'equazione quadratica in $D$, la cui soluzione positiva è: $$D=\frac{mg\sin\theta}{K}+\sqrt{ \left( \frac{mg\sin\theta​}{K} \right)^{2}+\frac{2mgd\sin\theta}{K}​+\frac{mv_{0}^{2}}{K}}=0,1315 m$$  
-
 ## Serway, pr. 7.65
 a) In un sistema, si espone che l'energia potenziale $U(x)$ vale $5 J$ per $x=0$. La forza agente sul punto materiale è $\overset{\rightarrow}{F}=(8e^{-2x})\hat{i}$. 
 b) Si dice se la forza è conservativa o non conservativa e si spieghi come si fa a verificarlo.
@@ -412,12 +398,8 @@ Si usa la conservazione dell'energia per trovare la velocità $v$ della zucca in
 \displaystyle mg\cos\theta=m\frac{2gR(1-\cos\theta)​}{R}\implies \cos\theta=2-2\cos\theta\implies 3\cos\theta=2 \\
 \displaystyle \theta=\arccos\left( \frac{2}{3}​ \right)=48,19°
 \end{array}$$  
-
-
 # File f - Quantità di moto e Sistemi
-
 ^68fa33
-
 ## Esercizio 1
 Un proiettile di massa $m=0,008 kg$ viene sparato contro un blocco di massa $M=0,25 kg$ inizialmente a riposo su un tavolo di altezza $h=1m$. Il proiettile si conficca nel blocco, che cade dal tavolo toccando il suolo in un punto a una distanza orizzontale $d=2m$ dal tavolo.
 domande:
@@ -434,7 +416,6 @@ Dal moto orizzontale: $\displaystyle t_{c}​=\frac{d}{V_{x}}​=\frac{(M+m)d}{m
 Sostituendo questa espressione nella legge del moto verticale: $\displaystyle h=\frac{1}{2}​g\cdot t_{c}^{2}=\frac{1}{2}​g \frac{(M+m)^2d^2}{m^2v_{0,x}^2}​$​ 
 Risolvendo per $v_{0,x}​$ si ottiene: $\displaystyle v_{0,x}^{2}​=\frac{(M+m)^2gd^2}{2hm^{2}}$​ 
 E infine: $\displaystyle |v_{0}|=v_{0}=\frac{(M+m)d​^{2}}{m}\sqrt{ \frac{g}{2h} }​​=\frac{(0,25kg+0,008kg)\cdot (2m)}{0,008kg}​ \sqrt{ \frac{9,81m/s^{2}}{2\cdot (1m)} }​​=142,857 m/s$​  
-
 ## Esercizio 2
 Una molla di massa trascurabile è compressa di un tratto $d=0,08m$ e costante elastica $K=3,85N/m$ ed è tenuta tra due blocchi aventi masse rispettivamente $m_{1}=0,25 kg$ (a sinistra) e $m_{2}=0,5 kg$ (a destra), entrambi inizialmente in quiete sulla superficie orizzontale. 
 Domande: 

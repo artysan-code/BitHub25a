@@ -1,7 +1,5 @@
 ## Introduzione ai vettori
-
 ### Approccio algebrico
-
 Un insieme $V$ è detto **Spazio vettoriale** sull'insieme $\mathbb{R}$ dei numeri reali, e i suoi elementi sono detti **vettori** se:
 1) dati $\underline u,\ \underline v\in V$, esiste un operazione *somma*, indicata con $+$, tale che $\underline w=\underline u+\underline v\in V$
 2) dati $\underline u\in V$ e $c\in \mathbb{R}$, esiste un operazione *prodotto di un vettore per uno scalare* tale che $\underline a=c\cdot \underline u\in V$
@@ -37,17 +35,13 @@ cv_{2} \\
 cv_{n}
 \end{pmatrix}$$Tutti gli elementi che soddisfano le due proprietà enunciate costituiscono uno **spazio vettoriale** a $n$ dimensioni.
 In fisica di base interessano i vettori a 2 o 3 componenti, perché possono essere associati a grandezze fisiche.
-
 ### Nomenclatura
-
 **Grandezza scalare**: e' specificata da un unico valore reale con segno
 **Grandezza vettoriale**: in 2 o 3 dimensioni, e' specificata da 3 proprietà:
 - Modulo
 - Direzione 
 - Verso
-
 ### Simbologia
-
 Simbologia per vettori in 2 o 3 dimensioni:
 $\overrightarrow v$   vettore in 2 o 3 dimensioni
 $|\ \overrightarrow v\ |$ modulo del vettore $\overrightarrow v$  (e' un numero con unita di misura)
@@ -77,13 +71,10 @@ Somma di più vettori:
 $\overrightarrow w=\overrightarrow v_{1}+\overrightarrow v_{2}+\overrightarrow v_{3}+\overrightarrow v_{4}$
 Applicando la regola 2) in "cascata", si vede agevolmente che il vettore somma $\overrightarrow w$  e' rappresentato dalla freccia che congiunge la "coda" del primo vettore con la "punta" dell'ultimo vettore della catena
 ![[Corsi/1° Anno/Fisica/Appunti/Assets/l33.png|300]]
-
 ### Opposto di un vettore
 Il vettore $-\overrightarrow u$ e' il vettore che, sommato a $\overrightarrow u$ , fornisce come risultato il vettore nulla $\overrightarrow 0$ .
 $\overrightarrow u$ e $-\overrightarrow u$ hanno lo stesso modulo ($|\ \overrightarrow u\ |=|\ -\overrightarrow u\ |$), stessa direzione, ma versi opposti.
-
 ### Sottrazione tra vettori
-
 $\overrightarrow w=\overrightarrow v_{1}-\overrightarrow v_{2}=\overrightarrow v_{1}+(-\overrightarrow v_{2})$
 Si calcola sommando il primo vettore e l'opposto del secondo vettore 
 ![[Corsi/1° Anno/Fisica/Appunti/Assets/l34.png|600]]
@@ -91,9 +82,7 @@ Si calcola sommando il primo vettore e l'opposto del secondo vettore
 $\overrightarrow w=c\ \overrightarrow v$  e' un vettore, e risulta $|\overrightarrow w|=|c|\cdot|\ \overrightarrow v\ |$ 
 $\overrightarrow w$ ha lo stesso verso di $\overrightarrow v$ se $c>0$
 $\overrightarrow w$ ha verso opposto di $\overrightarrow v$ se $c<0$
-
 ## Componenti di un vettore e versori
-
 Molto spesso conviene introdurre un **sistema di coordinate cartesiane ortogonali** per eseguire calcoli con grandezze vettoriali nel piano o nello spazio.
 Analizziamo in modo più specifico il caso di un vettore nel piano.
 Per semplificare questo primo approccio, trasliamo il vettore $\overrightarrow v$ parallelamente a se stesso finché la "coda" della freccia coincide con l'origine del sistema di coordinate.

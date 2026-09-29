@@ -6,7 +6,6 @@ L'obiettivo del corso è uscire dalla mentalità **procedurale** (dire al comput
 | **Approccio** | Descrive il processo                     | Descrive la realtà                    |
 | **Variabile** | Area di memoria con un valore che cambia | Termine che si unifica una volta sola |
 | **Esempi**    | C, Java, Python                          | Prolog                                |
-
 ## Variabili e Costanti
 In prolog la definizione delle "variabili" ha delle regole precise che sono imposte per una qualità di codice e anche logica.
 
@@ -33,7 +32,6 @@ x <- x + 1   % x ora vale 2
 % Dichiarativo: X si unifica con 1 e rimane 1
 X = 1
 ```
-
 ## Fatti, Regole e Predicati
 Un programma Prolog è una **base di conoscenza** composta da fatti e regole.
 ### Fatti
@@ -64,7 +62,6 @@ genitore(_, Y)   % Y ha un genitore — può essere uno diverso dal precedente
 ```
 
 Ogni `_` è completamente indipendente dalle altre.
-
 ## Query
 Con `?-` si pone una domanda alla base di conoscenza. Prolog risponde `true`/`false` o restituisce i valori delle variabili.
 
@@ -73,7 +70,6 @@ Con `?-` si pone una domanda alla base di conoscenza. Prolog risponde `true`/`fa
 ?- genitore(mario, X).        % X = luigi ; X = sofia
 ?- fratello(luigi, sofia).    % true (per backtracking sulla regola)
 ```
-
 ## Esempio: Cruciverba
 Un esempio concreto della potenza del paradigma dichiarativo. Si definiscono i **fatti** (le parole disponibili) e i **vincoli** (le lettere di intersezione), e Prolog trova autonomamente la soluzione tramite **backtracking**.
 
@@ -119,11 +115,8 @@ Per l'esercizio lascia stare roba sopra, facciamo riferimento a Esercizi -> Lezi
 Scrivere predicati con lo stesso numero di cardinalità vicini.
 
 Obiettivo del corso (sfida con il prof) costruire photomath.
-
 ## Temp
-
 Capitolo 4 di Learn Prolog Now.
-
 #### Le liste
 Si dichiarano come:
 ```

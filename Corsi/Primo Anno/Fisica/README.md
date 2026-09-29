@@ -13,8 +13,10 @@ propedeuticita: []
 # Fisica
 Corso del prof. **Paolo Camarri** che fornisce le conoscenze della fisica di base e le metodologie per l'impostazione e la risoluzione di problemi (meccanica ed elettromagnetismo); richiede matematica di base ed elementi di analisi per funzioni di una variabile.
 ## Modalità d'esame
-Secondo DidatticaWEB (A.A. 2025/2026) la valutazione è scritta e orale.
-<!-- Da completare -->
+Secondo DidatticaWEB (A.A. 2025/2026) la valutazione è scritta e orale, con insegnamento frontale e senza obbligo di frequenza.
+- **Prerequisiti** indicati nella scheda: matematica di base (algebra elementare, geometria euclidea e analitica, trigonometria) ed elementi di analisi per funzioni di una variabile (limiti, derivate, integrali).
+- Il corso punta all'impostazione e alla risoluzione di problemi: gli esercizi svolti sono in [[Eserciziario]].
+- Il dettaglio di svolgimento delle due prove non è indicato nella scheda.
 ## Programma e Appunti
 Le note seguono le slide del docente (numerate come le slide) e sono divise in blocchi.
 ### Meccanica classica

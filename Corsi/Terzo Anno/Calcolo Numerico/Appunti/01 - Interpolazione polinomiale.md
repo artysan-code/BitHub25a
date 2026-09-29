@@ -1,18 +1,14 @@
 # Interpolazione polinomiale (approssimazione)
-
 E' data da una funzione $f:[a,b]\to \mathbb{R}$ di cui sono noti i valori $f(x_{0}),f(x_{1}),\dots,f(x_{n})$ in $u + 1$ punti distinti $x_{0},x_{1},\dots,x_{n}\in[a,b]$
 Si sceglie una classe $C$ di funzioni definite su $[a,b]$ a valori in $\mathbb{R}$ e si vuole approssimare la funzione $f(x)$ con una funzione $p:[a,b]\to \mathbb{R}$ che appartiene in $C$  e che nei punti $x_{0},x_{1},\dots,x_{n}$ assume i valori $f(x_{0}),f(x_{1}),\dots,f(x_{n})$.
 Una scelta comune fatta bene e' quella di prendere $C$ come lo spazio vettoriale (reale) dei polinomi di grado $\leq u$:$$C=\mathbb{R}_{n}[x]=\{a_{0}+a_{1}x+a_{2}x^2+\dots+a_{n}x^n:a_{0},a_{1},\dots,a_{n}\in \mathbb{R}\}$$
 con questa scelta di $C$ si può dimostrare che $\exists! p(x)\in \mathbb{R}_{n}[x]$ tale che $p(x_{i})=f(x_{i})\quad \forall i=0,1,\dots,n$.
-
 ## Teorema
 Siano $(x_{0},y_{0}),(x_{1},y_{1}),\dots,(x_{n},y_{n})\in \mathbb{R}^2$ tali che $x_{0},x_{1},\dots,x_{n}$ sono tutti distinti. Allora  $\exists!\ p(x)\in \mathbb{R}_{n}[x]$ t.c. $p(x_{i})=y_{i}\quad\forall i=0,1,\dots,n$
 ![[Pasted image 20251007153144.png]]
 
 $\exists! p(x)\in \mathbb{R}_{3}[x]$ t.c. $p(x_{0})=y_{0},p(x_{1})=y_{1},p(x_{2})=y_{2},p(x_{3})=x_{3}$
-
 ## Dimostrazione 1
-
 Osserviamo che un generico polinomio $p(x)$ in $\mathbb{R}_{n}[x]$ 
 $p(x)=a_{0}+a_{1}x+a_{2}x^2+\dots+a_{n}x^n$
 $p(x)$ soddisfa la condizione $p(x_{i})=y_{i}\quad\forall i=0,1,\dots,n$ 

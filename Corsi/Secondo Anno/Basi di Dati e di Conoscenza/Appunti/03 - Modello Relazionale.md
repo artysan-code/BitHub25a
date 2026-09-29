@@ -10,7 +10,6 @@ Una **relazione matematica** su $D_{1},\ \dots, D_{n}$ è un sottoinsieme di $D_
 
 > [!example] Prodotto cartesiano e relazione
 > Dati $D_1 = \{A, B\}$ e $D_2 = \{X, Y, Z\}$, il prodotto cartesiano $D_1 \times D_2$ contiene 6 coppie: $(A,X), (A,Y), (A,Z), (B,X), (B,Y), (B,Z)$. Una possibile relazione $r \subseteq D_1 \times D_2$ è: $\{(A,X), (B,X), (B,Y)\}$.
-
 ### Proprietà
 Una **relazione** è un **insieme**, quindi:
 1. **Non c'è ordinamento** fra le n-uple.
@@ -66,7 +65,6 @@ In una tabella che rappresenta una relazione:
 
 > [!warning] Cosa NON è ammesso
 > Due righe uguali (le n-uple devono essere distinte) e dati non omogenei nella stessa colonna.
-
 ## Modelli basati sui valori
 I riferimenti fra dati in relazioni diverse sono rappresentati per mezzo di **valori dei domini** che compaiono nelle ennuple (non tramite puntatori fisici).
 
@@ -126,15 +124,12 @@ Uno **schema di base di dati** è un insieme di schemi di relazione: $\mathcal{R
 > ESAMI(Studente, Voto, Corso)
 > CORSO(Codice, Titolo, Docente)
 > ```
-
 ### Istanza di relazione e di base di dati
-
 > [!quote] Definizione — Istanza di relazione
 > **(Istanza di) relazione** su uno schema $R(X)$: insieme $r$ di ennuple su $X$.
 
 > [!quote] Definizione — Istanza di base di dati
 > **(Istanza di) base di dati** su uno schema $\mathcal{R} = \{R_1(X_1), \ldots, R_n(X_n)\}$: insieme di relazioni $r = \{r_1, \ldots, r_n\}$ (con $r_i$ relazione su $R_i$).
-
 ### Relazioni su singoli attributi
 Una relazione può avere anche un **singolo attributo**. Ad esempio, la relazione `studenti_lavoratori` può contenere solo la `Matricola` degli studenti che lavorano:
 

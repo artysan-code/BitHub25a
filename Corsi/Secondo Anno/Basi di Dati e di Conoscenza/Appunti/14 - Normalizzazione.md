@@ -1,5 +1,4 @@
 ## Normalizzazione
-
 La **normalizzazione** è una formalizzazione teorica dei problemi che possono emergere durante l'utilizzo, l'interrogazione e la gestione dei dati in un database, e che possono impedire o rendere complicato l'uso delle informazioni. Non sempre è applicabile, ma permette di costruire un DB corretto e ben definito.
 
 In sostanza è un procedimento utile per l'**eliminazione della ridondanza** delle informazioni e per ridurre il rischio di inconsistenza della base di dati. Di fatto riduce la dimensione delle relazioni a partire da relazioni con concetti tra loro indipendenti.
@@ -8,20 +7,15 @@ La normalizzazione dei dati può essere considerata come un processo di analisi 
 
 1. **Minimizzazione della ridondanza**
 2. **Minimizzazione delle anomalie di inserimento, cancellazione, modifica**
-
 ## Qualità di uno schema relazionale
-
 ### Linee guida
-
 Un buon schema relazionale segue alcune linee guida fondamentali:
 
 - **Linea guida 1**: ogni tupla in una relazione dovrebbe rappresentare un'entità o un'istanza di relazione. Gli attributi di entità diverse (dipendenti, dipartimenti, progetti) **non dovrebbero essere mescolati** nella stessa relazione. Per riferirsi ad altre entità dovrebbero essere usate solo le chiavi esterne. Gli attributi di entità e di relazioni diverse dovrebbero essere tenuti il più possibile separati.
 - **Linea guida 2**: progettare uno schema che non risenta delle anomalie di inserimento, cancellazione e aggiornamento.
 - **Linea guida 3**: le relazioni dovrebbero essere progettate in modo tale che le loro tuple abbiano il minor numero possibile di valori `NULL`. Gli attributi spesso `NULL` potrebbero essere collocati in relazioni separate (con la chiave primaria).
 - **Linea guida 4**: le relazioni dovrebbero essere progettate per soddisfare la condizione di **lossless join** (decomposizione senza perdita). Non si dovrebbero creare tuple spurie facendo un natural join di tutte le relazioni.
-
 ## Anomalie di uno schema
-
 Mescolare attributi di più entità nella stessa relazione causa **ridondanza** e tre tipi di **anomalie di aggiornamento**.
 
 > [!example] Schema con anomalie — EMP_PROJ
@@ -39,9 +33,7 @@ Mescolare attributi di più entità nella stessa relazione causa **ridondanza** 
 
 > [!quote] Definizione — Anomalia di aggiornamento (modifica)
 > La modifica di un valore richiede l'aggiornamento di molte righe, con rischio di inconsistenza. In `EMP_PROJ`: la modifica del nome del progetto P1 da "Fatturazione" a "Customer-Accounting" può richiedere l'aggiornamento di tutte le 100 righe dei dipendenti che lavorano al progetto P1.
-
 ### Esempio con anomalie (da Atzeni)
-
 Si consideri la relazione (la chiave è composta da {Impiegato, Progetto}):
 
 `Impiegati_Progetti(<u>Impiegato</u>, Stipendio, <u>Progetto</u>, Bilancio, Funzione)`
@@ -60,11 +52,8 @@ Si consideri la relazione (la chiave è composta da {Impiegato, Progetto}):
 | Bianchi       | 48        | Giove        | 15       | direttore   |
 
 Le anomalie sono legate alle dipendenze funzionali $\text{Impiegato} \to \text{Stipendio}$ e $\text{Progetto} \to \text{Bilancio}$, che non corrispondono alla chiave e causano ridondanza. La dipendenza $\text{Impiegato, Progetto} \to \text{Funzione}$ invece corrisponde alla chiave e non causa anomalie.
-
 ## Dipendenze Funzionali
-
 ### Definizione formale
-
 Le **dipendenze funzionali** (DF, o FD dall'inglese *Functional Dependencies*) sono usate per specificare misure formali della "bontà" dei progetti relazionali. Le FD e le chiavi sono usate per definire le **forme normali**. Le FD sono vincoli che derivano dal significato e dalle interrelazioni degli attributi dei dati.
 
 > [!quote] Definizione — Dipendenza funzionale
@@ -84,17 +73,13 @@ Una FD è una **proprietà degli attributi** nello schema $R$: il vincolo deve v
 > - Ogni impiegato ha un solo stipendio (anche se partecipa a più progetti): $\text{Impiegato} \to \text{Stipendio}$
 > - Ogni progetto ha un bilancio: $\text{Progetto} \to \text{Bilancio}$
 > - Ogni impiegato in ciascun progetto ha una sola funzione (ma può avere funzioni diverse in progetti diversi): $\text{Impiegato, Progetto} \to \text{Funzione}$
-
 ### Dipendenze banali e non banali
-
 > [!quote] Definizione — Dipendenza banale
 > Una FD $X \to Y$ è **banale** se $Y \subseteq X$ (il secondo membro è sottoinsieme del primo). Ad esempio, $\text{Impiegato, Progetto} \to \text{Progetto}$ è banale: è sempre soddisfatta e non porta informazione.
 
 - $Y \to A$ è **non banale** se $A \notin Y$
 - $Y \to Z$ è **non banale** se nessun attributo in $Z$ appartiene a $Y$
-
 ### Dipendenze parziali e complete
-
 > [!quote] Definizione — Dipendenza completa
 > Una FD $X \to Y$ è **completa** (o dipendenza funzionale completa) se non esiste alcun sottoinsieme proprio $Z \subset X$ tale che $Z \to Y$. In altre parole, $Y$ dipende dall'*intera* chiave $X$, non da una sua parte.
 
@@ -106,9 +91,7 @@ Una FD è una **proprietà degli attributi** nello schema $R$: il vincolo deve v
 > - $\{\text{SSN}, \text{PNUMBER}\} \to \text{HOURS}$ — dipendenza **completa** (la chiave intera serve)
 > - $\text{SSN} \to \text{ENAME}$ — dipendenza **parziale** (dipende solo da parte della chiave)
 > - $\text{PNUMBER} \to \{\text{PNAME, PLOCATION}\}$ — dipendenza **parziale**
-
 ### Dipendenza transitiva
-
 > [!quote] Definizione — Dipendenza transitiva
 > Si ha **dipendenza transitiva** quando $A \to B$ e $B \to C$, con $B$ non chiave. Si dice allora che $C$ dipende transitivamente da $A$ (tramite $B$).
 
@@ -118,13 +101,9 @@ Una FD è una **proprietà degli attributi** nello schema $R$: il vincolo deve v
 > - $\text{Categoria} \to \text{Stipendio}$
 >
 > Quindi $\text{Stipendio}$ dipende transitivamente da $\text{Impiegato}$ tramite $\text{Categoria}$.
-
 ## Assiomi di Armstrong e regole derivate
-
 Per ragionare sulle dipendenze funzionali si usa un sistema di inferenza completo e corretto: gli **assiomi di Armstrong**.
-
 ### Assiomi fondamentali
-
 Sia $R(U)$ uno schema e $F$ un insieme di FD su $U$. Per ogni $X, Y, Z, W \subseteq U$:
 
 > [!quote] Definizione — Riflessività (Reflexivity)
@@ -139,9 +118,7 @@ Sia $R(U)$ uno schema e $F$ un insieme di FD su $U$. Per ogni $X, Y, Z, W \subse
 
 > [!quote] Definizione — Transitività (Transitivity)
 > Se $X \to Y$ e $Y \to Z$, allora $X \to Z$.
-
 ### Regole derivate
-
 Le seguenti regole si dimostrano a partire dagli assiomi e sono utili nella pratica:
 
 > [!info] Unione (Union)
@@ -157,27 +134,20 @@ Le seguenti regole si dimostrano a partire dagli assiomi e sono utili nella prat
 > Sia $F = \{A \to B,\ B \to C\}$.
 > - Per transitività: $A \to C$
 > - Per unione con $A \to B$ e $A \to C$: $A \to BC$
-
 ## Chiusura di un insieme di dipendenze ($F^+$) e di attributi ($X^+$)
-
 ### Chiusura di $F$
-
 > [!quote] Definizione — Chiusura di $F$
 > Dato un insieme $F$ di dipendenze funzionali, la **chiusura** $F^+$ è l'insieme di tutte le FD che possono essere derivate da $F$ applicando ripetutamente gli assiomi di Armstrong:
 > $$F^+ = \{ X \to Y \mid F \text{ implica } X \to Y \}$$
 
 Un insieme $F$ di FD **implica** un'altra FD $f$ se ogni relazione che soddisfa tutte le FD in $F$ soddisfa anche $f$.
-
 ### Chiusura di un insieme di attributi ($X^+$)
-
 > [!quote] Definizione — Chiusura di $X$ rispetto a $F$
 > Dati uno schema $R(U)$, un insieme $F$ di FD su $U$ e un insieme di attributi $X \subseteq U$, la **chiusura** di $X$ rispetto a $F$, indicata con $X^+_F$ (o semplicemente $X^+$), è l'insieme degli attributi che dipendono funzionalmente da $X$ rispetto a $F$:
 > $$X^+_F = \{ A \mid A \in U \text{ e } F \text{ implica } X \to A \}$$
 >
 > Se $A \in X^+_F$, allora $F$ implica $X \to A$.
-
 ### Algoritmo di calcolo di $X^+$
-
 ```
 Input:  insieme X di attributi, insieme F di dipendenze funzionali
 Output: X_P (= X^+_F)
@@ -200,22 +170,15 @@ Output: X_P (= X^+_F)
 > - Nessun nuovo attributo aggiungibile.
 >
 > Risultato: $\{A\}^+ = \{A, B, C, D\}$
-
 ### Chiusura e chiavi
-
 Un insieme di attributi $K$ è **superchiave** per $R(U)$ con insieme di FD $F$ se $F$ implica $K \to U$, cioè se $K^+ = U$. È **chiave candidata** se è una superchiave minimale (nessun suo sottoinsieme proprio è superchiave). L'algoritmo di calcolo di $X^+$ può essere usato direttamente per verificare se un insieme di attributi è chiave.
-
 ## Copertura e copertura minima (ridotta)
-
 ### Copertura
-
 > [!quote] Definizione — Copertura
 > Due insiemi di dipendenze funzionali $F_1$ e $F_2$ sono **equivalenti** se $F_1$ implica ogni dipendenza in $F_2$ e viceversa ($F_1^+ = F_2^+$). In tal caso diciamo che ognuno è una **copertura** dell'altro.
 
 Questa proprietà consente di utilizzare, dato un insieme di dipendenze, un altro a esso equivalente ma più semplice.
-
 ### Proprietà desiderabili
-
 Un insieme di dipendenze $F$ è:
 - **Non ridondante**: non esiste dipendenza $f \in F$ tale che $F - \{f\}$ implica $f$.
 - **Ridotto** (o **canonico** o **minimale**): è non ridondante e non esiste un insieme $F'$ equivalente a $F$ ottenuto eliminando attributi dai primi membri di una o più dipendenze.
@@ -224,9 +187,7 @@ Un insieme di dipendenze $F$ è:
 > - $F_1 = \{A \to B;\ AB \to C;\ A \to C\}$ — ridondante (equivalente a $F_2$)
 > - $F_2 = \{A \to B;\ AB \to C\}$ — non ridondante ma non ridotto (B nel primo membro è eliminabile)
 > - $F_3 = \{A \to B;\ A \to C\}$ — ridotto
-
 ### Calcolo della copertura ridotta
-
 ```
 1. Sostituire l'insieme dato con quello equivalente che ha tutti i secondi
    membri costituiti da singoli attributi (per decomposizione)
@@ -235,9 +196,7 @@ Un insieme di dipendenze $F$ è:
    dal primo membro (cioè se esiste Y ⊂ X tale che F è equivalente
    a F - {X -> A} ∪ {Y -> A})
 ```
-
 ## Attributi primi e non primi
-
 > [!quote] Definizione — Attributo primo
 > Sia $R(U)$ una relazione. Un attributo $A \in U$ si dice **attributo primo** se appartiene ad almeno una **chiave candidata** della relazione. Gli attributi che non appartengono ad alcuna chiave candidata sono detti **attributi non primi**.
 
@@ -249,13 +208,9 @@ Un insieme di dipendenze $F$ è:
 >
 > - **Attributi primi**: Matricola, CodCorso (appartengono alla chiave)
 > - **Attributi non primi**: NomeStudente, NomeCorso, Voto
-
 ## Forme Normali
-
 Le forme normali sono proprietà degli schemi di relazione che garantiscono l'assenza di certi tipi di anomalie. Ogni forma normale è strettamente più forte della precedente: BCNF implica 3NF, 3NF implica 2NF, 2NF implica 1NF.
-
 ### Prima Forma Normale (1NF)
-
 > [!quote] Definizione — Prima Forma Normale (1NF)
 > Uno schema di relazione $R(X)$ è in **1NF** se ogni attributo appartenente a $X$ è un **attributo semplice** (atomico): il suo valore è unico e indivisibile in una ennupla. Non sono ammessi attributi multivalore o gruppi ripetuti.
 
@@ -282,16 +237,12 @@ La 1NF è una condizione di base del modello relazionale: tutte le relazioni del
 > | 001        | 02              | Serena |
 > | 002        | 01              | Marzia |
 > | 002        | 02              | Ilaria |
-
 ### Decomposizione rispetto a una FD
-
 Sia $R(U)$ una relazione e $X \to Y$ una dipendenza funzionale, con $X \subseteq U$ e $Y \subseteq U$. La **decomposizione** di $R(U)$ rispetto a $X \to Y$ consiste nella sostituzione di $R(U)$ con due relazioni:
 
 1. $R_1(X \cup Y)$ — contiene gli attributi necessari a rappresentare la FD
 2. $R_2(U - (Y - X))$ — contiene gli attributi rimanenti, mantenendo $X$ per garantire il collegamento
-
 ### Seconda Forma Normale (2NF)
-
 > [!quote] Definizione — Seconda Forma Normale (2NF)
 > Uno schema di relazione $R(X)$ è in **2NF** se è in 1NF e se ogni **attributo non primo** (non facente parte di alcuna chiave) di $R(X)$ dipende funzionalmente e **completamente** da ogni chiave di $R(X)$.
 >
@@ -314,9 +265,7 @@ Sia $R(U)$ una relazione e $X \to Y$ una dipendenza funzionale, con $X \subseteq
 > `Articoli(<u>CodArticolo</u>, DescArticoli)`
 >
 > `Magazzino(<u>CodMagazzino</u>, IndirizzoMagazzino)`
-
 ### Terza Forma Normale (3NF)
-
 > [!quote] Definizione — Terza Forma Normale (3NF) — versione classica
 > Uno schema di relazione $R(X)$ è in **3NF** se è in 1NF e se ogni **attributo non primo** di $R(X)$ è dipendente in modo **non transitivo** da ogni chiave di $R(X)$.
 >
@@ -346,18 +295,14 @@ Sia $R(U)$ una relazione e $X \to Y$ una dipendenza funzionale, con $X \subseteq
 > `Impiegati(<u>CodImpiegato</u>, Nome, Reparto)`
 >
 > `Reparto(<u>Reparto</u>, TelefonoReparto)`
-
 ### Forma Normale di Boyce-Codd (BCNF)
-
 > [!quote] Definizione — BCNF
 > Una relazione è in **forma normale di Boyce-Codd (BCNF)** se è in 1NF e se, ogni volta che vale la FD $X \to A$ in $R$ (con $A \notin X$), allora $X$ è una **superchiave** di $R$.
 >
 > Equivalentemente: ogni determinante (ogni lato sinistro di una FD non banale) deve essere una superchiave.
 
 La BCNF è una forma normale **più forte** della 3NF: ogni relazione in BCNF è anche in 3NF, ma non viceversa. La differenza emerge quando esistono più chiavi candidate che si sovrappongono.
-
 ### BCNF vs 3NF
-
 Il vantaggio della 3NF rispetto alla BCNF è che la 3NF è **sempre raggiungibile** senza perdita di informazioni e senza perdita di dipendenze funzionali. Non è così per la BCNF: esistono relazioni che non possono essere normalizzate in BCNF senza perdere qualche dipendenza funzionale.
 
 Regola pratica: **se una relazione ha una sola chiave candidata, allora essa è in BCNF se e solo se è in 3NF**.
@@ -384,9 +329,7 @@ Regola pratica: **se una relazione ha una sola chiave candidata, allora essa è 
 | Wallace  | Operating Systems | Ahamad     |
 | Wong     | Database          | Omiecinski |
 | Zelaya   | Database          | Navathe    |
-
 ## Riepilogo delle forme normali
-
 | Forma Normale | Elimina                      | Requisiti                                              |
 |---------------|------------------------------|--------------------------------------------------------|
 | **1NF**       | Valori multipli in una cella | Atomicità degli attributi                              |
@@ -395,13 +338,9 @@ Regola pratica: **se una relazione ha una sola chiave candidata, allora essa è 
 | **BCNF**      | Violazioni della chiave      | Ogni LHS di una DF è superchiave                       |
 | **4NF**       | MVD non banali               | BCNF + nessuna MVD non banale tranne da superchiavi    |
 | **5NF**       | Join dependency              | 4NF + ogni JD è implicata da chiavi candidate          |
-
 ## Forme normali avanzate: 4NF e 5NF
-
 La quarta e la quinta forma normale risolvono i problemi che si possono creare quando nella relazione sono presenti **attributi multivalore**, cioè attributi che possono assumere più valori in corrispondenza dello stesso valore di un altro attributo.
-
 ### Dipendenze multivalore (MVD)
-
 > [!quote] Definizione — Dipendenza multivalore
 > Una **dipendenza multivalore** (MVD) $X \twoheadrightarrow Y$ su uno schema $R(U)$ vale su un'istanza $r$ se, per ogni coppia di tuple $t_1, t_2 \in r$ con $t_1[X] = t_2[X]$, esiste una tupla $t_3 \in r$ tale che $t_3[X] = t_1[X]$, $t_3[Y] = t_1[Y]$ e $t_3[U - X - Y] = t_2[U - X - Y]$.
 >
@@ -422,9 +361,7 @@ La quarta e la quinta forma normale risolvono i problemi che si possono creare q
 > - $\text{Student} \twoheadrightarrow \text{Hobby}$
 >
 > Le righe sono il prodotto cartesiano dei due insiemi dipendenti: {Math, CS} e {Tennis, Reading}.
-
 ### Quarta Forma Normale (4NF)
-
 > [!quote] Definizione — 4NF
 > Uno schema è in **4NF** se:
 > - è in BCNF
@@ -436,9 +373,7 @@ La quarta e la quinta forma normale risolvono i problemi che si possono creare q
 > `R1(Student, Course)`
 >
 > `R2(Student, Hobby)`
-
 ### Dipendenze di join (JD) e Quinta Forma Normale (5NF)
-
 > [!quote] Definizione — Join Dependency
 > Una **dipendenza di join** (JD) $JD(R_1, R_2, \ldots, R_n)$ su uno schema $R$ afferma che $R$ è ricostruibile come join naturale di $R_1, R_2, \ldots, R_n$ senza perdita.
 
@@ -451,11 +386,8 @@ La quarta e la quinta forma normale risolvono i problemi che si possono creare q
 > Schema $R(\text{Supplier, Part, Project})$: un fornitore può fornire parti a progetti, ma i dati sono noti solo in combinazioni parziali. Tutte le proiezioni sono corrette ma l'unione può generare tuple spurie. La decomposizione in 5NF è:
 >
 > `R1(Supplier, Part)` — `R2(Supplier, Project)` — `R3(Part, Project)`
-
 ## Normalizzazione per decomposizione
-
 ### Proprietà di una buona decomposizione
-
 Una decomposizione dovrebbe sempre soddisfare due proprietà fondamentali:
 
 > [!quote] Definizione — Decomposizione senza perdita (Lossless Join)
@@ -488,22 +420,16 @@ Una decomposizione dovrebbe sempre soddisfare due proprietà fondamentali:
 > |           |        |      | Neri      | Venere   |
 >
 > Il join naturale produce tuple spurie (es. Verdi-Saturno-Milano, Neri-Giove-Milano) e la FD $\text{Progetto} \to \text{Sede}$ è **perduta**: non è più controllabile localmente. Inserendo Neri-Marte, il sistema non può verificare che Marte sia a Roma (come Rossi) e non a Milano (come Neri), portando a una violazione non rilevabile.
-
 ### Quando non è possibile raggiungere la BCNF conservando le dipendenze
-
 > [!warning] BCNF e conservazione delle dipendenze
 > In alcuni casi la BCNF non è raggiungibile senza perdere dipendenze funzionali. Quando una FD coinvolge tutti gli attributi dello schema (come $\text{Progetto, Sede} \to \text{Dirigente}$ in uno schema con tutti e tre gli attributi), nessuna decomposizione può preservare tale dipendenza. In questi casi ci si accontenta della 3NF.
-
 ## Algoritmo di sintesi in 3NF
-
 Il problema formale è: data una relazione $R(U)$ e un insieme di dipendenze $F$ su $U$, generare una decomposizione di $R$ che:
 - sia senza perdita e conservi le dipendenze
 - contenga solo relazioni normalizzate (in 3NF)
 
 Si fa riferimento alla 3NF perché, a differenza della BCNF, è **sempre raggiungibile** senza perdita di informazioni e senza perdita di dipendenze.
-
 ### Algoritmo (sintesi)
-
 ```
 Input:  schema R(U), insieme di FD F su U
 Output: decomposizione in 3NF, senza perdita, con conservazione delle dipendenze
@@ -547,9 +473,7 @@ Output: decomposizione in 3NF, senza perdita, con conservazione delle dipendenze
 > - $R_4(\text{P, D, A})$ con $\{PD \to A\}$
 >
 > **Passo 6**: MP è chiave per $R$, ed è contenuta in $R_4(\text{P, D, A})$ (contiene P ma non M)... Il sistema verifica; in questo caso MP è chiave e PD è in $R_4$: si aggiunge, se necessario, uno schema con la chiave.
-
 ## Normalizzazione nella progettazione concettuale
-
 La teoria della normalizzazione può essere usata anche durante la **progettazione concettuale** per verificare la qualità dello schema ER, identificando dipendenze che segnalano entità mescolate o relazioni mal modellate.
 
 > [!example] Entità con dipendenza transitiva — Prodotto

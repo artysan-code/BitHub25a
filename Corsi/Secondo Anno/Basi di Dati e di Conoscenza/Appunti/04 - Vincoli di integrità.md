@@ -27,7 +27,6 @@ I vincoli d'integrità consentono una descrizione più accurata della realtà e 
 > - Lode **"e lode"** con voto **27** (vincolo di ennupla: `Voto = 30 OR NOT Lode = "e lode"`)
 > - Matricola **739430** in Esami non esiste in Studenti (vincolo di integrità referenziale)
 > - Matricola **787643** duplicata in Studenti con dati diversi (vincolo di chiave)
-
 ## Tipi di vincoli
 I vincoli possono essere suddivisi in due macro-categorie:
 - **Vincoli intrarelazionali**: coinvolgono una sola relazione.
@@ -51,11 +50,9 @@ Una possibile sintassi è un'espressione booleana di atomi che confrontano valor
 > | Bruni | 47.000,00 € | 11.000,00 € | 36.000,00 € |
 >
 > Vincolo: `Lordo = (Ritenute + Netto)`
-
 ## Chiavi e schemi di relazione
 La chiave è un concetto fondamentale nel modello relazionale: garantisce l'**accessibilità** a ciascun dato della base di dati e permette di **correlare** i dati in relazioni diverse (modello basato su valori).
 ### Identificazione delle ennuple
-
 > [!quote] Definizione — Superchiave
 > Un insieme *K* di attributi è **superchiave** per una relazione *r* se *r* non contiene due ennuple distinte $t_1$ e $t_2$ con $t_1[K] = t_2[K]$.
 
@@ -80,7 +77,6 @@ La chiave è un concetto fondamentale nel modello relazionale: garantisce l'**ac
 
 > [!warning] Vincoli a livello di schema vs istanza
 > I vincoli corrispondono a proprietà del mondo reale modellato dalla base di dati. Interessano a **livello di schema** (con riferimento a tutte le istanze possibili). Ad uno schema associamo un insieme di vincoli e consideriamo **corrette** solo le istanze che soddisfano tutti i vincoli. Un'istanza può soddisfare altri vincoli "per caso".
-
 ### Chiave primaria
 La **chiave primaria** (Primary Key) è una chiave su cui **non sono ammessi valori nulli**. Viene prescelta fra l'insieme di chiavi candidate secondo criteri di efficienza.
 - **Notazione**: In uno schema, gli attributi che compongono la chiave primaria sono solitamente _sottolineati_.
@@ -123,7 +119,6 @@ Le correlazioni devono essere "coerenti": un record in $R_1$ non può fare rifer
 > Vincoli di integrità referenziale:
 > - L'attributo `Vigile` di **Infrazioni** → chiave primaria `Matricola` di **Vigili**
 > - Gli attributi `Prov, Numero` di **Infrazioni** → chiave primaria `Prov, Numero` di **Auto**
-
 ### Violazione e Azioni compensative
 Cosa succede se un'operazione di aggiornamento (es. eliminazione di un'ennupla in $R_2$) viola l'integrità referenziale?
 Sono previste alcune azioni compensative:

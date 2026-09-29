@@ -1,11 +1,8 @@
 ## Linguaggi per basi di dati
-
 I linguaggi per basi di dati si suddividono in due categorie principali:
 - **DDL** (Data Definition Language): operazioni sullo schema.
 - **DML** (Data Manipulation Language): operazioni sui dati, a loro volta suddivise in *interrogazione* (query) e *aggiornamento*.
-
 ### Linguaggi di interrogazione
-
 I linguaggi di interrogazione per basi di dati relazionali si classificano in:
 
 - **Dichiarativi**: specificano le *proprietà* del risultato ("**che cosa**"). Si descrive il risultato desiderato, non il modo per ottenerlo.
@@ -16,9 +13,7 @@ I principali linguaggi relazionali sono:
 - **Calcolo relazionale**: dichiarativo (teorico). Basato sul calcolo dei predicati del primo ordine; usa connettivi e clausole per descrivere la relazione risultato.
 - **SQL** (Structured Query Language): intermedio (reale), il linguaggio standard dei DBMS.
 - **QBE** (Query by Example): dichiarativo (reale).
-
 ## Algebra Relazionale
-
 > [!quote] Definizione — Algebra relazionale
 > L'**algebra relazionale** è un linguaggio **procedurale** e **chiuso**: ogni operatore accetta relazioni come argomento e restituisce una relazione. Le interrogazioni sono espressioni composte di operatori che producono relazioni.
 
@@ -28,9 +23,7 @@ Gli operatori di base si suddividono in tre gruppi:
 1. **Operatori insiemistici**: *unione*, *differenza*, *intersezione* — derivati dalla teoria degli insiemi.
 2. **Operatori specifici**: *ridenominazione*, *selezione*, *proiezione* — propri dell'algebra relazionale.
 3. **Join**: *join naturale*, *theta-join*, *prodotto cartesiano* — per correlare dati in relazioni diverse.
-
 ### Definizione formale
-
 L'algebra relazionale è formalmente una quintupla:
 
 $$\mathcal{AR} = \langle \mathcal{R}, \mathcal{A}, \mathcal{D}, dom, Op \rangle$$
@@ -44,26 +37,18 @@ dove:
 
 > [!info] Completezza e minimalità
 > Un insieme di operatori è **completo** (Codd, 1972) se può esprimere qualsiasi query definibile tramite formule atomiche ($A\,\theta\,c$ o $A\,\theta\,B$, con $\theta \in \{=, <, >, \leq, \geq, \neq\}$) e connettivi logici $(\land, \lor, \lnot)$. L'insieme $\{\sigma, \pi, \times, \cup, -\}$ è completo. È anche **minimale** perché nessun operatore è ridondante: $\sigma$ non è esprimibile con $\{\pi, \times, \cup, -\}$ e $\times$ non è esprimibile con $\{\sigma, \pi, \cup, -\}$. L'intersezione $\cap$ invece è ridondante: $R \cap S = R - (R - S)$.
-
 ## Operatori insiemistici
-
 Le relazioni sono insiemi di tuple omogenee. Gli operatori insiemistici hanno senso solo tra relazioni **unione-compatibili**, ovvero definite sullo stesso insieme di attributi (stessi nomi e stessi domini).
 
 > [!warning] Unione-compatibilità
 > L'unione fra due relazioni su tuple *non* omogenee non è una relazione valida. Prima di applicare operatori insiemistici è necessario verificare che le relazioni abbiano lo stesso schema, o usare la **ridenominazione** per renderle compatibili.
-
 ### Unione
-
 > [!quote] Definizione — Unione
 > L'**unione** $r_1 \cup r_2$ di due relazioni $r_1$ e $r_2$ definite sullo stesso insieme di attributi $X$ è la relazione su $X$ contenente le tuple che appartengono a $r_1$ o a $r_2$ (o ad entrambe). I duplicati sono eliminati.
-
 ### Intersezione
-
 > [!quote] Definizione — Intersezione
 > L'**intersezione** $r_1 \cap r_2$ di due relazioni $r_1$ e $r_2$ definite sullo stesso insieme di attributi $X$ è la relazione su $X$ contenente le tuple che appartengono sia a $r_1$ che a $r_2$.
-
 ### Differenza
-
 > [!quote] Definizione — Differenza
 > La **differenza** $r_1 - r_2$ di due relazioni $r_1$ e $r_2$ definite sullo stesso insieme di attributi $X$ è la relazione su $X$ contenente le tuple che appartengono a $r_1$ e non a $r_2$.
 
@@ -106,9 +91,7 @@ Le relazioni sono insiemi di tuple omogenee. Gli operatori insiemistici hanno se
 > | 2 | Neri | 36 |
 > | 3 | Bianchi | 28 |
 > | 9 | Verdi | 51 |
-
 ## Ridenominazione
-
 > [!quote] Definizione — Ridenominazione
 > L'operatore di **ridenominazione** $\rho_{B \leftarrow A}(R)$ è un operatore **monadico** che cambia il nome dell'attributo $A$ in $B$ nella relazione $R$, lasciando inalterata l'istanza. Formalmente, $\rho_{B_1,\dots,B_k \leftarrow A_1,\dots,A_k}(R)$ contiene tuple $t'$ tali che $t'[B_i] = t[A_i]$ per ogni $i$.
 
@@ -146,13 +129,9 @@ La ridenominazione è utile principalmente per rendere relazioni unione-compatib
 > | Eva | Abele |
 > | Eva | Set |
 > | Sara | Isacco |
-
 ## Selezione e Proiezione
-
 Selezione e proiezione sono operatori complementari: la **selezione** opera sulle *righe* (restituisce un sottoinsieme di tuple conservando tutti gli attributi), la **proiezione** opera sulle *colonne* (restituisce tutti i valori su un sottoinsieme di attributi).
-
 ### Selezione
-
 > [!quote] Definizione — Selezione
 > La **selezione** $\sigma_F(r)$ è un operatore **monadico** che produce una relazione sugli stessi attributi di $r$ contenente le tuple di $r$ su cui la condizione $F$ è **vera**.
 
@@ -195,9 +174,7 @@ dove $\theta \in \{\leq, <, =, >, \geq\}$ e $A$, $B$ sono attributi del dominio 
 > |---------|------|---------|-----------|
 > | Neri | Luca | Roma | Roma |
 > | Verdi | Nico | Firenze | Firenze |
-
 ### Selezione con valori nulli
-
 Quando un attributo contiene `NULL`, qualsiasi confronto ordinario ($=$, $<$, $>$, ...) produce il valore di verità **SCONOSCIUTO** (U), terzo valore della logica a tre valori $\{V, U, F\}$.
 
 La logica a tre valori ha le seguenti tavole di verità:
@@ -226,9 +203,7 @@ La selezione include una tupla nel risultato solo se la condizione vale **V** (v
 Per riferirsi ai valori nulli esistono due condizioni speciali:
 - `A IS NULL`: vera su una tupla $t$ se $t[A]$ è nullo; falsa se è specificato.
 - `A IS NOT NULL`: vera su una tupla $t$ se $t[A]$ è specificato; falsa se è nullo.
-
 ### Proiezione
-
 > [!quote] Definizione — Proiezione
 > Dati una relazione $r(X)$ e un sottoinsieme $Y \subseteq X$, la **proiezione** $\pi_Y(r)$ è l'insieme delle tuple su $Y$ ottenute dalle tuple di $r$ considerando solo i valori su $Y$:
 >
@@ -263,13 +238,9 @@ La proiezione ha un numero di tuple *minore o uguale* a quello di $r$: tuple div
 > | Neri | Luca |
 > | Verdi | Nico |
 > | Rossi | Marco |
-
 ## Join
-
 Il **join** è l'operatore più importante dell'algebra relazionale: selezione e proiezione permettono di estrarre informazioni da *una* relazione, ma non di correlare dati in relazioni diverse. Il join risolve questo problema, evidenziando la proprietà del modello relazionale di essere **basato su valori**.
-
 ### Join naturale
-
 > [!quote] Definizione — Join naturale
 > Il **join naturale** $r_1 \bowtie r_2$ di $r_1(X_1)$ e $r_2(X_2)$ è una relazione definita su $X_1 \cup X_2$ (che si scrive $X_1 X_2$):
 >
@@ -280,9 +251,7 @@ Il join naturale correla dati sulla base di valori uguali negli **attributi con 
 Casi limite:
 - Se $X_1 \cap X_2 = \emptyset$, il join naturale equivale al **prodotto cartesiano**.
 - Se $X_1 = X_2$, il join naturale equivale all'**intersezione**.
-
 #### Join completo e tuple dangling
-
 > [!quote] Definizione — Join completo e dangling
 > Un join si dice **completo** se ogni tuple di ciascun operando contribuisce ad almeno una tupla del risultato. Le tuple che non trovano corrispondenza e vengono quindi escluse si dicono **dangling** (appese, incomplete).
 
@@ -341,18 +310,14 @@ Casi limite:
 >
 > | Impiegato | Reparto | Capo |
 > |-----------|---------|------|
-
 #### Proprietà del join naturale
-
 1. Il join di $r_1$ e $r_2$ contiene un numero di tuple compreso fra 0 e $|r_1| \cdot |r_2|$.
 2. Se il join è **completo**, contiene almeno $\max(|r_1|, |r_2|)$ tuple.
 3. Se $X_1 \cap X_2$ contiene una chiave per $r_2$, il join contiene almeno $|r_2|$ tuple.
 4. Se il join coinvolge una chiave di $R_2$ e un **vincolo di integrità referenziale**, il numero di tuple è pari a $|R_1|$.
 5. Il join è **commutativo**: $r_1 \bowtie r_2 = r_2 \bowtie r_1$.
 6. Il join è **associativo**: $(r_1 \bowtie r_2) \bowtie r_3 = r_1 \bowtie (r_2 \bowtie r_3)$. Quindi sequenze di join possono essere scritte senza parentesi.
-
 #### Join e proiezioni: perdita di informazione
-
 Date $R_1(X_1)$ e $R_2(X_2)$, vale sempre:
 
 $$\pi_{X_1}(R_1 \bowtie R_2) \subseteq R_1$$
@@ -362,9 +327,7 @@ La proiezione del join su $X_1$ è un sottoinsieme di $R_1$ (le tuple dangling v
 $$(\pi_{X_1}(R)) \bowtie (\pi_{X_2}(R)) \supseteq R$$
 
 Il join delle proiezioni può introdurre tuple spurie non presenti in $R$.
-
 ### Prodotto cartesiano
-
 > [!quote] Definizione — Prodotto cartesiano
 > Il **prodotto cartesiano** $r_1 \times r_2$ di $r_1(X_1)$ e $r_2(X_2)$, con $X_1 \cap X_2 = \emptyset$, è:
 >
@@ -399,9 +362,7 @@ Il prodotto cartesiano è un join naturale su relazioni senza attributi in comun
 > | Rossi | A | B | Bruni |
 > | Neri | B | B | Bruni |
 > | Bianchi | B | B | Bruni |
-
 ### Theta-join ed equi-join
-
 Quando si devono correlare relazioni su attributi con **nome diverso**, si usa il **theta-join**.
 
 > [!quote] Definizione — Theta-join
@@ -440,17 +401,13 @@ Se $\theta$ è una relazione di **uguaglianza** tra un attributo della prima rel
 > | Rossi | A | A | Venere |
 > | Neri | A | A | Venere |
 > | Neri | B | B | Marte |
-
 #### Equivalenza tra equi-join e join naturale tramite ridenominazione
-
 Le tre espressioni seguenti sono equivalenti:
 
 $$\pi_{\text{Impiegato, Reparto, Capo}}(\text{Impiegati} \bowtie_{\text{Reparto}=\text{Codice}} \text{Reparti})$$
 $$= \pi_{\text{Impiegato, Reparto, Capo}}(\sigma_{\text{Reparto}=\text{Codice}}(\text{Impiegati} \times \text{Reparti}))$$
 $$= \text{Impiegati} \bowtie \rho_{\text{Reparto} \leftarrow \text{Codice}}(\text{Reparti})$$
-
 ### Join esterni (Outer Join)
-
 Il join naturale tralascia le tuple dangling. L'**outer join** le preserva, estendendole con valori `NULL` dove mancano le controparti.
 
 > [!quote] Definizione — Left outer join
@@ -503,16 +460,12 @@ Il join naturale tralascia le tuple dangling. L'**outer join** le preserva, este
 > | Bianchi | produzione | Mori |
 > | Rossi | vendite | NULL |
 > | NULL | acquisti | Bruni |
-
 ## Interrogazioni (Query)
-
 > [!quote] Definizione — Interrogazione
 > Un'**interrogazione** è un'espressione $E(\mathcal{R})$ che, applicata a istanze di una base di dati $\mathcal{R}$, produce una relazione su un dato insieme di attributi $X$. Le interrogazioni sono espressioni i cui atomi sono relazioni in $\mathcal{R}$ o costanti.
 
 Le interrogazioni sono in pratica **espressioni di relazioni che producono relazioni**.
-
 ### Schema di esempio per le interrogazioni
-
 Le query seguenti usano queste due relazioni:
 
 **Impiegati**
@@ -598,9 +551,7 @@ Le query seguenti usano queste due relazioni:
 > *Logica: tutti i capi meno quelli che hanno almeno un impiegato con stipendio $\leq 40$.*
 >
 > $$\pi_{\text{Capo}}(\text{Supervisione}) - \pi_{\text{Capo}}\!\left(\text{Supervisione} \bowtie_{\text{Impiegato}=\text{Matricola}} (\sigma_{\text{Stipendio}\leq40}(\text{Impiegati}))\right)$$
-
 ## Equivalenza di espressioni
-
 Due espressioni sono **equivalenti** se producono lo stesso risultato su ogni istanza della base di dati. L'equivalenza è importante perché consente di scegliere, a parità di risultato, l'operazione meno costosa (ottimizzazione delle query).
 
 Le principali equivalenze utili sono:
@@ -637,15 +588,11 @@ $$\pi_X(E_1 \cup E_2) \equiv \pi_X(E_1) \cup \pi_X(E_2)$$
 $$\sigma_{F_1 \lor F_2}(R) \equiv \sigma_{F_1}(R) \cup \sigma_{F_2}(R)$$
 $$\sigma_{F_1 \land F_2}(R) \equiv \sigma_{F_1}(R) \cap \sigma_{F_2}(R)$$
 $$\sigma_{F_1 \land \lnot F_2}(R) \equiv \sigma_{F_1}(R) - \sigma_{F_2}(R)$$
-
 ## Viste (Relazioni derivate)
-
 In una base di dati si distinguono:
 - **Relazioni di base**: contenuto autonomo, memorizzato fisicamente.
 - **Relazioni derivate** (viste): il cui contenuto è funzione del contenuto di altre relazioni, definito per mezzo di interrogazioni.
-
 ### Tipi di viste
-
 **Relazioni virtuali (viste):** relazioni definite mediante espressioni del linguaggio di interrogazione, non memorizzate ma utilizzabili come se lo fossero. Devono essere ricalcolate ogni volta che vengono interrogate.
 
 **Viste materializzate:** relazioni virtuali effettivamente memorizzate nella base di dati. Immediatamente disponibili ma critiche per il mantenimento dell'allineamento con le relazioni da cui derivano.
@@ -663,14 +610,10 @@ In una base di dati si distinguono:
 > viene eseguita come:
 >
 > $$\sigma_{\text{Capo}='Leoni'}\!\left(\pi_{\text{Impiegato, Capo}}(\text{Afferenza} \bowtie \text{Direzione})\right)$$
-
 ### Vantaggi delle viste
-
 - Permettono di mostrare a ciascun utente solo le componenti della base di dati che lo interessano.
 - **Sicurezza**: è possibile definire diritti di accesso relativi a una vista.
 - Espressioni complesse possono essere definite come viste e riutilizzate.
 - In caso di ristrutturazione della base di dati, le vecchie relazioni possono essere ricavate mediante viste, mantenendo la compatibilità con le applicazioni esistenti.
-
 ### Aggiornamenti sulle viste
-
 "Aggiornare una vista" significa modificare le relazioni di base in modo che la vista, ricalcolata, rispecchi l'aggiornamento. L'aggiornamento sulle relazioni di base corrispondente a quello specificato sulla vista deve essere **univoco**, ma in generale non lo è: per questo ben pochi aggiornamenti sono ammissibili sulle viste.

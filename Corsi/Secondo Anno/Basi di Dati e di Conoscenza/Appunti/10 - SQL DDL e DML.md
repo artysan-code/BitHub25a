@@ -1,16 +1,11 @@
 ## SQL: il linguaggio standard
-
 **SQL** (originariamente *Structured Query Language*, oggi considerato un nome proprio) è il linguaggio standard per la definizione e la manipolazione delle basi di dati relazionali. Incorpora sia le funzionalità di **DDL** (*Data Definition Language*) sia quelle di **DML** (*Data Manipulation Language*), ed esiste in molte versioni dialettali legate ai singoli DBMS.
-
 ### Cenni storici
-
 La prima proposta risale al **1974** con il linguaggio SEQUEL (IBM). Le prime implementazioni commerciali arrivarono nel **1981** con SQL/DS e Oracle. Dal **1983** circa SQL divenne lo "standard di fatto". Seguirono numerosi standard ISO ufficiali: 1986, 1989, 1992 (**SQL-92**), 1999 (**SQL:1999**), 2003, 2006, 2008, 2011, 2016 e oltre. Ogni standard è recepito solo *in parte* dai DBMS: le implementazioni reali (MySQL, PostgreSQL, Oracle, SQL Server) presentano estensioni e omissioni rispetto allo standard.
 
 > [!info] Standard e dialetti
 > SQL:1999 ha introdotto tipi booleani, BLOB/CLOB e caratteristiche orientate agli oggetti. MySQL implementa un sottoinsieme dello standard con estensioni proprietarie (es. `AUTO_INCREMENT`, `ENGINE`).
-
 ### Suddivisione funzionale
-
 SQL comprende tre sotto-linguaggi principali:
 
 - **DDL** (*Data Definition Language*): definizione e modifica della struttura della base di dati (schemi, tabelle, vincoli, indici).
@@ -18,33 +13,25 @@ SQL comprende tre sotto-linguaggi principali:
 - **QL** (*Query Language*, spesso incluso nel DML): interrogazione dei dati tramite `SELECT`.
 
 A questi si aggiunge il **DCL** (*Data Control Language*) per la gestione dei permessi (`GRANT`, `REVOKE`), non trattato in questa lezione.
-
 ## MySQL
-
 > [!quote] Definizione — DBMS
 > Un **DataBase Management System** (DBMS) è un sistema di gestione il cui obiettivo generale è mantenere le informazioni e renderle disponibili su richiesta. (J. Date)
 
 Un DBMS deve garantire: condivisione dei dati, persistenza, affidabilità, privatezza, efficienza ed efficacia.
 
 **MySQL** è un **RDBMS** (*Relational Database Management System*) open source, sviluppato e mantenuto da Oracle. È tra i più diffusi al mondo e incorpora funzionalità non open source nelle versioni enterprise a pagamento. Esiste un fork open-source attivo: **MariaDB**.
-
 ### Caratteristiche principali
-
 - Basato su routine ISAM, scritto in C e C++.
 - Storage engine preferibile: **InnoDB** (supporta transazioni, chiavi esterne, lock a livello di record, maggiore robustezza ai guasti). Alternativa: **MyISAM** (più efficiente, meno spazio, ma senza transazioni né foreign key).
 - Interfacciabile da C, Java, Python e molti altri linguaggi.
 - Nessun limite esplicito sulla dimensione del database o sul numero di tabelle (il limite massimo di righe dipende dai vincoli del sistema operativo).
-
 ### Connessione da terminale
-
 L'interfaccia principale è una shell SQL a riga di comando. Per connettersi:
 
 ```sql
 mysql -u utente -p password [-P porta -h host]
 ```
-
 ### Istruzioni di base
-
 ```sql
 SHOW DATABASES;          -- visualizza tutti i database
 USE nome_db;             -- seleziona il database da usare
@@ -55,20 +42,14 @@ EXIT;                    -- esci dalla shell
 
 > [!warning] Il punto e virgola
 > Ogni istruzione SQL deve terminare con `;`. In MySQL il punto e virgola chiude l'istruzione ed è obbligatorio nella shell interattiva.
-
 ## DDL — Data Definition Language
-
 Il DDL serve a definire e modificare la **struttura** della base di dati: database, tabelle, vincoli, indici.
-
 ### Domini
-
 SQL distingue due categorie di domini:
 
 - **Domini elementari (predefiniti)**: tipi di dato built-in del DBMS.
 - **Domini definiti dall'utente**: tipi semplici ma riutilizzabili, definiti tramite `CREATE DOMAIN` (standard SQL, supporto parziale in MySQL).
-
 #### Tipi numerici
-
 | Tipo | Intervallo (signed) | Note |
 |---|---|---|
 | `TINYINT` | $-128$ a $127$ (unsigned $0$–$255$) | intero su 1 byte |
@@ -77,9 +58,7 @@ SQL distingue due categorie di domini:
 | `FLOAT(M,D)` | — | $M$ cifre totali, $D$ decimali; singola precisione |
 | `DOUBLE(M,D)` | — | come `FLOAT` ma a doppia precisione |
 | `DECIMAL(M,D)` / `NUMERIC(M,D)` | — | numerico esatto; preferito per valori monetari |
-
 #### Tipi alfanumerici
-
 | Tipo | Descrizione |
 |---|---|
 | `CHAR(x)` | Stringa a lunghezza **fissa** di max 255 caratteri |
@@ -89,9 +68,7 @@ SQL distingue due categorie di domini:
 
 > [!warning] Indici su TEXT e BLOB
 > Non creare indici su colonne di tipo `TEXT` o `BLOB`: MySQL non lo supporta in modo diretto e degraderebbe le prestazioni.
-
 #### Tipi temporali
-
 | Tipo | Formato | Note |
 |---|---|---|
 | `DATE` | `aaaa-mm-gg` | solo data |
@@ -99,9 +76,7 @@ SQL distingue due categorie di domini:
 | `DATETIME` | `aaaa-mm-gg hh:mm:ss` | data e ora |
 | `YEAR` | `aaaa` | solo anno |
 | `TIMESTAMP(x)` | variabile | $x$ da 2 a 14; aggiornato automaticamente |
-
 #### Tipo booleano ed ENUM
-
 `BOOLEAN` (introdotto in SQL:1999) memorizza `TRUE` o `FALSE`; in MySQL è implementato come `TINYINT(1)`.
 
 `ENUM('val1', 'val2', ...)` consente di vincolare una colonna a un insieme finito di valori stringa. È utile per campi con dominio piccolo e fisso.
@@ -110,9 +85,7 @@ SQL distingue due categorie di domini:
 -- Esempio: colonna che ammette solo 'M' o 'F'
 Sesso ENUM('M', 'F') NOT NULL
 ```
-
 #### Domini definiti dall'utente (CREATE DOMAIN)
-
 `CREATE DOMAIN` definisce un tipo riutilizzabile, eventualmente con vincoli e valore di default:
 
 ```sql
@@ -122,18 +95,14 @@ CREATE DOMAIN Voto
 ```
 
 In MySQL il supporto a `CREATE DOMAIN` è limitato; in pratica si usa direttamente il tipo built-in con i vincoli inline sulla colonna.
-
 ### CREATE DATABASE / USE
-
 ```sql
 CREATE DATABASE universita;
 USE universita;
 ```
 
 Il comando `CREATE DATABASE` e il sinonimo `CREATE SCHEMA` sono equivalenti in MySQL. `USE` seleziona il database corrente per le istruzioni successive.
-
 ### CREATE TABLE
-
 La sintassi generale per creare una tabella è:
 
 ```sql
@@ -148,9 +117,7 @@ CREATE TABLE nome_tabella (
 Una tabella appena creata è **vuota**. Chi la crea possiede tutti i diritti su di essa.
 
 Per le tabelle che devono supportare **chiavi esterne** e **transazioni** è obbligatorio usare `ENGINE=InnoDB`.
-
 #### Opzione IF NOT EXISTS
-
 ```sql
 CREATE TABLE IF NOT EXISTS nome_tabella (...);
 ```
@@ -186,30 +153,22 @@ CREATE TABLE emp (
         ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 ```
-
 ### Vincoli di colonna e di tabella
-
 I vincoli possono essere dichiarati **inline** (livello di colonna) oppure come clausola separata in coda alla lista delle colonne (livello di tabella).
-
 #### NOT NULL
-
 Impedisce che la colonna contenga `NULL`. Il DBMS rifiuta qualsiasi inserimento o aggiornamento che lascerebbe il campo senza valore (salvo che non esista un `DEFAULT`).
 
 ```sql
 emp_name VARCHAR(30) NOT NULL
 ```
-
 #### DEFAULT
-
 Specifica il valore assunto da una colonna quando al momento dell'inserimento non viene fornito alcun valore. Il nuovo default sostituisce quello precedente.
 
 ```sql
 numero_figli SMALLINT DEFAULT 0,
 stipendio    INT      DEFAULT NULL
 ```
-
 #### PRIMARY KEY
-
 Definisce la **chiave primaria** della tabella. Implica automaticamente `NOT NULL` su tutte le colonne coinvolte. Può essere dichiarata a livello di colonna (chiave semplice) o di tabella (chiave composta):
 
 ```sql
@@ -221,9 +180,7 @@ PRIMARY KEY (anno, numero)
 ```
 
 `AUTO_INCREMENT` è un'estensione MySQL che incrementa automaticamente il valore intero a ogni inserimento; usato tipicamente per le chiavi surrogate.
-
 #### UNIQUE
-
 Impone che i valori nella colonna (o nella combinazione di colonne) siano tutti distinti. A differenza di `PRIMARY KEY`, ammette `NULL` (più righe possono avere `NULL`).
 
 ```sql
@@ -238,9 +195,7 @@ UNIQUE (Nome, Cognome)
 
 > [!info] UNIQUE vs PRIMARY KEY
 > `UNIQUE` definisce una **superchiave**; impone che non esistano due righe con la stessa combinazione di valori, ma non è la chiave primaria. `PRIMARY KEY` è una sola per tabella e comporta implicitamente `NOT NULL`.
-
 #### CHECK
-
 Permette di esprimere vincoli arbitrari su valori di colonna o di ennupla. La condizione deve essere soddisfatta da tutte le tuple in ogni momento.
 
 ```sql
@@ -254,9 +209,7 @@ CHECK (Stipendio <= (SELECT Stipendio FROM Impiegato J
 
 > [!warning] CHECK in MySQL
 > MySQL verifica la sintassi del `CHECK` ma nelle versioni precedenti alla 8.0.16 **non lo applica** a runtime. Per vincoli complessi è necessario usare trigger o logica applicativa.
-
 #### FOREIGN KEY ... REFERENCES
-
 Definisce un **vincolo di integrità referenziale**: impone che il valore dell'attributo referente sia presente come valore dell'attributo (unico o chiave primaria) della tabella referenziata.
 
 ```sql
@@ -275,9 +228,7 @@ FOREIGN KEY (col1, col2, ...) REFERENCES tabella_esterna(col1, col2, ...)
 
 > [!info] Posizione delle azioni referenziali
 > Le clausole `ON DELETE` e `ON UPDATE` si specificano subito dopo `REFERENCES`, all'interno della definizione della foreign key.
-
 ### Azioni referenziali (ON DELETE / ON UPDATE)
-
 Quando un'operazione sulla tabella **esterna** (referenziata) potrebbe violare l'integrità referenziale, il DBMS reagisce secondo la politica specificata:
 
 | Politica | ON UPDATE | ON DELETE |
@@ -293,9 +244,7 @@ Quando un'operazione sulla tabella **esterna** (referenziata) potrebbe violare l
 > - `ON UPDATE CASCADE`: tutte le righe di `emp` con `deptno = 10` aggiornano il valore al nuovo `dptno`.
 > - `ON DELETE NO ACTION`: il DELETE del dipartimento viene rifiutato finché esistono impiegati che vi appartengono.
 > - `ON DELETE SET NULL`: il campo `deptno` degli impiegati di quel dipartimento diventa `NULL` (richiede che la colonna ammetta `NULL`).
-
 ### Esempio completo: tabella Impiegato con vincoli
-
 ```sql
 CREATE TABLE Impiegato (
     Matricola  CHAR(6)     PRIMARY KEY,
@@ -311,9 +260,7 @@ CREATE TABLE Impiegato (
         REFERENCES Impiegato(Matricola)
 ) ENGINE=InnoDB;
 ```
-
 ### DROP TABLE e DROP DATABASE
-
 ```sql
 DROP TABLE emp;        -- elimina la tabella e tutti i suoi dati
 DROP DATABASE azienda; -- elimina l'intero database
@@ -327,9 +274,7 @@ DROP TABLE nome [ RESTRICT | CASCADE ]
 
 - `RESTRICT`: non esegue il comando se esistono oggetti dipendenti (es. view, foreign key).
 - `CASCADE`: rimuove anche tutti gli oggetti dipendenti. **Usare con estrema cautela.**
-
 ### ALTER TABLE — modifica dello schema
-
 `ALTER TABLE` permette di modificare la struttura di una tabella esistente senza ricrearla.
 
 ```sql
@@ -362,9 +307,7 @@ RENAME TABLE employee TO emp;
 
 > [!warning] Vincoli aggiunti a posteriori
 > Quando si aggiunge un nuovo vincolo con `ALTER TABLE ADD CONSTRAINT`, esso deve essere **soddisfatto dai dati già presenti** nella tabella. In caso contrario il comando fallisce.
-
 ### Indici (cenni)
-
 Gli indici operano a livello **fisico** (non logico) e non cambiano la semantica della base di dati, ma migliorano le prestazioni delle interrogazioni. In passato erano l'unico mezzo per definire chiavi in certi sistemi; oggi questa funzione è svolta dai vincoli `PRIMARY KEY` e `UNIQUE`.
 
 ```sql
@@ -374,13 +317,9 @@ CREATE INDEX idx_nome ON emp(emp_name);
 -- Eliminazione dell'indice
 DROP INDEX idx_nome ON emp;
 ```
-
 ## DML — Data Manipulation Language
-
 Il DML gestisce il **contenuto** delle tabelle tramite tre istruzioni: `INSERT`, `UPDATE`, `DELETE`.
-
 ### INSERT INTO
-
 `INSERT` aggiunge una o più righe a una tabella.
 
 **Sintassi con VALUES (inserimento singolo):**
@@ -440,9 +379,7 @@ SELECT ...;
 > INSERT INTO emp (emp_name, sal, deptno)
 > VALUES ('Wilson', 2500.00, 1);
 > ```
-
 ### UPDATE
-
 `UPDATE` modifica i valori di uno o più attributi nelle righe che soddisfano la condizione `WHERE`. Se `WHERE` è assente, la modifica viene applicata a **tutte** le righe della tabella.
 
 **Sintassi:**
@@ -479,9 +416,7 @@ Il nuovo valore può essere: un'espressione calcolata sugli attributi della riga
 > UPDATE Impiegato SET Stipendio = Stipendio * 1.15 WHERE Stipendio > 30;
 > UPDATE Impiegato SET Stipendio = Stipendio * 1.10 WHERE Stipendio <= 30;
 > ```
-
 ### DELETE
-
 `DELETE` elimina le righe che soddisfano la condizione `WHERE`. Se `WHERE` è assente, **tutte** le righe vengono eliminate (la struttura della tabella rimane).
 
 **Sintassi:**
@@ -508,17 +443,11 @@ WHERE condizione;
 
 > [!warning] DELETE senza WHERE e CASCADE
 > `DELETE FROM tabella;` svuota l'intera tabella. Se esistono **foreign key con politica CASCADE** verso questa tabella, le righe delle tabelle figlie vengono eliminate a catena. Prestare sempre attenzione all'impatto sulle tabelle dipendenti.
-
 #### DELETE vs TRUNCATE
-
 `TRUNCATE TABLE nome_tabella;` svuota la tabella in modo più rapido di `DELETE FROM nome_tabella;`, ma **non attiva i trigger** e non può essere usato quando ci sono foreign key attive che referenziano la tabella. In MySQL `TRUNCATE` non è reversibile con `ROLLBACK`.
-
 ## DDL — Vincoli di integrità
-
 I vincoli visti nelle sezioni CREATE TABLE meritano un riepilogo sistematico.
-
 ### Vincoli intrarelazionali (su una sola tabella)
-
 I vincoli intrarelazionali sono verificati dal DBMS ad ogni operazione di modifica. La violazione viene semplicemente **impedita** (l'operazione fallisce con errore).
 
 | Vincolo | Sintassi di colonna | Sintassi di tabella |
@@ -528,13 +457,9 @@ I vincoli intrarelazionali sono verificati dal DBMS ad ogni operazione di modifi
 | Chiave primaria | `PRIMARY KEY` | `PRIMARY KEY (col1, col2)` |
 | Unicità | `UNIQUE` | `UNIQUE (col1, col2)` |
 | Verifica generica | `CHECK (condizione)` | `CHECK (condizione)` |
-
 ### Vincoli interrelazionali (FOREIGN KEY)
-
 Per i vincoli referenziali, quando la violazione deriva da un cambiamento alla tabella **esterna**, si applicano le politiche `CASCADE`, `SET NULL`, `SET DEFAULT`, `NO ACTION`/`RESTRICT` come descritto in precedenza.
-
 ### Vincoli generici — CHECK
-
 `CHECK` è il meccanismo più potente per esprimere vincoli arbitrari. Tuttavia:
 - È meno leggibile di `NOT NULL` / `UNIQUE` / `FOREIGN KEY` per i casi semplici.
 - Non supporta politiche di reazione alle violazioni (solo rifiuto dell'operazione).
@@ -548,9 +473,7 @@ CHECK (Matricola LIKE '1%' OR
        Dipart = (SELECT Dipart FROM Impiegato I
                  WHERE I.Matricola = Superiore))
 ```
-
 ### Asserzioni
-
 Le **asserzioni** sono vincoli che fanno parte dello schema ma non sono associati a un singolo attributo o tabella. Permettono di esprimere vincoli su più tabelle o vincoli di cardinalità:
 
 ```sql

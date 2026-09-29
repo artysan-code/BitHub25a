@@ -1,5 +1,4 @@
 ## Dati, informazioni e sistemi informativi
-
 > [!quote] Definizione — Dato
 > In informatica, la singola informazione codificabile o codificata (elementi di informazione costituiti da simboli che debbono essere elaborati). Ciò che è immediatamente presente alla conoscenza, prima di ogni elaborazione.
 

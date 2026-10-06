@@ -20,9 +20,6 @@ Il SO esiste per **gestire in modo ordinato e controllato** le risorse di un sis
 - **Nello spazio**: la risorsa è divisa tra più utenti (es. la memoria, il disco).
 
 Il SO deve inoltre garantire **isolamento** tra i processi, **equità** nell'accesso e tracciamento dell'uso delle risorse (*accounting*).
-
-> [!question] Domanda tipica d'esame
-> - **D:** Quali sono le due visioni (funzioni) di un sistema operativo? **R:** **Macchina estesa** (top-down): nasconde la complessità dell'hardware dietro astrazioni (driver, file), offrendo ai programmi un'interfaccia pulita. **Gestore delle risorse** (bottom-up): alloca in modo ordinato e controllato le risorse condivise tramite **multiplexing nel tempo** (CPU, stampante) e **nello spazio** (RAM, disco), garantendo isolamento, equità e accounting.
 ### Modalità kernel e modalità utente
 L'hardware supporta (almeno) due modalità operative:
 - **Modalità kernel** (o **supervisor**): accesso completo all'hardware, può eseguire qualsiasi istruzione. Vi gira il sistema operativo.
@@ -30,9 +27,6 @@ L'hardware supporta (almeno) due modalità operative:
 
 > [!example] Perché la distinzione conta
 > Un utente è libero di sostituire il proprio client di posta o di scriverne uno; **non** è libero di scrivere il gestore degli interrupt del clock, che è parte del SO ed è protetto dall'hardware contro le modifiche. Questa barriera è meno netta nei sistemi [[#^embedded|embedded]].
-
-> [!question] Domanda tipica d'esame
-> - **D:** Differenza tra modalità kernel e modalità utente, e perché è necessaria? **R:** In **modalità kernel** (supervisor) si ha accesso completo all'hardware e a tutte le istruzioni: vi gira il SO. In **modalità utente** è disponibile solo un sottoinsieme di istruzioni con accesso controllato all'hardware: vi girano le applicazioni. La distinzione **protegge** il SO — un'applicazione non può, ad esempio, riscrivere il gestore degli interrupt del clock o accedere direttamente all'hardware.
 ## Storia dei sistemi operativi
 L'idea risale a **Charles Babbage** (1792-1871) e al suo *motore analitico*, mai completato; **Ada Lovelace** ne scrisse il software (da cui il linguaggio Ada). I SO veri arrivano però con i computer elettronici.
 ### Prima generazione (1945-55) — valvole termoioniche
@@ -53,10 +47,6 @@ I **circuiti integrati (IC)** migliorano il rapporto prezzo/prestazioni. IBM uni
 - **Multiprogrammazione**: la memoria è partizionata tra più job; mentre uno attende l'I/O, la CPU lavora su un altro, evitando di restare inattiva (critico per i carichi commerciali, dove l'attesa I/O è l'80-90% del tempo).
 - **Spooling** (*Simultaneous Peripheral Operation On Line*): i job vengono caricati su disco appena arrivano, senza fermare la macchina.
 - **Time-sharing**: variante della multiprogrammazione in cui più utenti interattivi condividono la CPU a turni rapidi (primo sistema: CTSS del M.I.T. su 7094). Da qui **MULTICS**, antesignano del concetto di *computer utility* e quindi del **cloud** moderno.
-
-> [!question] Domande tipiche d'esame
-> - **D:** Cos'è la multiprogrammazione e quale problema risolve? **R:** Partiziona la memoria tra più job: mentre uno attende l'**I/O**, la CPU esegue un altro job, evitando di restare inattiva. Risolve lo spreco dovuto all'attesa dell'I/O, che nei carichi commerciali arriva all'**80–90%** del tempo.
-> - **D:** Cosa introduce il System/360 di IBM? **R:** La prima **famiglia di computer compatibili** (stesso set di istruzioni, modelli scalabili che eseguono lo stesso software) e la diffusione su larga scala di **multiprogrammazione** e **spooling**.
 
 > [!info] Nascita di UNIX
 > Da MULTICS, **Ken Thompson** (Bell Labs, 1969) scrive una versione ridotta — chiamata inizialmente **UNICS** (*UNIplexed Information and Computing Service*), poi rinominata UNIX — su PDP-7 in assembler, poi evoluta su PDP-11 (1970-1974) e **riscritta in C** da Dennis Ritchie (partendo dal linguaggio B). La terza versione di UNIX è già scritta in C. Nel **1974** viene pubblicato un articolo su UNIX su *Communications of the ACM*; Thompson e Ritchie ricevono il **ACM Turing Award nel 1984**. UNIX diventa popolare in ambito accademico e aziendale, ma il proliferare di varianti incompatibili (ramo **System V** e ramo **BSD**) genera frammentazione. Per porvi rimedio nasce lo standard **POSIX** (IEEE, 1984, fusione di System V e BSD), cui si aggiungono nel tempo i progetti [[#^stdunix|di standardizzazione]] OSF, X/Open e Open Group. Da UNIX derivano **MINIX** (didattico, micro-kernel, → MINIX 3) e, ispirato a MINIX, **Linux** di Linus Torvalds (1991).
@@ -132,9 +122,6 @@ Ogni dispositivo ha due parti: un **controller** (interfaccia con registri di co
 - **Polling** (*busy waiting*): la CPU interroga di continuo il dispositivo — spreca cicli.
 - **Interrupt-driven**: il dispositivo genera un **interrupt** quando è pronto — efficiente (ripreso in [[08 - Input Output]]).
 - **DMA (Direct Memory Access)**: un controller trasferisce i dati direttamente da/verso la memoria senza impegnare la CPU — ottimale per grandi quantità.
-
-> [!question] Domanda tipica d'esame
-> - **D:** Quali sono i tre modi in cui il SO può gestire un trasferimento di I/O? **R:** **Polling** (*busy waiting*): la CPU interroga di continuo il dispositivo, sprecando cicli. **Interrupt-driven**: il dispositivo genera un interrupt quando è pronto, liberando la CPU nel frattempo. **DMA**: un controller trasferisce i dati direttamente da/verso la memoria senza impegnare la CPU, ideale per grandi quantità. Approfonditi in [[08 - Input Output]].
 ### Architettura dei bus (x86)
 Un sistema x86 moderno ha **più bus** con funzioni e velocità diverse:
 - **DDR4**: bus veloce tra CPU e **memoria** centrale.

@@ -19,5 +19,4 @@ Secondo DidatticaWEB (A.A. 2025/2026) la valutazione è scritta e orale, senza p
 ## Programma e Appunti
 Gli appunti non ci sono ancora.
 ## Materiale di riferimento
-- **Repository del docente** (A.A. 2025/26): [glucatv/Programmazione_dei_Calcolatori_aa25-26](https://github.com/glucatv/Programmazione_dei_Calcolatori_aa25-26), con il materiale didattico del corso.
-- **Testi** citati nella repository: J. V. Guttag — *Introduzione alla programmazione con Python* (EGEA, 2021); G. Rossi — *Programmazione in Python - Esercizi* (EGEA, 2022); B. Kernighan, D. Ritchie — *Linguaggio C*, 2ª ed. (Pearson Italia); G. Rossi — *Programmazione dei calcolatori - Appunti delle lezioni* (dispensa in pdf).
+- **Testi** citati dal docente nella sua repository (A.A. 2025/26, non più raggiungibile): J. V. Guttag — *Introduzione alla programmazione con Python* (EGEA, 2021); G. Rossi — *Programmazione in Python - Esercizi* (EGEA, 2022); B. Kernighan, D. Ritchie — *Linguaggio C*, 2ª ed. (Pearson Italia); G. Rossi — *Programmazione dei calcolatori - Appunti delle lezioni* (dispensa in pdf).

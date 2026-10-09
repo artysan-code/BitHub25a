@@ -20,7 +20,8 @@ Esame **scritto + orale**. Gli esami passati sono disponibili sulla pagina web d
 Possibilità di crediti D con MATLAB (annuncio su Teams).
 ## Programma e Appunti
 Programma del corso ancora da completare. Le note seguono le lezioni:
-1. [[01 - Interpolazione polinomiale]]: approssimazione di una funzione con un polinomio che ne assume i valori in punti dati, teorema di esistenza e unicità con dimostrazioni.
+1. [[01 - Interpolazione polinomiale]]: approssimazione di una funzione con un polinomio che ne assume i valori in punti dati, teorema di esistenza e unicità, prima dimostrazione con la matrice di Vandermonde e il suo determinante.
+2. [[02 - Polinomi di Lagrange]]: seconda dimostrazione del teorema con i polinomi di Lagrange, definizione di polinomio d'interpolazione, forma canonica e forma di Lagrange, esempio con $\sin x$ sui nodi $0, \pi/6, \pi/4$.
 ## Materiale di riferimento
 Il corso non adotta un libro di testo. Le **dispense** scritte dal docente cambiano ogni anno e vengono fornite a fine corso.
 ## Note

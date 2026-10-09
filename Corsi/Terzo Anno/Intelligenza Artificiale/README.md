@@ -32,6 +32,7 @@ Regole dell'a.a. 2026-27 come le ha spiegate il docente a lezione (05/10/2026). 
 ## Programma e Appunti
 Il programma del corso è nella sezione «Obiettivi del corso» qui sotto. Le note seguono le lezioni:
 - [[01 - Presentazione del corso]]: il paradosso dei problemi senza una sola soluzione (la diagnosi medica), cosa c'è dietro una risposta (le decisioni critiche), le discipline che confluiscono nell'IA e i suoi ingredienti: agenti e ricerca, conoscenza e logica, modellazione dei dati, machine learning e linguaggio.
+- [[02 - Agenti intelligenti]]: agente, ambiente e funzione agente, razionalità e misura di prestazione, formulazione PEAS, proprietà degli ambienti, l'ambiente come programma (simulatore), tipi di agente dal reattivo semplice all'agente che apprende, rappresentazioni atomiche, fattorizzate e strutturate (AIMA cap. 2).
 ## Materiale di riferimento
 - **Slide** in `Materiale Didattico/Slide/`, per ora solo come storico: `000_Intro_2026_27_v1.0.pdf` (Lezione 0, pubblicata il 05/10/2026 ma con contenuti in parte dell'a.a. 2025-26) e `000_From_Intro_AI_Short_For_Lab_25_26_v1.0.pdf` (introduzione all'IA, a.a. 2025-26). Le slide aggiornate non sono ancora state condivise.
 - **Sito del corso**: <http://sag.art.uniroma2.it/didattica/basili/IA_26_27/>, con avvisi, programma, testi e slide delle lezioni.

@@ -23,6 +23,7 @@ Regole dell'a.a. 2026-27 come le ha spiegate il docente a lezione (06/10/2026).
 ## Programma e Appunti
 Programma del corso ancora da completare. Le note seguono le lezioni:
 - [[01 - Introduzione al corso e al data mining]]: organizzazione e prerequisiti, i due step del data mining, esempio del phishing (sketch, pesi, soglia, falsi positivi e negativi), anomalie statistiche e grafo delle "gang" (clique attese), data stream e query tipiche, page ranking.
+- [[02 - Algoritmi randomizzati]]: Monte Carlo e Las Vegas, identità tra polinomi, richiami di probabilità (union bound, probabilità condizionata e totale), verifica del prodotto tra matrici (Freivalds), taglio minimo (Karger) e amplificazione per ripetizione.
 ## Materiale di riferimento
 - **Slide** in `Materiale Didattico/Slide/`, per ora solo come storico: `Ch01_Algo4BigData_Andy_10_2025.pdf` (capitolo 1, a.a. 2025-26). Le slide aggiornate vengono pubblicate sul canale Teams, aggiornato settimanalmente.
 - **Teams**: canale «Algoritmi per i Big Data», riferimento per tutte le comunicazioni e il materiale (a senso unico: i docenti non lo leggono ogni giorno). Per appuntamenti e chiarimenti si scrive al docente via **mail**.

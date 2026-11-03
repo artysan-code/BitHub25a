@@ -3,10 +3,11 @@ tags:
   - algoritmi-big-data
   - introduzione
   - data-mining
-slide: []
+slide:
+  - "Ch01_Algo4BigData_Andy_10_2025.pdf"
 ---
 # Introduzione al corso e al data mining
-Lezione 1 (06/10/2026): organizzazione del corso, prerequisiti, e una panoramica per esempi (phishing, anomalie, data stream, PageRank) del tipo di problemi che si affrontano. Lo scopo non è capire a fondo ma individuare le situazioni tipiche che si approfondiranno nei prossimi mesi.
+Lezione 1 (06/10/2026): organizzazione del corso, prerequisiti, e una panoramica per esempi (phishing, anomalie, data stream, PageRank) del tipo di problemi che si affrontano. Lo scopo non è capire a fondo ma individuare le situazioni tipiche che si approfondiranno nei prossimi mesi. Slide Ch01_Algo4BigData, pp. 1-24 (le pp. 2-3 sul data mining, 4-5 phishing, 6-7 modelli statistico e avversario, 8-10 machine learning, 11-14 Bonferroni e gang, 15-16 approccio computazionale, 17-20 data stream, 21-24 sintesi e feature).
 ## Organizzazione del corso
 - **Crediti**: 6 CFU per Informatica; per Data Science il corso vale 9 CFU, con un **progetto** e un'integrazione del programma concordata con gli studenti (gli "extra crediti"), verificata in sede d'esame.
 - **Teams** è il canale di riferimento per comunicazioni, materiale e variazioni: comunicazione a senso unico, i docenti non lo leggono ogni giorno. Per parlare col docente o fissare un appuntamento si usa la **mail**.
@@ -22,10 +23,15 @@ Lezione 1 (06/10/2026): organizzazione del corso, prerequisiti, e una panoramica
 Area a cavallo tra **computer science** e **statistica**. Obiettivo: scegliere i migliori **modelli di input**, i migliori **algoritmi** e il miglior software per problemi computazionali in cui l'insieme dei dati:
 - è **troppo grande** per la memoria centrale, oppure
 - **non è disponibile per intero** durante l'esecuzione: l'input è **dinamico**, cambia nel tempo (anche una sequenza potenzialmente infinita, ad es. i dati di un satellite) e l'algoritmo deve aggiornarsi, calcolando indicatori come media, massimo, minimo, numero di elementi con una certa proprietà.
+> [!quote] Obiettivo strategico (dalle slide, p. 2)
+> Trovare il miglior **hardware**, i migliori **modelli**, i migliori **algoritmi** e il miglior **software** per risolvere problemi su insiemi di dati grandi e/o complessi in scienza, reti, sanità, e-commerce, pubblica amministrazione, ecc.
+
 Il data mining completo richiederebbe 3-4 corsi: qui ci si concentra sull'**approccio algoritmico-computazionale**. Si parte sempre da un'applicazione concreta, poi si astrae il problema (modello teorico) e si torna alle applicazioni.
 > [!quote] I due step del data mining
 > 1. **Modellare l'input**: da un insieme grezzo di dati (una centralina meteo, un satellite, un treno) si estrae un **modello di input**, spesso con una distribuzione di probabilità, e si definisce con precisione il **task computazionale** da risolvere su di esso.
 > 2. **Scegliere l'algoritmo** migliore per quel modello e quel task.
+
+Le slide (p. 3) li chiamano *Stage (i)* e *Stage (ii)*: il primo trasforma i dati reali in una struttura formale $I$ su cui il problema si riduce a un task computazionale ben definito $T$; il secondo cerca il miglior algoritmo per $T$ su $I$. Una volta risolto lo stage (i), lo stage (ii) richiede metodi avanzati ma standard.
 
 La parte difficile è la **prima**, la seconda è quella già sviluppata ad ASD. È anche la figura professionale più richiesta: l'analista che modella bene i dati e propone soluzioni efficienti.
 > [!info] Dati e informazione
@@ -39,6 +45,12 @@ Non è un problema formulato come *dato un grafo, trova il cammino minimo*: biso
 2. **Sketch**: ogni mail diventa un **vettore booleano** di 500 (o 100) bit, con 1 se la sequenza compare e 0 altrimenti. Un testo di un mega è ridotto a pochi bit che ne catturano l'essenza *per questo scopo*: si risparmia memoria e si passa da dati grezzi a informazione.
 3. **Pesi**: a ogni parola chiave si dà un peso positivo proporzionale a quanto, se presente, aumenta la probabilità di phishing (ad es. 50 per il principe, 500 per la richiesta di password).
 4. **Soglia**: si somma il peso delle parole presenti; se la somma supera una soglia $\gamma$ la mail è phishing, altrimenti no.
+> [!warning] Pesi negativi (dalle slide)
+> Le slide (p. 4) assegnano pesi **positivi** alle parole tipiche del phishing e pesi **negativi** alle altre; a lezione si era parlato solo di pesi positivi. Le slide formulano anche i passi come: (i) classificare le mail ricevute in phishing/non phishing (l'insieme etichettato), (ii) estrarre le parole che compaiono in modo insolitamente frequente nel phishing (es. "Nigerian Prince", "send money"), (iii) assegnare i pesi, (iv) sommare i pesi delle parole di ogni mail e confrontare con la soglia.
+
+> [!info] Le due sfide (dalle slide, p. 5)
+> Il passo (ii) richiede un **modello statistico** $M$ (una distribuzione di probabilità) sui dati grezzi, tale che l'informazione cercata emerga come evento probabile in $M$, estraendola poi in modo efficiente e/o dinamico (stream), ad es. le $k$ parole più frequenti nel phishing. Il passo (iii) richiede pesi tali che la somma per una mail sia proporzionale alla probabilità che sia phishing.
+
 L'algoritmo è banale (una somma e un confronto); la difficoltà sta in **quali parole**, **quali pesi** e **quale soglia**, scelte che spettano all'analista.
 > [!warning] Falsi negativi e falsi positivi
 > Alzando la soglia diventa più difficile essere classificati phishing: aumentano i **falsi negativi** (mail di phishing che passano il filtro). Abbassandola aumentano i **falsi positivi** (mail legittime finite in spam e mai lette).
@@ -47,36 +59,48 @@ L'algoritmo è banale (una somma e un confronto); la difficoltà sta in **quali 
 - **Online**: le mail arrivano continuamente, quindi la decisione va presa in modo online e il concetto stesso di phishing, e i pesi, vanno aggiornati nel tempo perché gli attacchi cambiano.
 ### Apprendimento automatico (cenno)
 Gli umani sono lenti nello scegliere parole e pesi. Con il **supervised learning** si parte da un dataset enorme (ad es. di chi gestisce Gmail) già **etichettato** da umani (1 = phishing, 0 = no): il sistema si **addestra** su metà del dataset ed estrae da solo parole e pesi, poi classifica le nuove mail. Non è argomento del corso (lo si vedrà in IA e ML), ma serve a capire il confine:
+> [!info] Machine learning (dalle slide, pp. 8-10)
+> Il ML è un approccio spesso potente al data mining: parte dell'input fa da **training set** per addestrare sistemi come reti bayesiane, SVM, K-means, modelli di Markov nascosti. Funziona bene quando **non si può definire una funzione obiettivo pulita** sui dati (non si sa cosa dicano i dati sul problema). Esempio buono: il **problema Netflix**, predire il voto di un utente a un film, dove non è chiaro quali feature contino e come formalizzarle. Esempi cattivi: localizzare i CV sul web (le feature sono ben definite dalla presenza di parole tipiche) e trovare triangoli in un social network (esistono algoritmi locali efficienti anche su grafi grandi e dinamici). Altro limite del ML: la **trasparenza**.
+
 - il **machine learning** rende meglio quando il task è **vago** (decidere se un film piacerà);
 - le tecniche di **data mining** rendono meglio quando il task è **ben definito** (phishing sì/no).
 > [!example] Predire il successo di un film
 > Per un film non si può rappresentare l'intera sequenza di immagini: si estraggono decine di migliaia di **feature** (giallo, asteroidi, scene violente, adatto ai bambini...) ciascuna con un punteggio, trasformando il film in un vettore con 20.000-30.000 variabili. Il successo si predice dall'esperienza passata di film simili.
 ### Due scenari di analisi
-- **Modello statistico**: si assume una distribuzione dei dati in ingresso.
+- **Modello statistico** (dalle slide, p. 6): si costruisce la distribuzione di probabilità da cui sono campionati i dati grezzi visibili (come nell'esempio gaussiano).
 - **Worst case dinamico**: l'algoritmo deve funzionare anche con la peggiore sequenza possibile. A differenza di ASD, dove tutto l'input è in memoria e non cambia, qui l'input arriva nel tempo e l'**avversario** conosce le mosse già fatte dall'algoritmo e sceglie l'elemento $t+1$ per peggiorarne le prestazioni. Per i problemi su stream si assume spesso questo **scenario avversario**.
+> [!example] Modello avversario (dalle slide, p. 7)
+> Contare e aggiornare il numero di 1 nell'ultima finestra di lunghezza $N$ su uno stream infinito di bit generato da un avversario, che sceglie il bit successivo in funzione delle scelte precedenti dell'algoritmo, con l'obiettivo di peggiorarne efficienza o addirittura correttezza.
 ## Le anomalie statistiche e il limite dell'analisi
+Obiettivo tipico del data mining: scoprire eventi insoliti nascosti in grandi insiemi di dati. Le slide (pp. 11-12) enunciano il **principio di Bonferroni**:
+> [!quote] Principio di Bonferroni (dalle slide)
+> Se l'insieme dei dati (o il processo) raccoglie molti elementi da fonti diverse in modo abbastanza casuale, gli eventi insoliti possono non avere alcun significato: sono artefatti statistici probabili. Cercando un certo evento in un dataset completamente casuale, lo si può aspettare, e il numero di occorrenze cresce con la dimensione del dataset. Tali occorrenze sono "bogus": nessuna causa se non il fatto che dati casuali hanno sempre caratteristiche insolite che sembrano significative. La **correzione di Bonferroni** è il risultato statistico che permette di evitare la maggior parte di questi falsi positivi.
+
 Un'anomalia (ad es. un attacco informatico a un sito istituzionale come INPS o un ministero) si rileva confrontando la distribuzione delle richieste dei server con la **serie storica**. Ma una forte divergenza non basta per concludere che c'è un attacco: può essere una coincidenza (uno sciopero). Un'analisi troppo rigida segnala come strani eventi **del tutto probabili** su sequenze casuali: è il principio, citato nella lezione come *Bonferroni*, per cui su una sequenza molto lunga, osservata abbastanza a lungo, ogni evento raro prima o poi capita.
 > [!example] Mille 1 consecutivi
 > La probabilità che da un istante $t$ arrivino mille 1 di fila è bassissima su tre giorni, ma cresce osservando la sequenza per vent'anni.
 ### Esempio: le "gang" in un grafo di incontri
 Una regione urbana con $h$ luoghi pubblici (aeroporti, stazioni, hotel, centri commerciali) e $n$ persone (insieme $U$). Per individuare gang criminali si osserva per $T$ giorni (ad es. 1000, più di tre anni) e si costruisce un **grafo** con:
-- **vertici**: tutti i cittadini (insieme statico);
+- **vertici**: tutti i cittadini (insieme statico; nelle slide sono $n$ agenti potenzialmente criminali, $V$);
 - **arco** tra $u$ e $v$ se esiste almeno un giorno in cui sono stati nella **stessa location** (si trascura l'ora).
-Di tutto il dataset enorme (nomi di tutti i partecipanti a ogni location, ogni giorno) interessa solo il **grafo**: è il data mining. Ordini di grandezza: $n\approx 10^7$, location da migliaia a decine di migliaia. Cosa segnalerebbe un'analista? Una **clique** (un insieme di cittadini il cui sottografo indotto è completo): potrebbe essere una coalizione.
+Di tutto il dataset enorme (nomi di tutti i partecipanti a ogni location, ogni giorno) interessa solo il **grafo**: è il data mining. Ordini di grandezza (slide, p. 14): $n\approx 10^7$, $h\approx 10^4$, $T\approx 10^3$. Cosa segnalerebbe un'analista? Una **clique** (un insieme di cittadini il cui sottografo indotto è completo): potrebbe essere una coalizione.
 **Modello random**: ogni giorno ogni agente sceglie una location uniformemente a caso (passeggiata "da ubriaco"), quindi $\Pr[\text{agente in } \ell]\approx 1/h$. Per $T\ll h$ la probabilità che esista l'arco $\{u,v\}$ è circa
 $$p\approx \frac{T}{h}$$
 Fissato un sottoinsieme $S$ con $|S|=s$, tutte le $\binom{s}{2}$ coppie devono avere l'arco; essendo **eventi indipendenti** (si moltiplicano le probabilità):
 $$\Pr[S \text{ clique}]\approx p^{\binom{s}{2}}\approx p^{s^2/2}$$
 Ma la domanda dell'analista non riguarda un $S$ fissato: è *quante clique di dimensione $s$ ci sono in tutto il grafo*. Il **numero atteso** è
 $$\mathbb{E}[\#\text{clique di dim. } s]=\binom{n}{s}\,p^{\binom{s}{2}}\approx\binom{n}{s}\,p^{s^2/2}$$
-dove $\binom{n}{s}$ si approssima con **Stirling**. Se questo numero è circa 0, trovare una clique è significativo; se è grande, è un fenomeno naturale.
+dove $\binom{n}{s}$ si approssima con **Stirling** (dalle slide: $\binom{n}{s}\approx\left(\frac{n}{e s}\right)^s$, quindi il numero atteso è $\approx\left(\frac{n}{es}\right)^s p^{s^2/2}$). Le slide richiedono l'ipotesi $h\gg T$ e che le visite degli agenti siano abbastanza casuali e uniformi; con $n\approx 10^7$, $h\approx 10^4$, $T\approx 10^3$ si ha $p\approx 1/10$. Se questo numero è circa 0, trovare una clique è significativo; se è grande, è un fenomeno naturale.
 - Con $n\approx 10^7$ e $p\approx 1/10$, per $s=10$ il valore atteso è enorme (centinaia di migliaia di clique secondo il docente): **non indica nulla**.
 - Per $s=30$ è invece trascurabile: una clique di 30 persone è un'anomalia vera, da indagare.
 > [!info] Controllo dei numeri
 > Con $n=10^7$ e $p=10^{-1}$: per $s=10$ si ottiene circa $10^{18}$ (quindi in realtà molto più delle centinaia di migliaia dette a lezione), per $s=30$ circa $10^{-257}$. La conclusione qualitativa non cambia.
 
+Le slide concludono solo che per $s\approx 10$ ci si aspetta un gran numero di clique: una gang di 10 persone che si sono incontrate almeno una volta non è sorprendente ("non chiamate l'FBI"). Non riportano il caso $s=30$, che è stato un esempio fatto a lezione.
+
 Morale: **dipende da cosa hai assunto** (parametri e distribuzione). Certe anomalie statistiche sono perfettamente probabili e non vanno lette come significative.
 ## Data stream
+(Slide pp. 15-20.) L'approccio informatico al data mining è algoritmico: dato un dataset o processo $DS$, fornire un algoritmo e una struttura dati efficienti per rispondere a query complesse su $DS$. Esempio delle slide: dato uno stream infinito di interi, mantenere media e deviazione standard dei valori visti finora; l'algoritmo non dovrebbe basarsi su ipotesi statistiche, ma se queste valgono i valori calcolati saranno coerenti con esse. I compiti tipici (p. 16) sono: modellare computazionalmente i processi di input (stream), riassumere il dataset (sketch), estrarre le feature più rilevanti scartando il resto.
 Il processo tipico di un algoritmo di data mining: un **modello di input** (una struttura dati che lo rappresenta) più uno o più algoritmi che fanno due cose:
 - **rispondere a query** degli utenti (la struttura è "a sportello");
 - **aggiornarsi in modo efficiente** quando l'input cambia (arriva un elemento, ne esce uno vecchio).
@@ -98,5 +122,10 @@ Esempi: Twitter e social network, dati di server e satelliti, le **transazioni b
 - **Elementi più frequenti**: in e-commerce, i 5 articoli più venduti del giorno su $10^6$-$10^7$ prodotti; non si può tenere la frequenza di ognuno, e la classifica cambia in continuazione.
 - **Conteggio degli 1 in una finestra** di $N$ bit: l'esatto richiede spazio $\Omega(N)$ (lower bound che si dimostrerà). Con un'approssimazione si può scendere a un contatore $\log N$, poi $\log\log N$ (miglioramento esponenziale), oppure spazio $O(\sqrt{N})$ per contare gli 1 in qualunque sottofinestra.
 ## Page ranking
+(Slide pp. 21-24.) La **sintesi** (*summarization*) chiede uno sketch $H(S)$ che riassuma le caratteristiche chiave di $DS$, con tre sfide: minimizzare $|H(S)|$ (asintoticamente molto più piccolo di $|DS|$), approssimare bene le caratteristiche chiave, permettere aggiornamenti dinamici efficienti.
 I primi motori di ricerca rappresentavano il web come un **grafo diretto**: ogni pagina è un nodo (di tutto il suo contenuto interessa solo questo) e c'è un arco $x\to y$ se $x$ contiene un link a $y$. Per ordinare le pagine per **autorevolezza** non si può affidarsi a ciò che la pagina dice di sé (*"sono un premio Nobel"*, manipolabile) né ai link **uscenti** (basterebbe linkare le pagine migliori). Conta la struttura del grafo: una pagina è autorevole se è **puntata da molte pagine a loro volta autorevoli** (la NASA o il New York Times, non la pagina del cugino). La definizione è **ricorsiva**, e si calcola dal grafo.
 Un grafo con miliardi di nodi e centinaia di miliardi di archi viene così condensato in un solo valore per pagina, il **rank**: è un salto generazionale, che permette di rispondere in un millisecondo. Verrà approfondito più avanti.
+> [!info] Dalle slide, non visto a lezione
+> - **Page rank** (p. 22): $\text{rank}(x)$ è la distribuzione di probabilità stazionaria di una **passeggiata casuale** sul grafo del web ed è una misura dell'importanza di $x$ rispetto a tutto il web.
+> - **Clustering** (p. 23): il dataset è un insieme di punti in uno spazio metrico $D$-dimensionale con distanza $d$. I punti vicini finiscono nello stesso cluster, ci si aspetta pochi cluster che formano una partizione di $DS$, e ogni cluster è riassunto da uno sketch (centroide e distanza media dei punti dal centroide). L'output è l'insieme degli sketch dei cluster.
+> - **Estrazione di feature** (p. 24): si selezionano le dipendenze statistiche (correlazioni) più forti fra gli elementi e si usano solo quelle per rappresentare l'intero dataset. Esempio: dato un insieme di agenti $V$, costruire il grafo $G(V,E)$ con le correlazioni più rilevanti.

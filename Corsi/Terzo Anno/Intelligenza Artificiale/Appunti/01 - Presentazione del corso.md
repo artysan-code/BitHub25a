@@ -2,10 +2,11 @@
 tags:
   - intelligenza-artificiale
   - introduzione
-slide: []
+slide:
+  - "000_Intro_2026_27_v1.0.pdf"
 ---
 # Presentazione del corso
-Lezione 0 (05/10/2026): che tipo di problemi affronta l'IA e quali sono i suoi ingredienti fondamentali (ricerca, conoscenza, dati, apprendimento, linguaggio).
+Lezione 1 (05/10/2026; slide 000_Intro, pp. 1-19, in gran parte organizzative: vedi [[#Obiettivi e organizzazione del corso]]): che tipo di problemi affronta l'IA e quali sono i suoi ingredienti fondamentali (ricerca, conoscenza, dati, apprendimento, linguaggio).
 ## Il paradosso dell'intelligenza
 Oggi interagire in linguaggio naturale con un sistema sembra banale, ma non lo è: una macchina che capisce da pochi elementi di un problema *cosa deve fare* non è una cascata di `if`, è un sistema che cambia stato, sceglie una strategia, accede ai dati e sintetizza una risposta che dovrebbe essere pertinente e affidabile.
 
@@ -52,3 +53,27 @@ I dati non arrivano "salvifici": sono **rumorosi**, provengono da sorgenti diver
 Il **machine learning** è la base per capire come funzionano i **Transformer** che stanno dietro gli LLM.
 
 Quando si scrive un **prompt** entra in gioco il linguaggio: scrivere un buon prompt significa scrivere bene in italiano, e un prompt sbagliato è un prompt che non ha fatto capire il task.
+## Obiettivi e organizzazione del corso
+Dalle slide, non visto a lezione (la trascrizione non è disponibile): le slide della Lezione 0 (pp. 2-19) sono in gran parte organizzative; il docente ha detto a lezione che in parte sono dell'anno precedente e non fanno fede (ad es. calendario, orale): il quadro aggiornato è nel [[Intelligenza Artificiale/README#Modalità d'esame]].
+### Obiettivi (slide 2-3)
+- **Fondamenti**: agenti razionali e algoritmi di ricerca per il problem solving ([[02 - Agenti intelligenti]], [[03 - Risoluzione di problemi mediante ricerca]]); il ruolo della conoscenza, rappresentazione e ragionamento, con la logica per conoscenza e deduzione ([[04 - Agenti basati sulla conoscenza]]); apprendimento automatico, dalle reti neurali multistrato ai Transformer; comunicazione degli agenti, lingue e NLP.
+- **Argomenti avanzati**: ricerca on-line (local search e random search), task e modelli di ML per l'NLP, reti neurali e Large Language Models, encoding dei dati per l'IA generativa.
+- **Workshop ed esercitazioni**: discussioni su problemi specifici, report dell'interazione didattica con LLM; progettazione di agenti in Python (agenti semplici, ricerca euristica, agenti che integrano ML e problem solving), classificazione dei testi e inferenza testuale, sentiment analysis con encoder pre-addestrati, PyTorch, prompt engineering.
+### Prerequisiti e corsi correlati (slide 5)
+- Prerequisiti: Analisi, Algebra e Logica, Calcolo delle Probabilità; Python e Prolog; basi di dati (modellazione, progettazione, SQL).
+- Correlati della magistrale: Machine Learning (Gambosi), Deep Learning (Basili), Natural Language Processing (Zanzotto), Information Retrieval (Croce), Knowledge Engineering (Stellato), Artificial Intelligence and Security.
+### Modalità didattiche (slide 6-10)
+- Classe su MS Teams `2026_27_BASILI-8067806-INTELLIGENZA_ARTIFICIALE`; materiali e avvisi anche sul sito `sag.art.uniroma2.it/didattica/basili/IA_26_27/`.
+- Lezioni in Aula 5 PP2: lunedì 14-16, mercoledì 14-16, venerdì 11:30-13:30; laboratorio episodico il venerdì 14:30-16:30; ricevimento (da verificare) il mercoledì dopo la lezione e su richiesta.
+- Alcuni esercizi di verifica sono da consegnare entro la data d'esame. La frequenza è caldamente consigliata.
+- Testi (preliminari): Russell e Norvig, *Artificial Intelligence: a Modern Approach*, 4ª ed. 2022 (online su aima.cs.berkeley.edu); *The Description Logic Handbook* (Baader et al., 2010); Manning, Raghavan, Schütze, *Introduction to Information Retrieval* (2008); articoli e dispense del docente.
+### Esami (slide 12-16)
+- **Calendario**: esonero di metà/fine novembre; secondo esonero e scritto finale a gennaio; secondo scritto a febbraio. Ogni scritto ha un progetto facoltativo.
+- **Esercitazioni**: un tema a settimana, sviluppato dallo studente con il supporto degli esercitatori; si produce un programma funzionante in Python e un notebook che commenta lo sviluppo (anche l'interazione con i modelli di IA usati); consegna sul portale degli esercizi. Ogni esercitazione consegnata può diventare domanda d'esame orale.
+- **Scritto**: obbligatorio solo per chi non ha consegnato l'80% degli esercizi. Test a risposta multipla (20-30 minuti, 8-15 domande) e domanda aperta in stile orale (circa 90 minuti): progettazione di un agente per problemi di ricerca, di algoritmi di ML per inferenza complessa (ad es. classificazione di testi), discussione di argomenti del programma.
+- **Orale**: obbligatorio per tutti. Discussione di errori dello scritto ed esercizi consegnati (modellazione, formalizzazione matematica, soluzioni algoritmiche, analisi computazionale); può partire dall'interazione con il modello di IA, ma per definizioni, algoritmi e metodi fa fede il **libro di testo**, non il modello.
+- **Progetto facoltativo** (max 2-3 persone): assegnato in stile tesi, con ricevimento dedicato, demo (LLM) e breve relazione; si discute progetto e demo. Esempi: sentiment analysis su Twitter, addestramento di LLM per task specifici, image processing con LLM, information extraction medica (genomica, radiomica, DSS). In alternativa un approfondimento bibliografico su un argomento avanzato.
+> [!warning] Da verificare
+> Le slide indicano "gennaio 2026" e "febbraio 2026" per gli scritti, ma l'anno accademico è 2026-27: è quasi certamente un refuso del docente (gennaio e febbraio 2027). Per ogni differenza (calendario, esonero, orale obbligatorio per tutti) vale quanto detto a lezione, riportato nel [[Intelligenza Artificiale/README#Modalità d'esame]].
+### Cosa fare subito (slide 17)
+Registrarsi al corso su Delphi, rispondere al questionario preliminare (QR code a slide 18), iscriversi al Team e verificare l'adesione (il docente potrebbe dover accettare la richiesta); verranno pubblicati elenchi degli iscritti, progetti e slide.

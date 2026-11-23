@@ -77,29 +77,29 @@ Un taglio st concreto e la sua capacità: si sommano **solo** gli archi che esco
 Un approccio greedy naturale è: partire da $f(e) = 0$, trovare un cammino $s \leadsto t$ con capacità residua positiva su ogni arco, aumentare il flusso lungo quel cammino, ripetere. Questo approccio **non è corretto**.
 
 > [!warning] Perché il greedy fallisce
-> Una volta che il greedy aumenta il flusso su un arco, non lo diminuisce mai. Considerare la rete:
+> Una volta che il greedy aumenta il flusso su un arco, non lo diminuisce mai. Considerare la rete $G$ (capacità sugli archi):
 >
 > ```
->           2          2
->    s ----------> v -------> t
->    |             |
->    | 2           | 1
->    |             v
->    +-------> w -------> t
->           2       2
+>          s --2--> v --2--> t
+>          |        |        ^
+>          2        1        2
+>          |        v        |
+>          +------> w -------+
+>
+>   Archi: s→v = 2,  v→t = 2,  v→w = 1,  s→w = 2,  w→t = 2
 > ```
 >
-> Il **flusso massimo** $f^*$ ha $f^*(v, w) = 0$ e vale 4 (2 unità su $s \to v \to t$ e 2 su $s \to w \to t$). Il **greedy** potrebbe scegliere per primo il cammino $s \to v \to w \to t$ (bottleneck 1), saturando l'arco $(v, w)$ di capacità 1. Dopo questo passo, nessun cammino aumentante porta più di 1 unità sui percorsi rimasti, e il greedy si blocca a un valore sub-ottimale.
+> Il **flusso massimo** $f^*$ è unico, vale 4 e ha $f^*(v, w) = 0$ (2 unità su $s \to v \to t$ e 2 su $s \to w \to t$). Il **greedy** potrebbe scegliere per primo il cammino $s \to v \to w \to t$ (bottleneck 1), mettendo flusso sull'arco $(v, w)$. Poiché non può più toglierlo, può aggiungere solo $s \to v \to t$ e $s \to w \to t$ con 1 unità ciascuno: si ferma a 3, sub-ottimale.
 >
 > **Conclusione**: serve un meccanismo di *undo* per le decisioni sbagliate.
 
 ![[mf_greedy_fallisce.png]]
 La slide che diagnostica il fallimento del greedy: una volta che il flusso è stato messo su un arco, non viene mai più tolto.
 ## Grafo residuo
-Il **grafo residuo** è la struttura che permette di "annullare" flusso già inviato, fornendo il meccanismo di correzione necessario.
+La **rete residua** è la struttura che permette di "annullare" flusso già inviato, fornendo il meccanismo di correzione necessario.
 
-> [!quote] Definizione — Grafo residuo
-> Dato $G = (V, E, s, t, c)$ e un flusso $f$, il **grafo residuo** $G_f = (V, E_f, s, t, c_f)$ è definito come segue.
+> [!quote] Definizione — Rete residua
+> Dato $G = (V, E, s, t, c)$ e un flusso $f$, la **rete residua** $G_f = (V, E_f, s, t, c_f)$ è definita come segue.
 >
 > Per ogni arco $e = (u, v) \in E$:
 > - Se $f(e) < c(e)$: l'arco **diretto** $e = (u,v)$ esiste in $E_f$ con **capacità residua** $c_f(e) = c(e) - f(e)$ (posso inviare ancora $c(e) - f(e)$ unità).
@@ -108,7 +108,7 @@ Il **grafo residuo** è la struttura che permette di "annullare" flusso già inv
 > In formule compatte:
 > $$E_f = \{e \in E : f(e) < c(e)\} \;\cup\; \{e^{\text{rev}} : f(e) > 0\}$$
 
-> [!info] Proprietà chiave del grafo residuo
+> [!info] Proprietà chiave della rete residua
 > $f'$ è un flusso valido in $G_f$ se e solo se $f + f'$ è un flusso valido in $G$.
 >
 > Questo significa che ogni cammino aumentante in $G_f$ corrisponde a un miglioramento di $f$ in $G$.
@@ -135,7 +135,7 @@ La costruzione arco per arco: dall'arco originale nascono l'arco **diretto** con
 Sopra la rete $G$ con un flusso, sotto la rete residua $G_f$ che ne deriva. È la figura da tenere davanti finché la costruzione non diventa automatica.
 ## Cammino aumentante
 > [!quote] Definizione — Cammino aumentante
-> Un **cammino aumentante** rispetto al flusso $f$ è un cammino semplice $s \leadsto t$ nel grafo residuo $G_f$.
+> Un **cammino aumentante** rispetto al flusso $f$ è un cammino semplice $s \leadsto t$ nella rete residua $G_f$.
 >
 > La **capacità di collo di bottiglia** (*bottleneck*) del cammino $P$ è:
 > $$\operatorname{bottleneck}(G_f, P) = \min_{e \in P} c_f(e)$$
@@ -170,7 +170,7 @@ Sopra la rete $G$ con un flusso, sotto la rete residua $G_f$ che ne deriva. È l
 ![[mf_cammino_aumentante.png]]
 Il cammino aumentante è un cammino $s \leadsto t$ **nella rete residua**, e il suo bottleneck è il minimo delle capacità residue lungo il cammino.
 ## Algoritmo di Ford-Fulkerson
-L'algoritmo di **Ford-Fulkerson** (1955) risolve il problema Max-Flow iterando la ricerca di cammini aumentanti nel grafo residuo.
+L'algoritmo di **Ford-Fulkerson** (1955) risolve il problema Max-Flow iterando la ricerca di cammini aumentanti nella rete residua.
 
 ```pseudo
 \begin{algorithm}
@@ -179,7 +179,7 @@ L'algoritmo di **Ford-Fulkerson** (1955) risolve il problema Max-Flow iterando l
 \ForAll{arco $e \in E$}
   \State $f(e) \gets 0$
 \EndFor
-\State $G_f \gets$ grafo residuo di $G$ rispetto a $f$
+\State $G_f \gets$ rete residua di $G$ rispetto a $f$
 \While{esiste un cammino $s \leadsto t$ $P$ in $G_f$}
   \State $f \gets$ \Call{Augment}{$f, c, P$}
   \State aggiorna $G_f$
@@ -191,6 +191,8 @@ L'algoritmo di **Ford-Fulkerson** (1955) risolve il problema Max-Flow iterando l
 
 > [!info] Invariante di integralità
 > Se tutte le capacità $c(e)$ sono **interi**, allora durante tutta l'esecuzione di Ford-Fulkerson ogni flusso $f(e)$ e ogni capacità residua $c_f(e)$ rimangono **interi** (per induzione sul numero di aumenti).
+>
+> **Dimostrazione.** Per induzione sul numero di cammini aumentanti. *Base*: all'inizio $f(e) = 0$ per ogni $e$, quindi $f(e)$ e $c_f(e) = c(e)$ sono interi. *Passo*: se prima di un aumento tutti i $f(e)$ e i $c_f(e)$ sono interi, il bottleneck $\delta = \min_{e \in P} c_f(e)$ è un intero; AUGMENT somma o sottrae $\delta$ al flusso degli archi di $P$, quindi i nuovi $f(e)$ sono interi, e di conseguenza lo sono anche le nuove capacità residue $c(e) - f(e)$ e $f(e)$. $\square$
 
 > [!example] Traccia di esecuzione — rete piccola
 > Rete con nodi $s, u, v, t$ e archi:
@@ -217,19 +219,24 @@ Lo stato finale: nessun cammino aumentante, e il taglio evidenziato ha capacità
 > [!quote] Teorema — Terminazione di Ford-Fulkerson (capacità intere)
 > Se tutte le capacità sono **interi** compresi tra $1$ e $C$, Ford-Fulkerson termina dopo al più $\operatorname{val}(f^*) \leq nC$ aumenti. Ogni aumento costa $O(m)$ (per trovare un cammino con BFS o DFS in [[08 - Grafi e Visite]]).
 >
+> **Dimostrazione.** Per l'invariante di integralità ogni aumento porta un bottleneck intero, cioè incrementa il valore del flusso di almeno 1. Per il limite superiore si considera il taglio $A = \{s\}$ (assumendo che non ci siano archi paralleli): da $s$ escono al più $n - 1$ archi, ciascuno di capacità al più $C$, quindi per la dualità debole $\operatorname{val}(f^*) \leq \operatorname{cap}(\{s\}, V \setminus \{s\}) \leq nC$. $\square$
+>
 > **Complessità totale**: $O(m \cdot \operatorname{val}(f^*)) = O(m n C)$
 >
 > Questa complessità è **pseudo-polinomiale**: dipende dai valori delle capacità (non solo da $m$ e $n$). La BFS o DFS per trovare un cammino in $G_f$ costa $O(m)$; vedi [[08 - Grafi e Visite]] e [[09 - Applicazioni della DFS]].
 
 > [!warning] Caso patologico — esponenziale
-> Con scelta arbitraria del cammino, Ford-Fulkerson può richiedere un numero esponenziale di iterazioni. Considera la rete:
+> Con scelta arbitraria del cammino, Ford-Fulkerson può richiedere un numero esponenziale di iterazioni. Si consideri la rete con capacità $C$ su quattro archi e capacità 1 sull'arco centrale:
 > ```
->       s ---[C]---> v
->       |    [1]     |
->       |    v<->w   |
->       +---[C]---> w ---[C]---> t
+>              s
+>          C /   \ C
+>           v --1--> w
+>          C \     / C
+>              t
+>
+>   Archi: s→v = C,  s→w = C,  v→w = 1,  v→t = C,  w→t = C
 > ```
-> Se l'algoritmo alterna i cammini $s \to v \to w \to t$ e $s \to w \to v \to t$, ogni aumento porta solo $\delta = 1$; ci vogliono $2C$ iterazioni totali. Con $C = 2^{30}$, il numero di passi è astronomico.
+> Se l'algoritmo alterna i cammini $s \to v \to w \to t$ e $s \to w \to v \to t$ (il secondo usa l'arco inverso di $(v, w)$), ogni cammino aumentante invia una sola unità di flusso: servono $2C$ cammini aumentanti, esponenziali nella dimensione dell'input ($\log C$ bit). Il flusso massimo vale $2C$.
 >
 > **Patologia con capacità irrazionali**: se le capacità sono numeri irrazionali, Ford-Fulkerson potrebbe non terminare mai né convergere al massimo flusso.
 
@@ -367,7 +374,7 @@ Il corollario operativo: da un flusso massimo il taglio minimo esce con **una so
 ## Scelta dei cammini aumentanti
 La scelta del cammino aumentante determina l'efficienza pratica dell'algoritmo.
 ### Algoritmo di Edmonds-Karp (cammino più corto)
-L'algoritmo di **Edmonds-Karp** (1970, indipendentemente da Dinitz) sceglie sempre il cammino aumentante con il **minor numero di archi**, trovato tramite BFS nel grafo residuo (vedi [[08 - Grafi e Visite]]).
+L'algoritmo di **Edmonds-Karp** (1970, indipendentemente da Dinitz) sceglie sempre il cammino aumentante con il **minor numero di archi**, trovato tramite BFS nella rete residua (vedi [[08 - Grafi e Visite]]).
 
 ```pseudo
 \begin{algorithm}
@@ -376,7 +383,7 @@ L'algoritmo di **Edmonds-Karp** (1970, indipendentemente da Dinitz) sceglie semp
 \ForAll{arco $e \in E$}
   \State $f(e) \gets 0$
 \EndFor
-\State $G_f \gets$ grafo residuo di $G$ rispetto a $f$
+\State $G_f \gets$ rete residua di $G$ rispetto a $f$
 \While{esiste un cammino $s \leadsto t$ in $G_f$}
   \State $P \gets$ \Call{BFS}{$G_f, s, t$} \Comment{cammino con meno archi}
   \State $f \gets$ \Call{Augment}{$f, c, P$}
@@ -392,8 +399,8 @@ L'algoritmo di **Edmonds-Karp** (1970, indipendentemente da Dinitz) sceglie semp
 >
 > La chiave è che la distanza BFS da $s$ a $t$ in $G_f$ è **monotona non decrescente** nel corso delle iterazioni, il che limita il numero totale di aumenti.
 
-> [!info] Perché la BFS è la scelta giusta
-> Scegliere cammini corti riduce la "confusione" nel grafo residuo: gli archi si saturano in ordine di livello BFS e ogni arco può essere critico (bottleneck) al massimo $O(n)$ volte prima che la sua distanza da $s$ aumenti.
+> [!info] Perché la BFS è la scelta giusta *(extra, non da slide)*
+> Scegliere cammini corti riduce la "confusione" nella rete residua: gli archi si saturano in ordine di livello BFS e ogni arco può essere critico (bottleneck) al massimo $O(n)$ volte prima che la sua distanza da $s$ aumenti.
 
 → **Palestra**: [[Esercizi 07 - Flussi di Rete (Max-Flow e Min-Cut)#Scelta dei cammini aumentanti: Ford-Fulkerson e Edmonds-Karp|Ford-Fulkerson e Edmonds-Karp a confronto]]
 
@@ -401,7 +408,7 @@ L'algoritmo di **Edmonds-Karp** (1970, indipendentemente da Dinitz) sceglie semp
 ### Capacity Scaling (cammino con bottleneck grande)
 La strategia **capacity scaling** (Edmonds-Karp, 1972; versione migliorata Gabow, 1985) preferisce cammini con **grande bottleneck**, evitando tanti piccoli aumenti.
 
-L'algoritmo mantiene un parametro di scala $\Delta$ e lavora solo sugli archi con capacità residua $\geq \Delta$, detto **$\Delta$-grafo residuo** $G_f(\Delta)$.
+L'algoritmo mantiene un parametro di scala $\Delta$ e lavora solo sugli archi con capacità residua $\geq \Delta$, che formano la **$\Delta$-rete residua** $G_f(\Delta)$.
 
 ```pseudo
 \begin{algorithm}
@@ -412,7 +419,7 @@ L'algoritmo mantiene un parametro di scala $\Delta$ e lavora solo sugli archi co
 \EndFor
 \State $\Delta \gets$ la più grande potenza di $2 \leq C$
 \While{$\Delta \geq 1$}
-  \State $G_f(\Delta) \gets$ $\Delta$-grafo residuo di $G$ rispetto a $f$
+  \State $G_f(\Delta) \gets$ la $\Delta$-rete residua di $G$ rispetto a $f$
   \While{esiste un cammino $s \leadsto t$ $P$ in $G_f(\Delta)$}
     \State $f \gets$ \Call{Augment}{$f, c, P$}
     \State aggiorna $G_f(\Delta)$
@@ -429,17 +436,22 @@ L'algoritmo mantiene un parametro di scala $\Delta$ e lavora solo sugli archi co
 >
 > **Complessità totale**: $O(m^2 \log C)$
 
-**Idea della dimostrazione del bound $2m$ per fase.** Si usa il lemma: all'inizio della fase $\Delta$, il flusso corrente $f$ soddisfa $\operatorname{val}(f^*) - \operatorname{val}(f) \leq m\Delta$. Questo si dimostra osservando che nella fase precedente (con parametro $2\Delta$) non esistono cammini nel $2\Delta$-grafo residuo: ogni taglio st ha capacità $\leq \operatorname{val}(f) + m \cdot 2\Delta$ (ogni arco contribuisce al più $2\Delta$ alla capacità), quindi $\operatorname{val}(f^*) \leq \operatorname{val}(f) + 2m\Delta$. Poiché nella fase $\Delta$ ogni aumento porta almeno $\Delta$ unità, il numero di aumenti per fase è al più $2m\Delta / \Delta = 2m$.
+**Idea della dimostrazione del bound $2m$ per fase** *(extra, non da slide)*. Si usa il lemma: all'inizio della fase $\Delta$, il flusso corrente $f$ soddisfa $\operatorname{val}(f^*) - \operatorname{val}(f) \leq m\Delta$. Questo si dimostra osservando che nella fase precedente (con parametro $2\Delta$) non esistono cammini nella $2\Delta$-rete residua: ogni taglio st ha capacità $\leq \operatorname{val}(f) + m \cdot 2\Delta$ (ogni arco contribuisce al più $2\Delta$ alla capacità), quindi $\operatorname{val}(f^*) \leq \operatorname{val}(f) + 2m\Delta$. Poiché nella fase $\Delta$ ogni aumento porta almeno $\Delta$ unità, il numero di aumenti per fase è al più $2m\Delta / \Delta = 2m$.
 ### Tabella riassuntiva degli algoritmi
+Algoritmi a cammini aumentanti, con $m$ archi, $n$ nodi e capacità intere tra 1 e $C$. Dopo il metodo generico, tre metodi scelgono cammini con grande bottleneck (*fat paths*) e tre cammini corti (*shortest paths*).
+
 | Anno | Metodo | N. aumenti | Complessità |
 |---|---|---|---|
-| 1955 | Ford-Fulkerson (generico) | $\leq nC$ | $O(m \cdot \operatorname{val}(f^*)) = O(mnC)$ |
-| 1972 | Capacity Scaling (Edmonds-Karp) | $O(m \log C)$ | $O(m^2 \log C)$ |
-| 1970 | Shortest augmenting path (Edmonds-Karp, Dinitz) | $O(mn)$ | $O(m^2 n)$ |
-| 1985 | Improved Capacity Scaling (Gabow) | $O(m \log C)$ | $O(mn \log C)$ |
+| 1955 | Ford-Fulkerson (augmenting path generico) | $nC$ | $O(mnC)$ |
+| 1972 | Fattest path | $m \log(mC)$ | $O(m^2 \log n \log(mC))$ |
+| 1972 | Capacity Scaling (Edmonds-Karp) | $m \log C$ | $O(m^2 \log C)$ |
+| 1985 | Improved Capacity Scaling (Gabow) | $m \log C$ | $O(mn \log C)$ |
+| 1970 | Shortest augmenting path (Edmonds-Karp) | $mn$ | $O(m^2 n)$ |
+| 1970 | Level graph (Dinitz) | $mn$ | $O(mn^2)$ |
+| 1983 | Dynamic trees (Sleator-Tarjan) | $mn$ | $O(mn \log n)$ |
 
 ![[mf_tabella_algoritmi.png]]
 La tabella della slide sugli algoritmi a cammini aumentanti: cambia la **strategia di scelta del cammino**, e con essa il numero di aumenti.
 
 > [!info] Evoluzione storica degli algoritmi di Max-Flow
-> Il problema del massimo flusso ha una storia algoritmicamente ricca. Principali risultati: Karzanov (1974) con blocking flows in $O(n^3)$; Sleator-Tarjan (1983) con dynamic trees in $O(mn \log n)$; Gabow (1985) con improved capacity scaling in $O(mn \log C)$; Goldberg-Tarjan (1988) con push-relabel in $O(mn \log(n^2/m))$; Orlin (2013) in $O(mn)$; Lee-Sidford (2014) in $\tilde{O}(m n^{1/2} \log C)$ con metodi di punto interno; Mądry (2016) con electrical flows in $\tilde{O}(m^{10/7} C^{1/7})$; risultati molto recenti (FOCS 2022) che si avvicinano a $\tilde{O}(m)$.
+> Il problema del massimo flusso ha una storia algoritmicamente ricca. Principali risultati: Dantzig (1951) con il simplesso in $O(mn^2C)$; Karzanov (1974) con blocking flows in $O(n^3)$; Sleator-Tarjan (1983) con dynamic trees in $O(mn \log n)$; Gabow (1985) con improved capacity scaling in $O(mn \log C)$; Goldberg-Tarjan (1988) con push-relabel in $O(mn \log(n^2/m))$; Goldberg-Rao (1998) con binary blocking flows in $O(m^{3/2} \log(n^2/m) \log C)$; Orlin (2013) in $O(mn)$; Lee-Sidford (2014) in $\tilde{O}(m n^{1/2} \log C)$ con metodi di punto interno; Mądry (2016) con electrical flows in $\tilde{O}(m^{10/7} C^{1/7})$; risultati molto recenti (FOCS 2022) che si avvicinano a $\tilde{O}(m)$.

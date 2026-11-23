@@ -48,9 +48,9 @@ Su $n$ vertici le proprietà *connesso*, *aciclico* e *$n-1$ archi* sono legate 
 
 Nello scrivere la terna si perdono di solito due cose: **connesso** nell'input, e la **misura**, che è lo slot che salta quando si va di fretta.
 ### Conseguenze dirette del conteggio degli archi
-Dal solo fatto che ogni spanning tree ha $n-1$ archi discendono i **bound sul costo**. Se tutti i pesi stanno in $\{1,2\}$, il costo è una somma di $n-1$ termini ciascuno pari a 1 o 2: al minimo $(n-1)\cdot 1 = n-1$, al massimo $(n-1)\cdot 2 = 2n-2$, e ogni altra combinazione cade in mezzo. È pura combinatoria: non serve che l'albero sia ottimo, e infatti il bound vale per **qualunque** spanning tree.
+*(extra, non da slide)* Dal solo fatto che ogni spanning tree ha $n-1$ archi discendono i **bound sul costo**. Se tutti i pesi stanno in $\{1,2\}$, il costo è una somma di $n-1$ termini ciascuno pari a 1 o 2: al minimo $(n-1)\cdot 1 = n-1$, al massimo $(n-1)\cdot 2 = 2n-2$, e ogni altra combinazione cade in mezzo. È pura combinatoria: non serve che l'albero sia ottimo, e infatti il bound vale per **qualunque** spanning tree.
 
-Diverso è affermare che il costo sia **esattamente** $n-1$: questo richiede che esista uno spanning tree fatto di **soli** archi di peso 1, cioè che il sottografo dei soli archi leggeri sia connesso e ricoprente. È la differenza fra un vincolo di **cardinalità** (quanti archi leggeri ci sono) e uno di **connettività** (dove stanno): gli archi di peso 1 possono essere moltissimi e concentrati in una sola zona, lasciando un nodo raggiungibile solo con archi di peso 2.
+*(extra, non da slide)* Diverso è affermare che il costo sia **esattamente** $n-1$: questo richiede che esista uno spanning tree fatto di **soli** archi di peso 1, cioè che il sottografo dei soli archi leggeri sia connesso e ricoprente. È la differenza fra un vincolo di **cardinalità** (quanti archi leggeri ci sono) e uno di **connettività** (dove stanno): gli archi di peso 1 possono essere moltissimi e concentrati in una sola zona, lasciando un nodo raggiungibile solo con archi di peso 2.
 
 Per confutare un'affermazione di questo tipo serve un'istanza che **rispetti l'ipotesi**: se la claim parte da «gli archi di peso 1 sono almeno $2n$», il controesempio deve averne davvero almeno $2n$. Concentrandoli in una clique su $n-1$ nodi se ne ottengono $\binom{n-1}{2} = \frac{(n-1)(n-2)}{2}$ — il conteggio standard degli archi di un grafo completo, un arco per ogni coppia di nodi — e la condizione $\frac{(n-1)(n-2)}{2} \geq 2n$ vale da $n \geq 7$ in poi. È la stessa costruzione del callout [[08 - Grafi e Visite#Alberi come grafi|«$m \geq n-1$ non implica connessione»]] del Modulo I: molti archi, concentrati dove non servono.
 
@@ -172,7 +172,7 @@ La struttura è di **cinque mosse in quest'ordine**: si suppone che $T^*$ non co
 ![[mst_exchange_argument.png]]
 Come leggerla: le due macchie grigie sono $S$ e $V\setminus S$; i segmenti pieni sono gli archi di $T^*$, l'MST di partenza. L'arco **tratteggiato $e$** è quello che la cut property vuole dentro, e non c'è. Aggiungendolo si chiude un ciclo, che riattraversa il taglio in **$f$**: lo scambio $T' = T^* \cup \{e\} \setminus \{f\}$ toglie $f$ e mette $e$. Le due macchie restano collegate — è il punto che rende $T'$ ancora uno spanning tree.
 
-> [!warning] La coppia gemella «+1 su ogni arco»: MST vero, min-cut falso
+> [!warning] La coppia gemella «+1 su ogni arco»: MST vero, min-cut falso *(extra, non da slide)*
 > Il prof ha chiesto la stessa perturbazione in due appelli consecutivi, su oggetti diversi e con **risposte opposte**:
 > - su **MST** (20/07/2026): $T$ resta MST — tutti gli spanning tree hanno $n-1$ archi, l'aumento è uniforme;
 > - su **min-cut** (30/06/2026, cfr. [[07 - Flussi di Rete (Max-Flow e Min-Cut)]]): il taglio minimo **può cambiare** — i tagli hanno cardinalità diverse, quindi $+1$ per arco penalizza di più i tagli con molti archi, e un taglio prima più costoso può diventare il minimo.
@@ -467,7 +467,7 @@ Il calcolo con heap di Fibonacci: $n \cdot O(1) + n \cdot O(\log n) + m \cdot O(
 | Prim (heap binario) | Min-heap binario | $O(m \log n)$ | Bilanciato; buono su grafi sparsi |
 | Prim (Fibonacci) | [[07 - Code con Priorità e Heap#Heap di Fibonacci (cenni)|heap di Fibonacci]] | $O(m + n \log n)$ | Bound migliore in assoluto; su grafi densi pareggia l'array ($O(n^2)$) |
 
-> [!info] Confronto Kruskal vs Prim
+> [!info] Confronto Kruskal vs Prim *(extra, non da slide)*
 > Su grafi **sparsi** ($m = O(n)$) sia Kruskal che Prim con heap binario danno $O(n \log n)$; la scelta è indifferente. Su grafi **densi** ($m = \Theta(n^2)$), Kruskal richiede $O(n^2 \log n)$ (dominato dall'ordinamento), mentre Prim con array non ordinato dà $O(n^2)$ e Prim con heap di Fibonacci dà $O(n^2)$: in questo caso Prim è preferibile.
 >
 > **Dove serve davvero l'heap di Fibonacci.** Non sui grafi densi: lì $O(m + n\log n) = O(n^2)$, esattamente quanto il banale array non ordinato, che è molto più semplice da implementare. Il bound $O(m + n\log n)$ domina (in senso debole) sia l'array — $O(m + n\log n) \leq O(n^2)$, con uguaglianza solo a densità massima — sia l'heap binario — $O(m + n\log n) \leq O(m\log n)$, con uguaglianza solo sui grafi sparsi. Il vantaggio **stretto** su entrambe le alternative si materializza quindi nella **fascia intermedia** di densità, ad esempio $m = \Theta(n\sqrt n)$: lì Fibonacci dà $\Theta(n\sqrt n)$ contro $\Theta(n\sqrt n \log n)$ dell'heap binario e $\Theta(n^2)$ dell'array. È lo scenario della domanda d'esame del 23/09/2025 qui sopra.

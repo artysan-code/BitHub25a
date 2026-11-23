@@ -8,7 +8,7 @@ capitolo: "Kleinberg-Tardos cap. 7"
 # Applicazioni dei Flussi di Rete
 Il **paradigma della riduzione** consiste nel trasformare un problema $P$ in un'istanza di un problema $Q$ già risolto, ricavando la soluzione di $P$ dalla soluzione di $Q$. I problemi di [[07 - Flussi di Rete (Max-Flow e Min-Cut)]] si prestano naturalmente a questo schema: dalla segmentazione di immagini all'eliminazione nel baseball, moltissimi problemi si formulano come ricerca del massimo flusso o del taglio minimo su una rete opportunamente costruita. Questa nota esplora le quattro applicazioni principali del deck (Bipartite Matching, cammini disgiunti, image segmentation, baseball elimination) mostrandone la costruzione della rete e la correttezza della riduzione.
 ## Schema generale di riduzione al Max-Flow
-> [!info] Tecnica — Riduzione al Max-Flow
+> [!info] Tecnica — Riduzione al Max-Flow *(extra, non da slide)*
 > Dato un problema $P$, la riduzione al Max-Flow segue quattro passi canonici:
 > 1. **Costruire** un grafo di flusso $G' = (V', E')$ che codifica le istanze di $P$ (nodi sorgente $s$, pozzo $t$, capacità degli archi).
 > 2. **Calcolare** il flusso massimo $f^*$ in $G'$ tramite Ford-Fulkerson o algoritmi migliori.
@@ -25,6 +25,8 @@ Il **paradigma della riduzione** consiste nel trasformare un problema $P$ in un'
 > Un grafo $G = (V, E)$ è **bipartito** se i nodi possono essere partizionati in due insiemi disgiunti $L$ e $R$ tali che ogni arco connette un nodo di $L$ con un nodo di $R$. Si scrive $G = (L \cup R, E)$.
 
 Il **problema del Bipartite Matching** chiede: dato $G = (L \cup R, E)$ bipartito, trovare un matching di cardinalità massima.
+Il **problema del matching perfetto** (in grafi bipartiti) chiede di trovare un matching perfetto oppure di riportare correttamente che non esiste. Esiste un matching perfetto se e solo se la cardinalità del matching massimo è $|L| = |R|$.
+**Esempio (dalle slide):** con $L = \{1,\dots,5\}$ e $R = \{1',\dots,5'\}$, il matching $1\text{-}1',\ 2\text{-}2',\ 3\text{-}4',\ 4\text{-}5'$ ha cardinalità 4 e lascia scoperti $5$ e $3'$; il grafo della slide **non** ha un matching perfetto, perché il matching massimo ha cardinalità $4 < 5 = |L|$. Si vede anche a occhio: i nodi $2$, $4$, $5$ hanno come vicini solo $2'$ e $5'$, quindi non possono essere accoppiati tutti e tre.
 **Esempio pratico:** $L$ = insieme di studenti, $R$ = insieme di laboratori; un arco $(u, v)$ indica che lo studente $u$ è compatibile con il laboratorio $v$. Un matching massimo assegna il massimo numero di studenti a laboratori compatibili.
 
 ![[app_matching_definizione.png]]
@@ -64,12 +66,12 @@ La corrispondenza biunivoca vista sulla slide: da un matching si costruisce il f
 
 Con Ford-Fulkerson ogni aumentazione incrementa il flusso di 1 (le capacità sono unitarie), quindi al più $n$ aumentazioni, ciascuna $O(m)$ con BFS/DFS sul grafo residuo (cfr. [[08 - Grafi e Visite]]).
 ### Teorema di König e Teorema di Hall
-> [!quote] Teorema — König (1931)
+> [!quote] Teorema — König (1931) *(extra, non da slide)*
 > In un grafo bipartito, la **cardinalità del matching massimo** è uguale alla **dimensione del vertex cover minimo** (minimo insieme di nodi che copre tutti gli archi).
 
 Questo risultato è una conseguenza diretta del teorema Max-Flow Min-Cut: il taglio minimo nella rete $G'$ ha capacità pari alla dimensione del vertex cover minimo, e il flusso massimo vale il matching massimo. Le due quantità coincidono per la dualità flusso-taglio.
 
-> [!quote] Teorema — Hall (condizione di matrimonio, 1935)
+> [!quote] Teorema — Hall (condizione di matrimonio, 1935) *(extra, non da slide)*
 > Un grafo bipartito $G = (L \cup R, E)$ ammette un **matching perfetto** che satura tutti i nodi di $L$ se e solo se, per ogni sottoinsieme $S \subseteq L$, il vicinato $N(S) \subseteq R$ soddisfa $|N(S)| \geq |S|$.
 
 → **Palestra**: [[Esercizi 08 - Applicazioni dei Flussi di Rete#Riduzione del Bipartite Matching al Max-Flow|riduzione del Bipartite Matching]]
@@ -106,16 +108,20 @@ La riduzione è la più economica di tutte: si mette capacità 1 su ogni arco e 
 > Esiste una corrispondenza biunivoca tra $k$ cammini arco-disgiunti $s \leadsto t$ in $G$ e flussi **interi** di valore $k$ in $G'$ (con capacità unitarie).
 
 **Dimostrazione ($\Rightarrow$):** Siano $P_1, \ldots, P_k$ cammini arco-disgiunti. Si pone $f(e) = 1$ se $e$ appartiene ad almeno un $P_i$, altrimenti $f(e) = 0$. Poiché i cammini sono arco-disgiunti, ogni arco è usato al più una volta: le capacità unitarie sono rispettate. La conservazione del flusso vale per ogni nodo intermedio (ogni $P_i$ entra ed esce da ogni nodo interno). Il flusso totale è $k$.
-**Dimostrazione ($\Leftarrow$):** Sia $f$ un flusso intero di valore $k$. Si consideri ogni arco $(s, u)$ con $f(s,u) = 1$: per la conservazione esiste un arco $(u, v)$ con $f(u,v) = 1$; continuando si arriva sempre a $t$ (scegliendo sempre un arco inutilizzato). Si ottengono $k$ cammini, non necessariamente semplici — i cicli si possono eliminare in $O(mn)$ con la *flow decomposition*.
+**Dimostrazione ($\Leftarrow$):** Sia $f$ un flusso intero di valore $k$. Si consideri ogni arco $(s, u)$ con $f(s,u) = 1$: per la conservazione esiste un arco $(u, v)$ con $f(u,v) = 1$; continuando si arriva sempre a $t$ (scegliendo sempre un arco inutilizzato). Si ottengono $k$ cammini, non necessariamente semplici — i cicli si possono eliminare in $O(mn)$ con la *flow decomposition*, se si vogliono cammini semplici.
 
-> [!quote] Teorema — Menger (1927)
+**Flow decomposition (slide):** il procedimento è quello della dimostrazione. Si parte da un arco $(s,u)$ con flusso 1; per la conservazione del flusso da $u$ esce un arco con flusso 1, e così via, scegliendo ogni volta un arco nuovo, fino a raggiungere $t$. Si ripete per ogni arco uscente da $s$ con flusso 1: ogni arco con flusso 1 finisce in un solo cammino, quindi i $k$ cammini ottenuti sono arco-disgiunti. Se un cammino passa due volte per lo stesso nodo contiene un ciclo, che si può togliere per ottenere un cammino semplice.
+
+> [!quote] Teorema — Menger (1927) *(extra, non da slide)*
 > Il massimo numero di cammini arco-disgiunti $s \leadsto t$ in $G$ è uguale alla **cardinalità del minimo taglio archi** (minimum edge cut): il minimo numero di archi la cui rimozione disconnette $s$ da $t$.
 
 Questo è direttamente il teorema Max-Flow Min-Cut applicato a $G'$: la capacità del taglio minimo (con archi unitari) conta gli archi del minimo taglio, e il flusso massimo conta i cammini arco-disgiunti.
 ### Cammini disgiunti in grafi non diretti
-Per grafi **non orientati**, si sostituisce ogni arco $\{u, v\}$ con **due archi diretti antiparalleli** $(u, v)$ e $(v, u)$, ciascuno con capacità 1. Il risultato di Max-Flow sulla rete così costruita fornisce il massimo numero di cammini arco-disgiunti nel grafo originale non orientato.
+**Esercizio (dalle slide):** dato un grafo non orientato $G = (V, E)$ e due nodi $s$ e $t$, trovare il massimo numero di cammini $s$–$t$ arco-disgiunti, progettando un algoritmo basato sul Max-Flow. La slide mostra lo stesso disegno prima con 2 cammini arco-disgiunti e poi con 3.
 
-> [!warning] Cammini nodo-disgiunti
+**Soluzione.** Per grafi **non orientati**, si sostituisce ogni arco $\{u, v\}$ con **due archi diretti antiparalleli** $(u, v)$ e $(v, u)$, ciascuno con capacità 1. Il risultato di Max-Flow sulla rete così costruita fornisce il massimo numero di cammini arco-disgiunti nel grafo originale non orientato.
+
+> [!warning] Cammini nodo-disgiunti *(extra, non da slide)*
 > Il problema dei **cammini nodo-disgiunti** (vertex-disjoint paths, nessun nodo interno in comune) si riduce al Max-Flow con una tecnica di **node splitting**: ogni nodo $v$ (eccetto $s$ e $t$) viene rimpiazzato da due nodi $v_{in}$ e $v_{out}$ collegati da un arco $(v_{in}, v_{out})$ di capacità 1. Ogni arco $(u,v)$ del grafo originale diventa $(u_{out}, v_{in})$ con capacità $+\infty$. Il massimo flusso nella rete risultante corrisponde al massimo numero di cammini nodo-disgiunti.
 
 → **Palestra**: [[Esercizi 08 - Applicazioni dei Flussi di Rete#Riduzione dei cammini nodo-disgiunti al Max-Flow|cammini nodo-disgiunti e node splitting]]
@@ -137,12 +143,17 @@ La formulazione di **foreground/background segmentation** è:
 - $p_{ij} \geq 0$: **penalità di separazione** per assegnare i due pixel $i$ e $j$ adiacenti a classi diverse.
 
 L'obiettivo è trovare una partizione $(A, B)$ con $A \cup B = V$, $A \cap B = \emptyset$ che **massimizza**:
-$$\text{qualità}(A, B) = \sum_{i \in A} a_i + \sum_{j \in B} b_j - \sum_{\substack{(i,j) \in E \\ |\{A,B\} \cap \{i,j\}| = 2}} p_{ij}$$
-dove il termine sottratto penalizza ogni coppia di pixel adiacenti assegnata a classi diverse.
+$$\sum_{i \in A} a_i + \sum_{j \in B} b_j - \sum_{\substack{(i,j) \in E \\ |A \cap \{i,j\}| = 1}} p_{ij}$$
+dove $A$ è il foreground e $B$ il background. La condizione $|A \cap \{i,j\}| = 1$ seleziona le coppie di vicini con esattamente un pixel in $A$, cioè separate dalla partizione: il termine sottratto penalizza ciascuna di esse. Gli obiettivi sono due: *accuratezza* (se $a_i > b_i$ preso da solo, conviene mettere $i$ nel foreground) e *regolarità* (se molti vicini di $i$ sono nel foreground, $i$ tende a starci anch'esso).
 ### Trasformazione in minimizzazione
-La massimizzazione di $\text{qualità}(A,B)$ è equivalente alla minimizzazione di:
-$$\text{costo}(A, B) = \sum_{i \in A} b_i + \sum_{j \in B} a_j + \sum_{\substack{(i,j) \in E \\ |\{A,B\} \cap \{i,j\}| = 2}} p_{ij}$$
-(si somma la costante $\sum_i (a_i + b_i)$ e si inverte il segno). Questa è la formulazione del **Min-Cut**.
+Il problema di partenza è una **massimizzazione**, su un grafo **non orientato** e **senza sorgente né pozzo**: va trasformato in una minimizzazione per poterlo vedere come Min-Cut. Passaggi della slide:
+1. Massimizzare $\displaystyle\sum_{i \in A} a_i + \sum_{j \in B} b_j - \sum_{\substack{(i,j) \in E \\ |A \cap \{i,j\}| = 1}} p_{ij}$
+2. è equivalente a minimizzare
+$$\Big(\sum_{i \in V} a_i + \sum_{j \in V} b_j\Big) - \sum_{i \in A} a_i - \sum_{j \in B} b_j + \sum_{\substack{(i,j) \in E \\ |A \cap \{i,j\}| = 1}} p_{ij}$$
+dove la prima parentesi è una **costante** (non dipende da $(A,B)$): cambiare segno a una quantità e sommarle una costante scambia massimi e minimi.
+3. Poiché $V = A \cup B$ con $A$ e $B$ disgiunti, $\sum_{i \in V} a_i - \sum_{i \in A} a_i = \sum_{j \in B} a_j$ e $\sum_{j \in V} b_j - \sum_{j \in B} b_j = \sum_{i \in A} b_i$. Quindi, in alternativa, si minimizza
+$$\sum_{j \in B} a_j + \sum_{i \in A} b_i + \sum_{\substack{(i,j) \in E \\ |A \cap \{i,j\}| = 1}} p_{ij}$$
+Questa è la formulazione che diventa **Min-Cut**.
 ### Costruzione della rete
 Si costruisce il grafo $G' = (V', E')$ come segue:
 - Un nodo per ogni pixel $i \in V$.
@@ -176,7 +187,7 @@ La rete costruita sui pixel: $s$ è il foreground, $t$ il background, e fra pixe
 - L'arco $(i, j)$ è nel taglio se $i \in A$ e $j \in B$ (pixel adiacenti su lati diversi): contribuisce $p_{ij}$. Poiché gli archi sono antiparalleli, se $i \in A$ e $j \in B$ si conta solo $(i,j)$; se $j \in A$ e $i \in B$ si conta solo $(j,i)$. In entrambi i casi si paga $p_{ij}$ esattamente una volta.
 
 La capacità del taglio è dunque:
-$$\text{cap}(A,B) = \sum_{i \in B} a_i + \sum_{i \in A} b_i + \sum_{\substack{(i,j) \in E \\ i \in A,\, j \in B}} p_{ij}$$
+$$\text{cap}(A,B) = \sum_{j \in B} a_j + \sum_{i \in A} b_i + \sum_{\substack{(i,j) \in E \\ i \in A,\, j \in B}} p_{ij}$$
 che è esattamente il **costo** da minimizzare.
 
 > [!info] Applicazione reale — GrabCut
@@ -208,8 +219,8 @@ Se $w_z + r_z < w_x$ per qualche team $x$, allora $z$ è eliminato banalmente: a
 | New York (2) | 78 | 78 | 6 | 6 | 0 | — | 0 |
 | Montreal (3) | 77 | 82 | 3 | 1 | 2 | 0 | — |
 
-Montreal è eliminato **banalmente**: anche vincendo tutte le 3 restanti arriverebbe a 80, ma Atlanta ha già 83 vittorie. Questo è l'unico caso di cui parlano normalmente i commentatori sportivi, ma non è l'unico scenario possibile.
-Philly è eliminato **non banalmente**: anche vincendo tutte le 3 restanti arriverebbe a 83 ($= w_z + r_z$). Tuttavia ATL e NYM devono ancora giocarsi 6 partite: qualunque sia l'esito, una delle due arriverà ad almeno $83 + 1 = 84$ vittorie totali, superando Philly. La rimozione di questo caso richiede Max-Flow.
+Montreal è eliminato **banalmente**: anche vincendo tutte le 3 restanti arriverebbe a 80, ma Atlanta ha già 83 vittorie.
+Philly è eliminato **non banalmente**: anche vincendo tutte le 3 restanti arriverebbe a 83 ($= w_z + r_z$). Tuttavia ATL e NYM devono ancora giocarsi 6 partite: qualunque sia l'esito, una delle due arriverà ad almeno 84 vittorie totali, superando Philly (la slide dice: «either New York or Atlanta will finish with $\geq 84$ wins»). La rimozione di questo caso richiede Max-Flow.
 
 ![[app_baseball_classifica.png]]
 La classifica da cui parte l'esempio: vittorie accumulate, partite rimanenti e scontri diretti ancora da giocare.
@@ -248,12 +259,12 @@ La rete del caso generale: nodi-partita alimentati da $s$ con capacità $r_{xy}$
 - Le capacità $(x, t)$ con valore $W^* - w_x$ limitano le vittorie aggiuntive di ogni team, assicurando che nessun team superi $W^*$.
 - Se il flusso **non** riesce a saturare tutti gli archi uscenti da $s$, significa che non esiste nessun modo di distribuire tutte le partite senza che un team superi $W^*$: $z$ è eliminato.
 
-**Interpretazione del taglio minimo:** Il taglio minimo individua un sottoinsieme $T \subseteq S'$ di team che collettivamente "giocheranno troppe partite":
+**Interpretazione del taglio minimo *(extra, non da slide)*:** Il taglio minimo individua un sottoinsieme $T \subseteq S'$ di team che collettivamente "giocheranno troppe partite":
 $$w_z + r_z < \frac{1}{|T|}\left(\sum_{x \in T} w_x + \sum_{x,y \in T} r_{xy}\right)$$
 Questa disuguaglianza è la **condizione di eliminazione combinatoria**: il numero medio di vittorie che i team in $T$ devono distribuirsi è superiore a $W^*$.
 
-> [!info] Certificato di eliminazione
-> Quando $z$ è eliminato, il taglio minimo fornisce un **certificato esplicito**: il sottoinsieme $T$ di team che "dimostrano" l'eliminazione di $z$. Questo è il tipo di spiegazione che, ad esempio, può apparire in un articolo sportivo: "anche se Philly vincesse tutte le partite, la combinazione Atlanta–New York ne ha già vinte 161 in 6 partite, garantendo che una delle due supererà Philly".
+> [!info] Certificato di eliminazione *(extra, non da slide)*
+> Quando $z$ è eliminato, il taglio minimo fornisce un **certificato esplicito**: il sottoinsieme $T$ di team che "dimostrano" l'eliminazione di $z$. Questo è il tipo di spiegazione che, ad esempio, può apparire in un articolo sportivo: "anche se Philly vincesse tutte le partite, Atlanta e New York hanno già vinto 83 + 78 = 161 partite e ne devono ancora giocare 6 tra loro, quindi insieme arriveranno a 167 vittorie: una delle due ne avrà almeno 84, più delle 83 di Philly".
 
 → **Palestra**: [[Esercizi 08 - Applicazioni dei Flussi di Rete#Eliminazione matematica via Max-Flow|baseball elimination]]
 ## Riepilogo: costruzioni delle reti

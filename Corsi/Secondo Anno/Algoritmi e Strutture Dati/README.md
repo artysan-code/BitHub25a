@@ -37,12 +37,15 @@ Le note seguono l'ordine del corso e coprono le slide del prof; lo slide e il ca
 6. [[06 - Programmazione Dinamica III (Sequence Alignment e Bellman-Ford)]] — distanza di edit, Hirschberg, Bellman-Ford.
 7. [[07 - Flussi di Rete (Max-Flow e Min-Cut)]] — Ford-Fulkerson, teorema max-flow min-cut.
 8. [[08 - Applicazioni dei Flussi di Rete]] — matching bipartito, cammini disgiunti, image segmentation, baseball elimination.
-9. [[09 - NP-Completezza e Riduzioni]] — riduzioni polinomiali, SAT, Vertex Cover, cenni di approssimazione.
+9. [[09 - NP-Completezza e Riduzioni]] — riduzioni polinomiali, SAT, Vertex Cover, classi P, NP, co-NP, approssimazione per Load Balancing.
+10. [[10 - Altre Riduzioni (Super Mario, Peg Solitaire, Tetris)]] — riduzioni da 3-SAT, Hamiltonian Cycle e 3-Partition.
+11. [[11 - Approssimazione II (k-Center)]] — algoritmo greedy 2-approssimato per k-Center.
+12. [[12 - Tabelle Hash]] — chaining, hashing universale, ridimensionamento della tabella.
 ## Materiale di riferimento
 - **Modulo I**: C. Demetrescu, I. Finocchi, G. F. Italiano — *Algoritmi e strutture dati*, McGraw-Hill (le slide ne seguono i capitoli). Integrazione per la DFS avanzata: S. Dasgupta, C. Papadimitriou, U. Vazirani — *Algorithms*, McGraw-Hill, cap. 3.
 - **Modulo II**: J. Kleinberg, É. Tardos — *Algorithm Design*, Pearson-Addison Wesley (slide del prof a partire da quelle di **Kevin Wayne**, Princeton); Union-Find anche da Demetrescu-Finocchi-Italiano.
 - **Slide ufficiali** del corso (prof. Gualà) in `Materiale Didattico/Modulo I/Slide/` e `Materiale Didattico/Modulo II/Slide/`.
 ## Crediti e fonti integrate
 La fonte primaria e autorevole sono le **slide del prof. Gualà**: in caso di conflitto su definizioni, notazioni o complessità prevalgono sempre. Le risorse seguenti sono state usate come traccia di prosa e riscontro, sempre verificate e **rielaborate** (non copiate):
-- **Ionut Zbir** ([github.com/IonutZbir/University](https://github.com/IonutZbir/University)): traccia per la prosa di Modulo I e II; soluzioni delle prove d'esame del Modulo I; dispense su Limiti e Ricorrenze; (Modulo II) raccolte di esercizi di DP e una soluzione d'esercitazione discussa dal prof (tutto in `Esercizi/`). Esclusa la nota Hash Table: fuori dal programma del corso.
+- **Ionut Zbir** ([github.com/IonutZbir/University](https://github.com/IonutZbir/University)): traccia per la prosa di Modulo I e II; soluzioni delle prove d'esame del Modulo I; dispense su Limiti e Ricorrenze; (Modulo II) raccolte di esercizi di DP e una soluzione d'esercitazione discussa dal prof (tutto in `Esercizi/`).
 - **Vittorio Porri** ([github.com/VittorioPorri/universita](https://github.com/VittorioPorri/universita)): codice di ordinamento e strutture dati (Modulo I) e note di teoria su greedy, DP e max-flow (Modulo II), usati come riscontro.

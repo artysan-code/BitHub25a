@@ -8,7 +8,7 @@ capitolo: "Kleinberg-Tardos cap. 6"
 # Programmazione Dinamica I — Principi e Weighted Independent Set
 La **programmazione dinamica** risolve un problema definendo una famiglia piccola di sottoproblemi, esprimendo la soluzione di ciascuno in funzione di sottoproblemi più piccoli e riempiendo una tabella nell'ordine giusto. Questa nota introduce la tecnica sul caso di studio del **Weighted Independent Set su cammino** e ne ricava i quattro passi generali, che sono il telaio di ogni Esercizio 3. Gli Esercizio 3 di progettazione delle tracce recenti stanno nella palestra [[Palestra - Programmazione Dinamica]]; i problemi di DP successivi sono in [[05 - Programmazione Dinamica II (Interval Scheduling e Knapsack)]] e [[06 - Programmazione Dinamica III (Sequence Alignment e Bellman-Ford)]].
 ## L'idea, prima della tecnica
-Prima di qualunque definizione, guardiamo **il fenomeno** che la programmazione dinamica sfrutta. Prendiamo un problema qualunque risolto per ricorsione — diciamo il calcolo di $F(6)$, il sesto numero di Fibonacci, con la ricorsione diretta $F(j) = F(j-1) + F(j-2)$. Disegniamo l'albero delle chiamate:
+*(extra, non da slide)* Prima di qualunque definizione, guardiamo **il fenomeno** che la programmazione dinamica sfrutta. Prendiamo un problema qualunque risolto per ricorsione — diciamo il calcolo di $F(6)$, il sesto numero di Fibonacci, con la ricorsione diretta $F(j) = F(j-1) + F(j-2)$. Disegniamo l'albero delle chiamate:
 ```
                           F(6)
                  ┌──────────┴──────────┐
@@ -41,14 +41,14 @@ Questo è il punto — e vale la pena dirlo nel modo più diretto possibile:
 
 Da questa frase discende tutto il resto. Il lavoro difficile, in ogni problema di DP, non è memorizzare i risultati — quello è banale, è un array. Il lavoro difficile è **capire quali sono i sottoproblemi**, e dimostrare che la soluzione ottima del problema grande si costruisce a partire dalle soluzioni ottime di quelli piccoli.
 ### Le due condizioni che servono
-Perché la strategia funzioni servono **entrambe** queste proprietà. Se ne manca una, la DP non si applica.
+*(extra, non da slide)* Perché la strategia funzioni servono **entrambe** queste proprietà. Se ne manca una, la DP non si applica.
 
 | Proprietà | Cosa significa | Cosa succede se manca |
 |---|---|---|
 | **Sottostruttura ottima** | La soluzione ottima del problema contiene al proprio interno le soluzioni ottime dei sottoproblemi | Non puoi costruire l'ottimo grande da quelli piccoli: la ricorrenza sarebbe sbagliata |
 | **Sottoproblemi sovrapposti** | La ricorsione incontra gli stessi sottoproblemi ripetutamente | La memorizzazione non serve a niente: non c'è nulla da riusare |
 
-> [!warning] È qui che si distingue la DP dal divide et impera
+> [!warning] È qui che si distingue la DP dal divide et impera *(extra, non da slide)*
 > Anche il divide et impera spezza il problema in sottoproblemi. La differenza è la **seconda** condizione: in Merge Sort i due sottoproblemi (metà sinistra e metà destra) sono **disgiunti**, non si sovrappongono mai, e memorizzarli non darebbe alcun vantaggio. Nella DP i sottoproblemi si **accavallano** — ed è esattamente quella ridondanza che la tecnica trasforma in guadagno.
 > All'orale è una domanda frequente: la risposta corretta non è «la DP usa una tabella», ma «la DP si applica quando i sottoproblemi si sovrappongono, e la tabella serve a non ricalcolarli».
 
@@ -166,9 +166,9 @@ $$w(S \cup \{v_n\}) = w(S) + w_n > w(S^* \setminus \{v_n\}) + w_n = w(S^*)$$
 ![[dp1_caso_2.png]]
 Caso 2: $v_n$ è in rosso perché è nella soluzione; $v_{n-1}$ è forzatamente escluso (freccia in basso) perché adiacente a $v_n$. Il riquadro $G''$ si ferma a $v_{n-2}$ — il salto di **due** posizioni che diventerà $\text{OPT}[j-2]$ nella ricorrenza. (slide 21)
 ### Il cuore dell'argomento: perché il residuo deve essere ottimo
-Entrambe le dimostrazioni sopra hanno la stessa forma, ed è la forma ricorrente di tutta la programmazione dinamica — è nota come **argomento di taglia-e-incolla** (*cut and paste*). Conviene vederla su numeri concreti prima di fidarsi della versione formale.
+*(extra, non da slide)* Entrambe le dimostrazioni sopra hanno la stessa forma, ed è la forma ricorrente di tutta la programmazione dinamica — è nota come **argomento di taglia-e-incolla** (*cut and paste*). Conviene vederla su numeri concreti prima di fidarsi della versione formale.
 
-Supponiamo che qualcuno proponga come ottima, sull'istanza di riferimento, la soluzione $\{v_6, v_1\}$, di peso $10 + 1 = 11$. Il nodo $v_6$ è incluso, quindi siamo nel Caso 2: il residuo $\{v_1\}$ è un insieme indipendente su $G'' = v_1 \ldots v_4$, e vale $1$. Ma su $v_1 \ldots v_4$ il meglio ottenibile è $\{v_1, v_3\}$, che vale $9$. Poiché né $v_1$ né $v_3$ sono adiacenti a $v_6$, si può **sostituire** il residuo scadente con quello ottimo:
+*(extra, non da slide)* Supponiamo che qualcuno proponga come ottima, sull'istanza di riferimento, la soluzione $\{v_6, v_1\}$, di peso $10 + 1 = 11$. Il nodo $v_6$ è incluso, quindi siamo nel Caso 2: il residuo $\{v_1\}$ è un insieme indipendente su $G'' = v_1 \ldots v_4$, e vale $1$. Ma su $v_1 \ldots v_4$ il meglio ottenibile è $\{v_1, v_3\}$, che vale $9$. Poiché né $v_1$ né $v_3$ sono adiacenti a $v_6$, si può **sostituire** il residuo scadente con quello ottimo:
 $$\{v_6\} \cup \{v_1, v_3\} = 19 \;>\; 11$$
 La soluzione proposta non era dunque ottima. Lo stesso ragionamento si applica a qualunque soluzione il cui residuo non sia ottimo, e questo dimostra la proprietà: **se $S^*$ è ottima, ogni suo residuo è a sua volta ottimo per il proprio sottoproblema**, perché altrimenti lo si potrebbe scambiare con uno migliore ottenendo un peso complessivo maggiore — in contraddizione con l'ottimalità di $S^*$.
 
@@ -264,9 +264,9 @@ $$\text{OPT}[1] = w_1 \qquad \text{OPT}[2] = \max\{w_1, w_2\}$$
 
 La ricorrenza cattura esattamente i due casi della struttura ottima: o $v_j$ non è nell'ottimo (e il valore coincide con l'ottimo di $G_{j-1}$), oppure $v_j$ è nell'ottimo (e il valore è $w_j$ più l'ottimo di $G_{j-2}$, poiché $v_{j-1}$ è escluso).
 
-La sottostruttura ottima giustifica la *forma* della ricorrenza; resta da chiudere il cerchio e verificare che l'algoritmo che la itera calcoli davvero il valore cercato. È un'induzione immediata, ma è il passo che trasforma «la formula è plausibile» in «l'algoritmo è corretto».
+*(extra, non da slide)* La sottostruttura ottima giustifica la *forma* della ricorrenza; resta da chiudere il cerchio e verificare che l'algoritmo che la itera calcoli davvero il valore cercato. È un'induzione immediata, ma è il passo che trasforma «la formula è plausibile» in «l'algoritmo è corretto».
 
-> [!quote] Proprietà — Correttezza di WIS-BottomUp
+> [!quote] Proprietà — Correttezza di WIS-BottomUp *(extra, non da slide)*
 > Per ogni $j = 1, \ldots, n$, al termine dell'iterazione $j$ la cella $\text{OPT}[j]$ contiene il peso dell'insieme indipendente di peso massimo di $G_j$.
 
 **Dimostrazione (per induzione su $j$).**
@@ -315,7 +315,7 @@ Il valore ottimo è $\text{OPT}[6] = 19$, corrispondente all'insieme $\{v_1, v_3
 ![[dp1_algoritmo_bottomup.png]]
 L'algoritmo come sta sulla slide, con il $T(n)=\Theta(n)$ incorniciato: due casi base, un ciclo da $3$ a $n$, una riga di ricorrenza. In fondo l'osservazione che apre la sezione successiva — **calcola il valore dell'ottimo, non l'ottimo**.
 
-> [!info] Ottimizzazione spaziale
+> [!info] Ottimizzazione spaziale *(extra, non da slide)*
 > Poiché la ricorrenza dipende solo da $\text{OPT}[j-1]$ e $\text{OPT}[j-2]$, è sufficiente mantenere le ultime due celle, riducendo lo spazio a $O(1)$. Tuttavia, per ricostruire la soluzione (non solo il valore) serve l'intero vettore.
 ## Ricostruzione della soluzione
 WIS-BottomUp calcola il **valore** dell'ottimo, ma non l'insieme $S^*$ stesso. Come recuperare i nodi scelti?
@@ -458,7 +458,7 @@ Le quattro proprietà che i sottoproblemi devono avere, dalla slide successiva. 
 
 → **Palestra**: gli otto Esercizio 3 reali su cui allenare tutto questo stanno in [[Palestra - Programmazione Dinamica]].
 ### Schema della tecnica: top-down con memoization vs bottom-up
-> [!info] Top-down (memoization) vs Bottom-up
+> [!info] Top-down (memoization) vs Bottom-up *(extra, non da slide)*
 > **Top-down con memoization**: si usa la ricorsione naturale, ma prima di calcolare $\text{OPT}[j]$ si controlla se è già memorizzato nella tabella. Se sì, si restituisce il valore salvato; altrimenti si calcola ricorsivamente e si salva.
 >
 > Vantaggio: calcola solo i sottoproblemi effettivamente raggiungibili dalla radice (utile se il grafo dei sottoproblemi è sparso).

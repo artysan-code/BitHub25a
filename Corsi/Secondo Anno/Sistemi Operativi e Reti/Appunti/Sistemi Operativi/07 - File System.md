@@ -35,7 +35,7 @@ Il file è il mattone dell'astrazione: serve a salvare e leggere informazioni su
 ## Nomi dei file
 I file sono identificati da **nomi**, le cui regole dipendono dal sistema operativo.
 - **Lunghezza e «sensibilità»**: alcuni sistemi limitano la lunghezza (es. 8 lettere in MS-DOS), altri ammettono nomi lunghi. ^naming
-- **Caratteri speciali vietati**: variano per file system — FAT12 vieta `* | < > ? \` e altri (inclusi caratteri di controllo); Ext4 vieta il carattere **NUL** (`\0`, 0x00) e i nomi speciali `.` e `..`. Il carattere `/` non è un vincolo specifico di Ext4: è il **separatore di percorso** del kernel UNIX, quindi è impossibile in qualsiasi nome di file su qualunque file system UNIX.
+- **Caratteri speciali vietati**: variano per file system — FAT12 vieta `* | < > ? \` e altri (inclusi caratteri di controllo); Ext4 vieta i caratteri `\0` e `/` e i nomi speciali `.` e `..` *(il testo della slide 11 p. 13 è corrotto, «No 10' e '', o i nomi speciali "." e "."»: i due caratteri sono ricostruiti, in coerenza con il file system V7 della slide 12 p. 81, che esclude '/' e NUL)*. *(extra, non da slide)* Precisazione: `\0` è il carattere NUL (0x00), e `/` non è un vincolo specifico di Ext4: è il **separatore di percorso** del kernel UNIX, quindi è impossibile in qualsiasi nome di file su qualunque file system UNIX.
 - **Case sensitivity**: cosa significa? È la distinzione tra maiuscole e minuscole. I sistemi **UNIX** distinguono (`File.txt` ≠ `file.txt`), **MS-DOS** no. ^case
 - **Evoluzione**: vari file system (FAT-16, FAT-32, NTFS) differiscono per costruzione dei nomi e supporto **Unicode**.
 ### Estensioni
@@ -95,12 +95,12 @@ Oltre a nome e dati, ogni file ha **attributi** (o *metadati*), variabili per SO
 > [!info] Tabella degli attributi (elenco completo)
 > | Attributo | Significato |
 > |---|---|
-> | Protezione, Password, Creatore, Proprietario | chi può accedere e come |
-> | Flag sola lettura / nascosto / di sistema / archivio | comportamento e visibilità del file |
-> | Flag ASCII-binario / accesso casuale / temporaneo / bloccato | tipo di contenuto e modalità d'uso |
-> | Lunghezza del record, Posizione della chiave, Lunghezza della chiave | per file organizzati a record |
+> | Protezione, Password, Creatore, Proprietario | chi può accedere e come (password necessaria per accedere; creatore = identificativo di chi ha creato il file; proprietario = proprietario attuale) |
+> | Flag sola lettura / nascosto / di sistema / archivio | comportamento e visibilità del file (0 = lettura/scrittura, 1 = sola lettura; 1 = non visualizzato negli elenchi; 1 = file di sistema; 0 = già salvato nel backup, 1 = da salvare) |
+> | Flag ASCII-binario / accesso casuale / temporaneo / bloccato | tipo di contenuto e modalità d'uso (0 = ASCII, 1 = binario; 0 = accesso sequenziale, 1 = casuale; temporaneo: 1 = file cancellato al termine del processo; bloccato: 0 = non bloccato, valore diverso da zero = bloccato) |
+> | Lunghezza del record, Posizione della chiave, Lunghezza della chiave | per file organizzati a record (numero di byte del record; scostamento della chiave in ciascun record; numero di byte del campo chiave) |
 > | Data creazione, ultimo accesso, ultima modifica | attributi temporali |
-> | Dimensione attuale, Dimensione massima | spazio occupato e limite |
+> | Dimensione attuale, Dimensione massima | spazio occupato (numero di byte del file) e limite (slide: «numero di byte di cui può aumentare il file») |
 
 Gli attributi sono cruciali per la **protezione**, il controllo dell'accesso e la gestione efficace dei file.
 ## Operazioni sui file
@@ -112,8 +112,8 @@ Le chiamate di sistema tipiche su file sono:
 5. **Read** — legge dati dalla posizione corrente, in un buffer fornito.
 6. **Write** — scrive dati alla posizione corrente; può ampliare il file o sovrascrivere.
 7. **Append** — aggiunge dati solo alla fine (forma limitata di write).
-8. **Seek** — riposiziona il puntatore per l'[[#^random|accesso casuale]].
-9. **Get Attributes** — legge gli attributi (es. il programma UNIX `make` li usa per la gestione dei progetti). ^random
+8. **Seek** — riposiziona il puntatore per l'[[#^random|accesso casuale]]. ^random
+9. **Get Attributes** — legge gli attributi (es. il programma UNIX `make` li usa per la gestione dei progetti).
 10. **Set Attributes** — modifica attributi (protezione, flag) dopo la creazione.
 11. **Rename** — rinomina il file, alternativa a copia + eliminazione (utile per file grandi).
 ### Operazioni su file in UNIX (POSIX)
@@ -195,7 +195,7 @@ Operazioni di livello utente per raggruppare e comprimere file. *(Argomento prat
 
 > [!info] tar e gzip
 > - **TAR (Tape Archive)**: raccoglie più file e cartelle in un **unico archivio**, mantenendo struttura e permessi originali. Usato per backup, trasferimento, archiviazione.
-> - **gzip (GZ)**: comprime l'archivio con un algoritmo **senza perdita di dati** per ridurre lo spazio. Un `.tar.gz` è quindi un file creato con `tar` e poi compresso con `gzip`.
+> - **gzip (GZ)**: comprime l'archivio con un algoritmo **senza perdita di dati** per ridurre lo spazio. Un `.tar.gz` è quindi un file creato con `tar` e poi compresso con `gzip`; nulla vieta di comprimere con `gzip` **qualsiasi file**, non solo un archivio `tar`.
 
 Comandi base:
 - Creazione: `tar -czvf nome-archivio.tar.gz /percorso/cartella` → `c` crea, `z` comprime con gzip, `v` output verboso, `f` specifica il nome file.
@@ -220,7 +220,7 @@ Il file system è il metodo per organizzare i dati su memoria **non volatile** (
 > - Ogni partizione inizia con un boot block, seguito da **superblocco**, gestione dello **spazio libero**, **i-node**, **directory radice**, file e directory.
 
 > [!info] Nuova scuola — UEFI (Unified Extensible Firmware Interface)
-> Sostituisce il BIOS tradizionale. Vantaggi: **avvio più veloce**, compatibilità 32/64 bit, interfaccia grafica con mouse, **Secure Boot**. Funziona con **GPT**, superando il limite di **2,2 TB** dell'MBR. UEFI non si basa sull'MBR: cerca la tabella delle partizioni nel **secondo blocco**, riservando il **primo blocco** per compatibilità con il software che si aspetta di trovare un MBR legacy.
+> Sostituisce il BIOS tradizionale. Vantaggi: **avvio più veloce**, compatibilità 32/64 bit, interfaccia grafica con mouse, **Secure Boot**. Funziona con **GPT**, superando il limite di **2,2 TB** dell'MBR. UEFI non si basa sull'MBR: cerca la tabella delle partizioni nel **secondo blocco**, riservando il **primo blocco** per compatibilità con il software che si aspetta di trovare un MBR legacy. Nella figura: blocco 0 = spazio per i sistemi legacy che cercano l'MBR; blocco 1 = intestazione della tabella delle partizioni; dal blocco 2 le voci delle partizioni (0…n); le partizioni occupano molti blocchi; in fondo al disco, fino al blocco N, c'è il **backup della GPT** (voci e intestazione).
 > - **GPT (GUID Partition Table)**: gestione avanzata delle partizioni — fino a **8 ZiB**, numero (quasi) illimitato di partizioni, **backup** della tabella, controllo di integrità **CRC**.
 > - **EFI System Partition (ESP)**: partizione speciale sui dischi GPT che archivia bootloader, driver e utility di diagnostica; usa **FAT32** per compatibilità col firmware UEFI.
 > - **Secure Boot**: funzionalità UEFI che controlla le **firme digitali** di bootloader/driver/SO e avvia solo software firmato, bloccando malware e rootkit all'avvio (alcune distro Linux richiedono di disattivarlo).
@@ -228,10 +228,10 @@ Il file system è il metodo per organizzare i dati su memoria **non volatile** (
 Obiettivo: gestire l'**associazione tra file e blocchi del disco**. È fondamentale per integrità, accesso efficiente e gestione dello spazio. Esistono vari metodi (indici, liste concatenate, bitmap, alberi).
 ### Allocazione contigua
 > [!quote] Definizione — Allocazione contigua
-> I file sono memorizzati come **sequenze contigue di blocchi** sul disco. Esempio: un file di 50 KB su disco con blocchi da 1 KB occupa **50 blocchi consecutivi**.
+> I file sono memorizzati come **sequenze contigue di blocchi** sul disco. Esempio: un file di 50 KB su disco con blocchi da 1 KB occupa **50 blocchi consecutivi**. Nella figura sette file A–G occupano rispettivamente 4, 3, 6, 5, 12, 6 e 3 blocchi consecutivi.
 
 - **Vantaggi**: semplice da implementare (basta l'indirizzo del primo blocco + numero di blocchi); **alta efficienza di lettura** (l'intero file si legge in una sola operazione, senza ritardi).
-- **Svantaggio — frammentazione**: col tempo i dischi si **frammentano** per la rimozione di file, lasciando intervalli di blocchi liberi sparsi. Allocare un nuovo file richiede di **conoscerne in anticipo la dimensione finale** e trovare un buco adeguato → serve **compattazione** del disco. È l'analogo su disco della [[06 - Gestione della Memoria|frammentazione della memoria]].
+- **Svantaggio — frammentazione**: col tempo i dischi si **frammentano** per la rimozione di file, lasciando intervalli di blocchi liberi sparsi. Allocare un nuovo file richiede di **conoscerne in anticipo la dimensione finale** e trovare un buco adeguato → serve **compattazione** del disco. È l'analogo su disco della [[06 - Gestione della Memoria|frammentazione della memoria]]. Nella figura, dopo la rimozione dei file D e F restano due buchi di **5** e **6 blocchi liberi** tra i file superstiti.
 ### Allocazione a liste concatenate
 > [!quote] Definizione — Liste concatenate
 > I file sono organizzati come **liste concatenate di blocchi**: ogni blocco contiene una parte di dati e un **puntatore** al blocco successivo. La voce di directory traccia solo l'indirizzo del **primo blocco**.
@@ -252,7 +252,7 @@ Ottimizza le liste concatenate **spostando i puntatori** dai blocchi a una tabel
 > [!warning] Limite della FAT — consumo di memoria
 > La FAT deve stare **interamente in memoria principale**. Con voci da 3–4 byte, un disco da **1 TB** con blocchi da 1 KB richiederebbe fino a **3 GB di RAM** solo per la FAT → non adatta a dischi grandi. Originariamente in **MS-DOS**, ancora usata da Windows/UEFI e comunissima su **schede SD** (fotocamere, lettori musicali).
 
-> [!example] Limiti per versione FAT — ragionamento numerico
+> [!example] Limiti per versione FAT — ragionamento numerico *(extra, non da slide)*
 > Ogni versione FAT prende il nome dal numero di **bit per entry** nella tabella; i bit determinano quanti cluster si possono indirizzare e quindi la dimensione massima del volume:
 > - **FAT12**: 12 bit per entry → $2^{12}$ cluster → file massimo di circa **32 MB**.
 > - **FAT16**: 16 bit per entry → $2^{16}$ cluster → file massimo di circa **2 GB**.
@@ -267,7 +267,7 @@ Ottimizza le liste concatenate **spostando i puntatori** dai blocchi a una tabel
 > - I sistemi i-node gestiscono meglio i **metadati** e scalano su dischi grandi.
 
 > [!example] Gestione dei file grandi (indirizzamento indiretto)
-> Un i-node ha spazio limitato per gli indirizzi (es. blocchi diretti 0–7). Per i file che superano il limite, uno degli indirizzi punta a un **blocco di puntatori** che contiene ulteriori indirizzi di blocchi dati. Così si gestiscono file molto grandi. In **NTFS** (Windows) si usa una struttura simile con i-node più grandi che possono contenere **file piccoli all'interno dell'i-node stesso**.
+> Un i-node ha spazio limitato per gli indirizzi: nella figura contiene gli **attributi del file**, gli indirizzi dei blocchi del disco 0–7 e, come ultima voce, l'**indirizzo del blocco di puntatori**. Per i file che superano il limite, uno degli indirizzi punta a un **blocco di puntatori** che contiene ulteriori indirizzi di blocchi dati (nella figura: «blocco del disco contenente indirizzi del disco aggiuntivi»). Così si gestiscono file molto grandi. In **NTFS** (Windows) si usa una struttura simile con i-node più grandi che possono contenere **file piccoli all'interno dell'i-node stesso**.
 
 > [!question] Domanda tipica d'esame
 > **D:** Quali sono i metodi di implementazione dei file? Pregi e difetti di ciascuno.
@@ -301,6 +301,7 @@ In ambienti collaborativi più utenti devono lavorare sugli **stessi file**: un 
 > - L'**hard link** punta **direttamente all'i-node** del file condiviso. L'i-node mantiene un **contatore di link** (`Conteggio`).
 > - **Spazio-efficiente**: un solo i-node indipendentemente dal numero di link; una sola voce di directory per ciascun link.
 > - Il file viene rimosso **solo quando il conteggio arriva a 0**.
+> - Figura: (a) prima del link, nella directory di C, `Proprietario = C`, `Conteggio = 1`; (b) dopo la creazione del link, le directory di B e di C puntano allo stesso i-node, `Conteggio = 2`; (c) dopo che il proprietario originale elimina il file, resta la sola directory di B, `Conteggio = 1`, ma `Proprietario = C`.
 > - **Problema**: se il proprietario originale (es. C) cancella il file, il conteggio scende (es. da 2 a 1) ma il file **resta** finché esistono altri link → possibile **confusione sulla proprietà** (l'i-node continua a indicare `Proprietario = C`).
 
 > [!info] Link simbolici (soft link)
@@ -326,7 +327,7 @@ La scelta della dimensione del blocco è un **compromesso tra spazio ed efficien
 > - **Blocchi piccoli**: minimo spreco con file piccoli **MA** un file si distribuisce su più blocchi → più ricerche e ritardi (anche di **rotazione** nei dischi).
 > - Il valore comune **4 KB** bilancia tempo di trasferimento ed efficienza dello spazio.
 
-Il grafico tipico: la **velocità di trasferimento** cresce con la dimensione del blocco; l'**efficienza di utilizzo** dello spazio (rapporto dimensione reale/spazio allocato) **cala** oltre la dimensione media dei file. Le due curve si incrociano intorno ai **4 KB**.
+Il grafico (dimensione del blocco da 1 KB a 1 MB): la **velocità di trasferimento** (curva tratteggiata, scala a sinistra, fino a circa 60 MB/s) cresce con la dimensione del blocco; l'**efficienza di utilizzo** dello spazio (curva continua, scala a destra: rapporto dimensione reale/spazio allocato) resta al **100%** finché il blocco non supera i **4 KB** (la dimensione dei file considerati) e poi **cala** rapidamente (circa 50% a 8 KB, 25% a 16 KB). Le due curve si intersecano attorno ai **64 KB**; il valore di **4 KB** è quello oltre il quale lo spreco comincia a crescere.
 
 > [!info] Dischi magnetici vs memoria flash
 > - **Dischi magnetici**: la scelta dipende da **tempo di ricerca** e **ritardo di rotazione**; blocchi più grandi = più velocità, meno efficienza.
@@ -343,7 +344,7 @@ Il grafico tipico: la **velocità di trasferimento** cresce con la dimensione de
 > Si possono tracciare **serie di blocchi consecutivi** invece di blocchi singoli: a ciascun indirizzo si associa un **conteggio** (8/16/32 bit) di blocchi liberi consecutivi. Nell'ipotesi migliore un disco quasi vuoto è descritto da **due numeri** (indirizzo del primo blocco libero + conteggio). Efficiente per dischi quasi vuoti, meno per dischi frammentati.
 ### Free list con blocchi di puntatori in memoria
 > [!info] Funzionamento della free list
-> La gestione può usare una **lista concatenata di blocchi di puntatori** (*free list*), tenendo in memoria **un solo blocco** di puntatori alla volta (ottimizza la RAM). Quando si crea un file, i blocchi necessari si prelevano da quelli disponibili nel blocco in memoria; quando il blocco si svuota, se ne legge uno nuovo dal disco.
+> La gestione può usare una **lista concatenata di blocchi di puntatori** (*free list*), tenendo in memoria **un solo blocco** di puntatori alla volta (ottimizza la RAM). Quando si crea un file, i blocchi necessari si prelevano da quelli disponibili nel blocco in memoria; quando il blocco si svuota, se ne legge uno nuovo dal disco. Nella figura: (a) un blocco quasi pieno di puntatori in memoria e tre blocchi di puntatori su disco; (b) la situazione dopo aver liberato un file da 3 blocchi; (c) la strategia alternativa che divide il blocco pieno.
 >
 > Problema: con molti **file temporanei**, se il blocco di puntatori in memoria è quasi pieno, le frequenti allocazioni/rilasci causano molte operazioni di **I/O su disco**. Una strategia alternativa **divide il blocco pieno** per gestire meglio i blocchi liberi senza I/O su disco.
 ## Quote del disco
@@ -361,7 +362,7 @@ Nei sistemi **multiutente** il SO limita lo spazio per utente.
 > - **Dimensione del blocco** e frammentazione interna → [[07 - File System (Esercizi)#Es. 4 — Dimensione del blocco e frammentazione interna|Es. 4]].
 ## Struttura di Ext2 (esempio concreto)
 > [!example] Componenti del file system Ext2 (cap. 10.6.3 del libro)
-> Il disco è diviso in **gruppi di blocchi**. Ogni gruppo contiene:
+> Il disco è diviso in un **blocco di boot** seguito da **gruppi di blocchi** (0, 1, 2, …). Ogni gruppo contiene, nell'ordine:
 > - **Superblocco**: layout, numero di i-node e di blocchi.
 > - **Descrittore del gruppo**: blocchi liberi, i-node liberi, posizione delle bitmap.
 > - **Bitmap dei blocchi** e **bitmap degli i-node** (design ereditato da MINIX 1).
@@ -371,7 +372,7 @@ Nei sistemi **multiutente** il SO limita lo spazio per utente.
 > [!info] Collocazione e preallocazione in Ext2
 > - Gli i-node delle directory sono **distribuiti tra i gruppi di blocchi**; Ext2 cerca di posizionare i file nella **stessa area della directory genitore** per minimizzare la frammentazione, usando le bitmap per trovare aree libere.
 > - **Preallocazione**: Ext2 prealloca **otto blocchi aggiuntivi** per ogni nuovo file, riducendo la frammentazione dovuta a scritture successive.
-> - Le voci di directory contengono: numero dell'i-node, dimensione della voce (`rec_len`), tipo, lunghezza del nome. Alla cancellazione di un file (es. «voluminoso»), la voce precedente **estende il proprio `rec_len`** per assorbire lo spazio liberato.
+> - Le voci di directory contengono: numero dell'i-node, dimensione della voce (`rec_len`), tipo, lunghezza del nome. Nella figura una directory con tre file: «colossale» (tipo `F`, nome di 9 caratteri), «voluminoso» (tipo `F`, 10 caratteri) e «bigdir» (tipo `D`, 6 caratteri), seguiti da spazio non utilizzato. Alla cancellazione di un file (es. «voluminoso»), la voce precedente **estende il proprio `rec_len`** per assorbire lo spazio liberato.
 > - Accesso ai file via syscall (`open`); il percorso si analizza dalla directory corrente o radice; ricerche **lineari ma ottimizzate da una cache** delle directory recenti; supporto a **soft link e hard link**.
 # Performance del file system
 Il collo di bottiglia è la differenza di velocità tra memoria e disco.
@@ -392,9 +393,10 @@ Funzionamento: a ogni richiesta di lettura si verifica **se il blocco è già in
 > **Limite di LRU**: in caso di **crash** può lasciare il file system **incoerente**, specialmente per blocchi critici come i blocchi degli i-node → si usa uno schema LRU modificato basato su importanza e necessità immediata. I **blocchi critici** modificati si scrivono **subito** su disco per mantenere la coerenza.
 
 > [!info] Posizionamento degli i-node sul disco
-> Leggere anche un file piccolo basato su i-node richiede **due accessi al disco**: uno per l'i-node e uno per il blocco dati. Per ridurre lo spostamento della testina si adottano due strategie:
-> - **I-node a metà disco**: posizionare gli i-node al centro del disco **dimezza in media** il tempo di ricerca rispetto al posizionamento tradizionale (i-node all'inizio del disco).
-> - **Gruppi di cilindri**: dividere il disco in **gruppi di cilindri**, ciascuno con i propri i-node, blocchi dati e lista dei blocchi liberi; così i-node e dati di un file restano vicini fisicamente.
+> Leggere anche un file piccolo basato su i-node richiede **due accessi al disco**: uno per l'i-node e uno per il blocco dati. *(extra, non da slide)* Per ridurre lo spostamento della testina si adottano due strategie:
+> - **I-node a metà disco** *(extra, non da slide)*: posizionare gli i-node al centro del disco **dimezza in media** il tempo di ricerca rispetto al posizionamento tradizionale (i-node all'inizio del disco).
+> - **Gruppi di cilindri** *(extra, non da slide)*: dividere il disco in **gruppi di cilindri**, ciascuno con i propri i-node, blocchi dati e lista dei blocchi liberi; così i-node e dati di un file restano vicini fisicamente.
+> - Nelle slide compaiono idee analoghe: Ext2 distribuisce gli i-node delle directory tra i **gruppi di blocchi** e posiziona i file nella stessa area della directory genitore (slide 12 p. 43, vedi [[#Struttura di Ext2 (esempio concreto)]]); l'allocazione intelligente tiene blocchi vicini nello stesso cilindro per minimizzare il movimento del braccio (slide 12 p. 49, vedi sotto).
 
 > [!info] Read ahead e deframmentazione
 > - **Allocazione intelligente**: blocchi vicini nello stesso cilindro per minimizzare il movimento del braccio del disco; bitmap in memoria per allocare blocchi adiacenti (scrittura sequenziale efficiente).
@@ -403,7 +405,7 @@ Funzionamento: a ogni richiesta di lettura si verifica **se il blocco è già in
 ## Buffer cache vs page cache
 > [!info] Due cache, spesso gli stessi dati
 > - **Buffer cache**: memorizza i **blocchi del disco** in RAM per ridurre gli accessi.
-> - **Page cache**: memorizza le **pagine del VFS** in RAM prima di passare al driver del dispositivo.
+> - **Page cache**: memorizza le **pagine del VFS** in RAM prima di passare al driver del dispositivo (nella figura sta tra il VFS e i driver FAT, NTFS, Ext4; la buffer cache sta tra i driver e lo storage).
 > - **Dati duplicati**: le due cache contengono spesso gli stessi dati (es. file **mappati in memoria**). Molti SO **fondono** buffer e page cache per un uso più efficiente della RAM: un file interamente mappato in memoria non occupa un'area di memoria utile per altre pagine, ma sfrutta la buffer cache del disco.
 ## Strategie di scrittura
 > [!info] UNIX vs Windows
@@ -439,8 +441,8 @@ Diverse minacce possono compromettere i dati.
 > «I backup su disco sono generalmente effettuati per affrontare uno dei due potenziali problemi: **recupero da un disastro** e **recupero dalla stupidità**.»
 
 > [!info] Cinque considerazioni pratiche sul backup
-> 1. **Quali file salvare**: un backup impiega molto tempo e occupa molto spazio; occorre decidere se salvare l'intero file system o solo alcune directory.
-> 2. **Ripristino incrementale**: il **backup incrementale** salva solo i file modificati dall'ultimo backup completo. Il ripristino è più complesso: va prima ripristinato il backup completo più recente, poi applicati tutti i backup incrementali **in ordine cronologico crescente** (dal più vecchio al più recente).
+> 1. **Quali file salvare** *(extra, non da slide)*: un backup impiega molto tempo e occupa molto spazio; occorre decidere se salvare l'intero file system o solo alcune directory.
+> 2. **Ripristino incrementale**: il **backup incrementale** salva solo i file modificati dall'ultimo backup completo. *(extra, non da slide)* Il ripristino è più complesso: va prima ripristinato il backup completo più recente, poi applicati tutti i backup incrementali **in ordine cronologico crescente** (dal più vecchio al più recente).
 > 3. **Compressione rischiosa**: con molti algoritmi di compressione basta un **singolo punto difettoso** sul supporto per rendere illeggibile l'intero flusso compresso; la scelta di comprimere va valutata con attenzione.
 > 4. **Backup su file system attivo**: se durante il backup vengono aggiunti, cancellati o modificati file, il risultato potrebbe essere incoerente; per questo si usano **snapshot** (istantanee) dello stato del file system.
 > 5. **Backup fuori sede**: i backup devono essere conservati lontano dai computer principali, ma questo introduce ulteriori **rischi per la sicurezza** (più luoghi da sorvegliare).
@@ -450,13 +452,13 @@ Modalità: **backup completo** (copia totale, settimanale/mensile) e **backup in
 - **Backup logico**: seleziona e copia **solo file e directory specifici** modificati a partire da una data, ignorando file di sistema e blocchi danneggiati. Ideale per incrementali e per ripristinare file singoli.
 
 > [!example] Algoritmo di backup logico (UNIX)
-> Si include ogni file/directory modificato dopo il backup precedente **e tutte le directory lungo il percorso** verso i file modificati (così la struttura è ricostruibile). Nella figura del libro, gli oggetti in grigio (i-node modificati) e i nodi sul percorso verso di essi vengono salvati. L'algoritmo si articola in **quattro fasi**:
+> Si include ogni file/directory modificato dopo il backup precedente **e tutte le directory lungo il percorso** verso i file modificati (così la struttura è ricostruibile). Nella figura (albero con i-node numerati da 1 a 32; quadrati = directory, cerchi = file) gli oggetti in grigio (i-node modificati) e i nodi sul percorso verso di essi vengono salvati. L'algoritmo si articola in **quattro fasi** *(extra, non da slide)*:
 > 1. **Rilevamento delle modifiche**: si parte dalla directory radice, si esaminano tutte le voci e si contrassegna nella **bitmap** gli i-node dei file e delle directory modificati; vengono incluse tutte le directory lungo il percorso verso i file modificati, indipendentemente dal proprio stato.
 > 2. **Pulizia della bitmap**: si deselezionano le directory che non contengono né file modificati né sottodirectory modificate, lasciando nella bitmap solo gli elementi che richiedono effettivamente il backup.
 > 3. **Backup delle directory contrassegnate**: si salvano le directory marcate con i loro attributi.
 > 4. **Backup dei file contrassegnati**: si salvano i file marcati con i relativi attributi.
 
-> [!info] Casi speciali nel ripristino del backup logico
+> [!info] Casi speciali nel ripristino del backup logico *(extra, non da slide)*
 > 1. **Free list non è un file**: la lista dei blocchi liberi non è oggetto di backup e va **ricostruita da zero** alla fine del ripristino; è sempre possibile farlo, poiché i blocchi liberi sono il complemento dei blocchi occupati da tutti i file.
 > 2. **Hard link**: un file collegato a più directory tramite hard link deve essere ripristinato **una sola volta**; tutte le directory che dovrebbero puntarvi devono poi puntarci correttamente.
 > 3. **Sparse file**: i file UNIX possono contenere **buchi** (si scrive a un offset distante senza riempire il mezzo); i buchi non si salvano e non si ripristinano; al momento del ripristino l'area corrispondente viene riempita di **zero**, preservando la dimensione virtuale del file.
@@ -471,12 +473,14 @@ La coerenza è cruciale per l'integrità dei dati; problemi sorgono dopo un **cr
 - **Utility di verifica**: UNIX (`fsck`) e Windows (`sfc`) controllano la coerenza, eseguite all'avvio dopo un crash.
 - **File system con journaling**: progettati per gestire autonomamente la maggior parte delle incoerenze, **senza** controlli esterni dopo un crash.
 
-> [!info] Come funziona fsck — controllo dei blocchi
+> [!info] Come funziona fsck — controllo dei blocchi *(extra, non da slide)*
 > `fsck` costruisce **due tabelle di contatori**, una per i blocchi presenti nei file e una per i blocchi nella lista dei liberi, scorrendo tutti gli i-node. Al termine confronta le due tabelle e individua tre possibili anomalie:
 > - **(a) Blocco mancante**: un blocco non appare in nessuna delle due tabelle → viene **aggiunto alla lista dei blocchi liberi**.
 > - **(b) Blocco duplicato nella lista dei liberi**: un blocco compare più volte tra i liberi → la lista viene **deduplicata**.
 > - **(c) Blocco di dati presente in più file**: un blocco risulta assegnato a due file distinti → il blocco viene **copiato** e ciascun file riceve la propria copia, segnalando all'utente che uno dei due è probabilmente corrotto.
 ### File system strutturati a log (LFS)
+*(extra, non da slide)*: intera sezione.
+
 Approccio nato dalla ricerca di **Berkeley** (Rosenblum & Ousterhout, 1991) da un'osservazione: i dischi crescono in capacità ma il **tempo di ricerca resta quasi invariato**, e le cache, sempre più grandi, assorbono gran parte delle **letture**. Conseguenza: la maggioranza degli accessi al disco diventa in **scrittura**, e le **scritture piccole** sono inefficientissime (pochi byte preceduti da ~10 ms di *seek* + ~4 ms di rotazione → efficienza del disco sotto l'**1%**).
 
 > [!quote] Definizione — Log-Structured File System (LFS)
@@ -507,7 +511,7 @@ Risultato: l'LFS supera UNIX di **un ordine di grandezza** sulle piccole scrittu
 > Esempio dell'eliminazione di un file in UNIX: rimozione dalla directory, rilascio dell'i-node, restituzione dei blocchi al pool dei liberi. Senza journaling, un crash a metà può perdere l'accesso a i-node/blocchi o assegnarli erroneamente.
 
 > [!question] Domanda tipica d'esame
-> **D:** Cos'è un file system con *journaling* e in che cosa differisce da un LFS? **R:** Il **journaling** registra **in anticipo** in un *log* (journal) le operazioni da compiere, in tre fasi: **registrazione** dell'operazione nel journal, **esecuzione** sul disco, **conferma** del completamento. Dopo un crash, al riavvio il file system rilegge il journal e **completa** le operazioni registrate ma non confermate, garantendo modifiche *tutto-o-niente* e un recupero rapido (NTFS, ext3/ext4). È diverso dall'**LFS** (*log-structured file system*, visto sopra): nel journaling il file system tradizionale resta e il log è un'**aggiunta**, mentre nell'LFS il log **è** l'intero file system.
+> **D:** Cos'è un file system con *journaling* e in che cosa differisce da un LFS? **R:** Il **journaling** registra **in anticipo** in un *log* (journal) le operazioni da compiere, in tre fasi: **registrazione** dell'operazione nel journal, **esecuzione** sul disco, **conferma** del completamento. Dopo un crash, al riavvio il file system rilegge il journal e **completa** le operazioni registrate ma non confermate, garantendo modifiche *tutto-o-niente* e un recupero rapido (NTFS, ext3/ext4). *(extra, non da slide: il confronto con l'LFS)* È diverso dall'**LFS** (*log-structured file system*, visto sopra): nel journaling il file system tradizionale resta e il log è un'**aggiunta**, mentre nell'LFS il log **è** l'intero file system.
 ## Sicurezza dei dati
 > [!warning] Eliminazione sicura e cifratura
 > - La **cancellazione standard non rimuove fisicamente** i dati dal disco, lasciandoli vulnerabili. L'eliminazione sicura richiede distruzione fisica o **sovrascrittura approfondita**.
@@ -531,7 +535,7 @@ I SO moderni gestiscono **più file system simultaneamente** (NTFS, FAT-32, FAT-
 > [!info] Aggiungere un nuovo file system
 > - **Registrazione**: ogni file system fornisce al VFS un **vettore di funzioni** richieste; così il VFS sa come eseguire le operazioni.
 > - **Montaggio**: al `mount`, il file system fornisce informazioni al VFS (es. superblock); l'apertura di un file crea un **v-node** mappato sulle operazioni del file system reale.
-> - **Gestione I/O**: i file aperti sono tracciati tramite v-node e tabelle dei descrittori; `read` segue il puntatore dalla tabella dei descrittori al v-node e alle funzioni del file system reale.
+> - **Gestione I/O**: i file aperti sono tracciati tramite v-node e tabelle dei descrittori; `read` segue il puntatore dalla tabella dei descrittori al v-node e alle funzioni del file system reale (nella figura: tabella dei processi → descrittori di file → v-node → puntatori a funzione `open`/`read`/`write` → chiamata dal VFS nel file system reale, es. FS 1).
 > - Aggiungere nuovi file system è relativamente semplice: basta fornire funzioni conformi all'**interfaccia VFS** → gestione trasparente di file system eterogenei.
 
 > [!question] Domanda tipica d'esame
@@ -551,6 +555,8 @@ Non solo il SO garantisce l'affidabilità: anche l'**hardware** può farlo.
 > - **RAID 5** (*+storage, +redundancy*): distribuisce i bit di parità **uniformemente** su tutte le unità.
 > - **RAID 6**: come RAID 5 ma con un **blocco di parità aggiuntivo** → maggiore tolleranza agli errori.
 > - **RAID 0+1**: combinazione — mirroring (RAID 1) di insiemi di dischi in striping (RAID 0).
+>
+> Nelle figure: RAID 0 = strip 0–11 distribuiti su quattro dischi; RAID 1 = gli stessi quattro dischi duplicati (otto in tutto); RAID 2 = sette dischi, un bit per disco; RAID 3 = quattro dischi di bit più un disco di parità; RAID 4 = parità degli strip (P0-3, P4-7, P8-11) su un disco dedicato; RAID 5 = strip di parità a rotazione; RAID 6 = due blocchi di parità per riga (P e P').
 
 > [!example] RAID 5 in azione (parità XOR)
 > Tre dischi A, B, C. La parità si calcola con **XOR** bit a bit dei dati e si memorizza (a rotazione) su un disco.
@@ -576,12 +582,12 @@ Non solo il SO garantisce l'affidabilità: anche l'**hardware** può farlo.
 In Linux **anche i dispositivi sono visti come file**. La gerarchia parte dalla radice `/`.
 
 > [!info] Cartelle principali
-> - **`/bin`**: binari dei comandi essenziali (`cat`, `ls`, `pwd`, `cp`, `mv`, `rm`, …).
-> - **`/boot`**: file per il **boot loader** e il **kernel** (`grub`, …).
-> - **`/etc`**: file di **configurazione** del sistema (`fstab`, `group`, `hosts`, …).
-> - **`/usr`**: pacchetti di sistema, applicazioni utente, dati condivisibili (`/usr/local`, `/usr/bin`, `/usr/lib`, …).
-> - **`/var`**: file variabili — temporanei, **log**, cache, spool, lock.
-> - **`/sbin`**: binari di **sistema** (`fdisk`, `ifconfig`, `mkfs`, `reboot`, …).
+> - **`/bin`**: binari dei comandi essenziali (`cat`, `chmod`, `cp`, `dd`, `echo`, `ls`, `mkdir`, `mount`, `mv`, `pwd`, `rm`, …).
+> - **`/boot`**: file per il **boot loader** e il **kernel** (`kernel`, `boot`, `grub`).
+> - **`/etc`**: file di **configurazione** del sistema (`fstab`, `group`, `host.conf`, `hosts`, `networks`, `shells`; contiene anche `/etc/opt`, per la configurazione del software aggiuntivo).
+> - **`/usr`**: pacchetti di sistema, applicazioni utente, dati condivisibili (`/usr/local` con `bin`, `games`, `include`, `lib`, `man`, `sbin`, `share`, `src`; `/usr/share`, `/usr/bin`, `/usr/include`, `/usr/lib`, `/usr/sbin`).
+> - **`/var`**: file variabili — temporanei, **log**, cache, spool e lock (sottocartelle `cache`, `lib`, `yp`, `lock`, `opt`, `run`, `tmp`, `spool`, `log`).
+> - **`/sbin`**: binari di **sistema** (`fastboot`, `fdisk`, `ifconfig`, `mkfs`, `mkswap`, `reboot`, `route`, `swapon`, `swapoff`, `update`).
 > - **`/home`**: directory principale degli utenti (Documenti, Immagini, …).
 > - **`/lib`**: librerie essenziali (incluso il compilatore C e le sue librerie).
 > - **`/dev`**: file descrittori dei **dispositivi** (hard disk, periferiche).

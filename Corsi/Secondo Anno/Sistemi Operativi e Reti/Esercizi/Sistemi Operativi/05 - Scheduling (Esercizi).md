@@ -79,6 +79,9 @@ Turnaround medio $= \dfrac{2+1+2+3+10}{5} = \dfrac{18}{5} = \mathbf{3{,}6}$.
 
 > [!check] Conclusione
 > $3{,}6 < 4{,}6$: l'ordine scelto da SJF **non** è ottimale. SJF minimizza il turnaround medio **solo se tutti i job sono disponibili allo stesso istante**; con arrivi sfasati conviene a volte ritardare un job lungo già pronto per servire job brevi che arriveranno a breve.
+
+> [!info] Ricostruzione dei valori 4,6 e 4,4 della slide 7
+> Con gli stessi dati (A=2, B=4 con arrivo 0; C, D, E=1 con arrivo 3): ordine `A B C D E` → turnaround 2, 6, 4, 5, 6, media $4{,}6$; ordine `B C D E A` → turnaround 4, 2, 3, 4, 9, media $4{,}4$. Sono le due medie citate dalla slide (gli ordini sono una ricostruzione compatibile con le medie, la slide non li riporta); il confronto con attesa a vuoto (3,6) sopra resta il minimo assoluto.
 ## Es. 3 — SRTN (Shortest Remaining Time Next, con prelazione)
 > [!quote] Consegna
 > Quattro processi con (arrivo, burst): $P_1(0, 7)$, $P_2(2, 4)$, $P_3(4, 1)$, $P_4(5, 4)$. Applicare **SRTN**: a ogni arrivo si confronta il tempo totale del nuovo processo con il tempo **rimanente** di quello in esecuzione, e si esegue sempre il rimanente più breve. Costruire il diagramma di esecuzione e calcolare i tempi medi.

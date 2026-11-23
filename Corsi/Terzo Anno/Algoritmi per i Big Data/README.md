@@ -43,7 +43,7 @@ Programma del corso ancora da completare. Gli appunti sono organizzati per argom
 	- `MITZ_UPFAL_Chapter-1.pdf` … `Chapter-4.pdf` (slide di E. Upfal sul libro di Mitzenmacher e Upfal, *Probability and Computing*): lezioni 2-6 ([[02 - Algoritmi randomizzati e probabilità]]);
 	- `Ch03-ABD-Andy_SLIDES 3.pdf` (capitolo 3, *Finding Similar Items*, pp. 10-69): lezioni 6-8 ([[03 - Ricerca di oggetti simili]]);
 	- `HASH_FUNCTIONS_LUCIO_ANDY_11-25.pdf` (L. Gualà e A. Clementi, pp. 1-18; le pp. 19-26 sul *perfect hashing* sono per la lezione successiva): lezione 9 ([[04 - Funzioni hash universali]]);
-	- `ch04-streams1_Andy_14-11-23.pdf` (stream, adattamento delle slide di mmds.org; pp. 3-20 e 33-34, saltate le pp. 21-32 sul campione di proporzione fissa): lezione 11 ([[05 - Data stream]]);
+	- `ch04-streams1_Andy_14-11-23.pdf` (stream, adattamento delle slide di mmds.org; pp. 3-21 e 34-38 del PDF, saltate le pp. 22-33 sul campione di proporzione fissa): lezione 11 ([[05 - Data stream]]);
 	- non ancora usati, e quindi non nel repo: `SLIDES_LSH_PREZZA_11_2026.pdf` (MinHash e LSH), `ch04_2_ABD_Andy_SLIDES.pdf` (stream: filtri di Bloom, Flajolet-Martin, AMS) e, come dispense di riferimento, le note di N. Prezza (*Algorithms for Massive Data*), di J. Nelson (*Sketching Algorithms*) e di C. Seshadhri su Flajolet-Martin.
 - **Teams**: canale «Algoritmi per i Big Data», riferimento per tutte le comunicazioni e il materiale (a senso unico: i docenti non lo leggono ogni giorno). Per appuntamenti e chiarimenti si scrive al docente via **mail** (clementi@mat.uniroma2.it).
 - **Docenti**: Andrea Clementi; dalla seconda settimana interviene anche Luca Pepe (nome come trascritto, da verificare) per la parte su probabilità e algoritmi randomizzati.

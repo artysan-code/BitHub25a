@@ -17,6 +17,7 @@ slide:
 Lezione 2 (08/10/2026), prima lezione sulla parte di probabilità e algoritmi randomizzati annunciata nella [[01 - Introduzione al corso e al data mining]]. Si introducono le due famiglie di algoritmi randomizzati (Monte Carlo e Las Vegas) e si lavora su tre problemi: l'identità tra polinomi, la verifica del prodotto tra matrici e il taglio minimo di un grafo. Su tutti vale lo stesso schema: un algoritmo semplice che può sbagliare, una **probabilità di errore** da maggiorare, e la **ripetizione indipendente** per renderla piccola quanto si vuole. Slide: MITZ_UPFAL_Chapter-1, pp. 9-44 e 57-66 (le pp. 45-56, legge di Bayes, non sono state viste a lezione).
 ### Monte Carlo e Las Vegas
 Si lavora in un modello RAM esteso: memoria, scrittura e lettura costano tempo costante e in più si può **generare un valore casuale in tempo costante**. Generare valori davvero casuali non è banale, ma si assume di poterlo fare.
+
 > [!quote] Algoritmo Monte Carlo
 > Algoritmo randomizzato con **tempo di esecuzione deterministico** ma con una certa **probabilità di errore** nella risposta. Per un problema decisionale (risposta vero/falso) può restituire la risposta sbagliata con probabilità limitata.
 
@@ -24,12 +25,12 @@ Si lavora in un modello RAM esteso: memoria, scrittura e lettura costano tempo c
 > Algoritmo randomizzato che restituisce **sempre la risposta corretta**, ma il cui **tempo di esecuzione è una variabile aleatoria**.
 
 > [!example] Quicksort con pivot casuale
-> Il quicksort sceglie un pivot, partiziona l'array in elementi minori e maggiori e ricorre sulle due parti. Nel caso peggiore (pivot sempre minimo o massimo) la ricorsione perde un solo elemento per volta e il costo è $O(n^2)$. Scegliendo il pivot **a caso**, e assumendo che l'avversario non conosca le nostre scelte random, il costo medio è $O(n\log n)$. È quindi un algoritmo Las Vegas: sempre corretto, tempo aleatorio.
+> Il quicksort sceglie un pivot, partiziona l'array in elementi minori e maggiori e ricorre sulle due parti. Nel caso peggiore (pivot sempre minimo o massimo) la ricorsione perde un solo elemento per volta e il costo è $O(n^2)$. Scegliendo il pivot **a caso**, e assumendo che l'**avversario** (chi sceglie l'input, vedi [[#Algoritmi randomizzati e analisi del caso medio]]) non conosca le nostre scelte random, il numero **atteso** di confronti è $O(n\log n)$ per ogni input (dalle slide, Chapter-2 p. 24: l'analisi vale per qualunque input e lo spazio campionario è quello delle scelte random dell'algoritmo). È quindi un algoritmo Las Vegas: sempre corretto, tempo aleatorio.
 
-Il caso peggiore è spesso troppo pessimistico per gli algoritmi randomizzati, per questo si analizza il caso medio rispetto alle scelte random. Oggi si vedono solo algoritmi Monte Carlo, e il tema ricorrente è **rendere la probabilità di errore piccola a piacere**.
+Il caso peggiore sull'input è spesso troppo pessimistico per gli algoritmi randomizzati, per questo si analizza il **valore atteso rispetto alle scelte random**, valido per ogni input (da non confondere con l'analisi del caso medio, che media sugli input: vedi [[#Algoritmi randomizzati e analisi del caso medio]]). Oggi si vedono solo algoritmi Monte Carlo, e il tema ricorrente è **rendere la probabilità di errore piccola a piacere**.
 ### Identity testing tra polinomi
 > [!quote] Problema
-> Dati due polinomi $f(x)$ e $g(x)$, stabilire se $f\equiv g$, cioè se $f(r)=g(r)$ per ogni valore $r$.
+> Dati due polinomi $f(x)$ e $g(x)$ (le slide li chiamano $P(x)$ e $Q(x)$, poi $G(x)$ e $H(x)$), stabilire se $f\equiv g$, cioè se $f(r)=g(r)$ per ogni valore $r$.
 
 Esempio visto a lezione: due polinomi scritti in forma diversa (uno con termini $x^6, \dots$) di cui si vuole sapere se coincidono. Nelle slide (p. 9) sono $(x+1)(x-2)(x+3)(x-4)(x+5)(x-6)$ e $x^6-7x^3+25$, quindi $d=6$ e il campione è $\{1,\dots,600\}$. Le slide usano $\equiv$ per l'identità tra polinomi e $=$ per l'uguaglianza numerica.
 #### Soluzione deterministica
@@ -53,24 +54,30 @@ Due polinomi sono diversi se **esiste** un valore $r$ in cui $f(r)\neq g(r)$. Va
 ```
 
 Si sceglie un insieme finito di interi, e non tutto $\mathbb{R}$, perché un calcolatore non può rappresentare tutti i reali. Il tempo è $O(d)$, contro $O(d^2)$ del metodo deterministico.
+
 > [!info] Errore a un lato (one-sided error)
 > Se l'algoritmo risponde "diversi" è **certo** che i polinomi sono diversi (si è trovato un $r$ che li distingue). Può sbagliare solo rispondendo "uguali" quando in realtà sono diversi: un solo valore può essere una **coincidenza**.
 
 (Dalle slide, pp. 13-15) Con $r=2$ il primo polinomio dà $3\cdot0\cdot5\cdot(-2)\cdot7\cdot(-4)=0$ e il secondo $64-56+25=33$: sono diversi. Se invece i polinomi sono identici, come $(x+1)(x-1)$ e $x^2-1$, qualunque $r$ dà uguaglianza e l'algoritmo risponde bene. Una scelta sfortunata può ingannare: per $x^2+7x+1$ e $(x+2)^2$ (diversi) $r=2$ dà $19\neq16$, ma $r=1$ dà $9=9$.
 #### Probabilità di errore
-Se $f\not\equiv g$, il polinomio $h=f-g$ è non nullo di grado al più $d$. Per il teorema fondamentale dell'algebra ha **al più $d$ radici**. L'algoritmo sbaglia solo se $r$ è una radice di $h$, quindi per $r$ uniforme su $S$ con $|S|=100d$:
+Se $f\not\equiv g$, il polinomio $h=f-g$ (le slide: $F=G-H$) è non nullo di grado al più $d$, dove $d$ è un limite al grado di $h$ (le slide lo definiscono come limite alla somma dei gradi dei due polinomi; qui basta il massimo dei due). Per il teorema fondamentale dell'algebra ha **al più $d$ radici**. L'algoritmo sbaglia solo se $r$ è una radice di $h$, quindi per $r$ uniforme su $S$ con $|S|=100d$:
 $$\Pr[\text{errore}]\le \frac{\#\text{casi favorevoli}}{\#\text{casi possibili}}\le\frac{d}{100d}=\frac{1}{100}$$
-Le radici di $h$ possono essere negative o non intere: in quel caso cadono fuori da $S$ e l'errore è anche minore, quindi $d/|S|$ resta una maggiorazione valida. Con un approccio deterministico basterebbe invece valutare i polinomi in $d+1$ punti distinti.
+Le radici di $h$ possono essere negative o non intere: in quel caso cadono fuori da $S$ e l'errore è anche minore, quindi $d/|S|$ resta una maggiorazione valida. Con un approccio deterministico basterebbe invece valutare i polinomi in $d+1$ punti distinti *(extra, non da slide)*.
 #### Ridurre l'errore: ripetizione indipendente
 Un errore dell'1% può essere troppo se l'algoritmo viene usato un miliardo di volte. Si **ripete l'algoritmo $k$ volte** con scelte indipendenti $r_1,\dots,r_k$ e si risponde "diversi" se almeno una prova lo dice. L'algoritmo sbaglia solo se sbagliano **tutte** le $k$ prove, cioè se tutti gli eventi di errore accadono insieme (intersezione). Essendo le scelte indipendenti si moltiplicano le probabilità:
 $$\Pr[\text{errore su } k \text{ prove}]=\prod_{i=1}^{k}\Pr[\text{errore alla prova } i]\le\left(\frac{1}{100}\right)^{k}$$
 Ogni prova in più moltiplica la fiducia nella risposta. Per avere un errore piccolo come $1/n$ basta $k=O(\log n)$ ripetizioni. (Dalle slide, pp. 18, 25-27) Nello spazio delle sequenze $(r_1,\dots,r_k)$ ci sono $(100d)^k$ esiti equiprobabili e quelli "cattivi" (tutte radici) sono al più $d^k$, da cui lo stesso $(1/100)^k$. Con $k=10$ l'errore è minore di $10^{-20}<2^{-64}$.
+
+> [!question] Domanda tipica d'esame
+> Dai un algoritmo randomizzato per l'identità tra polinomi, spiega perché l'errore è a un lato e perché $\Pr[\text{errore}]\le\frac1{100}$; come si riduce a $(1/100)^k$?
 ### Richiami di probabilità
 > [!quote] Spazio di probabilità
 > Terna $(\Omega,\mathcal{F},\Pr)$, dove $\Omega$ è lo **spazio campionario** (l'insieme di tutti i possibili esiti dell'esperimento), $\mathcal{F}$ è l'insieme degli **eventi** (nel caso discreto, tutti i sottoinsiemi di $\Omega$, cioè $\mathcal{F}=2^\Omega$) e $\Pr$ è una **funzione di probabilità** che soddisfa:
 > 1. $0\le\Pr[E]\le 1$ per ogni evento $E$;
 > 2. $\Pr[\Omega]=1$;
 > 3. per eventi $E_1,E_2$ **disgiunti** ($E_1\cap E_2=\emptyset$): $\Pr[E_1\cup E_2]=\Pr[E_1]+\Pr[E_2]$ (additività, estesa a successioni di eventi disgiunti).
+
+La probabilità di un evento è la somma delle probabilità dei suoi eventi elementari. Esempio (dalle slide, pp. 20-23): con due dadi, $\Pr[\text{somma}\le6]=\frac{15}{36}$, $\Pr[\text{entrambi dispari}]=\frac14$ e $\Pr[\text{somma}\le6\cap\text{entrambi dispari}]=\frac6{36}=\frac16$.
 
 > [!quote] Union bound
 > Per **qualsiasi** famiglia di eventi $E_1,\dots,E_n$, senza ipotesi sulle relazioni tra di loro:
@@ -84,19 +91,23 @@ Spesso è una maggiorazione grossolana (anche inutile, se la somma supera 1), ma
 
 Servono anche la **probabilità condizionata** $\Pr[E\mid F]=\Pr[E\cap F]/\Pr[F]$, la **probabilità totale** (si somma sui casi di una partizione dello spazio) e la **regola della catena**
 $$\Pr[E_1\cap\dots\cap E_n]=\Pr[E_1]\cdot\Pr[E_2\mid E_1]\cdots\Pr[E_n\mid E_1\cap\dots\cap E_{n-1}]$$
+
 > [!example] Indipendenza e condizionamento (dalle slide, pp. 29-37)
 > - Due dadi: $\Pr[\text{somma}=8\mid\text{somma pari}]=\frac{5/36}{1/2}=\frac5{18}$.
 > - L'indipendenza è una proprietà matematica, non fisica: nel lancio di un dado "esito pari" ($\frac36$) ed "esito $\le4$" ($\frac46$) sono indipendenti, perché $\Pr[\text{pari e}\le4]=\frac26=\frac36\cdot\frac46$.
 > - Due figli: se il primo è femmina, la probabilità che lo sia anche il secondo è $\frac12$; se si sa solo che **almeno uno** è femmina, la probabilità che lo siano entrambi è $\frac{1/4}{3/4}=\frac13$.
+> - Due monete, una equa $A$ e una $B$ con testa su entrambe le facce, scelta a caso: lo spazio è $\{(A,t),(A,c),(B,t)\}$ con probabilità $\frac14,\frac14,\frac12$. Dato "testa", la probabilità di aver scelto $A$ è $\frac{1/4}{1/4+1/2}=\frac13$ (slide, pp. 31-32).
 #### Probabilità totale e legge di Bayes
-(Dalle slide, pp. 44-56; la legge di Bayes non è stata vista a lezione.) Se $E_1,\dots,E_n$ sono eventi disgiunti la cui unione è $\Omega$, la **probabilità totale** è $\Pr[B]=\sum_i\Pr[B\mid E_i]\Pr[E_i]$ e la **legge di Bayes** inverte il condizionamento:
+(Dalle slide, pp. 44-56: la probabilità totale è a p. 44, la legge di Bayes e le sue applicazioni non sono state viste a lezione.) Se $E_1,\dots,E_n$ sono eventi disgiunti la cui unione è $\Omega$, la **probabilità totale** è $\Pr[B]=\sum_i\Pr[B\mid E_i]\Pr[E_i]$ e la **legge di Bayes** inverte il condizionamento:
 $$\Pr[E_j\mid B]=\frac{\Pr[B\mid E_j]\Pr[E_j]}{\sum_{i=1}^{n}\Pr[B\mid E_i]\Pr[E_i]}$$
+
 > [!example] Fiducia crescente nel test del prodotto tra matrici
 > Sia $E$ l'evento "l'identità $AB=C$ è vera" e $B$ "il test dice che è vera". Con a priori $\Pr[E]=\frac12$, $\Pr[B\mid E]=1$ e $\Pr[B\mid\bar E]\le\frac12$ (errore a un lato), dopo un test positivo $\Pr[E\mid B]\ge\frac{1/2}{1/2+1/4}=\frac23$, dopo il secondo $\ge\frac45$ e in generale dopo $i$ test positivi $\ge1-\frac1{2^i+1}$. Dopo 100 test la confidenza è almeno $1-\frac1{2^{100}+1}$.
 
 > [!example] Altri esempi di Bayes
-> - Tre monete, due eque e una che dà testa con probabilità $\frac23$: dopo i lanci testa, testa, croce la probabilità che la prima sia quella truccata passa da $\frac13$ a $\frac25$.
+> - Tre monete, due eque e una che dà testa con probabilità $\frac23$: si lancia ciascuna una volta e si ottiene testa, testa, croce: la probabilità che la prima sia quella truccata passa da $\frac13$ a $\frac25$.
 > - Un virus colpisce 1 turista su 1000 e il test ha il 5% di falsi positivi e nessun falso negativo: un test positivo porta solo a $\frac{20}{1019}\approx2\%$ di probabilità di avere il virus (su 1000 persone, 1 è malata e circa 50 sono falsi positivi).
+> - Un test su una macchina ha tasso di errore del 10%; $A$ = "test positivo", $B$ = "la macchina funziona". Senza informazioni a priori $\Pr[B]=\frac12$ e $\Pr[B\mid A]=\frac{\frac12\cdot\frac9{10}}{\frac12\cdot\frac9{10}+\frac12\cdot\frac1{10}}=\frac9{10}$, dominato dall'affidabilità del test. Sapendo che la macchina si guasta solo 1 volta su 5, $\Pr[B]=\frac45$ e $\Pr[B\mid A]=\frac{36}{37}\approx0{,}97$ (le slide, p. 51, scrivono "0.97%" per errore). È il passaggio dal modello *a priori* al modello *a posteriori* (slide, pp. 49-51).
 ### Verifica del prodotto tra matrici (Freivalds)
 > [!quote] Problema
 > Date tre matrici $A,B,C\in\mathbb{R}^{n\times n}$, stabilire se $A\cdot B=C$.
@@ -106,7 +117,7 @@ $$\Pr[E_j\mid B]=\frac{\Pr[B\mid E_j]\Pr[E_j]}{\sum_{i=1}^{n}\Pr[B\mid E_i]\Pr[E
 - Con la randomizzazione si verifica l'uguaglianza in $O(n^2)$.
 
 > [!warning] Precisazioni rispetto alle slide
-> - Negli appunti era scritto $\omega\ge2.37$: $2{,}37$ circa è il **miglior esponente noto** (limite superiore) per la moltiplicazione, non un limite inferiore. Le slide (p. 38) riportano $\Theta(n^3)$ per il metodo classico e $\Theta(n^{2.37})$ per i migliori.
+> - $2{,}37$ circa è il **miglior esponente noto** (limite superiore) per la moltiplicazione, non un limite inferiore. Le slide (p. 38) riportano $\Theta(n^3)$ per il metodo classico e $\Theta(n^{2.37})$ per i migliori.
 > - Le slide parlano di matrici $n\times n$ "in a Boolean field", gli appunti di matrici reali. L'analisi sotto vale in entrambi i casi: usa solo che $d_{11}\neq0$ e che $r_1$ è un bit uniforme.
 
 L'idea generalizza il caso dei polinomi: invece di sostituire un numero a caso si sostituisce un **vettore a caso**. Se $AB=C$ allora $ABr=Cr$ per ogni vettore $r$; si sceglie un $r\in\{0,1\}^n$ e si controlla l'uguaglianza solo per quello.
@@ -128,6 +139,7 @@ L'idea generalizza il caso dei polinomi: invece di sostituire un numero a caso s
 ```
 
 **Costo**: tre prodotti matrice-vettore da $O(n^2)$ ciascuno. Il prodotto $A(Br)$ va calcolato **da destra** (prima $Br$, poi $A$ per il risultato) per non calcolare mai $AB$.
+
 > [!info] Scegliere $n$ bit a caso = scegliere un vettore uniforme di $\{0,1\}^n$
 > Scegliere ogni componente come un lancio di moneta indipendente equivale a scegliere un vettore uniformemente tra tutti i $2^n$ vettori: ogni vettore specifico (ad es. quello tutto 0) esce con probabilità $1/2^n$ in entrambi i modi.
 
@@ -145,6 +157,9 @@ Si usa il **principio delle decisioni differite** (deferred decisions), qui pres
 In formula (dalle slide, p. 43), sommando su $x=(x_2,\dots,x_n)\in\{0,1\}^{n-1}$: $\Pr[ABr=Cr]\le\sum_x\Pr\big[r_1=-\tfrac{1}{d_{11}}\sum_{j\ge2}d_{1j}x_j\big]\Pr[(r_2,\dots,r_n)=x]\le\frac12\sum_x\Pr[(r_2,\dots,r_n)=x]=\frac12$.
 
 Ripetendo $k$ volte con vettori indipendenti la probabilità di errore scende a $(1/2)^k=2^{-k}$.
+
+> [!question] Domanda tipica d'esame
+> Descrivi l'algoritmo di verifica di $AB=C$ e dimostra che sbaglia con probabilità al più $\frac12$. Perché si calcola $A(Br)$ e non $(AB)r$? Quante ripetizioni servono per scendere a $2^{-k}$?
 ### Taglio minimo di un grafo (algoritmo di Karger)
 > [!quote] Multigrafo, taglio, taglio minimo
 > Un **multigrafo** non diretto $G=(V,E)$ ammette **archi paralleli** (più archi tra la stessa coppia di vertici, distinti tra loro) e **self loop** (archi da un vertice a sé stesso); gli archi non hanno direzione. Un **taglio** è una partizione di $V$ in due insiemi non vuoti $S$ e $V\setminus S$; la sua **dimensione** è il numero di archi con un estremo per parte (la cardinalità dell'insieme di archi che attraversano il taglio). Il **taglio minimo** è quello di dimensione minima.
@@ -171,8 +186,8 @@ Contrazioni ripetute riducono il grafo a **due soli vertici**, e gli archi rimas
 L'algoritmo è un Monte Carlo (esegue sempre $n-2$ contrazioni) e può restituire un taglio non minimo.
 #### Perché funziona
 - **Ogni taglio del grafo contratto è un taglio del grafo originale**, con la stessa dimensione: la contrazione conserva i tagli (se $S$ non separa gli estremi dell'arco contratto).
-- Sia $C^*$ un taglio minimo. Se l'arco contratto **non** appartiene a $C^*$, allora $C^*$ resta un taglio (ancora minimo) del grafo contratto $G'$.
-- L'algoritmo restituisce un taglio minimo **se e solo se non contrae mai un arco di $C^*$**: contrarre un arco di $C^*$ lo fa sparire e il taglio finale avrebbe dimensione maggiore.
+- Sia $C$ un taglio minimo (fissato). Se l'arco contratto **non** appartiene a $C$, allora $C$ resta un taglio (ancora minimo) del grafo contratto $G'$.
+- L'algoritmo restituisce proprio il taglio $C$ **se non contrae mai un arco di $C$**: contrarre un arco di $C$ lo fa sparire dal grafo e il taglio finale non può più essere $C$ (potrebbe comunque essere un altro taglio minimo, ipotesi che l'analisi trascura: vedi [[#Lo schema dell'analisi]]). Perciò $\Pr[\text{successo}]\ge\Pr[F_{n-2}]$, dove $F_{n-2}$ è l'evento definito sotto.
 - La probabilità di pescare un arco del taglio è piccola all'inizio e **cresce** man mano che gli archi diminuiscono.
 #### Probabilità di successo
 > [!quote] Teorema
@@ -183,9 +198,9 @@ L'algoritmo è un Monte Carlo (esegue sempre $n-2$ contrazioni) e può restituir
 *Dimostrazione.* Sia $k$ la dimensione del taglio minimo.
 1. Ogni vertice ha grado almeno $k$: se un vertice avesse grado minore, i suoi archi formerebbero un taglio (vertice contro resto) più piccolo di $k$. Questo vale anche dopo ogni contrazione, perché i tagli del grafo contratto sono tagli del grafo originale.
 2. Dunque il numero di archi è $m=\tfrac12\sum_v\deg(v)\ge \dfrac{nk}{2}$.
-3. Sia $E_i$ l'evento "all'iterazione $i$ l'arco scelto non è nel taglio $C^*$" ed $F_{i}=E_1\cap\dots\cap E_i$. Alla fine dell'iterazione $i-1$ ci sono $n-i+1$ vertici, e se non si è mai pescato un arco di $C^*$ questo ha ancora $k$ archi, su almeno $(n-i+1)k/2$ totali:
+3. Sia $E_i$ l'evento "all'iterazione $i$ l'arco scelto non è nel taglio $C$" ed $F_{i}=E_1\cap\dots\cap E_i$. Alla fine dell'iterazione $i-1$ ci sono $n-i+1$ vertici, e se non si è mai pescato un arco di $C$ questo ha ancora $k$ archi, su almeno $(n-i+1)k/2$ totali:
 $$\Pr[E_i\mid F_{i-1}]=1-\frac{k}{m_i}\ge 1-\frac{2}{n-i+1}=\frac{n-i-1}{n-i+1}$$
-4. Si vuole la probabilità di non pescare mai un arco di $C^*$ nelle $n-2$ iterazioni. Per la **regola della catena**:
+4. Si vuole la probabilità di non pescare mai un arco di $C$ nelle $n-2$ iterazioni. Per la **regola della catena**:
 $$\Pr[F_{n-2}]=\prod_{i=1}^{n-2}\Pr[E_i\mid F_{i-1}]\ge\prod_{i=1}^{n-2}\frac{n-i-1}{n-i+1}=\frac{n-2}{n}\cdot\frac{n-3}{n-1}\cdot\frac{n-4}{n-2}\cdots\frac{2}{4}\cdot\frac{1}{3}$$
 È un **prodotto telescopico**: ogni numeratore si cancella con il denominatore due fattori dopo, e restano solo i due ultimi numeratori (2 e 1) e i due primi denominatori ($n$ e $n-1$):
 $$\Pr[F_{n-2}]\ge\frac{2\cdot 1}{n(n-1)}=\frac{2}{n(n-1)}$$
@@ -195,11 +210,14 @@ $$\Pr[F_{n-2}]\ge\frac{2\cdot 1}{n(n-1)}=\frac{2}{n(n-1)}$$
 #### Amplificare la probabilità di successo
 La probabilità di successo è piccola (circa $1/n^2$), ma si ripete l'algoritmo $N$ volte in modo indipendente e si tiene **il taglio più piccolo** tra i trovati. L'algoritmo fallisce solo se fallisce ogni volta:
 $$\Pr[\text{fallimento}]\le\left(1-\frac{2}{n(n-1)}\right)^{N}\le e^{-2N/(n(n-1))}$$
-Con $N=\Theta(n^2\log n)$ ripetizioni la probabilità di fallimento scende a $O(1/n)$ (con $n$ numero di vertici). Le slide (p. 65) usano $N=n(n-1)\ln n$ e ottengono un errore al più $1/n^2$, grazie a $1-x\le e^{-x}$ (sviluppo di Taylor, p. 66): vedi [[#Corretto con alta probabilità]].
+Con $N=n(n-1)\ln n=\Theta(n^2\log n)$ ripetizioni (con $n$ numero di vertici) la probabilità di fallimento scende a $\le 1/n^2$: vedi [[#Corretto con alta probabilità]]. Le slide (p. 65) scrivono $\log n$; l'uguaglianza $e^{-2\log n}=1/n^2$ vale con il logaritmo naturale (con $\log_2$ la maggiorazione $\le1/n^2$ resta vera, perché le ripetizioni sono di più). La disuguaglianza $1-x\le e^{-x}$ (sviluppo di Taylor) è a p. 66.
+
+> [!question] Domanda tipica d'esame
+> Dimostra che l'algoritmo di contrazione restituisce un taglio minimo con probabilità almeno $\frac{2}{n(n-1)}$ e spiega come si amplifica la probabilità di successo fino a $1-\frac1{n^2}$.
 ## Variabili aleatorie e valore atteso
-Lezione 3 (13/10/2026): si riprende il [[02 - Algoritmi randomizzati e probabilità#Taglio minimo di un grafo (algoritmo di Karger)|taglio minimo di Karger]] per chiarire quale spazio di probabilità genera un algoritmo randomizzato e come se ne controlla l'evoluzione con la probabilità condizionata. Poi si introducono gli strumenti del capitolo 2 del Mitzenmacher-Upfal: variabili aleatorie, indipendenza, valore atteso e la sua **linearità**, variabili Bernoulliane e binomiali. Si chiude con l'analisi del **randomized quicksort**, in cui la linearità riduce un'analisi apparentemente esponenziale a pochi passaggi. Slide: MITZ_UPFAL_Chapter-2, pp. 1-21 e MITZ_UPFAL_Chapter-1, pp. 57-63 (Karger); le pp. 12 e 26-36 (guardaroba, valore atteso condizionato) non sono state viste a lezione.
+Lezione 3 (13/10/2026): si riprende il [[#Taglio minimo di un grafo (algoritmo di Karger)|taglio minimo di Karger]] per chiarire quale spazio di probabilità genera un algoritmo randomizzato e come se ne controlla l'evoluzione con la probabilità condizionata. Poi si introducono gli strumenti del capitolo 2 del Mitzenmacher-Upfal: variabili aleatorie, indipendenza, valore atteso e la sua **linearità**, variabili Bernoulliane e binomiali. Si chiude con l'analisi del **randomized quicksort**, in cui la linearità riduce un'analisi apparentemente esponenziale a pochi passaggi. Slide: MITZ_UPFAL_Chapter-2, pp. 1-21 e MITZ_UPFAL_Chapter-1, pp. 57-63 (Karger); le pp. 12 e 26-36 (guardaroba, valore atteso condizionato) non sono state viste a lezione.
 ### Perché la randomizzazione conviene
-Nella [[02 - Algoritmi randomizzati e probabilità#Verifica del prodotto tra matrici (Freivalds)|verifica del prodotto tra matrici]] il metodo deterministico calcola $AB$ e lo confronta con $C$; anche i metodi più sofisticati per la moltiplicazione restano sopra $n^2$. L'algoritmo randomizzato genera un vettore casuale ($O(n)$) e fa tre prodotti matrice-vettore ($O(n^2)$ ciascuno), quindi costa $O(n^2)$: è un **miglioramento polinomiale**.
+Nella [[#Verifica del prodotto tra matrici (Freivalds)|verifica del prodotto tra matrici]] il metodo deterministico calcola $AB$ e lo confronta con $C$; anche i metodi più sofisticati per la moltiplicazione restano sopra $n^2$. L'algoritmo randomizzato genera un vettore casuale ($O(n)$) e fa tre prodotti matrice-vettore ($O(n^2)$ ciascuno), quindi costa $O(n^2)$: è un **miglioramento polinomiale**.
 
 Non è gratis: si paga con una **probabilità di errore**, che però è controllabile, perché con ripetizioni indipendenti diventa piccola a piacere.
 
@@ -209,21 +227,19 @@ Non è gratis: si paga con una **probabilità di errore**, che però è controll
 Per verificare di aver capito davvero un algoritmo randomizzato, oltre all'idea, ci si devono porre due tipi di domande, che sono anche quelle tipiche dell'orale:
 1. **da probabilista**: qual è lo spazio di probabilità generato dall'algoritmo a ogni passo? Con quale distribuzione? Quanti bit casuali servono?
 2. **da informatico**: come si implementa il passo casuale? Quale struttura dati si sceglie, come si modifica, cosa si sceglie esattamente? Il linguaggio è libero (Python, C), ma la descrizione deve essere precisa.
-
-> [!question] Domanda tipica d'esame
-> Si porta il min cut di Karger come argomento a piacere. Qual è lo spazio di probabilità generato al primo passo, e come cambia ai passi successivi? Come si implementa la scelta dell'arco da contrarre?
->
-> Traccia: al tempo 0 gli esiti possibili sono gli archi $E = \{e_1, \dots, e_m\}$ e la scelta è **uniforme**: $\Pr[E_1 = e_i] = 1/|E|$. Al passo $t$ il grafo $G_t$ ha un vertice in meno e un insieme di archi $E_t \subseteq E$ (spariscono l'arco contratto e i self loop creati), che **non si conosce** finché non si sono eseguiti i primi $t-1$ passi. Lo spazio al passo $t$ è $E_t$ con distribuzione uniforme: in pratica si rinumerano gli archi rimasti e si chiede alla libreria un indice uniforme.
 #### Variabili aleatorie e valori deterministici
 Si distinguono due tipi di oggetti, anche quando hanno lo stesso simbolo:
 - $e_1, \dots, e_m$ sono **elementi di un insieme fissato**: deterministici, non cambiano nel tempo ($e_1$ è sempre l'arco $\{1, 2\}$);
-- $E_t$, l'arco scelto al passo $t$, è una **variabile aleatoria**: l'esito (*outcome*) di un esperimento. Finché l'esperimento non è eseguito se ne conoscono solo i **valori possibili** e la **distribuzione**.
+- $A_t$, l'arco scelto al passo $t$, è una **variabile aleatoria**: l'esito (*outcome*) di un esperimento. Finché l'esperimento non è eseguito se ne conoscono solo i **valori possibili** e la **distribuzione**. (Si usa $A_t$ e non $E_t$ perché nelle slide $E_i$ è l'evento "l'arco contratto all'iterazione $i$ non è in $C$", vedi [[#Lo schema dell'analisi]].)
 
-Lo spazio di probabilità di un algoritmo randomizzato quindi non è fisso: per ogni passo $t \geq 1$ e ogni $e \in E_t$,
+Lo spazio di probabilità di un algoritmo randomizzato quindi non è fisso: al tempo 0 gli esiti possibili sono gli archi $E = \{e_1, \dots, e_m\}$ e la scelta è **uniforme**, $\Pr[A_1 = e_i] = 1/|E|$. Al passo $t$ il grafo $G_t$ ha un vertice in meno e un insieme di archi $E^{(t)} \subseteq E$ (spariscono l'arco contratto e i self loop creati), che **non si conosce** finché non si sono eseguiti i primi $t-1$ passi. Per ogni passo $t \geq 1$ e ogni $e \in E^{(t)}$,
 
-$$\Pr[\,E_t = e\,] = \frac{1}{|E_t|}$$
+$$\Pr[\,A_t = e\,] = \frac{1}{|E^{(t)}|}$$
 
-dove $E_t$ è a sua volta una variabile aleatoria che dipende dalle scelte precedenti.
+dove $E^{(t)}$ è a sua volta una variabile aleatoria che dipende dalle scelte precedenti. In pratica si rinumerano gli archi rimasti e si chiede alla libreria un indice uniforme.
+
+> [!question] Domanda tipica d'esame
+> Si porta il min cut di Karger come argomento a piacere. Qual è lo spazio di probabilità generato al primo passo, e come cambia ai passi successivi? Come si implementa la scelta dell'arco da contrarre?
 ### Karger rivisto
 #### La contrazione non diminuisce il taglio minimo
 Il primo ingrediente dell'analisi è di natura **topologica**.
@@ -231,8 +247,8 @@ Il primo ingrediente dell'analisi è di natura **topologica**.
 > [!quote] Lemma
 > Ogni taglio del grafo ottenuto contraendo un arco è anche un taglio del grafo di partenza, con la stessa dimensione. Quindi la contrazione **non diminuisce** la dimensione del taglio minimo.
 
-> [!example] Due clique unite da un arco
-> Si prendono due grafi completi con $n/2$ vertici ciascuno, collegati da un solo arco. Il taglio minimo ha dimensione 1 (quell'arco). Contraendo un arco interno a una clique il taglio minimo resta 1; contraendo l'arco ponte le due clique si fondono e il taglio minimo sale molto.
+> [!example] Due clique (grafi completi) unite da un arco
+> Si prendono due **clique**, cioè grafi completi con $n/2$ vertici ciascuno, collegate da un solo arco. Il taglio minimo ha dimensione 1 (quell'arco). Contraendo un arco interno a una clique il taglio minimo resta 1; contraendo l'arco ponte le due clique si fondono e il taglio minimo sale molto.
 
 Un taglio è un insieme di archi la cui rimozione **disconnette** il grafo, e il taglio minimo misura la **resilienza** (*fault tolerance*) della rete: un grafo con taglio minimo $k$ resta connesso finché non si rompono almeno $k$ archi. Contrarre un arco toglie una possibilità di staccare il grafo, quindi non peggiora mai la situazione.
 
@@ -254,7 +270,7 @@ $$\Pr[E_2 \mid F_1] \geq 1 - \frac{k}{(n-1)k/2} = 1 - \frac{2}{n-1}$$
 
 - **Passo generico**. Con lo stesso ragionamento su $n - i + 1$ vertici, $\Pr[E_i \mid F_{i-1}] \geq 1 - \frac{2}{n-i+1}$.
 
-Senza il lemma topologico non si potrebbe dire nulla sui passi successivi al primo. Per la **regola della catena**, $\Pr[F_{n-2}] = \Pr[E_{n-2} \mid F_{n-3}] \cdot \Pr[F_{n-3}]$, e srotolando fino al primo passo si ottiene il prodotto telescopico già visto nella [[02 - Algoritmi randomizzati e probabilità#Probabilità di successo|probabilità di successo]]:
+Senza il lemma topologico non si potrebbe dire nulla sui passi successivi al primo. Per la **regola della catena**, $\Pr[F_{n-2}] = \Pr[E_{n-2} \mid F_{n-3}] \cdot \Pr[F_{n-3}]$, e srotolando fino al primo passo si ottiene il prodotto telescopico già visto nella [[#Probabilità di successo|probabilità di successo]]:
 
 $$\Pr[F_{n-2}] \geq \frac{2}{n(n-1)}$$
 #### Corretto con alta probabilità
@@ -288,7 +304,7 @@ Spazio di probabilità e variabile aleatoria vanno tenuti separati: lo spazio de
 > [!quote] Indipendenza
 > Due variabili aleatorie $X$ e $Y$ sono **indipendenti** se per ogni coppia di valori $x, y$
 > $$\Pr[(X = x) \cap (Y = y)] = \Pr[X = x] \cdot \Pr[Y = y]$$
-> e analogamente per $k$ variabili: la probabilità della congiunzione è il prodotto delle probabilità.
+> e analogamente $X_1,\dots,X_k$ sono **mutuamente indipendenti** se per ogni sottoinsieme $I\subseteq[1,k]$ e ogni scelta dei valori $x_i$ ($i\in I$) vale $\Pr\big[\bigcap_{i\in I}X_i=x_i\big]=\prod_{i\in I}\Pr[X_i=x_i]$.
 
 L'indipendenza è una definizione matematica, non un'idea fisica del tipo "uno non dà fastidio all'altro". La notazione $X = x$ ribadisce la distinzione: $x$ è un valore fissato tra quelli possibili, $X$ è l'esito.
 ### Valore atteso
@@ -303,10 +319,7 @@ L'indipendenza è una definizione matematica, non un'idea fisica del tipo "uno n
 > - (Dalle slide, p. 5) Se $X$ vale $2^i$ con probabilità $1/2^i$ per $i=1,2,\dots$, allora $\mathbb{E}[X]=\sum_i\frac1{2^i}2^i=\sum_i1=\infty$: il valore atteso è finito solo se $\sum_i|i|\Pr[X=i]$ converge.
 > - (Dalle slide, p. 7) Si sceglie un numero in $[1,6]$ e si lanciano 3 dadi: si vince 1 dollaro per ogni dado che coincide, se ne perde 1 se nessuno coincide. $\mathbb{E}=-\left(\frac56\right)^3+3\cdot\frac16\left(\frac56\right)^2+2\cdot3\left(\frac16\right)^2\frac56+3\left(\frac16\right)^3=-\frac{17}{216}$: il gioco è sfavorevole.
 
-La **mediana** è diversa dal valore atteso: è un valore $m$ che la variabile assume davvero e che divide a metà la massa di probabilità, cioè $\Pr[X \leq m] \geq 1/2$ e $\Pr[X \geq m] \geq 1/2$.
-
-> [!warning] Definizione di mediana nelle slide
-> Le slide (Chapter-2, p. 6) definiscono la mediana come un valore $m$ con $\Pr[X<m]\le\frac12$ e $\Pr[X>m]<\frac12$. È la stessa idea, con la seconda disuguaglianza stretta. Qui si usa la formulazione standard sopra.
+La **mediana** è diversa dal valore atteso: (dalle slide, Chapter-2 p. 6) è un valore $m$ tale che $\Pr[X<m]\le\frac12$ e $\Pr[X>m]<\frac12$, cioè $m$ divide a metà la massa di probabilità. Non è detto che coincida con il valore atteso.
 #### Linearità del valore atteso
 > [!quote] Teorema (linearità del valore atteso)
 > Per qualsiasi variabili aleatorie $X$ e $Y$, **indipendenti o no**, e per ogni costante $c$:
@@ -318,13 +331,13 @@ $$\mathbb{E}[X + Y] = \sum_i \sum_j (i + j) \Pr[(X = i) \cap (Y = j)] = \sum_i i
 
 Gli eventi $\{Y = j\}$, al variare di $j$, formano una **partizione** dello spazio (disgiunti a due a due, con unione $\Omega$), quindi per la probabilità totale $\sum_j \Pr[(X = i) \cap (Y = j)] = \Pr[X = i]$. Il primo addendo è $\mathbb{E}[X]$, e allo stesso modo il secondo è $\mathbb{E}[Y]$. La seconda proprietà è immediata.
 
-La forza del teorema è che non richiede alcuna ipotesi sulla dipendenza: si calcolano i valori attesi separatamente e si sommano. Non vale per altre grandezze: la **varianza** di una somma, ad esempio, non è la somma delle varianze quando le variabili sono correlate.
+La forza del teorema è che non richiede alcuna ipotesi sulla dipendenza: si calcolano i valori attesi separatamente e si sommano. Non vale per altre grandezze: la **varianza** di una somma, ad esempio, non è la somma delle varianze quando le variabili sono correlate *(extra, non da slide)*.
 
 > [!example] Somma di due dadi e numero di teste
 > - Due dadi: $\mathbb{E}[X_1 + X_2] = 3{,}5 + 3{,}5 = 7$, senza il calcolo sui 36 esiti.
-> - $n$ lanci di una moneta equa: il numero atteso di teste è $n \cdot \frac12$, perché ogni lancio contribuisce con $\frac12$.
-> - (Dalle slide, p. 11) La linearità vale anche per variabili dipendenti: un dado più il doppio di un secondo dado ha valore atteso $3{,}5+2\cdot3{,}5=10{,}5$. Da qui, confrontando con la somma diretta, segue l'identità $\sum_{i=0}^{N}i\binom Ni2^{-N}=\frac N2$.
-> - (Dalle slide, p. 12; non visto a lezione) Guardaroba: $N$ persone lasciano il cappotto e ognuna ne riceve uno a caso. Se $X_i$ è l'indicatrice "la persona $i$ riceve il suo", $\mathbb{E}[X_i]=\frac1N$ e il numero atteso di persone con il proprio cappotto è $\sum_i\mathbb{E}[X_i]=1$, per ogni $N$.
+> - $n$ lanci di una moneta equa: il numero atteso di teste è $n \cdot \frac12$, perché ogni lancio contribuisce con $\frac12$. Confrontando con la somma diretta $\sum_{i=0}^{N}i\binom Ni2^{-N}$ (dalle slide, p. 11, con $N$ lanci) segue l'identità $\sum_{i=0}^{N}i\binom Ni2^{-N}=\frac N2$.
+> - (Dalle slide, p. 11) La linearità vale anche per variabili dipendenti: un dado più il doppio di un secondo dado ha valore atteso $3{,}5+2\cdot3{,}5=10{,}5$; anche la somma di due dadi non indipendenti ha valore atteso 7.
+> - (Dalle slide, p. 12; non visto a lezione) Guardaroba: $N$ persone lasciano il cappotto e ognuna ne riceve uno a caso. Se $X_i$ è la variabile **indicatrice** (vedi [[#Bernoulliana e binomiale]]) "la persona $i$ riceve il suo", $\mathbb{E}[X_i]=\frac1N$ e il numero atteso di persone con il proprio cappotto è $\sum_i\mathbb{E}[X_i]=1$, per ogni $N$.
 #### Bernoulliana e binomiale
 > [!quote] Variabile Bernoulliana
 > Una variabile **Bernoulliana** (o **indicatrice**) di parametro $p$ vale 1 con probabilità $p$ e 0 con probabilità $1 - p$. Il suo valore atteso è
@@ -338,11 +351,11 @@ Per una variabile booleana il valore atteso coincide sempre con la probabilità 
 
 Il coefficiente $\binom{n}{j}$ sceglie le posizioni dei $j$ successi; per l'indipendenza, su quelle posizioni si ha $p^j$ e sulle altre $(1-p)^{n-j}$. Ad esempio, la probabilità di esattamente 75 teste su 100 lanci si ottiene sostituendo $n = 100$, $j = 75$, $p = 1/2$. È raro, nell'analisi di algoritmi complessi, conoscere la distribuzione esatta così; di solito ci si concentra sul valore atteso e al più sulla varianza.
 
-Il valore atteso della binomiale si può calcolare dalla definizione, con qualche passaggio sui coefficienti binomiali, oppure in una riga con la linearità: $X = X_1 + \dots + X_n$ con $X_i$ Bernoulliane, quindi
+Il valore atteso della binomiale si può calcolare dalla definizione (dalle slide, Chapter-2 p. 15): $\mathbb{E}[X]=\sum_{j=0}^{n}j\binom nj p^j(1-p)^{n-j}=np\sum_{j=1}^{n}\binom{n-1}{j-1}p^{j-1}(1-p)^{(n-1)-(j-1)}=np$, usando $j\binom nj=n\binom{n-1}{j-1}$ e il fatto che l'ultima somma, somma delle probabilità di una $B(n-1,p)$, vale 1; oppure in una riga con la linearità: $X = X_1 + \dots + X_n$ con $X_i$ Bernoulliane, quindi
 
 $$\mathbb{E}[X] = \sum_{i=1}^{n} \mathbb{E}[X_i] = n\,p$$
 ### Randomized quicksort
-Il quicksort con pivot casuale (già incontrato come esempio di [[02 - Algoritmi randomizzati e probabilità#Monte Carlo e Las Vegas|algoritmo Las Vegas]]) ordina un insieme $S$ di $n$ elementi distinti. Ha lo stesso numero ottimo di confronti di heapsort e mergesort, ma è molto più semplice.
+Il quicksort con pivot casuale (già incontrato come esempio di [[#Monte Carlo e Las Vegas|algoritmo Las Vegas]]) ordina un insieme $S$ di $n$ elementi distinti. Ha lo stesso ordine di grandezza $\Theta(n\log n)$ di heapsort e mergesort *(extra, non da slide)*, ma è molto più semplice.
 
 ```pseudo
 \begin{algorithm}
@@ -402,14 +415,15 @@ dove $H_n = \sum_{k=1}^{n} 1/k \approx \ln n$ è la serie armonica.
 ### Valore atteso condizionato
 (Dalle slide, Chapter-2 pp. 26-36; non visto a lezione.) Il valore atteso di $Y$ dato $Z=z$ è $\mathbb{E}[Y\mid Z=z]=\sum_y y\Pr[Y=y\mid Z=z]$. L'espressione $\mathbb{E}[Y\mid Z]$ è una variabile aleatoria $f(Z)$ che vale $\mathbb{E}[Y\mid Z=z]$ quando $Z=z$, e vale
 $$\mathbb{E}[Y]=\sum_z\Pr[Z=z]\,\mathbb{E}[Y\mid Z=z]=\mathbb{E}\big[\mathbb{E}[Y\mid Z]\big]$$
-Con due dadi e $X=X_1+X_2$: $\mathbb{E}[X\mid X_1=2]=\frac{11}2$, $\mathbb{E}[X\mid X_1]=X_1+\frac72$ e $\mathbb{E}\big[\mathbb{E}[X\mid X_1]\big]=\frac72+\frac72=7$.
+Con due dadi e $X=X_1+X_2$: $\mathbb{E}[X\mid X_1=2]=\frac{11}2$, $\mathbb{E}[X\mid X_1]=X_1+\frac72$ e $\mathbb{E}\big[\mathbb{E}[X\mid X_1]\big]=\frac72+\frac72=7$ e $\mathbb{E}[X_1\mid X=5]=\sum_{x=1}^4x\cdot\frac{1/36}{4/36}=\frac52$ (slide, p. 28).
+
 > [!example] Processo che genera copie di sé stesso
 > Un processo $S$ genera ricorsivamente un numero di copie distribuito come $B(n,p)$, indipendente per ogni chiamata. Se $Y_i$ è il numero di processi alla generazione $i$ ($Y_0=1$), condizionando su $Y_{i-1}$ si ha $\mathbb{E}[Y_i\mid Y_{i-1}]=Y_{i-1}\,np$, quindi $\mathbb{E}[Y_i]=(np)^i$ e il numero totale atteso di copie è $\sum_{i\ge0}(np)^i$: illimitato se $np\ge1$, uguale a $\frac1{1-np}$ se $np<1$.
 ## Analisi del caso medio e disuguaglianze di concentrazione
-Lezione 4 (15/10/2026): si distingue l'analisi di un algoritmo randomizzato su un input peggiore dall'**analisi del caso medio** di un algoritmo deterministico su un input casuale, rifacendo il quicksort nei due modi a partire dal [[02 - Algoritmi randomizzati e probabilità#Randomized quicksort|randomized quicksort]] della lezione precedente. Seguono una classificazione degli algoritmi randomizzati per problemi decisionali, la **distribuzione geometrica** con il problema del **coupon collector** e i primi strumenti per misurare quanto una variabile aleatoria si discosta dal suo valore atteso: varianza, **disuguaglianza di Markov** e **disuguaglianza di Chebyshev**. Slide: MITZ_UPFAL_Chapter-2, pp. 22-25 e 37-43 (quicksort deterministico, classificazione, geometrica, coupon collector) e MITZ_UPFAL_Chapter-3, pp. 1-12 (Markov, varianza, Chebyshev); le pp. 30-38 del Chapter-3 non sono state viste a lezione.
+Lezione 4 (15/10/2026): si distingue l'analisi di un algoritmo randomizzato su un input peggiore dall'**analisi del caso medio** di un algoritmo deterministico su un input casuale, rifacendo il quicksort nei due modi a partire dal [[#Randomized quicksort|randomized quicksort]] della lezione precedente. Seguono una classificazione degli algoritmi randomizzati per problemi decisionali, la **distribuzione geometrica** con il problema del **coupon collector** e i primi strumenti per misurare quanto una variabile aleatoria si discosta dal suo valore atteso: varianza, **disuguaglianza di Markov** e **disuguaglianza di Chebyshev**. Slide: MITZ_UPFAL_Chapter-2, pp. 22-25 e 37-43 (quicksort deterministico, classificazione, geometrica, coupon collector) e MITZ_UPFAL_Chapter-3, pp. 1-12 (Markov, varianza, Chebyshev); le pp. 30-38 del Chapter-3 non sono state viste a lezione.
 ### Algoritmi randomizzati e analisi del caso medio
 #### Il randomized quicksort, ancora
-Nel randomized quicksort il numero di confronti è una variabile aleatoria definita sullo spazio delle scelte dei pivot $y$; anche **quanti** pivot si scelgono è aleatorio (in alcune esecuzioni l'albero delle chiamate è profondo $\log n$, in altre $n$). Il teorema dice che, **per qualunque input fissato**, anche il peggiore, il numero atteso di confronti è $O(n \log n)$: il caso peggiore riguarda l'input, il valore atteso riguarda le scelte dell'algoritmo. L'analisi si basava su [[02 - Algoritmi randomizzati e probabilità#Dimostrazione con la linearità|indicatrici e linearità]]: $s_i$ e $s_j$ si confrontano con probabilità $2/(j - i + 1)$, e la somma dà la serie armonica.
+Nel randomized quicksort il numero di confronti è una variabile aleatoria definita sullo spazio delle scelte dei pivot $y$; anche **quanti** pivot si scelgono è aleatorio (in alcune esecuzioni l'albero delle chiamate è profondo $\log n$, in altre $n$). Il teorema dice che, **per qualunque input fissato**, anche il peggiore, il numero atteso di confronti è $O(n \log n)$: il caso peggiore riguarda l'input, il valore atteso riguarda le scelte dell'algoritmo. L'analisi si basava su [[#Dimostrazione con la linearità|indicatrici e linearità]]: $s_i$ e $s_j$ si confrontano con probabilità $2/(j - i + 1)$, e la somma dà la serie armonica.
 
 La probabilità entra però nell'algoritmica in due modi diversi.
 - **Algoritmi randomizzati**: l'algoritmo, oltre a confronti, cicli e strutture dati, ogni tanto **lancia un bit casuale** e decide in base al risultato. L'input è nel caso peggiore, scelto da un **avversario** che conosce il codice ma **non** le scelte casuali fatte durante l'esecuzione (sa che al passo 33 si sceglierà un pivot a caso, non quale). L'avversario sceglie l'input "a bocce ferme", prima dell'esecuzione. È la stessa ipotesi su cui si regge la crittografia: l'avversario non legge i numeri casuali del sistema.
@@ -455,11 +469,11 @@ La dimostrazione ricalca quella del randomized quicksort, con le stesse indicatr
 > (Dalle slide, Chapter-2 p. 24) Inoltre le esecuzioni ripetute di un algoritmo randomizzato sono indipendenti tra loro, mentre un algoritmo deterministico ripetuto sullo stesso input dà sempre lo stesso risultato.
 
 > [!info] Perché si chiama *quick* sort
-> Anche selection sort e insertion sort costano $\Theta(n^2)$ nel caso peggiore, ma per il quicksort le permutazioni "cattive" sono **poche**: l'avversario deve disporre gli elementi in modo molto particolare. Per il selection sort, invece, moltissime configurazioni costano $\Theta(n^2)$. Il modello statistico dell'input fa emergere questa differenza, ed è per questo che la sua costruzione, con le assunzioni dichiarate esplicitamente, è importante quanto l'algoritmo.
+> Anche selection sort e insertion sort costano $\Theta(n^2)$ nel caso peggiore, ma per il quicksort le permutazioni "cattive" sono **poche**: l'avversario deve disporre gli elementi in modo molto particolare. Per il selection sort, invece, **tutti** gli input costano $\Theta(n^2)$. Il modello statistico dell'input fa emergere questa differenza, ed è per questo che la sua costruzione, con le assunzioni dichiarate esplicitamente, è importante quanto l'algoritmo.
 #### Tipi di algoritmi randomizzati
 Per un **problema decisionale**, in cui ogni istanza ha risposta sì o no (un grafo è connesso? è 3-colorabile?), un algoritmo randomizzato può essere:
 - a **errore bilaterale** (*two-sided error*): probabilità di errore maggiore di zero sia sulle istanze sì sia sulle istanze no;
-- a **errore unilaterale** (*one-sided error*): sbaglia solo su uno dei due tipi di istanza. Sono di questo tipo l'[[02 - Algoritmi randomizzati e probabilità#Soluzione randomizzata|identity testing tra polinomi]] e la verifica del prodotto tra matrici: se rispondono "diversi" hanno sempre ragione;
+- a **errore unilaterale** (*one-sided error*): sbaglia solo su uno dei due tipi di istanza. Sono di questo tipo l'[[#Soluzione randomizzata|identity testing tra polinomi]] e la [[#Verifica del prodotto tra matrici (Freivalds)|verifica del prodotto tra matrici]]: se rispondono "diversi" hanno sempre ragione;
 - **Las Vegas**: quando risponde, risponde sempre correttamente, ma a volte non risponde. Per la soddisfacibilità di una formula in forma normale congiuntiva, ad esempio, può dire "sì" (ed è certo), "no" (ed è certo) oppure "?". Se la probabilità di "?" è al più $1/3$, ripetendo l'algoritmo cresce la confidenza di ottenere prima o poi la risposta.
 
 I problemi di ottimizzazione si riducono a problemi decisionali con un parametro: invece del numero minimo di colori, ci si chiede se esiste una colorazione con al più $k$ colori.
@@ -492,7 +506,10 @@ $$\mathbb{E}[X] = \sum_{i=1}^{\infty} (1 - p)^{i - 1} = \frac{1}{p}$$
 
 Con una moneta equa servono in media 2 lanci per la prima testa; con probabilità di successo $1/150$ servono in media 150 tentativi.
 
-(Dalle slide, Chapter-3 p. 27) Dimostrazione alternativa: si condiziona sul primo tentativo. Se $Z$ è il numero di tentativi dopo il primo, $\mathbb{E}[X]=(1-p)\mathbb{E}[Z+1]+p\cdot1$; per l'assenza di memoria $Z$ è geometrica come $X$, quindi $\mathbb{E}[X]=(1-p)\mathbb{E}[X]+1$, cioè $\mathbb{E}[X]=1/p$. Con lo stesso metodo (non visto a lezione) $\mathbb{E}[X^2]=\frac{2-p}{p^2}$ e quindi $\mathrm{Var}[X]=\frac{1-p}{p^2}$.
+(Dalle slide, Chapter-3 p. 27 e Chapter-2 p. 41) Dimostrazione alternativa: si condiziona sul primo tentativo. Se $Z$ è il numero di tentativi dopo il primo, $\mathbb{E}[X]=(1-p)\mathbb{E}[Z+1]+p\cdot1$; per l'assenza di memoria $Z$ è geometrica come $X$, quindi $\mathbb{E}[X]=(1-p)\mathbb{E}[X]+1$, cioè $\mathbb{E}[X]=1/p$. Con lo stesso metodo (Chapter-3 pp. 30-32; non visto a lezione) $\mathbb{E}[X^2]=\frac{2-p}{p^2}$ e quindi $\mathrm{Var}[X]=\frac{1-p}{p^2}$.
+
+> [!question] Domanda tipica d'esame
+> Definisci la variabile geometrica, dimostra l'assenza di memoria e calcola $\mathbb{E}[X]$ in due modi.
 #### Il coupon collector
 > [!example] L'album di figurine
 > Ogni pacchetto contiene una figurina scelta uniformemente a caso tra $n$, indipendentemente dalle precedenti. Quanti pacchetti servono in media per completare l'album? Lo stesso processo descrive l'allocazione online di risorse in cui ogni agente deve ricevere una risorsa almeno una volta.
@@ -507,8 +524,9 @@ Il numero totale di pacchetti è $X = \sum_{i=1}^{n} X_i$ e, per linearità,
 
 $$\mathbb{E}[X] = \sum_{i=1}^{n} \frac{1}{p_i} = \sum_{i=1}^{n} \frac{n}{n - i + 1} = n \sum_{k=1}^{n} \frac{1}{k} = n\,H_n = n \ln n + \Theta(n)$$
 
-(Dalle slide, Chapter-3 pp. 33-35; non visto a lezione.) Con Markov, $\Pr[X\ge2nH_n]\le\frac12$. Si fa meglio: le $X_i$ sono indipendenti e $\mathrm{Var}[X_i]\le1/p_i^2=\left(\frac n{n-i+1}\right)^2$, quindi $\mathrm{Var}[X]\le n^2\sum_{k=1}^n\frac1{k^2}\le\frac{\pi^2n^2}6$ e per Chebyshev $\Pr[|X-nH_n|\ge nH_n]\le\frac{\pi^2}{6H_n^2}=O\!\left(\frac1{\ln^2n}\right)$. Con un'analisi diretta: un fissato coupon manca dopo $n\ln n+cn$ pacchetti con probabilità $\left(1-\frac1n\right)^{n(\ln n+c)}<\frac1{e^cn}$, e per l'union bound ne manca almeno uno con probabilità minore di $e^{-c}$; dopo $2n\ln n$ pacchetti la probabilità è al più $\frac1n$.
+Lo stesso problema si enuncia come palline nelle scatole (dalle slide, Chapter-3 pp. 28-29): si lanciano palline in $n$ scatole indipendentemente e uniformemente, e $X$ è il numero di palline lanciate fino a che nessuna scatola è vuota; è il modello di [[#Bilanciamento del carico]].
 
+(Dalle slide, Chapter-3 pp. 33-35; non visto a lezione.) Con Markov, $\Pr[X\ge2nH_n]\le\frac12$. Si fa meglio: le $X_i$ sono indipendenti e $\mathrm{Var}[X_i]\le1/p_i^2=\left(\frac n{n-i+1}\right)^2$, quindi $\mathrm{Var}[X]\le n^2\sum_{k=1}^n\frac1{k^2}\le\frac{\pi^2n^2}6$ e per Chebyshev $\Pr[|X-nH_n|\ge nH_n]\le\frac{\pi^2}{6H_n^2}=O\!\left(\frac1{\ln^2n}\right)$. Con un'analisi diretta: un fissato coupon manca dopo $n\ln n+cn$ pacchetti con probabilità $\left(1-\frac1n\right)^{n(\ln n+c)}<\frac1{e^cn}$, e per l'union bound ne manca almeno uno con probabilità minore di $e^{-c}$; dopo $2n\ln n$ pacchetti la probabilità è al più $\frac1n$.
 
 > [!question] Domanda tipica d'esame
 > Qual è il numero atteso di estrazioni per vedere tutti gli $n$ coupon almeno una volta? Spiega la divisione in epoche, perché la durata di ogni epoca è geometrica e con quale parametro, e dove si usa la linearità del valore atteso.
@@ -517,8 +535,10 @@ In data mining non basta dire che un algoritmo ci mette tempo atteso $n \log n$:
 - una **campana stretta** attorno alla media: nelle esecuzioni reali il tempo sarà quasi sempre vicino al valore atteso, ad esempio tra $\frac12 n \log n$ e $2 n \log n$, e il valore atteso è una buona previsione;
 - una distribuzione a **due gobbe**, con la massa lontana a sinistra e a destra: il valore atteso non viene quasi mai osservato, e scommettere su di esso è pessimo.
 
-> [!example] Tre giochi con lo stesso valore atteso
-> Si vince o si perde 1 euro con probabilità $\frac12$; oppure si vincono o si perdono 100 000 euro con probabilità $\frac12$; oppure un gioco molto sbilanciato con una vincita enorme e rarissima. Il valore atteso è circa lo stesso, ma con un budget di 100 euro nel primo gioco si fanno tranquillamente un centinaio di tentativi, mentre nel secondo si può fallire al primo.
+> [!example] Tre giochi con valori attesi simili
+> (Dalle slide, Chapter-3 p. 1.) (1) Con probabilità $\frac12$ si vince 1 dollaro, con probabilità $\frac12$ se ne perde 1. (2) Come (1) ma con 100 000 dollari. (3) Con probabilità $\frac1{1\,000\,000}$ si vincono 1 000 000 dollari, con probabilità $\frac12$ se ne pagano 5, altrimenti $0. I valori attesi sono $0$, $0$ e $1-2{,}5=-1{,}5$ dollari: piccoli e simili, ma i giochi sono molto diversi. Con un budget di 100 dollari nel primo si fanno tranquillamente un centinaio di tentativi, nel secondo si può fallire al primo.
+
+(Chapter-3 p. 2) Analogamente, un lavoro da 1000 dollari a settimana e uno da 1 dollaro più un bonus di 1 000 000 dollari con probabilità $\frac1{1000}$ hanno valori attesi simili ma rischi diversi.
 
 Studiare quanto una variabile si discosta dalla media è l'**analisi del secondo momento** (o della varianza).
 #### Disuguaglianza di Markov
@@ -535,7 +555,7 @@ L'unica ipotesi è la non negatività: niente sull'indipendenza. Proprio per que
 > [!example] Troppe teste
 > Lanciando $n$ monete eque, sia $X$ il numero di teste, con $\mathbb{E}[X] = n/2$. La probabilità di avere almeno $\frac34 n$ teste è
 > $$\Pr\left[X \geq \tfrac34 n\right] \leq \frac{n/2}{3n/4} = \frac23$$
-> Una costante, indipendente da $n$: secondo Markov la probabilità di stare lontano dalla media non diminuirebbe nemmeno con un milione di lanci. La legge dei grandi numeri dice il contrario: Markov non sfrutta l'indipendenza dei lanci.
+> Una costante, indipendente da $n$: secondo Markov la probabilità di stare lontano dalla media non diminuirebbe nemmeno con un milione di lanci. La **legge dei grandi numeri** (vedi [[#Media di più campioni e legge dei grandi numeri]]) dice il contrario: Markov non sfrutta l'indipendenza dei lanci.
 #### Varianza
 > [!quote] Varianza e deviazione standard
 > La **varianza** di $X$ è il valore atteso del quadrato della distanza dalla media:
@@ -554,7 +574,7 @@ Se la variabile sta spesso lontano dalla media la varianza è grande (le due gob
 > $$\mathbb{E}[X\,Y] = \mathbb{E}[X]\,\mathbb{E}[Y] \qquad \mathrm{Var}[X + Y] = \mathrm{Var}[X] + \mathrm{Var}[Y]$$
 > e lo stesso vale per somme di più variabili indipendenti a due a due.
 
-La prima si dimostra dalla definizione: $\mathbb{E}[XY] = \sum_i \sum_j i\,j \Pr[(X = i) \cap (Y = j)]$, e per l'indipendenza la probabilità si fattorizza in $\Pr[X = i]\Pr[Y = j]$; la somma si separa nel prodotto dei due valori attesi. La seconda segue sviluppando il quadrato (la dimostrazione non è in programma). A differenza della [[02 - Algoritmi randomizzati e probabilità#Linearità del valore atteso|linearità del valore atteso]], queste proprietà **richiedono** l'indipendenza.
+La prima si dimostra dalla definizione: $\mathbb{E}[XY] = \sum_i \sum_j i\,j \Pr[(X = i) \cap (Y = j)]$, e per l'indipendenza la probabilità si fattorizza in $\Pr[X = i]\Pr[Y = j]$; la somma si separa nel prodotto dei due valori attesi. La seconda segue sviluppando il quadrato (la dimostrazione non è in programma). A differenza della [[#Linearità del valore atteso|linearità del valore atteso]], queste proprietà **richiedono** l'indipendenza.
 
 Per una binomiale $B(n, \frac12)$, somma di $n$ Bernoulliane indipendenti, si ottiene quindi $\mathrm{Var}[X] = n/4$. In generale (dalle slide, Chapter-3 pp. 11-12) una binomiale $B(n,p)$ ha $\mathrm{Var}[X]=np(1-p)$.
 #### Disuguaglianza di Chebyshev
@@ -567,7 +587,7 @@ Per una binomiale $B(n, \frac12)$, somma di $n$ Bernoulliane indipendenti, si ot
 $$\Pr\big[(X - \mathbb{E}[X])^2 \geq a^2\big] \leq \frac{\mathbb{E}\big[(X - \mathbb{E}[X])^2\big]}{a^2} = \frac{\mathrm{Var}[X]}{a^2}$$
 
 Due forme equivalenti, molto usate:
-- con $a = t\,\sigma[X]$: $\Pr[|X - \mathbb{E}[X]| \geq t\,\sigma[X]] \leq 1/t^2$;
+- con $a = t\,\sigma[X]$ (nelle slide, Chapter-3 p. 7, il moltiplicatore si chiama $a$: $\Pr[|X - \mathbb{E}[X]| \geq a\,\sigma[X]] \leq 1/a^2$): $\Pr[|X - \mathbb{E}[X]| \geq t\,\sigma[X]] \leq 1/t^2$;
 - con un errore **relativo** $a = \varepsilon\,\mathbb{E}[X]$: $\Pr[|X - \mathbb{E}[X]| \geq \varepsilon\,\mathbb{E}[X]] \leq \dfrac{\mathrm{Var}[X]}{\varepsilon^2\,\mathbb{E}[X]^2}$.
 
 > [!example] Troppe teste, con Chebyshev
@@ -576,7 +596,7 @@ Due forme equivalenti, molto usate:
 > La probabilità ora **tende a zero** al crescere di $n$, e la stima copre entrambe le code. La differenza rispetto a Markov viene dall'aver usato l'indipendenza dei lanci, attraverso la varianza.
 
 > [!info] Verifica con le slide
-> La registrazione si interrompe durante il calcolo, ma il risultato $4/n$ è confermato dalle slide (MITZ_UPFAL_Chapter-3, p. 10): $\Pr[X\ge\frac34N]\le\Pr[|X-\mathbb{E}[X]|\ge\frac{\mathbb{E}[X]}2]\le\frac{N/4}{(N^2/4)(1/4)}=\frac4N$, un bound molto migliore di quello di Markov.
+> Il risultato $4/n$ è confermato dalle slide (MITZ_UPFAL_Chapter-3, p. 10): $\Pr[X\ge\frac34N]\le\Pr[|X-\mathbb{E}[X]|\ge\frac{\mathbb{E}[X]}2]\le\frac{N/4}{(N^2/4)(1/4)}=\frac4N$, un bound molto migliore di quello di Markov.
 #### Media di più campioni e legge dei grandi numeri
 (Dalle slide, Chapter-3 pp. 36-38; non visto a lezione.) Per ogni costante $a$, $\mathrm{Var}[aX]=a^2\mathrm{Var}[X]$. Se $X_1,\dots,X_n$ sono indipendenti e identicamente distribuite e $\bar X=\frac1n\sum_iX_i$, allora $\mathrm{Var}[\bar X]=\frac1{n^2}\,n\,\mathrm{Var}[X_i]=\frac1n\mathrm{Var}[X_i]$: la media di più campioni è più concentrata. Con Chebyshev si ottiene la **legge debole dei grandi numeri**, $\Pr[|\bar X_n-\mathbb{E}[X]|>\varepsilon]\le\frac{\mathrm{Var}[X_i]}{n\varepsilon^2}\to0$ per ogni $\varepsilon>0$.
 
@@ -612,6 +632,8 @@ All'inizio si riprende l'algoritmo randomizzato per la **mediana** visto nella l
 \end{algorithm}
 ```
 
+Lo spazio di probabilità dell'algoritmo è l'insieme di tutte le scelte, con ripetizione, di $n^{3/4}$ elementi tra $n$ ($n^{n^{3/4}}$ punti); ogni punto determina $Y_1$, $Y_2$ e $|C|$ (slide, Chapter-3 p. 18). Calcolare le probabilità direttamente è troppo complicato, per questo si usano i limiti sulla deviazione dal valore atteso. L'intuizione (p. 16): insiemi di taglia inferiore a $n/\log n$ si ordinano in tempo lineare e, con alta probabilità, la mediana sta in $C$ con $|C|<n/\log n$.
+
 Il campione ordinato ha $n^{3/4}\log n$ di costo, gli insiemi $C$ abbastanza piccoli si ordinano in tempo lineare e i confronti con $d$ e $u$ costano $O(n)$. L'algoritmo sbaglia a calcolare la mediana in tempo lineare solo se accade uno di tre eventi: $E_1$, meno di $\frac12n^{3/4}-\sqrt n$ campioni sono sotto la mediana; $E_2$, lo stesso sopra la mediana; $E_3$, $|C|>4n^{3/4}$. Il numero $Y_1$ di campioni sotto la mediana è somma di $n^{3/4}$ indicatrici indipendenti di media $\frac12$ e varianza $\frac14$, quindi $\mathbb{E}[Y_1]=\frac12n^{3/4}$ e $\mathrm{Var}[Y_1]=\frac14n^{3/4}$. Per Chebyshev
 $$\Pr[E_1]\le\Pr\big[|Y_1-\mathbb{E}[Y_1]|>\sqrt n\big]\le\frac{n^{3/4}/4}{n}=\frac14n^{-1/4}$$
 e lo stesso per $E_2$. Per $E_3$ si osserva che $|C|>4n^{3/4}$ implica che almeno $2n^{3/4}$ elementi di $C$ siano sopra la mediana o sotto: lo stesso argomento (pp. 21-24) dà $\Pr[E_3]\le\frac12n^{-1/4}$. L'algoritmo ha successo con probabilità almeno $1-n^{-1/4}$.
@@ -631,7 +653,7 @@ che tende a 0 come l'inverso di un **polinomio** (legge dei grandi numeri).
 Le **code** sono le aree sotto la "campana" della distribuzione oltre una certa soglia: più sono piccole, più la variabile è concentrata attorno al valore medio. I bound di Chernoff mostrano che, nelle stesse condizioni (somma di variabili binarie indipendenti), la distribuzione è molto più concentrata di quanto dica Chebyshev: a $\frac34n$ la coda decresce **esponenzialmente** in $n$.
 
 > [!quote] Teorema (bound di Chernoff, coda superiore)
-> Siano $X_1,\dots,X_n$ variabili binarie indipendenti, $X=\sum_iX_i$ e $\mu\geq\mathbb{E}[X]$. Allora per ogni $\delta>0$
+> Siano $X_1,\dots,X_n$ variabili binarie (Bernoulli) indipendenti, $X=\sum_iX_i$ e $\mu=\mathbb{E}[X]$ (nella versione di Kleinberg-Tardos basta $\mu\geq\mathbb{E}[X]$). Allora per ogni $\delta>0$
 > $$\Pr[X\geq(1+\delta)\mu]<\left[\frac{e^\delta}{(1+\delta)^{1+\delta}}\right]^\mu$$
 
 Come leggerlo: per $\delta$ costante la base $\frac{e^\delta}{(1+\delta)^{1+\delta}}$ è una **costante minore di 1**, e l'esponente è il valore medio $\mu$. Se $\mu$ cresce linearmente con $n$, la probabilità decresce **esponenzialmente** in $n$. (Dalle slide, Chapter-4 p. 2) Per una binomiale con $\mu=np$ e $q=1-p$ Chebyshev dà $\Pr[|X-\mu|>\delta\mu]\le\frac{npq}{\delta^2n^2p^2}=\frac q{\delta^2\mu}$, mentre Chernoff dà $2e^{-\mu\delta^2/3}$.
@@ -657,7 +679,7 @@ Per la **coda inferiore**, per $0<\delta<1$:
 $$\Pr[X\leq(1-\delta)\mu]\leq\left[\frac{e^{-\delta}}{(1-\delta)^{1-\delta}}\right]^\mu\qquad\Pr[X\leq(1-\delta)\mu]\leq e^{-\mu\delta^2/2}$$
 Anche qui, per $\delta$ costante, la concentrazione è esponenziale.
 #### Idea della dimostrazione (dalle slide, non richiesta)
-(MITZ_UPFAL_Chapter-4, pp. 3-15.) Per $t>0$, Markov applicato a $e^{tX}$ dà $\Pr[X\ge a]=\Pr[e^{tX}\ge e^{ta}]\le\mathbb{E}[e^{tX}]/e^{ta}$. La **funzione generatrice dei momenti** $M_X(t)=\mathbb{E}[e^{tX}]$ di una somma di variabili indipendenti è il prodotto delle funzioni generatrici; per una Bernoulliana $M_{X_i}(t)=1+p_i(e^t-1)\le e^{p_i(e^t-1)}$, quindi $M_X(t)\le e^{(e^t-1)\mu}$. Scegliendo $t=\ln(1+\delta)$ si ottiene la forma 1; le forme 2 e 3 ne seguono con maggiorazioni elementari, e per la coda inferiore si usa $t=\ln(1-\delta)<0$.
+(MITZ_UPFAL_Chapter-4, pp. 3-15.) Per $t>0$, Markov applicato a $e^{tX}$ dà $\Pr[X\ge a]=\Pr[e^{tX}\ge e^{ta}]\le\mathbb{E}[e^{tX}]/e^{ta}$. La **funzione generatrice dei momenti** $M_X(t)=\mathbb{E}[e^{tX}]$ di una somma di variabili indipendenti è il prodotto delle funzioni generatrici; per una Bernoulliana $M_{X_i}(t)=1+p_i(e^t-1)\le e^{p_i(e^t-1)}$, quindi $M_X(t)\le e^{(e^t-1)\mu}$. Scegliendo $t=\ln(1+\delta)$ si ottiene la forma 1; le forme 2 e 3 ne seguono con maggiorazioni elementari, e per la coda inferiore si usa $t=\ln(1-\delta)<0$. Proprietà della funzione generatrice dei momenti (pp. 5-6): $\mathbb{E}[X^n]=M_X^{(n)}(0)$ (da cui il nome); due variabili con la stessa $M$ in un intorno di 0 hanno la stessa distribuzione; per variabili **indipendenti** $M_{X+Y}(t)=M_X(t)M_Y(t)$. Per la coda inferiore (p. 3) si usa $t<0$: $\Pr[X\le a]\le\min_{t<0}\mathbb{E}[e^{tX}]/e^{ta}$.
 #### Scostamenti vicini al valore medio
 Chernoff permette di analizzare anche scostamenti **non costanti** rispetto al valore medio. Con le $n$ monete la deviazione standard è $\sqrt{n/4}$. Spostandosi di un fattore appena più grande, circa $\sqrt{n\log n}$, applicando la forma 2 con $\mu=\frac n2$ e $\delta=\sqrt{6\ln n/n}$ alle due code:
 $$\Pr\left[\left|X-\tfrac n2\right|\geq\tfrac12\sqrt{6\,n\ln n}\right]\leq\frac2n$$
@@ -673,8 +695,11 @@ Il quadro completo: dentro $\frac n2\pm\sqrt{n\log n}$ c'è quasi tutta la proba
 Per i big data il messaggio è che, sotto condizioni di indipendenza, il **valore medio è molto attendibile**: rappresenta bene la distribuzione.
 #### Altre applicazioni nelle slide (non viste a lezione)
 Le slide del Mitzenmacher-Upfal (Chapter-4, pp. 18-49) proseguono con la stima di un parametro tramite intervalli di confidenza (pp. 18-22), con il **set balancing** (data $A\in\{0,1\}^{n\times n}$ si cerca $b\in\{-1,1\}^n$ che minimizzi $\|Ab\|_\infty$: con $b$ casuale vale $\|Ab\|_\infty\le\sqrt{4n\ln n}$ con probabilità almeno $1-\frac2n$, grazie a un Chernoff per somme di $\pm1$, $\Pr[X\ge a]\le e^{-a^2/2n}$, pp. 23-33) e con il **packet routing** sull'ipercubo, in cui l'instradamento in due fasi (prima verso una destinazione casuale) porta ogni permutazione a destinazione in $O(\log N)$ passi con alta probabilità (pp. 34-49).
+
+> [!question] Domanda tipica d'esame
+> Enuncia il bound di Chernoff (forma 1 e forma 2) e confrontalo con Chebyshev sulla probabilità di avere almeno $\frac34n$ teste su $n$ lanci: come decresce la probabilità nei due casi? Che cosa dice Chernoff sullo scostamento $\sqrt{n\log n}$ dalla media?
 ### Bilanciamento del carico
-Ci sono $m$ job (ad esempio pacchetti da instradare) e $n$ server in parallelo. Un assegnamento deterministico come il **round robin** richiederebbe di coordinarsi a ogni arrivo, e con input online, traffico e server che cadono spesso non funziona. Si usa allora una tecnica **casuale**: ogni job viene mandato a un server scelto uniformemente, indipendentemente dagli altri. È il modello delle **palline nelle scatole** (*balls into bins*).
+Ci sono $m$ job (ad esempio pacchetti da instradare) e $n$ server in parallelo. Un assegnamento deterministico come il **round robin** (i job assegnati ai server a turno, in ordine ciclico) richiederebbe di coordinarsi a ogni arrivo, e con input online, traffico e server che cadono spesso non funziona. Si usa allora una tecnica **casuale**: ogni job viene mandato a un server scelto uniformemente, indipendentemente dagli altri. È il modello delle **palline nelle scatole** (*balls into bins*).
 
 Ogni server è una macchina sequenziale: il tempo per smaltire i job è lineare nel numero di job ricevuti. Il caso pessimo è che tutti i job finiscano sullo stesso server (tempo $m$); il caso ideale è una distribuzione uniforme, con carico massimo $\frac mn$ e uno speedup di un fattore $n$.
 
@@ -689,7 +714,7 @@ $$\Pr[X_i>e\,\gamma(n)]<\left(\frac1{\gamma(n)}\right)^{e\gamma(n)}<\left(\frac1
 Con lo **union bound** sugli $n$ server, la probabilità che **qualche** server abbia carico maggiore di $e\,\gamma(n)$ è minore di $\frac1n$.
 
 > [!info] Cosa significa in pratica
-> Con $n$ job su $n$ server il carico medio è 1, ma il carico **massimo** è con alta probabilità dell'ordine di $\frac{\log n}{\log\log n}$, che **cresce** con $n$, anche se lentamente (circa 3,6 per $n=10^3$, 6,8 per $n=10^9$). Qualche server sarà sicuramente più carico della media, e nessuno lo sarà oltre quel valore. Per dimensionare memoria e potenza dei server non basta il valore atteso: bisogna tenere conto di questa congestione.
+> Con $n$ job su $n$ server il carico medio è 1, ma il carico **massimo** è con alta probabilità dell'ordine di $\frac{\log n}{\log\log n}$, che **cresce** con $n$, anche se lentamente (circa 3,6 per $n=10^3$, 6,8 per $n=10^9$, con logaritmi naturali *(extra, non da slide)*). Qualche server sarà sicuramente più carico della media, e nessuno lo sarà oltre quel valore. Per dimensionare memoria e potenza dei server non basta il valore atteso: bisogna tenere conto di questa congestione.
 #### $m=\Theta(n\log n)$: il carico si uniforma
 Con $m=16\,n\ln n$ job il carico medio è $\mu=16\ln n$, e il valore medio compare all'**esponente** del bound. Con $\delta=1$ (forma 1):
 $$\Pr[X_i>2\mu]<\left(\frac e4\right)^{16\ln n}<\frac1{n^2}$$
@@ -701,4 +726,4 @@ Con lo union bound, con alta probabilità **tutti** i server hanno carico tra me
 > A lezione il calcolo è stato rifatto con $\mu=\ln n$ e $\delta=\frac12$: la probabilità che un server abbia carico inferiore a $\frac12\ln n$ è al più $e^{-\delta^2\mu/2}=n^{-1/8}$, che tende a zero come l'inverso di un polinomio. Con la costante 16 delle slide si arriva a $\frac1{n^2}$, che permette lo union bound su tutti i server.
 
 > [!question] Domanda tipica d'esame
-> Enuncia il bound di Chernoff e confrontalo con la disuguaglianza di Chebyshev sul lancio di $n$ monete. Applicalo al bilanciamento del carico: con $n$ job assegnati a caso a $n$ server, qual è il carico massimo con alta probabilità? E con $\Theta(n\log n)$ job?
+> Applica Chernoff al bilanciamento del carico: con $n$ job assegnati a caso a $n$ server, qual è il carico massimo con alta probabilità? E con $\Theta(n\log n)$ job? Perché serve l'union bound?

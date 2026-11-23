@@ -9,7 +9,7 @@ slide:
 ---
 # Ricerca di oggetti simili
 ## Trovare oggetti simili
-Lezione 6 (22/10/2026), seconda parte: comincia il data mining con il problema di **trovare oggetti simili** in grandi dataset (slide Ch03-ABD-Andy_SLIDES 3, pp. 10-20: pp. 10-17 per il problema e la distanza di Jaccard, pp. 18-20 per la pipeline; i numeri di pagina sono quelli del PDF).
+Lezione 6 (22/10/2026), seconda parte: comincia il data mining con il problema di **trovare oggetti simili** in grandi dataset (slide Ch03-ABD-Andy_SLIDES 3, pp. 10-20: pp. 10-18 per il problema, la distanza di Jaccard e l'applicazione ai documenti, pp. 19-20 per la pipeline; i numeri di pagina sono quelli del PDF).
 Il primo argomento di data mining del corso è trovare **oggetti simili** in un dataset molto grande. Le slide e gli aggiornamenti sono sul sito del libro, mmds.org, utile anche per fare esperimenti. Gli oggetti possono essere foto, documenti di testo, sequenze di DNA, proteine; in ogni caso ci sono due passi fondamentali:
 1. **rappresentare** gli oggetti in memoria, in strutture dati;
 2. definire cosa significa **simile**, cioè scegliere una **distanza** (una misura della similarità) efficace per l'esigenza dell'utente. Cosa vuol dire che due proteine, due immagini o due documenti sono simili dipende dall'applicazione.
@@ -19,7 +19,7 @@ Esempi:
 - **pagine web**: un operatore che raccoglie pagine sul meteo non vuole 200 link a pagine sostanzialmente identiche, e deve farlo su miliardi di pagine che cambiano di continuo;
 - **e-commerce**: trovare utenti con acquisti simili, per proporre a un utente quello che hanno comprato gli utenti simili a lui.
 
-Un'immagine si rappresenta come una matrice di valori numerici (il colore di ogni pixel). Oltre al nearest neighbor, un'altra query importante è **all similar pairs**: data una distanza $d$ e una soglia $s$, trovare tutte le coppie di oggetti a distanza al più $s$. Di solito la distanza è tra 0 e 1 e la similarità è il suo complemento, $1-d$.
+Un'immagine si rappresenta come una matrice di valori numerici (il colore di ogni pixel). Oltre al nearest neighbor, un'altra query importante è **all similar pairs**: data una distanza $d$ e una soglia $s$, trovare tutte le coppie di oggetti a distanza al più $s$ (nella parte sul locality-sensitive hashing $s$ sarà invece una soglia sulla similarità: coppie con similarità almeno $s$). Di solito la distanza è tra 0 e 1 e la similarità è il suo complemento, $1-d$.
 
 Il corso si concentra sui **documenti** di testo.
 
@@ -30,14 +30,14 @@ Se confrontare due oggetti costa $h$, il metodo banale confronta tutte le coppie
 
 Le difficoltà per i documenti: come capire se due documenti sono simili, come rappresentarli in memoria, e il fatto che spesso sono troppo grandi per stare interamente in memoria.
 ### Distanza di Jaccard
-La **distanza di Jaccard** è una metrica a tutti gli effetti, ma definita sui **sottoinsiemi** di un universo invece che su uno spazio vettoriale:
+La **distanza di Jaccard** (che è anche una metrica *(extra, non da slide)*) è definita sui **sottoinsiemi** di un universo invece che su uno spazio vettoriale:
 $$\mathrm{Sim}(C_1,C_2)=\frac{|C_1\cap C_2|}{|C_1\cup C_2|}\qquad d(C_1,C_2)=1-\mathrm{Sim}(C_1,C_2)$$
 La similarità è sempre tra 0 (intersezione vuota) e 1 (insiemi coincidenti, unione uguale all'intersezione). Nell'esempio delle slide l'intersezione ha 3 elementi e l'unione 8: similarità $\frac38$, distanza $\frac58$.
 ### La pipeline
 Resta da capire che relazione c'è tra documenti e sottoinsiemi. La soluzione, sviluppata nel mese successivo, ha più passi:
 1. **shingling**: ogni documento viene spezzettato in "mattoncini" (*shingle*), che diventano gli elementi di un sottoinsieme;
 2. **min-hashing**: gli insiemi così ottenuti sono enormi, e vengono **compressi** in oggetti esponenzialmente più piccoli che **preservano** la similarità di Jaccard: se i documenti erano simili, con alta probabilità lo sono anche le loro versioni compresse, e viceversa. Così si passa da $h$ a $h'$, ma restano $N^2$ confronti;
-3. **locality-sensitive hashing**: si mappano i documenti compressi in una **tabella hash** con funzioni hash particolari, tali che nelle **liste di trabocco** finiscano tutti e soli gli elementi simili tra loro. Ogni documento si inserisce una volta sola, con costo lineare, e le liste di trabocco danno direttamente le coppie candidate.
+3. **locality-sensitive hashing**: si mappano i documenti compressi in una **tabella hash** con funzioni hash particolari, tali che nelle **[[04 - Funzioni hash universali#Il problema del dizionario|liste di trabocco]]** finiscano tutti e soli gli elementi simili tra loro. Ogni documento si inserisce una volta sola, con costo lineare, e le liste di trabocco danno direttamente le coppie candidate.
 
 La figura di p. 20 (dalle slide) riassume i passi e che cosa esce da ciascuno: lo shingling produce l'**insieme di stringhe di lunghezza $k$** che compaiono nel documento; il min-hashing produce le **firme**, vettori brevi di interi che rappresentano gli insiemi e ne riflettono la similarità di Jaccard; il locality-sensitive hashing produce le **coppie candidate**, cioè le coppie di firme da sottoporre a un test di similarità.
 
@@ -64,10 +64,10 @@ Uno strumento centrale è il **locality-sensitive hashing**, che serve a trovare
 
 In generale l'input sono punti $x_1,\dots,x_N$ ad alta dimensionalità (un'immagine è un lungo vettore di colori dei pixel, $x\in\{0,1,\dots,c\}^h$ con $h$ la dimensione del dato) con una funzione distanza $d(x_i,x_j)$. Due query collegate:
 - **nearest neighbor**: dato un oggetto (ad esempio una foto) e un database di milioni di oggetti, trovare il più simile. Esempio delle slide: lo *scene completion problem* (Hays e Efros, SIGGRAPH 2007), che completa una parte mancante di una foto cercando le immagini più simili in un'enorme collezione;
-- **all candidate pairs** (*all documents*): dato l'intero database e una **soglia** $s$, fissata una metrica, trovare tutte le coppie di oggetti con similarità almeno $s$ (equivalentemente, con distanza $d(x_i,x_j)\leq s$ per una soglia sulla distanza).
+- **all similar pairs** (*all documents*): dato l'intero database e una **soglia** $s$, fissata una metrica, trovare tutte le coppie di oggetti con similarità almeno $s$ (equivalentemente, con distanza $d(x_i,x_j)\leq s$ per una soglia sulla distanza); le *coppie candidate* sono invece l'output approssimato dell'LSH, da verificare.
 
 Chi sa risolvere una delle due di solito sa risolvere anche l'altra.
-#### La barriera quadratica
+#### La barriera quadratica sulle coppie
 Con $N$ oggetti e un costo $h$ per confrontare una coppia, il metodo banale (ricerca esaustiva su tutte le coppie, con una matrice di bit $N\times N$ o con un vettore degli oggetti) costa tempo e/o spazio
 $$O(N^2\,h)$$
 Entrambi i fattori sono inaccettabili:
@@ -92,14 +92,14 @@ La soluzione è una pipeline:
 
 Questa lezione copre i passi 2 e 3.
 ### Similarità di Jaccard
-Sia $U$ un universo finito, tipicamente molto grande, e siano $C_1,C_2\subseteq U$.
+Siano $C_1,C_2$ due sottoinsiemi di uno stesso universo finito, tipicamente molto grande: per i documenti, l'insieme $U^k$ di tutti i $k$-shingle possibili, con $U$ l'alfabeto dei token (notazione delle slide, pp. 18-24).
 
 > [!quote] Similarità e distanza di Jaccard
 > $$\mathrm{Sim}(C_1,C_2)=\frac{|C_1\cap C_2|}{|C_1\cup C_2|}\qquad d(C_1,C_2)=1-\mathrm{Sim}(C_1,C_2)$$
 
 Per ogni applicazione bisogna prima decidere cosa significa "distanza": la scelta del corso è la distanza di Jaccard su una famiglia di sottoinsiemi. Esempio delle slide: due insiemi con 3 elementi nell'intersezione e 8 nell'unione hanno similarità $\frac38$ e distanza $\frac58$.
 
-Con la distribuzione uniforme sui punti di $U$, la similarità di Jaccard è la **probabilità condizionata** di pescare un punto dell'intersezione sapendo di averlo pescato nell'unione:
+Con la distribuzione uniforme sui punti dell'universo, la similarità di Jaccard è la **[[02 - Algoritmi randomizzati e probabilità#Richiami di probabilità|probabilità condizionata]]** di pescare un punto dell'intersezione sapendo di averlo pescato nell'unione:
 $$\mathrm{Sim}(C_1,C_2)=\Pr[x\in C_1\cap C_2\mid x\in C_1\cup C_2]$$
 (esercizio: basta applicare la definizione di probabilità condizionata). Restringendosi ai casi possibili dentro l'unione, si misura quanta "area" occupa l'intersezione.
 
@@ -110,15 +110,15 @@ A lezione è stato proposto di confrontare due documenti contando le **parole in
 - **la frequenza**: un bit 0/1 non distingue una parola che compare 20 volte da una che ne compare 2000, e due testi così non sono simili. Le parole molto comuni ("the") vanno poi pesate meno o tolte, il che richiede già una statistica delle frequenze;
 - **l'ordine**: due testi sono tanto più simili quanto più compaiono nello stesso ordine sequenze di parole o di caratteri, e l'insieme delle parole lo perde.
 #### Documenti come stringhe
-Sia $\Sigma$ l'alfabeto dei caratteri (per testi in inglese circa 27 caratteri, spazio compreso). Un documento è un **elemento** di $\Sigma^*$, l'insieme di tutte le stringhe finite su $\Sigma$ (non un sottoinsieme). Da qui in poi "documento" significa questo.
+Sia $U$ l'alfabeto dei token, nelle slide *Alphabet* (per testi in inglese circa 27 caratteri, spazio compreso). Un documento è un **elemento** di $U^*$, l'insieme di tutte le stringhe finite su $U$ (non un sottoinsieme). Da qui in poi "documento" significa questo.
 
 > [!quote] $k$-shingle
-> Un **$k$-shingle** (o $k$-gramma) di un documento è una sequenza di $k$ **token** consecutivi che compare nel documento; i token possono essere caratteri, parole o altro. L'insieme dei $k$-shingle di $D\in\Sigma^*$, indicato con $S(D)$, è l'**insieme** (non ordinato, senza ripetizioni) di tutti i suoi $k$-shingle.
+> Un **$k$-shingle** (o $k$-gramma) di un documento è una sequenza di $k$ **token** consecutivi che compare nel documento; i token possono essere caratteri, parole o altro. L'insieme dei $k$-shingle di $D\in U^*$, indicato con $S(D)$, è l'**insieme** (non ordinato, senza ripetizioni) di tutti i suoi $k$-shingle.
 
 Rappresentare un documento come l'insieme delle sue parole, o delle sue parole "importanti", non funziona bene per questa applicazione: bisogna tenere conto dell'**ordine** delle parole, ed è quello che fanno gli shingle.
 
 > [!example] Esempio
-> Con $\Sigma=\{a,b,c\}$ e $D_1=abcab$, scorrendo il testo da sinistra a destra si incontrano $ab$, $bc$, $ca$ e di nuovo $ab$, che è già nell'insieme. Il 2-shingle di $D_1$ è
+> Con $U=\{a,b,c\}$ e $D_1=abcab$, scorrendo il testo da sinistra a destra si incontrano $ab$, $bc$, $ca$ e di nuovo $ab$, che è già nell'insieme. Il 2-shingle di $D_1$ è
 > $$\{ab,\ bc,\ ca\}$$
 
 Si calcola con una scansione lineare del testo: nessun problema computazionale.
@@ -133,12 +133,12 @@ Si calcola con una scansione lineare del testo: nessun problema computazionale.
 > [!warning] Modellare conta quanto gli algoritmi
 > Secondo il docente il vero lavoro del data mining è questo: davanti a una nuova applicazione, trasformare un problema reale in un problema computazionale ben definito, a cui poi applicare gli algoritmi noti. La parte di modellazione è importante quanto l'analisi delle strutture dati, o di più. Il docente consiglia di leggere sul libro il capitolo sulla similarità tra documenti: sulle slide un discorso occupa tre righe, sul libro dieci pagine di esempi ed esercizi.
 ### La matrice delle caratteristiche
-Fissati $\Sigma$ e $k$, gli shingle possibili sono $m=|\Sigma|^k$. Ogni documento $D$ è in corrispondenza biunivoca con un **vettore binario** $C(D)\in\{0,1\}^m$: una componente per ogni possibile $k$-shingle (in ordine lessicografico), a 1 se lo shingle compare in $D$.
+Fissati $U$ e $k$, gli shingle possibili sono $m=|U|^k$. Ogni documento $D$ è rappresentato da un **vettore binario** $C(D)\in\{0,1\}^m$ (slide p. 24; la rappresentazione non è iniettiva: documenti diversi possono avere lo stesso insieme di shingle, ad esempio $abcab$ e $abcabcab$ hanno entrambi $\{ab,bc,ca\}$): una componente per ogni possibile $k$-shingle (in ordine lessicografico), a 1 se lo shingle compare in $D$. Insiemi di $k$-shingle e vettori binari sono invece in corrispondenza biunivoca.
 
 > [!example] Esempio
-> Con $\Sigma=\{a,b,c\}$ e $k=2$ i possibili shingle sono $3^2=9$: $aa,ab,ac,ba,bb,bc,ca,cb,cc$. Per $D=abcab$:
+> Con $U=\{a,b,c\}$ e $k=2$ i possibili shingle sono $3^2=9$: $aa,ab,ac,ba,bb,bc,ca,cb,cc$. Per $D=abcab$:
 > $$C(D)=(0,1,0,0,0,1,1,0,0)$$
-> Con $|\Sigma|=27$ e $k=10$ il vettore di una sola email ha $27^{10}$ componenti.
+> Con $|U|=27$ e $k=10$ il vettore di una sola email ha $27^{10}$ componenti.
 
 Mettendo i vettori dei documenti $1,\dots,N$ come colonne si ottiene la **matrice** (la "matriciona"): $m$ righe, una per ogni shingle possibile, e $N$ colonne, una per ogni documento.
 - Il numero di righe **cresce esponenzialmente** con $k$: per questo $k$ va tenuto piccolo.
@@ -175,14 +175,14 @@ Due termini da qui in poi centrali:
 - **firma** (*signature*): una stringa che dipende fortemente dall'oggetto; se l'oggetto cambia un po', cambia un po' anche la firma.
 
 > [!info] Lo sketch dipende dalla distanza
-> Di uno stesso vettore si possono fare infiniti sketch: la scelta dipende da cosa si vuole preservare. Per la similarità di Jaccard si vuole che, con alta probabilità, colonne con similarità **alta** abbiano sketch **uguali** e colonne con similarità **bassa** sketch **diversi**. Per verificare l'**uguaglianza** esatta servirebbe uno sketch del tutto diverso, e lo stesso cambiando distanza (Hamming, euclidea, Manhattan).
+> Di uno stesso vettore si possono fare infiniti sketch: la scelta dipende da cosa si vuole preservare. Per la similarità di Jaccard si vuole che, con alta probabilità, colonne con similarità **alta** abbiano sketch **uguali** e colonne con similarità **bassa** sketch **diversi**. Per verificare l'**uguaglianza** esatta servirebbe uno sketch del tutto diverso, e lo stesso vale cambiando distanza (ad esempio le distanze di Hamming, euclidea o di Manhattan, citate a lezione ma non trattate nel corso).
 
 Lo schema, in tre passi:
 1. si calcolano le **firme** delle colonne, piccoli riassunti delle colonne;
 2. si esaminano le coppie di firme per trovare le colonne simili. È essenziale che la similarità delle firme sia legata a quella delle colonne;
 3. facoltativo: si verifica che le colonne con firme simili siano davvero simili, tornando alle colonne originali e calcolando la similarità esatta.
 
-Il fattore $N^2$ **resta** (confrontare tutte le coppie può richiedere troppo tempo: è il compito del locality-sensitive hashing), ma ogni confronto diventa molto più economico. Questi metodi possono produrre **falsi negativi**, e anche **falsi positivi** se si salta la verifica del passo 3. La verifica elimina i falsi positivi ma non i falsi negativi, che richiederebbero di ricontrollare tutte le coppie.
+Il fattore $N^2$ **resta** (confrontare tutte le coppie può richiedere troppo tempo: è il compito del locality-sensitive hashing), ma ogni confronto diventa molto più economico. Questi metodi possono produrre **falsi negativi** (coppie simili non trovate) e anche **falsi positivi** (coppie candidate che in realtà non sono simili), se si salta la verifica del passo 3 (slide p. 32). La verifica elimina i falsi positivi ma non i falsi negativi, che richiederebbero di ricontrollare tutte le coppie.
 
 L'idea è una **funzione hash** $h$ che mappa ogni colonna $C$ di $m$ bit in una firma $h(C)$ con $|h(C)|\ll|C|=m$, tale che:
 1. $h(C)$ sia abbastanza piccola da far stare le firme in RAM (memoria veloce);
@@ -196,10 +196,7 @@ L'unica componente casuale è una **permutazione $\pi$ delle righe** della matri
 > Fissata una permutazione $\pi$ delle righe, il **min-hash** di una colonna $C$ è
 > $$h_\pi(C)=\text{l'indice, nell'ordine permutato da }\pi\text{, della prima riga in cui }C\text{ ha un }1$$
 
-Una volta fissata $\pi$, $h_\pi$ è deterministica; al variare di $\pi$ casuale, $h_\pi(C)$ è una variabile aleatoria. Nelle slide si scrive anche $h_\pi(C)=\min(\pi(C))$. La strategia pratica è usare **più** permutazioni casuali indipendenti (ad esempio 100) per costruire la firma di $C$.
-
-> [!question] Domanda tipica d'esame
-> Qual è il dominio e il codominio del min-hash $h_\pi$? Traccia: fissata $\pi$, $h_\pi:\{0,1\}^m\to\{1,\dots,m\}$. Il dominio non sono le permutazioni né la matrice: sono **tutti** i possibili vettori binari di $m$ componenti, anche se in un'applicazione le colonne sono poche. Il docente avverte che domande come questa le fa, e che non basta sapere la definizione a memoria.
+Una volta fissata $\pi$, $h_\pi$ è deterministica; al variare di $\pi$ casuale, $h_\pi(C)$ è una [[02 - Algoritmi randomizzati e probabilità#Variabili aleatorie|variabile aleatoria]]. Nelle slide si scrive anche $h_\pi(C)=\min(\pi(C))$. La strategia pratica è usare **più** permutazioni casuali indipendenti (ad esempio 100) per costruire la firma di $C$.
 
 Rappresentare una colonna richiede $m$ bit, rappresentarne il min-hash solo $O(\log m)$ bit, perché è soltanto un indice di riga della matrice: con $m=27^{10}$ si passa da $27^{10}$ bit a circa $10\log_227\approx48$ bit.
 #### Esempio
@@ -228,7 +225,10 @@ $$\begin{array}{c|cccc}
 Ad esempio $h_{\pi_2}(C_3)=4$ e $h_{\pi_3}(C_4)=2$, come verificato a lezione.
 
 > [!warning] Refusi nelle slide dell'esempio
-> Nella slide 37 l'intestazione della matrice delle firme riporta $\langle\pi_1,\pi_2,\pi_2\rangle$: è un refuso per $\langle\pi_1,\pi_2,\pi_3\rangle$. Nella tabella finale (slide 41) la similarità vera della coppia $C_1$-$C_3$ è scritta $6/7$, ma dalla matrice risulta $\frac34$ ($C_1$ ha 1 nelle righe 1, 2, 6, 7, $C_3$ nelle righe 1, 6, 7: intersezione 3, unione 4); il valore $0{,}75$ degli appunti è quello giusto, ricalcolato con Python insieme alle firme.
+> Nella slide 37 l'intestazione della matrice delle firme riporta $\langle\pi_1,\pi_2,\pi_2\rangle$: è un refuso per $\langle\pi_1,\pi_2,\pi_3\rangle$. Nella tabella finale (slide 41) la similarità vera della coppia $C_1$-$C_3$ è scritta $6/7$, ma dalla matrice risulta $\frac34$ ($C_1$ ha 1 nelle righe 1, 2, 6, 7, $C_3$ nelle righe 1, 6, 7: intersezione 3, unione 4).
+
+> [!question] Domanda tipica d'esame
+> Qual è il dominio e il codominio del min-hash $h_\pi$? Traccia: fissata $\pi$, $h_\pi:\{0,1\}^m\to\{1,\dots,m\}$. Il dominio non sono le permutazioni né la matrice: sono **tutti** i possibili vettori binari di $m$ componenti, anche se in un'applicazione le colonne sono poche. Il docente avverte che domande come questa le fa, e che non basta sapere la definizione a memoria.
 ### Il teorema del min-hashing
 > [!quote] Teorema
 > Per ogni coppia di colonne $C_1,C_2\in\{0,1\}^m$, scegliendo $\pi$ uniformemente tra le permutazioni delle righe,
@@ -236,12 +236,7 @@ Ad esempio $h_{\pi_2}(C_3)=4$ e $h_{\pi_3}(C_4)=2$, come verificato a lezione.
 
 Le due colonne sono arbitrarie, anche le peggiori; lo spazio di probabilità è dato solo dalla scelta di $\pi$. L'evento non è che le colonne siano uguali, ma che i loro **min-hash** coincidano, cioè che finiscano nello stesso bucket. La probabilità di collisione cresce **linearmente** con la similarità: proprio quello che si voleva.
 #### Dimostrazione
-A lezione il docente ha detto di "lasciar perdere la dimostrazione" per concentrarsi sull'uso del teorema; la dimostrazione è nelle slide (pagina 39).
-- Sia $X$ una colonna (l'insieme dei suoi shingle) e $y\in X$. Allora $\Pr[\pi(y)=\min(\pi(X))]=\frac1{|X|}$: con una permutazione uniforme ogni riga di $X$ ha la stessa probabilità di finire nella posizione più piccola.
-- Sia $y$ la riga tale che $\pi(y)=\min(\pi(C_1\cup C_2))$; per il punto precedente è uniforme su $C_1\cup C_2$. Le righe con 0 in entrambe le colonne non contano.
-- Allora $\pi(y)=\min(\pi(C_1))$ se $y\in C_1$, oppure $\pi(y)=\min(\pi(C_2))$ se $y\in C_2$: una delle due colonne deve avere 1 nella riga $y$.
-- I due min-hash coincidono esattamente quando valgono entrambe, cioè quando $y\in C_1\cap C_2$. Quindi
-$$\Pr[\min(\pi(C_1))=\min(\pi(C_2))]=\frac{|C_1\cap C_2|}{|C_1\cup C_2|}=\mathrm{Sim}(C_1,C_2)\qquad\blacksquare$$
+A lezione il docente ha detto di "lasciar perdere la dimostrazione" per concentrarsi sull'uso del teorema: la dimostrazione (slide, pagina 39) è stata fatta nella lezione successiva, ed è in [[03 - Ricerca di oggetti simili#Dimostrazione del teorema del min-hashing]].
 #### Uno stimatore non distorto
 Per una coppia di colonne $i,j$ sia
 $$Z_{ij}=\begin{cases}1&\text{se }h_\pi(C_i)=h_\pi(C_j)\\0&\text{altrimenti}\end{cases}$$
@@ -256,29 +251,31 @@ Il teorema non dà da solo un metodo per **stimare** la similarità, ad esempio 
 > $$\text{Sign-Sim}(C_1,C_2)=\frac{\big|\{\ell: h_{\pi_\ell}(C_1)=h_{\pi_\ell}(C_2)\}\big|}{t}$$
 
 È una media delle $t$ variabili $Z$, il cui valore atteso è la similarità di Jaccard: l'obiettivo è stimare $\Pr[Z=1]$.
-Per la legge dei grandi numeri e per le disuguaglianze di concentrazione ([[02 - Algoritmi randomizzati e probabilità#Disuguaglianza di Chebyshev|Chebyshev]], con la varianza di una somma di variabili binarie indipendenti, e i bound di Chernoff) questa frazione converge al valore atteso, cioè alla similarità vera, e si può quantificare la probabilità di errore in funzione di $t$.
+Per la [[02 - Algoritmi randomizzati e probabilità#Media di più campioni e legge dei grandi numeri|legge dei grandi numeri]] e per le disuguaglianze di concentrazione ([[02 - Algoritmi randomizzati e probabilità#Disuguaglianza di Chebyshev|Chebyshev]], con la varianza di una somma di variabili binarie indipendenti, e i bound di Chernoff) questa frazione converge al valore atteso, cioè alla similarità vera, e si può quantificare la probabilità di errore in funzione di $t$.
 
 L'algoritmo lavora sulla **matrice delle firme**, non sulla matrice originale: stesse $N$ colonne, ma $t$ righe invece di $27^{10}$. Questo è il punto decisivo: una tecnica di sketching serve solo se le query si possono rispondere **usando soltanto gli sketch**, senza tornare a leggere i dati originali.
 
 > [!example] Stime e valori veri nell'esempio
-> Dalla matrice delle firme, la stima per $C_1,C_2$ è $\frac03=0$, come la similarità vera ($C_1$ e $C_2$ non hanno shingle in comune). In generale le stime sbagliano: per $C_1,C_3$ la similarità vera è $\frac34=0{,}75$ e la stima $\frac23\approx0{,}67$; per $C_2,C_4$ la similarità vera è $0{,}75$ e la stima $1$; per $C_3,C_4$ entrambe valgono 0 (la tabella di slide 41 riassume tutto: coppie 1-3, 2-4, 1-2, 3-4, similarità vera $\frac34$, $0{,}75$, 0, 0, stima dalle firme $\frac23$, $1$, 0, 0). Aumentando il numero di permutazioni le stime convergono ai valori veri.
+> Dalla matrice delle firme, la stima per $C_1,C_2$ è $\frac03=0$, come la similarità vera ($C_1$ e $C_2$ non hanno shingle in comune). In generale le stime sbagliano: per $C_1,C_3$ la similarità vera è $\frac34=0{,}75$ e la stima $\frac23\approx0{,}67$; per $C_2,C_4$ la similarità vera è $0{,}75$ e la stima $1$; per $C_3,C_4$ entrambe valgono 0 (la tabella di slide 41 riassume tutto: per le coppie 1-3, 2-4, 1-2, 3-4 la similarità vera è $0{,}75$, $0{,}75$, $0$, $0$ e la stima dalle firme $\frac23$, $1$, $0$, $0$; per la coppia 1-3 la slide scrive $6/7$ al posto di $0{,}75$, vedi sopra). Aumentando il numero di permutazioni le stime convergono ai valori veri.
 
 > [!question] Domanda tipica d'esame
 > Definisci il min-hash di una colonna e dimostra che la probabilità che due colonne abbiano lo stesso min-hash è la loro similarità di Jaccard. Come si usa questo fatto per stimare la similarità, e con quale confidenza? Traccia: matrice shingle × documenti, permutazione casuale delle righe, prima riga con 1; stimatore non distorto; $t$ permutazioni indipendenti, frazione di coincidenze, concentrazione (Chebyshev, Chernoff).
 ### Prossimi passi
 La lezione si interrompe qui, a pagina 41 delle slide: la discussione sulla stima con più permutazioni continua giovedì (dalla pagina 42: l'algoritmo randomizzato che restituisce $\text{Sign-Sim}$ con $t$ permutazioni, la concentrazione, lo spazio $\Theta(t\log m)$ della firma e il trucco di sostituire le permutazioni con funzioni hash sulle righe). Il min-hashing riduce il costo del singolo confronto, ma non il fattore $N^2$ delle coppie: è il compito del locality-sensitive hashing.
 ## Locality-sensitive hashing
-Lezione 8 (29/10/2026), slide Ch03-ABD-Andy_SLIDES 3, pp. 42-63 del PDF (più la dimostrazione di p. 39; le pp. 64-69, algoritmo, tabella, S-curve e riepilogo, sono riassunte in fondo come "dalle slide"): si dimostra il [[03 - Ricerca di oggetti simili#Il teorema del min-hashing|teorema del min-hashing]], si discute il costo di generare permutazioni casuali e come le si sostituisce in pratica con funzioni hash, e si affronta l'ultimo passo della pipeline: il **locality-sensitive hashing** (LSH) con la tecnica delle **bande**, che supera la barriera quadratica.
+Lezione 8 (29/10/2026), slide Ch03-ABD-Andy_SLIDES 3, pp. 42-63 del PDF (più la dimostrazione di p. 39 e, dalla tecnica delle bande, i valori di pp. 61 e 65; le pp. 64-69, algoritmo, S-curve e riepilogo, sono riassunte in fondo come "dalle slide"): si dimostra il [[03 - Ricerca di oggetti simili#Il teorema del min-hashing|teorema del min-hashing]], si discute il costo di generare permutazioni casuali e come le si sostituisce in pratica con funzioni hash, e si affronta l'ultimo passo della pipeline: il **locality-sensitive hashing** (LSH) con la tecnica delle **bande**, che supera la barriera quadratica.
 ### Ripresa: una funzione hash con località
 Si riparte dalla matrice shingle × documenti: $m=|U|^k$ righe, una per ogni $k$-shingle possibile, e $N$ colonne, una per documento, con 1 nella riga $i$ e colonna $j$ se l'$i$-esimo shingle compare nel $j$-esimo documento. La matrice è sparsa, e calcolare la similarità di Jaccard di due colonne è banale (righe con 1 in entrambe diviso righe con 1 in almeno una), ma la matrice è enorme: già con $k$ tra 5 e 10 il numero di righe è impresentabile.
 
 > [!info] Due idee di hashing opposte
-> Nelle funzioni hash dei **dizionari** si vuole che, **qualunque** sia la coppia di chiavi, la probabilità che finiscano nello stesso slot sia bassa: la collisione non deve dipendere da come si chiamano le chiavi. Qui serve una proprietà di **località**: se due colonne si assomigliano (hanno molti 1 in comune) la probabilità di collisione deve **aumentare**, se sono distanti deve diminuire. Le funzioni hash dei dizionari serviranno comunque, più avanti.
+> Nelle funzioni hash dei **dizionari** ([[04 - Funzioni hash universali#Il problema del dizionario|il problema del dizionario]]) si vuole che, **qualunque** sia la coppia di chiavi, la probabilità che finiscano nello stesso slot sia bassa: la collisione non deve dipendere da come si chiamano le chiavi. Qui serve una proprietà di **località**: se due colonne si assomigliano (hanno molti 1 in comune) la probabilità di collisione deve **aumentare**, se sono distanti deve diminuire. Le funzioni hash dei dizionari serviranno comunque, più avanti.
 ### Dimostrazione del teorema del min-hashing
 La dimostrazione, saltata nella lezione precedente, è quella delle slide (pagina 39).
-- Sia $X$ una colonna e $y$ una riga in cui $X$ ha 1. Con una permutazione uniforme, $y$ è la prima riga con 1 nell'ordine permutato con probabilità $\frac1{|X|}$, dove $|X|$ è il **numero di 1** della colonna: tra tutti gli 1 di $X$ c'è un solo caso favorevole, che $y$ venga prima di tutti gli altri, e la permutazione non favorisce nessuno. Gli 0 non contano, possono finire dove vogliono.
-- Per due colonne $C_1,C_2$, i casi possibili per la posizione del primo 1 dell'**unione** sono le righe con 1 in almeno una delle due colonne, tutti equiprobabili.
-- I due min-hash coincidono esattamente quando quella riga ha 1 in **entrambe** le colonne: i casi favorevoli sono le righe di $C_1\cap C_2$. Quindi la probabilità è $\frac{|C_1\cap C_2|}{|C_1\cup C_2|}$.
+- Sia $X$ una colonna (l'insieme dei suoi shingle) e $y\in X$ una riga in cui $X$ ha 1. Con una permutazione uniforme, $y$ è la prima riga con 1 nell'ordine permutato con probabilità $\Pr[\pi(y)=\min(\pi(X))]=\frac1{|X|}$, dove $|X|$ è il **numero di 1** della colonna: tra tutti gli 1 di $X$ c'è un solo caso favorevole, che $y$ venga prima di tutti gli altri, e la permutazione non favorisce nessuno. Gli 0 non contano, possono finire dove vogliono.
+- Per due colonne $C_1,C_2$, i casi possibili per la posizione del primo 1 dell'**unione** sono le righe con 1 in almeno una delle due colonne, tutti equiprobabili: sia $y$ la riga tale che $\pi(y)=\min(\pi(C_1\cup C_2))$, uniforme su $C_1\cup C_2$ per il punto precedente. Le righe con 0 in entrambe le colonne non contano.
+- Allora $\pi(y)=\min(\pi(C_1))$ se $y\in C_1$, oppure $\pi(y)=\min(\pi(C_2))$ se $y\in C_2$: una delle due colonne deve avere 1 nella riga $y$.
+- Se $y\in C_1\cap C_2$ valgono entrambe e i due min-hash coincidono (valgono entrambi $\pi(y)$). Se invece $y$ appartiene a una sola delle due colonne, ad esempio solo a $C_1$, allora $\min(\pi(C_1))=\pi(y)<\min(\pi(C_2))$, perché $\pi$ è iniettiva e $y$ ha la posizione minima in $C_1\cup C_2$: i due min-hash sono diversi. I due min-hash coincidono quindi se e solo se $y\in C_1\cap C_2$, e i casi favorevoli sono le righe di $C_1\cap C_2$.
+$$\Pr[\min(\pi(C_1))=\min(\pi(C_2))]=\frac{|C_1\cap C_2|}{|C_1\cup C_2|}=\mathrm{Sim}(C_1,C_2)\qquad\blacksquare$$
 
 Tutto si basa sul fatto che la permutazione sia scelta **uniformemente**: se alcuni indici fossero privilegiati, ogni posizione avrebbe una probabilità diversa e non basterebbe contare casi favorevoli su casi possibili.
 ### Stima con $t$ permutazioni
@@ -297,17 +294,17 @@ Con una sola permutazione la stima è 1 o 0: se la similarità vera è $0{,}7$ s
 \end{algorithm}
 ```
 
-$\text{Sign-Sim}(C_1,C_2)$ non è uguale a $\mathrm{Sim}(C_1,C_2)$, ma per il teorema ne è il valore atteso, quindi converge a $\mathrm{Sim}(C_1,C_2)$ per $t\to\infty$ (corollario del teorema). Le $t$ variabili binarie "le due colonne collidono con la permutazione $j$" sono indipendenti, quindi valgono i risultati di concentrazione (Chebyshev, [[02 - Algoritmi randomizzati e probabilità#I bound di Chernoff|Chernoff]]) e la convergenza è esponenziale.
+$\text{Sign-Sim}(C_1,C_2)$ non è uguale a $\mathrm{Sim}(C_1,C_2)$, ma per il teorema ne è il valore atteso, quindi converge a $\mathrm{Sim}(C_1,C_2)$ per $t\to\infty$ (corollario del teorema). Le $t$ variabili binarie "le due colonne collidono con la permutazione $j$" sono indipendenti, quindi valgono i risultati di concentrazione (Chebyshev, [[02 - Algoritmi randomizzati e probabilità#I bound di Chernoff|Chernoff]]) e la convergenza è esponenziale *(extra, non da slide: segue dai bound di Chernoff; le slide, p. 42, parlano solo di "concentration results")*.
 
-Nella pratica bastano circa **100** permutazioni. Ogni elemento della firma è un indice di riga, quindi occupa $\Theta(\log m)$ bit, e la firma di una colonna $\Theta(t\log m)$ bit: con $t=100$, circa 400 byte. Il passaggio da $m$ a $\log m$ ha quindi una costante davanti, $t\approx100$, del tutto accettabile visto che $m$ è dell'ordine dei miliardi. La matrice originale $M$ con $m$ righe diventa la **matrice delle firme** $\mathrm{SIG}$ con $t$ righe da $\log m$ bit.
+Nella pratica bastano circa **100** permutazioni. Ogni elemento della firma è un indice di riga, quindi occupa $\Theta(\log m)$ bit, e la firma di una colonna $\Theta(t\log m)$ bit: con $t=100$ e indici da 4 byte, circa 400 byte (come nelle slide, p. 43). Il passaggio da $m$ a $\log m$ ha quindi una costante davanti, $t\approx100$, del tutto accettabile visto che $m$ è dell'ordine dei miliardi. La matrice originale $M$ con $m$ righe diventa la **matrice delle firme** $\mathrm{SIG}$ con $t$ righe da $\log m$ bit.
 ### Il costo delle permutazioni casuali
-Per calcolare i min-hash bisogna generare e tenere in memoria le permutazioni. Le permutazioni di $m$ elementi sono $m!$; numerandole (ad esempio per numero di inversioni) e mettendole in corrispondenza biunivoca con stringhe binarie, il modo migliore per sceglierne una uniformemente è generare a caso, bit per bit, una stringa di
+Per calcolare i min-hash bisogna generare e tenere in memoria le permutazioni (le slide, p. 44, dicono solo che permutare le $m$ righe, anche una volta sola, è troppo costoso). Le permutazioni di $m$ elementi sono $m!$; numerandole (ad esempio per numero di inversioni) e mettendole in corrispondenza biunivoca con stringhe binarie, il modo migliore per sceglierne una uniformemente è generare a caso, bit per bit, una stringa di
 $$\log_2(m!)\approx m\log m\ \text{bit}$$
 (con l'approssimazione di Stirling), cioè un costo **superlineare** in $m$. Con $m=27^{10}$ anche generare e memorizzare una sola permutazione è un problema, e ne servono $t$ indipendenti.
 
 In pratica si sostituiscono le $t$ permutazioni delle righe con $t$ **funzioni hash** sulle righe: ordinare le righe secondo $f_i(j)$ dà una permutazione "quasi" casuale. Una funzione hash casuale classica è
 $$h_{a,b}(x)=\big((a\cdot x+b)\bmod p\big)\bmod m$$
-con $a,b$ interi casuali e $p$ un numero primo maggiore di $m$: per rappresentarla bastano $O(\log m)$ bit invece di $m\log m$.
+con $a,b$ interi casuali e $p$ un numero primo maggiore di $m$ (è una [[04 - Funzioni hash universali#Seconda costruzione: una retta casuale|famiglia universale]], slide p. 45; attenzione: nella nota 04 $p\geq N$ e $m$ è il numero di bucket, qui, come nelle slide, $p>m$ con $m$ numero di righe): per rappresentarla bastano $O(\log m)$ bit invece di $m\log m$.
 
 ```pseudo
 \begin{algorithm}
@@ -336,7 +333,7 @@ Le iterazioni sono $\Theta(mN)$, ma i $t$ hash si calcolano solo dove $M(j,C)=1$
 > [!warning] Teoria e pratica
 > Una permutazione non crea **collisioni**: indici diversi finiscono sempre in posizioni diverse. Una funzione hash che manda $m$ indici in circa $m$ bucket con probabilità uniforme (lo stesso esperimento delle [[02 - Algoritmi randomizzati e probabilità#Bilanciamento del carico|palline nelle scatole]]) invece ne crea qualcuna: due righe possono avere lo stesso valore, e due colonne possono risultare con lo stesso min-hash non perché sono simili ma per una collisione. In pratica questi errori si trascurano: con un centinaio di funzioni hash sono rari e la media funziona bene. Il min-hashing è progettato e analizzato con le permutazioni, ed è usato con funzioni hash che minimizzano le collisioni, molto più efficienti; empiricamente funziona bene.
 ### Perché serve il locality-sensitive hashing
-Il quadro: documenti → $k$-shingle → matrice di $m$ righe → matrice delle firme di $t\log m$ righe. Il min-hashing ha reso efficiente il confronto di **una** coppia fissata, ma per rispondere alla domanda originale, tutte le coppie candidate con similarità almeno $s$, bisogna ancora confrontare tutte le coppie: il fattore $N^2$ resta.
+Il quadro: documenti → $k$-shingle → matrice $M$ di $m$ righe → matrice delle firme $\mathrm{SIG}$ di $t$ righe, ciascuna da $\log m$ bit (in tutto $t\log m$ bit per colonna; la slide p. 47 scrive "$t\log m$ rows", intendendo i bit). Il min-hashing ha reso efficiente il confronto di **una** coppia fissata, ma per rispondere alla domanda originale, tutte le coppie candidate con similarità almeno $s$, bisogna ancora confrontare tutte le coppie: il fattore $N^2$ resta.
 
 > [!example] Gli ordini di grandezza
 > Con $N=10^6$ documenti le coppie sono $\binom N2\approx5\cdot10^{11}$. Con $10^6$ confronti al secondo e circa $10^5$ secondi in un giorno servono circa 5 giorni; con $N=10^7$ più di un anno.
@@ -349,11 +346,11 @@ L'obiettivo dell'LSH: data una soglia $s$ (ad esempio $0{,}8$, un parametro di i
 
 L'ipotesi di lavoro è che due documenti abbiano la stessa similarità delle loro firme (grazie al corollario del teorema). La similarità di due firme non viene da piccole differenze nei valori: la distanza tra due indici non ha alcun significato. Contano solo i valori **identici**.
 ### Hashing delle firme intere
-L'idea più semplice: si considera la firma di un documento (ad esempio $(2,1,2)$) come la sua **chiave** e la si manda, con una normale funzione hash dei dizionari, in una tabella con abbastanza bucket da rendere improbabili le collisioni tra chiavi diverse. Firme identiche finiscono sicuramente nello stesso bucket, firme diverse con alta probabilità in bucket diversi. Le coppie candidate si leggono dalle **liste di trabocco**: il costo è lineare per inserire i documenti, e poi **proporzionale all'output**, cioè al numero di coppie simili, che in un dataset grande sono molte meno di $N^2$.
+L'idea più semplice: si considera la firma di un documento (ad esempio $(2,1,2)$) come la sua **chiave** e la si manda, con una normale funzione hash dei dizionari ([[04 - Funzioni hash universali#Il problema del dizionario|il problema del dizionario]]), in una tabella con abbastanza bucket da rendere improbabili le collisioni tra chiavi diverse. Firme identiche finiscono sicuramente nello stesso bucket, firme diverse con alta probabilità in bucket diversi. Le coppie candidate si leggono dalle **liste di trabocco**: il costo è lineare per inserire i documenti, e poi **proporzionale all'output**, cioè al numero di coppie simili, che in un dataset grande sono molte meno di $N^2$.
 
-Il problema è che il criterio è troppo forte: due firme sono considerate uguali solo se coincidono in **tutte** le $t$ componenti (un AND). Due colonne con similarità $0{,}75$ superano il test con probabilità $0{,}75^{100}\approx3\cdot10^{-13}$, e anche due firme uguali in 99 componenti su 100 finiscono quasi certamente in bucket diversi.
+Il problema è che il criterio è troppo forte: due firme sono considerate uguali solo se coincidono in **tutte** le $t$ componenti (un AND). Due colonne con similarità $0{,}75$ superano il test con probabilità $0{,}75^{100}\approx3\cdot10^{-13}$ *(extra, non da slide)*, e anche due firme uguali in 99 componenti su 100 finiscono quasi certamente in bucket diversi.
 
-Il problema "tutte le coppie con similarità almeno $s$" ha una risposta **a gradino**: la funzione ideale vale 0 sotto la soglia e 1 sopra. Il min-hashing da solo dà una retta (la probabilità di collisione è la similarità); l'AND su $t$ componenti dà una curva che crolla verso zero al crescere di $t$. Serve una combinazione di AND e OR.
+Il problema "tutte le coppie con similarità almeno $s$" ha una risposta **a gradino**: la funzione ideale vale 0 sotto la soglia e 1 sopra (slide p. 59, "Ideal Performance"). Il min-hashing da solo dà una retta (la probabilità di collisione è la similarità); l'AND su $t$ componenti dà una curva che crolla verso zero al crescere di $t$. Serve una combinazione di AND e OR.
 ### La tecnica delle bande
 Si divide la matrice delle firme in $b$ **bande** di $r$ righe ciascuna, con $b\cdot r=t$ (ad esempio 20 bande da 5 righe). La numerazione delle righe è fissata una volta per tutte e le bande non si sovrappongono.
 - Per **ogni banda**, la porzione di ogni colonna in quella banda si manda con una funzione hash in una tabella con $c$ bucket, con $c$ abbastanza grande rispetto a $r$ da evitare con alta probabilità le collisioni tra porzioni diverse.
@@ -361,9 +358,11 @@ Si divide la matrice delle firme in $b$ **bande** di $r$ righe ciascuna, con $b\
 
 Dentro una banda si fa l'AND sulle righe, tra le bande l'OR. Per l'analisi si assume che "stesso bucket" significhi "identiche in quella banda" (*perfect hashing*): l'ipotesi serve solo a semplificare l'analisi, non alla correttezza dell'algoritmo; nelle applicazioni reali si usa l'hashing universale.
 
+Nella figura di p. 54 ogni banda è mandata in una propria tabella di bucket: le colonne 2 e 6 finiscono nello stesso bucket in almeno una banda e sono quindi una coppia candidata (probabilmente simili), mentre le colonne 6 e 7 non condividono nessun bucket e vengono scartate.
+
 > [!example] Esempio: $N=10^5$, $t=100$, $b=20$, $r=5$, $s=0{,}8$
 > Con 100.000 documenti e firme di 100 interi, le firme occupano 40 MB. Si vogliono le coppie con similarità almeno $0{,}8$.
-> - **Coppia simile**, $\mathrm{Sim}(C_1,C_2)=0{,}8$: si vuole che sia candidata. La probabilità che sia identica in una banda è $0{,}8^5\approx0{,}328$; che non sia identica in nessuna delle 20 bande è $(1-0{,}328)^{20}\approx0{,}00035$. Solo circa una coppia su 3000 è un **falso negativo**: si trova il 99,965% delle coppie simili.
+> - **Coppia simile**, $\mathrm{Sim}(C_1,C_2)=0{,}8$: si vuole che sia candidata. La probabilità che sia identica in una banda è $0{,}8^5\approx0{,}328$; che non sia identica in nessuna delle 20 bande è $(1-0{,}328)^{20}\approx0{,}00035$ (esatto $0{,}000356$). Solo circa una coppia su 3000 (le slide arrotondano; esattamente una su circa 2800) è un **falso negativo**: si trova il 99,965% delle coppie simili (esattamente 99,964%).
 > - **Coppia dissimile**, $\mathrm{Sim}(C_1,C_2)=0{,}3$: si vuole che non sia candidata. La probabilità che sia identica in una banda è $0{,}3^5=0{,}00243$; che lo sia in almeno una banda è $1-(1-0{,}00243)^{20}\approx0{,}0474$. Circa il 4,75% di queste coppie diventa candidato (le slide scrivono 0,0474, troncando $0{,}04749$): sono **falsi positivi**, da esaminare per scoprire che sono sotto la soglia.
 ### La curva a S
 In generale, se due documenti hanno similarità $x$:
@@ -374,16 +373,16 @@ $$s\approx\left(\frac1b\right)^{1/r}$$
 Con $b=20$ e $r=5$ la soglia è circa $0{,}55$, e il salto è netto: la probabilità di essere candidata passa da circa $0{,}19$ con similarità $0{,}4$ a circa $0{,}80$ con similarità $0{,}6$. Con una sola banda di una sola riga ($r=1$) si torna alla retta del min-hashing, un pessimo comportamento a soglia.
 
 > [!example] Tabella per $b=20$, $r=5$ (dalle slide, p. 65)
-> Probabilità che almeno una banda sia identica, $1-(1-x^5)^{20}$, in funzione della similarità $x$ (valori ricalcolati con Python, coincidono con le slide):
+> Probabilità che almeno una banda sia identica, $1-(1-x^5)^{20}$, in funzione della similarità $x$ (i valori coincidono con quelli delle slide):
 >
 > | $x$ | 0,2 | 0,3 | 0,4 | 0,5 | 0,6 | 0,7 | 0,8 |
 > |---|---|---|---|---|---|---|---|
 > | probabilità | 0,006 | 0,047 | 0,186 | 0,470 | 0,802 | 0,975 | 0,9996 |
 >
-> La soglia teorica $(1/20)^{1/5}\approx0{,}549$ è la zona in cui la curva sale più rapidamente.
+> La soglia teorica $(1/20)^{1/5}\approx0{,}549$ è un'approssimazione della zona in cui la curva sale più rapidamente (la pendenza massima è intorno a $0{,}5$-$0{,}55$).
 
 > [!warning] Soglia e valori citati a lezione
-> A lezione il flesso per $b=20$, $r=5$ è stato indicato a $0{,}5$, e la probabilità a $0{,}4$ a $0{,}1$ (e "da $0{,}2$ a $0{,}8$" tra $0{,}4$ e $0{,}6$). Con le formule il flesso è circa $0{,}55$ e la probabilità vale $0{,}186$ a $0{,}4$ e $0{,}802$ a $0{,}6$, come nella tabella delle slide: i valori a voce sono approssimazioni del docente, quelli degli appunti sono corretti.
+> A lezione il flesso per $b=20$, $r=5$ è stato indicato a $0{,}5$, e la probabilità a $0{,}4$ a $0{,}1$ (e "da $0{,}2$ a $0{,}8$" tra $0{,}4$ e $0{,}6$). Con le formule la soglia approssimata è circa $0{,}55$ (la pendenza massima è intorno a $0{,}5$) e la probabilità vale $0{,}186$ a $0{,}4$ e $0{,}802$ a $0{,}6$, come nella tabella delle slide: i valori a voce sono approssimazioni del docente, quelli della tabella sono esatti.
 
 > [!info] Come si scelgono $b$ e $r$
 > Si fa "reverse engineering": data la soglia $s$ desiderata, si scelgono $b$ e $r$ tali che $(1/b)^{1/r}\approx s$; le coppie possibili sono infinite. Poi:
@@ -392,17 +391,17 @@ Con $b=20$ e $r=5$ la soglia è circa $0{,}55$, e il salto è netto: la probabil
 >
 > I falsi positivi si possono eliminare verificando le coppie candidate sulle colonne vere; i falsi negativi no, se non tornando al metodo esaustivo. Per ridurli al massimo si aumenta $b$ e si diminuisce $r$.
 
-> [!info] Esercizio delle slide: perché l'LSH supera la barriera $\Theta(N^2)$ (p. 51, risposta ricavata dagli appunti)
+> [!info] Esercizio delle slide: perché l'LSH supera la barriera $\Theta(N^2)$ (p. 51; risposta *(extra, non da slide)*)
 > Ogni documento viene inserito una volta per banda ($b$ inserimenti per documento, lineari in $N$) e le coppie candidate si leggono dalle liste di trabocco: il costo è lineare in $N$ più il numero di candidate, cioè **output sensitive**. Funziona quando le coppie davvero simili sono molte meno di $N^2$, come nelle applicazioni pratiche.
 
 > [!info] Similarità e transitività
 > Rispondendo a una domanda: se $A$ è simile all'80% a $B$ e a $C$, non segue che $B$ e $C$ siano simili all'80%. Per questo il criterio è sulle **coppie**: due colonne sono candidate se almeno una delle loro $b$ sottofirme finisce nello stesso bucket. Per ogni documento si guardano dove finiscono tutte le sue $b$ sottofirme, non una sola firma.
+
+> [!question] Domanda tipica d'esame
+> Perché il min-hashing da solo non basta a trovare tutte le coppie simili? Descrivi la tecnica delle bande e calcola la probabilità che due documenti con similarità $x$ diventino una coppia candidata. Come scegli $b$ e $r$ per una soglia $s$, e come influiscono su falsi positivi e falsi negativi? Traccia: il fattore $N^2$ resta; $b$ bande di $r$ righe, AND dentro la banda e OR tra le bande; $\Pr=1-(1-x^r)^b$, curva a S con soglia $\approx(1/b)^{1/r}$; esempio $b=20$, $r=5$; aumentare $b$ riduce i falsi negativi, aumentare $r$ riduce i falsi positivi.
 ### Dalle slide, non visto a lezione
 Pagine 64-69 delle slide, riassunte in modo sintetico (la tecnica è quella di [[#La tecnica delle bande]]).
 - **Obiettivo algoritmico** (p. 64). Dati le colonne della matrice delle firme $\mathrm{SIG}$ e la soglia $s$ ($0<s\leq1$), trovare le coppie con similarità delle firme almeno $s$: si applica la tecnica delle bande scegliendo $b$ e $r$ con $b\cdot r\leq t$ (le slide scrivono $\leq$, mentre sopra si è usato $b\cdot r=t$, il caso in cui si usano tutte le righe) e $(1/b)^{1/r}\approx s$. L'output sono le coppie con le $r$ righe identiche in **almeno una** banda. Taratura: aumentare $b$ diminuisce i falsi negativi, aumentare $r$ diminuisce i falsi positivi.
-- **Scelta di $r$ e $b$: la S-curve** (p. 66). Con $t=50$ ($r=5$, $b=10$) la curva è quella a S, con soglia vicina a $0{,}6$; l'**area blu** (sopra la curva ideale a gradino, a destra della soglia) è il tasso di falsi negativi, l'**area verde** (sotto, a sinistra della soglia) è il tasso di falsi positivi.
+- **Scelta di $r$ e $b$: la S-curve** (p. 66). Con $t=50$ ($r=5$, $b=10$) la curva è quella a S, con soglia $(1/10)^{1/5}\approx0{,}63$ (nella figura il gradino ideale è tracciato a $0{,}6$); l'**area blu** (a destra della soglia, tra la curva a S e il valore 1 del gradino ideale) è il tasso di falsi negativi, l'**area verde** (a sinistra della soglia, tra il valore 0 del gradino ideale e la curva a S) è il tasso di falsi positivi.
 - **Riepilogo LSH** (p. 67). Si tarano $b$ e $r$ per prendere quasi tutte le coppie con firme simili ed eliminare la maggior parte delle altre, scelta più bilanciata $s\approx(1/b)^{1/r}$. Poi si controlla in memoria centrale che le coppie candidate abbiano davvero firme simili (stessi valori in molte righe) e, facoltativamente, con un ulteriore passaggio sui dati, che i documenti siano davvero simili, per evitare i falsi positivi.
 - **Riepilogo dei tre passi** (pp. 68-69). Shingling: ogni $k$-shingle riceve un identificativo tramite hashing (una riga della matrice grande $M$); la similarità di Jaccard è definita su sottoinsiemi. Min-hashing: hashing che preserva la similarità, con $\Pr[h_\pi(C_1)=h_\pi(C_2)]=\mathrm{sim}(C_1,C_2)$, e funzioni hash al posto delle permutazioni. LSH: hashing per trovare le coppie candidate con similarità $\geq s$ (tecnica delle bande).
-
-> [!question] Domanda tipica d'esame
-> Perché il min-hashing da solo non basta a trovare tutte le coppie simili? Descrivi la tecnica delle bande e calcola la probabilità che due documenti con similarità $x$ diventino una coppia candidata. Come scegli $b$ e $r$ per una soglia $s$, e come influiscono su falsi positivi e falsi negativi?

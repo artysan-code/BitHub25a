@@ -140,7 +140,7 @@ Espandendo ripetutamente i successori si sviluppa un **albero di ricerca**, con 
 
 Nell'esempio della Romania, dopo aver espanso Arad e poi Sibiu, la frontiera contiene Timisoara, Zerind, Arad, Fagaras, Oradea e Rimnicu Vilcea. Che Arad ricompaia è un problema: espanderlo di nuovo equivale a ripartire dal via. Bisogna quindi gestire gli **stati ripetuti** (i cicli); per ora si trascurano e si riprendono più avanti.
 
-Lo schema generale della ricerca ad albero:
+Lo schema generale della ricerca ad albero (nelle slide, p. 26, *Ricerca-Albero*):
 
 ```pseudo
 \begin{algorithm}
@@ -184,7 +184,7 @@ La frontiera non è un insieme ma una **lista ordinata**: i nodi vi entrano con 
 > [!quote] Strategia di ricerca
 > La strategia di ricerca è determinata interamente dall'**ordine** in cui i nodi della frontiera vengono estratti, cioè da come vengono inseriti nella frontiera.
 #### Ricerca in ampiezza
-Con una coda FIFO si ottiene la ricerca in ampiezza (*Breadth-First Search*), che espande i nodi livello per livello. Nelle slide (p. 30) lo stesso pseudocodice è presentato come quiz, "Che tipo di ricerca è?", e riproposto a p. 37 con il nome di ricerca in ampiezza. In questa versione il test obiettivo si fa quando un nodo viene **generato**: se lo stato iniziale è già un obiettivo si restituisce subito, come se all'inizio della partita il pallone fosse già in porta.
+Con una coda FIFO si ottiene la ricerca in ampiezza (*Breadth-First Search*; nelle slide *Ricerca-Ampiezza-A*, "su albero"), che espande i nodi livello per livello. Nelle slide (p. 30) lo stesso pseudocodice è presentato come quiz, "Che tipo di ricerca è?", e riproposto a p. 37 con il nome di ricerca in ampiezza. In questa versione il test obiettivo si fa quando un nodo viene **generato**: se lo stato iniziale è già un obiettivo si restituisce subito, come se all'inizio della partita il pallone fosse già in porta.
 
 ```pseudo
 \begin{algorithm}
@@ -262,7 +262,7 @@ La [[03 - Risoluzione di problemi mediante ricerca#Problemi come ricerca nello s
 - **Tempo**: $b + b^2 + \dots + b^d = O(b^d)$ nodi generati (con il test obiettivo fatto alla generazione).
 - **Spazio**: $O(b^d)$, perché la frontiera deve contenere un intero livello.
 
-Il vero limite è la **memoria**. Con $b = 10$, un milione di nodi al secondo e un kilobyte per nodo, a profondità 10 servono ore e terabyte di memoria; a profondità 16 servono anni ed exabyte. In giochi come gli scacchi, o nella guida autonoma, il numero di azioni possibili e la profondità delle soluzioni rendono l'ampiezza inutilizzabile anche su architetture moderne.
+Il vero limite è la **memoria**. Con $b = 10$, un milione di nodi al secondo e un kilobyte per nodo, a profondità 10 servono ore e terabyte di memoria; a profondità 14 servono 3,5 anni e 10 exabyte (tabella qui sotto). In giochi come gli scacchi, o nella guida autonoma, il numero di azioni possibili e la profondità delle soluzioni rendono l'ampiezza inutilizzabile anche su architetture moderne.
 
 > [!example] Tempo e memoria dell'ampiezza (dalle slide, p. 40)
 > Con $b = 10$, un milione di nodi generati al secondo e 1000 byte per nodo:
@@ -282,6 +282,33 @@ Se gli archi hanno costi diversi, conviene espandere per primo il nodo raggiunto
 Due accorgimenti rispetto all'ampiezza:
 - il **test obiettivo** si fa quando un nodo viene **estratto** per l'espansione, non quando viene generato: il primo nodo obiettivo generato potrebbe stare su un cammino più costoso di un altro non ancora scoperto;
 - se uno stato già in frontiera viene raggiunto con un cammino **più economico**, si sostituisce il nodo in frontiera con quello nuovo. Se uno stato $G$ è raggiungibile sia da $A$ sia da $B$, si tiene il padre che dà il cammino più breve.
+
+Le slide danno la ricerca a costo uniforme in tre forme. La prima (p. 43, *Ricerca-UC-A*, "su albero") è lo schema della ricerca ad albero con una coda con priorità e il test obiettivo all'**estrazione**, senza insieme $explored$ e senza il controllo sui duplicati:
+
+```pseudo
+\begin{algorithm}
+\caption{Uniform-Cost-Search-Tree(problem)}
+\begin{algorithmic}
+\State $node \gets$ un nodo con $\mathit{State} = problem.\mathit{Initial\text{-}State}$, $\mathit{Path\text{-}Cost} = 0$
+\State $frontier \gets$ coda con priorità con $node$ come unico elemento
+\Loop
+  \If{\Call{Empty?}{$frontier$}}
+    \State \Return fallimento
+  \EndIf
+  \State $node \gets$ \Call{Pop}{$frontier$}
+  \If{\Call{Goal-Test}{$node.\mathit{State}$}}
+    \State \Return \Call{Solution}{$node$}
+  \EndIf
+  \For{$action \in$ \Call{Actions}{$node.\mathit{State}$}}
+    \State $child \gets$ \Call{Child-Node}{$problem, node, action$}
+    \State $frontier \gets$ \Call{Insert}{$child, frontier$} \Comment{in coda con priorità}
+  \EndFor
+\EndLoop
+\end{algorithmic}
+\end{algorithm}
+```
+
+La seconda (p. 44, intitolata "Ricerca UC (modified)") è la figura 3.14 di AIMA, con $explored$ e la sostituzione del nodo in frontiera; la terza (p. 68) è la stessa con il nome *Ricerca-UC-G*, "su grafo". È la versione che segue, con i due accorgimenti già descritti:
 
 ```pseudo
 \begin{algorithm}
@@ -317,7 +344,7 @@ L'insieme $explored$ ricorda gli stati già espansi, per evitare cicli. Il costo
 - **Ottima**: sì. I nodi vengono espansi in ordine di $g$ crescente, quindi il primo obiettivo estratto è quello di costo minimo.
 - **Tempo e spazio**: $O\big(b^{1 + \lfloor C^*/\varepsilon \rfloor}\big)$, dove $C^*$ è il costo della soluzione ottima. Più gli archi costano poco rispetto a $C^*$, più livelli si esplorano. Con costi tutti uguali si riduce a $O(b^{d+1})$.
 
-È una strategia "golosa" e locale: preferisce i cammini localmente più brevi anche quando non vanno nella direzione giusta. Per andare da Roma a Milano non conviene passare per Frascati solo perché è la città più vicina. Fa quindi esplorazioni inutili, ma la soluzione che restituisce è ottima. Nelle slide (p. 45) $\lfloor C^*/\varepsilon \rfloor$ è il numero di mosse nel caso peggiore;.
+È una strategia "golosa" e locale: preferisce i cammini localmente più brevi anche quando non vanno nella direzione giusta. Per andare da Roma a Milano non conviene passare per Frascati solo perché è la città più vicina. Fa quindi esplorazioni inutili, ma la soluzione che restituisce è ottima. Nelle slide (p. 45) $\lfloor C^*/\varepsilon \rfloor$ è il numero di mosse nel caso peggiore.
 
 > [!info] Le dimostrazioni delle complessità
 > Il docente non le dimostra: chiede di ricostruirle sui libri di algoritmica o discutendole con un LLM, e di condividere i prompt migliori.
@@ -328,7 +355,7 @@ La ricerca in profondità usa una frontiera **LIFO**: espande sempre il nodo pi�
 - **Tempo**: $O(b^m)$. Dipende dalla profondità massima $m$, non da quella della soluzione: se $m \gg d$ può cercare troppo a lungo.
 - **Spazio**: $O(b\,m)$. In memoria ci sono solo il cammino corrente e, per ogni nodo del cammino, i fratelli non ancora espansi: al più $b$ nodi per ciascuno degli $m$ livelli. La memoria **non cresce esponenzialmente**.
 
-È questo il suo vantaggio: a profondità 16, con le stesse ipotesi di prima, la memoria passa dai 10 exabyte dell'ampiezza a circa 156 kilobyte (dalle slide, p. 50).
+È questo il suo vantaggio: con le stesse ipotesi di prima, la memoria passa dai 10 exabyte dell'ampiezza a circa 156 kilobyte (dalle slide, p. 50). Attenzione: la slide 50 attribuisce questi valori alla profondità 16, mentre nella tabella della slide 40 i 10 exabyte corrispondono alla profondità 14; qui vale la tabella.
 
 > [!warning] Slide e tabella non concordano sulla profondità
 > Nella slide 50 la complessità in tempo della profondità è scritta $O(b^{m+1})$ e la memoria "proporzionale a $b\,m + 1$", e $m$ è descritta come "distanza massima della soluzione"; nella tabella di confronto (slide 58) compaiono invece $O(b^m)$ e $O(b\,m)$, con $m$ lunghezza massima dei cammini (la definizione di AIMA, usata in queste note). Si riportano i valori di AIMA e della tabella: la differenza di un livello è irrilevante nell'ordine di grandezza.
@@ -408,6 +435,37 @@ Se lo spazio degli stati non è un albero ma un grafo, la ricerca ad albero può
 3. non generare stati **già visitati**: si ricorda ogni stato espanso in una struttura con accesso rapido, tipicamente una **tabella hash**, e lo si scarta se ricompare. È l'insieme $explored$ della ricerca a costo uniforme. Costa memoria $O(s)$, con $s$ il numero di stati possibili.
 
 Dalle slide (pp. 59-65): i cammini ciclici rendono infiniti gli alberi di ricerca, e le ridondanze compaiono anche senza cicli (ad esempio nelle griglie). C'è un compromesso tra spazio e tempo: ricordare gli stati visitati occupa spazio ma evita lavoro inutile, e "gli algoritmi che dimenticano la propria storia sono destinati a ripeterla". La **ricerca su grafi** mantiene la lista dei nodi visitati (lista chiusa) e non espande un nodo il cui stato è già stato incontrato; è ottima solo se il nuovo cammino non costa più di quello già trovato. Le slide (pp. 67-68) danno le versioni su grafo di ampiezza (il figlio si inserisce solo se il suo stato non è né in $explored$ né in frontiera) e di costo uniforme (la stessa del [[03 - Risoluzione di problemi mediante ricerca#Ricerca a costo uniforme|pseudocodice sopra]]).
+
+```pseudo
+\begin{algorithm}
+\caption{Graph-Breadth-First-Search(problem)}
+\begin{algorithmic}
+\State $node \gets$ un nodo con $\mathit{State} = problem.\mathit{Initial\text{-}State}$, $\mathit{Path\text{-}Cost} = 0$
+\If{\Call{Goal-Test}{$node.\mathit{State}$}}
+  \State \Return \Call{Solution}{$node$}
+\EndIf
+\State $frontier \gets$ coda FIFO con $node$ come unico elemento
+\State $explored \gets \emptyset$
+\Loop
+  \If{\Call{Empty?}{$frontier$}}
+    \State \Return fallimento
+  \EndIf
+  \State $node \gets$ \Call{Pop}{$frontier$}; aggiungi $node.\mathit{State}$ a $explored$
+  \For{$action \in$ \Call{Actions}{$node.\mathit{State}$}}
+    \State $child \gets$ \Call{Child-Node}{$problem, node, action$}
+    \If{$child.\mathit{State} \notin explored$ e $child.\mathit{State}$ non è in $frontier$}
+      \If{\Call{Goal-Test}{$child.\mathit{State}$}}
+        \State \Return \Call{Solution}{$child$}
+      \EndIf
+      \State $frontier \gets$ \Call{Insert}{$child, frontier$} \Comment{in coda}
+    \EndIf
+  \EndFor
+\EndLoop
+\end{algorithmic}
+\end{algorithm}
+```
+
+Questo è lo pseudocodice di p. 67 (*Ricerca-Ampiezza-g*): rispetto alla versione ad albero ([[03 - Risoluzione di problemi mediante ricerca#Problemi come ricerca nello spazio degli stati#Ricerca in ampiezza|sopra]]) il test obiettivo resta alla generazione, ma si applica solo ai figli nuovi. Sulla mappa della Romania (p. 66) la ricerca su grafo esplora uno stato **al più una volta**, e la frontiera separa i nodi esplorati da quelli non esplorati.
 
 > [!info] Programma
 > Le varianti per i grafi (*graph search*) sono state presentate come facoltative e non fanno parte del programma d'esame.
@@ -538,13 +596,141 @@ Poiché $f$ è non decrescente, A\* espande i nodi per **contorni** di $f$ cresc
 A\* è un buon compromesso tra l'avidità di chi guarda in avanti ($h$) e la memoria del cammino già fatto ($g$). Il suo problema è la memoria: tiene la frontiera, che in un labirinto $1000 \times 1000$ contiene moltissimi nodi, e anche tutti gli stati già esplorati (i nodi "rossi" delle animazioni).
 #### Varianti a memoria limitata
 - **IDA\*** (*iterative deepening A\**): come l'[[03 - Risoluzione di problemi mediante ricerca#Profondità limitata e approfondimento iterativo|approfondimento iterativo]], ma il limite (*f-limit*) è sul valore di $f$ invece che sulla profondità. A ogni iterazione si espandono i cammini entro la soglia corrente, e la si alza solo quanto serve. Non si memorizza la storia dell'intera ricerca. Dalle slide (pp. 55-58): con costi costanti $k$ il limite cresce di $k$; con costi variabili cresce almeno del costo minimo degli archi $\varepsilon$, oppure si fissa al **minimo $f$ tra i nodi scartati** all'iterazione precedente. È completo e ottimo in questi casi, con memoria $O(b\,d)$ come la profondità.
-- **A\* a memoria limitata** (*memory-bounded*, ad esempio SMA\*): si esegue A\* finché la memoria basta. Quando la frontiera supera il budget, si **eliminano i nodi peggiori** in fondo alla coda con priorità e si tengono i più promettenti. Nelle slide (p. 62) SMA\* (*Simplified Memory-bounded A\**) dimentica il nodo peggiore **dopo aver aggiornato il valore del padre**; a parità di $f$ sceglie il nodo migliore più recente e dimentica il peggiore più vecchio; è ottimo se il cammino soluzione sta in memoria.
+- **A\* a memoria limitata** (*memory-bounded*, ad esempio SMA\*): si esegue A\* finché la memoria basta. Quando la frontiera supera il budget, si **eliminano i nodi peggiori** in fondo alla coda con priorità e si tengono i più promettenti. Nelle slide (p. 62) SMA\* (*Simplified Memory-bounded A\**) dimentica il nodo peggiore **dopo aver aggiornato il valore del padre**; a parità di $f$ sceglie il nodo migliore più recente e dimentica il peggiore più vecchio; è ottimo se il cammino soluzione sta in memoria. La slide la presenta come «versione semplice» e non ne dà lo pseudocodice.
 - **Beam search**: si tiene sempre solo un numero fissato $k$ di nodi migliori. La ricerca diventa guidata dal limite di memoria più che dalla garanzia di ottimalità. Non è completa (slide, p. 47); $k$ è l'ampiezza del raggio (*beam*). La beam search come ricerca locale è ripresa nella [[03 - Risoluzione di problemi mediante ricerca#Beam search locale|lezione 6]].
-- **Best-first ricorsiva** (RBFS), dalle slide (pp. 59-61), non vista a lezione: simile a una profondità ricorsiva che usa meno memoria facendo più lavoro. Tiene traccia a ogni livello del migliore percorso alternativo e, invece di fare backtracking al fallimento, interrompe l'esplorazione quando trova un nodo meno promettente secondo $f$ (limite $f$ = minimo tra il limite corrente e il valore dell'alternativa); tornando indietro ricorda il miglior nodo trovato nel sottoalbero, per poterci eventualmente ritornare.
+- **Best-first ricorsiva** (RBFS), dalle slide (pp. 59-61), non vista a lezione: simile a una profondità ricorsiva che usa meno memoria facendo più lavoro. Tiene traccia a ogni livello del migliore percorso alternativo e, invece di fare backtracking al fallimento, interrompe l'esplorazione quando trova un nodo meno promettente secondo $f$ (limite $f$ = minimo tra il limite corrente e il valore dell'alternativa); tornando indietro ricorda il miglior nodo trovato nel sottoalbero, per poterci eventualmente ritornare. Pseudocodice ed esempio sono qui sotto.
 
 Le slide (p. 63) avvertono che con memoria limitata (IDA\*, SMA\*) si può compiere molto lavoro inutile, che il tempo effettivo è difficile da stimare e che la limitazione può rendere un problema intrattabile.
 
-Dalle slide (pp. 52-54, non viste a lezione), la beam search si applica ai compiti di trasduzione *sequence-to-sequence* (decodifica di sequenze), come il riconoscimento del parlato e la traduzione automatica; è lo stesso schema dell'[[03 - Risoluzione di problemi mediante ricerca#Beam search locale|esempio sul parlato]]. Anche la modalità con $w = 2$ e $w = 3$ è mostrata con esempi alle pp. 50-51.
+#### Beam search informata (dalle slide, pp. 47-54)
+Nella best-first si tiene tutta la frontiera; se la memoria è eccessiva si ricorre alla **beam search**, che a ogni passo tiene solo i $k$ nodi più promettenti (le slide indicano l'ampiezza del raggio con $w$, o con $\beta$ nello pseudocodice di p. 49). Non è completa: il nodo che porta alla soluzione può essere stato potato. Le slide danno due versioni dell'algoritmo.
+
+La prima (p. 48, "Algoritmo 12.5", grado $w$) lavora **a livelli**: espande tutti i nodi della lista OPEN, raccoglie i successori in una lista di candidati e conserva solo i $w$ migliori secondo $f$.
+
+```pseudo
+\begin{algorithm}
+\caption{Beam-Search(w)}
+\begin{algorithmic}
+\State metti $S$ nella lista $OPEN$; $CLOSE \gets$ lista vuota
+\Loop
+  \If{$OPEN$ è vuota}
+    \State \Return fallimento
+  \EndIf
+  \For{ogni nodo $N \in OPEN$}
+    \State togli $N$ da $OPEN$ e mettilo in $CLOSE$
+    \If{$N$ è un nodo obiettivo}
+      \State \Return la soluzione, ricostruita risalendo i puntatori da $N$ a $S$
+    \EndIf
+    \State espandi $N$ generando l'insieme dei successori $SS(N)$, eliminando quelli che sono antenati di $N$
+    \For{ogni $v \in SS(N)$}
+      \State crea un puntatore da $v$ a $N$ e inserisci $v$ nella lista $Beam\text{-}Candidate$
+    \EndFor
+  \EndFor
+  \State ordina $Beam\text{-}Candidate$ secondo $f$: i $w$ nodi migliori vanno in $OPEN$, gli altri sono potati
+\EndLoop
+\end{algorithmic}
+\end{algorithm}
+```
+
+La seconda (p. 49, $\mathit{beamSearch}(G, s, g, \beta)$) estrae un nodo alla volta e pota la lista aperta a $\beta$ elementi dopo ogni espansione; restituisce il cammino di costo minimo trovato.
+
+```pseudo
+\begin{algorithm}
+\caption{Beam-Search($G, s, g, \beta$)}
+\begin{algorithmic}
+\State $openList \gets s$; $closedList \gets$ vuota; $path \gets$ vuoto
+\While{$openList$ non è vuota}
+  \State $b \gets$ il nodo migliore di $openList$; toglilo da $openList$ e aggiungilo a $closedList$
+  \If{$b = g$}
+    \State aggiungi $b$ a $path$
+    \State \Return $path$
+  \EndIf
+  \For{ogni $n \in$ \Call{neighbors}{$b$}}
+    \If{$n$ non è né in $closedList$ né in $openList$}
+      \State aggiungi $n$ a $openList$
+    \ElsIf{$n$ è in $openList$}
+      \If{il cammino con il padre attuale è $\leq$ quello con il vecchio padre}
+        \State sostituisci il padre di $n$
+      \EndIf
+    \ElsIf{$n$ non è in $closedList$}
+      \State aggiungi $n$ a $openList$
+    \EndIf
+  \EndFor
+  \If{$|openList| > \beta$}
+    \State $openList \gets$ i migliori $\beta$ nodi di $openList$
+  \EndIf
+\EndWhile
+\State \Return $path$
+\end{algorithmic}
+\end{algorithm}
+```
+
+> [!example] Un esempio con $w = 2$ (p. 50)
+> Grafo con nodi $S, A, B, C, D, E, F, G$ e archi con costo: $S$-$A$ 3, $S$-$B$ 2, $A$-$B$ 4, $A$-$C$ 3, $C$-$E$ 3, $E$-$G$ 3, $B$-$D$ 4, $D$-$E$ 5, $D$-$F$ 5. Si cerca un cammino da $S$ a $G$. L'albero di ricerca disegnato sulla slide ha i costi di cammino accanto ai nodi: da $S$ si generano $A$ (3) e $B$ (2); al livello successivo $B$ raggiunto da $A$ costa 7 ed è scartato, mentre $C$ (6), $A$ raggiunto da $B$ (6) e $D$ (6) sono espansi (la slide non commenta il pareggio a 6 fra tre nodi con $w = 2$); al livello seguente $E$ (9) e $C$ (9) sono espansi, mentre $E$ e $F$ raggiunti da $D$ (11) sono scartati. La soluzione è $S \to A \to C \to E \to G$, di costo 12.
+
+> [!example] Un esempio con $w = 3$ (p. 51)
+> Albero a cinque livelli: dal livello 0 si generano quattro figli e se ne espandono tre (il quarto è scartato dal filtro); ai livelli successivi si espandono solo alcuni nodi e gli altri sono scartati, e al livello 5 la frontiera contiene sei nodi. Nella legenda: nodi espansi, nodi scartati dal filtro, nodi di frontiera.
+
+La beam search si applica ai compiti di **trasduzione** (*sequence-to-sequence*, S2S), in cui una sequenza in ingresso si trasforma in una sequenza in uscita (pp. 52-54). Gli esempi della slide:
+- traduzione automatica: «kare wa ringo wo tabeta» $\to$ «he ate an apple»;
+- etichettatura (*tagging*): «he ate an apple» $\to$ PRN VBD DET PP;
+- dialogo: «he ate an apple» $\to$ «good, he needs to slim down»;
+- riconoscimento del parlato: dal segnale audio a «he ate an apple»;
+- "qualunque cosa": anche una sequenza di bit in una di altri bit.
+
+La slide mostra anche come si stimano le probabilità dai conteggi di un piccolo corpus («i am from pittsburgh», «i study at a university», «my mother is from utah»): per massima verosimiglianza $P(e_2 = \mathit{am} \mid e_1 = i) = c(e_1 = i, e_2 = \mathit{am}) / c(e_1 = i) = 1/2 = 0{,}5$, e allo stesso modo $P(e_2 = \mathit{study} \mid e_1 = i) = 0{,}5$. È la stessa idea dei modelli a bigrammi dell'[[03 - Risoluzione di problemi mediante ricerca#Beam search locale|esempio sul parlato]].
+
+> [!example] Decodifica di sequenze con beam search (p. 53)
+> Alfabeto $\{A, B, C, D, E\}$, ampiezza del raggio 2, lunghezza massima della sequenza in uscita 3. Al primo passo i candidati migliori sono $A$ e $C$; al secondo, partendo da ciascuno dei due, si tengono $AB$ e $CE$; al terzo $ABD$ e $CED$. Le sequenze candidate sono $A, C, AB, CE, ABD$ e $CED$.
+
+A p. 54 la figura mostra la beam search con $K = 3$ usata durante l'addestramento di un modello di traduzione o di riconoscimento del parlato: la sequenza corretta («a red dog runs quickly today») è evidenziata e i prefissi predetti che violano il margine (ai passi $t = 4$ e $t = 6$) sono in grigio; la slide non dà altri dettagli.
+
+#### Best-first ricorsiva: pseudocodice ed esempio (dalle slide, pp. 59-61)
+```pseudo
+\begin{algorithm}
+\caption{Recursive-Best-First-Search(problem)}
+\begin{algorithmic}
+\State \Return \Call{RBFS}{$problem$, \Call{Make-Node}{$problem.\mathit{Initial\text{-}State}$}, $\infty$} \Comment{all'inizio $f$-limite è molto grande}
+\end{algorithmic}
+\end{algorithm}
+```
+
+```pseudo
+\begin{algorithm}
+\caption{RBFS($problem, node, f\text{-}limit$)}
+\begin{algorithmic}
+\If{\Call{Goal-Test}{$node.\mathit{State}$}}
+  \State \Return \Call{Solution}{$node$}
+\EndIf
+\State $successors \gets [\,]$
+\For{$action \in$ \Call{Actions}{$node.\mathit{State}$}}
+  \State aggiungi \Call{Child-Node}{$problem, node, action$} a $successors$
+\EndFor
+\If{$successors$ è vuoto}
+  \State \Return fallimento, $\infty$ \Comment{restituisce due valori}
+\EndIf
+\For{ogni $s \in successors$}
+  \State $s.f \gets \max(s.g + s.h,\ node.f)$
+\EndFor
+\Loop
+  \State $best \gets$ il nodo di $successors$ con $f$ minimo
+  \If{$best.f > f\text{-}limit$}
+    \State \Return fallimento, $best.f$
+  \EndIf
+  \State $alternative \gets$ il secondo nodo di $successors$ con $f$ minimo
+  \State $result,\ best.f \gets$ \Call{RBFS}{$problem, best, \min(f\text{-}limit, alternative)$}
+  \If{$result \neq$ fallimento}
+    \State \Return $result$
+  \EndIf
+\EndLoop
+\end{algorithmic}
+\end{algorithm}
+```
+
+Il valore $f$ di un figlio non scende mai sotto quello del padre ($\max$ nella riga di valutazione). Quando il migliore supera il limite si **torna indietro** restituendo il suo $f$ aggiornato, che il livello superiore ricorda per poter eventualmente ritornare in quel sottoalbero. Nella chiamata ricorsiva, la slide scrive $\min(f\text{-limite}, alternativa)$ intendendo il valore $f$ del secondo nodo migliore.
+
+> [!example] RBFS sulla Romania (p. 60)
+> La figura (c), "dopo essere tornati a Rimnicu Vilcea ed aver espanso Pitesti", mostra l'albero da Arad con il $f$-limite scritto nei riquadri. Radice Arad (366, limite $\infty$); i suoi figli sono Sibiu (393), Timisoara (447) e Zerind (449). Sibiu ha figli Arad (646), Fagaras (450: il valore 415 è barrato e sostituito dal valore aggiornato), Oradea (671) e Rimnicu Vilcea (417). Rimnicu Vilcea ha figli Craiova (526), Pitesti (417) e Sibiu (553). Pitesti ha figli Bucarest (418), Craiova (615) e Rimnicu Vilcea (607). Nei nodi Sibiu, Rimnicu Vilcea e Pitesti il limite è 447, il valore dell'alternativa migliore (Timisoara): la ricerca prosegue in quel ramo finché $f$ resta sotto il limite, e Bucarest con 418 è sotto.
 
 > [!question] Domanda tipica d'esame
 > Quando A\* è completo e quando è ottimo? Definisci euristica ammissibile ed euristica consistente, spiega perché la consistenza implica che $f$ sia non decrescente lungo i cammini, e mostra con un esempio cosa succede se $h$ sovrastima.
@@ -567,7 +753,7 @@ Ad esempio, una soluzione a profondità 5 trovata generando 52 nodi dà $b^* \ap
 
 > [!warning] Il termine 1 nella formula delle slide
 > Le slide scrivono $N + 1 = b^* + (b^*)^2 + \dots + (b^*)^d$, senza il termine $1$ (la radice) a destra. Con il termine $1$, che serve perché l'albero uniforme ha $N + 1$ nodi in tutto, per $N = 52$ e $d = 5$ si ottiene $b^* \approx 1{,}917$, cioè 1,92 come nell'esempio; senza il termine si avrebbe 1,926. Il valore è tondo in entrambi i casi, ma la formula corretta è quella di AIMA qui riportata (ricalcolato con Python).
- Sperimentalmente una buona euristica ha $b^*$ abbastanza vicino a 1 (le slide indicano $\lesssim 1{,}5$). Più $b^*$ è vicino a 1, più la ricerca è vicina a un andamento lineare: si toglie un nodo dalla frontiera e se ne aggiunge circa uno. Con $b^*$ vicino a 2 il numero di nodi raddoppia a ogni livello.
+Sperimentalmente una buona euristica ha $b^*$ abbastanza vicino a 1 (le slide indicano $\lesssim 1{,}5$). Più $b^*$ è vicino a 1, più la ricerca è vicina a un andamento lineare: si toglie un nodo dalla frontiera e se ne aggiunge circa uno. Con $b^*$ vicino a 2 il numero di nodi raddoppia a ogni livello.
 
 > [!example] Gioco dell'8: nodi generati e fattore di ramificazione effettivo (dalle slide, p. 69)
 > Nodi generati, tra parentesi $b^*$; medie su 100 istanze per ogni profondità $d$.
@@ -625,7 +811,28 @@ ad esempio $x_1$ = tessere fuori posto e $x_2$ = coppie di tessere adiacenti sca
 ### Altri esempi dalle slide
 Dalle slide, non visti a lezione.
 - **Minimum spanning tree** con la best-first (0031, pp. 10-11): un esempio su un grafo pesato mostra, passo per passo, che la best-first in generale **non è completa né ottimale**.
-- **Delivery robot** (pp. 84-88): il robot deve andare dall'esterno della stanza 103 all'interno della 123; i luoghi di interesse hanno etichette (r101, ...), e il grafo di ricerca presenta cicli. Un'euristica ammissibile è la **distanza euclidea** da r123, come nell'[[03 - Risoluzione di problemi mediante ricerca#Le esercitazioni: confrontare le euristiche|esercitazione sul labirinto]].
+- **Delivery robot** (pp. 84-88): un robot per le consegne in un edificio. L'esempio è sviluppato qui sotto.
+
+#### Delivery robot (0031, pp. 84-88)
+Il robot vuole andare dall'**esterno della stanza 103** (cerchio verde sulla pianta, nodo $o103$) all'**interno della stanza 123** (cerchio rosso, nodo $r123$). I nomi come $r101$ etichettano i luoghi di interesse; le etichette in grassetto (ad esempio *mail*) aiutano a tracciare la ricerca (p. 85, pianta del piano).
+
+Il **grafo di ricerca** (p. 86) è orientato e ha costi sugli archi. Dallo stato iniziale $o103$ escono tre archi: verso $ts$ (costo 8), verso $b3$ (4) e verso $o109$ (12). Gli altri archi letti sulla figura: $ts \to mail$ 6; $b3 \to b1$ 4, $b3 \to b4$ 7; $b1 \to c2$ 3, $b1 \to b2$ 6; $b2 \to b4$ 3; $b4 \to o109$ 7; $c2 \to c1$ 4, $c2 \to c3$ 6; $c1 \to c3$ 8; $o109 \to o111$ 4, $o109 \to o119$ 16; $o119 \to o123$ 9, $o119 \to storage$ 7; $o123 \to r123$ 4, $o123 \to o125$ 4. Il test obiettivo è $r123$.
+
+A p. 87 ("Il grafo: cicli") lo stesso grafo è ridisegnato con quasi tutti gli archi **bidirezionali** (la didascalia dice che un arco $X \longleftrightarrow Y$ sono due archi, $\langle X, Y\rangle$ e $\langle Y, X\rangle$): ci sono quindi cicli, e serve il controllo degli [[03 - Risoluzione di problemi mediante ricerca#Stati ripetuti|stati ripetuti]].
+
+A p. 88 si dà un'**euristica ammissibile**, la distanza euclidea da $r123$:
+
+| Nodo | $h$ | Nodo | $h$ | Nodo | $h$ |
+|---|---|---|---|---|---|
+| $mail$ | 26 | $ts$ | 23 | $o103$ | 21 |
+| $o109$ | 24 | $o111$ | 27 | $o119$ | 11 |
+| $o123$ | 4 | $o125$ | 6 | $r123$ | 0 |
+| $b1$ | 13 | $b2$ | 15 | $b3$ | 17 |
+| $b4$ | 18 | $c1$ | 6 | $c2$ | 10 |
+| $c3$ | 12 | $storage$ | 12 | | |
+
+È la stessa idea della distanza in linea d'aria della Romania e dell'[[03 - Risoluzione di problemi mediante ricerca#Le esercitazioni: confrontare le euristiche|esercitazione sul labirinto]]. Le slide non svolgono la ricerca su questo grafo: danno solo il grafo e i valori di $h$.
+
 ### Prossimi passi
 La prossima lezione chiude la ricerca con gli algoritmi per **ambienti che cambiano**, in cui il piano non si può decidere una volta per tutte come con A\* e va **ripianificato** dinamicamente. L'esercitazione del venerdì successivo è un labirinto con un oggetto in movimento, che costringe l'agente a cambiare direzione e ripianificare a ogni istante.
 ## Ricerca locale e ambienti non deterministici
@@ -764,7 +971,7 @@ L'albero di ricerca ha due tipi di nodi:
 
 Una soluzione è un sottoalbero con un obiettivo in ogni foglia, un'azione in ogni nodo OR e tutti i rami in ogni nodo AND. Se per qualche contingenza non funziona, non è un piano.
 
-La ricerca parte con $\textsc{Or-Search}(problem.\textsc{Initial-State}, problem, [\,])$.
+La ricerca parte con $\textsc{Or-Search}(problem.\textsc{Initial-State}, problem, [\,])$ (nelle slide, pp. 32-33, la funzione principale è *Ricerca-Grafo-AND-OR* e le due procedure sono *Ricerca-OR* e *Ricerca-AND*).
 
 ```pseudo
 \begin{algorithm}
@@ -903,7 +1110,18 @@ Quando l'agente lascia $s$, aggiorna $H(s)$ al minimo, tra le azioni possibili, 
 > [!example] Uscire da un minimo locale
 > In un corridoio unidimensionale l'agente si trova in uno stato con $H=2$ tra due vicini che sembrano allontanarlo dall'obiettivo: per arrivarci deve superare una "cresta". Spostandosi aggiorna il nodo di partenza a $2+1=3$; tornando indietro e avanti aggiorna i valori a 4, poi a 5. Dopo qualche andata e ritorno i valori del minimo locale crescono abbastanza da rendere conveniente scavalcare la cresta, e l'agente prosegue verso l'uscita: anche sbagliando, torna indietro e procede. Nelle slide (p. 68) le sei celle passano dai valori $(8, 9, 2, 2, 4, 3)$ a $(8, 9, 5, 5, 4, 3)$ con la terza cella che va da 2 a 3 e poi a 5 e la quarta da 2 a 4 e poi a 5 (le righe (a)-(f) della figura).
 
-Le slide (pp. 69-76) mostrano anche LRTA\* su una griglia $4 \times 4$ con $H$ aggiornata passo dopo passo; non è stata commentata a lezione.
+> [!example] LRTA\* su una griglia $4 \times 4$ (dalle slide, pp. 69-76)
+> Non commentato a lezione. Le celle si indicano con (riga, colonna). L'uscita è a destra della cella (2,4) (la freccia sulla slide); il robot $T$ parte da (2,1), con $H = 3$; i muri sono i segmenti spessi della figura e compaiono man mano, da una slide all'altra. I valori di $H$ riportati sono quelli delle slide: la sequenza delle pp. 70-71 non si ricava dal solo aggiornamento a costo unitario con l'euristica iniziale. Il riquadro in alto a destra di ogni slide dà l'euristica iniziale $h$, la distanza di Manhattan dall'uscita, riga per riga: $(4, 3, 2, 1)$, $(3, 2, 1, 0)$, $(4, 3, 2, 1)$, $(5, 4, 3, 2)$. La successione di figure mostra:
+> - p. 69: $T$ in (2,1), $H = 3$;
+> - p. 70: $T$ si sposta in (1,1), $H = 4$ (la cella (2,1) mostra ancora 3);
+> - p. 71: $T$ torna in (2,1), ora con $H = 5$, mentre (1,1) resta a 4;
+> - p. 72: $T$ passa in (2,2), $H = 2$;
+> - p. 73: $T$ scende in (3,2), $H = 3$;
+> - p. 74: $T$ torna in (2,2), ora con $H = 4$ (la cella (3,2) resta a 3);
+> - p. 75: $T$ va in (2,3), $H = 1$;
+> - p. 76: $T$ arriva in (2,4), $H = 0$, cioè all'uscita. Sulla figura sono segnate anche (3,3) con $H = 2$, (3,4) con 1, (4,3) con 3 e (4,4) con 2, uguali al valore iniziale di $h$.
+>
+> I valori che cambiano rispetto a $h$ sono quelli di (2,1), da 3 a 5, e di (2,2), da 2 a 4: sono le celle da cui il robot è tornato indietro, e dopo il ritorno la stima $H$ è più alta di $h$. Le slide non riportano i calcoli dei singoli aggiornamenti: i valori sono letti sulle figure.
 
 > [!quote] Proprietà di LRTA\* (dalle slide, p. 77)
 > LRTA\* cerca di simulare A\* con un metodo di ricerca locale, tenendo conto del costo delle mosse aggiornando al volo $H$. È **completo** in spazi esplorabili in sicurezza; nel caso pessimo visita tutti gli stati due volte, ma è mediamente più efficiente della profondità online. **Non è ottimo**, a meno di usare un'euristica perfetta: non basta $f = g + h$ con $h$ ammissibile.

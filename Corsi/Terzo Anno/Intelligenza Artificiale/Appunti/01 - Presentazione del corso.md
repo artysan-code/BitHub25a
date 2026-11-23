@@ -4,9 +4,13 @@ tags:
   - introduzione
 slide:
   - "000_Intro_2026_27_v1.0.pdf"
+  - "000_From_Intro_AI_Short_For_Lab_25_26_v1.0.pdf"
 ---
 # Presentazione del corso
 Lezione 1 (05/10/2026; slide 000_Intro, pp. 1-19, in gran parte organizzative: vedi [[#Obiettivi e organizzazione del corso]]): che tipo di problemi affronta l'IA e quali sono i suoi ingredienti fondamentali (ricerca, conoscenza, dati, apprendimento, linguaggio).
+
+> [!info] Fonti di questa nota
+> Le sezioni da «Il paradosso dell'intelligenza» a «Le discipline che confluiscono nell'IA» vengono dalla lezione e non si trovano nelle slide. La sezione [[#Dalla slide «From Intro AI Short For Lab»]] viene invece da una slide dell'anno precedente (a.a. 2025/26, 44 pagine), non da una versione di quest'anno.
 ## Il paradosso dell'intelligenza
 Oggi interagire in linguaggio naturale con un sistema sembra banale, ma non lo è: una macchina che capisce da pochi elementi di un problema *cosa deve fare* non è una cascata di `if`, è un sistema che cambia stato, sceglie una strategia, accede ai dati e sintetizza una risposta che dovrebbe essere pertinente e affidabile.
 
@@ -77,3 +81,64 @@ Dalle slide, non visto a lezione (la trascrizione non è disponibile): le slide 
 > Le slide indicano "gennaio 2026" e "febbraio 2026" per gli scritti, ma l'anno accademico è 2026-27: è quasi certamente un refuso del docente (gennaio e febbraio 2027). Per ogni differenza (calendario, esonero, orale obbligatorio per tutti) vale quanto detto a lezione, riportato nel [[Intelligenza Artificiale/README#Modalità d'esame]].
 ### Cosa fare subito (slide 17)
 Registrarsi al corso su Delphi, rispondere al questionario preliminare (QR code a slide 18), iscriversi al Team e verificare l'adesione (il docente potrebbe dover accettare la richiesta); verranno pubblicati elenchi degli iscritti, progetti e slide.
+## Dalla slide «From Intro AI Short For Lab»
+Dalle slide, non visto a lezione: la slide `000_From_Intro_AI_Short_For_Lab` porta la data a.a. 2025-2026 (Roberto Basili, per i corsi di laurea in Informatica e in Ingegneria gestionale, informatica e di internet). Qui si riportano gli argomenti che non compaiono nelle altre parti della nota, con i numeri di pagina della slide. La parte sull'IA generativa, con le conversazioni mostrate con un assistente (pp. 8-19), e quella sul captioning e sulla cronologia (pp. 33-40) non sono riassunte qui.
+### Che cos'è l'IA
+La slide (p. 3) dice che l'intelligenza artificiale si occupa dell'**osservazione e comprensione** del comportamento intelligente, **per la sua riproduzione**. La definizione di **intelligenza** (p. 4) è quella dell'Enciclopedia britannica:
+
+> [!quote] Intelligenza
+> «Qualità mentale che consiste nell'abilità di apprendere dall'esperienza, di adattarsi a nuove situazioni, comprendere e gestire concetti astratti. E utilizzare conoscenza per agire sul proprio ambiente.»
+#### IA forte e IA debole
+La slide distingue due modi di intendere l'IA (pp. 5-6).
+
+> [!info] L'IA come scienza (IA forte, approccio della psicologia cognitiva)
+> - **Obiettivo**: la comprensione dell'intelligenza umana.
+> - **Metodo**: costruire modelli computazionali dell'agire intelligente.
+> - **Criterio di successo**: risolvere i problemi **con gli stessi processi usati dall'uomo**.
+> - **Requisito**: enfasi sulla verifica sperimentale in rapporto all'uomo.
+
+> [!info] L'IA come ingegneria (IA debole, approccio ingegneristico)
+> - **Obiettivo**: costruire sistemi dotati di razionalità.
+> - **Metodo**: codificare il pensiero razionale; progettare processi che simulano il comportamento razionale.
+> - **Criterio di successo**: misure (percentuali) di successo nelle decisioni che richiedono intelligenza.
+
+La differenza sta quindi nel criterio: per l'IA forte conta che il sistema ragioni **come l'uomo**, per quella debole che **decida bene**.
+### Definizioni di IA lungo due assi
+La slide (p. 7) ordina le definizioni di IA in una tabella con due assi: **pensiero** o **azione** (in riga) e **umanità** o **razionalità** (in colonna).
+
+| | Umanità | Razionalità |
+|---|---|---|
+| **Pensiero** | «[L'automazione delle] attività che associamo al pensiero umano, come il processo decisionale, la risoluzione di problemi, l'apprendimento…» (Bellman, 1978) | «Lo studio delle facoltà mentali attraverso l'uso di modelli computazionali» (Charniak, McDermott, 1985) |
+| **Azione** | «L'arte di creare macchine che svolgono funzioni che richiedono intelligenza quando svolte da esseri umani» (Kurzweil, 1990) | «Il ramo della scienza dei calcolatori che si occupa dell'automazione del comportamento intelligente» (Luger, Stubblefield, 1993); «L'impresa di costruire artifatti intelligenti» (Ginsberg, 1993) |
+
+La slide non collega in modo esplicito questa tabella alla distinzione tra IA forte e IA debole.
+### Quali capacità caratterizzano un sistema di IA
+La slide (p. 26) lascia la domanda aperta, con un elenco di possibili risposte: capacità di simulare il comportamento umano; di ragionamento; intelligenza come competenza «da esperto»; intelligenza come «buon senso» (senso comune); capacità di interagire con un ambiente; capacità sociali, di comunicazione e coordinamento; capacità di comprendere e provare emozioni; altro. Nella pagina precedente (p. 25) le «conclusioni» sulle prestazioni di un assistente conversazionale riguardano la naturalezza dell'interazione, la comprensione dei problemi, il pragmatismo (capire le intenzioni e porsi obiettivi corretti e realistici), le spiegazioni, la coerenza con il discorso e il ragionamento espresso in forma linguistica.
+### Il test di Turing
+La slide dedicata a Turing (p. 29, «Capacità di imitazione?») presenta Alan Turing e il suo test. A p. 30 dà la definizione:
+
+> [!quote] Test di Turing
+> Il test di Turing (1950) è «un tentativo di definizione **operativa** di intelligenza».
+
+La figura mostra «The Interrogator»: un interrogante, chiuso in una stanza, comunica tramite terminale con due interlocutori, una persona e un calcolatore. La slide non spiega altro del test.
+### Ambiguità linguistica
+La slide dedica diverse pagine all'**ambiguità**, esempio di quanto sia difficile capire il linguaggio naturale.
+- **Il cartello sulla scala mobile** (pp. 31-32). «Dogs must be carried on this escalator» ha, secondo la slide, più interpretazioni: tutti i cani devono avere la possibilità di fare questa meravigliosa corsa sulla scala mobile; questa scala mobile è solo per chi ha un cane in braccio; non si può portare l'animale sulle altre scale mobili; se si viaggia con un animale, bisogna portarlo in braccio.
+- **Il riferimento di «questo»** (pp. 20-24). La slide mostra una conversazione con un assistente su frasi come «se sfrego un mattone su un uovo questo si sporca?» e «se tiro il muro sul colle questo si rompe?». La risposta dell'assistente distingue un'interpretazione letterale (il muro si rompe solo se subisce una forza sufficiente) da un gioco di parole o indovinello, e propone di verificare se si tratti di un indovinello. Quando gli si racconta la storiella («C'era un asino ed un muro sul colle. L'asino scese dal colle perché stava stretto insieme al muro. Si domandò: se tiro il muro sul colle questo si rompe, scendendo?») la legge come un piccolo paradosso scherzoso.
+- **Analisi dell'interpretazione** (p. 21, «Osservazioni: interpretazione»). La slide annota quattro frasi simili («se tiro un uovo sul muro questo si rompe?», «se sbatto un mattone su un uovo questo si rompe?», «se giro un lago sul van questo si vede?», «se tiro il muro sul colle questo si rompe?»), segnando il verbo, i possibili antecedenti di «questo» (con frecce verso due sintagmi diversi) e il predicato. Nella frase sul lago e sul van i punti interrogativi indicano che l'antecedente non è determinabile con certezza.
+### I fondamenti dell'IA
+La slide (p. 27) elenca le discipline che stanno alla base dell'IA, con gli ambiti principali:
+- **matematica**: logica, algebra, analisi funzionale, probabilità;
+- **informatica**: algoritmica, complessità, rappresentazione della conoscenza;
+- **linguistica**: linguistica computazionale, semiotica;
+- **filosofia**: ontologia, epistemologia, filosofia del linguaggio;
+- **psicologia**: percezione e cognizione;
+- **economia**: teoria dei giochi;
+- **neuroscienze**: brain imaging;
+- **teoria del controllo e cibernetica**.
+
+È un elenco più ampio di quello detto a lezione ([[#Le discipline che confluiscono nell'IA]]: matematica, informatica, intelligenza artificiale in senso proprio, linguistica).
+
+A p. 28 la slide propone la figura della «farmacia dell'IA» (*AI pharmacy*): una farmacia i cui scaffali sono intestati ai paradigmi dell'IA, tra cui logica (*logic*), apprendimento (*learning*), reti neurali (*neural nets*), ricerca e risoluzione di problemi (*search/problem solving*), ragionamento con incertezza (*reasoning with uncertainty*) e rimedi applicativi (*application remedies*).
+### L'effetto IA
+A p. 41 la slide descrive l'IA come un **fenomeno sociale**: lo sviluppo continuo del campo sposta in avanti la frontiera della cosiddetta *machine intelligence*, e questo rafforza il cosiddetto «effetto IA» (*odd paradox*): non appena l'IA porta nuovi risultati nella vita comune, le persone si abituano a quelle tecnologie e smettono di considerarle IA, e lo schema si ripete. L'IA non rilascia prodotti dirompenti dal nulla, ma costruisce in modo incrementale approssimazioni migliori dell'intelligenza; nonostante ciò l'intelligenza umana è la scelta d'elezione per misurare il progresso dell'IA.

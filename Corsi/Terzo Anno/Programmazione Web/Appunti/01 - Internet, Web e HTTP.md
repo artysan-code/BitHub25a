@@ -27,9 +27,25 @@ Il corso descrive questa architettura come **full stack**, cioè composta da tre
 > [!warning] MEVN nelle slide introduttive vs requisiti del progetto d'esame
 > Le slide di apertura (`PW00-Introduzione.pdf`) presentano lo stack **MEVN** come esempio concreto dell'architettura full stack. Le regole d'esame A.A. 2025/26 (`Materiale Didattico/Esami/PW-Esame-2026.pdf`) però non richiedono né Vue né MongoDB: il backend obbligatorio è **Node.js + Express**, il frontend richiesto è **JavaScript "vanilla"** (senza framework SPA, con manipolazione diretta del DOM), e i dati possono stare in memoria, in un file JSON o in un database leggero — MongoDB è solo una delle opzioni facoltative per la persistenza. Il principio architetturale (Browser ⇔ Server applicativo ⇔ Storage) resta comunque valido qualunque tecnologia si scelga.
 
+> [!info] Tecnologie, modalità d'esame e teoria (PW00)
+> - **Ambiente del browser**: HTML/CSS/JavaScript (markup, separazione tra contenuto e stile, riuso), Document Object Model (DOM, la rappresentazione ad albero della pagina che JavaScript può modificare: [[06 - JavaScript e DOM#Cos'è il DOM e l'albero dei nodi]]), struttura dei documenti, responsive design.
+> - **Software del browser**: Model View Controller (MVC), Single Page Application (SPA), reactive design (Vue.js). *(extra, non da slide)* MVC è un modello che separa i dati (Model), la loro presentazione (View) e la logica che li collega (Controller); una SPA è un'applicazione che carica una sola pagina HTML e ne aggiorna il contenuto con JavaScript, senza ricaricarla a ogni azione. Nel corso se ne vede solo l'idea: il frontend è in JavaScript puro.
+> - **Comunicazione con il backend**: API design (HTTP/AJAX/REST), cookie, sessioni e gestione dello stato (storage/trust).
+> - **Realizzazione del backend**: web server e gestione delle richieste HTTP (Node.js); DBMS (schema, oggetti, CRUD, indici, transazioni; MongoDB). *(extra, non da slide)* Un DBMS (Database Management System) è il software che gestisce una base dati; CRUD indica le quattro operazioni di base sui dati (Create, Read, Update, Delete), collegate ai metodi HTTP in [[09 - Express e API REST#Dal CRUD ai metodi HTTP]]; end-to-end: scalabilità e sicurezza.
+> - **Modalità d'esame** (slide p. 5): quiz, prova pratica (con il pc) e prova orale/teorica; inoltre homework ed esercizi. Le regole vigenti per l'A.A. 2025/26 sono quelle del PDF citato nell'avviso precedente.
+> - **Teoria e pratica** (slide p. 6): le lezioni approfondiscono i concetti e i principi alla base, più che le istruzioni per scrivere il codice; gli esami si concentrano soprattutto sulla parte teorica, e ottenere buoni risultati nella pratica non garantisce automaticamente un buon voto finale.
+
 Coerentemente con questa suddivisione, il codice di una web app si divide in due parti:
 - **Frontend (lato client)**: eseguito sul dispositivo dell'utente, gestisce interfaccia e interazioni (HTML, CSS, JavaScript, eventualmente framework come React, Angular, Vue).
 - **Backend (lato server)**: eseguito sul server remoto, gestisce dati e logica applicativa, tipicamente esponendo un'**API** invece di un'interfaccia utente.
+
+Il **browser** (PW01, p. 6) è l'interfaccia che consente all'utente di interagire con la web app: interpreta il codice HTML, CSS e JavaScript proveniente dal server, controlla l'aspetto grafico (colori, font, layout, animazioni) e interagisce con il server per rendere dinamica l'app. Funziona come **client universale**: non richiede un'installazione specifica per ogni app e funziona su qualsiasi dispositivo connesso a Internet. Le sue **limitazioni** sono tre: dipende dalla connessione Internet, ha un accesso limitato alle funzionalità hardware del dispositivo e l'esperienza utente è talvolta meno fluida rispetto a un'app installata.
+Dentro una pagina web (p. 7 e p. 52) i tre linguaggi hanno ruoli distinti:
+- **HTML** (*Hypertext Markup Language*), la struttura: definisce gli elementi della pagina (testi, titoli, immagini, form) con un markup semantico per il contenuto.
+- **CSS** (*Cascading Style Sheets*), lo stile: controlla l'aspetto grafico (colori, font, layout, animazioni).
+- **JavaScript**, il comportamento: rende la pagina interattiva (risposte ai clic, dinamiche, chiamate a server/API).
+
+Rispetto al passato (p. 11) le applicazioni web sono cambiate: in origine i contenuti erano statici, senza alcuna interazione; oggi le web app offrono contenuti dinamici, gestione dei dati in tempo reale e operazioni complesse da remoto (per esempio prenotazioni, referti, consulti).
 ## Il modello client-server
 Il **modello client-server** è il modello di progettazione software alla base di (quasi) tutte le applicazioni web: suddivide l'applicazione in due parti, il **client** e il **server**, con una regola semplice — il client fa le richieste, il server risponde.
 
@@ -58,7 +74,7 @@ Le web app moderne combinano sistematicamente risorse statiche (HTML, CSS, immag
 Per poter richiedere una risorsa al server, serve un modo univoco di identificarla e localizzarla in rete.
 
 > [!quote] Definizione — URI (Uniform Resource Identifier)
-> Identificatore univoco per una risorsa sul Web, come un indirizzo postale: dice **cosa** cercare (e, in alcuni casi, anche dove trovarlo). Non è legato a un solo protocollo.
+> Identificatore univoco per una risorsa sul Web, come un indirizzo postale: dice **cosa** cercare e dove trovarlo; può essere usato per immagini, pagine, file. Non è legato a un solo protocollo (gli esempi seguenti usano schemi diversi). *(extra, non da slide)* Alcuni URI, come quelli di tipo `urn:`, identificano soltanto la risorsa senza dire dove trovarla.
 
 Alcuni esempi di URI, ciascuno con uno schema diverso:
 
@@ -67,12 +83,12 @@ Alcuni esempi di URI, ciascuno con uno schema diverso:
 | `mailto:info@ospedalesanita.it` | Indirizzo email |
 | `urn:isbn:978-88-123-4567-0` | Identifica un libro tramite ISBN, senza dire dove trovarlo |
 | `ftp://ftp.esempio.it/immagini/banner.png` | Risorsa accessibile via protocollo FTP |
-| `http://www.laboratoriomedico.it/referti/12345.pdf` | Può essere sia URI (identifica il referto) sia URL (dice anche dove/come recuperarlo) |
+| `http://www.laboratoriomedico.it/referti/12345.pdf` | Può essere anche un URL, ma usato come identificatore (identifica il referto; come URL dice anche dove/come recuperarlo) |
 
 > [!quote] Definizione — URL (Uniform Resource Locator)
 > Il tipo più comune di URI: specifica **dove** si trova una risorsa e **come** accedervi. È un identificatore per la posizione di un documento in rete.
 
-Una URL come `https://www.domain-name.com` si scompone in parti ben precise:
+Le slide (PW01, p. 24) scompongono una URL in tre parti: **protocollo**, **host** e **path** (es. `https://internet.uniroma2.it/esame/programmazione-web/`). Nella figura «Struttura dei nomi» (p. 29) il nome `https://www.domain-name.com` è scomposto in protocollo, **sub-domain** (`www`), **domain name** (`domain-name`) e **top-level domain** (`com`); domain name e TLD insieme formano il **root domain** (nella figura: «what you can register»). L'esempio seguente, con `blog`, path, query e fragment, è una rielaborazione *(extra, non da slide)* di questa scomposizione:
 
 > [!info] Anatomia di una URL
 > ```text
@@ -91,17 +107,21 @@ Una URL come `https://www.domain-name.com` si scompone in parti ben precise:
 > - **Fragment** (`#introduzione`): riferimento a una sezione interna della risorsa, gestito lato browser (non viene inviato al server).
 
 > [!question] Domanda tipica d'esame
-> Data una URL, saper individuare protocollo, host e path è la base minima richiesta. Occhio a non confondere il **root domain** (`dominio.it`, quello che si registra) con il singolo **sub-domain** (`www.dominio.it` è solo uno dei possibili sotto-domini di `dominio.it`).
+> **Domanda**: data una URL, da quali parti è fatta e che differenza c'è tra root domain e sub-domain?
+>
+> **Risposta**: una URL è fatta di tre parti: il protocollo, il nome del server (host) e il path della risorsa (PW04, p. 9). Il **root domain** (`dominio.it`) è quello che si registra (figura di p. 29); `www.dominio.it` è solo uno dei possibili **sub-domain** di `dominio.it`.
 ## Server web: root, path e tipi di URL
-Un **server web** è un computer — più precisamente un programma, il server web vero e proprio — che risponde a richieste di documenti: aspetta una richiesta, cerca il documento richiesto e lo invia al richiedente. Per farlo deve "parlare" HTTP, per questo viene spesso chiamato **server HTTP**. Qualunque computer può diventare un server web installando il software adatto: i più diffusi sono **Apache** e **nginx**.
+Un **server web** è un computer — più precisamente un programma, il server web vero e proprio — che risponde a richieste di documenti: aspetta una richiesta, cerca il documento richiesto e lo invia al richiedente. Per farlo deve "parlare" HTTP, per questo viene spesso chiamato **server HTTP**. Qualunque computer può diventare un server web installando il software adatto: i più diffusi sono **Apache** (40,4%) e **nginx** (31,8%), secondo i dati di marzo 2020 riportati dalle slide (PW01, p. 42, fonte netcraft.com).
 Ogni server ha una **root**: la cartella principale da cui vengono servite tutte le risorse. Quando si digita una URL senza percorso (es. `www.miosito.it`), il browser richiede al server il **file di default della root**, che per convenzione si chiama `index.html`. Il **path** di una URL indica la posizione di una risorsa relativamente alla root, e ogni livello del path corrisponde a una sottocartella sul server.
 
 > [!example] Avviare un server web locale
-> Per esercitarsi senza un server "vero" si può avviare un server statico locale con Node.js (approfondito in [[08 - Node.js e npm]]):
+> Per esercitarsi senza un server "vero" si può avviare un server statico locale con Node.js (approfondito in [[08 - Node.js e npm]]). Prerequisiti (PW04, p. 2): Node.js installato (si verifica con `node -v` e `npm -v`) e il terminale integrato di VS Code; le slide aggiungono che si può farlo anche con LiveServer. Si crea una cartella di lavoro `htdocs`, la si apre in VS Code e dal terminale integrato si avvia:
 > ```bash
 > npx http-server
 > ```
-> Il comando serve la cartella corrente (la sua root) sulla porta di default (`8080`, a seconda della versione anche `8000`); dal browser si accede con `http://127.0.0.1:8080` oppure `http://localhost:8080`.
+> Il comando serve la cartella corrente (la sua root). Le funzionalità elencate dalle slide (PW04, p. 4) sono: root (la cartella dei file), pagina di default (`index.html`), CORS e cache.
+>
+> **Porta**: le slide non concordano. PW01 (p. 44) dice «avviare un server HTTP locale sulla porta 8000» e fa accedere da browser con `127.0.0.1:8000`; PW04 (p. 3) dice che il server sarà accessibile su `http://localhost:8080`. *(extra, non da slide)* La porta effettivamente in uso compare nell'output di `http-server` all'avvio (il default documentato del pacchetto è `8080`; per usare `8000` si passa l'opzione `-p 8000`).
 
 Le URL che scriviamo nelle pagine (per esempio nell'attributo `href` di un link o `src` di un'immagine) possono essere di tre tipi:
 
@@ -109,10 +129,17 @@ Le URL che scriviamo nelle pagine (per esempio nell'attributo `href` di un link 
 |---|---|---|
 | **Assoluta** | `http://www.miosito.com/about.html` | La risorsa è su un server **diverso** da quello della pagina corrente (link esterno): serve l'indirizzo completo. |
 | **Relativa alla pagina** | `about.html` oppure `privacy/privacy.html` | Risorsa nello stesso server, path calcolato rispetto alla posizione del file attuale. |
-| **Relativa alla root** | `/about.html` oppure `/privacy/privacy.html` | Risorsa nello stesso server, path calcolato a partire dalla root (inizia sempre con `/`). |
+| **Relativa alla root** (*path assoluto*) | `/about.html` oppure `/privacy/privacy.html` | Risorsa nello stesso server, path calcolato a partire dalla root (inizia sempre con `/`). |
+
+Nella terminologia delle slide (PW04, p. 13) i link interni, che possono omettere protocollo e nome del server, usano due tipi di **path**: quelli **relativi** al path corrente e quelli **assoluti**, cioè relativi alla root del server, ossia ciò che comparirebbe nella URL assoluta dopo il nome del server. Il «path assoluto» non va confuso con la **URL assoluta** della prima riga, necessaria per i link esterni.
 
 > [!warning] Stesso dominio non vuol dire stesso server
-> `web.uniroma2.it` e `ppl.eln.uniroma2.it` sono **due server diversi**, anche se "sembrano" dello stesso sito: hanno sub-domain differenti. Per collegarsi a una risorsa su un server diverso da quello della pagina corrente servono sempre **URL assolute**; per link interni allo stesso server si può omettere protocollo e host e usare solo il path.
+> `web.uniroma2.it` e `ppl.eln.uniroma2.it` sono **due server diversi**, anche se "sembrano" dello stesso sito: hanno sub-domain differenti. Per collegarsi a una risorsa su un server diverso da quello della pagina corrente servono sempre **URL assolute**; per link interni allo stesso server si può omettere protocollo e host e usare solo il path. Esempio delle slide (PW04, p. 12): dalla pagina `http://ppl.eln.uniroma2.it/pw/` il link `<a href="http://www.easyphp.org/">` richiede una URL assoluta perché la risorsa è su un server web diverso.
+
+> [!question] Domanda tipica d'esame
+> **Domanda**: in una pagina, che differenza c'è tra `href="about.html"` e `href="/about.html"`, e quando serve una URL assoluta come `http://www.miosito.com/about.html`?
+>
+> **Risposta**: `about.html` è un path relativo al path corrente; `/about.html` è un path assoluto, cioè relativo alla root del server (PW04, p. 13). La URL assoluta con protocollo e nome del server serve solo quando la risorsa è su un server web diverso da quello della pagina (PW04, p. 12). Uno stesso dominio non implica lo stesso server: `web.uniroma2.it` è un server diverso da `ppl.eln.uniroma2.it`.
 ## Il percorso di una richiesta
 Digitare un indirizzo nella barra del browser e premere invio sembra un'azione istantanea, ma dietro le quinte succedono diversi passaggi:
 1. **Inserimento dell'indirizzo web** da parte dell'utente.
@@ -121,7 +148,7 @@ Digitare un indirizzo nella barra del browser e premere invio sembra un'azione i
 4. **Risposta del server**: il server invia una risposta HTTP con il contenuto richiesto (HTML, immagini, CSS, script, ecc.).
 5. **Rendering**: il browser interpreta il codice HTML e "renderizza" la pagina, rendendola navigabile per l'utente.
 
-Un aspetto spesso sottovalutato: le risorse che compongono una pagina sono **fisicamente sparse per il mondo**. Chiedere `google.com` da un browser in Italia può voler dire raggiungere un server dall'altra parte dell'oceano: la latenza di questo percorso fisico è uno dei motivi per cui il DNS e i browser usano intensamente la cache.
+Un aspetto da non trascurare (PW01, p. 21: «Le pagine sono sparse per il mondo», con l'esempio `google.com`): le risorse che compongono una pagina sono **fisicamente sparse per il mondo**. *(extra, non da slide)* Chiedere `google.com` da un browser in Italia può voler dire raggiungere un server dall'altra parte dell'oceano: la latenza di questo percorso fisico è uno dei motivi per cui il DNS e i browser usano intensamente la cache.
 Una singola pagina, inoltre, richiede quasi sempre **più risorse separate**, ciascuna con la propria richiesta HTTP: il browser scarica prima il documento HTML, poi — leggendolo — scopre di dover richiedere anche il foglio di stile CSS e le immagini referenziate, e le richiede a loro volta.
 
 > [!example] Scambio file fra Browser e Server
@@ -131,6 +158,8 @@ Una singola pagina, inoltre, richiede quasi sempre **più risorse separate**, ci
 > 3. `GET foods.gif`, `GET spoon.gif` → riceve le immagini referenziate dall'HTML.
 >
 > Ogni file è quindi il risultato di una richiesta HTTP indipendente, anche se all'utente appare come un'unica pagina.
+
+In sintesi (PW01, p. 61): quando si parla di pagine web ci si riferisce di solito a ciò che visualizza il browser, cioè un insieme di contenuti, struttura, stili e immagini; il browser fa diverse richieste HTTP per raccogliere le diverse parti; ciò che viene visualizzato dipende da un documento di struttura HTML, da direttive di stile CSS e da contenuti multimediali.
 ## DNS: Domain Name System
 I computer non "capiscono" i nomi di dominio (`www.google.com`): comunicano solo tramite **indirizzi IP** (es. `173.194.34.87`). Il **DNS** (Domain Name System) è il sistema che traduce i nomi di dominio in indirizzi IP, permettendo ai dispositivi di comunicare — esattamente come una rubrica telefonica collega un nome a un numero. Una volta noto l'indirizzo IP, il client può aprire una connessione (un *socket*) verso il server.
 ### Come funziona la risoluzione
@@ -168,16 +197,21 @@ Tutti questi passaggi possono essere memorizzati in **cache** per un tempo deter
 > - `nslookup www.google.com` — interroga il DNS e mostra l'IP associato al dominio.
 > - `dig www.miosito.it` — analogo più dettagliato di `nslookup`.
 > - `dnschecker.org` — verifica la propagazione di un dominio da più località nel mondo.
+
+> [!question] Domanda tipica d'esame
+> **Domanda**: a cosa serve il DNS e in che ordine viene interrogata la gerarchia per risolvere `www.miosito.it`?
+>
+> **Risposta**: il DNS traduce il nome a dominio nell'indirizzo IP del server. Il browser controlla prima la cache; se non trova l'IP, il resolver interroga i Root Server (che indicano i TLD server di `.it`), poi i TLD Server (che indicano i server autoritativi del dominio) e infine il server autoritativo, che restituisce l'IP. Le risposte restano in cache per il tempo indicato dal TTL.
 ## Internet e il World Wide Web
 **Internet** è un sistema di dispositivi elettronici interconnessi: ogni computer ha un indirizzo **IP** (Internet Protocol, es. `160.80.180.186`) e chi è connesso alla rete può scambiare informazioni con chiunque altro.
 Il **World Wide Web (WWW)** è uno dei modi — non l'unico — con cui queste informazioni possono essere condivise: è un insieme di pagine web e documenti collegati tra loro tramite collegamenti ipertestuali (**link**). Il protocollo principale con cui il Web scambia documenti è **HTTP** (HyperText Transfer Protocol).
 
 > [!warning] Internet non è il Web
-> **Internet** è l'infrastruttura di rete (dispositivi collegati, indirizzi IP, instradamento dei pacchetti). Il **Web** è un *servizio* che gira sopra Internet, basato su HTTP e ipertesto. Email, streaming video e giochi online usano Internet ma non sono "il Web". È un trabocchetto da test a risposta multipla: i due termini non sono sinonimi.
+> **Internet** è l'infrastruttura di rete (dispositivi collegati, indirizzi IP, instradamento dei pacchetti). Il **Web** è un *servizio* che gira sopra Internet, basato su HTTP e ipertesto. Email, streaming video e giochi online usano Internet ma non sono "il Web". È un errore tipico da test a risposta multipla: i due termini non sono sinonimi.
 
-I software che fanno richieste HTTP ai server si chiamano **client web**: i più comuni sono i browser (Chrome, Firefox, Safari, Edge...). L'utente inserisce un indirizzo, il browser chiede il documento corrispondente al server (per esempio con una richiesta `GET page1.html`), il server lo spedisce e il browser lo mostra, potendo richiedere documenti di qualsiasi tipo (testo, immagini, video, audio, script). Dal lato opposto, come già visto, il **server web** è il programma che riceve queste richieste e le soddisfa: i due server più diffusi al mondo sono storicamente **Apache** e **nginx**.
+I software che fanno richieste HTTP ai server si chiamano **client web**: i più comuni sono i browser (secondo le slide, p. 41: Chrome, Internet Explorer/Edge, Firefox, Safari, Opera). L'utente inserisce un indirizzo, il browser chiede il documento corrispondente al server (per esempio con una richiesta `GET page1.html`), il server lo spedisce e il browser lo mostra, potendo richiedere documenti di qualsiasi tipo (testo, immagini, video, audio, script). I browser parlano HTTP come i server web e visualizzano i documenti richiesti in una finestra; spesso gli stessi documenti sono mostrati in modo diverso dai diversi browser. Dal lato opposto, come già visto, il **server web** è il programma che riceve queste richieste e le soddisfa: i due server più diffusi al mondo sono **Apache** (40,4%) e **nginx** (31,8%), dati di marzo 2020 (PW01, p. 42, fonte netcraft.com).
 ### Un po' di storia
-Il Web nasce nel **1989** al CERN di Ginevra: **Tim Berners-Lee**, insieme a Robert Cailliau, propone un sistema di gestione delle informazioni basato sull'ipertesto per collegare documenti fra loro, e nel **1991** crea il primo sito web. Nel 1992 nasce **NCSA Mosaic**, il primo browser grafico, che rende il Web accessibile "di massa".
+Il Web nasce nel **1989** al CERN di Ginevra: **Tim Berners-Lee** propone un sistema di gestione delle informazioni basato sull'ipertesto per collegare documenti fra loro e, con Robert Cailliau, ne crea un prototipo; nel **1991** crea il primo sito web (6 agosto 1991, p. 49). Nel 1992 i server web erano 50 e nasce **NCSA Mosaic**, il primo browser grafico, che rende il Web accessibile "di massa". Per approfondire le slide rimandano ai *W3C's History Archives* (`www.w3.org/History.html`).
 Tre enti principali si occupano oggi della governance di Internet e del Web:
 
 > [!info] Chi governa Internet e il Web
@@ -190,7 +224,7 @@ Tre enti principali si occupano oggi della governance di Internet e del Web:
 > [!quote] Definizione — HTTP
 > Protocollo di livello applicativo per lo scambio di documenti sul Web. Funziona a **richiesta/risposta**: il client invia una richiesta HTTP a un server, il server elabora la richiesta e restituisce una risposta HTTP. È **stateless**: ogni richiesta è indipendente dalle precedenti, il server non ricorda automaticamente nulla della richiesta precedente dello stesso client.
 
-*(extra, non da slide)* Le slide del corso introducono HTTP come "il ponte della comunicazione" ma non dettagliano la struttura testuale di una richiesta/risposta: la sezione seguente la ricostruisce per completezza. Metodi, classi di status code, gli header `Accept`/`Content-Type` e il formato JSON sono invece trattati esplicitamente nelle slide sull'architettura REST (`PW46-Express-rest-v2.pdf`, `PW35-Express.pdf`) e vengono ripresi qui in chiave di protocollo generale, prima che [[09 - Express e API REST]] li applichi a un'API concreta.
+*(extra, non da slide)* Le slide del corso introducono HTTP come "il ponte della comunicazione" ma non dettagliano la struttura testuale di una richiesta/risposta: la sezione seguente la ricostruisce per completezza. Metodi, principali status code, gli header `Accept`/`Content-Type` e il formato JSON sono invece trattati esplicitamente nelle slide sull'architettura REST (`PW46-Express-rest-v2.pdf`, `PW35-Express.pdf`) e vengono ripresi qui in chiave di protocollo generale, prima che [[09 - Express e API REST]] li applichi a un'API concreta.
 ### Struttura di una richiesta HTTP
 Una richiesta HTTP è testo strutturato in tre parti: una **request line**, una serie di **header**, e un **body** opzionale.
 ```http
@@ -215,7 +249,9 @@ Content-Length: 48213
 - **Body**: il contenuto vero e proprio della risposta (HTML, JSON, un file, o nulla).
 
 > [!question] Domanda tipica d'esame
-> Una richiesta e una risposta HTTP hanno la **stessa struttura a tre parti** (riga iniziale, header, body): cambia solo cosa contiene la prima riga (metodo+path per la richiesta, status code per la risposta).
+> **Domanda**: che struttura hanno una richiesta e una risposta HTTP?
+>
+> **Risposta**: la **stessa struttura a tre parti** (riga iniziale, header, body): cambia solo cosa contiene la prima riga (metodo e path per la richiesta, status code per la risposta).
 ## Metodi HTTP
 Il **metodo** (o verbo) HTTP indica l'azione che il client vuole compiere sulla risorsa indicata dal path.
 
@@ -229,10 +265,17 @@ Il **metodo** (o verbo) HTTP indica l'azione che il client vuole compiere sulla 
 | `HEAD` | Come `GET`, ma la risposta ha solo gli header (nessun body) | No | Sì |
 | `OPTIONS` | Chiede quali metodi/header sono ammessi su una risorsa (usato anche dal *preflight* CORS, vedi [[#CORS: cenni]]) | No | Sì |
 
-**Idempotente** significa che ripetere la stessa richiesta più volte produce lo stesso effetto di eseguirla una sola volta (es. cancellare due volte la stessa risorsa lascia il sistema nello stesso stato). `GET`, `PUT`, `DELETE` sono idempotenti; `POST` in generale no, perché ogni chiamata può creare una nuova risorsa. Come questi metodi si applicano alle quattro operazioni **CRUD** su una risorsa REST (`POST`→Create, `GET`→Read, `PUT`/`PATCH`→Update, `DELETE`→Delete) è approfondito in [[09 - Express e API REST#Dal CRUD ai metodi HTTP]].
+*(extra, non da slide)* Le colonne «Ha un body?» e «Idempotente?», le descrizioni d'uso e le righe `HEAD` e `OPTIONS` sono una sintesi dello standard HTTP, non delle slide. **Idempotente** significa che ripetere la stessa richiesta più volte produce lo stesso effetto di eseguirla una sola volta (es. cancellare due volte la stessa risorsa lascia il sistema nello stesso stato). `GET`, `PUT`, `DELETE` sono idempotenti; `POST` in generale no, perché ogni chiamata può creare una nuova risorsa. Come questi metodi si applicano alle quattro operazioni **CRUD** su una risorsa REST (`POST`→Create, `GET`→Read, `PUT`/`PATCH`→Update, `DELETE`→Delete) è approfondito in [[09 - Express e API REST#Dal CRUD ai metodi HTTP]].
 
-> [!warning] Trabocchetto — GET non deve avere effetti collaterali
-> Le slide sono nette su questo punto: **"GET deve solo recuperare dati, non modificarli"** (un `GET /addCustomer?name=Rossi` che crea una risorsa è l'esempio scorretto da evitare). `GET` non dovrebbe mai modificare lo stato del server, ed è per questo **idempotente**. Inoltre una richiesta `GET` normalmente **non ha un body**: eventuali parametri vanno nella query string della URL.
+> [!warning] Attenzione — GET non deve avere effetti collaterali
+> Le slide sono nette su questo punto: **"GET deve solo recuperare dati, non modificarli"** (un `GET /addCustomer?name=Rossi` che crea una risorsa è l'esempio scorretto da evitare). `GET` non dovrebbe mai modificare lo stato del server, ed è per questo **idempotente**. *(extra, non da slide)* Inoltre una richiesta `GET` normalmente **non ha un body**: eventuali parametri vanno nella query string della URL.
+
+Cosa dicono le slide sui metodi: una request contiene metodo HTTP, endpoint (URL), header e body; i metodi del CRUD sono `POST` (create), `GET` (read), `PUT` (update) e `DELETE` (delete) (PW46, p. 4), a cui si affianca `PATCH` (es. `PATCH /products/3`, p. 7). Nel web classico `GET` serviva per qualsiasi interazione (`GET /addCustomer?name=Rossi`); in REST per creare una risorsa si usa `POST /customers` con body `{ "name": "Rossi" }` (p. 5). Lo stesso metodo ha esiti diversi su una collezione e su un elemento: `POST /books/145` è «metodo non consentito (405)» (p. 10). Express supporta, oltre a questi, anche `head`, `options` e molti altri metodi (PW35, p. 29: get, post, put, head, delete, options, trace, copy, lock, mkcol, move, purge, propfind, proppatch, unlock, report, mkactivity, checkout, merge, m-search, notify, subscribe, unsubscribe, patch, search e connect).
+
+> [!question] Domanda tipica d'esame
+> **Domanda**: quale metodo HTTP si usa in un'API REST per creare una risorsa, e perché non si usa `GET /addCustomer?name=Rossi`?
+>
+> **Risposta**: si usa `POST` (create), ad esempio `POST /customers` con il dato nel body. `GET` deve solo recuperare dati, non modificarli (PW46, p. 5); la corrispondenza completa è `POST` create, `GET` read, `PUT` update, `DELETE` delete.
 ## Status code HTTP
 Ogni risposta HTTP porta uno **status code**: un numero a tre cifre che indica l'esito della richiesta. La prima cifra individua la **classe**:
 
@@ -244,15 +287,21 @@ Ogni risposta HTTP porta uno **status code**: un numero a tre cifre che indica l
 | **4xx** | Errore del client | `400 Bad Request`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found`, `405 Method Not Allowed`, `422 Unprocessable Entity` |
 | **5xx** | Errore del server | `500 Internal Server Error` *(502/503: standard HTTP diffusi, non elencati esplicitamente nelle slide)* |
 
+Dalle slide (PW46, p. 13) i codici elencati sono questi: `200` OK («tutto bene»); `201` («è stata creata una nuova risorsa»); `204` («la risorsa è stata cancellata con successo»); `304` Not Modified («i dati non sono cambiati, il cliente può utilizzare i dati nella cache»); `400` Bad Request (richiesta non valida, l'errore esatto va spiegato nel payload); `401` Unauthorized (la richiesta richiede un'autenticazione dell'utente); `403` Forbidden (il server ha capito la richiesta, ma i diritti del richiedente non consentono l'accesso); `404` Not Found (non c'è alcuna risorsa dietro l'URI richiesto); `422` Unprocessable Entity (il server non può elaborare l'entity, ad esempio perché mancano campi obbligatori nel payload); `500` Internal Server Error (da evitare: lo stacktrace va loggato e non inviato all'utente). *(extra, non da slide)* La riga `1xx` con `100 Continue`, i nomi standard `201 Created`, `204 No Content` e `405 Method Not Allowed` (le slide riportano solo «(405)», a p. 10) e la denominazione delle classi non compaiono nelle slide.
+
 Quali di questi codici usare in una risposta e come strutturarla in un'API REST — inclusi i casi d'uso di 401/403/422 e il formato JSend — è approfondito in [[09 - Express e API REST#Status code e formato delle risposte]].
 
 > [!question] Domanda tipica d'esame
-> Saper collocare uno status code nella classe giusta (es. "404 è un errore di quale classe?" → 4xx, errore del client) è un classico del test a risposta multipla; non serve sapere a memoria l'elenco completo, ma riconoscere i più comuni e la loro classe.
+> **Domanda**: a quale classe appartiene lo status code 404?
+>
+> **Risposta**: alla classe 4xx, errore del client. Saper collocare uno status code nella classe giusta è un classico del test a risposta multipla; non serve l'elenco completo, ma riconoscere i più comuni e la loro classe.
 ## Header HTTP
 Gli header sono metadati, coppie `Chiave: valore`, che accompagnano richiesta e risposta. Le slide sull'architettura REST introducono la coppia più importante per negoziare il formato dei dati:
 
 > [!quote] Definizione — Accept e Content-Type
-> **`Accept`** (dal client verso il server): i formati di risposta che il client è disposto ad accettare, es. `Accept: application/json`. **`Content-Type`** (da chi invia un body, client o server): il formato del corpo della richiesta o della risposta, es. `Content-Type: application/json`. Formati comuni: `application/json`, `application/xml`, `text/plain`.
+> **`Accept`** (dal client verso il server): i formati di risposta che il client è disposto ad accettare, es. `Accept: application/json`. **`Content-Type`** (dal server verso il client, nelle slide REST): il formato della risposta, es. `Content-Type: application/json`. Formati comuni: `application/json`, `application/xml`, `text/plain` (PW46, p. 14).
+
+*(extra, non da slide)* Lo stesso header descrive anche il body di una richiesta inviata dal client (ad esempio un `POST` con JSON); le slide su CORS (PW32, p. 25) lo elencano infatti fra gli header di richiesta, con i valori ammessi in una simple request (`application/x-www-form-urlencoded`, `multipart/form-data`, `text/plain`).
 
 *(extra, non da slide)* Altri header ricorrenti, utili per leggere una richiesta/risposta reale nei **DevTools** (pannello Network), uno strumento fondamentale per il debug del progetto d'esame:
 
@@ -266,6 +315,11 @@ Gli header sono metadati, coppie `Chiave: valore`, che accompagnano richiesta e 
 | `Set-Cookie` | Risposta | Chiede al client di memorizzare un cookie |
 | `Cache-Control` | Risposta | Direttive sulla cache del contenuto |
 | `Location` | Risposta | URL di destinazione in una redirezione (3xx) o della risorsa appena creata (201) |
+
+> [!question] Domanda tipica d'esame
+> **Domanda**: qual è la differenza tra gli header `Accept` e `Content-Type`?
+>
+> **Risposta**: `Accept` (client → server) indica i formati che il client accetta, es. `Accept: application/json`; `Content-Type` (server → client) indica il formato della risposta, es. `Content-Type: application/json` (PW46, p. 14).
 ## JSON come formato di scambio
 **JSON** (JavaScript Object Notation) è il formato più usato per scambiare dati strutturati tra client e server nelle applicazioni web moderne, al posto (o accanto) di HTML puro. È testo semplice, leggibile sia da umani sia da programmi, indipendente dal linguaggio di programmazione. Le slide sull'architettura REST ("JSON formatting") lo mostrano con un oggetto di esempio:
 ```json
@@ -280,11 +334,17 @@ Gli header sono metadati, coppie `Chiave: valore`, che accompagnano richiesta e 
 *(extra, non da slide)* Regole di sintassi non dettagliate a lezione ma indispensabili per scrivere JSON valido: le chiavi sono sempre stringhe fra doppi apici, i valori possono essere stringhe, numeri, booleani, `null`, oggetti (`{}`) o array (`[]`); non sono ammessi commenti né virgole finali. Quando il body di una richiesta o risposta HTTP contiene JSON, l'header `Content-Type` deve valere `application/json` (vedi sopra). Come avvolgere questi dati in una busta coerente per un'intera API (lo standard **JSend**) è mostrato in [[09 - Express e API REST#Status code e formato delle risposte]].
 ## CORS: cenni
 Per motivi di sicurezza il browser applica di default la **same-origin policy**: uno script non può leggere liberamente le risposte di richieste verso un'origine (schema + host + porta) diversa da quella della pagina che lo esegue. **CORS** (Cross-Origin Resource Sharing) è il meccanismo, introdotto nelle slide su fetch/AJAX, con cui un server autorizza esplicitamente, tramite header di risposta, l'accesso da origini esterne. Il meccanismo compare anche fra le funzionalità elencate per un server web locale (`http-server`, vedi [[#Server web: root, path e tipi di URL]]).
+Dalle slide (PW32, pp. 24-26): CORS è uno standard W3C per condividere risorse tra domini diversi; prevede una richiesta di autorizzazione (client) e un'autorizzazione (server) ed è implementato inviando header HTTP in richiesta e risposta, distinguendo richieste semplici e richieste *preflight*. In una **simple request** i metodi ammessi sono `GET`, `HEAD` e `POST`; gli header permessi sono `Accept`, `Accept-Language`, `Content-Language` e `Content-Type`, quest'ultimo solo con i valori `application/x-www-form-urlencoded`, `multipart/form-data` o `text/plain`. `Access-Control-Allow-Origin: *` significa che la risorsa può essere acceduta da qualunque origine.
 La logica completa — *simple request* contro richiesta di *preflight* con `OPTIONS`, header coinvolti, configurazione lato Express — è approfondita in [[07 - JavaScript asincrono, Promise, fetch e CORS#CORS]], dove si studia insieme a `fetch` e alle chiamate asincrone che più spesso incontrano problemi di CORS.
+
+> [!question] Domanda tipica d'esame
+> **Domanda**: quando il browser applica i controlli CORS?
+>
+> **Risposta**: quando uno script JavaScript nel browser (ad esempio con `fetch`) fa una richiesta verso un'origine diversa (schema, host o porta diversi) da quella della pagina: il server deve autorizzarla con gli header di risposta (es. `Access-Control-Allow-Origin`). *(extra, non da slide)* Non si applicano al semplice click su un link verso un altro sito, né a un server che legge un file JSON, né a uno script che modifica il DOM, e non dipendono dal fatto che il backend usi Express o restituisca JSON.
 ## Riferimenti
-- `PW00-Introduzione.pdf` — schema Full Stack Web Architecture (Browser ⇔ Server ⇔ Storage).
-- `PW01-Internet e HTML.pdf`, pp. 1-62 — web app, modello client-server, ciclo di comunicazione, percorso di una richiesta, URI/URL, DNS (pp. 25-36), Internet e WWW, client/server HTTP, nascita del Web (pp. 37-62). Le pagine successive (63 in poi) riguardano il markup HTML e sono trattate in [[02 - HTML semantico e form]].
-- `PW04-WebServer-Url.pdf`, pp. 1-13 — server web locale (`http-server`), root e file di default, tipi di URL (assolute, relative alla pagina, relative alla root).
+- `PW00-Introduzione.pdf`, pp. 2-3 — schema Full Stack Web Architecture (Browser ⇔ Server ⇔ Storage) e stack MEVN; pp. 4-6 — tecnologie e concetti, modalità d'esame, teoria e pratica.
+- `PW01-Internet e HTML.pdf`, pp. 1-62 — web app, browser e tecnologie web (pp. 6-7, 11, 52), recap (p. 61), modello client-server, ciclo di comunicazione, percorso di una richiesta, URI/URL, DNS (pp. 25-36), Internet e WWW, client/server HTTP, nascita del Web (pp. 37-62). Le pagine successive (63 in poi) riguardano il markup HTML e sono trattate in [[02 - HTML semantico e form]].
+- `PW04-WebServer-Url.pdf`, pp. 1-13 (in particolare pp. 2-4, 9, 12-13) — server web locale (`http-server`), root e file di default, tipi di URL (assolute, relative alla pagina, relative alla root).
 - `PW46-Express-rest-v2.pdf`, pp. 4-5, 13-16 — struttura della request (metodo, endpoint, header, body), "GET deve solo recuperare dati, non modificarli", status code HTTP, header Accept/Content-Type, JSON formatting (esempio `cerulean`). Il mapping CRUD/REST e l'uso dei codici in un'API sono approfonditi in [[09 - Express e API REST]].
 - `PW32-Fetch-Async-CORS.pdf`, pp. 20-28 — same-origin policy, CORS, metodi ammessi in una simple request (GET/HEAD/POST). Il dettaglio è in [[07 - JavaScript asincrono, Promise, fetch e CORS]].
 - `PW35-Express.pdf`, p. 29 — elenco completo dei metodi HTTP supportati da Express (incluse `head` e `options`).
